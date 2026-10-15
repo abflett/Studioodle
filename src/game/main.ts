@@ -2,7 +2,7 @@ import { Game, Scale, WEBGL } from 'phaser';
 import type { EditorBridge } from '../editor/bridge';
 import { StudioScene } from './scenes/StudioScene';
 
-export function startGame(parent: HTMLElement, bridge: EditorBridge) {
+export function startGame(parent: HTMLElement, bridge: EditorBridge, leafColor: number) {
   return new Game({
     type: WEBGL,
     parent,
@@ -10,6 +10,6 @@ export function startGame(parent: HTMLElement, bridge: EditorBridge) {
     transparent: true,
     antialias: true,
     scale: { mode: Scale.RESIZE, width: parent.clientWidth, height: parent.clientHeight },
-    scene: [new StudioScene(bridge)],
+    scene: [new StudioScene(bridge, leafColor)],
   });
 }

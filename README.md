@@ -6,7 +6,7 @@ Studioodle is a free drawing and coloring app concept that combines the freedom 
 
 Designed with children in mind and open to anyone who enjoys creating, Studioodle puts approachable controls and playful exploration at the heart of the experience.
 
-> **Project status:** Early development. A web starter with a React interface and a Phaser tree/color preview is available. The drawing, stickers, focus, and saving features below describe the intended experience and are not implemented yet.
+> **Project status:** Early development. A loading splash and picture-selection screen lead to a Phaser tree/color preview. All three entry choices currently open that preview. Drawing, sticker editing, focus, and saving are planned, not implemented yet.
 
 ## Start with a page. Make it yours.
 
@@ -70,7 +70,9 @@ npm ci
 npm run dev
 ```
 
-Open the local URL printed by Vite. The starter lets you change the preview tree's color and reset it; it is not yet a painting editor.
+Open the local URL printed by Vite. After loading, choose a blank picture, coloring page, or previous picture. All three currently open the tree preview, where you can change colors, reset, and return to selection. No pictures are saved yet. The interface follows your system's light/dark theme.
+
+The branded splash stays visible for at least two seconds and continues automatically once loading is complete. Picture selection uses large images and short labels: Blank page and Coloring page open overlay wizards, with a previous-picture carousel underneath. Blank setup steps through paper shape and background color. Coloring choices and the carousel currently use examples, not saved pictures. Editor controls use icons, with accessible labels for screen readers. The viewport-sized interface uses sunny beach-inspired gradients in light mode and moonlit forest colors in dark mode.
 
 ```sh
 npm run check      # TypeScript, ESLint, and production build
@@ -84,6 +86,8 @@ The contents of `dist/` can be served by a static website host. Asset URLs are r
 
 ```text
 src/
+  app/             Startup preparation and selection choices
+  assets/          Bundled selection illustrations
   editor/          Framework-independent editor contracts and future document logic
   game/            Phaser lifecycle, scenes, and rendering
   ui/              React controls and styles
@@ -95,6 +99,8 @@ vite/              Shared, development, and production build configuration
 React owns interface controls; Phaser owns the drawing surface. Commands cross a typed bridge rather than exposing scene objects to UI components. Future document state, undo history, and storage adapters should remain independent of Phaser objects. The starter does not enable physics or include a native wrapper.
 
 The intended first technical milestone is a small prototype of the core interaction: place a sticker, focus on it, focus on one part, paint within its boundaries, and return to the whole picture.
+
+See [startup and navigation notes](docs/STARTUP.md) for loading stages, state ownership, and the approach to future asset packs.
 
 ## What's in the name?
 

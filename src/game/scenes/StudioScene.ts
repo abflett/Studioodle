@@ -4,17 +4,18 @@ import type { EditorBridge } from '../../editor/bridge';
 
 // An integration preview, not the painting/document engine.
 export class StudioScene extends Scene {
-  private leafColor = 0x87b999;
+  private leafColor: number;
   private artwork?: GameObjects.Graphics;
 
-  constructor(private readonly bridge: EditorBridge) {
+  constructor(private readonly bridge: EditorBridge, private readonly initialColor: number) {
     super('Studio');
+    this.leafColor = initialColor;
   }
 
   create() {
     this.artwork = this.add.graphics();
     const unsubscribe = this.bridge.subscribe((command) => {
-      this.leafColor = command.type === 'set-color' ? command.color : 0x87b999;
+      this.leafColor = command.type === 'set-color' ? command.color : this.initialColor;
       this.drawPreview();
     });
     this.scale.on('resize', this.drawPreview, this);
