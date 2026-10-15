@@ -1,3 +1,5 @@
+import { loadPictures } from '../editor/storage';
+import { SavedPreview } from './SavedPreview';
 import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, Monitor, Moon, Sun, X } from 'lucide-react';
 import { pictureChoices } from '../app/startup';
@@ -11,7 +13,7 @@ const papers = [
   { name: 'Lilac', color: '#e5daf0' },
   { name: 'Night', color: '#293831' },
 ];
-// Placeholder artwork until real saved pictures and scene packs are available.
+// Starter templates until full scene packs are available.
 const samples: EditorSetup[] = [
   { title: 'Garden', format: 'landscape', background: '#fff5df', leafColor: 0x87b999 },
   { title: 'Daydream', format: 'square', background: '#e5daf0', leafColor: 0xb3a0d4 },
@@ -38,6 +40,11 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
   const [format, setFormat] = useState<PaperFormat>('landscape');
   const [background, setBackground] = useState(papers[0]!.color);
   const [sampleIndex, setSampleIndex] = useState(0);
+  const [library] = useState(() => {
+    try { return { pictures: loadPictures(), error: false }; }
+    catch { return { pictures: [], error: true }; }
+  });
+  const saved = library.pictures;
   const [sceneIndex, setSceneIndex] = useState(0);
 
   const dialog = useRef<HTMLDialogElement>(null);
@@ -53,7 +60,7 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
   }, [open]);
   useEffect(() => { if (step) stepHeading.current?.focus({ preventScroll: true }); }, [step]);
 
-  const current = samples[sampleIndex]!;
+  const current = saved[sampleIndex];
   const scene = samples[sceneIndex]!;
   const stepTitle = step === 'shape' ? 'Pick a shape' : step === 'paper' ? 'Pick a paper color' : 'Pick a picture';
   const openPicture = (setup: EditorSetup) => {
@@ -83,13 +90,13 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
         <section className="previous-section" aria-label="Previous pictures">
 
           <div className="picture-carousel">
-            <button className="icon-button" aria-label="Previous preview" onClick={() => setSampleIndex((value) => (value + samples.length - 1) % samples.length)}><Arrow direction="left" /></button>
-            <button className="choice-card previous-picture" aria-label={`Open example: ${current.title}`} onClick={() => onOpen(current)}><span className="choice-art"><PictureThumbnail picture={current} /></span><span className="carousel-dots" aria-hidden="true">{samples.map((sample, index) => <span key={sample.title} className={index === sampleIndex ? 'active' : ''} />)}</span><span className="choice-label">Your pictures</span></button>
-            <button className="icon-button" aria-label="Next preview" onClick={() => setSampleIndex((value) => (value + 1) % samples.length)}><Arrow direction="right" /></button>
+            <button className="icon-button" aria-label="Previous saved picture" disabled={saved.length < 2} onClick={() => setSampleIndex((value) => (value + saved.length - 1) % saved.length)}><Arrow direction="left" /></button>
+            <button className="choice-card previous-picture" aria-label={current ? `Open saved picture: ${current.title}` : 'No saved pictures yet'} disabled={!current} onClick={() => { if (current) onOpen(current); }}><span className="choice-art"><>{current ? <SavedPreview picture={current} /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}</></span><span className="carousel-dots" aria-hidden="true">{saved.map((sample, index) => <span key={sample.id} className={index === sampleIndex ? 'active' : ''} />)}</span><span className="choice-label">Your pictures</span></button>
+            <button className="icon-button" aria-label="Next saved picture" disabled={saved.length < 2} onClick={() => setSampleIndex((value) => (value + 1) % saved.length)}><Arrow direction="right" /></button>
           </div>
 
 
-          <p className="sr-only" role="status">Example pictures · {sampleIndex + 1} / {samples.length}</p>
+          <p className="sr-only" role="status">{saved.length ? `Saved picture ${sampleIndex + 1} of ${saved.length}` : 'No saved pictures yet'}</p>
         </section>
       </section>
 
@@ -126,6 +133,8 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
     </main>
   );
 }
+
+
 
 
 

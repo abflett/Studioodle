@@ -75,5 +75,5 @@ export function App() {
     return <Editor setup={choice} onBack={() => setChoice(null)} />;
   }
 
-  return <SelectionScreen onOpen={setChoice} theme={theme} onThemeChange={changeTheme} />;
+  return <SelectionScreen onOpen={(setup) => setChoice({ ...setup, id: setup.id ?? crypto.randomUUID() })} theme={theme} onThemeChange={changeTheme} />;
 }

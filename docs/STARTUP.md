@@ -28,3 +28,14 @@ Preload common navigation artwork and editor code. Load larger scene/sticker pac
 - Future storage adapter: browser persistence and import/export, independent of native wrappers.
 
 Keep the initial React entry independent of Phaser through dynamic imports. All choices intentionally lead to a preview until their actual flows are implemented. The child-facing UI is picture-led, with short labels for choices and setup options. Accessible names and status messages remain available to assistive technology. Detailed prototype limitations belong in project documentation.
+
+## First artwork workspace
+
+The editor now fills the area beneath a top ribbon. Back returns to selection; Undo reverses up to 50 artwork changes; Save writes a versioned editable document to browser local storage; the selection carousel reads these documents and renders previews from their marks. Reopening and saving updates the same document ID. Failed saves show an error without replacing the stored document. Stickers, Colors, and Tools open modal pickers. The first tools are a freehand brush and a coarse sticker fill, with tree and flower stickers in the Nature picker. Blank pages start empty.
+
+This is an interaction prototype: stickers are placed automatically, fill uses sticker bounds rather than mask/part hit testing, and strokes can cross outlines. Patterns, moving stickers, and protected coloring are not implemented. Back discards unsaved changes; saved pictures survive reloads in the same browser and origin. Clearing browser storage removes the library. Canvas coordinates are fixed document pixels: landscape 1000 × 700, portrait 700 × 1000, square 800 × 800. The workspace scrolls around this fixed paper without stretching it, with scrollbars hidden. Mouse wheel/trackpad and keyboard scrolling are available; a grab tool and zoom are deferred. Save is no longer PNG export. Undo history is session-only.
+
+
+## Expanded ribbon prototype
+
+Inspect highlights the selected sticker; focused editing, rotation and resize remain future work. Move drags stickers and shapes, with one undo step per drag. Pan uses pointer capture to move the viewport with mouse or touch; traditional wheel/scroll navigation is disabled. Zoom cycles via its ribbon button through 50%, 75%, 100%, 150%, and 200%, without changing document coordinates. The Shapes picker adds circles, squares, and triangles to the same document model as nature stickers, including fill, move, save, and preview rendering. Compact screens wrap the ribbon into rows pending the later UX redesign.
