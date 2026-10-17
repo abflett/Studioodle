@@ -1,41 +1,60 @@
-# Startup and navigation
+# Startup, artwork, and persistence
 
-Studioodle borrows Nanite Survivors' separation between loading, React UI, and Phaser presentation, without its gameplay packs, audio-unlock screen, or simulation startup.
+## Startup and navigation
 
-1. React immediately renders a system-themed splash with the Studioodle wordmark and an inline sketchbook/pencil icon. The small sparkle respects reduced-motion preferences and needs no external image or font download.
-2. `prepareStudio` decodes the three selection illustrations and dynamically imports the editor, including Phaser. Progress counts completed tasks, not bytes.
-3. Once those tasks succeed AND the splash has been visible for at least two seconds, React displays picture selection. The minimum duration runs alongside loading, not after it; the progress bar still reflects real work. Timers are cleared on cleanup.
-4. Blank page and Coloring page appear side by side. Each opens a modal setup wizard without expanding the selection screen. Blank setup steps through paper shape and color; coloring setup offers an example-picture carousel. The native dialog keeps keyboard focus inside, with visible close/back controls and Escape support. A separate carousel below represents previous pictures, with arrows and an openable preview. It currently uses explicitly labeled examples, not saved user data.
-5. Opening a picture mounts the tree preview with the selected paper shape, background, and starting leaf color. Returning to selection destroys Phaser and its subscriptions. Entering again starts a fresh preview. The selected paper color belongs to the picture and does not change with the system theme.
+React displays the Studioodle wordmark and inline sketchbook/pencil icon while `prepareStudio` decodes selection illustrations and imports the editor. Progress reports completed tasks. The splash lasts at least two seconds, concurrently with loading. Failed loading offers retry; abandoned startup effects cannot update state.
 
-Failures show a retry action. Effect cleanup prevents abandoned startup attempts from changing UI state, including during React Strict Mode's development lifecycle checks.
+Blank page and Coloring page open modal setup wizards. Blank setup selects paper shape and background; coloring setup offers starter scenes. Your pictures browses actual saved documents. Clicking outside a dialog or its close button dismisses it. The system/light/dark selector saves its preference locally, independently of paper color. Nunito and Lucide are bundled with the app.
 
-Selection is a React screen, not a Phaser scene. Phaser is instantiated only when entering the preview. Modules preload at startup; GPU resources initialize when the canvas mounts.
+A new picture receives a GUID before Phaser mounts. Returning to selection destroys the game and immediately disconnects its command listeners. Saving a reopened document updates the same GUID.
 
-The interface defaults to the system theme: sunny sand, sea-glass teal, and warm cream in light mode; moonlit blue, forest teal, and amber in dark mode. The selection screen has system/sun/moon controls to follow the device or override it. The preference is saved locally and applies to the splash, selection, and editor; paper colors remain unchanged. Layered gradients add depth without scenic background images. Selection and setup are constrained to the viewport, with compact layouts for shorter screens and no page scrolling.
+## Artwork model
 
-## Growing the asset library
+`Artwork` owns an ordered stack of surfaces. The canvas is the fixed bottom surface. Each sticker or shape has a stable object ID, position, immutable base artwork, protected outline mask, and an editable paint buffer in local coordinates. The buffer stores added solid colors; empty pixels reveal the base artwork.
 
-Interface typography uses bundled Nunito Variable via Fontsource, and controls use Lucide React icons. Neither requires an external font or icon service at runtime. Picture choices use artwork with centered labels instead of framed cards; carousel navigation uses borderless round hit areas. Buttons share hover/press feedback and respect reduced-motion preferences. Keep strong outlines for keyboard focus and selected options rather than framing every control.
+All shapes and nature stickers use the selected outline color and white interiors, including tree trunks and flower stems. The Stickers wizard starts with Shapes and Nature categories, then shows items with a Back control. There is no separate Shapes ribbon button. New categories can be registered in stickerCatalog.ts. Saved objects use these same default bases while retaining added paint. The canvas base is the paper color chosen at creation.
 
-Preload common navigation artwork and editor code. Load larger scene/sticker packs when chosen, reporting their real loader progress. Do not load every future coloring book into memory at launch. Measure expensive mask preprocessing and move it off the main thread if needed. No sticker masks or document persistence exist yet.
+An ownership map assigns every document pixel to its topmost visible surface. It is rebuilt when an object is added or moved. Drawing and erasing route each brush pixel to that surface only. A stroke crossing the canvas and a sticker is therefore split between their buffers. Covered surfaces receive no hidden duplicate paint. Moving a sticker carries its paint and leaves the canvas's existing paint where it was.
 
-## State ownership
+The default brush is a hard 10-pixel round brush. Erase is a hard 40-pixel brush that removes added paint and reveals the original surface, including its default fill. Neither changes protected outlines. Paint cannot make the underlying sticker silhouette disappear.
 
-- React: startup status and selected entry path.
-- Editor: tool state and future document commands.
-- Phaser: canvas lifecycle and presentation.
-- Future storage adapter: browser persistence and import/export, independent of native wrappers.
+Bucket fills a connected region of matching color on the clicked surface, limited to its currently visible, editable pixels. It respects freehand boundaries and outlines. Fill resolves into actual paint pixels once; moving another object never reruns the fill or changes its result. No-op fills and erasing untouched defaults do not consume undo steps.
 
-Keep the initial React entry independent of Phaser through dynamic imports. All choices intentionally lead to a preview until their actual flows are implemented. The child-facing UI is picture-led, with short labels for choices and setup options. Accessible names and status messages remain available to assistive technology. Detailed prototype limitations belong in project documentation.
+Undo stores up to 50 document snapshots, with one entry per brush/eraser gesture, fill, move, or insertion. Inspect currently highlights a selected sticker; part focus, rotation, resize, patterns, and additional brushes are deferred.
 
-## First artwork workspace
+## View and input
 
-The editor now fills the area beneath a top ribbon. Back returns to selection; Undo reverses up to 50 artwork changes; Save writes a versioned editable document to browser local storage; the selection carousel reads these documents and renders previews from their marks. Reopening and saving updates the same document ID. Failed saves show an error without replacing the stored document. Stickers, Colors, and Tools open modal pickers. The first tools are a freehand brush and a coarse sticker fill, with tree and flower stickers in the Nature picker. Blank pages start empty.
+Landscape paper is 1000 × 700 document pixels, portrait 700 × 1000, and square 800 × 800. Pan freely translates the paper while leaving a small portion reachable. Zoom cycles through 50%, 75%, 100%, 150%, and 200%. View changes never modify saved artwork geometry. The ribbon wraps on narrow screens.
 
-This is an interaction prototype: stickers are placed automatically, fill uses sticker bounds rather than mask/part hit testing, and strokes can cross outlines. Patterns, moving stickers, and protected coloring are not implemented. Back discards unsaved changes; saved pictures survive reloads in the same browser and origin. Clearing browser storage removes the library. Canvas coordinates are fixed document pixels: landscape 1000 × 700, portrait 700 × 1000, square 800 × 800. The workspace scrolls around this fixed paper without stretching it, with scrollbars hidden. Mouse wheel/trackpad and keyboard scrolling are available; a grab tool and zoom are deferred. Save is no longer PNG export. Undo history is session-only.
+Both mouse buttons activate tools and controls. Pan supports pointer capture for mouse/touch dragging. Browser context menus, native dragging, and text selection are suppressed within the app. Traditional scrollbar navigation is disabled.
+
+## Saved documents
+
+Version 2 saves the surface stack and run-length encoded paint buffers, rather than a global replay of strokes and flood-fill seeds. Previews and the editor render the same surface model. Saves use one local-storage key per picture GUID; storage errors are reported. Saving is manual, Back discards unsaved edits, and clearing browser storage removes the library.
+
+Version 1 documents are imported in memory by replaying their operations into the surface model and are written as version 2 only on Save. Their bases use the same white-interior defaults; imported paint operations are retained. Old global erasures adopt the new reset-to-default semantics; there was no reliable per-object paint ownership in the old format to recover. Existing saved keys are not deleted or automatically overwritten during migration.
+
+## Responsibilities
+
+React owns navigation, dialogs, and view placement. `Artwork` owns document editing, surface masks, selection, rendering, and serialization. Phaser owns input delivery and the displayed canvas texture. The storage adapter persists documents independently of Phaser. Modules preload at startup; GPU resources initialize when entering the editor. Larger future sticker packs should load on demand rather than all at startup.
 
 
-## Expanded ribbon prototype
+## Binary sticker assets
 
-Inspect highlights the selected sticker; focused editing, rotation and resize remain future work. Move drags stickers and shapes, with one undo step per drag. Pan uses pointer capture to move the viewport with mouse or touch; traditional wheel/scroll navigation is disabled. Zoom cycles via its ribbon button through 50%, 75%, 100%, 150%, and 200%, without changing document coordinates. The Shapes picker adds circles, squares, and triangles to the same document model as nature stickers, including fill, move, save, and preview rendering. Compact screens wrap the ribbon into rows pending the later UX redesign.
+All sticker coverage and outline pixels are binary. Procedural paths are rasterized once and thresholded at 50% coverage; the resulting base contains only fully opaque outline color, fully opaque white, or transparency. Outline masks are bit-packed. The texture uses nearest-neighbor filtering and canvas previews use pixelated scaling, so zoom does not introduce blended edge colors.
+
+Eight source-image stickers are available from the cottage garden BMP in Nature, Sky, Fruit, and Cottage categories. Their silhouettes and outlines are stored as separate 1-bit planes and use the same painting/selection/persistence model as procedural shapes. See `src/assets/stickers/README.md` for extraction provenance, source bounds, and the repeatable extraction command.
+
+## Window-sized blank pages and cottage garden
+
+New blank pages default to Fit screen. EditorPreview measures the actual drawing viewport after ribbon layout, before mounting Phaser, and persists those integer dimensions in setup.size and the artwork document. This is a one-time size choice: later window changes pan/recenter the view without stretching or resizing artwork. Explicit Wide, Tall and Square choices remain available. Saved pictures and previews use the saved dimensions.
+
+The Cottage garden template uses a 1536 by 1024 document and reusable sticker instances. See art/GARDEN-PACK.md for asset sources, exact generation prompts, binary mask conversion and regeneration commands.
+
+## Child playtest adjustments
+
+The sticker picker defaults to charcoal outlines (#242428), with a Current color override at its footer. New stickers are placed near the visible viewport center and enter Select immediately. Clicking empty space, Done, or toggling Select off returns to Fill without filling on the dismissal click. Scene tool changes are reported through the bridge so React stays synchronized.
+
+Home replaces Back and saves before navigation; failures leave the editor open. The manual ribbon Save button is removed. A cleanup-managed one-minute timer saves to the same document ID. Saving does not interrupt an active paint or drag gesture.
+
+The selection screen provides bottom-centered Delete, Print and PNG export actions for the displayed saved picture. Delete offers Undo while the message remains present. Print and export render the saved document at native dimensions without editor selection graphics; printing opens a dedicated browser print window. No app tests or build were run for these changes.

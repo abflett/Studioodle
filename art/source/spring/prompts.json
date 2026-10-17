@@ -1,0 +1,25 @@
+{
+  "tool": "Built-in image_gen",
+  "prompts": [
+    {
+      "name": "bunny",
+      "prompt": "Use case: illustration-story. One isolated original sticker for Chloe's very simple spring coloring page for a young child: a seated friendly spring bunny, two long ears with single large inner-ear regions, round head, large simple body, two big feet and a little round tail. Tiny dot eyes and one simple smile. No fur lines, whiskers, clothing, paws with toes or patterns. Flat friendly rounded hand-drawn illustration, entire object visible with margin. Very few BIG closed coloring regions, intentionally much simpler than typical coloring books. Bold pure black outlines about 15 pixels at 1024px source height, opaque plain white interior, genuine transparent exterior. NO gray, shading, shadows, hatching, text, gradients or detailed textures. No ground, background scene or other objects. Keep all colorable regions broad and easy to click with a paint bucket."
+    },
+    {
+      "name": "butterfly",
+      "prompt": "Use case: illustration-story. One isolated original sticker for Chloe's very simple spring coloring page for a young child: a cheerful butterfly with four large rounded wings, one wide oval body, two simple curved antennae and a tiny smile. Each wing is one empty region: NO wing spots, veins, patterns or extra subdivisions. Flat friendly rounded hand-drawn illustration, entire object visible with margin. Very few BIG closed coloring regions, intentionally much simpler than typical coloring books. Bold pure black outlines about 15 pixels at 1024px source height, opaque plain white interior, genuine transparent exterior. NO gray, shading, shadows, hatching, text, gradients or detailed textures. No ground, background scene or other objects. Keep all colorable regions broad and easy to click with a paint bucket."
+    },
+    {
+      "name": "tulip",
+      "prompt": "Use case: illustration-story. One isolated original sticker for Chloe's very simple spring coloring page for a young child: one big tulip flower with a single cup-shaped blossom with a three-point scalloped top, a thick broad stem and two very large leaves. No petal divisions or leaf veins. Flat friendly rounded hand-drawn illustration, entire object visible with margin. Very few BIG closed coloring regions, intentionally much simpler than typical coloring books. Bold pure black outlines about 15 pixels at 1024px source height, opaque plain white interior, genuine transparent exterior. NO gray, shading, shadows, hatching, text, gradients or detailed textures. No ground, background scene or other objects. Keep all colorable regions broad and easy to click with a paint bucket."
+    },
+    {
+      "name": "bird",
+      "prompt": "Use case: illustration-story. One isolated original sticker for Chloe's very simple spring coloring page for a young child: a plump little songbird perched on a single thick short branch, with one large oval wing and a simple tail. One dot eye, small triangular beak. No feathers, toes, bark texture or patterns. Flat friendly rounded hand-drawn illustration, entire object visible with margin. Very few BIG closed coloring regions, intentionally much simpler than typical coloring books. Bold pure black outlines about 15 pixels at 1024px source height, opaque plain white interior, genuine transparent exterior. NO gray, shading, shadows, hatching, text, gradients or detailed textures. No ground, background scene or other objects. Keep all colorable regions broad and easy to click with a paint bucket."
+    },
+    {
+      "name": "watering-can",
+      "prompt": "Use case: illustration-story. One isolated original sticker for Chloe's very simple spring coloring page for a young child: a friendly rounded garden watering can with one big body, large open handle and broad spout with a simple oval rose. No holes, droplets, decoration, rivets or writing. Flat friendly rounded hand-drawn illustration, entire object visible with margin. Very few BIG closed coloring regions, intentionally much simpler than typical coloring books. Bold pure black outlines about 15 pixels at 1024px source height, opaque plain white interior, genuine transparent exterior. NO gray, shading, shadows, hatching, text, gradients or detailed textures. No ground, background scene or other objects. Keep all colorable regions broad and easy to click with a paint bucket."
+    }
+  ]
+}

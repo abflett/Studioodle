@@ -1,0 +1,24 @@
+[
+  {
+    "name": "centerline",
+    "error": 2,
+    "iterations": 4,
+    "strokeWidth": 12,
+    "curves": 268,
+    "lines": 10,
+    "bytes": 9566,
+    "gzip": 4364,
+    "brotli": 3767
+  },
+  {
+    "name": "centerline-smooth",
+    "error": 4,
+    "iterations": 8,
+    "strokeWidth": 12,
+    "curves": 189,
+    "lines": 8,
+    "bytes": 6968,
+    "gzip": 3248,
+    "brotli": 2799
+  }
+]

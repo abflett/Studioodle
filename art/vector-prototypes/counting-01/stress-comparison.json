@@ -1,0 +1,38 @@
+[
+  {
+    "name": "stress-gentle",
+    "alpha": 1.334,
+    "tolerance": 4,
+    "paths": 8,
+    "contours": 46,
+    "cubicSegments": 386,
+    "lineSegments": 0,
+    "bytes": 10415,
+    "gzip": 4869,
+    "brotli": 4055
+  },
+  {
+    "name": "stress-bold",
+    "alpha": 1.334,
+    "tolerance": 12,
+    "paths": 8,
+    "contours": 46,
+    "cubicSegments": 383,
+    "lineSegments": 0,
+    "bytes": 10349,
+    "gzip": 4833,
+    "brotli": 4029
+  },
+  {
+    "name": "stress-extreme",
+    "alpha": 1.334,
+    "tolerance": 40,
+    "paths": 8,
+    "contours": 46,
+    "cubicSegments": 383,
+    "lineSegments": 0,
+    "bytes": 10349,
+    "gzip": 4833,
+    "brotli": 4029
+  }
+]

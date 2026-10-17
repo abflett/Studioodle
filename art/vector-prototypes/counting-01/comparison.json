@@ -1,0 +1,32 @@
+[
+  {
+    "name": "faithful",
+    "alpha": 1,
+    "tolerance": 0.2,
+    "paths": 8,
+    "contours": 46,
+    "cubicSegments": 592,
+    "lineSegments": 94,
+    "bytes": 15578
+  },
+  {
+    "name": "smooth",
+    "alpha": 1.2,
+    "tolerance": 1,
+    "paths": 8,
+    "contours": 46,
+    "cubicSegments": 406,
+    "lineSegments": 20,
+    "bytes": 11033
+  },
+  {
+    "name": "minimal",
+    "alpha": 1.3,
+    "tolerance": 2,
+    "paths": 8,
+    "contours": 46,
+    "cubicSegments": 392,
+    "lineSegments": 0,
+    "bytes": 10561
+  }
+]

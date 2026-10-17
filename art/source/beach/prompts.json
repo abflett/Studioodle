@@ -1,0 +1,17 @@
+{
+  "tool": "Built-in image_gen",
+  "prompts": [
+    {
+      "name": "palm",
+      "prompt": "Use case: illustration-story. Create one isolated coloring-book sticker: A playful curved palm tree, five broad smooth palm fronds with just one center seam each, three large coconuts, curved trunk divided into five broad sections. No tiny leaflets, no ground. Medium-simple detail for children, clean confident rounded black outlines, approximately 10 pixels at 1024 source resolution (5px at final size), large closed white fill regions. Pure black ink and opaque white interior, genuinely transparent background outside silhouette. No gray, shading, hatching, texture, lettering, tiny decorative details or extra objects. Entire object visible with small margin. Friendly polished hand-drawn coloring book style."
+    },
+    {
+      "name": "umbrella",
+      "prompt": "Use case: illustration-story. Create one isolated coloring-book sticker: A jaunty beach umbrella, domed canopy with five large curved panels and gently scalloped edge, thick slightly tilted pole ending in a rounded tip. No chair or ground. Medium-simple detail for children, clean confident rounded black outlines, approximately 10 pixels at 1024 source resolution (5px at final size), large closed white fill regions. Pure black ink and opaque white interior, genuinely transparent background outside silhouette. No gray, shading, hatching, texture, lettering, tiny decorative details or extra objects. Entire object visible with small margin. Friendly polished hand-drawn coloring book style."
+    },
+    {
+      "name": "ball",
+      "prompt": "Use case: illustration-story. Create one isolated coloring-book sticker: A cheerful classic beach ball, circular silhouette, five broad curved beach-ball panels and one large round cap offset near the upper left. No face, ground or shadow. Medium-simple detail for children, clean confident rounded black outlines, approximately 10 pixels at 1024 source resolution (5px at final size), large closed white fill regions. Pure black ink and opaque white interior, genuinely transparent background outside silhouette. No gray, shading, hatching, texture, lettering, tiny decorative details or extra objects. Entire object visible with small margin. Friendly polished hand-drawn coloring book style."
+    }
+  ]
+}

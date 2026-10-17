@@ -6,7 +6,7 @@ Studioodle is a free drawing and coloring app concept that combines the freedom 
 
 Designed with children in mind and open to anyone who enjoys creating, Studioodle puts approachable controls and playful exploration at the heart of the experience.
 
-> **Project status:** Early development. A loading splash and picture-selection screen lead to a Phaser tree/color preview. All three entry choices currently open that preview. Drawing, sticker editing, focus, and saving are planned, not implemented yet.
+> **Project status:** Early development. The editor supports hard-brush drawing, connected-area fill, erase-to-default, movable stickers and shapes, pan/zoom, undo, and local editable saves. Paint belongs to the canvas or object it lands on. Focused part editing and the final child-friendly UX are still in development.
 
 ## Start with a page. Make it yours.
 
@@ -70,9 +70,9 @@ npm ci
 npm run dev
 ```
 
-Open the local URL printed by Vite. After loading, choose a blank picture, coloring page, or previous picture. All three currently open the tree preview, where you can change colors, reset, and return to selection. No pictures are saved yet. The interface follows your system's light/dark theme.
+Open the local URL printed by Vite. After loading, choose a blank picture, coloring page, or previous picture. New pictures open the artwork editor; saved pictures reopen from Your pictures. Save stores editable documents in this browser. Shapes and stickers carry their paint when moved; erase restores their original appearance. The interface follows your system's light/dark theme.
 
-The branded splash stays visible for at least two seconds and continues automatically once loading is complete. Picture selection uses large images and short labels: Blank page and Coloring page open overlay wizards, with a previous-picture carousel underneath. Blank setup steps through paper shape and background color. Coloring choices and the carousel currently use examples, not saved pictures. Editor controls use icons, with accessible labels for screen readers. The viewport-sized interface uses sunny beach-inspired gradients in light mode and moonlit forest colors in dark mode.
+The branded splash stays visible for at least two seconds and continues automatically once loading is complete. Picture selection uses large images and short labels: Blank page and Coloring page open overlay wizards, with a previous-picture carousel underneath. Blank setup steps through paper shape and background color. Coloring choices use starter examples; Your pictures browses actual local saves. Editor controls use icons, with accessible labels for screen readers. The viewport-sized interface uses sunny beach-inspired gradients in light mode and moonlit forest colors in dark mode.
 
 ```sh
 npm run check      # TypeScript, ESLint, and production build
@@ -111,3 +111,4 @@ Say it *stoo-dee-oh-oo-dle* — or stretch it into a little yodel if the mood ta
 ## License
 
 Studioodle is licensed under the [Apache License 2.0](LICENSE).
+

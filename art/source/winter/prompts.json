@@ -1,0 +1,29 @@
+{
+  "tool": "Built-in image_gen",
+  "prompts": [
+    {
+      "name": "santa-sleigh",
+      "prompt": "Use case: illustration-story. A single isolated Christmas winter coloring-book sticker. Santa sitting in a festive sleigh facing RIGHT, waving mitten, big simple beard and hat, rounded sleigh body with one broad decorative stripe and curled runners, one large sack behind Santa. No reindeer, no reins extending outside object. Wide side view. Friendly rounded storybook drawing, medium-simple detail, large closed regions easy for children to bucket fill. Confident black outlines roughly 12 pixels at 1024 source, target 5 pixels at final sticker size. ONLY black ink and solid opaque white interiors. Genuine transparent background outside object and through gaps. Entire object with margin. No gray, shading, gradients, hatching, texture, tiny details, text, ground shadows or extra objects."
+    },
+    {
+      "name": "reindeer",
+      "prompt": "Use case: illustration-story. A single isolated Christmas winter coloring-book sticker. One cheerful reindeer facing RIGHT in a gentle bounding pose, four clear legs, simple branching antlers with only two branches each, round nose, broad collar and one bell. No harness lines extending outside object. Friendly rounded storybook drawing, medium-simple detail, large closed regions easy for children to bucket fill. Confident black outlines roughly 12 pixels at 1024 source, target 5 pixels at final sticker size. ONLY black ink and solid opaque white interiors. Genuine transparent background outside object and through gaps. Entire object with margin. No gray, shading, gradients, hatching, texture, tiny details, text, ground shadows or extra objects."
+    },
+    {
+      "name": "cabin",
+      "prompt": "Use case: illustration-story. A single isolated Christmas winter coloring-book sticker. A cozy snow-covered cabin, front three-quarter view, big snowy roof, chimney, one door and two large windows, simple wreath on door, only three broad log divisions. No trees, ground or smoke. Friendly rounded storybook drawing, medium-simple detail, large closed regions easy for children to bucket fill. Confident black outlines roughly 12 pixels at 1024 source, target 5 pixels at final sticker size. ONLY black ink and solid opaque white interiors. Genuine transparent background outside object and through gaps. Entire object with margin. No gray, shading, gradients, hatching, texture, tiny details, text, ground shadows or extra objects."
+    },
+    {
+      "name": "pine",
+      "prompt": "Use case: illustration-story. A single isolated Christmas winter coloring-book sticker. One snowy Christmas pine tree, three broad tiered boughs with soft snow caps, stout trunk, large star topper and just five large round ornaments. No tiny needles, garlands or ground. Friendly rounded storybook drawing, medium-simple detail, large closed regions easy for children to bucket fill. Confident black outlines roughly 12 pixels at 1024 source, target 5 pixels at final sticker size. ONLY black ink and solid opaque white interiors. Genuine transparent background outside object and through gaps. Entire object with margin. No gray, shading, gradients, hatching, texture, tiny details, text, ground shadows or extra objects."
+    },
+    {
+      "name": "skater",
+      "prompt": "Use case: illustration-story. A single isolated Christmas winter coloring-book sticker. One happy young child ice skating, bobble hat, scarf with two broad stripes, mittens, puffy jacket, trousers, two clearly visible boots and thick skate blades. Arms spread, facing slightly RIGHT. No ice or background. Friendly rounded storybook drawing, medium-simple detail, large closed regions easy for children to bucket fill. Confident black outlines roughly 12 pixels at 1024 source, target 5 pixels at final sticker size. ONLY black ink and solid opaque white interiors. Genuine transparent background outside object and through gaps. Entire object with margin. No gray, shading, gradients, hatching, texture, tiny details, text, ground shadows or extra objects."
+    },
+    {
+      "name": "skater-friend",
+      "prompt": "Use case: illustration-story. A single isolated Christmas winter coloring-book sticker. One happy young child ice skating, earmuffs, short hair, long warm coat with three large buttons, mittens, leggings and two clearly visible boots with thick skate blades, playful balanced pose facing slightly LEFT. No ice or background. Friendly rounded storybook drawing, medium-simple detail, large closed regions easy for children to bucket fill. Confident black outlines roughly 12 pixels at 1024 source, target 5 pixels at final sticker size. ONLY black ink and solid opaque white interiors. Genuine transparent background outside object and through gaps. Entire object with margin. No gray, shading, gradients, hatching, texture, tiny details, text, ground shadows or extra objects."
+    }
+  ]
+}
