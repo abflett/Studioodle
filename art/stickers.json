@@ -4,79 +4,285 @@
     "width": 220,
     "height": 280,
     "source": "art/source/shapes/circle.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Circle",
+    "category": "shapes",
+    "sortOrder": 0,
+    "description": "Plain round shape for simple designs.",
+    "tags": [
+      "geometry",
+      "round",
+      "abstract",
+      "space"
+    ],
+    "roles": [
+      "subject",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "square",
     "width": 220,
     "height": 280,
     "source": "art/source/shapes/square.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Square",
+    "category": "shapes",
+    "sortOrder": 1,
+    "description": "Plain square shape for blocks or abstract compositions.",
+    "tags": [
+      "geometry",
+      "block",
+      "abstract"
+    ],
+    "roles": [
+      "subject",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "triangle",
     "width": 220,
     "height": 280,
     "source": "art/source/shapes/triangle.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Triangle",
+    "category": "shapes",
+    "sortOrder": 2,
+    "description": "Plain triangle shape for geometric compositions.",
+    "tags": [
+      "geometry",
+      "pointed",
+      "abstract"
+    ],
+    "roles": [
+      "subject",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "tree",
     "width": 220,
     "height": 280,
     "source": "art/source/shapes/tree.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Simple Tree",
+    "category": "plants",
+    "sortOrder": 1,
+    "description": "Simple rounded canopy and straight trunk with large fill areas.",
+    "tags": [
+      "tree",
+      "nature",
+      "woodland",
+      "safari",
+      "park"
+    ],
+    "roles": [
+      "background",
+      "subject"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "flower",
     "width": 220,
     "height": 280,
     "source": "art/source/shapes/flower.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Simple Flower",
+    "category": "plants",
+    "sortOrder": 7,
+    "description": "Simple rounded-petal flower with broad coloring areas.",
+    "tags": [
+      "flower",
+      "garden",
+      "spring",
+      "nature"
+    ],
+    "roles": [
+      "accent",
+      "foreground"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-house",
     "width": 623,
     "height": 560,
-    "source": "art/source/generated/house.png"
+    "source": "art/source/generated/house.png",
+    "title": "Cottage",
+    "category": "buildings",
+    "sortOrder": 0,
+    "description": "Cottage with roof, door and small architectural details.",
+    "tags": [
+      "house",
+      "cottage",
+      "garden",
+      "village",
+      "home"
+    ],
+    "roles": [
+      "background",
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-tree",
     "width": 450,
     "height": 486,
-    "source": "art/source/generated/tree.png"
+    "source": "art/source/generated/tree.png",
+    "title": "Apple Tree",
+    "category": "plants",
+    "sortOrder": 0,
+    "description": "Leafy broad-canopy tree with visible branches; fruit is a separate asset.",
+    "tags": [
+      "tree",
+      "nature",
+      "garden",
+      "safari",
+      "woodland"
+    ],
+    "roles": [
+      "background",
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "The canopy has no attached apples; use this as a generic leafy tree, or add garden-apple separately for an orchard."
   },
   {
     "id": "garden-bush",
     "width": 242,
     "height": 150,
-    "source": "art/source/generated/bush.png"
+    "source": "art/source/generated/bush.png",
+    "title": "Bush",
+    "category": "plants",
+    "sortOrder": 4,
+    "description": "Low rounded leafy bush.",
+    "tags": [
+      "bush",
+      "leaves",
+      "garden",
+      "safari",
+      "woodland"
+    ],
+    "roles": [
+      "background",
+      "foreground"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-flower",
     "width": 200,
     "height": 294,
-    "source": "art/source/generated/flower.png"
+    "source": "art/source/generated/flower.png",
+    "title": "Flower",
+    "category": "plants",
+    "sortOrder": 6,
+    "description": "Tall garden flower on a leafy stem.",
+    "tags": [
+      "flower",
+      "garden",
+      "spring",
+      "nature"
+    ],
+    "roles": [
+      "foreground",
+      "accent"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-mushroom",
     "width": 150,
     "height": 138,
-    "source": "art/source/generated/mushroom.png"
+    "source": "art/source/generated/mushroom.png",
+    "title": "Mushroom",
+    "category": "plants",
+    "sortOrder": 10,
+    "description": "Small capped mushroom.",
+    "tags": [
+      "mushroom",
+      "garden",
+      "woodland",
+      "fantasy"
+    ],
+    "roles": [
+      "foreground",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-blossom",
     "width": 64,
     "height": 57,
     "source": "art/source/generated/blossom.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Blossom",
+    "category": "plants",
+    "sortOrder": 8,
+    "description": "Small five-petal blossom with a short closed stem.",
+    "tags": [
+      "flower",
+      "blossom",
+      "garden",
+      "spring"
+    ],
+    "roles": [
+      "accent",
+      "foreground"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-rainbow",
     "width": 800,
     "height": 398,
     "source": "art/source/generated/rainbow.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Rainbow",
+    "category": "sky",
+    "sortOrder": 4,
+    "description": "Broad arched rainbow with separate bands to color.",
+    "tags": [
+      "rainbow",
+      "sky",
+      "spring",
+      "garden",
+      "fantasy"
+    ],
+    "roles": [
+      "background"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-fence",
@@ -105,28 +311,98 @@
         300,
         100
       ]
-    ]
+    ],
+    "title": "Fence",
+    "category": "buildings",
+    "sortOrder": 3,
+    "description": "Repeated pointed pickets linked by two rails, with clear gaps.",
+    "tags": [
+      "fence",
+      "garden",
+      "farm",
+      "village"
+    ],
+    "roles": [
+      "background",
+      "foreground"
+    ],
+    "detail": "moderate",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-path",
     "width": 426,
     "height": 320,
     "source": "art/source/generated/path.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Path",
+    "category": "landscapes",
+    "sortOrder": 4,
+    "description": "Curving path that widens toward the viewer.",
+    "tags": [
+      "path",
+      "garden",
+      "walkway",
+      "village"
+    ],
+    "roles": [
+      "background"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-stone",
     "width": 120,
     "height": 41,
     "source": "art/source/generated/stone.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Stone",
+    "category": "landscapes",
+    "sortOrder": 5,
+    "description": "Low rounded stone suitable for paths and shorelines.",
+    "tags": [
+      "rock",
+      "stone",
+      "safari",
+      "garden",
+      "beach",
+      "space"
+    ],
+    "roles": [
+      "foreground",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-grass",
     "width": 88,
     "height": 47,
     "source": "art/source/generated/grass.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Grass",
+    "category": "plants",
+    "sortOrder": 5,
+    "description": "Small tuft of grass with bold open shapes.",
+    "tags": [
+      "grass",
+      "tuft",
+      "safari",
+      "garden",
+      "meadow"
+    ],
+    "roles": [
+      "foreground",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-sun",
@@ -134,7 +410,26 @@
     "height": 313,
     "source": "art/source/cottage-garden-PAINT-READY.bmp",
     "crop": "353x313+30+18",
-    "extracted": true
+    "extracted": true,
+    "title": "Sun With Rays",
+    "category": "sky",
+    "sortOrder": 0,
+    "description": "Round sun surrounded by pointed rays.",
+    "tags": [
+      "sun",
+      "sky",
+      "safari",
+      "beach",
+      "spring",
+      "weather"
+    ],
+    "roles": [
+      "background",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-cloud",
@@ -142,7 +437,26 @@
     "height": 169,
     "source": "art/source/cottage-garden-PAINT-READY.bmp",
     "crop": "306x169+1205+32",
-    "extracted": true
+    "extracted": true,
+    "title": "Cloud",
+    "category": "sky",
+    "sortOrder": 2,
+    "description": "Rounded cloud outline with large coloring space.",
+    "tags": [
+      "cloud",
+      "sky",
+      "safari",
+      "beach",
+      "garden",
+      "weather"
+    ],
+    "roles": [
+      "background",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-butterfly",
@@ -150,14 +464,50 @@
     "height": 193,
     "source": "art/source/cottage-garden-PAINT-READY.bmp",
     "crop": "215x193+1308+232",
-    "extracted": true
+    "extracted": true,
+    "title": "Garden Butterfly",
+    "category": "animals",
+    "sortOrder": 4,
+    "description": "Garden butterfly with decorative wings; flip to change direction.",
+    "tags": [
+      "butterfly",
+      "insect",
+      "garden",
+      "spring",
+      "nature"
+    ],
+    "roles": [
+      "accent",
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-apple",
     "width": 77,
     "height": 92,
     "source": "art/source/generated/apple.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Apple",
+    "category": "food",
+    "sortOrder": 0,
+    "description": "Single apple with a leaf and stem.",
+    "tags": [
+      "apple",
+      "fruit",
+      "food",
+      "garden",
+      "orchard"
+    ],
+    "roles": [
+      "accent",
+      "subject"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "garden-window",
@@ -165,13 +515,47 @@
     "height": 113,
     "source": "art/source/cottage-garden-PAINT-READY.bmp",
     "crop": "106x113+890+357",
-    "extracted": true
+    "extracted": true,
+    "title": "Window",
+    "category": "buildings",
+    "sortOrder": 2,
+    "description": "Decorative window to add to a building or scene.",
+    "tags": [
+      "window",
+      "building",
+      "house",
+      "village"
+    ],
+    "roles": [
+      "accent"
+    ],
+    "detail": "moderate",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-01",
     "width": 229,
     "height": 340,
-    "source": "art/source/counting/01.png"
+    "source": "art/source/counting/01.png",
+    "title": "1 - Astronaut",
+    "category": "characters",
+    "sortOrder": 0,
+    "description": "Personified number one dressed as an astronaut.",
+    "tags": [
+      "number",
+      "one",
+      "counting",
+      "astronaut",
+      "space",
+      "costume"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-02",
@@ -183,13 +567,49 @@
         126.75,
         142.75
       ]
-    ]
+    ],
+    "title": "2 - Pirate",
+    "category": "characters",
+    "sortOrder": 1,
+    "description": "Personified number two dressed as a pirate.",
+    "tags": [
+      "number",
+      "two",
+      "counting",
+      "pirate",
+      "adventure",
+      "costume"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-03",
     "width": 228,
     "height": 340,
-    "source": "art/source/counting/03.png"
+    "source": "art/source/counting/03.png",
+    "title": "3 - Chef",
+    "category": "characters",
+    "sortOrder": 2,
+    "description": "Personified number three dressed as a chef.",
+    "tags": [
+      "number",
+      "three",
+      "counting",
+      "chef",
+      "kitchen",
+      "costume"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-04",
@@ -201,25 +621,98 @@
         111.75,
         156.25
       ]
-    ]
+    ],
+    "title": "4 - Gardener",
+    "category": "characters",
+    "sortOrder": 3,
+    "description": "Personified number four dressed as a gardener.",
+    "tags": [
+      "number",
+      "four",
+      "counting",
+      "gardener",
+      "garden",
+      "costume"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-05",
     "width": 229,
     "height": 340,
-    "source": "art/source/counting/05.png"
+    "source": "art/source/counting/05.png",
+    "title": "5 - Knight",
+    "category": "characters",
+    "sortOrder": 4,
+    "description": "Personified number five dressed as a knight.",
+    "tags": [
+      "number",
+      "five",
+      "counting",
+      "knight",
+      "castle",
+      "costume"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-06",
     "width": 233,
     "height": 340,
-    "source": "art/source/counting/06.png"
+    "source": "art/source/counting/06.png",
+    "title": "6 - Wizard",
+    "category": "characters",
+    "sortOrder": 5,
+    "description": "Personified number six dressed as a wizard.",
+    "tags": [
+      "number",
+      "six",
+      "counting",
+      "wizard",
+      "fantasy",
+      "costume"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-07",
     "width": 300,
     "height": 324,
-    "source": "art/source/counting/07.png"
+    "source": "art/source/counting/07.png",
+    "title": "7 - Explorer",
+    "category": "characters",
+    "sortOrder": 6,
+    "description": "Personified number seven dressed as an explorer.",
+    "tags": [
+      "number",
+      "seven",
+      "counting",
+      "explorer",
+      "adventure",
+      "safari",
+      "costume"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-08",
@@ -235,7 +728,25 @@
         115.25,
         160.25
       ]
-    ]
+    ],
+    "title": "8 - Dancer",
+    "category": "characters",
+    "sortOrder": 7,
+    "description": "Personified number eight dressed as a dancer.",
+    "tags": [
+      "number",
+      "eight",
+      "counting",
+      "dancer",
+      "music",
+      "costume"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-09",
@@ -247,7 +758,25 @@
         135.25,
         131.25
       ]
-    ]
+    ],
+    "title": "9 - Firefighter",
+    "category": "characters",
+    "sortOrder": 8,
+    "description": "Personified number nine dressed as a firefighter.",
+    "tags": [
+      "number",
+      "nine",
+      "counting",
+      "firefighter",
+      "helper",
+      "costume"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-10",
@@ -263,45 +792,168 @@
         185.25,
         143.25
       ]
-    ]
+    ],
+    "title": "10 - Musician",
+    "category": "characters",
+    "sortOrder": 9,
+    "description": "Personified number ten dressed as a musician.",
+    "tags": [
+      "number",
+      "ten",
+      "counting",
+      "musician",
+      "music",
+      "costume"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-bunting",
     "width": 1800,
     "height": 76,
     "source": "art/source/counting/bunting.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Bunting",
+    "category": "objects",
+    "sortOrder": 6,
+    "description": "Long string of hanging triangular pennants.",
+    "tags": [
+      "bunting",
+      "party",
+      "celebration",
+      "counting",
+      "garden"
+    ],
+    "roles": [
+      "background",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "counting-star",
     "width": 70,
     "height": 69,
     "source": "art/source/counting/star.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Star",
+    "category": "sky",
+    "sortOrder": 5,
+    "description": "Five-pointed star outline.",
+    "tags": [
+      "star",
+      "sky",
+      "space",
+      "winter",
+      "celebration"
+    ],
+    "roles": [
+      "accent",
+      "background"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "spring-bunny",
     "width": 307,
     "height": 460,
-    "source": "art/source/spring/bunny.png"
+    "source": "art/source/spring/bunny.png",
+    "title": "Bunny",
+    "category": "animals",
+    "sortOrder": 0,
+    "description": "Friendly upright bunny with long ears.",
+    "tags": [
+      "rabbit",
+      "bunny",
+      "animal",
+      "spring",
+      "garden"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "spring-butterfly",
     "width": 289,
     "height": 260,
-    "source": "art/source/spring/butterfly.png"
+    "source": "art/source/spring/butterfly.png",
+    "title": "Butterfly",
+    "category": "animals",
+    "sortOrder": 3,
+    "description": "Large butterfly with patterned wings.",
+    "tags": [
+      "butterfly",
+      "insect",
+      "spring",
+      "garden"
+    ],
+    "roles": [
+      "accent",
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "spring-tulip",
     "width": 294,
     "height": 420,
-    "source": "art/source/spring/tulip.png"
+    "source": "art/source/spring/tulip.png",
+    "title": "Tulip",
+    "category": "plants",
+    "sortOrder": 9,
+    "description": "Single upright tulip with long leaves.",
+    "tags": [
+      "tulip",
+      "flower",
+      "spring",
+      "garden"
+    ],
+    "roles": [
+      "foreground",
+      "accent"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "spring-bird",
     "width": 319,
     "height": 300,
-    "source": "art/source/spring/bird.png"
+    "source": "art/source/spring/bird.png",
+    "title": "Bird",
+    "category": "animals",
+    "sortOrder": 1,
+    "description": "Small friendly bird.",
+    "tags": [
+      "bird",
+      "animal",
+      "spring",
+      "garden",
+      "sky"
+    ],
+    "roles": [
+      "accent",
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "spring-watering-can",
@@ -313,21 +965,75 @@
         61.75,
         111.25
       ]
-    ]
+    ],
+    "title": "Watering Can",
+    "category": "objects",
+    "sortOrder": 0,
+    "description": "Garden watering can with handle and spout.",
+    "tags": [
+      "watering-can",
+      "tool",
+      "garden",
+      "spring"
+    ],
+    "roles": [
+      "foreground",
+      "accent"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "spring-sun",
     "width": 260,
     "height": 260,
     "source": "art/source/spring/sun.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Round Sun",
+    "category": "sky",
+    "sortOrder": 1,
+    "description": "Simple round sun for an uncluttered sky.",
+    "tags": [
+      "sun",
+      "sky",
+      "safari",
+      "beach",
+      "spring",
+      "weather"
+    ],
+    "roles": [
+      "background",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "spring-cloud",
     "width": 380,
     "height": 174,
     "source": "art/source/spring/cloud.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Simple Cloud",
+    "category": "sky",
+    "sortOrder": 3,
+    "description": "Simple wide rounded cloud.",
+    "tags": [
+      "cloud",
+      "sky",
+      "safari",
+      "spring",
+      "weather"
+    ],
+    "roles": [
+      "background",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "spring-meadow",
@@ -335,25 +1041,97 @@
     "height": 1440,
     "source": "art/source/spring/meadow.svg",
     "mode": "svg",
-    "horizon": true
+    "horizon": true,
+    "title": "Meadow Horizon",
+    "category": "landscapes",
+    "sortOrder": 0,
+    "description": "Rolling grass horizon with a deep closed ground silhouette.",
+    "tags": [
+      "horizon",
+      "ground",
+      "meadow",
+      "safari",
+      "garden",
+      "spring"
+    ],
+    "roles": [
+      "background"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Place first, behind other stickers. Logical height includes extended ground; keep the lower silhouette beyond the page edge. Use horizonStart for interactive placement, not as a center coordinate."
   },
   {
     "id": "beach-palm",
     "width": 566,
     "height": 690,
-    "source": "art/source/beach/palm.png"
+    "source": "art/source/beach/palm.png",
+    "title": "Palm Tree",
+    "category": "plants",
+    "sortOrder": 2,
+    "description": "Curved palm tree with large fronds.",
+    "tags": [
+      "palm",
+      "tree",
+      "tropical",
+      "beach",
+      "safari",
+      "island"
+    ],
+    "roles": [
+      "background",
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "beach-umbrella",
     "width": 627,
     "height": 580,
-    "source": "art/source/beach/umbrella.png"
+    "source": "art/source/beach/umbrella.png",
+    "title": "Umbrella",
+    "category": "objects",
+    "sortOrder": 1,
+    "description": "Beach umbrella on a pole.",
+    "tags": [
+      "umbrella",
+      "beach",
+      "summer",
+      "picnic"
+    ],
+    "roles": [
+      "subject",
+      "background"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "beach-ball",
     "width": 277,
     "height": 280,
-    "source": "art/source/beach/ball.png"
+    "source": "art/source/beach/ball.png",
+    "title": "Ball",
+    "category": "objects",
+    "sortOrder": 2,
+    "description": "Striped beach ball with large colorable panels.",
+    "tags": [
+      "ball",
+      "toy",
+      "beach",
+      "summer",
+      "play"
+    ],
+    "roles": [
+      "foreground",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "beach-shore",
@@ -361,21 +1139,73 @@
     "height": 1440,
     "source": "art/source/beach/shore.svg",
     "mode": "svg",
-    "horizon": true
+    "horizon": true,
+    "title": "Seashore Horizon",
+    "category": "landscapes",
+    "sortOrder": 1,
+    "description": "Shoreline horizon and extended ground for a beach scene.",
+    "tags": [
+      "horizon",
+      "ground",
+      "shore",
+      "beach",
+      "island",
+      "water"
+    ],
+    "roles": [
+      "background"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Place first, behind other stickers. Logical height includes extended ground; keep the lower silhouette beyond the page edge. Use horizonStart for interactive placement, not as a center coordinate."
   },
   {
     "id": "beach-towel",
     "width": 460,
     "height": 180,
     "source": "art/source/beach/towel.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Towel",
+    "category": "objects",
+    "sortOrder": 3,
+    "description": "Flat rectangular beach towel with decorative lines.",
+    "tags": [
+      "towel",
+      "beach",
+      "picnic",
+      "summer"
+    ],
+    "roles": [
+      "foreground",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "beach-shell",
     "width": 160,
     "height": 128,
     "source": "art/source/beach/shell.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Shell",
+    "category": "landscapes",
+    "sortOrder": 6,
+    "description": "Small seashell with radiating lines.",
+    "tags": [
+      "shell",
+      "beach",
+      "sea",
+      "shore"
+    ],
+    "roles": [
+      "foreground",
+      "accent"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "winter-santa-sleigh",
@@ -391,25 +1221,94 @@
         233.25,
         307.25
       ]
-    ]
+    ],
+    "title": "Santa And Sleigh",
+    "category": "characters",
+    "sortOrder": 12,
+    "description": "Santa sitting in a decorative sleigh.",
+    "tags": [
+      "santa",
+      "sleigh",
+      "christmas",
+      "winter",
+      "holiday"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "winter-reindeer",
     "width": 284,
     "height": 280,
-    "source": "art/source/winter/reindeer.png"
+    "source": "art/source/winter/reindeer.png",
+    "title": "Reindeer",
+    "category": "animals",
+    "sortOrder": 2,
+    "description": "Leaping four-legged reindeer with antlers and collar.",
+    "tags": [
+      "reindeer",
+      "animal",
+      "christmas",
+      "winter"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "right",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "winter-cabin",
     "width": 520,
     "height": 393,
-    "source": "art/source/winter/cabin.png"
+    "source": "art/source/winter/cabin.png",
+    "title": "Snowy Cabin",
+    "category": "buildings",
+    "sortOrder": 1,
+    "description": "Snowy cabin with roof and architectural details.",
+    "tags": [
+      "cabin",
+      "house",
+      "snow",
+      "winter",
+      "christmas"
+    ],
+    "roles": [
+      "background",
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "winter-pine",
     "width": 290,
     "height": 344,
-    "source": "art/source/winter/pine.png"
+    "source": "art/source/winter/pine.png",
+    "title": "Pine Tree",
+    "category": "plants",
+    "sortOrder": 3,
+    "description": "Evergreen pine tree.",
+    "tags": [
+      "pine",
+      "tree",
+      "forest",
+      "winter",
+      "christmas"
+    ],
+    "roles": [
+      "background",
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "winter-skater",
@@ -429,7 +1328,24 @@
         138.25,
         231.25
       ]
-    ]
+    ],
+    "title": "Skater",
+    "category": "characters",
+    "sortOrder": 10,
+    "description": "Child ice skating with scarf and winter clothes.",
+    "tags": [
+      "child",
+      "skater",
+      "person",
+      "winter",
+      "ice"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "right",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "winter-skater-friend",
@@ -453,7 +1369,24 @@
         100.25,
         234.75
       ]
-    ]
+    ],
+    "title": "Skating Friend",
+    "category": "characters",
+    "sortOrder": 11,
+    "description": "Second child ice skating in warm clothes.",
+    "tags": [
+      "child",
+      "skater",
+      "person",
+      "winter",
+      "ice"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "left",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "winter-snow",
@@ -461,21 +1394,74 @@
     "height": 1440,
     "source": "art/source/winter/snow.svg",
     "mode": "svg",
-    "horizon": true
+    "horizon": true,
+    "title": "Snow Horizon",
+    "category": "landscapes",
+    "sortOrder": 2,
+    "description": "Rolling snow horizon with extended closed ground.",
+    "tags": [
+      "horizon",
+      "ground",
+      "snow",
+      "winter",
+      "christmas"
+    ],
+    "roles": [
+      "background"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Place first, behind other stickers. Logical height includes extended ground; keep the lower silhouette beyond the page edge. Use horizonStart for interactive placement, not as a center coordinate."
   },
   {
     "id": "winter-pond",
     "width": 820,
     "height": 319,
     "source": "art/source/winter/pond.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Pond",
+    "category": "landscapes",
+    "sortOrder": 3,
+    "description": "Oval pond outline with short curved water lines; reusable beyond winter.",
+    "tags": [
+      "pond",
+      "water",
+      "watering-hole",
+      "safari",
+      "wildlife",
+      "winter"
+    ],
+    "roles": [
+      "background"
+    ],
+    "detail": "simple",
+    "facing": "none",
+    "placementNotes": "Place behind animals. Despite its winter prefix, the art has no snow or skaters and works as a safari watering hole."
   },
   {
     "id": "winter-present",
     "width": 150,
     "height": 151,
     "source": "art/source/winter/present.svg",
-    "mode": "svg"
+    "mode": "svg",
+    "title": "Present",
+    "category": "objects",
+    "sortOrder": 5,
+    "description": "Wrapped gift box with a bow.",
+    "tags": [
+      "gift",
+      "present",
+      "christmas",
+      "birthday",
+      "celebration"
+    ],
+    "roles": [
+      "foreground",
+      "accent"
+    ],
+    "detail": "moderate",
+    "facing": "none",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "animal-giraffe",
@@ -483,7 +1469,25 @@
     "height": 270,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "170x270+95+15",
-    "extracted": true
+    "extracted": true,
+    "title": "Giraffe",
+    "category": "animals",
+    "sortOrder": 5,
+    "description": "Standing long-necked giraffe with outlined spots.",
+    "tags": [
+      "giraffe",
+      "animal",
+      "safari",
+      "savanna",
+      "wildlife",
+      "spots"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "right",
+    "placementNotes": "Keep relatively large on the page so stripe or spot regions remain comfortable to color."
   },
   {
     "id": "animal-elephant",
@@ -491,7 +1495,24 @@
     "height": 227,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "310x227+376+40",
-    "extracted": true
+    "extracted": true,
+    "title": "Elephant",
+    "category": "animals",
+    "sortOrder": 6,
+    "description": "Standing elephant with large ears and curled trunk.",
+    "tags": [
+      "elephant",
+      "animal",
+      "safari",
+      "savanna",
+      "wildlife"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "left",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "animal-lion",
@@ -509,7 +1530,25 @@
         101.625,
         204.625
       ]
-    ]
+    ],
+    "title": "Lion",
+    "category": "animals",
+    "sortOrder": 7,
+    "description": "Seated friendly lion with mane and curled tail.",
+    "tags": [
+      "lion",
+      "animal",
+      "safari",
+      "savanna",
+      "wildlife",
+      "mane"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "animal-hippo",
@@ -517,7 +1556,25 @@
     "height": 203,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "290x203+1080+50",
-    "extracted": true
+    "extracted": true,
+    "title": "Hippo",
+    "category": "animals",
+    "sortOrder": 8,
+    "description": "Friendly standing hippo with broad muzzle.",
+    "tags": [
+      "hippo",
+      "animal",
+      "safari",
+      "water",
+      "watering-hole",
+      "wildlife"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "left",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "animal-zebra",
@@ -525,7 +1582,25 @@
     "height": 227,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "273x227+38+293",
-    "extracted": true
+    "extracted": true,
+    "title": "Zebra",
+    "category": "animals",
+    "sortOrder": 9,
+    "description": "Walking zebra with many narrow stripe regions.",
+    "tags": [
+      "zebra",
+      "animal",
+      "safari",
+      "savanna",
+      "wildlife",
+      "stripes"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "right",
+    "placementNotes": "Keep relatively large on the page so stripe or spot regions remain comfortable to color."
   },
   {
     "id": "animal-rhino",
@@ -533,7 +1608,24 @@
     "height": 194,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "302x194+372+312",
-    "extracted": true
+    "extracted": true,
+    "title": "Rhino",
+    "category": "animals",
+    "sortOrder": 10,
+    "description": "Standing rhinoceros with horns and folded skin lines.",
+    "tags": [
+      "rhino",
+      "animal",
+      "safari",
+      "savanna",
+      "wildlife"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "left",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "animal-leopard",
@@ -541,7 +1633,25 @@
     "height": 193,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "318x193+721+310",
-    "extracted": true
+    "extracted": true,
+    "title": "Leopard",
+    "category": "animals",
+    "sortOrder": 11,
+    "description": "Walking big cat with numerous outlined spots.",
+    "tags": [
+      "leopard",
+      "animal",
+      "safari",
+      "savanna",
+      "wildlife",
+      "spots"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "right",
+    "placementNotes": "Keep relatively large on the page so stripe or spot regions remain comfortable to color."
   },
   {
     "id": "animal-ostrich",
@@ -549,7 +1659,25 @@
     "height": 262,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "192x262+1138+277",
-    "extracted": true
+    "extracted": true,
+    "title": "Ostrich",
+    "category": "animals",
+    "sortOrder": 12,
+    "description": "Standing long-necked ostrich with feathered wings and tail.",
+    "tags": [
+      "ostrich",
+      "bird",
+      "animal",
+      "safari",
+      "savanna",
+      "wildlife"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "left",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "animal-buffalo",
@@ -557,7 +1685,25 @@
     "height": 207,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "301x207+36+545",
-    "extracted": true
+    "extracted": true,
+    "title": "Buffalo",
+    "category": "animals",
+    "sortOrder": 13,
+    "description": "Standing buffalo with wide curved horns, facing the viewer.",
+    "tags": [
+      "buffalo",
+      "animal",
+      "safari",
+      "savanna",
+      "wildlife",
+      "horns"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "animal-meerkat",
@@ -565,7 +1711,24 @@
     "height": 214,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "138x214+479+537",
-    "extracted": true
+    "extracted": true,
+    "title": "Meerkat",
+    "category": "animals",
+    "sortOrder": 14,
+    "description": "Small upright meerkat with long tail.",
+    "tags": [
+      "meerkat",
+      "animal",
+      "safari",
+      "savanna",
+      "wildlife"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "animal-warthog",
@@ -573,7 +1736,25 @@
     "height": 194,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "258x194+744+552",
-    "extracted": true
+    "extracted": true,
+    "title": "Warthog",
+    "category": "animals",
+    "sortOrder": 15,
+    "description": "Standing warthog with tusks and raised tail.",
+    "tags": [
+      "warthog",
+      "animal",
+      "safari",
+      "savanna",
+      "wildlife",
+      "tusks"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "left",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "animal-crocodile",
@@ -581,7 +1762,25 @@
     "height": 151,
     "source": "art/source/animals/safari-sheet.jpg",
     "crop": "312x151+1061+580",
-    "extracted": true
+    "extracted": true,
+    "title": "Crocodile",
+    "category": "animals",
+    "sortOrder": 16,
+    "description": "Low crocodile with long tail, scales and visible teeth.",
+    "tags": [
+      "crocodile",
+      "animal",
+      "safari",
+      "water",
+      "watering-hole",
+      "wildlife"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "moderate",
+    "facing": "left",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "space-alien",
@@ -589,7 +1788,24 @@
     "height": 400,
     "source": "art/source/space/alien.jpg",
     "crop": "581x703+414+33",
-    "extracted": true
+    "extracted": true,
+    "title": "Alien Explorer",
+    "category": "characters",
+    "sortOrder": 13,
+    "description": "Friendly three-eyed alien in a detailed spacesuit.",
+    "tags": [
+      "alien",
+      "space",
+      "explorer",
+      "character",
+      "astronaut"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "front",
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
   },
   {
     "id": "space-spaceship",
@@ -607,7 +1823,24 @@
         816.75,
         286.25
       ]
-    ]
+    ],
+    "title": "Explorer Spaceship",
+    "category": "objects",
+    "sortOrder": 4,
+    "description": "Long explorer spaceship with windows, fins and engines.",
+    "tags": [
+      "spaceship",
+      "rocket",
+      "vehicle",
+      "space",
+      "exploration"
+    ],
+    "roles": [
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "left",
+    "placementNotes": "High detail; use as a large focal subject. The source contains STAR-EXPLORER lettering."
   },
   {
     "id": "space-crater",
@@ -616,6 +1849,25 @@
     "source": "art/source/space/crater-horizon.svg",
     "mode": "svg",
     "horizon": true,
-    "horizonStart": 0.2
+    "horizonStart": 0.2,
+    "title": "Moon Crater",
+    "category": "landscapes",
+    "sortOrder": 7,
+    "description": "Large detailed lunar crater integrated into rolling moon ground.",
+    "tags": [
+      "crater",
+      "moon",
+      "space",
+      "horizon",
+      "ground",
+      "rocks"
+    ],
+    "roles": [
+      "background",
+      "subject"
+    ],
+    "detail": "detailed",
+    "facing": "none",
+    "placementNotes": "Place first, behind other stickers. Logical height includes extended ground; keep the lower silhouette beyond the page edge. Use horizonStart for interactive placement, not as a center coordinate."
   }
 ]

@@ -9,7 +9,7 @@ const placements: [StickerKind, number, number][] = [
   ['spring-bunny', 1020, 680], ['spring-watering-can', 560, 760],
 ];
 export const springScene: EditorSetup = {
-  title: "Chloe's spring garden", format: 'landscape', size: { width: 1920, height: 960 },
+  title: 'Spring Garden', format: 'landscape', size: { width: 1920, height: 960 },
   background: '#ffffff', leafColor: 0x242428,
   document: {
     version: 3, width: 1920, height: 960,

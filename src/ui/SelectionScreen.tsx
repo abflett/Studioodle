@@ -1,4 +1,5 @@
 import { DeletePictureDialog } from './DeletePictureDialog';
+import { isDesktop, toggleDesktopFullscreen, watchDesktopFullscreen } from '../platform/desktop';
 import type { AppSettings } from './settings';
 import { SelectionSettings } from './SelectionSettings';
 import { fullPageScene } from '../editor/fullPageScene';
@@ -12,6 +13,7 @@ import { countingScene } from '../editor/countingScene';
 import { springScene } from '../editor/springScene';
 import { beachScene } from '../editor/beachScene';
 import { winterScene } from '../editor/winterScene';
+import { safariScene } from '../editor/safariScene';
 import { createColoringPage } from '../editor/coloringPage';
 import { deleteColoringPage, loadColoringPages, saveColoringPage, deletePicture, loadPictures, savePicture } from '../editor/storage';
 import type { SavedPicture } from '../editor/storage';
@@ -30,6 +32,7 @@ const samples: EditorSetup[] = [
   springScene,
   countingScene,
   gardenScene,
+  safariScene,
 ].map(fullPageScene);
 
 function PictureThumbnail({ picture }: { picture: EditorSetup }) {
@@ -53,6 +56,12 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
 }) {
   const [fullscreen, setFullscreen] = useState(Boolean(document.fullscreenElement));
   useEffect(() => {
+    if (isDesktop) {
+      let disposed = false;
+      let stop: (() => void) | undefined;
+      void watchDesktopFullscreen(value => { if (!disposed) setFullscreen(value); }).then(unlisten => { if (disposed) unlisten(); else stop = unlisten; }).catch(() => {});
+      return () => { disposed = true; stop?.(); };
+    }
     const update = () => setFullscreen(Boolean(document.fullscreenElement));
     document.addEventListener('fullscreenchange', update);
     return () => document.removeEventListener('fullscreenchange', update);
@@ -143,8 +152,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   const addColoringPage = () => {
     if (!current || current.document.surfaces.length < 2) return;
     try {
-      const number = customPages.reduce((max, page) => Math.max(max, Number(/^Coloring page (\d+)$/.exec(page.title)?.[1] ?? 0)), 0) + 1;
-      const page = createColoringPage(current, `Coloring page ${number}`);
+      const number = customPages.reduce((max, page) => Math.max(max, Number(/^Coloring page (\d+)$/i.exec(page.title)?.[1] ?? 0)), 0) + 1;
+      const page = createColoringPage(current, `Coloring Page ${number}`);
       saveColoringPage(page);
       setCustomPages(pages => [page, ...pages]);
       setSceneIndex(samples.length); setStep('scene');
@@ -169,8 +178,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             </button>
           ))}
         </div>
-        {document.fullscreenEnabled && <button className="fullscreen-toggle icon-button" title={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} aria-label={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} onClick={() => {
-          const action = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+        {(isDesktop || document.fullscreenEnabled) && <button className="fullscreen-toggle icon-button" title={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} aria-label={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} onClick={() => {
+          const action = isDesktop ? toggleDesktopFullscreen().then(setFullscreen) : document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
           void action.catch(() => setActionError('Fullscreen is unavailable in this window.'));
         }}>{fullscreen ? <Minimize aria-hidden="true" /> : <Fullscreen aria-hidden="true" />}</button>}
         </div>
@@ -179,7 +188,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             <button className={`choice-card choice-${item.id}`} key={item.id}
               onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
               <span className="choice-art"><img src={item.image} alt="" width="320" height="220" /></span>
-              <span className="choice-label">{item.id === 'blank' ? 'Blank page' : 'Coloring page'}</span>
+              <span className="choice-label">{item.id === 'blank' ? 'Blank Page' : 'Coloring Page'}</span>
             </button>
           ))}
         </div>
@@ -224,7 +233,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             {step === 'scene' && customScene ? <button className="icon-button" aria-label="Delete this custom coloring page" title="Delete coloring page" onClick={() => { setDeletingPage(true); setPendingDelete(customScene); }}><Trash2 /></button> : step === 'paper' ? <button className="icon-button" aria-label="Back to paper shape" onClick={() => setStep('shape')}><ArrowLeft aria-hidden="true" /></button> : <span />}
             <button className="go-button" onClick={() => {
               if (step === 'shape') setStep('paper');
-              else openPicture(step === 'scene' ? scene : { title: 'Blank page', format: paperPreset === 'square' ? 'square' : orientation, size: presetSize(paperPreset, orientation), background, leafColor: contrastingDrawingColor(background) });
+              else openPicture(step === 'scene' ? scene : { title: 'Blank Page', format: paperPreset === 'square' ? 'square' : orientation, size: presetSize(paperPreset, orientation), background, leafColor: contrastingDrawingColor(background) });
             }}>{step === 'shape' ? 'Next' : 'Let’s draw'}<ArrowRight aria-hidden="true" /></button>
           </footer>
         </div>

@@ -8,7 +8,7 @@ const placements: [StickerKind, number, number][] = [
   ['beach-ball', 850, 760], ['beach-shell', 640, 880], ['beach-shell', 1720, 850],
 ];
 export const beachScene: EditorSetup = {
-  title: 'Sunny beach day', format: 'landscape', size: { width: 1920, height: 960 },
+  title: 'Sunny Beach Day', format: 'landscape', size: { width: 1920, height: 960 },
   background: '#ffffff', leafColor: 0x242428,
   document: {
     version: 3, width: 1920, height: 960,

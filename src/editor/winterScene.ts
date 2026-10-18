@@ -10,7 +10,7 @@ const placements: [StickerKind, number, number][] = [
   ['counting-star', 1500, 160], ['counting-star', 1760, 280],
 ];
 export const winterScene: EditorSetup = {
-  title: 'Christmas skating village', format: 'landscape', size: { width: 1920, height: 960 },
+  title: 'Christmas Skating Village', format: 'landscape', size: { width: 1920, height: 960 },
   background: '#ffffff', leafColor: 0x242428,
   document: {
     version: 3, width: 1920, height: 960,

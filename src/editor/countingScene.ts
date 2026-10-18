@@ -12,7 +12,7 @@ const placements: [StickerKind, number, number][] = [
 ];
 
 export const countingScene: EditorSetup = {
-  title: 'Counting costume parade', format: 'landscape', size: { width: 1920, height: 960 },
+  title: 'Counting Costume Parade', format: 'landscape', size: { width: 1920, height: 960 },
   background: '#ffffff', leafColor: 0x242428,
   document: {
     version: 3, width: 1920, height: 960,

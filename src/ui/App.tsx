@@ -7,7 +7,8 @@ import type { EditorSetup } from '../editor/setup';
 import { Brand } from './Brand';
 import { SelectionScreen } from './SelectionScreen';
 import { readSettings, saveSettings } from './settings';
-import { stopAppMouse, useAppMouse } from './appMouse';
+import { suspendAppMouse, useAppMouse } from './appMouse';
+import { closeDesktop, isDesktop } from '../platform/desktop';
 import type { AppSettings } from './settings';
 import { applyTheme, readTheme, saveTheme } from './theme';
 import type { ThemePreference } from './theme';
@@ -81,7 +82,8 @@ export function App() {
   }
 
   const exitStudio = () => {
-    stopAppMouse();
+    suspendAppMouse();
+    if (isDesktop) { void closeDesktop().catch(() => setExited(true)); return; }
     if (document.fullscreenElement) void document.exitFullscreen().catch(() => {});
     setExited(true);
     if (window.opener) window.close();

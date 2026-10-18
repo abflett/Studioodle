@@ -31,7 +31,7 @@ const objects: [StickerKind, number, number, number?, boolean?][] = [
 ];
 
 export const gardenScene: EditorSetup = {
-  title: 'Cottage garden', format: 'landscape', size: { width: 1536, height: 1024 },
+  title: 'Cottage Garden', format: 'landscape', size: { width: 1536, height: 1024 },
   background: '#ffffff', leafColor: 0x000000,
   document: {
     version: 3, horizonLayout: 2, width: 1536, height: 1024,

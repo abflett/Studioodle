@@ -1,7 +1,11 @@
 # Sticker artwork
 
+Start with the [Asset Catalog](CATALOG.md) to find artwork for a new coloring page.
+It includes a searchable offline visual browser, nine category guides, an AI-friendly
+JSON index, six scene kits and the [Scene Authoring Guide](SCENE-AUTHORING.md).
+
 `stickers.json` is the complete source manifest for 71 hybrid definitions. It records
-source paths, original-image crop rectangles and logical display dimensions. Raster
+source paths, original-image crop rectangles, logical display dimensions, display names, subject categories, descriptions, tags, roles, detail levels, facing and placement notes. Raster
 illustrations and their generation prompts remain in `source/`; the original garden
 BMP remains the source for extracted sun/cloud/butterfly/window assets. Corrected
 `source/winter/reindeer.png` is the accepted four-legged version.
@@ -28,3 +32,5 @@ The safari animals come from `source/animals/safari-sheet.jpg` (1408 ? 768). Man
 Space sources are in `source/space/`. Alien and spaceship use cropped Light Potrace conversions. `node scripts/build-crater-source.mjs` traces the original crater and composes `crater-horizon.svg` with an open rolling horizon, closed hidden ground boundary, extended cracks, and a few peripheral rocks. Run `node scripts/build-stickers.mjs space-crater` afterwards to rebuild its hybrid definition.
 
 Horizon placement is declared by `horizon: true` and optional `horizonStart` (a page-height fraction) in the manifest/catalog. They start at full page width behind other stickers. Ground depth is accounted for so the bottom remains covered on portrait pages. The crater starts higher than ordinary horizons to keep its large landmark visible.
+
+Metadata-only refresh: `node scripts/build-asset-catalog.mjs`. The sticker pipeline runs this automatically after artwork conversion. Generated `src/assets/assetLibrary.json` supplies sticker-picker names and categories from the same manifest.

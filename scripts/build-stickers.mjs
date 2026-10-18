@@ -120,3 +120,6 @@ if(!process.argv[2]){
   fs.writeFileSync('src/editor/stickerKinds.ts',`// Generated from art/stickers.json by scripts/build-stickers.mjs.\nexport type StickerKind = ${assets.map(a=>JSON.stringify(a.id)).join(' | ')};\n`);
   for(let i=0;i<assets.length;i+=12)run('montage',...assets.slice(i,i+12).map(a=>`${work}/${a.id}-preview.png`),'-tile','4x3','-geometry','+6+6','-background','#eeeeee',`${work}/sheet-${i/12+1}.png`);
 }
+
+// Refresh the searchable authoring library and the UI display metadata.
+await import('./build-asset-catalog.mjs');

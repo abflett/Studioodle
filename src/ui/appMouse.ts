@@ -1,11 +1,21 @@
 import { useEffect, useSyncExternalStore } from 'react';
+import { isDesktop } from '../platform/desktop';
 
 // A separate id lets the existing gesture handlers use our virtual capture
 // instead of asking the browser to capture a synthetic pointer.
 export const appMousePointerId = 21332;
-type Status = 'idle' | 'starting' | 'active' | 'error' | 'unsupported';
+type Status = 'ready' | 'idle' | 'starting' | 'active' | 'error' | 'unsupported';
 let status: Status = typeof document.documentElement.requestPointerLock === 'function' ? 'idle' : 'unsupported';
 let speed = .5;
+const enabledKey = 'studioodle.mouse-adjusted';
+let resumeOnClick = false;
+function rememberMouse(enabled: boolean) {
+  if (!isDesktop) return;
+  try { localStorage.setItem(enabledKey, String(enabled)); } catch { /* Keep current control working without storage. */ }
+}
+function savedMouseEnabled() {
+  try { return isDesktop && localStorage.getItem(enabledKey) === 'true'; } catch { return false; }
+}
 const listeners = new Set<() => void>();
 function publish(next: Status) {
   status = next;
@@ -21,11 +31,19 @@ export function startAppMouse() {
     void Promise.resolve(document.documentElement.requestPointerLock()).catch(() => publish('error'));
   } catch { publish('error'); }
 }
-export function stopAppMouse() { document.exitPointerLock?.(); }
+export function stopAppMouse() {
+  resumeOnClick = false; rememberMouse(false);
+  if (status === 'ready') publish('idle');
+  document.exitPointerLock?.();
+}
+// Native dialogs, focus loss and app exit must not erase the enabled preference.
+export function suspendAppMouse() { document.exitPointerLock?.(); }
 
 /** One coordinate source for both the drawn cursor and all routed app input. */
 function installAppMouse() {
   const root = document.documentElement;
+  resumeOnClick = savedMouseEnabled();
+  if (resumeOnClick && status !== 'unsupported') publish('ready');
   const cursor = document.createElement('div');
   cursor.className = 'app-mouse-cursor';
   cursor.setAttribute('aria-hidden', 'true');
@@ -108,6 +126,7 @@ function installAppMouse() {
     if (next === locked) return;
     locked = next;
     if (locked) {
+      resumeOnClick = false; rememberMouse(true);
       root.dataset.appMouse = 'true';
       showCursor(); publish('active'); tick();
     } else {
@@ -194,16 +213,16 @@ function installAppMouse() {
       }
     }
   };
-  const release = () => { if (locked) { cancel(); stopAppMouse(); } };
+  const release = () => { if (locked) { cancel(); suspendAppMouse(); } };
   const visibility = () => { if (document.hidden) release(); };
   const key = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') { release(); return; }
+    if (event.key === 'Escape') { stopAppMouse(); release(); return; }
     if (event.code !== 'Space' || event.repeat || event.isComposing || event.altKey || event.ctrlKey || event.metaKey || press) return;
     const target = event.target;
     if (target instanceof Element && target.closest('input, textarea, select, summary, [contenteditable]:not([contenteditable="false"])')) return;
     if (document.querySelector('dialog[open]') && target instanceof Element && target.closest('button, a, summary, [role="button"], [role="switch"]')) return;
     event.preventDefault();
-    if (locked) release(); else startAppMouse();
+    if (locked) { stopAppMouse(); release(); } else startAppMouse();
   };
   const resize = () => { cancel(); x = Math.min(x, innerWidth - 1); y = Math.min(y, innerHeight - 1); };
   // Newly opened modal dialogs are in the top layer. Keep the cursor above them.
@@ -221,6 +240,18 @@ function installAppMouse() {
   on(window, 'mouseup', up as EventListener);
   on(window, 'wheel', wheel as EventListener);
   for (const type of ['pointerdown', 'pointermove', 'pointerup', 'click', 'auxclick', 'contextmenu', 'mouseover', 'mouseout']) on(window, type, suppress);
+  // Request capture only after a complete click. Doing this on pointerdown can
+  // split the first drawing gesture between native and virtual coordinates.
+  const resumeSavedMouse = (event: Event) => {
+    if (!resumeOnClick || locked || !event.isTrusted || !(event instanceof MouseEvent)) return;
+    if (event.button !== 0 && event.button !== 2) return;
+    if (event instanceof PointerEvent && event.pointerType !== 'mouse') return;
+    resumeOnClick = false;
+    x = event.clientX; y = event.clientY;
+    startAppMouse();
+  };
+  on(window, 'click', resumeSavedMouse);
+  on(window, 'auxclick', resumeSavedMouse);
   on(document, 'pointerlockchange', lockChange);
   on(document, 'pointerlockerror', lockError);
   // Capture also sees blur from focused buttons and dialog focus restoration.

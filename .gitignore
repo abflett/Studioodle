@@ -11,3 +11,8 @@ dist/
 !.vscode/extensions.json
 
 work/
+
+# Rust build output and local Windows release packages
+src-tauri/target/
+src-tauri/gen/
+release/

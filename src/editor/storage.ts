@@ -1,3 +1,4 @@
+import { formatPictureTitle } from './pictureTitles';
 import { isVectorSticker, vectorStickerSize } from './vectorStickers';
 import { paperSize, paintScale } from './document';
 import type { EditorSetup } from './setup';
@@ -28,7 +29,7 @@ function loadStoredPictures(prefix: string): SavedPicture[] {
                 typeof picture.title === 'string' && typeof picture.background === 'string' && /^#[0-9a-f]{6}$/i.test(picture.background) &&
                 ['square', 'landscape', 'portrait'].includes(picture.format) && validSize(picture.size) && Number.isFinite(picture.leafColor) && Number.isFinite(picture.updatedAt) &&
                 isArtworkDocument(picture.document) && picture.document.width === paperSize(picture.format, picture.size).width && picture.document.height === paperSize(picture.format, picture.size).height)
-                pictures.push(picture);
+                pictures.push({ ...picture, title: formatPictureTitle(picture.title) });
         }
         catch { /* An unreadable picture must not hide the rest of the library. */ }
     }

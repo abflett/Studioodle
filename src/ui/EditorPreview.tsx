@@ -1,4 +1,5 @@
 import { useToolCursorStyle } from './toolCursors';
+import { guardDesktopClose, isDesktop } from '../platform/desktop';
 import { usePrecisionFill } from './usePrecisionFill';
 import { useCanvasGestures } from './useCanvasGestures';
 import { useEditorShortcuts } from './useEditorShortcuts';
@@ -42,6 +43,13 @@ export default function EditorPreview({ setup: initialSetup, onBack, settings }:
     setSelectionOrder(previous => previous.forward === order.forward && previous.backward === order.backward ? previous : order);
   }), [bridge]);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
+  useEffect(() => {
+    if (!isDesktop) return;
+    let disposed = false;
+    let stop: (() => void) | undefined;
+    void guardDesktopClose(close => bridge.send({ type: 'save', onComplete: saved => { if (saved) close(); else setSaveStatus('error'); } })).then(unlisten => { if (disposed) unlisten(); else stop = unlisten; }).catch(() => setSaveStatus('error'));
+    return () => { disposed = true; stop?.(); };
+  }, [bridge]);
   useEffect(() => {
     const timer = window.setInterval(() => bridge.send({ type: 'save', onComplete: (saved) => setSaveStatus(saved ? 'idle' : 'error') }), 60_000);
     return () => window.clearInterval(timer);
@@ -184,7 +192,8 @@ export default function EditorPreview({ setup: initialSetup, onBack, settings }:
       if (event.pointerType === 'touch' && event.nativeEvent.isTrusted) return;
       if (!focused && tool === 'select' && event.target === event.currentTarget) bridge.send({ type: 'clear-selection' });
     }}>
-      {precisionFill.aim && <span className="precision-fill-aim" aria-hidden="true" style={{ left: precisionFill.aim.x, top: precisionFill.aim.y }}><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11" /><path d="M16 1v7m0 16v7M1 16h7m16 0h7" /></svg></span>}
+      {precisionFill.aim && <span key={precisionFill.aim.sequence} className={`precision-fill-aim ${precisionFill.magnified ? 'is-magnified' : 'is-holding'}`} aria-hidden="true" style={{ left: precisionFill.aim.x, top: precisionFill.aim.y }}><span className="precision-fill-cross"><i className="aim-top" /><i className="aim-right" /><i className="aim-bottom" /><i className="aim-left" /></span></span>}
+      {precisionFill.releasedAim && <span className="precision-fill-aim is-released" aria-hidden="true" style={{ left: precisionFill.releasedAim.x, top: precisionFill.releasedAim.y }}><span className="precision-fill-cross">{(['top', 'right', 'bottom', 'left'] as const).map(direction => <i key={direction} className={`aim-${direction}`} style={{ animationDelay: `-${precisionFill.releasedAim!.elapsed}ms` }} />)}</span></span>}
       <div className="canvas-envelope" style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
         <PhaserGame focused={!!focused} bridge={bridge} setup={setup} zoom={zoom} offsetX={position.x} offsetY={position.y} />
       </div>

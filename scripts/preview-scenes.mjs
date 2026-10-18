@@ -3,7 +3,9 @@ import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import ts from 'typescript';
 const out = 'work/hybrid/scenes'; fs.mkdirSync(out, { recursive: true });
-for (const name of ['garden','counting','spring','beach','winter']) {
+const requested = process.argv.slice(2);
+for (const name of requested.length ? requested : ['garden','counting','spring','beach','winter','safari']) {
+  if (!['garden','counting','spring','beach','winter','safari'].includes(name)) throw new Error(`Unknown scene: ${name}`);
   const source = fs.readFileSync(`src/editor/${name}Scene.ts`, 'utf8');
   const js = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext } }).outputText;
   const module = await import(`data:text/javascript;base64,${Buffer.from(js).toString('base64')}`);

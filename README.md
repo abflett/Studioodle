@@ -46,7 +46,7 @@ Sounds, animation, and visual effects are ideas for later exploration, adding pe
 - Visible controls for essential actions, without relying on hidden gestures or hover.
 - Protected outlines and enclosed-region coloring to reduce frustrating precision work.
 
-## Planned platforms
+## Platforms
 
 Windows, macOS, Linux, Android, and iOS.
 
@@ -67,7 +67,7 @@ npm run dev
 
 Open the local URL printed by Vite. After loading, choose a blank picture, coloring page, or previous picture. New pictures open the artwork editor; saved pictures reopen from Your pictures. Save stores editable documents in this browser. Shapes and stickers carry their paint when moved; erase restores their original appearance. The interface follows your system's light/dark theme.
 
-The branded splash stays visible for at least two seconds and continues automatically once loading is complete. Picture selection uses large images and short labels: Blank page and Coloring page open overlay wizards, with a previous-picture carousel underneath. Blank setup steps through print size, orientation and background color. Coloring choices use five reusable sticker scenes; Your pictures browses actual local saves. Editor controls use icons, with accessible labels for screen readers. The viewport-sized interface uses sunny beach-inspired gradients in light mode and moonlit forest colors in dark mode.
+The branded splash stays visible for at least two seconds and continues automatically once loading is complete. Picture selection uses large images and short labels: Blank page and Coloring page open overlay wizards, with a previous-picture carousel underneath. Blank setup steps through print size, orientation and background color. Coloring choices use six reusable sticker scenes; Your pictures browses actual local saves. Editor controls use icons, with accessible labels for screen readers. The viewport-sized interface uses sunny beach-inspired gradients in light mode and moonlit forest colors in dark mode.
 
 ```sh
 npm run check      # TypeScript, ESLint, and production build
@@ -91,11 +91,13 @@ src/
 vite/              Shared, development, and production build configuration
 ```
 
-React owns interface controls; Canvas2D composites vector artwork and raster paint, while Phaser supplies pointer input and selection graphics. Commands cross a typed bridge rather than exposing scene objects to UI components. Future document state, undo history, and storage adapters should remain independent of Phaser objects. The starter does not enable physics or include a native wrapper.
+React owns interface controls; Canvas2D composites vector artwork and raster paint, while Phaser supplies pointer input and selection graphics. Commands cross a typed bridge rather than exposing scene objects to UI components. Future document state, undo history, and storage adapters should remain independent of Phaser objects. The editor does not enable physics. A Tauri 2 wrapper supplies the Windows desktop build, native window controls, PNG save dialogs and printing.
 
 The current document format is version 3. Earlier development saves are intentionally unsupported; all runtime stickers now use the same hybrid engine.
 
 See the [hybrid engine](docs/HYBRID-ENGINE.md) and [startup and navigation notes](docs/STARTUP.md) for loading stages, state ownership, and the approach to future asset packs.
+
+See the [asset catalog](art/CATALOG.md) for searchable artwork, scene kits and AI-assisted page-authoring guidance. The Safari Watering Hole page combines eight existing animals with reusable scenery.
 
 See the [sticker conversion checklist](docs/STICKER-CONVERSIONS.md) for per-asset progress
 on the vector/raster hybrid migration and instructions for resuming unfinished conversions.
@@ -110,3 +112,7 @@ Say it *stoo-dee-oh-oo-dle* — or stretch it into a little yodel if the mood ta
 
 Studioodle is licensed under the [Apache License 2.0](LICENSE).
 
+
+## Windows Desktop
+
+Run `npm run desktop:dev` for the Tauri app or `npm run desktop:build` for a Windows x64 installer. See [desktop build and tester notes](docs/DESKTOP.md) for prerequisites, output paths, local data and distribution details.

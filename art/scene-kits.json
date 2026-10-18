@@ -1,0 +1,119 @@
+[
+  {
+    "id": "safari",
+    "title": "Safari And Watering Hole",
+    "description": "Select a few safari animals, broad-canopy trees, a meadow horizon and a pond. Keep detailed animals large and frame the page with small grass tufts.",
+    "assets": [
+      "animal-giraffe",
+      "animal-elephant",
+      "animal-lion",
+      "animal-hippo",
+      "animal-zebra",
+      "animal-rhino",
+      "animal-leopard",
+      "animal-ostrich",
+      "animal-buffalo",
+      "animal-meerkat",
+      "animal-warthog",
+      "animal-crocodile",
+      "spring-meadow",
+      "garden-tree",
+      "tree",
+      "garden-bush",
+      "garden-grass",
+      "garden-stone",
+      "garden-sun",
+      "garden-cloud",
+      "winter-pond"
+    ],
+    "example": "src/editor/safariScene.ts"
+  },
+  {
+    "id": "garden",
+    "title": "Garden And Woodland",
+    "description": "Combine leafy scenery, small wildlife, cottage and paths.",
+    "assets": [
+      "garden-house",
+      "garden-tree",
+      "garden-bush",
+      "garden-flower",
+      "garden-blossom",
+      "garden-mushroom",
+      "spring-bunny",
+      "spring-bird",
+      "spring-butterfly",
+      "garden-path",
+      "garden-stone",
+      "garden-fence",
+      "spring-meadow"
+    ],
+    "example": "src/editor/gardenScene.ts"
+  },
+  {
+    "id": "beach",
+    "title": "Beach And Island",
+    "description": "Build a shoreline scene with palm, umbrella, towel and beach toys.",
+    "assets": [
+      "beach-shore",
+      "beach-palm",
+      "beach-umbrella",
+      "beach-towel",
+      "beach-ball",
+      "beach-shell",
+      "garden-sun",
+      "garden-cloud"
+    ],
+    "example": "src/editor/beachScene.ts"
+  },
+  {
+    "id": "winter",
+    "title": "Winter And Christmas",
+    "description": "Arrange winter characters, cabin, pine trees, pond and gifts on a snow horizon.",
+    "assets": [
+      "winter-santa-sleigh",
+      "winter-reindeer",
+      "winter-cabin",
+      "winter-pine",
+      "winter-skater",
+      "winter-skater-friend",
+      "winter-snow",
+      "winter-pond",
+      "winter-present",
+      "counting-star"
+    ],
+    "example": "src/editor/winterScene.ts"
+  },
+  {
+    "id": "space",
+    "title": "Space Adventure",
+    "description": "Use the crater as ground and the spaceship as a large focal subject, with alien, astronaut and stars.",
+    "assets": [
+      "space-crater",
+      "space-spaceship",
+      "space-alien",
+      "counting-01",
+      "counting-star"
+    ],
+    "example": null
+  },
+  {
+    "id": "counting",
+    "title": "Counting And Celebration",
+    "description": "Personified numerals, bunting and stars for a costume parade or counting page.",
+    "assets": [
+      "counting-01",
+      "counting-02",
+      "counting-03",
+      "counting-04",
+      "counting-05",
+      "counting-06",
+      "counting-07",
+      "counting-08",
+      "counting-09",
+      "counting-10",
+      "counting-bunting",
+      "counting-star"
+    ],
+    "example": "src/editor/countingScene.ts"
+  }
+]
