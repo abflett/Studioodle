@@ -108,7 +108,7 @@ export default function EditorPreview({ setup: initialSetup, onBack, settings }:
   useEditorShortcuts({
     b: selectBrush, g: selectFill, e: () => chooseTool('erase'), v: () => chooseTool('select'), h: () => chooseTool('pan'),
     s: openStickers, c: () => setPicker('colors'), z: cycleZoom, '+': () => stepZoom(1.25), '=': () => stepZoom(1.25), '-': () => stepZoom(.8), '0': resetZoom,
-    'mod+z': () => bridge.send({ type: 'undo' }), 'mod+s': save,
+    'mod+z': () => bridge.send({ type: 'undo' }), backspace: () => bridge.send({ type: 'undo' }), 'mod+s': save,
     'mod+d': () => { if (selected && !focused) bridge.send({ type: 'duplicate-selection' }); },
     delete: () => { if (selected && !focused) bridge.send({ type: 'delete-selection' }); },
     f: focusSelection, enter: () => { if (focused || (selected && tool === 'select')) finishSelection(); },
@@ -154,7 +154,7 @@ export default function EditorPreview({ setup: initialSetup, onBack, settings }:
         <button title="Colors (C)" aria-keyshortcuts="C" aria-label="Colors" onClick={() => setPicker('colors')} aria-haspopup="dialog"><Palette aria-hidden="true" /><span className="ribbon-color-dot" aria-hidden="true" style={{ background: `#${color.toString(16).padStart(6, '0')}` }} /></button>
       </div>
       <div className="ribbon-group" role="group" aria-label="History">
-        <button title="Undo (Ctrl/Cmd+Z)" aria-keyshortcuts="Control+Z Meta+Z" aria-label="Undo" onClick={() => bridge.send({ type: 'undo' })}><Undo2 aria-hidden="true" /></button>
+        <button title="Undo (Ctrl/Cmd+Z or Backspace)" aria-keyshortcuts="Control+Z Meta+Z Backspace" aria-label="Undo" onClick={() => bridge.send({ type: 'undo' })}><Undo2 aria-hidden="true" /></button>
       </div>
     </header>
       {((tool === 'select' && selected) || focused) && <div ref={selectionDrawer} className="art-ribbon sticker-ribbon" role="toolbar" aria-label="Selected sticker" onPointerDown={(event) => event.stopPropagation()}>

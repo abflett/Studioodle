@@ -9,9 +9,14 @@ export type SavedPicture = EditorSetup & {
     document: ArtworkDocument;
 };
 const prefix = 'studioodle.v3.picture.';
+const coloringPrefix = 'studioodle.v3.coloring.';
 export function deletePicture(id: string) { localStorage.removeItem(prefix + id); }
 export function savePicture(picture: SavedPicture) { localStorage.setItem(prefix + picture.id, JSON.stringify(picture)); }
-export function loadPictures(): SavedPicture[] {
+export function loadPictures(): SavedPicture[] { return loadStoredPictures(prefix); }
+export function loadColoringPages(): SavedPicture[] { return loadStoredPictures(coloringPrefix); }
+export function saveColoringPage(picture: SavedPicture) { localStorage.setItem(coloringPrefix + picture.id, JSON.stringify(picture)); }
+export function deleteColoringPage(id: string) { localStorage.removeItem(coloringPrefix + id); }
+function loadStoredPictures(prefix: string): SavedPicture[] {
     const pictures: SavedPicture[] = [];
     for (let index = 0; index < localStorage.length; index++) {
         const key = localStorage.key(index);

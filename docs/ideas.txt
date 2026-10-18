@@ -1,8 +1,0 @@
-Blank: print sizes makes more sense, maybe half page, full page, and common picture ratio. Images are mostly vector so size is mostly end product size problem.
-Ribbon: Need to remove text and re-arrange the order and group better and resize icons.
-Fill: fill on release, holding for more then 1 second zooms in, releasing after positioning will apply.
-Settings: add settings to the selection/home screen.
-Exit: add exit button to exit app.
-Sticker Silhuette: needs to shrink a few points as there is still a bit of bleed on the outline.
-Backward/forward: check for overlap and step to that first, for example if sticker is 20 but only in front of 4, Backward should go to 3 instead 19.
-Sub Ribbon: Should be more like a drawer that comes out of the ribbon instead of it's own large island.

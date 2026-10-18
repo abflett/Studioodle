@@ -14,7 +14,7 @@ export function useEditorShortcuts(actions: Record<string, () => void>) {
       const action = latest.current[key];
       if (!action) return;
       event.preventDefault();
-      if (!event.repeat || key === 'mod+z' || ['+', '=', '-'].includes(key)) action();
+      if (!event.repeat || key === 'mod+z' || key === 'backspace' || ['+', '=', '-'].includes(key)) action();
     };
     window.addEventListener('keydown', keydown);
     return () => window.removeEventListener('keydown', keydown);

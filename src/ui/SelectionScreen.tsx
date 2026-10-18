@@ -12,12 +12,13 @@ import { countingScene } from '../editor/countingScene';
 import { springScene } from '../editor/springScene';
 import { beachScene } from '../editor/beachScene';
 import { winterScene } from '../editor/winterScene';
-import { deletePicture, loadPictures, savePicture } from '../editor/storage';
+import { createColoringPage } from '../editor/coloringPage';
+import { deleteColoringPage, loadColoringPages, saveColoringPage, deletePicture, loadPictures, savePicture } from '../editor/storage';
 import type { SavedPicture } from '../editor/storage';
 import { exportPicture, printPicture } from '../editor/pictureOutput';
 import { SavedPreview } from './SavedPreview';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Monitor, Moon, Sun, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Monitor, Moon, Sun, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, BookPlus } from 'lucide-react';
 import { pictureChoices } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
@@ -75,6 +76,17 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     catch { return { pictures: [], error: true }; }
   });
   const saved = library.pictures;
+  const [customPages, setCustomPages] = useState(() => {
+    try { return loadColoringPages(); } catch { return []; }
+  });
+  const scenes: EditorSetup[] = [...samples, ...customPages];
+  const [notice, setNotice] = useState<string>();
+  useEffect(() => {
+    if (!notice) return;
+    const timeout = window.setTimeout(() => setNotice(undefined), 6000);
+    return () => window.clearTimeout(timeout);
+  }, [notice]);
+  const [deletingPage, setDeletingPage] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<SavedPicture>();
   const [toastPaused, setToastPaused] = useState(false);
   const [removed, setRemoved] = useState<SavedPicture>();
@@ -87,6 +99,13 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   const removeCurrent = (picture: SavedPicture) => {
     setPendingDelete(undefined);
     try {
+      if (deletingPage) {
+        deleteColoringPage(picture.id);
+        setCustomPages(pages => pages.filter(item => item.id !== picture.id));
+        setSceneIndex(index => Math.max(0, Math.min(index, scenes.length - 2)));
+        setDeletingPage(false); setRemoved(undefined); setActionError(undefined); setNotice('Coloring page removed');
+        return;
+      }
       deletePicture(picture.id);
       setRemoved(picture); setToastPaused(false); setActionError(undefined);
       setLibrary({ pictures: saved.filter((item) => item.id !== picture.id), error: false });
@@ -119,11 +138,24 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   useEffect(() => { if (step) stepHeading.current?.focus({ preventScroll: true }); }, [step]);
 
   const current = saved[sampleIndex];
-  const scene = samples[sceneIndex]!;
+  const scene = scenes[Math.min(sceneIndex, scenes.length - 1)]!;
+  const customScene = customPages.find(page => page.id === scene.id);
+  const addColoringPage = () => {
+    if (!current || current.document.surfaces.length < 2) return;
+    try {
+      const number = customPages.reduce((max, page) => Math.max(max, Number(/^Coloring page (\d+)$/.exec(page.title)?.[1] ?? 0)), 0) + 1;
+      const page = createColoringPage(current, `Coloring page ${number}`);
+      saveColoringPage(page);
+      setCustomPages(pages => [page, ...pages]);
+      setSceneIndex(samples.length); setStep('scene');
+      setRemoved(undefined); setActionError(undefined); setNotice('Added to coloring pages');
+    } catch { setActionError('Could not save coloring page. Device storage may be full or unavailable.'); }
+  };
   const stepTitle = step === 'shape' ? 'Pick your paper' : step === 'paper' ? 'Pick a paper color' : 'Pick a picture';
   const openPicture = (setup: EditorSetup) => {
     dialog.current?.close();
-    onOpen(setup);
+    // Templates are immutable starting points, each use gets a fresh saved-picture id.
+    onOpen(step === 'scene' ? { ...setup, id: undefined } : setup);
   };
 
   return (
@@ -183,13 +215,13 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             </div>}
             {step === 'paper' && <ColorPicker label="Canvas background colors" color={parseInt(background.slice(1), 16)} onChoose={(value) => setBackground(`#${value.toString(16).padStart(6, '0')}`)} />}
             {step === 'scene' && <div className="scene-picker">
-              <button className="icon-button" aria-label="Previous coloring page" onClick={() => setSceneIndex((value) => (value + samples.length - 1) % samples.length)}><Arrow direction="left" /></button>
+              <button className="icon-button" aria-label="Previous coloring page" onClick={() => setSceneIndex((value) => (value + scenes.length - 1) % scenes.length)}><Arrow direction="left" /></button>
               <figure><PictureThumbnail picture={scene} /><figcaption aria-live="polite">{scene.title}</figcaption></figure>
-              <button className="icon-button" aria-label="Next coloring page" onClick={() => setSceneIndex((value) => (value + 1) % samples.length)}><Arrow direction="right" /></button>
+              <button className="icon-button" aria-label="Next coloring page" onClick={() => setSceneIndex((value) => (value + 1) % scenes.length)}><Arrow direction="right" /></button>
             </div>}
           </div>
           <footer className="wizard-footer">
-            {step === 'paper' ? <button className="icon-button" aria-label="Back to paper shape" onClick={() => setStep('shape')}><ArrowLeft aria-hidden="true" /></button> : <span />}
+            {step === 'scene' && customScene ? <button className="icon-button" aria-label="Delete this custom coloring page" title="Delete coloring page" onClick={() => { setDeletingPage(true); setPendingDelete(customScene); }}><Trash2 /></button> : step === 'paper' ? <button className="icon-button" aria-label="Back to paper shape" onClick={() => setStep('shape')}><ArrowLeft aria-hidden="true" /></button> : <span />}
             <button className="go-button" onClick={() => {
               if (step === 'shape') setStep('paper');
               else openPicture(step === 'scene' ? scene : { title: 'Blank page', format: paperPreset === 'square' ? 'square' : orientation, size: presetSize(paperPreset, orientation), background, leafColor: contrastingDrawingColor(background) });
@@ -197,11 +229,12 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
           </footer>
         </div>
       </dialog>
-      <DeletePictureDialog picture={pendingDelete} onCancel={() => setPendingDelete(undefined)} onConfirm={removeCurrent} />
+      <DeletePictureDialog picture={pendingDelete} onCancel={() => { setPendingDelete(undefined); setDeletingPage(false); }} onConfirm={removeCurrent} />
       <SelectionSettings settings={settings} onSettingsChange={onSettingsChange} open={settingsOpen} onClose={() => setSettingsOpen(false)} theme={theme} onThemeChange={onThemeChange} />
       <footer className="selection-footer">
       <nav className="library-actions" aria-label="Selected saved picture actions">
-        <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) setPendingDelete(current); }}><Trash2 /></button>
+        <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) { setDeletingPage(false); setPendingDelete(current); } }}><Trash2 /></button>
+        <button className="icon-button" disabled={!current || current.document.surfaces.length < 2} aria-label="Save selected picture as a coloring page" title={current && current.document.surfaces.length > 1 ? "Save as coloring page" : "Arrange stickers in a picture to make a coloring page"} onClick={addColoringPage}><BookPlus /></button>
         <button className="icon-button" disabled={!current} aria-label="Print selected saved picture" title="Print picture" onClick={() => { if (current) printPicture(current, () => setActionError('Could not open printing. Allow the print window and try again.')); }}><Printer /></button>
         <button className="icon-button" disabled={!current} aria-label="Export selected saved picture as PNG" title="Export PNG" onClick={() => { if (current) void exportPicture(current).catch(() => setActionError('Could not export this picture.')); }}><Download /></button>
       </nav>
@@ -211,10 +244,10 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
       <button className="icon-button exit-control" title="Exit Studioodle" aria-label="Exit Studioodle" onClick={onExit}><LogOut aria-hidden="true" /></button>
       </nav>
       </footer>
-      {(removed || actionError) && <div className="save-notice library-notice" role="status" onPointerEnter={() => setToastPaused(true)} onPointerLeave={() => setToastPaused(false)} onFocusCapture={() => setToastPaused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setToastPaused(false); }}>
-        <span>{actionError ?? 'Picture removed'}</span>
+      {(removed || actionError || notice) && <div className="save-notice library-notice" role="status" onPointerEnter={() => setToastPaused(true)} onPointerLeave={() => setToastPaused(false)} onFocusCapture={() => setToastPaused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setToastPaused(false); }}>
+        <span>{actionError ?? notice ?? 'Picture removed'}</span>
         {removed && <button className="icon-button" aria-label="Undo delete" onClick={undoRemove}><Undo2 /></button>}
-        <button className="icon-button" aria-label="Dismiss message" onClick={() => { setRemoved(undefined); setActionError(undefined); }}><X /></button>
+        <button className="icon-button" aria-label="Dismiss message" onClick={() => { setRemoved(undefined); setActionError(undefined); setNotice(undefined); }}><X /></button>
       </div>}
     </main>
   );

@@ -18,13 +18,22 @@ async function renderPicture(picture: EditorSetup) {
   return canvas;
 }
 
+// Give untitled drawings a stable name shared by PNG downloads and print/PDF.
+function outputTitle(picture: EditorSetup) {
+  const title = picture.title.trim();
+  if (title && !/^blank[ -]?page$/i.test(title)) return title;
+  let hash = 2166136261;
+  for (const character of picture.id ?? title) hash = Math.imul(hash ^ character.charCodeAt(0), 16777619);
+  return `Picture ${String((hash >>> 0) % 1_000_000).padStart(6, '0')}`;
+}
+
 export async function exportPicture(picture: EditorSetup) {
   const canvas = await renderPicture(picture);
   const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error('PNG export failed')), 'image/png'));
   const url = URL.createObjectURL(await pngResolution(blob, 150));
   const link = document.createElement('a');
   link.href = url;
-  link.download = `${picture.title.replace(/[^a-z0-9 _-]/gi, '').trim() || 'Studioodle picture'}.png`;
+  link.download = `${outputTitle(picture).replace(/[^a-z0-9 _-]/gi, '').trim() || 'Studioodle picture'}.png`;
   document.body.append(link); link.click(); link.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
@@ -36,13 +45,13 @@ export function printPicture(picture: EditorSetup, onError: () => void) {
   try {
     preview.opener = null;
     const doc = preview.document;
-    doc.title = picture.title;
+    doc.title = outputTitle(picture);
     const style = doc.createElement('style');
     style.textContent = `body{margin:0;text-align:center;background:white}img{display:block;max-width:100%;max-height:90vh;object-fit:contain;margin:auto}button{font:18px sans-serif;padding:12px 24px;margin:12px}@media print{button{display:none}img{max-width:100%;max-height:95vh;break-inside:avoid}}@page{margin:10mm}`;
     doc.head.append(style);
     const button = doc.createElement('button');
     button.textContent = 'Print'; button.onclick = () => preview.print();
-    const image = doc.createElement('img'); image.alt = picture.title;
+    const image = doc.createElement('img'); image.alt = outputTitle(picture);
     image.onload = () => { preview.focus(); preview.print(); };
     image.onerror = onError;
     doc.body.append(button, image);

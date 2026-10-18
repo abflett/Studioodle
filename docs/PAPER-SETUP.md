@@ -19,3 +19,9 @@ The Horizons sticker category contains meadow, seashore, and snow. These are fin
 The Cottage garden template uses the reusable meadow horizon behind the fence and buildings to separate sky and grass fills. Its repeating fence has uniform 60-unit picket spacing, and its curved path and progressively sized stepping stones align with the cottage doorway.
 
 Horizon stickers now use manifest placement metadata and insert immediately above the paper, behind existing artwork. The moon crater starts higher than meadow/shore/snow horizons to keep its main detail on the page. Portrait placement adjusts for the ground depth so it still reaches the page bottom.
+
+## Custom coloring pages
+
+The selection screen's book-plus utility button copies the selected saved picture into the coloring-page picker. Templates keep paper size, sticker order, positions, scale, rotation and flips. All paint runs are removed, the canvas becomes white and sticker outlines become black. Freehand marks are paint and are omitted. A picture needs at least one sticker to create a useful template.
+
+Templates are stored locally under `studioodle.v3.coloring.` separately from `Your pictures`. Each use receives a new picture ID, so coloring a template never overwrites it or the source picture. The picker previews the new template immediately; custom entries can be deleted through the existing confirmation dialog. Built-in pages cannot be deleted. `coloringPage.ts` creates copies and the shared storage reader validates both libraries.

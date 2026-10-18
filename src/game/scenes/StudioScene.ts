@@ -1,4 +1,5 @@
 import { Artwork } from '../../editor/Artwork';
+import { StrokeSmoothing } from '../../editor/strokeSmoothing';
 import { defaultBrush, defaultFill } from '../../editor/toolOptions';
 import { Scene } from 'phaser';
 import type { GameObjects, Input } from 'phaser';
@@ -25,6 +26,7 @@ export class StudioScene extends Scene {
   private brushOptions = defaultBrush;
   private fillOptions = defaultFill;
   private previous?: Point;
+  private stroke?: StrokeSmoothing;
   private activePointer?: number;
   private gestureUndo?: { document: ArtworkDocument; history: ArtworkDocument[]; selected?: string; tool: EditorTool; focusHistoryStart: number };
   private nextSpray = 0;
@@ -56,7 +58,7 @@ export class StudioScene extends Scene {
           this.history = before.history; this.selected = before.selected; this.tool = before.tool;
           this.focusHistoryStart = before.focusHistoryStart;
         }
-        this.end(); this.draw(); return;
+        this.end(false); this.draw(); return;
       }
       this.end();
       if (this.focused && ['add-sticker', 'duplicate-selection', 'delete-selection', 'order-selection', 'clear-selection'].includes(command.type)) return;
@@ -171,6 +173,7 @@ export class StudioScene extends Scene {
     } else {
       this.pending = snapshot;
       this.previous = point;
+      this.stroke = this.tool === 'brush' && this.brushOptions.kind !== 'spray' ? new StrokeSmoothing(point) : undefined;
       if (this.document.brush(point, point, this.color, this.tool === 'erase', this.brushOptions)) this.changed();
     }
     this.draw();
@@ -186,13 +189,37 @@ export class StudioScene extends Scene {
       const actual = this.document.position(this.drag.id)!;
       if (old.x !== actual.x || old.y !== actual.y) this.changed();
     } else if (this.previous) {
-      if (this.document.brush(this.previous, point, this.color, this.tool === 'erase', this.brushOptions)) this.changed();
-      this.previous = point;
+      this.paintStroke(point);
     }
     this.draw();
   }
-  private release(pointer: Input.Pointer) { if (pointer.id === this.activePointer) this.end(); }
-  private end() { this.gestureUndo = undefined; this.previous = undefined; this.drag = undefined; this.pending = undefined; this.activePointer = undefined; }
+  private paintStroke(point: Point) {
+    const points = this.stroke ? this.stroke.append(point, 6 / Math.max(.01, this.scale.zoom)) : [point];
+    for (const next of points) {
+      if (!this.previous) break;
+      if (this.document.brush(this.previous, next, this.color, this.tool === 'erase', this.brushOptions)) this.changed();
+      this.previous = next;
+    }
+  }
+  private release(pointer: Input.Pointer) {
+    if (pointer.id !== this.activePointer) return;
+    if (this.previous && this.stroke) this.paintStroke(this.point(pointer));
+    this.end();
+  }
+  private end(flush = true) {
+    const hadStroke = this.stroke !== undefined;
+    let changed = false;
+    if (flush && this.stroke && this.previous) {
+      const tip = this.stroke.finish();
+      if (tip.x !== this.previous.x || tip.y !== this.previous.y)
+        changed = this.document.brush(this.previous, tip, this.color, false, this.brushOptions);
+      if (changed) this.changed();
+    }
+    this.stroke = undefined; this.gestureUndo = undefined; this.previous = undefined;
+    this.drag = undefined; this.pending = undefined; this.activePointer = undefined;
+    // Include the release position even when the tail writes no additional pixels.
+    if (flush && hadStroke) this.draw();
+  }
   private draw() {
     this.vectorViewport?.render(this.document, true);
     this.selection?.clear();
