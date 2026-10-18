@@ -1,10 +1,14 @@
 import { Circle, Square, Triangle, TreePine, Flower2, Shapes, CloudSun, Apple, House } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { StickerKind } from '../editor/document';
+import vectorCottagePreview from '../assets/vector/cottage-v1.svg?url';
 const previews = import.meta.glob<string>('../assets/stickers/*.svg', { eager: true, query: '?url', import: 'default' });
 type StickerItem = { kind: StickerKind; title: string; icon: LucideIcon; preview?: string };
 const sourceItem = (kind: StickerKind, title: string, icon: LucideIcon): StickerItem => ({ kind, title, icon, preview: previews[`../assets/stickers/${kind}.svg`] });
 export const stickerCategories: { id: string; title: string; icon: LucideIcon; items: StickerItem[] }[] = [
+  { id: 'vector-cottage', title: 'Cottage studio', icon: House, items: [
+    { kind: 'vector-cottage-v1', title: 'Cottage', icon: House, preview: vectorCottagePreview },
+  ] },
   { id: 'winter', title: 'Christmas winter', icon: TreePine, items: [
     sourceItem('winter-santa-sleigh', 'Santa and sleigh', Shapes), sourceItem('winter-reindeer', 'Reindeer', Shapes),
     sourceItem('winter-cabin', 'Snowy cabin', House), sourceItem('winter-pine', 'Christmas pine', TreePine),

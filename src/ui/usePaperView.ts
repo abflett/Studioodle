@@ -13,7 +13,7 @@ function constrain(view: View, paper: { width: number; height: number }): View {
 
 export function usePaperView(paper: { width: number; height: number }, requestedZoom: number | null, enabled: boolean) {
   const [fitZoom, setFitZoom] = useState(1);
-  const zoom = requestedZoom ?? fitZoom;
+  const zoom = (requestedZoom ?? 1) * fitZoom;
   const viewport = useRef<HTMLElement>(null);
   const current = useRef<View | null>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -29,7 +29,7 @@ export function usePaperView(paper: { width: number; height: number }, requested
       if (!w || !h) return;
       const fitted = Math.min(w / width, h / height);
       setFitZoom(fitted);
-      const activeZoom = requestedZoom ?? fitted;
+      const activeZoom = (requestedZoom ?? 1) * fitted;
       const old = current.current;
       const next = constrain({ width: w, height: h, zoom: activeZoom,
         x: old && requestedZoom !== null ? w / 2 - (old.width / 2 - old.x) / old.zoom * activeZoom : (w - width * activeZoom) / 2,
@@ -52,16 +52,17 @@ export function usePaperView(paper: { width: number; height: number }, requested
   };
   const focus = (bounds: { x: number; y: number; width: number; height: number }, topInset: number) => {
     const element = viewport.current;
-    if (!element) return zoom;
+    if (!element) return requestedZoom ?? 1;
     const w = element.clientWidth, h = element.clientHeight;
     const inset = Math.min(topInset, h / 2);
-    const nextZoom = Math.max(.1, Math.min(8, (w - 40) / Math.max(1, bounds.width), (h - inset - 40) / Math.max(1, bounds.height)));
+    const fitted = Math.min(w / paper.width, h / paper.height);
+    const nextZoom = Math.max(fitted, Math.min(fitted * 4, (w - 40) / Math.max(1, bounds.width), (h - inset - 40) / Math.max(1, bounds.height)));
     const next = constrain({ width: w, height: h, zoom: nextZoom,
       x: w / 2 - (bounds.x + bounds.width / 2) * nextZoom,
       y: inset + (h - inset) / 2 - (bounds.y + bounds.height / 2) * nextZoom,
     }, paper);
     current.current = next; drag.current = null; setPosition({ x: next.x, y: next.y });
-    return nextZoom;
+    return nextZoom / fitted;
   };
   return { viewport, position, focus, zoom, fitZoom, handlers: {
     onPointerDownCapture(event: ReactPointerEvent<HTMLElement>) {

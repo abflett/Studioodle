@@ -8,6 +8,7 @@ import { initialDrawingSettings } from '../../editor/setup';
 import { paperSize } from '../../editor/document';
 import type { ArtworkDocument, Point } from '../../editor/document';
 import { savePicture } from '../../editor/storage';
+import { VectorViewport } from '../VectorViewport';
 
 export class StudioScene extends Scene {
   private selection?: GameObjects.Graphics;
@@ -24,6 +25,7 @@ export class StudioScene extends Scene {
   private previous?: Point;
   private activePointer?: number;
   private nextSpray = 0;
+  private vectorViewport?: VectorViewport;
   constructor(private readonly bridge: EditorBridge, private readonly setup: EditorSetup) {
     super('Studio');
     const initial = initialDrawingSettings(setup);
@@ -41,6 +43,7 @@ export class StudioScene extends Scene {
     this.texture?.setFilter(Textures.FilterMode.NEAREST);
     this.add.image(0, 0, 'document-paint').setOrigin(0);
     this.selection = this.add.graphics();
+    this.vectorViewport = new VectorViewport(this.game.canvas, size.width, size.height);
     const unsubscribe = this.bridge.subscribe((command) => {
       if (command.type === 'save') {
         try {
@@ -99,6 +102,7 @@ export class StudioScene extends Scene {
     this.input.on('pointerupoutside', this.release, this);
     this.game.events.on('blur', this.end, this);
     const cleanup = () => {
+      this.vectorViewport?.destroy(); this.vectorViewport = undefined;
       unsubscribe();
       this.input.off('pointerdown', this.begin, this); this.input.off('pointermove', this.move, this);
       this.input.off('pointerup', this.release, this); this.input.off('pointerupoutside', this.release, this);
@@ -108,6 +112,7 @@ export class StudioScene extends Scene {
     this.draw();
   }
   update(time: number) {
+    this.vectorViewport?.render(this.document);
     if (this.tool !== 'brush' || this.brushOptions.kind !== 'spray' || !this.previous || this.activePointer === undefined || time < this.nextSpray) return;
     this.nextSpray = time + 40;
     if (this.document.brush(this.previous, this.previous, this.color, false, this.brushOptions)) { this.changed(); this.draw(); }
@@ -159,7 +164,12 @@ export class StudioScene extends Scene {
   private release(pointer: Input.Pointer) { if (pointer.id === this.activePointer) this.end(); }
   private end() { this.previous = undefined; this.drag = undefined; this.pending = undefined; this.activePointer = undefined; }
   private draw() {
-    if (this.texture) { this.document.render(this.texture.context); this.texture.refresh(); }
+    if (this.texture) {
+      if (this.document.usesCompositeRenderer) this.texture.context.clearRect(0, 0, this.texture.width, this.texture.height);
+      else this.document.render(this.texture.context);
+      this.texture.refresh();
+    }
+    this.vectorViewport?.render(this.document, true);
     this.selection?.clear();
     const bounds = this.selected ? this.document.bounds(this.selected) : undefined;
     if (bounds && this.tool === 'select') this.selection?.lineStyle(3, 0x549bd1).strokeRoundedRect(bounds.x - 5, bounds.y - 5, bounds.width + 10, bounds.height + 10, 8);

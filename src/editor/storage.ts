@@ -1,5 +1,6 @@
 import { cottageMask, isCottageSticker } from './stickerMasks';
-import { paperSize } from './document';
+import { isVectorSticker, vectorStickerSize } from './vectorStickers';
+import { paperSize, paintScale } from './document';
 import type { EditorSetup } from './setup';
 import type { Mark, ArtworkDocument } from './document';
 
@@ -59,16 +60,21 @@ function isArtworkDocument(value: unknown): value is ArtworkDocument {
   return doc.surfaces.every((surface, order) => {
     if (!surface || typeof surface !== 'object' || typeof surface.id !== 'string' || ids.has(surface.id)) return false;
     ids.add(surface.id);
-    if (order === 0 ? surface.kind !== 'canvas' : !['tree', 'flower', 'circle', 'square', 'triangle'].includes(surface.kind) && !isCottageSticker(surface.kind)) return false;
+    if (order === 0 ? surface.kind !== 'canvas' : !['tree', 'flower', 'circle', 'square', 'triangle'].includes(surface.kind) && !isCottageSticker(surface.kind) && !isVectorSticker(surface.kind)) return false;
     if (![surface.x, surface.y, surface.color].every(Number.isFinite) || !Number.isInteger(surface.color) || surface.color < 0 || surface.color > 0xffffff) return false;
     if (surface.legacyFill !== undefined && (!Number.isInteger(surface.legacyFill) || surface.legacyFill < 0 || surface.legacyFill > 0xffffff)) return false;
     if (!Array.isArray(surface.paint)) return false;
     if (surface.nativePixels !== undefined && typeof surface.nativePixels !== 'boolean') return false;
+    if (surface.paintDpi !== undefined && surface.paintDpi !== 96 && surface.paintDpi !== 150) return false;
     if (surface.scale !== undefined && (!Number.isFinite(surface.scale) || surface.scale < .1 || surface.scale > 4)) return false;
     if (surface.rotation !== undefined && (!Number.isFinite(surface.rotation) || surface.rotation < 0 || surface.rotation >= 360)) return false;
     if (surface.kind === 'canvas' && ((surface.scale ?? 1) !== 1 || (surface.rotation ?? 0) !== 0)) return false;
     const mask = isCottageSticker(surface.kind) ? cottageMask(surface.kind, surface.nativePixels === true) : undefined;
-    const pixels = order === 0 ? doc.width * doc.height : mask ? mask.width * mask.height : 220 * 280;
+    const vector = isVectorSticker(surface.kind) ? vectorStickerSize(surface.kind) : undefined;
+    const resolution = order === 0 || vector ? paintScale(surface) : 1;
+    const w = order === 0 ? doc.width : vector?.width ?? mask?.width ?? 220;
+    const h = order === 0 ? doc.height : vector?.height ?? mask?.height ?? 280;
+    const pixels = Math.ceil(w * resolution) * Math.ceil(h * resolution);
     let end = 0;
     return surface.paint.every((run) => {
       if (!Array.isArray(run) || run.length !== 3 || !run.every(Number.isInteger)) return false;

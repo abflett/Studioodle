@@ -1,4 +1,6 @@
 import { ColorPicker } from './ColorPicker';
+import { paperPresets, presetSize } from '../editor/paperPresets';
+import type { PaperPresetId } from '../editor/paperPresets';
 import { contrastingDrawingColor } from '../editor/palette';
 import { closeOnBackdrop } from './dialog';
 import { gardenScene } from '../editor/gardenScene';
@@ -6,6 +8,7 @@ import { countingScene } from '../editor/countingScene';
 import { springScene } from '../editor/springScene';
 import { beachScene } from '../editor/beachScene';
 import { winterScene } from '../editor/winterScene';
+import { vectorCottageScene } from '../editor/vectorCottageScene';
 import { deletePicture, loadPictures, savePicture } from '../editor/storage';
 import type { SavedPicture } from '../editor/storage';
 import { exportPicture, printPicture } from '../editor/pictureOutput';
@@ -13,11 +16,12 @@ import { SavedPreview } from './SavedPreview';
 import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Monitor, Moon, Sun, X, Trash2, Printer, Download, Undo2 } from 'lucide-react';
 import { pictureChoices } from '../app/startup';
-import type { EditorSetup, PaperFormat } from '../editor/setup';
+import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
 
 // Starter templates until full scene packs are available.
 const samples: EditorSetup[] = [
+  vectorCottageScene,
   winterScene,
   beachScene,
   springScene,
@@ -39,6 +43,7 @@ function Arrow({ direction }: { direction: 'left' | 'right' }) {
 }
 
 type WizardStep = 'shape' | 'paper' | 'scene';
+const windowOrientation = () => window.matchMedia('(min-aspect-ratio: 1/1)').matches ? 'landscape' as const : 'portrait' as const;
 
 export function SelectionScreen({ onOpen, theme, onThemeChange }: {
   onOpen: (setup: EditorSetup) => void;
@@ -46,7 +51,16 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
   onThemeChange: (theme: ThemePreference) => void;
 }) {
   const [step, setStep] = useState<WizardStep | null>(null);
-  const [format, setFormat] = useState<PaperFormat>('window');
+  const [paperPreset, setPaperPreset] = useState<PaperPresetId>('full');
+  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>(windowOrientation);
+  const [manualOrientation, setManualOrientation] = useState(false);
+  useEffect(() => {
+    if (manualOrientation) return;
+    const query = window.matchMedia('(min-aspect-ratio: 1/1)');
+    const update = () => setOrientation(query.matches ? 'landscape' : 'portrait');
+    update(); query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, [manualOrientation]);
   const [background, setBackground] = useState('#f6f2e8');
   const [sampleIndex, setSampleIndex] = useState(0);
   const [library, setLibrary] = useState(() => {
@@ -93,7 +107,7 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
 
   const current = saved[sampleIndex];
   const scene = samples[sceneIndex]!;
-  const stepTitle = step === 'shape' ? 'Pick a shape' : step === 'paper' ? 'Pick a paper color' : 'Pick a picture';
+  const stepTitle = step === 'shape' ? 'Pick your paper' : step === 'paper' ? 'Pick a paper color' : 'Pick a picture';
   const openPicture = (setup: EditorSetup) => {
     dialog.current?.close();
     onOpen(setup);
@@ -112,7 +126,7 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
         <div className="choice-grid">
           {pictureChoices.filter((item) => item.id !== 'previous').map((item) => (
             <button className={`choice-card choice-${item.id}`} key={item.id}
-              onClick={() => setStep(item.id === 'blank' ? 'shape' : 'scene')} aria-haspopup="dialog">
+              onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
               <span className="choice-art"><img src={item.image} alt="" width="320" height="220" /></span>
               <span className="choice-label">{item.id === 'blank' ? 'Blank page' : 'Coloring page'}</span>
             </button>
@@ -140,8 +154,13 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
             <button className="icon-button" aria-label="Close setup" onClick={() => setStep(null)}><X aria-hidden="true" /></button>
           </header>
           <div className="wizard-body">
-            {step === 'shape' && <div className="format-options" role="group" aria-label="Paper shape">
-              {(['window', 'landscape', 'square', 'portrait'] as const).map((value) => <button key={value} aria-label={value === 'window' ? 'Fit drawing area' : value} aria-pressed={format === value} onClick={() => setFormat(value)} className="format-button">{value === 'window' ? <Monitor /> : <span className={`paper-shape paper-${value}`} />}<span className="shape-label">{value === 'window' ? 'Fit screen' : value === 'landscape' ? 'Wide' : value === 'portrait' ? 'Tall' : 'Square'}</span></button>)}
+            {step === 'shape' && <div className="paper-setup">
+              <div className="format-options" role="group" aria-label="Paper size">
+                {paperPresets.map(preset => <button key={preset.id} aria-label={`${preset.title}, ${preset.detail}`} aria-pressed={paperPreset === preset.id} onClick={() => setPaperPreset(preset.id)} className="format-button"><span className={`paper-shape paper-${preset.id === 'square' ? 'square' : orientation} preset-${preset.id}`} /><span className="shape-label">{preset.title}<small>{preset.detail}</small></span></button>)}
+              </div>
+              <div className="paper-orientation" role="group" aria-label="Paper orientation">
+                {(['portrait', 'landscape'] as const).map(value => <button key={value} className="format-button" disabled={paperPreset === 'square'} aria-pressed={paperPreset !== 'square' && orientation === value} onClick={() => { setManualOrientation(true); setOrientation(value); }}><span className={`orientation-icon paper-${value}`} />{value === 'portrait' ? 'Tall' : 'Wide'}</button>)}
+              </div>
             </div>}
             {step === 'paper' && <ColorPicker label="Canvas background colors" color={parseInt(background.slice(1), 16)} onChoose={(value) => setBackground(`#${value.toString(16).padStart(6, '0')}`)} />}
             {step === 'scene' && <div className="scene-picker">
@@ -154,7 +173,7 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
             {step === 'paper' ? <button className="icon-button" aria-label="Back to paper shape" onClick={() => setStep('shape')}><ArrowLeft aria-hidden="true" /></button> : <span />}
             <button className="go-button" onClick={() => {
               if (step === 'shape') setStep('paper');
-              else openPicture(step === 'scene' ? scene : { title: 'Blank page', format, background, leafColor: contrastingDrawingColor(background) });
+              else openPicture(step === 'scene' ? scene : { title: 'Blank page', format: paperPreset === 'square' ? 'square' : orientation, size: presetSize(paperPreset, orientation), background, leafColor: contrastingDrawingColor(background) });
             }}>{step === 'shape' ? 'Next' : 'Let’s draw'}<ArrowRight aria-hidden="true" /></button>
           </footer>
         </div>

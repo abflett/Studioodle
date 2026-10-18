@@ -44,7 +44,7 @@ export default function EditorPreview({ setup: initialSetup, onBack }: { setup: 
   const pickerTitle = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (picker) pickerTitle.current?.focus({ preventScroll: true }); }, [picker, categoryId]);
   const [requestedZoom, setZoom] = useState<number | null>(null);
-  const { viewport, position, focus, zoom, fitZoom, handlers } = usePaperView(paperSize(setup.format, setup.size), requestedZoom, tool === 'pan');
+  const { viewport, position, focus, zoom, handlers } = usePaperView(paperSize(setup.format, setup.size), requestedZoom, tool === 'pan');
   useLayoutEffect(() => {
     if (!needsMeasurement || !viewport.current) return;
     setMeasuredSetup({ ...initialSetup, size: {
@@ -58,9 +58,8 @@ export default function EditorPreview({ setup: initialSetup, onBack }: { setup: 
     else chooseTool('select');
   };
   const cycleZoom = () => {
-    const levels = [...new Set([fitZoom, .5, .75, 1, 1.5, 2])].sort((a, b) => a - b);
-    const next = levels.find(level => level > zoom + .001) ?? levels[0]!;
-    setZoom(Math.abs(next - fitZoom) < .001 ? null : next);
+    const next = [1, 1.5, 2, 3, 4].find(level => level > (requestedZoom ?? 1) + .001) ?? 1;
+    setZoom(next === 1 ? null : next);
   };
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
@@ -78,7 +77,7 @@ export default function EditorPreview({ setup: initialSetup, onBack }: { setup: 
       <button aria-pressed={tool === 'erase'} onClick={() => chooseTool('erase')}><Eraser /><span>Erase</span></button>
       <button aria-pressed={tool === 'select'} onClick={toggleSelect}><MousePointer2 /><span>Select</span></button>
       <button aria-pressed={tool === 'pan'} onClick={() => chooseTool('pan')}><Move /><span>Pan</span></button>
-      <button onClick={cycleZoom} aria-label={`Zoom ${Math.round(zoom * 100)} percent, next zoom level`}><ZoomIn /><span>{Math.round(zoom * 100)}%</span></button>
+      <button onClick={cycleZoom} aria-label={`Zoom ${requestedZoom ?? 1} times fitted page, next zoom level`}><ZoomIn /><span>Zoom</span></button>
 
       <button onClick={() => { setUseCurrentOutline(false); setCategoryId(null); setPicker('stickers'); }} aria-haspopup="dialog"><Shapes /><span>Stickers</span></button>
       <button onClick={() => setPicker('colors')} aria-haspopup="dialog"><Palette style={{ color: `#${color.toString(16).padStart(6, '0')}` }} /><span>Colors</span></button>

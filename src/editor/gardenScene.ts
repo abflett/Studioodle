@@ -33,7 +33,7 @@ export const gardenScene: EditorSetup = {
   document: {
     version: 2, width: 1536, height: 1024,
     surfaces: [
-      { id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff, paint: [] },
+      { id: 'canvas', kind: 'canvas', paintDpi: 150, x: 0, y: 0, color: 0xffffff, paint: [] },
       ...objects.map(([kind, x, y], index): SurfaceData => ({
         id: `garden-${index}`, kind, x, y, color: 0, nativePixels: true, paint: [],
       })),

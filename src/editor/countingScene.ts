@@ -17,7 +17,7 @@ export const countingScene: EditorSetup = {
   document: {
     version: 2, width: 1920, height: 960,
     surfaces: [
-      { id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff, paint: [] },
+      { id: 'canvas', kind: 'canvas', paintDpi: 150, x: 0, y: 0, color: 0xffffff, paint: [] },
       ...placements.map(([kind, x, y], index): SurfaceData => ({
         id: `counting-instance-${index}`, kind, x, y, color: 0, nativePixels: true, paint: [],
       })),
