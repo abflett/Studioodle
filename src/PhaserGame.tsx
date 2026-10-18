@@ -4,7 +4,7 @@ import { startGame } from './game/main';
 import type { EditorBridge } from './editor/bridge';
 import type { EditorSetup } from './editor/setup';
 
-export function PhaserGame({ bridge, setup, zoom = 1, offsetX = 0, offsetY = 0 }: { bridge: EditorBridge; setup: EditorSetup; zoom?: number; offsetX?: number; offsetY?: number }) {
+export function PhaserGame({ bridge, setup, zoom = 1, offsetX = 0, offsetY = 0, focused = false }: { bridge: EditorBridge; setup: EditorSetup; zoom?: number; offsetX?: number; offsetY?: number; focused?: boolean }) {
   const parent = useRef<HTMLDivElement>(null);
   const activeGame = useRef<ReturnType<typeof startGame> | null>(null);
   const latestZoom = useRef(zoom);
@@ -46,7 +46,7 @@ export function PhaserGame({ bridge, setup, zoom = 1, offsetX = 0, offsetY = 0 }
   }, [bridge, setup]);
 
   const size = paperSize(setup.format, setup.size);
-  return <div className="canvas-host" style={{ backgroundColor: setup.background, width: size.width * zoom, height: size.height * zoom }} ref={parent} role="img" aria-label="Drawing canvas. Use Brush to draw or Fill to color a sticker." />;
+  return <div className="canvas-host" style={{ backgroundColor: focused ? 'transparent' : setup.background, width: size.width * zoom, height: size.height * zoom }} ref={parent} role="img" aria-label="Drawing canvas. Use Brush to draw or Fill to color a sticker." />;
 }
 
 

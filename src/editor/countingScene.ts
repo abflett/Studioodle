@@ -15,11 +15,11 @@ export const countingScene: EditorSetup = {
   title: 'Counting costume parade', format: 'landscape', size: { width: 1920, height: 960 },
   background: '#ffffff', leafColor: 0x242428,
   document: {
-    version: 2, width: 1920, height: 960,
+    version: 3, width: 1920, height: 960,
     surfaces: [
-      { id: 'canvas', kind: 'canvas', paintDpi: 150, x: 0, y: 0, color: 0xffffff, paint: [] },
+      { id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff, paint: [] },
       ...placements.map(([kind, x, y], index): SurfaceData => ({
-        id: `counting-instance-${index}`, kind, x, y, color: 0, nativePixels: true, paint: [],
+        id: `counting-instance-${index}`, kind, x, y, color: 0, paint: [],
       })),
     ],
   },

@@ -1,9 +1,8 @@
-import type { Mark, ArtworkDocument } from './document';
+import type { ArtworkDocument } from './document';
 import { contrastingDrawingColor } from './palette';
-export type PaperFormat = 'square' | 'landscape' | 'portrait' | 'window';
+export type PaperFormat = 'square' | 'landscape' | 'portrait';
 export type EditorSetup = {
   id?: string;
-  marks?: Mark[];
   document?: ArtworkDocument;
   title: string;
   format: PaperFormat;
@@ -13,7 +12,7 @@ export type EditorSetup = {
 };
 
 export function initialDrawingSettings(setup: EditorSetup) {
-  const blank = setup.title === 'Blank page' && !setup.document && !setup.marks;
+  const blank = setup.title === 'Blank page' && !setup.document;
   return {
     tool: blank ? 'brush' as const : 'bucket' as const,
     color: blank ? contrastingDrawingColor(setup.background) : setup.leafColor,

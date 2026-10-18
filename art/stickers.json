@@ -1,0 +1,621 @@
+[
+  {
+    "id": "circle",
+    "width": 220,
+    "height": 280,
+    "source": "art/source/shapes/circle.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "square",
+    "width": 220,
+    "height": 280,
+    "source": "art/source/shapes/square.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "triangle",
+    "width": 220,
+    "height": 280,
+    "source": "art/source/shapes/triangle.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "tree",
+    "width": 220,
+    "height": 280,
+    "source": "art/source/shapes/tree.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "flower",
+    "width": 220,
+    "height": 280,
+    "source": "art/source/shapes/flower.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "garden-house",
+    "width": 623,
+    "height": 560,
+    "source": "art/source/generated/house.png"
+  },
+  {
+    "id": "garden-tree",
+    "width": 450,
+    "height": 486,
+    "source": "art/source/generated/tree.png"
+  },
+  {
+    "id": "garden-bush",
+    "width": 242,
+    "height": 150,
+    "source": "art/source/generated/bush.png"
+  },
+  {
+    "id": "garden-flower",
+    "width": 200,
+    "height": 294,
+    "source": "art/source/generated/flower.png"
+  },
+  {
+    "id": "garden-mushroom",
+    "width": 150,
+    "height": 138,
+    "source": "art/source/generated/mushroom.png"
+  },
+  {
+    "id": "garden-blossom",
+    "width": 64,
+    "height": 57,
+    "source": "art/source/generated/blossom.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "garden-rainbow",
+    "width": 800,
+    "height": 398,
+    "source": "art/source/generated/rainbow.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "garden-fence",
+    "width": 360,
+    "height": 148,
+    "source": "art/source/generated/fence.svg",
+    "mode": "svg",
+    "cutouts": [
+      [
+        60,
+        100
+      ],
+      [
+        120,
+        100
+      ],
+      [
+        180,
+        100
+      ],
+      [
+        240,
+        100
+      ],
+      [
+        300,
+        100
+      ]
+    ]
+  },
+  {
+    "id": "garden-path",
+    "width": 426,
+    "height": 320,
+    "source": "art/source/generated/path.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "garden-stone",
+    "width": 120,
+    "height": 41,
+    "source": "art/source/generated/stone.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "garden-grass",
+    "width": 88,
+    "height": 47,
+    "source": "art/source/generated/grass.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "garden-sun",
+    "width": 353,
+    "height": 313,
+    "source": "art/source/cottage-garden-PAINT-READY.bmp",
+    "crop": "353x313+30+18",
+    "extracted": true
+  },
+  {
+    "id": "garden-cloud",
+    "width": 306,
+    "height": 169,
+    "source": "art/source/cottage-garden-PAINT-READY.bmp",
+    "crop": "306x169+1205+32",
+    "extracted": true
+  },
+  {
+    "id": "garden-butterfly",
+    "width": 215,
+    "height": 193,
+    "source": "art/source/cottage-garden-PAINT-READY.bmp",
+    "crop": "215x193+1308+232",
+    "extracted": true
+  },
+  {
+    "id": "garden-apple",
+    "width": 77,
+    "height": 92,
+    "source": "art/source/generated/apple.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "garden-window",
+    "width": 106,
+    "height": 113,
+    "source": "art/source/cottage-garden-PAINT-READY.bmp",
+    "crop": "106x113+890+357",
+    "extracted": true
+  },
+  {
+    "id": "counting-01",
+    "width": 229,
+    "height": 340,
+    "source": "art/source/counting/01.png"
+  },
+  {
+    "id": "counting-02",
+    "width": 300,
+    "height": 331,
+    "source": "art/source/counting/02.png",
+    "cutouts": [
+      [
+        126.75,
+        142.75
+      ]
+    ]
+  },
+  {
+    "id": "counting-03",
+    "width": 228,
+    "height": 340,
+    "source": "art/source/counting/03.png"
+  },
+  {
+    "id": "counting-04",
+    "width": 270,
+    "height": 340,
+    "source": "art/source/counting/04.png",
+    "cutouts": [
+      [
+        111.75,
+        156.25
+      ]
+    ]
+  },
+  {
+    "id": "counting-05",
+    "width": 229,
+    "height": 340,
+    "source": "art/source/counting/05.png"
+  },
+  {
+    "id": "counting-06",
+    "width": 233,
+    "height": 340,
+    "source": "art/source/counting/06.png"
+  },
+  {
+    "id": "counting-07",
+    "width": 300,
+    "height": 324,
+    "source": "art/source/counting/07.png"
+  },
+  {
+    "id": "counting-08",
+    "width": 232,
+    "height": 340,
+    "source": "art/source/counting/08.png",
+    "cutouts": [
+      [
+        115.25,
+        96.75
+      ],
+      [
+        115.25,
+        160.25
+      ]
+    ]
+  },
+  {
+    "id": "counting-09",
+    "width": 288,
+    "height": 340,
+    "source": "art/source/counting/09.png",
+    "cutouts": [
+      [
+        135.25,
+        131.25
+      ]
+    ]
+  },
+  {
+    "id": "counting-10",
+    "width": 300,
+    "height": 300,
+    "source": "art/source/counting/10.png",
+    "cutouts": [
+      [
+        137.25,
+        77.25
+      ],
+      [
+        185.25,
+        143.25
+      ]
+    ]
+  },
+  {
+    "id": "counting-bunting",
+    "width": 1800,
+    "height": 76,
+    "source": "art/source/counting/bunting.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "counting-star",
+    "width": 70,
+    "height": 69,
+    "source": "art/source/counting/star.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "spring-bunny",
+    "width": 307,
+    "height": 460,
+    "source": "art/source/spring/bunny.png"
+  },
+  {
+    "id": "spring-butterfly",
+    "width": 289,
+    "height": 260,
+    "source": "art/source/spring/butterfly.png"
+  },
+  {
+    "id": "spring-tulip",
+    "width": 294,
+    "height": 420,
+    "source": "art/source/spring/tulip.png"
+  },
+  {
+    "id": "spring-bird",
+    "width": 319,
+    "height": 300,
+    "source": "art/source/spring/bird.png"
+  },
+  {
+    "id": "spring-watering-can",
+    "width": 380,
+    "height": 288,
+    "source": "art/source/spring/watering-can.png",
+    "cutouts": [
+      [
+        61.75,
+        111.25
+      ]
+    ]
+  },
+  {
+    "id": "spring-sun",
+    "width": 260,
+    "height": 260,
+    "source": "art/source/spring/sun.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "spring-cloud",
+    "width": 380,
+    "height": 174,
+    "source": "art/source/spring/cloud.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "spring-meadow",
+    "width": 1920,
+    "height": 1440,
+    "source": "art/source/spring/meadow.svg",
+    "mode": "svg",
+    "horizon": true
+  },
+  {
+    "id": "beach-palm",
+    "width": 566,
+    "height": 690,
+    "source": "art/source/beach/palm.png"
+  },
+  {
+    "id": "beach-umbrella",
+    "width": 627,
+    "height": 580,
+    "source": "art/source/beach/umbrella.png"
+  },
+  {
+    "id": "beach-ball",
+    "width": 277,
+    "height": 280,
+    "source": "art/source/beach/ball.png"
+  },
+  {
+    "id": "beach-shore",
+    "width": 1920,
+    "height": 1440,
+    "source": "art/source/beach/shore.svg",
+    "mode": "svg",
+    "horizon": true
+  },
+  {
+    "id": "beach-towel",
+    "width": 460,
+    "height": 180,
+    "source": "art/source/beach/towel.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "beach-shell",
+    "width": 160,
+    "height": 128,
+    "source": "art/source/beach/shell.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "winter-santa-sleigh",
+    "width": 480,
+    "height": 340,
+    "source": "art/source/winter/santa-sleigh.png",
+    "cutouts": [
+      [
+        389.75,
+        286.75
+      ],
+      [
+        233.25,
+        307.25
+      ]
+    ]
+  },
+  {
+    "id": "winter-reindeer",
+    "width": 284,
+    "height": 280,
+    "source": "art/source/winter/reindeer.png"
+  },
+  {
+    "id": "winter-cabin",
+    "width": 520,
+    "height": 393,
+    "source": "art/source/winter/cabin.png"
+  },
+  {
+    "id": "winter-pine",
+    "width": 290,
+    "height": 344,
+    "source": "art/source/winter/pine.png"
+  },
+  {
+    "id": "winter-skater",
+    "width": 230,
+    "height": 247,
+    "source": "art/source/winter/skater.png",
+    "cutouts": [
+      [
+        27.25,
+        171.75
+      ],
+      [
+        26.75,
+        191.25
+      ],
+      [
+        138.25,
+        231.25
+      ]
+    ]
+  },
+  {
+    "id": "winter-skater-friend",
+    "width": 230,
+    "height": 247,
+    "source": "art/source/winter/skater-friend.png",
+    "cutouts": [
+      [
+        204.75,
+        186.75
+      ],
+      [
+        198.25,
+        207.25
+      ],
+      [
+        119.25,
+        231.25
+      ],
+      [
+        100.25,
+        234.75
+      ]
+    ]
+  },
+  {
+    "id": "winter-snow",
+    "width": 1920,
+    "height": 1440,
+    "source": "art/source/winter/snow.svg",
+    "mode": "svg",
+    "horizon": true
+  },
+  {
+    "id": "winter-pond",
+    "width": 820,
+    "height": 319,
+    "source": "art/source/winter/pond.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "winter-present",
+    "width": 150,
+    "height": 151,
+    "source": "art/source/winter/present.svg",
+    "mode": "svg"
+  },
+  {
+    "id": "animal-giraffe",
+    "width": 170,
+    "height": 270,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "170x270+95+15",
+    "extracted": true
+  },
+  {
+    "id": "animal-elephant",
+    "width": 310,
+    "height": 227,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "310x227+376+40",
+    "extracted": true
+  },
+  {
+    "id": "animal-lion",
+    "width": 199,
+    "height": 234,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "199x234+790+32",
+    "extracted": true,
+    "cutouts": [
+      [
+        75.875,
+        193.125
+      ],
+      [
+        101.625,
+        204.625
+      ]
+    ]
+  },
+  {
+    "id": "animal-hippo",
+    "width": 290,
+    "height": 203,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "290x203+1080+50",
+    "extracted": true
+  },
+  {
+    "id": "animal-zebra",
+    "width": 273,
+    "height": 227,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "273x227+38+293",
+    "extracted": true
+  },
+  {
+    "id": "animal-rhino",
+    "width": 302,
+    "height": 194,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "302x194+372+312",
+    "extracted": true
+  },
+  {
+    "id": "animal-leopard",
+    "width": 318,
+    "height": 193,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "318x193+721+310",
+    "extracted": true
+  },
+  {
+    "id": "animal-ostrich",
+    "width": 192,
+    "height": 262,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "192x262+1138+277",
+    "extracted": true
+  },
+  {
+    "id": "animal-buffalo",
+    "width": 301,
+    "height": 207,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "301x207+36+545",
+    "extracted": true
+  },
+  {
+    "id": "animal-meerkat",
+    "width": 138,
+    "height": 214,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "138x214+479+537",
+    "extracted": true
+  },
+  {
+    "id": "animal-warthog",
+    "width": 258,
+    "height": 194,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "258x194+744+552",
+    "extracted": true
+  },
+  {
+    "id": "animal-crocodile",
+    "width": 312,
+    "height": 151,
+    "source": "art/source/animals/safari-sheet.jpg",
+    "crop": "312x151+1061+580",
+    "extracted": true
+  },
+  {
+    "id": "space-alien",
+    "width": 331,
+    "height": 400,
+    "source": "art/source/space/alien.jpg",
+    "crop": "581x703+414+33",
+    "extracted": true
+  },
+  {
+    "id": "space-spaceship",
+    "width": 960,
+    "height": 479,
+    "source": "art/source/space/spaceship.jpg",
+    "crop": "1350x673+29+49",
+    "extracted": true,
+    "cutouts": [
+      [
+        826.25,
+        202.75
+      ],
+      [
+        816.75,
+        286.25
+      ]
+    ]
+  },
+  {
+    "id": "space-crater",
+    "width": 1920,
+    "height": 1440,
+    "source": "art/source/space/crater-horizon.svg",
+    "mode": "svg",
+    "horizon": true,
+    "horizonStart": 0.2
+  }
+]

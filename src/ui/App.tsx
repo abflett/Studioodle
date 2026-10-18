@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
-import { RotateCcw } from 'lucide-react';
+import { prepareStickers } from '../editor/vectorStickers';
+import { RotateCcw, Play } from 'lucide-react';
 import { prepareStudio } from '../app/startup';
 import type { EditorModule } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import { Brand } from './Brand';
 import { SelectionScreen } from './SelectionScreen';
+import { readSettings, saveSettings } from './settings';
+import { stopAppMouse, useAppMouse } from './appMouse';
+import type { AppSettings } from './settings';
 import { applyTheme, readTheme, saveTheme } from './theme';
 import type { ThemePreference } from './theme';
 
@@ -14,6 +18,12 @@ type StartupState =
   | { phase: 'error' };
 
 export function App() {
+  const [settings, setSettings] = useState(readSettings);
+  useAppMouse(settings.mouseSpeed);
+  const changeSettings = (next: AppSettings) => { saveSettings(next); setSettings(next); };
+  const [exited, setExited] = useState(false);
+  const [opening, setOpening] = useState(false);
+  const [openError, setOpenError] = useState(false);
   const [startup, setStartup] = useState<StartupState>({ phase: 'loading', completed: 0, total: 4 });
   const [attempt, setAttempt] = useState(0);
   const [choice, setChoice] = useState<EditorSetup | null>(null);
@@ -70,10 +80,30 @@ export function App() {
     );
   }
 
+  const exitStudio = () => {
+    stopAppMouse();
+    if (document.fullscreenElement) void document.exitFullscreen().catch(() => {});
+    setExited(true);
+    if (window.opener) window.close();
+  };
+  if (exited) return <main className="splash exit-screen" aria-label="Studioodle closed">
+    <Brand />
+    <p>You can close this tab now.</p>
+    <button className="go-button" onClick={() => setExited(false)}><Play aria-hidden="true" /><span>Back to Studioodle</span></button>
+  </main>;
+
   if (choice) {
     const Editor = startup.module.default;
-    return <Editor setup={choice} onBack={() => setChoice(null)} />;
+    return <Editor settings={settings} setup={choice} onBack={() => setChoice(null)} />;
   }
 
-  return <SelectionScreen onOpen={(setup) => setChoice({ ...setup, id: setup.id ?? crypto.randomUUID() })} theme={theme} onThemeChange={changeTheme} />;
+  return <><SelectionScreen settings={settings} onSettingsChange={changeSettings} onExit={exitStudio} onOpen={(setup) => {
+    if (opening) return;
+    setOpening(true); setOpenError(false);
+    void prepareStickers(setup.document?.surfaces.map(surface => surface.kind) ?? []).then(() => {
+      setChoice({ ...setup, id: setup.id ?? crypto.randomUUID() });
+    }).catch(() => setOpenError(true)).finally(() => setOpening(false));
+  }} theme={theme} onThemeChange={changeTheme} />
+  {opening && <div className="asset-loading"><progress aria-label="Loading picture" /></div>}
+  {openError && <button className="save-notice" onClick={() => setOpenError(false)}>Could not load this picture. Tap to dismiss.</button>}</>;
 }

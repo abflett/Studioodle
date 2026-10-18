@@ -1,0 +1,570 @@
+[
+  {
+    "id": "circle",
+    "width": 220,
+    "height": 280,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "square",
+    "width": 220,
+    "height": 280,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "triangle",
+    "width": 220,
+    "height": 280,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "tree",
+    "width": 220,
+    "height": 280,
+    "regionCount": 2,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "flower",
+    "width": 220,
+    "height": 280,
+    "regionCount": 7,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "garden-house",
+    "width": 623,
+    "height": 560,
+    "regionCount": 90,
+    "tinyRegions": 1,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "garden-tree",
+    "width": 450,
+    "height": 486,
+    "regionCount": 6,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "garden-bush",
+    "width": 242,
+    "height": 150,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "garden-flower",
+    "width": 200,
+    "height": 294,
+    "regionCount": 9,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "garden-mushroom",
+    "width": 150,
+    "height": 138,
+    "regionCount": 6,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "garden-blossom",
+    "width": 64,
+    "height": 57,
+    "regionCount": 7,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "garden-rainbow",
+    "width": 800,
+    "height": 398,
+    "regionCount": 3,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "garden-fence",
+    "width": 360,
+    "height": 148,
+    "regionCount": 20,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "garden-path",
+    "width": 426,
+    "height": 320,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "garden-stone",
+    "width": 120,
+    "height": 41,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "garden-grass",
+    "width": 88,
+    "height": 47,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "garden-sun",
+    "width": 353,
+    "height": 313,
+    "regionCount": 12,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "garden-cloud",
+    "width": 306,
+    "height": 169,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "garden-butterfly",
+    "width": 215,
+    "height": 193,
+    "regionCount": 12,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "garden-apple",
+    "width": 77,
+    "height": 92,
+    "regionCount": 3,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "garden-window",
+    "width": 106,
+    "height": 113,
+    "regionCount": 6,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-01",
+    "width": 229,
+    "height": 340,
+    "regionCount": 38,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-02",
+    "width": 300,
+    "height": 331,
+    "regionCount": 37,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-03",
+    "width": 228,
+    "height": 340,
+    "regionCount": 27,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-04",
+    "width": 270,
+    "height": 340,
+    "regionCount": 44,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-05",
+    "width": 229,
+    "height": 340,
+    "regionCount": 68,
+    "tinyRegions": 1,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-06",
+    "width": 233,
+    "height": 340,
+    "regionCount": 41,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-07",
+    "width": 300,
+    "height": 324,
+    "regionCount": 59,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-08",
+    "width": 232,
+    "height": 340,
+    "regionCount": 55,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-09",
+    "width": 288,
+    "height": 340,
+    "regionCount": 40,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-10",
+    "width": 300,
+    "height": 300,
+    "regionCount": 63,
+    "tinyRegions": 1,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "counting-bunting",
+    "width": 1800,
+    "height": 76,
+    "regionCount": 18,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "counting-star",
+    "width": 70,
+    "height": 69,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "spring-bunny",
+    "width": 307,
+    "height": 460,
+    "regionCount": 7,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "spring-butterfly",
+    "width": 289,
+    "height": 260,
+    "regionCount": 10,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "spring-tulip",
+    "width": 294,
+    "height": 420,
+    "regionCount": 4,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "spring-bird",
+    "width": 319,
+    "height": 300,
+    "regionCount": 5,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "spring-watering-can",
+    "width": 380,
+    "height": 288,
+    "regionCount": 6,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "spring-sun",
+    "width": 260,
+    "height": 260,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "spring-cloud",
+    "width": 380,
+    "height": 174,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "spring-meadow",
+    "width": 1920,
+    "height": 1440,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "beach-palm",
+    "width": 566,
+    "height": 690,
+    "regionCount": 13,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "beach-umbrella",
+    "width": 627,
+    "height": 580,
+    "regionCount": 5,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "beach-ball",
+    "width": 277,
+    "height": 280,
+    "regionCount": 8,
+    "tinyRegions": 1,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "beach-shore",
+    "width": 1920,
+    "height": 1440,
+    "regionCount": 2,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "beach-towel",
+    "width": 460,
+    "height": 180,
+    "regionCount": 3,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "beach-shell",
+    "width": 160,
+    "height": 128,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "winter-santa-sleigh",
+    "width": 480,
+    "height": 340,
+    "regionCount": 30,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "winter-reindeer",
+    "width": 284,
+    "height": 280,
+    "regionCount": 20,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "winter-cabin",
+    "width": 520,
+    "height": 393,
+    "regionCount": 66,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "winter-pine",
+    "width": 290,
+    "height": 344,
+    "regionCount": 16,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "winter-skater",
+    "width": 230,
+    "height": 247,
+    "regionCount": 68,
+    "tinyRegions": 2,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "winter-skater-friend",
+    "width": 230,
+    "height": 247,
+    "regionCount": 51,
+    "tinyRegions": 2,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "winter-snow",
+    "width": 1920,
+    "height": 1440,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "winter-pond",
+    "width": 820,
+    "height": 319,
+    "regionCount": 1,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "winter-present",
+    "width": 150,
+    "height": 151,
+    "regionCount": 7,
+    "tinyRegions": 0,
+    "mode": "svg"
+  },
+  {
+    "id": "animal-giraffe",
+    "width": 170,
+    "height": 270,
+    "regionCount": 47,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-elephant",
+    "width": 310,
+    "height": 227,
+    "regionCount": 19,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-hippo",
+    "width": 290,
+    "height": 203,
+    "regionCount": 22,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-zebra",
+    "width": 273,
+    "height": 227,
+    "regionCount": 74,
+    "tinyRegions": 2,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-rhino",
+    "width": 302,
+    "height": 194,
+    "regionCount": 19,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-leopard",
+    "width": 318,
+    "height": 193,
+    "regionCount": 89,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-ostrich",
+    "width": 192,
+    "height": 262,
+    "regionCount": 18,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-buffalo",
+    "width": 301,
+    "height": 207,
+    "regionCount": 19,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-meerkat",
+    "width": 138,
+    "height": 214,
+    "regionCount": 17,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-warthog",
+    "width": 258,
+    "height": 194,
+    "regionCount": 18,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-crocodile",
+    "width": 312,
+    "height": 151,
+    "regionCount": 44,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "animal-lion",
+    "width": 199,
+    "height": 234,
+    "regionCount": 13,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "space-alien",
+    "width": 331,
+    "height": 400,
+    "regionCount": 99,
+    "tinyRegions": 0,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "space-crater",
+    "width": 1920,
+    "height": 1440,
+    "regionCount": 435,
+    "tinyRegions": 22,
+    "mode": "svg"
+  },
+  {
+    "id": "space-spaceship",
+    "width": 960,
+    "height": 479,
+    "regionCount": 599,
+    "tinyRegions": 82,
+    "mode": "potrace-light"
+  }
+]

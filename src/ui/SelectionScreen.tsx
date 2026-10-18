@@ -1,3 +1,7 @@
+import { DeletePictureDialog } from './DeletePictureDialog';
+import type { AppSettings } from './settings';
+import { SelectionSettings } from './SelectionSettings';
+import { fullPageScene } from '../editor/fullPageScene';
 import { ColorPicker } from './ColorPicker';
 import { paperPresets, presetSize } from '../editor/paperPresets';
 import type { PaperPresetId } from '../editor/paperPresets';
@@ -8,34 +12,27 @@ import { countingScene } from '../editor/countingScene';
 import { springScene } from '../editor/springScene';
 import { beachScene } from '../editor/beachScene';
 import { winterScene } from '../editor/winterScene';
-import { vectorCottageScene } from '../editor/vectorCottageScene';
 import { deletePicture, loadPictures, savePicture } from '../editor/storage';
 import type { SavedPicture } from '../editor/storage';
 import { exportPicture, printPicture } from '../editor/pictureOutput';
 import { SavedPreview } from './SavedPreview';
-import { useEffect, useId, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Monitor, Moon, Sun, X, Trash2, Printer, Download, Undo2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight, Monitor, Moon, Sun, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize } from 'lucide-react';
 import { pictureChoices } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
 
-// Starter templates until full scene packs are available.
+// Ready-made scenes use the same hybrid definitions as the sticker picker.
 const samples: EditorSetup[] = [
-  vectorCottageScene,
   winterScene,
   beachScene,
   springScene,
   countingScene,
   gardenScene,
-  { title: 'Garden', format: 'landscape', background: '#fff5df', leafColor: 0x87b999 },
-  { title: 'Daydream', format: 'square', background: '#e5daf0', leafColor: 0xb3a0d4 },
-  { title: 'Sunshine', format: 'portrait', background: '#cde6ed', leafColor: 0xe7c46e },
-];
+].map(fullPageScene);
 
 function PictureThumbnail({ picture }: { picture: EditorSetup }) {
-  const clipId = useId();
-  if (picture.document) return <SavedPreview picture={picture} />;
-  return <svg viewBox="0 0 240 150" aria-hidden="true"><defs><clipPath id={clipId}><rect width="240" height="150" rx="16" /></clipPath></defs><g clipPath={`url(#${clipId})`}><rect width="240" height="150" rx="16" fill={picture.background} /><circle cx="190" cy="34" r="15" fill="#e7c46e" /><path d="M0 125Q60 92 120 120T240 115v35H0Z" fill="#87b999" opacity=".35" /><path d="M112 81h16v48h-16Z" fill="#c99569" stroke="#46584c" strokeWidth="3" /><rect x="81" y="29" width="78" height="65" rx="28" fill={`#${picture.leafColor.toString(16).padStart(6, '0')}`} stroke="#46584c" strokeWidth="3" /></g><rect x="2.5" y="2.5" width="235" height="145" rx="13.5" fill="none" stroke="#46584c" strokeWidth="5" /></svg>;
+  return <SavedPreview picture={picture} />;
 }
 
 function Arrow({ direction }: { direction: 'left' | 'right' }) {
@@ -45,11 +42,21 @@ function Arrow({ direction }: { direction: 'left' | 'right' }) {
 type WizardStep = 'shape' | 'paper' | 'scene';
 const windowOrientation = () => window.matchMedia('(min-aspect-ratio: 1/1)').matches ? 'landscape' as const : 'portrait' as const;
 
-export function SelectionScreen({ onOpen, theme, onThemeChange }: {
+export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings, onSettingsChange }: {
   onOpen: (setup: EditorSetup) => void;
+  onExit: () => void;
+  settings: AppSettings;
+  onSettingsChange: (settings: AppSettings) => void;
   theme: ThemePreference;
   onThemeChange: (theme: ThemePreference) => void;
 }) {
+  const [fullscreen, setFullscreen] = useState(Boolean(document.fullscreenElement));
+  useEffect(() => {
+    const update = () => setFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener('fullscreenchange', update);
+    return () => document.removeEventListener('fullscreenchange', update);
+  }, []);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [step, setStep] = useState<WizardStep | null>(null);
   const [paperPreset, setPaperPreset] = useState<PaperPresetId>('full');
   const [orientation, setOrientation] = useState<'portrait' | 'landscape'>(windowOrientation);
@@ -68,14 +75,20 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
     catch { return { pictures: [], error: true }; }
   });
   const saved = library.pictures;
+  const [pendingDelete, setPendingDelete] = useState<SavedPicture>();
+  const [toastPaused, setToastPaused] = useState(false);
   const [removed, setRemoved] = useState<SavedPicture>();
   const [actionError, setActionError] = useState<string>();
-  const removeCurrent = () => {
-    const picture = saved[sampleIndex];
-    if (!picture) return;
+  useEffect(() => {
+    if (!removed || toastPaused || actionError || pendingDelete) return;
+    const timeout = window.setTimeout(() => setRemoved(undefined), 8000);
+    return () => window.clearTimeout(timeout);
+  }, [removed, toastPaused, actionError, pendingDelete]);
+  const removeCurrent = (picture: SavedPicture) => {
+    setPendingDelete(undefined);
     try {
       deletePicture(picture.id);
-      setRemoved(picture); setActionError(undefined);
+      setRemoved(picture); setToastPaused(false); setActionError(undefined);
       setLibrary({ pictures: saved.filter((item) => item.id !== picture.id), error: false });
       setSampleIndex(Math.max(0, Math.min(sampleIndex, saved.length - 2)));
     } catch { setActionError('Could not delete this picture.'); }
@@ -116,12 +129,18 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
   return (
     <main className="selection-screen" aria-label="Choose a picture">
       <section className="selection">
+        <div className="selection-preferences">
         <div className="theme-picker" role="group" aria-label="Color theme">
           {(['system', 'light', 'dark'] as const).map((value) => (
             <button key={value} aria-label={value === 'system' ? 'Follow system theme' : `${value} theme`} title={value === 'system' ? 'Follow system' : `${value === 'light' ? 'Light' : 'Dark'} theme`} aria-pressed={theme === value} onClick={() => onThemeChange(value)}>
               {value === 'system' ? <Monitor aria-hidden="true" /> : value === 'light' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
             </button>
           ))}
+        </div>
+        {document.fullscreenEnabled && <button className="fullscreen-toggle icon-button" title={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} aria-label={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} onClick={() => {
+          const action = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+          void action.catch(() => setActionError('Fullscreen is unavailable in this window.'));
+        }}>{fullscreen ? <Minimize aria-hidden="true" /> : <Fullscreen aria-hidden="true" />}</button>}
         </div>
         <div className="choice-grid">
           {pictureChoices.filter((item) => item.id !== 'previous').map((item) => (
@@ -178,12 +197,21 @@ export function SelectionScreen({ onOpen, theme, onThemeChange }: {
           </footer>
         </div>
       </dialog>
+      <DeletePictureDialog picture={pendingDelete} onCancel={() => setPendingDelete(undefined)} onConfirm={removeCurrent} />
+      <SelectionSettings settings={settings} onSettingsChange={onSettingsChange} open={settingsOpen} onClose={() => setSettingsOpen(false)} theme={theme} onThemeChange={onThemeChange} />
+      <footer className="selection-footer">
       <nav className="library-actions" aria-label="Selected saved picture actions">
-        <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={removeCurrent}><Trash2 /></button>
+        <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) setPendingDelete(current); }}><Trash2 /></button>
         <button className="icon-button" disabled={!current} aria-label="Print selected saved picture" title="Print picture" onClick={() => { if (current) printPicture(current, () => setActionError('Could not open printing. Allow the print window and try again.')); }}><Printer /></button>
         <button className="icon-button" disabled={!current} aria-label="Export selected saved picture as PNG" title="Export PNG" onClick={() => { if (current) void exportPicture(current).catch(() => setActionError('Could not export this picture.')); }}><Download /></button>
       </nav>
-      {(removed || actionError) && <div className="save-notice library-notice" role="status">
+      <nav className="studio-actions" aria-label="Studio controls">
+
+        <button className="icon-button" title="Settings" aria-label="Settings" aria-haspopup="dialog" onClick={() => setSettingsOpen(true)}><Settings aria-hidden="true" /></button>
+      <button className="icon-button exit-control" title="Exit Studioodle" aria-label="Exit Studioodle" onClick={onExit}><LogOut aria-hidden="true" /></button>
+      </nav>
+      </footer>
+      {(removed || actionError) && <div className="save-notice library-notice" role="status" onPointerEnter={() => setToastPaused(true)} onPointerLeave={() => setToastPaused(false)} onFocusCapture={() => setToastPaused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setToastPaused(false); }}>
         <span>{actionError ?? 'Picture removed'}</span>
         {removed && <button className="icon-button" aria-label="Undo delete" onClick={undoRemove}><Undo2 /></button>}
         <button className="icon-button" aria-label="Dismiss message" onClick={() => { setRemoved(undefined); setActionError(undefined); }}><X /></button>

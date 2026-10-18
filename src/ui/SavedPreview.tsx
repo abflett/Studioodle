@@ -1,17 +1,50 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { LoaderCircle, ImageOff } from 'lucide-react';
 import { paperSize } from '../editor/document';
 import { Artwork } from '../editor/Artwork';
+import { prepareStickers } from '../editor/vectorStickers';
 import type { EditorSetup } from '../editor/setup';
+
 export function SavedPreview({ picture }: { picture: EditorSetup }) {
   const canvas = useRef<HTMLCanvasElement>(null);
+  const [result, setResult] = useState<{ picture: EditorSetup; failed: boolean }>();
+  const ready = result?.picture === picture && !result.failed;
+  const failed = result?.picture === picture && result.failed;
   const { width, height } = paperSize(picture.format, picture.size);
   useEffect(() => {
-    const ctx = canvas.current?.getContext('2d');
-    if (!ctx) return;
-    const artwork = picture.document ? Artwork.restore(picture.document) : Artwork.create(width, height, picture.background);
-    if (!picture.document && picture.marks) artwork.importMarks(picture.marks);
-    artwork.render(ctx);
+    const element = canvas.current;
+    if (!element) return;
+    let active = true;
+    let artwork: Artwork | undefined;
+    const draw = () => {
+      if (!active || !artwork) return;
+      const box = element.getBoundingClientRect();
+      // Render vectors directly at the displayed size, with device-pixel backing.
+      const density = window.devicePixelRatio || 1;
+      const w = Math.max(1, Math.round((box.width - element.clientLeft * 2) * density));
+      const h = Math.max(1, Math.round((box.height - element.clientTop * 2) * density));
+      if (element.width !== w) element.width = w;
+      if (element.height !== h) element.height = h;
+      const ctx = element.getContext('2d');
+      if (!ctx) return;
+      ctx.setTransform(w / width, 0, 0, h / height, 0, 0);
+      artwork.render(ctx, true);
+    };
+    const observer = new ResizeObserver(draw);
+    observer.observe(element);
+    // Give the loading state a painted frame before decoding/restoring artwork.
+    let frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => {
+    void prepareStickers(picture.document?.surfaces.map(surface => surface.kind) ?? []).then(() => {
+      if (!active) return;
+      artwork = picture.document ? Artwork.restore(picture.document) : Artwork.create(width, height, picture.background);
+      draw();
+      setResult({ picture, failed: false });
+    }).catch(() => { if (active) setResult({ picture, failed: true }); });
+    }); });
+    return () => { active = false; cancelAnimationFrame(frame); observer.disconnect(); };
   }, [picture, width, height]);
-  return <canvas ref={canvas} width={width} height={height} className="saved-preview" aria-hidden="true" style={{ background: picture.background, width: '100%', height: '100%', objectFit: 'contain' }} />;
+  return <span className="saved-preview preview-frame" aria-busy={!ready && !failed} style={{ background: picture.background, aspectRatio: `${width} / ${height}`, width: `min(100%, calc(var(--preview-height, 240px) * ${width / height}))`, height: 'auto' }}>
+    <canvas ref={canvas} width={width} height={height} aria-hidden="true" style={{ visibility: ready ? 'visible' : 'hidden' }} />
+    {!ready && <span className="preview-loading">{failed ? <ImageOff aria-hidden="true" /> : <LoaderCircle className="preview-spinner" aria-hidden="true" />}<span className="sr-only" role="status">{failed ? 'Preview unavailable' : 'Loading picture preview'}</span></span>}
+  </span>;
 }
-

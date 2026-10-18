@@ -2,25 +2,26 @@ import { Artwork } from './Artwork';
 import { paperSize, paintScale } from './document';
 import type { EditorSetup } from './setup';
 import { pngResolution } from './pngResolution';
+import { prepareStickers } from './vectorStickers';
 
-function renderPicture(picture: EditorSetup) {
+async function renderPicture(picture: EditorSetup) {
+  await prepareStickers(picture.document?.surfaces.map(surface => surface.kind) ?? []);
   const { width, height } = paperSize(picture.format, picture.size);
   const canvas = document.createElement('canvas');
-  const scale = picture.document?.surfaces[0] ? paintScale(picture.document.surfaces[0]) : 150 / 96;
+  const scale = paintScale();
   canvas.width = Math.ceil(width * scale); canvas.height = Math.ceil(height * scale);
   const context = canvas.getContext('2d');
   if (!context) throw new Error('Unable to render picture');
   context.scale(canvas.width / width, canvas.height / height);
   const artwork = picture.document ? Artwork.restore(picture.document) : Artwork.create(width, height, picture.background);
-  if (!picture.document && picture.marks) artwork.importMarks(picture.marks);
   artwork.render(context);
   return canvas;
 }
 
 export async function exportPicture(picture: EditorSetup) {
-  const canvas = renderPicture(picture);
+  const canvas = await renderPicture(picture);
   const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob((value) => value ? resolve(value) : reject(new Error('PNG export failed')), 'image/png'));
-  const url = URL.createObjectURL(await pngResolution(blob, picture.document?.surfaces[0]?.paintDpi ?? (picture.document ? 96 : 150)));
+  const url = URL.createObjectURL(await pngResolution(blob, 150));
   const link = document.createElement('a');
   link.href = url;
   link.download = `${picture.title.replace(/[^a-z0-9 _-]/gi, '').trim() || 'Studioodle picture'}.png`;
@@ -45,6 +46,6 @@ export function printPicture(picture: EditorSetup, onError: () => void) {
     image.onload = () => { preview.focus(); preview.print(); };
     image.onerror = onError;
     doc.body.append(button, image);
-    image.src = renderPicture(picture).toDataURL('image/png');
+    void renderPicture(picture).then(canvas => { image.src = canvas.toDataURL('image/png'); }).catch(() => { preview.close(); onError(); });
   } catch { preview.close(); onError(); }
 }

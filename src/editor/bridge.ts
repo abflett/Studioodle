@@ -3,23 +3,31 @@ import type { BrushOptions, FillOptions } from './toolOptions';
 export type EditorTool = 'brush' | 'bucket' | 'select' | 'pan' | 'erase';
 export type SelectionOrder = { forward: boolean; backward: boolean };
 export type EditorCommand =
+  | { type: 'fill-at'; point: Point }
   | { type: 'set-color'; color: number }
   | { type: 'set-tool'; tool: EditorTool }
   | { type: 'set-brush'; options: BrushOptions }
   | { type: 'set-fill'; options: FillOptions }
+  | { type: 'flip-selection'; axis: 'horizontal' | 'vertical' }
   | { type: 'transform-selection'; scaleDelta: number; rotationDelta: number }
   | { type: 'order-selection'; direction: 'forward' | 'backward' }
   | { type: 'focus-selection'; onFocus: (bounds: { x: number; y: number; width: number; height: number }) => void }
   | { type: 'add-sticker'; sticker: StickerKind; outlineColor: number; point: Point }
-  | { type: 'undo' }
+  | { type: 'undo' | 'exit-focus' | 'cancel-input' }
   | { type: 'clear-selection' | 'duplicate-selection' | 'delete-selection' }
   | { type: 'save'; onComplete: (saved: boolean) => void };
 
 export function createEditorBridge() {
   const listeners = new Set<(command: EditorCommand) => void>();
   const selectionListeners = new Set<(id: string | undefined, order: SelectionOrder) => void>();
+  const focusListeners = new Set<(id: string | undefined) => void>();
   const toolListeners = new Set<(tool: EditorTool) => void>();
   return {
+    focusChanged(id?: string) { for (const listener of focusListeners) listener(id); },
+    onFocus(listener: (id: string | undefined) => void) {
+      focusListeners.add(listener);
+      return () => { focusListeners.delete(listener); };
+    },
     toolChanged(tool: EditorTool) { for (const listener of toolListeners) listener(tool); },
     onTool(listener: (tool: EditorTool) => void) {
       toolListeners.add(listener);

@@ -19,7 +19,6 @@ export class VectorViewport {
     gameCanvas.parentElement?.prepend(this.canvas);
   }
   render(artwork: Artwork, dirty = false) {
-    if (!artwork.usesCompositeRenderer) { this.canvas.style.display = 'none'; this.geometry = ''; return; }
     const page = this.gameCanvas.getBoundingClientRect();
     const viewport = this.gameCanvas.closest('.art-canvas')?.getBoundingClientRect() ?? page;
     const left = Math.max(page.left, viewport.left), top = Math.max(page.top, viewport.top);

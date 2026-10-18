@@ -1,0 +1,60 @@
+import { useEffect, useRef } from 'react';
+import { Monitor, Sun, Moon, X } from 'lucide-react';
+import { closeOnBackdrop } from './dialog';
+import { startAppMouse, stopAppMouse, useAppMouseStatus } from './appMouse';
+import type { AppSettings } from './settings';
+import type { ThemePreference } from './theme';
+
+export function SelectionSettings({ open, onClose, theme, onThemeChange, settings, onSettingsChange }: {
+  open: boolean; onClose: () => void; theme: ThemePreference;
+  onThemeChange: (theme: ThemePreference) => void;
+  settings: AppSettings; onSettingsChange: (settings: AppSettings) => void;
+}) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const mouse = useAppMouseStatus();
+  useEffect(() => {
+    const modal = dialog.current;
+    if (open && !modal?.open) modal?.showModal();
+    if (!open) modal?.close();
+    return () => modal?.close();
+  }, [open]);
+  return <dialog className="setup-dialog settings-dialog" ref={dialog} aria-labelledby="settings-title" onCancel={onClose} onClick={event => closeOnBackdrop(event, onClose)} onAuxClick={event => { if (event.button === 2) closeOnBackdrop(event, onClose); }}>
+    <div className="wizard">
+      <header className="wizard-header"><h2 id="settings-title">Settings</h2><button className="icon-button" aria-label="Close settings" onClick={onClose}><X aria-hidden="true" /></button></header>
+      <div className="settings-options">
+        <div className="settings-theme-options" role="group" aria-label="Theme">
+          {(['system', 'light', 'dark'] as const).map(value => <button key={value} className="format-button" aria-pressed={theme === value} onClick={() => onThemeChange(value)}>
+            {value === 'system' ? <Monitor aria-hidden="true" /> : value === 'light' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}<span>{value === 'system' ? 'System' : value === 'light' ? 'Light' : 'Dark'}</span>
+          </button>)}
+        </div>
+        <section className="mouse-setting" aria-labelledby="mouse-speed-label">
+          <label className="mouse-speed-label" htmlFor="mouse-speed"><span id="mouse-speed-label">Mouse speed</span><output htmlFor="mouse-speed">{settings.mouseSpeed}%</output></label>
+          <input id="mouse-speed" type="range" min="10" max="100" step="5" value={settings.mouseSpeed} aria-describedby="mouse-speed-help" aria-valuetext={`${settings.mouseSpeed} percent of normal speed`} onChange={event => onSettingsChange({ ...settings, mouseSpeed: Number(event.target.value) })} />
+          <div className="mouse-speed-scale" aria-hidden="true"><span>Slower</span><span>Normal</span></div>
+          <p id="mouse-speed-help">Use a slower mouse throughout the app. Space toggles mouse control. Escape returns to your normal mouse.</p>
+          <button className="mouse-speed-action" disabled={mouse === 'unsupported' || mouse === 'starting'} onClick={mouse === 'active' ? stopAppMouse : startAppMouse}>{mouse === 'active' ? 'Use normal mouse' : mouse === 'starting' ? 'Starting...' : 'Use adjusted speed'}</button>
+          <span className="mouse-speed-status" role="status">{mouse === 'active' ? 'Adjusted mouse is on.' : mouse === 'error' ? 'Could not start mouse control. Click the button to try again.' : mouse === 'unsupported' ? 'Mouse speed control is not available in this browser.' : 'Your regular mouse stays unchanged until you start.'}</span>
+        </section>
+        <button className="advanced-controls-setting" role="switch" aria-checked={settings.advancedPainting} aria-labelledby="advanced-painting-label" aria-describedby="advanced-painting-description" onClick={() => onSettingsChange({ ...settings, advancedPainting: !settings.advancedPainting })}>
+          <span className="settings-description"><span id="advanced-painting-label">Advanced painting controls</span><small id="advanced-painting-description">Brush sizes, brush types, and fill patterns</small></span>
+          <span className="settings-switch" aria-hidden="true"><span /></span>
+        </button>
+        <details className="shortcut-help">
+          <summary>Shortcuts &amp; gestures</summary>
+          <dl>
+            <div><dt>Mouse control</dt><dd>Space toggles; Escape releases</dd></div>
+            <div><dt>Brush / Fill / Eraser</dt><dd>B / G / E</dd></div>
+            <div><dt>Select / Pan</dt><dd>V / H</dd></div>
+            <div><dt>Stickers / Colors</dt><dd>S / C</dd></div>
+            <div><dt>Undo / Save</dt><dd>Ctrl or Cmd + Z / S</dd></div>
+            <div><dt>Duplicate / Delete</dt><dd>Ctrl or Cmd + D / Delete</dd></div>
+            <div><dt>Zoom / Fit</dt><dd>+ and - / 0; Z cycles zoom</dd></div>
+            <div><dt>Focus / Done</dt><dd>F / Enter</dd></div>
+            <div><dt>Touch canvas</dt><dd>One finger draws; two fingers pan and pinch to zoom</dd></div>
+            <div><dt>Trackpad canvas</dt><dd>Two fingers pan; pinch to zoom</dd></div>
+          </dl>
+        </details>
+      </div>
+    </div>
+  </dialog>;
+}
