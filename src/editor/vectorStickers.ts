@@ -1,4 +1,3 @@
-import catalogSource from '../assets/vector/catalog.json?raw';
 import type { StickerKind } from './stickerKinds';
 type Command = {
     d: string;
@@ -37,19 +36,11 @@ export type VectorDefinition = {
     silhouette: Path2D;
     ink: InkCommand[];
 };
-const catalog = JSON.parse(catalogSource) as Record<StickerKind, {
-    width: number;
-    height: number;
-    horizon?: boolean;
-    horizonStart?: number;
-}>;
-const files = import.meta.glob<string>('../assets/vector/*.json', { query: '?raw', import: 'default' });
+const files = import.meta.glob<string>(['../assets/vector/*.json', '!../assets/vector/catalog.json'], { query: '?raw', import: 'default' });
 const sources = new Map<StickerKind, Source>();
 const definitions = new Map<StickerKind, VectorDefinition>();
 const pending = new Map<StickerKind, Promise<void>>();
 const maxCached = 24;
-export function isVectorSticker(kind: string): kind is StickerKind { return Object.hasOwn(catalog, kind); }
-export function vectorStickerSize(kind: StickerKind) { return catalog[kind]; }
 export async function prepareStickers(kinds: Iterable<StickerKind | 'canvas'>) {
     await Promise.all([...new Set(kinds)].filter((kind): kind is StickerKind => kind !== 'canvas').map(async (kind) => {
         if (definitions.has(kind))

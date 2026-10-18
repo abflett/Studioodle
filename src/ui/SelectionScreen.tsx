@@ -1,43 +1,23 @@
+import { coloringPages } from '../app/coloringPages';
 import { DeletePictureDialog } from './DeletePictureDialog';
 import { isDesktop, toggleDesktopFullscreen, watchDesktopFullscreen } from '../platform/desktop';
 import type { AppSettings } from './settings';
 import { SelectionSettings } from './SelectionSettings';
-import { fullPageScene } from '../editor/fullPageScene';
 import { ColorPicker } from './ColorPicker';
 import { paperPresets, presetSize } from '../editor/paperPresets';
 import type { PaperPresetId } from '../editor/paperPresets';
 import { contrastingDrawingColor } from '../editor/palette';
 import { closeOnBackdrop } from './dialog';
-import { gardenScene } from '../editor/gardenScene';
-import { countingScene } from '../editor/countingScene';
-import { springScene } from '../editor/springScene';
-import { beachScene } from '../editor/beachScene';
-import { winterScene } from '../editor/winterScene';
-import { safariScene } from '../editor/safariScene';
 import { createColoringPage } from '../editor/coloringPage';
-import { deleteColoringPage, loadColoringPages, saveColoringPage, deletePicture, loadPictures, savePicture } from '../editor/storage';
-import type { SavedPicture } from '../editor/storage';
-import { exportPicture, printPicture } from '../editor/pictureOutput';
+import { coloringPageRepository, pictureRepository } from '../app/pictures';
+import type { SavedPicture } from '../editor/savedPicture';
+import { exportPicture, printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Monitor, Moon, Sun, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, BookPlus } from 'lucide-react';
 import { pictureChoices } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
-
-// Ready-made scenes use the same hybrid definitions as the sticker picker.
-const samples: EditorSetup[] = [
-  winterScene,
-  beachScene,
-  springScene,
-  countingScene,
-  gardenScene,
-  safariScene,
-].map(fullPageScene);
-
-function PictureThumbnail({ picture }: { picture: EditorSetup }) {
-  return <SavedPreview picture={picture} />;
-}
 
 function Arrow({ direction }: { direction: 'left' | 'right' }) {
   return direction === 'left' ? <ArrowLeft aria-hidden="true" /> : <ArrowRight aria-hidden="true" />;
@@ -81,14 +61,14 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   const [background, setBackground] = useState('#f6f2e8');
   const [sampleIndex, setSampleIndex] = useState(0);
   const [library, setLibrary] = useState(() => {
-    try { return { pictures: loadPictures(), error: false }; }
+    try { return { pictures: pictureRepository.load(), error: false }; }
     catch { return { pictures: [], error: true }; }
   });
   const saved = library.pictures;
   const [customPages, setCustomPages] = useState(() => {
-    try { return loadColoringPages(); } catch { return []; }
+    try { return coloringPageRepository.load(); } catch { return []; }
   });
-  const scenes: EditorSetup[] = [...samples, ...customPages];
+  const scenes: EditorSetup[] = [...coloringPages, ...customPages];
   const [notice, setNotice] = useState<string>();
   useEffect(() => {
     if (!notice) return;
@@ -109,13 +89,13 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     setPendingDelete(undefined);
     try {
       if (deletingPage) {
-        deleteColoringPage(picture.id);
+        coloringPageRepository.delete(picture.id);
         setCustomPages(pages => pages.filter(item => item.id !== picture.id));
         setSceneIndex(index => Math.max(0, Math.min(index, scenes.length - 2)));
         setDeletingPage(false); setRemoved(undefined); setActionError(undefined); setNotice('Coloring page removed');
         return;
       }
-      deletePicture(picture.id);
+      pictureRepository.delete(picture.id);
       setRemoved(picture); setToastPaused(false); setActionError(undefined);
       setLibrary({ pictures: saved.filter((item) => item.id !== picture.id), error: false });
       setSampleIndex(Math.max(0, Math.min(sampleIndex, saved.length - 2)));
@@ -124,8 +104,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   const undoRemove = () => {
     if (!removed) return;
     try {
-      savePicture(removed);
-      const pictures = loadPictures();
+      pictureRepository.save(removed);
+      const pictures = pictureRepository.load();
       setLibrary({ pictures, error: false });
       setSampleIndex(Math.max(0, pictures.findIndex((item) => item.id === removed.id)));
       setRemoved(undefined); setActionError(undefined);
@@ -154,9 +134,9 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     try {
       const number = customPages.reduce((max, page) => Math.max(max, Number(/^Coloring page (\d+)$/i.exec(page.title)?.[1] ?? 0)), 0) + 1;
       const page = createColoringPage(current, `Coloring Page ${number}`);
-      saveColoringPage(page);
+      coloringPageRepository.save(page);
       setCustomPages(pages => [page, ...pages]);
-      setSceneIndex(samples.length); setStep('scene');
+      setSceneIndex(coloringPages.length); setStep('scene');
       setRemoved(undefined); setActionError(undefined); setNotice('Added to coloring pages');
     } catch { setActionError('Could not save coloring page. Device storage may be full or unavailable.'); }
   };
@@ -184,7 +164,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
         }}>{fullscreen ? <Minimize aria-hidden="true" /> : <Fullscreen aria-hidden="true" />}</button>}
         </div>
         <div className="choice-grid">
-          {pictureChoices.filter((item) => item.id !== 'previous').map((item) => (
+          {pictureChoices.map((item) => (
             <button className={`choice-card choice-${item.id}`} key={item.id}
               onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
               <span className="choice-art"><img src={item.image} alt="" width="320" height="220" /></span>
@@ -199,7 +179,6 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             <button className="choice-card previous-picture" aria-label={current ? `Open saved picture: ${current.title}` : 'No saved pictures yet'} disabled={!current} onClick={() => { if (current) onOpen(current); }}><span className="choice-art"><>{current ? <SavedPreview picture={current} /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}</></span><span className="choice-label">Your pictures</span></button>
             <button className="icon-button" aria-label="Next saved picture" disabled={saved.length < 2} onClick={() => setSampleIndex((value) => (value + 1) % saved.length)}><Arrow direction="right" /></button>
           </div>
-
 
           <p className="sr-only" role="status">{saved.length ? `Saved picture ${sampleIndex + 1} of ${saved.length}` : 'No saved pictures yet'}</p>
         </section>
@@ -225,7 +204,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             {step === 'paper' && <ColorPicker label="Canvas background colors" color={parseInt(background.slice(1), 16)} onChoose={(value) => setBackground(`#${value.toString(16).padStart(6, '0')}`)} />}
             {step === 'scene' && <div className="scene-picker">
               <button className="icon-button" aria-label="Previous coloring page" onClick={() => setSceneIndex((value) => (value + scenes.length - 1) % scenes.length)}><Arrow direction="left" /></button>
-              <figure><PictureThumbnail picture={scene} /><figcaption aria-live="polite">{scene.title}</figcaption></figure>
+              <figure><SavedPreview picture={scene} /><figcaption aria-live="polite">{scene.title}</figcaption></figure>
               <button className="icon-button" aria-label="Next coloring page" onClick={() => setSceneIndex((value) => (value + 1) % scenes.length)}><Arrow direction="right" /></button>
             </div>}
           </div>
@@ -261,11 +240,3 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     </main>
   );
 }
-
-
-
-
-
-
-
-

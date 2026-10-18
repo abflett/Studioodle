@@ -1,10 +1,11 @@
+import type { EditorSessionPorts } from '../editor/EditorSession';
 import { paperSize } from '../editor/document';
 import { Game, WEBGL } from 'phaser';
 import type { EditorBridge } from '../editor/bridge';
 import type { EditorSetup } from '../editor/setup';
 import { StudioScene } from './scenes/StudioScene';
 
-export function startGame(parent: HTMLElement, bridge: EditorBridge, setup: EditorSetup, zoom = 1) {
+export function startGame(parent: HTMLElement, bridge: EditorBridge, setup: EditorSetup, zoom: number, save: EditorSessionPorts['save']) {
   return new Game({
     type: WEBGL,
     parent,
@@ -13,9 +14,6 @@ export function startGame(parent: HTMLElement, bridge: EditorBridge, setup: Edit
     antialias: true,
     ...paperSize(setup.format, setup.size),
     scale: { zoom },
-    scene: [new StudioScene(bridge, setup)],
+    scene: [new StudioScene(bridge, setup, save)],
   });
 }
-
-
-

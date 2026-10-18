@@ -141,4 +141,3 @@ export function usePaperView(paper: { width: number; height: number }, requested
     onLostPointerCapture: end,
   } };
 }
-

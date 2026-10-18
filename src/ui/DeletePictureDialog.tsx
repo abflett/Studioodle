@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Trash2, X } from 'lucide-react';
-import type { SavedPicture } from '../editor/storage';
+import type { SavedPicture } from '../editor/savedPicture';
 import { SavedPreview } from './SavedPreview';
 import { closeOnBackdrop } from './dialog';
 

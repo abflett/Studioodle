@@ -21,4 +21,3 @@ export const springScene: EditorSetup = {
     ],
   },
 };
-

@@ -1,3 +1,4 @@
+import { pictureRepository } from './app/pictures';
 import { paperSize } from './editor/document';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { startGame } from './game/main';
@@ -8,8 +9,8 @@ export function PhaserGame({ bridge, setup, zoom = 1, offsetX = 0, offsetY = 0, 
   const parent = useRef<HTMLDivElement>(null);
   const activeGame = useRef<ReturnType<typeof startGame> | null>(null);
   const latestZoom = useRef(zoom);
-  latestZoom.current = zoom;
   useLayoutEffect(() => {
+    latestZoom.current = zoom;
     const scale = activeGame.current?.scale;
     if (!scale) return;
     if (scale.zoom !== zoom) scale.setZoom(zoom);
@@ -32,7 +33,7 @@ export function PhaserGame({ bridge, setup, zoom = 1, offsetX = 0, offsetY = 0, 
           subscriptions.add(unsubscribe);
           return () => { unsubscribe(); subscriptions.delete(unsubscribe); };
         },
-      }, setup, latestZoom.current);
+      }, setup, latestZoom.current, picture => pictureRepository.save(picture));
       activeGame.current = game;
     });
     return () => {

@@ -1,4 +1,4 @@
-import type { SavedPicture } from './storage';
+import type { SavedPicture } from './savedPicture';
 
 /** Copy only sticker geometry and line art; paint and paper colors never carry over. */
 export function createColoringPage(source: SavedPicture, title: string): SavedPicture {

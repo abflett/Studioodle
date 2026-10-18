@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { prepareStickers } from '../editor/vectorStickers';
 import { RotateCcw, Play } from 'lucide-react';
-import { prepareStudio } from '../app/startup';
+import { startupTaskCount, prepareStudio } from '../app/startup';
 import type { EditorModule } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import { Brand } from './Brand';
@@ -25,7 +25,7 @@ export function App() {
   const [exited, setExited] = useState(false);
   const [opening, setOpening] = useState(false);
   const [openError, setOpenError] = useState(false);
-  const [startup, setStartup] = useState<StartupState>({ phase: 'loading', completed: 0, total: 4 });
+  const [startup, setStartup] = useState<StartupState>({ phase: 'loading', completed: 0, total: startupTaskCount });
   const [attempt, setAttempt] = useState(0);
   const [choice, setChoice] = useState<EditorSetup | null>(null);
   const [theme, setTheme] = useState(readTheme);
@@ -74,7 +74,7 @@ export function App() {
         <span className="sr-only" role="status">{failed ? 'Unable to load. Check your connection and try again.' : 'Getting your studio ready.'}</span>
         {!failed && <progress aria-label="Preparing Studioodle" max={startup.total} value={startup.completed} />}
         {failed && <button className="icon-button" aria-label="Try loading again" onClick={() => {
-          setStartup({ phase: 'loading', completed: 0, total: 4 });
+          setStartup({ phase: 'loading', completed: 0, total: startupTaskCount });
           setAttempt((value) => value + 1);
         }}><RotateCcw aria-hidden="true" /></button>}
       </main>

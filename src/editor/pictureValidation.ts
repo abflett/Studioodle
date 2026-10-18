@@ -1,40 +1,17 @@
-import { formatPictureTitle } from './pictureTitles';
-import { isVectorSticker, vectorStickerSize } from './vectorStickers';
+import { isVectorSticker, vectorStickerSize } from './vectorCatalog';
 import { paperSize, paintScale } from './document';
-import type { EditorSetup } from './setup';
+import type { SavedPicture } from './savedPicture';
 import type { ArtworkDocument } from './document';
-export type SavedPicture = EditorSetup & {
-    id: string;
-    version: 3;
-    updatedAt: number;
-    document: ArtworkDocument;
-};
-const prefix = 'studioodle.v3.picture.';
-const coloringPrefix = 'studioodle.v3.coloring.';
-export function deletePicture(id: string) { localStorage.removeItem(prefix + id); }
-export function savePicture(picture: SavedPicture) { localStorage.setItem(prefix + picture.id, JSON.stringify(picture)); }
-export function loadPictures(): SavedPicture[] { return loadStoredPictures(prefix); }
-export function loadColoringPages(): SavedPicture[] { return loadStoredPictures(coloringPrefix); }
-export function saveColoringPage(picture: SavedPicture) { localStorage.setItem(coloringPrefix + picture.id, JSON.stringify(picture)); }
-export function deleteColoringPage(id: string) { localStorage.removeItem(coloringPrefix + id); }
-function loadStoredPictures(prefix: string): SavedPicture[] {
-    const pictures: SavedPicture[] = [];
-    for (let index = 0; index < localStorage.length; index++) {
-        const key = localStorage.key(index);
-        if (!key?.startsWith(prefix))
-            continue;
-        try {
-            const picture = JSON.parse(localStorage.getItem(key) ?? 'null') as SavedPicture | null;
-            if (picture && picture.version === 3 && typeof picture.id === 'string' && key === prefix + picture.id &&
-                typeof picture.title === 'string' && typeof picture.background === 'string' && /^#[0-9a-f]{6}$/i.test(picture.background) &&
-                ['square', 'landscape', 'portrait'].includes(picture.format) && validSize(picture.size) && Number.isFinite(picture.leafColor) && Number.isFinite(picture.updatedAt) &&
-                isArtworkDocument(picture.document) && picture.document.width === paperSize(picture.format, picture.size).width && picture.document.height === paperSize(picture.format, picture.size).height)
-                pictures.push({ ...picture, title: formatPictureTitle(picture.title) });
-        }
-        catch { /* An unreadable picture must not hide the rest of the library. */ }
-    }
-    return pictures.sort((a, b) => b.updatedAt - a.updatedAt);
+
+export function isSavedPicture(value: unknown): value is SavedPicture {
+  if (!value || typeof value !== 'object') return false;
+  const picture = value as SavedPicture;
+  return picture.version === 3 && typeof picture.id === 'string' &&
+    typeof picture.title === 'string' && typeof picture.background === 'string' && /^#[0-9a-f]{6}$/i.test(picture.background) &&
+    ['square', 'landscape', 'portrait'].includes(picture.format) && validSize(picture.size) && Number.isFinite(picture.leafColor) && Number.isFinite(picture.updatedAt) &&
+    isArtworkDocument(picture.document) && picture.document.width === paperSize(picture.format, picture.size).width && picture.document.height === paperSize(picture.format, picture.size).height;
 }
+
 function validSize(value: unknown): value is {
     width: number;
     height: number;

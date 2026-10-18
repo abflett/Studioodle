@@ -25,7 +25,7 @@ One finger uses the current tool. Two fingers pan and pinch simultaneously, anch
 
 The canvas touch adapter owns native touch and compatibility input to avoid duplicate marks from Phaser. A second finger cancels precision fill or pan and rolls back an in-progress brush/eraser stroke or sticker drag, including its undo history entry. A new gesture requires lifting all fingers. Touch cancellation, resize, and window blur cancel active input. Pointer/pen and mouse input otherwise retain their existing routes.
 
-Implementation: `useEditorShortcuts.ts`, `useCanvasGestures.ts`, `usePaperView.ts`, `appMouse.ts`, and the scene's `cancel-input` transaction command. Source-reviewed only; interaction checks remain with the user, per the project workflow.
+Implementation: `useEditorShortcuts.ts`, `useCanvasGestures.ts`, `usePaperView.ts`, `appMouse.ts`, and the session's `cancel-input` transaction command. See [architecture](ARCHITECTURE.md) for automated checks and manual interaction coverage.
 
 ## Raster stroke smoothing
 

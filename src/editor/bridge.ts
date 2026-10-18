@@ -22,18 +22,34 @@ export function createEditorBridge() {
   const selectionListeners = new Set<(id: string | undefined, order: SelectionOrder) => void>();
   const focusListeners = new Set<(id: string | undefined) => void>();
   const toolListeners = new Set<(tool: EditorTool) => void>();
+  let previousFocus: string | undefined;
+  let previousTool: EditorTool | undefined;
+  let previousSelection: { id?: string; order: SelectionOrder } | undefined;
+  let focusPublished = false;
   return {
-    focusChanged(id?: string) { for (const listener of focusListeners) listener(id); },
+    focusChanged(id?: string) {
+      if (focusPublished && previousFocus === id) return;
+      focusPublished = true; previousFocus = id;
+      for (const listener of focusListeners) listener(id);
+    },
     onFocus(listener: (id: string | undefined) => void) {
       focusListeners.add(listener);
       return () => { focusListeners.delete(listener); };
     },
-    toolChanged(tool: EditorTool) { for (const listener of toolListeners) listener(tool); },
+    toolChanged(tool: EditorTool) {
+      if (previousTool === tool) return;
+      previousTool = tool;
+      for (const listener of toolListeners) listener(tool);
+    },
     onTool(listener: (tool: EditorTool) => void) {
       toolListeners.add(listener);
       return () => { toolListeners.delete(listener); };
     },
-    selectionChanged(id: string | undefined, order: SelectionOrder) { for (const listener of selectionListeners) listener(id, order); },
+    selectionChanged(id: string | undefined, order: SelectionOrder) {
+      if (previousSelection && previousSelection.id === id && previousSelection.order.forward === order.forward && previousSelection.order.backward === order.backward) return;
+      previousSelection = { id, order: { ...order } };
+      for (const listener of selectionListeners) listener(id, order);
+    },
     onSelection(listener: (id: string | undefined, order: SelectionOrder) => void) {
       selectionListeners.add(listener);
       return () => { selectionListeners.delete(listener); };
@@ -46,7 +62,3 @@ export function createEditorBridge() {
   };
 }
 export type EditorBridge = ReturnType<typeof createEditorBridge>;
-
-
-
-

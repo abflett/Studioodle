@@ -1,6 +1,9 @@
 # Hybrid sticker engine
 
-All 59 stickers use one engine. `art/stickers.json` is the source inventory;
+Start with [How stickers actually work](STICKER-PIPELINE.md) for the source-to-screen
+walkthrough, SVG/JSON responsibilities, loading behavior and measured data costs.
+
+All catalogued stickers use one engine. `art/stickers.json` is the source inventory;
 `scripts/build-stickers.mjs` generates definitions under `src/assets/vector/`.
 The old binary-outline renderer, procedural raster shapes, legacy operation imports,
 pilot-only definition and version-1/2 save readers have been removed.
@@ -33,8 +36,8 @@ boundary near the ink midpoint instead of applying fixed erosion to thin details
 It is traced with a 0.05-logical-pixel optimization tolerance. Standalone ink specks
 get no white backing. Hit coverage still includes the ink for selection.
 `art/conversion-report.json` records region counts and tiny-region review flags.
-View authoring sheets at `work/hybrid/sheet-1.png` through `sheet-5.png`.
-Run `node scripts/preview-scenes.mjs` for offline compositions of the five starter
+View generated authoring sheets under `work/hybrid/`.
+Run `node scripts/preview-scenes.mjs` for offline compositions of the built-in coloring
 pages under `work/hybrid/scenes/`.
 
 ## Runtime
@@ -80,16 +83,17 @@ migration. Earlier keys are not automatically deleted from the browser. Definiti
 and logical dimensions are regenerated from the manifest; any future incompatible
 change needs an explicit document-version decision.
 
-All five starter scenes and every picker item use the new definitions. Simple tree,
-simple flower and both additional apple variants are now also exposed in the picker.
+Built-in scenes and every picker item use these definitions. The generated
+[asset catalog](../art/CATALOG.md) is the current inventory; `art/conversion-report.json`
+records conversion statistics. Add specific artwork issues alongside the affected
+manifest/source rather than maintaining a second conversion checklist.
 
-## Review status
+## Review
 
-All generated sticker sheets and offline starter-scene compositions were visually inspected, including a correction for
-neighboring ink in the garden BMP crops. Tiny regions are retained for art fidelity;
-touch-target assistance is not included. App tests/builds remain deferred to the user
-as requested. Review scene fills, outlines at zoom, transforms, undo, save/reopen,
-PNG output and printing; record per-asset issues in STICKER-CONVERSIONS.md.
+Inspect generated contact sheets and scene compositions after artwork changes.
+Review fills, outlines at zoom, transforms, undo, save/reopen, PNG output and printing
+in the app. Offline mask checks do not establish interaction correctness. Tiny regions
+are retained for fidelity unless a specific artwork correction is requested.
 
 ## Sticker focus
 

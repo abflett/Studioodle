@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useLatest } from './useLatest';
+import { useEffect } from 'react';
 import type { RefObject } from 'react';
 import { appMousePointerId } from './appMouse';
 
@@ -15,8 +16,7 @@ type Options = {
 
 /** Own touch input before Phaser: one finger draws, two manipulate the view. */
 export function useCanvasGestures(options: Options) {
-  const latest = useRef(options);
-  latest.current = options;
+  const latest = useLatest(options);
   useEffect(() => {
     const element = options.viewport.current;
     if (!element) return;
@@ -118,5 +118,5 @@ export function useCanvasGestures(options: Options) {
       window.removeEventListener('blur', cancel);
       window.removeEventListener('resize', cancel);
     };
-  }, [options.viewport]);
+  }, [options.viewport, latest]);
 }

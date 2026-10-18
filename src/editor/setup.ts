@@ -18,5 +18,3 @@ export function initialDrawingSettings(setup: EditorSetup) {
     color: blank ? contrastingDrawingColor(setup.background) : setup.leafColor,
   };
 }
-
-

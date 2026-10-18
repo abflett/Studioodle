@@ -5,7 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default tseslint.config(
-  { ignores: ['dist/**', 'node_modules/**'] },
+  { ignores: ['dist/**', 'node_modules/**', 'work/**', 'release/**', 'src-tauri/target/**', 'src-tauri/gen/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -18,7 +18,22 @@ export default tseslint.config(
     },
   },
   {
-    files: ['*.mjs', 'vite/**/*.ts'],
+    files: ['src/editor/**/*.ts'],
+    rules: {
+      'no-restricted-imports': ['error', { patterns: [
+        'react', 'react/*', 'phaser', '@tauri-apps/*',
+        '../app/*', '../ui/*', '../game/*', '../platform/*',
+      ] }],
+    },
+  },
+  {
+    files: ['src/game/**/*.ts'],
+    rules: {
+      'no-restricted-imports': ['error', { patterns: ['../app/*', '../../app/*', '../ui/*', '../../ui/*', '../platform/*', '../../platform/*'] }],
+    },
+  },
+  {
+    files: ['*.mjs', 'scripts/**/*.mjs', 'tests/**/*.mjs', 'vite/**/*.ts'],
     languageOptions: { globals: globals.node },
   },
 );

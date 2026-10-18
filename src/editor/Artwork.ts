@@ -1,4 +1,5 @@
-import { bitAt, vectorDefinition, vectorStickerSize, drawVectorInk } from './vectorStickers';
+import { vectorStickerSize } from './vectorCatalog';
+import { bitAt, vectorDefinition, drawVectorInk } from './vectorStickers';
 import type { VectorDefinition } from './vectorStickers';
 import { defaultBrush, defaultFill, patternPixel } from './toolOptions';
 import type { BrushOptions, FillOptions } from './toolOptions';

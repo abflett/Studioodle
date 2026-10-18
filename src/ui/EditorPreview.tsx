@@ -1,3 +1,4 @@
+import { PrecisionFillFeedback } from './PrecisionFillFeedback';
 import { useToolCursorStyle } from './toolCursors';
 import { guardDesktopClose, isDesktop } from '../platform/desktop';
 import { usePrecisionFill } from './usePrecisionFill';
@@ -24,8 +25,7 @@ import { initialDrawingSettings } from '../editor/setup';
 import { prepareStickers } from '../editor/vectorStickers';
 
 type Picker = 'stickers' | 'colors' | 'brush' | 'fill';
-export default function EditorPreview({ setup: initialSetup, onBack, settings }: { setup: EditorSetup; onBack: () => void; settings: AppSettings }) {
-  const setup = initialSetup;
+export default function EditorPreview({ setup, onBack, settings }: { setup: EditorSetup; onBack: () => void; settings: AppSettings }) {
   const [bridge] = useState(createEditorBridge);
   const [color, setColor] = useState(() => initialDrawingSettings(setup).color);
   const [tool, setTool] = useState<EditorTool>(() => initialDrawingSettings(setup).tool);
@@ -65,7 +65,7 @@ export default function EditorPreview({ setup: initialSetup, onBack, settings }:
   useEffect(() => { if (picker) pickerTitle.current?.focus({ preventScroll: true }); }, [picker, categoryId]);
   const [requestedZoom, setZoom] = useState<number | null>(null);
   const { viewport, position, focus, captureView, restoreView, pointAt, zoomAt, transformView, fitPage, zoom, handlers } = usePaperView(paperSize(setup.format, setup.size), requestedZoom, tool === 'pan');
-  const focusZoom = useRef(1);
+  const [focusZoom, setFocusZoom] = useState(1);
   const beforeFocus = useRef<{ zoom: number | null; view: ReturnType<typeof captureView> } | undefined>(undefined);
   const finishSelection = () => {
     if (focused) {
@@ -85,16 +85,16 @@ export default function EditorPreview({ setup: initialSetup, onBack, settings }:
     fill: client => { const point = pointAt(client); if (point) bridge.send({ type: 'fill-at', point }); },
     magnify: client => {
       const previous = { view: captureView(), zoom: requestedZoom };
-      setZoom(zoomAt(client, (focused ? focusZoom.current : 1) * 8));
+      setZoom(zoomAt(client, (focused ? focusZoom : 1) * 8));
       return () => { restoreView(previous.view); setZoom(previous.zoom); };
     },
   });
   const cycleZoom = () => {
-    const baseline = focused ? focusZoom.current : 1;
+    const baseline = focused ? focusZoom : 1;
     const next = [1, 1.5, 2, 3, 4, 8].map(level => level * baseline).find(level => level > (requestedZoom ?? baseline) + .001) ?? baseline;
     setZoom(!focused && next === 1 ? null : next);
   };
-  const touchGestures = { viewport, captureView, transformView, baseline: focused ? focusZoom.current : 1,
+  const touchGestures = { viewport, captureView, transformView, baseline: focused ? focusZoom : 1,
     setZoom: (value: number) => setZoom(value), cancelInput: () => bridge.send({ type: 'cancel-input' }) };
   useCanvasGestures(touchGestures);
   const selectBrush = () => { chooseTool('brush'); if (settings.advancedPainting) setPicker('brush'); else { setBrushOptions(defaultBrush); bridge.send({ type: 'set-brush', options: defaultBrush }); } };
@@ -105,12 +105,12 @@ export default function EditorPreview({ setup: initialSetup, onBack, settings }:
     const view = captureView(), box = viewport.current?.getBoundingClientRect();
     if (!view || !box) return;
     const center = { x: box.left + box.width / 2, y: box.top + box.height / 2 };
-    setZoom(transformView(view, center, center, factor, focused ? focusZoom.current : 1));
+    setZoom(transformView(view, center, center, factor, focused ? focusZoom : 1));
   };
   const focusSelection = () => {
     if (!selected) return;
     if (!focused) beforeFocus.current = { zoom: requestedZoom, view: captureView() };
-    bridge.send({ type: 'focus-selection', onFocus: bounds => { const fitted = focus(bounds, (selectionDrawer.current?.getBoundingClientRect().height ?? 100) + 20); focusZoom.current = fitted; setZoom(fitted); } });
+    bridge.send({ type: 'focus-selection', onFocus: bounds => { const fitted = focus(bounds, (selectionDrawer.current?.getBoundingClientRect().height ?? 100) + 20); setFocusZoom(fitted); setZoom(fitted); } });
   };
   const resetZoom = () => { if (focused) focusSelection(); else { fitPage(); setZoom(null); } };
   useEditorShortcuts({
@@ -192,8 +192,7 @@ export default function EditorPreview({ setup: initialSetup, onBack, settings }:
       if (event.pointerType === 'touch' && event.nativeEvent.isTrusted) return;
       if (!focused && tool === 'select' && event.target === event.currentTarget) bridge.send({ type: 'clear-selection' });
     }}>
-      {precisionFill.aim && <span key={precisionFill.aim.sequence} className={`precision-fill-aim ${precisionFill.magnified ? 'is-magnified' : 'is-holding'}`} aria-hidden="true" style={{ left: precisionFill.aim.x, top: precisionFill.aim.y }}><span className="precision-fill-cross"><i className="aim-top" /><i className="aim-right" /><i className="aim-bottom" /><i className="aim-left" /></span></span>}
-      {precisionFill.releasedAim && <span className="precision-fill-aim is-released" aria-hidden="true" style={{ left: precisionFill.releasedAim.x, top: precisionFill.releasedAim.y }}><span className="precision-fill-cross">{(['top', 'right', 'bottom', 'left'] as const).map(direction => <i key={direction} className={`aim-${direction}`} style={{ animationDelay: `-${precisionFill.releasedAim!.elapsed}ms` }} />)}</span></span>}
+      <PrecisionFillFeedback aim={precisionFill.aim} magnified={precisionFill.magnified} releasedAim={precisionFill.releasedAim} />
       <div className="canvas-envelope" style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
         <PhaserGame focused={!!focused} bridge={bridge} setup={setup} zoom={zoom} offsetX={position.x} offsetY={position.y} />
       </div>
@@ -220,19 +219,3 @@ export default function EditorPreview({ setup: initialSetup, onBack, settings }:
     </dialog>
   </main>;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

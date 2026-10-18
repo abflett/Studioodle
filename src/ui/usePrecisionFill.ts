@@ -1,3 +1,4 @@
+import { useLatest } from './useLatest';
 import { appMousePointerId } from './appMouse';
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
@@ -12,8 +13,7 @@ type Options = {
 
 /** Own the bucket gesture above Phaser so coordinates follow the zoomed view. */
 export function usePrecisionFill(options: Options) {
-  const latest = useRef(options);
-  latest.current = options;
+  const latest = useLatest(options);
   const active = useRef<Gesture | undefined>(undefined);
   const sequence = useRef(0);
   const [aim, setAim] = useState<Point & { sequence: number }>();
@@ -41,8 +41,7 @@ export function usePrecisionFill(options: Options) {
       }
     } finally { gesture.restore?.(); }
   };
-  const finishRef = useRef(finish);
-  finishRef.current = finish;
+  const finishRef = useLatest(finish);
   useEffect(() => {
     const cancel = () => finishRef.current(false);
     const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') cancel(); };
@@ -57,8 +56,8 @@ export function usePrecisionFill(options: Options) {
       window.clearTimeout(releaseTimer.current);
       active.current = undefined;
     };
-  }, []);
-  useEffect(() => { if (!options.enabled) finishRef.current(false); }, [options.enabled]);
+  }, [finishRef]);
+  useEffect(() => { if (!options.enabled) finishRef.current(false); }, [options.enabled, finishRef]);
   const showAim = (gesture: Gesture) => {
     const box = gesture.element.getBoundingClientRect();
     setAim({ x: gesture.client.x - box.left, y: gesture.client.y - box.top, sequence: gesture.sequence });

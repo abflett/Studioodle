@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useLatest } from './useLatest';
+import { useEffect } from 'react';
 
 export function useEditorShortcuts(actions: Record<string, () => void>) {
-  const latest = useRef(actions);
-  latest.current = actions;
+  const latest = useLatest(actions);
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if (event.defaultPrevented || event.isComposing || event.altKey || document.querySelector('dialog[open]')) return;
@@ -18,5 +18,5 @@ export function useEditorShortcuts(actions: Record<string, () => void>) {
     };
     window.addEventListener('keydown', keydown);
     return () => window.removeEventListener('keydown', keydown);
-  }, []);
+  }, [latest]);
 }

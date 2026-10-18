@@ -18,8 +18,8 @@ sheets in ignored `work/hybrid/`.
 
 Original illustration PNGs are source material, not runtime paint layers. Old binary
 masks, pixel-row SVGs, rejected reindeer source, comparison traces and pilot assets
-were removed after migration. See `docs/HYBRID-ENGINE.md` for the current pipeline and
-`docs/STICKER-CONVERSIONS.md` for inventory/review status.
+were removed after migration. See [engine notes](../docs/HYBRID-ENGINE.md) for the current pipeline and the
+[asset catalog](CATALOG.md) for the current inventory.
 
 Horizon sources use un-stroked closed white silhouettes plus separate visible horizon paths. The manifest `horizon` flag adds closed boundaries only to offline region analysis; these boundaries never enter runtime ink or previews. Keep the extended lower silhouette when editing these sources.
 
