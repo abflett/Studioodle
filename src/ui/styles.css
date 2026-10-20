@@ -461,14 +461,14 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 }
 
 /* A compact selection drawer emerges from beneath the main ribbon. */
-.ribbon-shell { position: relative; flex-shrink: 0; z-index: 3; background: var(--panel); box-shadow: 0 3px 18px var(--shadow); }
-.ribbon-shell .main-ribbon { position: relative; z-index: 2; background: var(--panel); box-shadow: none; }
+.ribbon-shell { position: relative; flex-shrink: 0; z-index: 3; background: transparent; box-shadow: 0 3px 18px var(--shadow); }
+.ribbon-shell .main-ribbon { position: relative; z-index: 2; background: var(--ribbon-glaze); box-shadow: none; }
 .ribbon-shell .sticker-ribbon {
   top: calc(100% - 8px); left: 50%; transform: translateX(-50%);
   width: max-content; max-width: calc(100% - 20px); margin: 0;
   padding: 14px 8px 8px;
   border-radius: 0 0 22px 22px;
-  background: linear-gradient(var(--ribbon-well), var(--ribbon-well)), var(--panel);
+  background: linear-gradient(var(--ribbon-well), var(--ribbon-well)), var(--ribbon-glaze);
   box-shadow: 0 7px 14px var(--shadow);
   z-index: 1;
   animation: sticker-drawer-enter 200ms ease-out;
@@ -759,14 +759,16 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .selection-screen .selection { --picture-height: min(184px, 32vw, 25dvh); --label-gap: 20px; gap: clamp(18px, 3.5dvh, 32px); }
 }
 /* Shared painted artwork for selection, splash, and ribbon surfaces. */
-:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b493019, #5b493019); }
-:root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --canvas-tint: linear-gradient(#06111f38, #06111f38); }
+:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b493019, #5b493019); --ribbon-glaze: linear-gradient(#fff8e82e, #fff8e82e); }
+:root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --canvas-tint: linear-gradient(#06111f38, #06111f38); --ribbon-glaze: linear-gradient(#10233230, #10233230); }
 .selection-screen, .splash { position: relative; isolation: isolate; overflow: hidden; }
 :is(.selection-screen, .splash)::before, :is(.selection-screen, .splash)::after { content: ''; position: absolute; pointer-events: none; }
 :is(.selection-screen, .splash)::before { inset: 0; z-index: -2; background-image: var(--scene-art); background-size: cover; background-position: center; }
 :is(.selection-screen, .splash)::after { inset: 0; z-index: -1; background: var(--scene-tint); }
 .art-studio { background-image: var(--scene-tint), var(--scene-art); background-size: cover; background-position: center; background-repeat: no-repeat; }
 .art-studio .art-canvas:not(.focus-mode) { background: var(--canvas-tint); }
+/* The drawer overlaps the page, so reproduce the viewport-aligned artwork beneath it. */
+.art-studio .sticker-ribbon { background-image: linear-gradient(var(--ribbon-well), var(--ribbon-well)), var(--ribbon-glaze), var(--scene-tint), var(--scene-art); background-size: cover; background-position: center; background-attachment: fixed; }
 .saved-picture-card .choice-art { padding: 0; }
 
 /* Fixed preview stage with browsing controls outside the hover card. */
