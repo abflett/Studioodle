@@ -1,12 +1,14 @@
 // Unified offline vector/region authoring pipeline. No app tests or builds.
 import fs from 'node:fs';
 import { regionSvg } from './svg-regions.mjs';
+import { stickerInspection } from './sticker-inspection.mjs';
 import { execFileSync } from 'node:child_process';
+const inspectionDirectory=process.argv.find(arg=>arg.startsWith('--inspect='))?.slice('--inspect='.length);
 const assets = JSON.parse(fs.readFileSync('art/stickers.json','utf8'));
 const out='src/assets/vector', work='work/hybrid';
 fs.mkdirSync(out,{recursive:true}); fs.mkdirSync(work,{recursive:true});
 fs.mkdirSync('art/source/shapes',{recursive:true});
-const shape = (name, body) => fs.writeFileSync(`art/source/shapes/${name}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="280"><g fill="white" stroke="black" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">${body}</g></svg>`);
+const shape = (name, body) => !inspectionDirectory && fs.writeFileSync(`art/source/shapes/${name}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="280"><g fill="white" stroke="black" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">${body}</g></svg>`);
 shape('circle','<circle cx="110" cy="140" r="80"/>');
 shape('square','<rect x="30" y="60" width="160" height="160"/>');
 shape('triangle','<path d="M110 55L25 215H195Z"/>');
@@ -29,6 +31,7 @@ function svgCommands(svg) {
 }
 const pending=process.argv.includes('--pending');
 const target=process.argv.slice(2).find(arg=>!arg.startsWith('--'));
+if(inspectionDirectory && (!target || pending))throw new Error('Inspection requires one asset ID and cannot use --pending');
 const report=(pending || target) && fs.existsSync('art/conversion-report.json') ? JSON.parse(fs.readFileSync('art/conversion-report.json','utf8')).filter(item=>item.id!==target) : [];
 for(const asset of assets) {
   const {id,width,height}=asset;
@@ -36,6 +39,8 @@ for(const asset of assets) {
   if(target && id!==target) continue;
   if(pending && report.some(item=>item.id===id) && fs.existsSync(`${out}/${id}.svg`)) continue;
   const base=`${work}/${id}`, source=asset.source;
+  if(inspectionDirectory && asset.mode==='svg')throw new Error('Stage inspection currently supports raster sources only');
+  const inspection=inspectionDirectory?stickerInspection(inspectionDirectory,asset):undefined;
   let commands,matrix,inkSvg;
   if(asset.mode==='svg') {
     const original=fs.readFileSync(source,'utf8'), parsed=svgCommands(original);
@@ -56,13 +61,16 @@ for(const asset of assets) {
       for(let i=0;i<gray.length;i++)if(outside[i])gray[i]=255;
       fs.writeFileSync(`${base}-clean.gray`,gray);run('-size',`${sw}x${sh}`,'-depth','8',`${base}-clean.gray`,`${base}-gray.png`);
     }
+    inspection?.source(`${base}-gray.png`);
     const histogram=new Uint32Array(Math.ceil(Math.min(sw,sh)*.04)+1);
     const record=n=>{if(n>=3&&n<histogram.length)histogram[n]++;};
     for(let y=0;y<sh;y++){let n=0;for(let x=0;x<=sw;x++){if(x<sw&&gray[y*sw+x]<128)n++;else{record(n);n=0;}}}
     for(let x=0;x<sw;x++){let n=0;for(let y=0;y<=sh;y++){if(y<sh&&gray[y*sw+x]<128)n++;else{record(n);n=0;}}}
     let stroke=3;for(let n=4;n<histogram.length;n++)if(histogram[n]>histogram[stroke])stroke=n;
     run(`${base}-gray.png`,'-blur',`0x${stroke*.04}`,'-threshold','50%',`${base}.pbm`);
+    inspection?.bitmap(`${base}-gray.png`,`${base}.pbm`,stroke);
     trace(`${base}.pbm`,`${base}-ink.svg`,1.2,.5*stroke/12,Math.max(2,Math.round(8*(stroke/12)**2)));
+    inspection?.ink(`${base}-ink.svg`);
     commands=paths(fs.readFileSync(`${base}-ink.svg`,'utf8')).map(d=>({d,fill:'ink',stroke:false,width:0}));
     matrix=[.1*width/sw,0,0,-.1*height/sh,0,height];
     inkSvg=`<g fill="black" transform="matrix(${matrix.join(' ')})">${commands.map(c=>`<path d="${c.d}"/>`).join('')}</g>`;
@@ -78,6 +86,7 @@ for(const asset of assets) {
   const preview=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="white"/>${inkSvg}${barriers}</svg>`;
   fs.writeFileSync(`${base}-render.svg`,preview);
   const gray=run('-background','white',`${base}-render.svg`,...(asset.analysisGapClosure?['-morphology','Open',`Disk:${asset.analysisGapClosure*scale}`]:[]),'-alpha','remove','-colorspace','Gray','-depth','8','gray:-');
+  inspection?.analysis(`${base}-render.svg`,gray,w,h,scale,lookupScale);
   if(gray.length!==count)throw new Error(`${id}: raster dimensions`);
   const labels=new Int32Array(count);labels.fill(-1);for(let i=0;i<count;i++)if(gray[i]<128)labels[i]=-2;
   const queue=new Int32Array(count),areas=[];
@@ -107,6 +116,7 @@ for(const asset of assets) {
     flood(index,0);
   }
   let regionCount=0;for(let i=0;i<count;i++)if(labels[i]===-1)areas.push(flood(i,++regionCount));
+  inspection?.discovered(labels,w,h,regionCount);
   // No regions is a real conversion failure, never silently emit an empty sticker.
   if(!regionCount)throw new Error(`${id}: no enclosed coloring regions`);
   let left=w,top=h,right=0,bottom=0;
@@ -115,7 +125,10 @@ for(const asset of assets) {
   // Extend categorical labels under the ink with nearest 4-connected regions.
   let head=0,tail=0;for(let i=0;i<count;i++){if(labels[i]<0)continue;const x=i%w;if((x&&labels[i-1]===-2)||(x+1<w&&labels[i+1]===-2)||(i>=w&&labels[i-w]===-2)||(i+w<count&&labels[i+w]===-2))queue[tail++]=i;}
   while(head<tail){const i=queue[head++],x=i%w;const visit=n=>{if(labels[n]===-2){labels[n]=labels[i];queue[tail++]=n;}};if(x)visit(i-1);if(x+1<w)visit(i+1);if(i>=w)visit(i-w);if(i+w<count)visit(i+w);}
-  fs.writeFileSync(`${out}/${id}.svg`,regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix,inkMask:gray}));
+  inspection?.extended(labels,w,h);
+  const svg=regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix,inkMask:gray});
+  if(inspection){inspection.finish(svg);console.log(`${id}: captured current pipeline in ${inspectionDirectory}`);continue;}
+  fs.writeFileSync(`${out}/${id}.svg`,svg);
   // Remove obsolete generated transport only after the replacement was written.
   if (fs.existsSync(`${out}/${id}.json`)) fs.unlinkSync(`${out}/${id}.json`);
   run('-background','white',`${out}/${id}.svg`,'-resize','180x170','-gravity','center','-extent','200x205','-font','Arial','-pointsize','12','-gravity','south','-annotate','+0+5',id,`${base}-preview.png`);
@@ -130,4 +143,4 @@ if(!target){
 }
 
 // Refresh the searchable authoring library and the UI display metadata.
-await import('./build-asset-catalog.mjs');
+if(!inspectionDirectory)await import('./build-asset-catalog.mjs');
