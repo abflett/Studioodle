@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
 
 /** Turn offline region labels into closed paths; no raster maps are shipped. */
-export function regionSvg({ width, height, bounds, regionCount, scale, labels, commands, matrix }) {
+export function regionSvg({ width, height, bounds, regionCount, scale, lookupScale = scale, labels, commands, matrix, inkMask }) {
   const w = width * scale, h = height * scale;
   const boxes = Array.from({ length: regionCount + 1 }, () => ({ left: w, top: h, right: 0, bottom: 0 }));
   for (let i = 0; i < labels.length; i++) {
@@ -12,16 +12,27 @@ export function regionSvg({ width, height, bounds, regionCount, scale, labels, c
   }
   const regionPaths = [];
   for (let id = 1; id <= regionCount; id++) {
-    const b = boxes[id];
+    const b = { ...boxes[id] };
+    // A subpixel overlap, confined to actual ink, hides independent trace-fit seams.
+    if (inkMask) { b.left = Math.max(0,b.left-1); b.top = Math.max(0,b.top-1); b.right = Math.min(w,b.right+1); b.bottom = Math.min(h,b.bottom+1); }
     if (b.right <= b.left) throw new Error(`Missing region ${id}`);
     // Add a white border, including regions that touch an asset edge.
     const x0 = b.left - 1, y0 = b.top - 1, sw = b.right - b.left + 2, sh = b.bottom - b.top + 2;
     const stride = Math.ceil(sw / 8), bitmap = Buffer.alloc(stride * sh);
-    for (let y = 1; y < sh - 1; y++) for (let x = 1; x < sw - 1; x++)
-      if (labels[(y0 + y) * w + x0 + x] === id) bitmap[y * stride + (x >> 3)] |= 1 << (7 - (x & 7));
+    for (let y = 1; y < sh - 1; y++) for (let x = 1; x < sw - 1; x++) {
+      const px=x0+x,py=y0+y,index=py*w+px;
+      let inside=labels[index]===id;
+      if (!inside && inkMask && inkMask[index]<128) {
+        for(let dy=-1;dy<=1&&!inside;dy++)for(let dx=-1;dx<=1;dx++) {
+          const nx=px+dx,ny=py+dy;
+          if(nx>=0&&ny>=0&&nx<w&&ny<h&&labels[ny*w+nx]===id){inside=true;break;}
+        }
+      }
+      if (inside) bitmap[y * stride + (x >> 3)] |= 1 << (7 - (x & 7));
+    }
     const pbm = Buffer.concat([Buffer.from(`P4\n${sw} ${sh}\n`), bitmap]);
     const svg = execFileSync(process.env.POTRACE_PATH ?? 'work/tools/potrace/potrace-1.16.win64/potrace.exe',
-      ['-', '-s', '-a', '1', '-O', String(.05 * scale), '-t', '0', '-o', '-'], { input: pbm, maxBuffer: 32e6 }).toString();
+      ['-', '-s', '-a', '1', '-O', String((inkMask ? .015 : .05) * scale), '-t', '0', '-o', '-'], { input: pbm, maxBuffer: 32e6 }).toString();
     const paths = [...svg.matchAll(/<path\s+d="([^"]+)"/g)].map(match => match[1]);
     if (!paths.length) throw new Error(`Empty traced region ${id}`);
     const transform = [.1 / scale, 0, 0, -.1 / scale, x0 / scale, (y0 + sh) / scale];
@@ -43,5 +54,5 @@ export function regionSvg({ width, height, bounds, regionCount, scale, labels, c
       if (commands[later].fill === 'base') ink = `<g clip-path="url(#clip-base-${later})">${ink}</g>`;
     return [ink];
   });
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" data-region-format="1" data-region-scale="${scale}" data-bounds="${[bounds.left, bounds.top, bounds.right, bounds.bottom].join(' ')}">${clips.length ? `<defs>${clips.join('')}</defs>` : ''}<g id="regions" fill="white" fill-rule="nonzero">${regionPaths.join('')}</g><g id="ink" stroke-linejoin="round" stroke-linecap="round">${inkPaths.join('')}</g></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" data-region-format="1" data-region-scale="${lookupScale}"${lookupScale !== scale ? ` data-analysis-scale="${scale}"` : ''} data-bounds="${[bounds.left, bounds.top, bounds.right, bounds.bottom].join(' ')}">${clips.length ? `<defs>${clips.join('')}</defs>` : ''}<g id="regions" fill="white" fill-rule="nonzero">${regionPaths.join('')}</g><g id="ink" stroke-linejoin="round" stroke-linecap="round">${inkPaths.join('')}</g></svg>`;
 }

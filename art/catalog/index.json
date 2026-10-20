@@ -2659,10 +2659,10 @@
       "width": 340,
       "height": 480,
       "bounds": {
-        "left": 3,
+        "left": 3.125,
         "top": 2.25,
-        "right": 337,
-        "bottom": 478
+        "right": 336.875,
+        "bottom": 477.875
       },
       "interior": false,
       "horizon": false,

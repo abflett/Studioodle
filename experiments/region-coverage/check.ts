@@ -1,0 +1,57 @@
+import { Artwork } from '../../src/editor/Artwork';
+import { decodeSvgDefinition } from '../../src/editor/svgDefinition';
+import { drawVectorInk } from '../../src/editor/vectorDefinition';
+import type { ArtworkDocument } from '../../src/editor/document';
+
+function assert(value: unknown, message: string): asserts value { if (!value) throw new Error(message); }
+const rectangle = 'M10 10H30V30H10Z';
+const fixture = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" data-bounds="8 8 43 43" data-region-format="1" data-region-scale="4"><g id="regions"><path id="region-1" data-bounds="10 10 30 30" d="${rectangle}"/></g><g id="ink"><path d="${rectangle}" fill="none" stroke="black" stroke-width="4"/><path d="M38 38H42V42H38Z" fill="black" stroke="none" stroke-width="0"/></g></svg>`;
+
+/** Browser-only regression: real Path2D, antialiasing, hit maps and bucket edits. */
+export async function checkRegionCoverage() {
+  const definition = decodeSvgDefinition(fixture);
+  assert(definition.regionAt(8.5, 20) === 0, 'Ink hit coverage must not enlarge paint regions');
+  assert(definition.contains(8.5, 20) && definition.hitRegionAt?.(8.5, 20) === 1, 'Outer stroke must resolve to its region');
+  assert(!definition.contains(5, 20), 'Hit coverage must not expand outside actual ink');
+  assert(definition.contains(40, 40) && definition.hitRegionAt?.(40, 40) === 0, 'Isolated ink must be owned without inventing a paint region');
+  const highestId = decodeSvgDefinition(fixture.replace('region-1', 'region-65535'));
+  assert(highestId.hitRegionAt?.(8.5, 20) === 65535, 'Ink marker must not overflow maximum region IDs');
+  const clipped = decodeSvgDefinition(fixture.replace('<g id="ink">', '<defs><clipPath id="left"><path d="M0 0H35V50H0Z"/></clipPath></defs><g id="ink" clip-path="url(#left)">'));
+  assert(!clipped.contains(40, 40), 'Invisible clipped ink must not receive hits');
+  const doc: ArtworkDocument = { version: 3, width: 200, height: 200, surfaces: [
+    { id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff, paint: [] },
+    { id: 'sticker', kind: 'circle', x: 100, y: 100, scale: 4, color: 0, paint: [] },
+  ] };
+  const art = Artwork.restore(doc, () => definition);
+  assert(art.fill({ x: 34, y: 80 }, 0x743dad), 'Bucket on outer line must color the sticker');
+  assert(!art.serialize().surfaces[0]!.paint.length && art.serialize().surfaces[1]!.paint.length, 'Line click must never fill the page');
+  assert(!art.fill({ x: 160, y: 160 }, 0xabcdef), 'Unfillable isolated ink must block click-through');
+  assert(!art.serialize().surfaces[0]!.paint.length, 'Isolated ink must not fill the page');
+  const transformed = structuredClone(doc);
+  Object.assign(transformed.surfaces[1]!, { rotation: 90, flipX: true });
+  const rotated = Artwork.restore(transformed, () => definition);
+  assert(rotated.fill({ x: 120, y: 166 }, 0x743dad), 'Rotated/flipped outlines must resolve in local coordinates');
+  assert(!rotated.serialize().surfaces[0]!.paint.length, 'Transformed line click must not fill the page');
+  const rows = [];
+  for (const id of ['fantasy-moon-sorceress', 'winter-reindeer', 'garden-house', 'garden-fence', 'dinosaur-striped-tyrannosaurus', 'horizons-forest-clearing']) {
+    const response = await fetch(`/src/assets/vector/${id}.svg`);
+    assert(response.ok, `Missing ${id}`);
+    const vector = decodeSvgDefinition(await response.text());
+    const scale = vector.mapSize!.scale;
+    const canvas = document.createElement('canvas');
+    canvas.width = vector.mapSize!.width; canvas.height = vector.mapSize!.height;
+    const context = canvas.getContext('2d', { willReadFrequently: true })!;
+    context.scale(scale, scale); drawVectorInk(context, vector, 'black');
+    const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+    let visibleInk = 0, missingHits = 0;
+    for (let y = 0; y < canvas.height; y++) for (let x = 0; x < canvas.width; x++) {
+      if (pixels[(y * canvas.width + x) * 4 + 3]! <= 128) continue;
+      visibleInk++;
+      if (!vector.contains((x + .5) / scale, (y + .5) / scale)) missingHits++;
+    }
+    assert(!missingHits, `${id}: ${missingHits} visible ink pixels click through`);
+    rows.push({ id, visibleInk, missingHits, lookupScale: scale, sharedBytes: vector.typedArrayBytes });
+    canvas.width = canvas.height = 1;
+  }
+  return { lineFill: true, isolatedInkBlocksPage: true, paintSilhouetteUnchanged: true, rows };
+}

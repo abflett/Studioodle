@@ -2152,14 +2152,6 @@
     "mode": "potrace-light"
   },
   {
-    "id": "fantasy-moon-sorceress",
-    "width": 340,
-    "height": 480,
-    "regionCount": 222,
-    "tinyRegions": 25,
-    "mode": "potrace-light"
-  },
-  {
     "id": "fantasy-armored-warrior",
     "width": 340,
     "height": 695,
@@ -2909,6 +2901,16 @@
     "height": 474,
     "regionCount": 67,
     "tinyRegions": 1,
+    "mode": "potrace-light"
+  },
+  {
+    "id": "fantasy-moon-sorceress",
+    "width": 340,
+    "height": 480,
+    "regionCount": 212,
+    "tinyRegions": 14,
+    "analysisScale": 8,
+    "lookupScale": 4,
     "mode": "potrace-light"
   }
 ]

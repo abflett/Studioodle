@@ -9,6 +9,7 @@ export type VectorDefinition = {
     bounds: { left: number; top: number; right: number; bottom: number };
     width: number;
     height: number;
+    hitRegionAt?: (x: number, y: number) => number;
     regionAt: (x: number, y: number) => number;
     inRegion: (x: number, y: number, id: number) => boolean;
     contains: (x: number, y: number) => boolean;
@@ -21,7 +22,7 @@ export type VectorDefinition = {
     ink: InkCommand[];
 };
 
-export function drawVectorInk(ctx: CanvasRenderingContext2D, definition: VectorDefinition, color: string, thumbnail = false) {
+export function drawVectorInk(ctx: CanvasRenderingContext2D, definition: Pick<VectorDefinition, 'ink'>, color: string, thumbnail = false) {
     ctx.fillStyle = ctx.strokeStyle = color;
     ctx.lineCap = ctx.lineJoin = 'round';
     const transform = ctx.getTransform();

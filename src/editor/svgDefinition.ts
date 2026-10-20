@@ -36,7 +36,7 @@ export function decodeSvgDefinition(text: string, options: { lookup?: 'paths' | 
   const inkGroup = root.querySelector('#ink');
   const ink: InkCommand[] = [...root.querySelectorAll('#ink path')].map(element => {
     const clips: Path2D[] = [];
-    for (let parent: Element | null = element; parent && parent !== inkGroup; parent = parent.parentElement) {
+    for (let parent: Element | null = element; parent && parent !== inkGroup?.parentElement; parent = parent.parentElement) {
       const clipId = /^url\(#([^)]*)\)$/.exec(parent.getAttribute('clip-path') ?? '')?.[1];
       if (!clipId) continue;
       let clip = clipPaths.get(clipId);
@@ -66,7 +66,7 @@ export function decodeSvgDefinition(text: string, options: { lookup?: 'paths' | 
     };
   } else {
     const scale = options.scale ?? (root.hasAttribute('data-region-scale') ? Number(root.getAttribute('data-region-scale')) : viewBox[2]! * viewBox[3]! <= 300000 ? 4 : 2);
-    lookup = rasterizeRegions(regions, viewBox[2]!, viewBox[3]!, scale);
+    lookup = rasterizeRegions(regions, viewBox[2]!, viewBox[3]!, scale, ink);
   }
   return {
     width: viewBox[2]!, height: viewBox[3]!, bounds: { left: bounds[0]!, top: bounds[1]!, right: bounds[2]!, bottom: bounds[3]! },

@@ -42,6 +42,7 @@ npm run lint        # Hand-maintained app and authoring code
 npm run build       # Static web application in dist/
 npm run preview     # Serve dist/ locally
 npm run check       # Tests, TypeScript, lint and production web build
+npm run check:regions # Browser regression for region/ink hit coverage
 npm run brand:icons  # Rebuild favicon, touch and desktop icons (ImageMagick)
 npm run assets:build # Rebuild sticker SVGs (ImageMagick + Potrace)
 npm run benchmark:stickers # Compare the library to the pinned pre-migration baseline

@@ -24,11 +24,16 @@ transparent cutouts, placement metadata and searchable descriptions. Original so
 live in `art/source/`; the app does not download those original illustrations.
 
 The offline builder preserves authored SVG geometry or traces raster line art with
-ImageMagick and Potrace. It analyzes the resulting ink at four samples per logical
-unit for assets up to 300,000 logical pixels, or two for larger assets. It discovers
+ImageMagick and Potrace. Region discovery now supersamples the resulting ink at up to eight samples per logical
+unit, bounded to 16 million analysis pixels for large scenery. This authoring density
+is independent of the shipped 4x/2x interaction lookup. It discovers
 closed regions, excludes authored cutouts, and extends region ownership beneath the
 ink to approximately its centerline. That raster analysis is an offline intermediate.
-Each region is then traced into a closed vector path in the generated SVG.
+Each region is traced into one closed vector path with a tighter fitting tolerance.
+A one-analysis-pixel overlap, confined to actual ink, prevents independently fitted
+neighboring curves from leaving seams. Ink paths remain unchanged. Higher sampling
+can remove tiny aliasing artifacts or recover thin regions, so region counts may change;
+IDs are not stored in saved paint. Existing assets are not silently bulk-regenerated.
 
 ```xml
 <svg viewBox="0 0 623 560" data-region-format="1"
@@ -66,8 +71,13 @@ The loader parses vector paths and builds one shared lookup array:
 - Each region is rasterized into a cropped temporary alpha mask at the declared scale.
 - Covered samples receive that region's integer ID. Separate masks avoid antialiased
   RGB mixtures inventing IDs at boundaries.
-- Zero means outside. This same array supplies hit coverage; no extra hit mask is stored.
-- IDs up to 255 use one byte per sample; larger IDs use two bytes.
+- The lookup also samples the actual visible ink, including inverse clips. Ink-only
+  samples inherit a nearby region for line clicks; isolated ink blocks clicks through
+  to the page without inventing a fill region.
+- A compact one-bit-per-sample flag distinguishes ink-only hit coverage from actual
+  paint regions. Paint clipping still uses the SVG region union.
+- IDs plus an ink-only marker use one byte per sample when possible, otherwise two
+  (four only at the 65,535-ID limit). Temporary propagation scratch is released.
 - Temporary masks are released after preparation. Instances of the same sticker share
   the resulting immutable array and vector geometry.
 
@@ -79,8 +89,9 @@ also prepare definitions; there is no separate scene-thumbnail pipeline yet.
 
 Each placed sticker has its own raster paint array and canvas at 150 DPI relative to
 96 logical scene units per inch. The interaction map can have a finer resolution than
-paint so thin details remain identifiable. Scaling a sticker transforms its paint; it
-does not convert paint to vectors or add more stored paint pixels.
+paint so thin details remain identifiable. Enlarging a sticker can grow its paint raster in bounded 2x/4x steps; it never
+converts brushwork to vectors. Region-aware nearest-neighbor transfer preserves
+existing paint, while solid fills recover their precise vector boundaries.
 
 Brush strokes modify paint pixels, with lookup IDs keeping writes within the sticker.
 Bucket clicks choose the visible sticker or paper, then flood that surface's connected
@@ -138,3 +149,11 @@ For sources whose trees reach the top edge, `skySeeds` can explicitly identify o
 ## Interior backgrounds
 
 Raster sources marked `interior: true` preserve the full canvas and treat every white component, including edge-connected walls and floors, as a paintable region. Unlike outdoor horizons, they have no transparent sky. Visible ink is unchanged; canvas boundaries implicitly close regions. The runtime centers these backgrounds behind stickers and scales to cover either page orientation with 5% overscan. Sources remain 1200 ? 1200 logical units; PNG dimensions are not runtime lookup resolution.
+
+## Region coverage regression
+
+`npm run check:regions` uses an isolated headless Chromium profile (Edge/Chrome, or
+`BENCHMARK_BROWSER`) and real browser Canvas2D. It checks outer-line bucket clicks,
+isolated-ink click blocking, unchanged paint silhouettes, and complete visible-ink
+hit coverage on representative characters, scenery, thin details and clipped SVG art.
+Results are written to ignored `work/region-coverage-results.json`. No native build runs.

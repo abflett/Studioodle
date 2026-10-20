@@ -67,9 +67,12 @@ for(const asset of assets) {
     matrix=[.1*width/sw,0,0,-.1*height/sh,0,height];
     inkSvg=`<g fill="black" transform="matrix(${matrix.join(' ')})">${commands.map(c=>`<path d="${c.d}"/>`).join('')}</g>`;
   }
-  // Four samples per logical unit preserve fine gaps and antlers. Large assets
-  // keep a bounded analysis footprint instead of allocating huge region maps.
-  const scale=width*height<=300000?4:2,w=width*scale,h=height*scale,count=w*h;
+  // Supersample discovery/tracing independently of the shipped runtime lookup.
+  // Keep large scenery bounded instead of scaling every asset into a huge map.
+  const lookupScale=width*height<=300000?4:2;
+  const scale=[8,4,2,1].find(value=>value<=lookupScale*2 && width*height*value*value<=16_000_000);
+  if(!scale)throw new Error(`${id}: asset exceeds the offline analysis budget`);
+  const w=width*scale,h=height*scale,count=w*h;
   // Hidden closures keep fill regions enclosed without drawing boxed scenery edges.
   const barriers=asset.horizon ? `<g transform="matrix(${matrix.join(' ')})" fill="none" stroke="black" stroke-width="5">${commands.filter(c=>c.fill==='base').map(c=>`<path d="${c.d}"/>`).join('')}</g>` : '';
   const preview=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="white"/>${inkSvg}${barriers}</svg>`;
@@ -112,11 +115,11 @@ for(const asset of assets) {
   // Extend categorical labels under the ink with nearest 4-connected regions.
   let head=0,tail=0;for(let i=0;i<count;i++){if(labels[i]<0)continue;const x=i%w;if((x&&labels[i-1]===-2)||(x+1<w&&labels[i+1]===-2)||(i>=w&&labels[i-w]===-2)||(i+w<count&&labels[i+w]===-2))queue[tail++]=i;}
   while(head<tail){const i=queue[head++],x=i%w;const visit=n=>{if(labels[n]===-2){labels[n]=labels[i];queue[tail++]=n;}};if(x)visit(i-1);if(x+1<w)visit(i+1);if(i>=w)visit(i-w);if(i+w<count)visit(i+w);}
-  fs.writeFileSync(`${out}/${id}.svg`,regionSvg({width,height,bounds,regionCount,scale,labels,commands,matrix}));
+  fs.writeFileSync(`${out}/${id}.svg`,regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix,inkMask:gray}));
   // Remove obsolete generated transport only after the replacement was written.
   if (fs.existsSync(`${out}/${id}.json`)) fs.unlinkSync(`${out}/${id}.json`);
   run('-background','white',`${out}/${id}.svg`,'-resize','180x170','-gravity','center','-extent','200x205','-font','Arial','-pointsize','12','-gravity','south','-annotate','+0+5',id,`${base}-preview.png`);
-  report.push({id,width,height,regionCount,tinyRegions:areas.filter(a=>a<16).length,mode:asset.mode??'potrace-light'});
+  report.push({id,width,height,regionCount,tinyRegions:areas.filter(a=>a<16*(scale/lookupScale)**2).length,analysisScale:scale,lookupScale,mode:asset.mode??'potrace-light'});
   fs.writeFileSync('art/conversion-report.json',JSON.stringify(report,null,2));
   console.log(`${id}: ${regionCount} regions`);
 }

@@ -91,6 +91,31 @@ class Surface {
         return { x, y, width: Math.ceil(Math.max(...points.map(p => p.x))) - x, height: Math.ceil(Math.max(...points.map(p => p.y))) - y };
     }
     editable(index: number) { return index >= 0 && index < this.paint.length && this.region(index) > 0; }
+    fillIndex(index: number) {
+        if (this.editable(index)) return index;
+        if (index < 0 || !this.vector?.hitRegionAt) return -1;
+        const x = index % this.width, y = Math.floor(index / this.width);
+        const region = this.vector.hitRegionAt(x / this.resolution, y / this.resolution);
+        if (!region) return -1;
+        // A line click belongs to its adjacent region, never to the page behind
+        // it. Find an actual paint pixel without changing the paint silhouette.
+        const reach = Math.ceil(32 * this.resolution);
+        for (let radius = 1; radius <= reach; radius++) {
+            let best = -1, distance = Infinity;
+            const visit = (dx: number, dy: number) => {
+                const px = x + dx, py = y + dy, d = dx * dx + dy * dy;
+                if (d >= distance || px < 0 || py < 0 || px >= this.width || py >= this.height) return;
+                const candidate = py * this.width + px;
+                if (this.region(candidate) === region) { best = candidate; distance = d; }
+            };
+            for (let offset = -radius; offset <= radius; offset++) {
+                visit(offset, -radius); visit(offset, radius);
+                if (Math.abs(offset) !== radius) { visit(-radius, offset); visit(radius, offset); }
+            }
+            if (best >= 0) return best;
+        }
+        return -1;
+    }
     color(index: number) { const value = this.paint[index]!; return value ? value - 1 : this.data.kind === 'canvas' ? this.data.color : 0xffffff; }
     write(index: number, color: number, erase: boolean, regionChecked = false) { if (!regionChecked && !this.editable(index))
         return false; const value = erase ? 0 : color + 1; if (this.paint[index] === value)
@@ -452,7 +477,7 @@ export class Artwork {
         if (owner < 0) return false;
         const surface = this.surfaces[owner]!;
         surface.ensurePaintResolution();
-        const local = surface.localIndex(start % this.width, Math.floor(start / this.width));
+        const local = surface.fillIndex(surface.localIndex(start % this.width, Math.floor(start / this.width)));
         if (!surface.editable(local))
             return false;
         return this.fillNative(surface, local, color, options);
