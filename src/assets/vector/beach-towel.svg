@@ -1,8 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 180"><g transform="matrix(0.025 0 0 -0.025 0 180)" fill="white"><path d="M1855 7064 c-62 -31 -68 -50 -246 -786 -153 -636 -168 -704 -158
--740 9 -36 7 -44 -25 -104 -32 -58 -79 -244 -466 -1844 -415 -1723 -429 -1781
--415 -1814 14 -34 14 -37 -24 -98 -36 -59 -48 -104 -206 -758 -133 -555 -165
--701 -158 -725 6 -20 22 -37 48 -52 l40 -23 8138 0 c7282 0 8141 2 8168 15 62
-32 69 56 244 781 156 648 166 691 155 731 -12 40 -10 45 29 120 39 74 64 172
-466 1840 421 1746 425 1762 410 1802 -14 42 -14 42 26 108 38 62 48 99 208
-760 162 670 167 696 153 727 -10 22 -30 41 -59 55 l-44 21 -8127 -1 c-7211 0
--8130 -2 -8157 -15z"/></g><g transform="scale(1 1)"><g fill="white" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M45 3H457L415 177H3Z"/><path fill="none" d="M35 43H447M13 137H425"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 180" data-region-format="1" data-region-scale="4" data-bounds="0.5 0.5 459.5 179.5"><defs><clipPath id="clip-base-0" clipPathUnits="userSpaceOnUse"><path transform="matrix(1 0 0 1 0 0)" clip-rule="evenodd" fill-rule="evenodd" d="M-100 -100 L560 -100 L560 280 L-100 280Z M45 3H457L415 177H3Z"/></clipPath></defs><g id="regions" fill="white" fill-rule="nonzero"><path id="region-1" data-bounds="36 3 456.5 43.75" transform="matrix(0.025 0 0 -0.025 35.75 44)" d="M425 1624 c-62 -31 -68 -50 -246 -786 -150 -622 -168 -705 -159 -738
+8 -31 16 -39 43 -46 17 -4 3688 -10 8157 -13 6725 -5 8129 -8 8148 -19 33 -19
+44 -12 86 59 35 58 51 119 205 757 162 669 167 695 153 726 -10 22 -30 41 -59
+55 l-44 21 -8127 -1 c-7211 0 -8130 -2 -8157 -15z"/><path id="region-2" data-bounds="13.25 42.5 446.75 137.75" transform="matrix(0.025 0 0 -0.025 13 138)" d="M906 3756 c-33 -61 -75 -228 -466 -1846 -400 -1659 -428 -1782 -416
+-1811 10 -23 24 -36 52 -45 33 -11 1360 -14 8146 -14 7497 0 8110 -1 8142 -16
+19 -9 40 -14 48 -11 7 3 30 38 51 79 34 66 80 248 462 1834 393 1630 423 1763
+413 1798 -9 28 -21 42 -47 54 -34 16 -570 17 -8161 23 -4469 3 -8139 9 -8156
+13 -30 8 -32 6 -68 -58z"/><path id="region-3" data-bounds="3.75 136.5 424 177" transform="matrix(0.025 0 0 -0.025 3.5 177.25)" d="M384 1574 c-36 -55 -48 -102 -206 -754 -188 -775 -184 -747 -113
+-787 l40 -23 8138 0 c7282 0 8141 2 8168 15 62 32 69 56 244 781 154 638 165
+692 155 729 -9 33 -18 43 -48 55 -32 13 -1098 15 -8162 20 -4469 3 -8137 10
+-8152 14 -25 8 -30 4 -64 -50z"/></g><g id="ink" stroke-linejoin="round" stroke-linecap="round"><path id="ink-1" transform="matrix(1 0 0 1 0 0)" fill="none" stroke="black" stroke-width="5" d="M45 3H457L415 177H3Z"/><path id="ink-2" transform="matrix(1 0 0 1 0 0)" fill="none" stroke="black" stroke-width="5" d="M35 43H447M13 137H425"/></g></svg>

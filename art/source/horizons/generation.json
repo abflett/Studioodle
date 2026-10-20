@@ -1,0 +1,473 @@
+{
+  "tool": "built-in image_gen",
+  "status": "PNG sources for later SVG conversion; not registered in app",
+  "requestedPixelSize": "approximately 1024x1024; actual output controlled by built-in tool",
+  "placement": {
+    "logicalWidth": 1200,
+    "logicalHeight": 1200,
+    "overscan": "20% larger than the longest standard 1000-unit page dimension",
+    "horizon": "base around 38% from top; visual target, not measured placement",
+    "edgeTreatment": "Scenery intentionally continues to side edges; preserve full square viewBox and add invisible analysis closures at conversion. Do not trim to ink bounds.",
+    "foreground": "Mostly open lower half"
+  },
+  "assets": [
+    {
+      "id": "alpine-peaks",
+      "title": "Alpine Peaks",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "alpine-peaks.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A broad distant alpine mountain range with three main triangular peaks, a few smaller connecting shoulders and simple clearly closed snowcap regions. One gentle foothill contour across the base. Peaks stay entirely in frame, no tiny rock texture.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A broad distant alpine mountain range with three main triangular peaks, a few smaller connecting shoulders and simple clearly closed snowcap regions. One gentle foothill contour across the base. Peaks stay entirely in frame, no tiny rock texture.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1045592,
+      "runtimeDefinition": "src/assets/vector/horizons-alpine-peaks.svg",
+      "converted": true
+    },
+    {
+      "id": "rounded-mountains",
+      "title": "Rounded Mountains",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "rounded-mountains.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A broad range of gentle rounded old mountains, three overlapping broad ridgelines, low central saddle and higher shoulders at sides. Just a few clean slope contours, no snowcaps or sharp crags.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A broad range of gentle rounded old mountains, three overlapping broad ridgelines, low central saddle and higher shoulders at sides. Just a few clean slope contours, no snowcaps or sharp crags.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 937880,
+      "runtimeDefinition": "src/assets/vector/horizons-rounded-mountains.svg",
+      "converted": true
+    },
+    {
+      "id": "layered-foothills",
+      "title": "Layered Foothills",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "layered-foothills.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "Three overlapping long gently rolling hill bands, a distant low ridge, middle undulating slopes and one foreground hill crest. Uneven organic rhythm, low dip near center for placing characters, no trees or buildings.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: Three overlapping long gently rolling hill bands, a distant low ridge, middle undulating slopes and one foreground hill crest. Uneven organic rhythm, low dip near center for placing characters, no trees or buildings.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 981863,
+      "runtimeDefinition": "src/assets/vector/horizons-layered-foothills.svg",
+      "converted": true
+    },
+    {
+      "id": "flat-prairie",
+      "title": "Flat Prairie",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "flat-prairie.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "Very flat open grassland horizon with slight natural undulation, two low faraway hill humps near the extreme sides and only three sparse broad grass tufts along the horizon. Vast uninterrupted blank foreground, no fence or trees.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: Very flat open grassland horizon with slight natural undulation, two low faraway hill humps near the extreme sides and only three sparse broad grass tufts along the horizon. Vast uninterrupted blank foreground, no fence or trees.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 815251,
+      "runtimeDefinition": "src/assets/vector/horizons-flat-prairie.svg",
+      "converted": true
+    },
+    {
+      "id": "rolling-farmland",
+      "title": "Rolling Farmland",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "rolling-farmland.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "Broad rolling farmland hills divided into a few large gently curved field sections, one winding lane disappearing over a distant crest near center. No buildings, vehicles, fences or tiny crops. Calm open central composition.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: Broad rolling farmland hills divided into a few large gently curved field sections, one winding lane disappearing over a distant crest near center. No buildings, vehicles, fences or tiny crops. Calm open central composition.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1012592,
+      "runtimeDefinition": "src/assets/vector/horizons-rolling-farmland.svg",
+      "converted": true
+    },
+    {
+      "id": "desert-dunes",
+      "title": "Desert Dunes",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "desert-dunes.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "Three layers of broad sweeping desert sand dunes, asymmetric flowing crests, a low central saddle and taller dune shoulders near sides. No texture marks, cacti, oasis or objects. Spacious smooth coloring shapes.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: Three layers of broad sweeping desert sand dunes, asymmetric flowing crests, a low central saddle and taller dune shoulders near sides. No texture marks, cacti, oasis or objects. Spacious smooth coloring shapes.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 931351,
+      "runtimeDefinition": "src/assets/vector/horizons-desert-dunes.svg",
+      "converted": true
+    },
+    {
+      "id": "red-rock-mesas",
+      "title": "Red Rock Mesas",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "red-rock-mesas.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "Distant desert mesas and buttes with broad flat tops and stepped sides, separated by low saddles. Five or fewer major rock formations, a few bold broad rock strata only, no tiny hatching or plants.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: Distant desert mesas and buttes with broad flat tops and stepped sides, separated by low saddles. Five or fewer major rock formations, a few bold broad rock strata only, no tiny hatching or plants.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1002331,
+      "runtimeDefinition": "src/assets/vector/horizons-red-rock-mesas.svg",
+      "converted": true
+    },
+    {
+      "id": "canyon-valley",
+      "title": "Canyon Valley",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "canyon-valley.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "Wide canyon vista with two broad stepped rock walls toward left and right framing an open central valley, faraway low plateau connecting distance, one simple winding river ribbon starting at horizon and extending partway downward. Broad cliff layers, no dense cracks. Central lower foreground largely empty.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: Wide canyon vista with two broad stepped rock walls toward left and right framing an open central valley, faraway low plateau connecting distance, one simple winding river ribbon starting at horizon and extending partway downward. Broad cliff layers, no dense cracks. Central lower foreground largely empty.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1199243,
+      "runtimeDefinition": "src/assets/vector/horizons-canyon-valley.svg",
+      "converted": true
+    },
+    {
+      "id": "river-valley",
+      "title": "River Valley",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "river-valley.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "Gentle rolling valley opening at center between two broad low hill shoulders, distant ridges, one simple river ribbon curving toward the viewer in the CENTER of the page. River banks are smooth and separated, lower left and right areas open for stickers, no trees or buildings.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: Gentle rolling valley opening at center between two broad low hill shoulders, distant ridges, one simple river ribbon curving toward the viewer in the CENTER of the page. River banks are smooth and separated, lower left and right areas open for stickers, no trees or buildings.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1018846,
+      "runtimeDefinition": "src/assets/vector/horizons-river-valley.svg",
+      "converted": true
+    },
+    {
+      "id": "lake-basin",
+      "title": "Lake Basin",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "lake-basin.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "Calm broad lake beneath a distant low mountain ridge, a few overlapping hillside shoulders framing the lake near far left and right, clean natural shoreline and two short water ripple curves near distant shore. No boats, trees, rocks in foreground or buildings. Large open white water/foreground.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: Calm broad lake beneath a distant low mountain ridge, a few overlapping hillside shoulders framing the lake near far left and right, clean natural shoreline and two short water ripple curves near distant shore. No boats, trees, rocks in foreground or buildings. Large open white water/foreground.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 934938,
+      "runtimeDefinition": "src/assets/vector/horizons-lake-basin.svg",
+      "converted": true
+    },
+    {
+      "id": "pine-forest",
+      "title": "Layered Pine Forest",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "pine-forest.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A distant horizon of layered evergreen trees in three rows, larger broad rounded triangular pine silhouettes at sides and smaller trees in center. Distinct simple tree group contours with a few visible trunks, broad branch tiers not tiny needles. Low forest floor line, empty open foreground.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A distant horizon of layered evergreen trees in three rows, larger broad rounded triangular pine silhouettes at sides and smaller trees in center. Distinct simple tree group contours with a few visible trunks, broad branch tiers not tiny needles. Low forest floor line, empty open foreground.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1071967,
+      "runtimeDefinition": "src/assets/vector/horizons-pine-forest.svg",
+      "converted": true
+    },
+    {
+      "id": "deciduous-forest",
+      "title": "Layered Deciduous Forest",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "deciduous-forest.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A distant layered broadleaf forest with overlapping rounded canopies, taller groups on left and right, lower canopy dip in center. A few visible branching trunks underneath, large canopy clusters and generous enclosed leaf areas. No individual tiny leaves. Wide clear foreground.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A distant layered broadleaf forest with overlapping rounded canopies, taller groups on left and right, lower canopy dip in center. A few visible branching trunks underneath, large canopy clusters and generous enclosed leaf areas. No individual tiny leaves. Wide clear foreground.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1111738,
+      "runtimeDefinition": "src/assets/vector/horizons-deciduous-forest.svg",
+      "converted": true
+    },
+    {
+      "id": "forest-clearing",
+      "title": "Forest Clearing",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "forest-clearing.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A welcoming woodland clearing framed by tree groups on far left and right, broad rounded leaf canopies and simple visible trunks, distant smaller forest row across middle with a WIDE central opening. Open white central clearing and foreground. No overhead canopy arch closing sky, no grass clutter.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A welcoming woodland clearing framed by tree groups on far left and right, broad rounded leaf canopies and simple visible trunks, distant smaller forest row across middle with a WIDE central opening. Open white central clearing and foreground. No overhead canopy arch closing sky, no grass clutter.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1240855,
+      "runtimeDefinition": "src/assets/vector/horizons-forest-clearing.svg",
+      "converted": true
+    },
+    {
+      "id": "woodland-trail",
+      "title": "Woodland Trail",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "woodland-trail.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "Two simple forest groups at far left and right with rounded broadleaf canopies, a distant low tree line and a wide gently winding path leading through a central gap. Path begins near lower center, sides have ample white planting space, no small objects or dense grass.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: Two simple forest groups at far left and right with rounded broadleaf canopies, a distant low tree line and a wide gently winding path leading through a central gap. Path begins near lower center, sides have ample white planting space, no small objects or dense grass.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1124252,
+      "runtimeDefinition": "src/assets/vector/horizons-woodland-trail.svg",
+      "converted": true
+    },
+    {
+      "id": "jungle-opening",
+      "title": "Jungle Opening",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "jungle-opening.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A distant tropical jungle horizon with broad banana-like leaves and rounded tree canopies at left and right framing an open central gap. Two simple palms among broadleaf trees, restrained thick vines confined to side groups. No animals, fruit, tiny fern texture or foreground objects.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A distant tropical jungle horizon with broad banana-like leaves and rounded tree canopies at left and right framing an open central gap. Two simple palms among broadleaf trees, restrained thick vines confined to side groups. No animals, fruit, tiny fern texture or foreground objects.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1258180,
+      "runtimeDefinition": "src/assets/vector/horizons-jungle-opening.svg",
+      "converted": true
+    },
+    {
+      "id": "birch-woodland",
+      "title": "Birch Woodland",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "birch-woodland.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A light open birch woodland backdrop, slender but clearly outlined trunks in loose groups toward sides, rounded sparse canopies in upper middle and distant lower forest row. Trunks have only a few short broad bark marks, no dense hatching. Large open central and lower clearing.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A light open birch woodland backdrop, slender but clearly outlined trunks in loose groups toward sides, rounded sparse canopies in upper middle and distant lower forest row. Trunks have only a few short broad bark marks, no dense hatching. Large open central and lower clearing.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1310103,
+      "runtimeDefinition": "src/assets/vector/horizons-birch-woodland.svg",
+      "converted": true
+    },
+    {
+      "id": "autumn-woodland",
+      "title": "Autumn Woodland",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "autumn-woodland.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "An autumn woodland horizon with broad irregular oak/maple canopy clusters and a few bare branching trees interspersed, taller tree groups at sides and a lower central gap. No detached falling leaves or leaf piles, no color or dense tiny leaf details. Broad white foreground.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: An autumn woodland horizon with broad irregular oak/maple canopy clusters and a few bare branching trees interspersed, taller tree groups at sides and a lower central gap. No detached falling leaves or leaf piles, no color or dense tiny leaf details. Broad white foreground.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1199791,
+      "runtimeDefinition": "src/assets/vector/horizons-autumn-woodland.svg",
+      "converted": true
+    },
+    {
+      "id": "snowy-forest",
+      "title": "Snowy Forest",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "snowy-forest.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A distant winter evergreen forest with broad pine boughs carrying thick outlined snow caps, gentle low snowbank contour across base. Larger simple pines near sides, smaller trees toward center and an open central gap. No snowflakes or foreground footprints, no hatching.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A distant winter evergreen forest with broad pine boughs carrying thick outlined snow caps, gentle low snowbank contour across base. Larger simple pines near sides, smaller trees toward center and an open central gap. No snowflakes or foreground footprints, no hatching.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1105135,
+      "runtimeDefinition": "src/assets/vector/horizons-snowy-forest.svg",
+      "converted": true
+    },
+    {
+      "id": "coastal-cliffs",
+      "title": "Coastal Cliffs",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "coastal-cliffs.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A distant coastal horizon with two broad gently stepped cliffs extending inward from left and right, a wide open sea gap between, simple horizontal ocean horizon visible through center and a few clean broad rock strata. No lighthouse, boats, sky objects or tiny waves. Open lower white water/shore.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A distant coastal horizon with two broad gently stepped cliffs extending inward from left and right, a wide open sea gap between, simple horizontal ocean horizon visible through center and a few clean broad rock strata. No lighthouse, boats, sky objects or tiny waves. Open lower white water/shore.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 973433,
+      "runtimeDefinition": "src/assets/vector/horizons-coastal-cliffs.svg",
+      "converted": true
+    },
+    {
+      "id": "beach-dunes",
+      "title": "Beach Dunes",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "beach-dunes.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "Low seaside dunes across the horizon, small broad beach-grass clusters only near far sides, gentle distant sea horizon visible in the low central opening. Two or three broad dune contours, no shells, palms, buildings or boats. Very open white foreground for arranging beach stickers.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: Low seaside dunes across the horizon, small broad beach-grass clusters only near far sides, gentle distant sea horizon visible in the low central opening. Two or three broad dune contours, no shells, palms, buildings or boats. Very open white foreground for arranging beach stickers.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 954409,
+      "runtimeDefinition": "src/assets/vector/horizons-beach-dunes.svg",
+      "converted": true
+    },
+    {
+      "id": "village-rooftops",
+      "title": "Village Rooftops",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "village-rooftops.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A distant cozy village rooftop horizon with about seven simple small cottages with varied pitched roofs, one modest bell tower and a few rounded trees between. Buildings stand on one shared gentle ground contour, clear large doors/windows, no text, signs, roads or tiny bricks. Wide blank foreground.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A distant cozy village rooftop horizon with about seven simple small cottages with varied pitched roofs, one modest bell tower and a few rounded trees between. Buildings stand on one shared gentle ground contour, clear large doors/windows, no text, signs, roads or tiny bricks. Wide blank foreground.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1035853,
+      "runtimeDefinition": "src/assets/vector/horizons-village-rooftops.svg",
+      "converted": true
+    },
+    {
+      "id": "suburban-neighborhood",
+      "title": "Suburban Neighborhood",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "suburban-neighborhood.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A distant friendly suburban neighborhood horizon with five simple separated two-storey houses, different roof shapes, broad windows and doors, a few rounded trees between. One continuous gently rolling ground line. No cars, people, fences, utility wires, tiny roof tiles or street markings. Open foreground.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A distant friendly suburban neighborhood horizon with five simple separated two-storey houses, different roof shapes, broad windows and doors, a few rounded trees between. One continuous gently rolling ground line. No cars, people, fences, utility wires, tiny roof tiles or street markings. Open foreground.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 998245,
+      "runtimeDefinition": "src/assets/vector/horizons-suburban-neighborhood.svg",
+      "converted": true
+    },
+    {
+      "id": "city-skyline",
+      "title": "City Skyline",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "city-skyline.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A friendly modern city skyline band with varied broad rectangular buildings, two taller towers and several lower buildings overlapping. A few LARGE window groups per building, simple rounded tower tops and rooftop shapes. No logos, signs, tiny window grids, cars or roads. Buildings sit on shared continuous base horizon; open blank foreground.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A friendly modern city skyline band with varied broad rectangular buildings, two taller towers and several lower buildings overlapping. A few LARGE window groups per building, simple rounded tower tops and rooftop shapes. No logos, signs, tiny window grids, cars or roads. Buildings sit on shared continuous base horizon; open blank foreground.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1152346,
+      "runtimeDefinition": "src/assets/vector/horizons-city-skyline.svg",
+      "converted": true
+    },
+    {
+      "id": "harbor-skyline",
+      "title": "Harbor Skyline",
+      "theme": "Horizon Backgrounds",
+      "status": "generated",
+      "file": "harbor-skyline.png",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "targetBaseHorizonY": 456,
+      "details": "A distant small harbor-town horizon with low simple waterfront buildings on far bank, one lighthouse near far left, one modest dock structure and two simple mooring posts near far right. Broad calm water in front with just two short ripple contours. NO boats, birds, text, ropes or foreground objects. Clear skyline band with large open white water below.",
+      "prompt": "Use case: illustration-story. Create ONE square black-and-white coloring-book HORIZON BACKGROUND PNG for Studioodle, approximately 1024x1024, intended for later SVG tracing and placing BEHIND separate character/object stickers. This is NOT a framed picture and NOT an isolated object. COMPOSITION: continuous edge-to-edge scenery across the FULL width, with contours deliberately continuing OFF both left and right edges (horizontal overscan for cropping). Main base horizon at about 38% down from top; uppermost scenery generally around 15-20% down, leaving blank white sky above. Keep most of the LOWER HALF as spacious blank WHITE foreground for adding stickers. Avoid full-scene clutter. Nothing important at extreme edges; side scenery may be cropped as intentional continuation. No enclosing rectangle, no decorative border, no bottom closing line, no vignette, no drop shadow. STYLE: smooth crisp medium black outlines, white coloring interiors, simple professional charming hand-drawn vector-like line art matching a classic coloring book, broad enclosed regions and clear overlaps, suitable for children and adults. No colors, no gray, no gradients, no shading, no dense hatching, no tiny textures, no large solid black areas. No sun, moon, stars, clouds, animals, people, captions, words or watermark. SUBJECT: A distant small harbor-town horizon with low simple waterfront buildings on far bank, one lighthouse near far left, one modest dock structure and two simple mooring posts near far right. Broad calm water in front with just two short ripple contours. NO boats, birds, text, ropes or foreground objects. Clear skyline band with large open white water below.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1037376,
+      "runtimeDefinition": "src/assets/vector/horizons-harbor-skyline.svg",
+      "converted": true
+    }
+  ],
+  "generated": 24,
+  "conversionStatus": "Converted to single region SVGs and registered for review"
+}

@@ -1,5 +1,6 @@
 // Unified offline vector/region authoring pipeline. No app tests or builds.
 import fs from 'node:fs';
+import { regionSvg } from './svg-regions.mjs';
 import { execFileSync } from 'node:child_process';
 const assets = JSON.parse(fs.readFileSync('art/stickers.json','utf8'));
 const out='src/assets/vector', work='work/hybrid';
@@ -15,7 +16,6 @@ const run=(...args)=>execFileSync('magick',args,{maxBuffer:128e6});
 const trace=(input, output, alpha=1.2, tolerance=.5, speckle=2)=>execFileSync(process.env.POTRACE_PATH??'work/tools/potrace/potrace-1.16.win64/potrace.exe',[input,'-s','-a',`${alpha}`,'-O',`${tolerance}`,'-t',`${speckle}`,'-o',output]);
 const attrs=tag=>Object.fromEntries([...tag.matchAll(/([\w-]+)="([^"]*)"/g)].map(m=>[m[1],m[2]]));
 const paths=svg=>[...svg.matchAll(/<path\s+d="([^"]+)"/g)].map(m=>m[1]);
-const pack=bits=>{const b=Buffer.alloc(Math.ceil(bits.length/8));bits.forEach((v,i)=>{if(v)b[i>>3]|=1<<(i&7);});return b.toString('base64');};
 function svgCommands(svg) {
   const root=attrs(svg.match(/<svg[^>]*>/)[0]), group=attrs(svg.match(/<g[^>]*>/)?.[0]??'');
   const commands=[];
@@ -27,10 +27,14 @@ function svgCommands(svg) {
   }
   return {commands,sourceWidth:+root.width,sourceHeight:+root.height};
 }
-const report=process.argv[2] && fs.existsSync('art/conversion-report.json') ? JSON.parse(fs.readFileSync('art/conversion-report.json','utf8')).filter(item=>item.id!==process.argv[2]) : [];
+const pending=process.argv.includes('--pending');
+const target=process.argv.slice(2).find(arg=>!arg.startsWith('--'));
+const report=(pending || target) && fs.existsSync('art/conversion-report.json') ? JSON.parse(fs.readFileSync('art/conversion-report.json','utf8')).filter(item=>item.id!==target) : [];
 for(const asset of assets) {
   const {id,width,height}=asset;
-  if(process.argv[2] && id!==process.argv[2]) continue;
+  if (!/^[a-z0-9-]+$/.test(id)) throw new Error('Invalid asset ID');
+  if(target && id!==target) continue;
+  if(pending && report.some(item=>item.id===id) && fs.existsSync(`${out}/${id}.svg`)) continue;
   const base=`${work}/${id}`, source=asset.source;
   let commands,matrix,inkSvg;
   if(asset.mode==='svg') {
@@ -70,13 +74,27 @@ for(const asset of assets) {
   const barriers=asset.horizon ? `<g transform="matrix(${matrix.join(' ')})" fill="none" stroke="black" stroke-width="5">${commands.filter(c=>c.fill==='base').map(c=>`<path d="${c.d}"/>`).join('')}</g>` : '';
   const preview=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="white"/>${inkSvg}${barriers}</svg>`;
   fs.writeFileSync(`${base}-render.svg`,preview);
-  const gray=run('-background','white',`${base}-render.svg`,'-alpha','remove','-colorspace','Gray','-depth','8','gray:-');
+  const gray=run('-background','white',`${base}-render.svg`,...(asset.analysisGapClosure?['-morphology','Open',`Disk:${asset.analysisGapClosure*scale}`]:[]),'-alpha','remove','-colorspace','Gray','-depth','8','gray:-');
   if(gray.length!==count)throw new Error(`${id}: raster dimensions`);
   const labels=new Int32Array(count);labels.fill(-1);for(let i=0;i<count;i++)if(gray[i]<128)labels[i]=-2;
   const queue=new Int32Array(count),areas=[];
   function flood(seed,label){let head=0,tail=1;queue[0]=seed;labels[seed]=label;while(head<tail){const i=queue[head++],x=i%w;const visit=n=>{if(labels[n]===-1){labels[n]=label;queue[tail++]=n;}};if(x)visit(i-1);if(x+1<w)visit(i+1);if(i>=w)visit(i-w);if(i+w<count)visit(i+w);}return tail;}
-  for(let x=0;x<w;x++)for(const i of [x,(h-1)*w+x])if(labels[i]===-1)flood(i,0);
-  for(let y=0;y<h;y++)for(const i of [y*w,y*w+w-1])if(labels[i]===-1)flood(i,0);
+  // Raster horizons continue off the canvas: only top-connected white is sky.
+  // Side/bottom canvas edges implicitly close ground regions without visible ink.
+  if(asset.interior) {
+    // Canvas edges close interior walls and floors; none is outside sky.
+  } else if(asset.horizon && asset.mode!=='svg') {
+    if(asset.skySeeds) {
+      for(const [x,y] of asset.skySeeds) {
+        const px=Math.floor(x*scale),py=Math.floor(y*scale);
+        if(px<0||py<0||px>=w||py>=h||labels[py*w+px]!==-1)throw new Error(`${id}: invalid sky seed`);
+        flood(py*w+px,0);
+      }
+    } else for(let x=0;x<w;x++)if(labels[x]===-1)flood(x,0);
+  } else {
+    for(let x=0;x<w;x++)for(const i of [x,(h-1)*w+x])if(labels[i]===-1)flood(i,0);
+    for(let y=0;y<h;y++)for(const i of [y*w,y*w+w-1])if(labels[i]===-1)flood(i,0);
+  }
   // Authored seeds mark enclosed negative space, not paintable sticker regions.
   // Keep them in logical asset coordinates so source rebuilds remain reproducible.
   for(const [x,y] of asset.cutouts??[]) {
@@ -88,35 +106,22 @@ for(const asset of assets) {
   let regionCount=0;for(let i=0;i<count;i++)if(labels[i]===-1)areas.push(flood(i,++regionCount));
   // No regions is a real conversion failure, never silently emit an empty sticker.
   if(!regionCount)throw new Error(`${id}: no enclosed coloring regions`);
-  const silhouette=new Uint8Array(count),hit=silhouette.slice();
-  for(let i=0;i<count;i++)hit[i]=labels[i]!==0?1:0;
   let left=w,top=h,right=0,bottom=0;
-  for(let i=0;i<count;i++)if(hit[i]){const x=i%w,y=Math.floor(i/w);left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x+1);bottom=Math.max(bottom,y+1);}
+  for(let i=0;i<count;i++)if(labels[i]!==0){const x=i%w,y=Math.floor(i/w);left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x+1);bottom=Math.max(bottom,y+1);}
   const bounds={left:left/scale,top:top/scale,right:right/scale,bottom:bottom/scale};
   // Extend categorical labels under the ink with nearest 4-connected regions.
   let head=0,tail=0;for(let i=0;i<count;i++){if(labels[i]<0)continue;const x=i%w;if((x&&labels[i-1]===-2)||(x+1<w&&labels[i+1]===-2)||(i>=w&&labels[i-w]===-2)||(i+w<count&&labels[i+w]===-2))queue[tail++]=i;}
   while(head<tail){const i=queue[head++],x=i%w;const visit=n=>{if(labels[n]===-2){labels[n]=labels[i];queue[tail++]=n;}};if(x)visit(i-1);if(x+1<w)visit(i+1);if(i>=w)visit(i-w);if(i+w<count)visit(i+w);}
-  // Place the paint backing at the ink's interior midpoint. Unlike a fixed
-  // erosion, this follows local stroke thickness and retains narrow interiors.
-  // Standalone ink specks need no white backing of their own.
-  for(let i=0;i<count;i++)silhouette[i]=labels[i]>0?1:0;
-  const raw=Buffer.from(silhouette.map(v=>v?255:0));fs.writeFileSync(`${base}-shape.gray`,raw);
-  run('-size',`${w}x${h}`,'-depth','8',`${base}-shape.gray`,'-negate',`${base}-shape.pbm`);
-  trace(`${base}-shape.pbm`,`${base}-shape.svg`,1,.05*scale,2);
-  const silhouettePaths=paths(fs.readFileSync(`${base}-shape.svg`,'utf8'));
-  const silhouetteMatrix=[.1/scale,0,0,-.1/scale,0,height];
-  const runs=[];for(let i=0;i<count;){const start=i,label=labels[i++];while(i<count&&labels[i]===label)i++;runs.push(i-start,label);}
-  const packed=Buffer.alloc(runs.length*4);runs.forEach((n,i)=>packed.writeUInt32LE(n,i*4));
-  fs.writeFileSync(`${out}/${id}.json`,JSON.stringify({width,height,bounds,regionCount,regionScale:scale,regionRuns:packed.toString('base64'),hitCoverage:pack(hit),commands,matrix,silhouettePaths,silhouetteMatrix}));
-  const silhouetteSvg=`<g transform="matrix(${silhouetteMatrix.join(' ')})" fill="white">${silhouettePaths.map(d=>`<path d="${d}"/>`).join('')}</g>`;
-  fs.writeFileSync(`${out}/${id}.svg`,`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">${silhouetteSvg}${inkSvg}</svg>`);
+  fs.writeFileSync(`${out}/${id}.svg`,regionSvg({width,height,bounds,regionCount,scale,labels,commands,matrix}));
+  // Remove obsolete generated transport only after the replacement was written.
+  if (fs.existsSync(`${out}/${id}.json`)) fs.unlinkSync(`${out}/${id}.json`);
   run('-background','white',`${out}/${id}.svg`,'-resize','180x170','-gravity','center','-extent','200x205','-font','Arial','-pointsize','12','-gravity','south','-annotate','+0+5',id,`${base}-preview.png`);
   report.push({id,width,height,regionCount,tinyRegions:areas.filter(a=>a<16).length,mode:asset.mode??'potrace-light'});
   fs.writeFileSync('art/conversion-report.json',JSON.stringify(report,null,2));
   console.log(`${id}: ${regionCount} regions`);
 }
-if(!process.argv[2]){
-  fs.writeFileSync(`${out}/catalog.json`,JSON.stringify(Object.fromEntries(assets.map(a=>[a.id,{width:a.width,height:a.height,...(a.horizon?{horizon:true,horizonStart:a.horizonStart??.58}:{})}]))));
+if(!target){
+  fs.writeFileSync(`${out}/catalog.json`,JSON.stringify(Object.fromEntries(assets.map(a=>[a.id,{width:a.width,height:a.height,...(a.interior?{interior:true}:{}),...(a.horizon?{horizon:true,horizonStart:a.horizonStart??.58,...(a.horizonOverscan?{horizonOverscan:a.horizonOverscan}:{})}:{})}]))));
   fs.writeFileSync('src/editor/stickerKinds.ts',`// Generated from art/stickers.json by scripts/build-stickers.mjs.\nexport type StickerKind = ${assets.map(a=>JSON.stringify(a.id)).join(' | ')};\n`);
   for(let i=0;i<assets.length;i+=12)run('montage',...assets.slice(i,i+12).map(a=>`${work}/${a.id}-preview.png`),'-tile','4x3','-geometry','+6+6','-background','#eeeeee',`${work}/sheet-${i/12+1}.png`);
 }

@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 280"><g transform="matrix(0.025 0 0 -0.025 0 280)" fill="white"><path d="M4125 8789 c-239 -21 -519 -83 -789 -176 -893 -305 -1644 -1057
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 280" data-region-format="1" data-region-scale="4" data-bounds="27.5 57.5 192.5 222.5"><defs><clipPath id="clip-base-0" clipPathUnits="userSpaceOnUse"><path transform="matrix(1 0 0 1 0 0)" clip-rule="evenodd" fill-rule="evenodd" d="M-100 -100 L320 -100 L320 380 L-100 380Z M30 140a80 80 0 1 0 160 0a80 80 0 1 0 -160 0Z"/></clipPath></defs><g id="regions" fill="white" fill-rule="nonzero"><path id="region-1" data-bounds="30 60 190 220" transform="matrix(0.025 0 0 -0.025 29.75 220.25)" d="M2935 6399 c-239 -21 -519 -83 -789 -176 -893 -305 -1644 -1057
 -1949 -1949 -281 -821 -246 -1603 107 -2406 54 -121 114 -229 228 -408 409
 -641 1117 -1155 1852 -1344 649 -168 1376 -131 1963 100 630 247 1154 665
 1522 1214 120 180 154 239 246 438 133 288 200 502 249 802 61 373 61 702 0
 1070 -51 308 -129 560 -254 817 -114 235 -177 343 -301 513 -510 703 -1244
-1157 -2101 1299 -238 40 -529 51 -773 30z"/></g><g transform="scale(1 1)"><g fill="white" stroke="black" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><circle cx="110" cy="140" r="80"/></g></g></svg>
+1157 -2101 1299 -238 40 -529 51 -773 30z"/></g><g id="ink" stroke-linejoin="round" stroke-linecap="round"><path id="ink-1" transform="matrix(1 0 0 1 0 0)" fill="none" stroke="black" stroke-width="5" d="M30 140a80 80 0 1 0 160 0a80 80 0 1 0 -160 0Z"/></g></svg>

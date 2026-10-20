@@ -1,99 +1,67 @@
 # Hybrid sticker engine
 
-Start with [How stickers actually work](STICKER-PIPELINE.md) for the source-to-screen
-walkthrough, SVG/JSON responsibilities, loading behavior and measured data costs.
-
-All catalogued stickers use one engine. `art/stickers.json` is the source inventory;
-`scripts/build-stickers.mjs` generates definitions under `src/assets/vector/`.
-The old binary-outline renderer, procedural raster shapes, legacy operation imports,
-pilot-only definition and version-1/2 save readers have been removed.
+All runtime stickers use the [single-SVG pipeline](STICKER-PIPELINE.md): SVG region
+and ink paths on disk, shared raster lookup arrays in memory, and per-instance raster
+paint. The old JSON-mask decoder remains only in benchmark fixtures, outside `src/`.
 
 ## Authoring
 
-Run `node scripts/build-stickers.mjs` from the repository root, or pass one asset ID
-to regenerate that definition. Requires ImageMagick and Potrace. Set `POTRACE_PATH`
-or place the portable executable at `work/tools/potrace/potrace-1.16.win64/potrace.exe`.
-No authoring binary is bundled with the application.
+Run `npm run assets:build` (or `node scripts/build-stickers.mjs <asset-id>`) from the
+repository root. Requires ImageMagick and Potrace. Set `POTRACE_PATH` or place the
+portable binary at `work/tools/potrace/potrace-1.16.win64/potrace.exe`.
+Authoring tools are not bundled with the application.
 
-Raster sources use the agreed Light preset at source resolution: alpha onto white,
-grayscale, Gaussian sigma 0.04 times estimated stroke width, 50% threshold, Potrace
-alpha max 1.2 and optimization tolerance 0.5 times stroke width / 12. Short-run mode
-estimates stroke width; speckle suppression scales with its square. Garden BMP crops
-isolate the main connected outline and its enclosed ink to reject neighboring marks.
-Source dimensions map to the authored logical sticker dimensions recorded in the manifest.
+Raster tracing uses alpha onto white, grayscale, Gaussian sigma 0.04 times estimated
+stroke width, 50% threshold, Potrace alpha max 1.2 and optimization tolerance 0.5 times
+stroke width / 12. Speckle suppression scales with stroke width. Extracted garden crops
+isolate the main outline and enclosed ink to reject neighboring marks.
 
-Authored SVG shapes retain their vector paths/strokes. Primitive circles/rectangles
-are represented as vector paths, not traced pixel contours. Later white-filled shapes
-occlude earlier outlines through inverse clipping, so overlapping petals/pickets stay
-correct without painting white over the user's colors.
+Authored vectors retain their path/stroke geometry. The builder discovers four-connected
+regions at 4x logical resolution for assets up to 300,000 logical pixels and 2x above
+that size. Explicit cutout seeds become outside space. Region labels propagate under
+ink from interior and exterior to approximate the centerline boundary. Every region
+is traced with fine tolerance and no speckle removal, then stored as a closed SVG path.
+Standalone exterior ink has no paint backing. Hidden horizon closures are not visible ink.
 
-The builder samples final SVG ink at 4x logical resolution for assets up to
-300,000 logical pixels and 2x for larger artwork to bound region-map memory. It
-discovers 4-connected enclosed regions, applies authored cutouts, then propagates
-categorical IDs through ink from both interior and exterior. IDs are never blended.
-The white/paint backing uses the interior side of that propagation, placing its
-boundary near the ink midpoint instead of applying fixed erosion to thin details.
-It is traced with a 0.05-logical-pixel optimization tolerance. Standalone ink specks
-get no white backing. Hit coverage still includes the ink for selection.
-`art/conversion-report.json` records region counts and tiny-region review flags.
-View generated authoring sheets under `work/hybrid/`.
-Run `node scripts/preview-scenes.mjs` for offline compositions of the built-in coloring
-pages under `work/hybrid/scenes/`.
+The SVG contains region paths, visible ink, optional inverse vector clips for authored
+white-shape occlusion, logical bounds and analysis scale. `catalog.json` contains only
+lightweight dimensions/placement data. `art/conversion-report.json` records region
+counts and tiny-region review flags. Successful rebuilds remove obsolete per-asset JSON
+transport files. Source artwork and manifest entries remain the editable source of truth.
 
 ## Runtime
 
-Each scene contains a fixed rectangular background surface and placed stickers.
-A definition stores immutable line art, a silhouette, categorical region map and hit
-mask. Each instance stores transform, outline color and its own RLE raster paint.
+`prepareStickers` fetches the same external SVG URLs used by the picker. The decoder
+creates Path2D geometry and rasterizes each region into a temporary cropped alpha mask.
+At 50% coverage it writes the integer ID to a shared Uint8Array or Uint16Array, with
+first-region precedence for overlaps. Zero denotes outside and provides hit coverage.
+No RGB ID blending or repeated geometric queries are used during normal painting.
+The temporary masks are released after loading.
 
-Rendering order per sticker is base white, raster paint clipped to silhouette, then
-colored vector ink. Whole composites follow scene order. Canvas2D renders only the
-visible viewport at device resolution; Phaser supplies input and the selection overlay.
-PNG export redraws at output resolution. Raster paint uses 150 DPI against 96 logical
-scene units per inch; brush size, patterns and Fit-relative zoom use logical units.
+Each placed sticker owns 150-DPI raster paint. Rendering clips its white base and
+paint to the union of region paths, then draws vector ink. Canvas2D composites at
+visible device resolution; Phaser supplies input adaptation and selection graphics.
+Bucket flood fill follows the selected surface's region IDs and connected paint color,
+including behind foreground stickers. Brushes use visible ownership; erasing reveals
+the base. Fill queues and ownership are reused until their relevant state changes.
 
-Brushes cross internal regions beneath protected ink and use visible ownership.
-Bucket clicks choose the visible surface; the flood then follows that surface's own
-region IDs and connected paint colors, continuing behind foreground stickers. Hidden
-stickers therefore do not leave unfilled background silhouettes when moved. The former
-four-unit bleed band is removed. Existing paint boundaries still stop a fill, and only
-the clicked surface changes. Boundary checks use cached hit masks rather than per-pixel
-vector queries. Fill queues are reused. Erasing reveals the surface base.
+Source text is cached up to 24 entries. Definitions remain available for duplicate/undo
+during editing and are released when leaving the editor. Geometry and lookup arrays
+are shared, but each instance has its own paint array/canvas. Picture thumbnails still
+prepare editable definitions. There is no preload of the complete collection at splash.
 
-For the reindeer, an offline comparison sampled at 8x found 35 backing pixels beyond
-the SVG exterior before this change and zero afterwards, with zero uncovered interior
-pixels in both cases. This checks mask alignment, not runtime interaction. Existing
-unpainted patches in saved pictures remain existing paint data; fill them once to
-repair them rather than expecting a conversion to rewrite saved artwork.
+## Persistence and verification
 
-## Loading and memory
+Version-3 saves and `studioodle.v3.picture.` / `studioodle.v3.coloring.` keys remain
+unchanged. IDs, logical dimensions, paint density and transforms are preserved. Earlier
+experimental save formats remain unsupported. No user paint is rewritten by conversion.
+Region-boundary rasterization can differ slightly from the former masks; see the
+[full-library migration report](experiments/SVG-MIGRATION.md) and preserved baseline.
 
-The catalog contains lightweight dimensions and SVG thumbnails. Full JSON definitions
-are separate lazy Vite imports and are prepared only for a chosen scene, thumbnail or
-sticker. Instances share decoded geometry/masks; paint remains per instance. Parsed
-source packs use a 24-entry cache; decoded definitions stay available during editing
-for duplicate/undo and are released when leaving the editor. Placed instances retain
-their references while alive. There is no preload of the whole collection at splash.
-
-## Persistence and intentional break
-
-Only version-3 documents are read/written, under `studioodle.v3.picture.` keys.
-Earlier development pictures are ignored; there is no compatibility renderer or
-migration. Earlier keys are not automatically deleted from the browser. Definitions
-and logical dimensions are regenerated from the manifest; any future incompatible
-change needs an explicit document-version decision.
-
-Built-in scenes and every picker item use these definitions. The generated
-[asset catalog](../art/CATALOG.md) is the current inventory; `art/conversion-report.json`
-records conversion statistics. Add specific artwork issues alongside the affected
-manifest/source rather than maintaining a second conversion checklist.
-
-## Review
-
-Inspect generated contact sheets and scene compositions after artwork changes.
-Review fills, outlines at zoom, transforms, undo, save/reopen, PNG output and printing
-in the app. Offline mask checks do not establish interaction correctness. Tiny regions
-are retained for fidelity unless a specific artwork correction is requested.
+Run `npm run assets:preview` for offline scene compositions. Embedding SVGs in one
+scene prefixes IDs per instance so clip references cannot collide. Inspect generated
+contact sheets in `work/hybrid/` and review fills, cutouts, overlaps, undo, save/reopen,
+PNG export and printing in the app after artwork changes.
 
 ## Sticker focus
 

@@ -1,0 +1,1016 @@
+{
+  "tool": "built-in image_gen",
+  "status": "Converted to region SVG and registered in the app; visual review remains open",
+  "placementNotes": "16 full-canvas interior backgrounds intended at 1200 x 1200 logical units with overscan; 32 isolated props. Interior backing differs from outdoor horizon sky handling.",
+  "assets": [
+    {
+      "id": "cave-chamber",
+      "title": "Cave Chamber",
+      "theme": "Caves",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "cave-chamber.png",
+      "details": "An empty broad rounded natural cave chamber, viewed straight into the room. Curving ceiling and rocky side walls frame a distant back wall with a few large rock facets. Wall-to-floor transition near 40 percent from top. Broad uncluttered floor. No stalactites, loose rocks, fire, crystals or furnishings.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty broad rounded natural cave chamber, viewed straight into the room. Curving ceiling and rocky side walls frame a distant back wall with a few large rock facets. Wall-to-floor transition near 40 percent from top. Broad uncluttered floor. No stalactites, loose rocks, fire, crystals or furnishings.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1310141,
+      "conversion": {
+        "id": "interiors-cave-chamber",
+        "file": "src/assets/vector/interiors-cave-chamber.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "cave-side-passage",
+      "title": "Cave Side Passage",
+      "theme": "Caves",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "cave-side-passage.png",
+      "details": "An empty spacious natural cave room in gentle three-quarter view, with a rounded side passage opening on the rear right wall and a few broad rock planes. Passage stays WHITE inside with simple receding contour, never solid black. Open broad floor, no props.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty spacious natural cave room in gentle three-quarter view, with a rounded side passage opening on the rear right wall and a few broad rock planes. Passage stays WHITE inside with simple receding contour, never solid black. Open broad floor, no props.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1323040,
+      "conversion": {
+        "id": "interiors-cave-side-passage",
+        "file": "src/assets/vector/interiors-cave-side-passage.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "cave-stalagmites",
+      "title": "Cave Stalagmites",
+      "theme": "Caves",
+      "category": "objects",
+      "type": "prop",
+      "file": "cave-stalagmites.png",
+      "details": "One low cluster of three smooth tapering stalagmites joined at a small rocky base, clear broad facets, no surrounding floor.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One low cluster of three smooth tapering stalagmites joined at a small rocky base, clear broad facets, no surrounding floor.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1204961,
+      "conversion": {
+        "id": "interiors-cave-stalagmites",
+        "file": "src/assets/vector/interiors-cave-stalagmites.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "hanging-stalactites",
+      "title": "Hanging Stalactites",
+      "theme": "Caves",
+      "category": "objects",
+      "type": "prop",
+      "file": "hanging-stalactites.png",
+      "details": "One small cluster of three broad downward-pointing stalactites attached to a short uneven rocky ceiling strip. Isolated hanging prop, complete strip in frame, no room.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One small cluster of three broad downward-pointing stalactites attached to a short uneven rocky ceiling strip. Isolated hanging prop, complete strip in frame, no room.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1236109,
+      "conversion": {
+        "id": "interiors-hanging-stalactites",
+        "file": "src/assets/vector/interiors-hanging-stalactites.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "cave-stone-arch",
+      "title": "Cave Stone Arch",
+      "theme": "Caves",
+      "category": "objects",
+      "type": "prop",
+      "file": "cave-stone-arch.png",
+      "details": "One freestanding natural rock arch with two sturdy rock feet and a broad irregular curved roof. Opening clearly WHITE and empty, a clean continuous inner contour, no scenery inside.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One freestanding natural rock arch with two sturdy rock feet and a broad irregular curved roof. Opening clearly WHITE and empty, a clean continuous inner contour, no scenery inside.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1328059,
+      "conversion": {
+        "id": "interiors-cave-stone-arch",
+        "file": "src/assets/vector/interiors-cave-stone-arch.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "small-campfire",
+      "title": "Small Campfire",
+      "theme": "Caves",
+      "category": "objects",
+      "type": "prop",
+      "file": "small-campfire.png",
+      "details": "One small campfire with three chunky logs in a clear stable arrangement and two broad enclosed flame shapes rising above. No smoke, sparks, ash or ground.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One small campfire with three chunky logs in a clear stable arrangement and two broad enclosed flame shapes rising above. No smoke, sparks, ash or ground.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1302253,
+      "conversion": {
+        "id": "interiors-small-campfire",
+        "file": "src/assets/vector/interiors-small-campfire.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "tavern-room",
+      "title": "Tavern Room",
+      "theme": "Taverns",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "tavern-room.png",
+      "details": "An empty welcoming medieval tavern interior viewed straight on. Simple timber-framed back wall, one broad arched window with WHITE panes, exposed ceiling beam and a wall-to-floor line near 40 percent from top. Sparse wide floorboards in lower area. No tables, chairs, bar, mugs, fireplace or loose props.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty welcoming medieval tavern interior viewed straight on. Simple timber-framed back wall, one broad arched window with WHITE panes, exposed ceiling beam and a wall-to-floor line near 40 percent from top. Sparse wide floorboards in lower area. No tables, chairs, bar, mugs, fireplace or loose props.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1683771,
+      "conversion": {
+        "id": "interiors-tavern-room",
+        "file": "src/assets/vector/interiors-tavern-room.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "tavern-corner",
+      "title": "Tavern Corner",
+      "theme": "Taverns",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "tavern-corner.png",
+      "details": "An empty rustic tavern corner in gentle three-quarter perspective, broad plaster wall panels divided by thick timber posts, a closed wooden back door, one ceiling beam, broad uncluttered plank floor. No furniture or loose props.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty rustic tavern corner in gentle three-quarter perspective, broad plaster wall panels divided by thick timber posts, a closed wooden back door, one ceiling beam, broad uncluttered plank floor. No furniture or loose props.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1608697,
+      "conversion": {
+        "id": "interiors-tavern-corner",
+        "file": "src/assets/vector/interiors-tavern-corner.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "tavern-table",
+      "title": "Tavern Table",
+      "theme": "Taverns",
+      "category": "objects",
+      "type": "prop",
+      "file": "tavern-table.png",
+      "details": "One sturdy rustic rectangular wooden table in mild three-quarter view, thick top and four clearly coherent legs, simple broad plank divisions. Empty tabletop, no cloth or other objects.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One sturdy rustic rectangular wooden table in mild three-quarter view, thick top and four clearly coherent legs, simple broad plank divisions. Empty tabletop, no cloth or other objects.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1308628,
+      "conversion": {
+        "id": "interiors-tavern-table",
+        "file": "src/assets/vector/interiors-tavern-table.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "tavern-stool",
+      "title": "Tavern Stool",
+      "theme": "Taverns",
+      "category": "objects",
+      "type": "prop",
+      "file": "tavern-stool.png",
+      "details": "One chunky three-legged wooden stool, rounded seat and readable leg braces, gentle three-quarter view. No other objects.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One chunky three-legged wooden stool, rounded seat and readable leg braces, gentle three-quarter view. No other objects.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1349090,
+      "conversion": {
+        "id": "interiors-tavern-stool",
+        "file": "src/assets/vector/interiors-tavern-stool.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "wooden-barrel",
+      "title": "Wooden Barrel",
+      "theme": "Taverns",
+      "category": "objects",
+      "type": "prop",
+      "file": "wooden-barrel.png",
+      "details": "One upright wooden barrel with broad staves, three simple metal hoops and a clear closed top, mild three-quarter view. No fine wood grain.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One upright wooden barrel with broad staves, three simple metal hoops and a clear closed top, mild three-quarter view. No fine wood grain.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1284519,
+      "conversion": {
+        "id": "interiors-wooden-barrel",
+        "file": "src/assets/vector/interiors-wooden-barrel.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "tavern-tankard",
+      "title": "Tavern Tankard",
+      "theme": "Taverns",
+      "category": "objects",
+      "type": "prop",
+      "file": "tavern-tankard.png",
+      "details": "One large plain medieval tankard, broad cylindrical body with simple bands and a sturdy open handle. Empty open rim, no liquid, foam, label or decoration.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One large plain medieval tankard, broad cylindrical body with simple bands and a sturdy open handle. Empty open rim, no liquid, foam, label or decoration.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1257047,
+      "conversion": {
+        "id": "interiors-tavern-tankard",
+        "file": "src/assets/vector/interiors-tavern-tankard.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "palace-chamber",
+      "title": "Palace Chamber",
+      "theme": "Palaces",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "palace-chamber.png",
+      "details": "An empty elegant palace room viewed straight on, broad wall panels, two graceful built-in columns at sides, a simple arched central window with WHITE panes and a few broad geometric floor tiles. Wall-to-floor transition near 40 percent. No throne, curtains, furniture, chandelier or loose props.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty elegant palace room viewed straight on, broad wall panels, two graceful built-in columns at sides, a simple arched central window with WHITE panes and a few broad geometric floor tiles. Wall-to-floor transition near 40 percent. No throne, curtains, furniture, chandelier or loose props.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1262979,
+      "conversion": {
+        "id": "interiors-palace-chamber",
+        "file": "src/assets/vector/interiors-palace-chamber.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "palace-gallery",
+      "title": "Palace Gallery",
+      "theme": "Palaces",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "palace-gallery.png",
+      "details": "An empty palace gallery in gentle three-quarter perspective, broad arched wall niches and simple pilasters along rear wall, restrained ceiling cornice, large spacious smooth floor with very few tile lines. Niches WHITE inside. No furniture or statues.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty palace gallery in gentle three-quarter perspective, broad arched wall niches and simple pilasters along rear wall, restrained ceiling cornice, large spacious smooth floor with very few tile lines. Niches WHITE inside. No furniture or statues.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1284785,
+      "conversion": {
+        "id": "interiors-palace-gallery",
+        "file": "src/assets/vector/interiors-palace-gallery.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "royal-throne",
+      "title": "Royal Throne",
+      "theme": "Palaces",
+      "category": "objects",
+      "type": "prop",
+      "file": "royal-throne.png",
+      "details": "One elegant freestanding throne chair in mild three-quarter view, tall rounded back with simple leaf crest, broad cushion panels, armrests and four sturdy legs. No crown, gemstones or excessive scrollwork.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One elegant freestanding throne chair in mild three-quarter view, tall rounded back with simple leaf crest, broad cushion panels, armrests and four sturdy legs. No crown, gemstones or excessive scrollwork.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1326687,
+      "conversion": {
+        "id": "interiors-royal-throne",
+        "file": "src/assets/vector/interiors-royal-throne.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "palace-column",
+      "title": "Palace Column",
+      "theme": "Palaces",
+      "category": "objects",
+      "type": "prop",
+      "file": "palace-column.png",
+      "details": "One complete freestanding classical column with broad square base, smooth shaft and a simple rounded capital, clear whole object with margin. No ruins, floor or surrounding architecture.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One complete freestanding classical column with broad square base, smooth shaft and a simple rounded capital, clear whole object with margin. No ruins, floor or surrounding architecture.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1015355,
+      "conversion": {
+        "id": "interiors-palace-column",
+        "file": "src/assets/vector/interiors-palace-column.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "palace-vase",
+      "title": "Palace Vase",
+      "theme": "Palaces",
+      "category": "objects",
+      "type": "prop",
+      "file": "palace-vase.png",
+      "details": "One elegant large palace vase with two curled side handles, broad rounded body, simple wide decorative band and closed base. No flowers, tiny ornament or pedestal.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One elegant large palace vase with two curled side handles, broad rounded body, simple wide decorative band and closed base. No flowers, tiny ornament or pedestal.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1351930,
+      "conversion": {
+        "id": "interiors-palace-vase",
+        "file": "src/assets/vector/interiors-palace-vase.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "royal-cabinet",
+      "title": "Royal Cabinet",
+      "theme": "Palaces",
+      "category": "objects",
+      "type": "prop",
+      "file": "royal-cabinet.png",
+      "details": "One freestanding elegant two-door cabinet, simple curved top, broad rectangular door panels, two round handles and short sturdy feet, mild three-quarter view. No objects on top.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One freestanding elegant two-door cabinet, simple curved top, broad rectangular door panels, two round handles and short sturdy feet, mild three-quarter view. No objects on top.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1144762,
+      "conversion": {
+        "id": "interiors-royal-cabinet",
+        "file": "src/assets/vector/interiors-royal-cabinet.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "great-hall",
+      "title": "Great Hall",
+      "theme": "Halls",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "great-hall.png",
+      "details": "An empty spacious medieval great hall viewed straight on, broad stone back wall, two tall narrow arched windows with WHITE panes and a few exposed roof beams. High open space, broad uncluttered flagstone floor starting near 40 percent down. No banners, torches, benches, table, weapons or furniture.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty spacious medieval great hall viewed straight on, broad stone back wall, two tall narrow arched windows with WHITE panes and a few exposed roof beams. High open space, broad uncluttered flagstone floor starting near 40 percent down. No banners, torches, benches, table, weapons or furniture.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1568627,
+      "conversion": {
+        "id": "interiors-great-hall",
+        "file": "src/assets/vector/interiors-great-hall.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "arched-hallway",
+      "title": "Arched Hallway",
+      "theme": "Halls",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "arched-hallway.png",
+      "details": "An empty wide stone hallway in gentle one-point perspective with three broad receding arches, broad wall blocks and a generous open floor. Keep side architecture sparse, distant exit WHITE, no black tunnel, no doors or loose props.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty wide stone hallway in gentle one-point perspective with three broad receding arches, broad wall blocks and a generous open floor. Keep side architecture sparse, distant exit WHITE, no black tunnel, no doors or loose props.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1375389,
+      "conversion": {
+        "id": "interiors-arched-hallway",
+        "file": "src/assets/vector/interiors-arched-hallway.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "hall-bench",
+      "title": "Hall Bench",
+      "theme": "Halls",
+      "category": "objects",
+      "type": "prop",
+      "file": "hall-bench.png",
+      "details": "One long simple wooden hall bench with a broad flat seat, short backrest and four sturdy legs with clear bracing, mild three-quarter view. No upholstery or other objects.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One long simple wooden hall bench with a broad flat seat, short backrest and four sturdy legs with clear bracing, mild three-quarter view. No upholstery or other objects.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1189580,
+      "conversion": {
+        "id": "interiors-hall-bench",
+        "file": "src/assets/vector/interiors-hall-bench.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "wall-banner",
+      "title": "Wall Banner",
+      "theme": "Halls",
+      "category": "objects",
+      "type": "prop",
+      "file": "wall-banner.png",
+      "details": "One hanging plain medieval cloth banner on a short horizontal pole with two round finials. Broad fabric panel ending in a single swallowtail notch, gentle fold lines, no emblem, letters or symbols.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One hanging plain medieval cloth banner on a short horizontal pole with two round finials. Broad fabric panel ending in a single swallowtail notch, gentle fold lines, no emblem, letters or symbols.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1163878,
+      "conversion": {
+        "id": "interiors-wall-banner",
+        "file": "src/assets/vector/interiors-wall-banner.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "wall-torch",
+      "title": "Wall Torch",
+      "theme": "Halls",
+      "category": "objects",
+      "type": "prop",
+      "file": "wall-torch.png",
+      "details": "One simple medieval wall-mounted torch, sturdy wooden handle held in a broad iron bracket with a small backing plate. Two large enclosed flame shapes, no sparks, smoke or wall scene.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One simple medieval wall-mounted torch, sturdy wooden handle held in a broad iron bracket with a small backing plate. Two large enclosed flame shapes, no sparks, smoke or wall scene.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1160213,
+      "conversion": {
+        "id": "interiors-wall-torch",
+        "file": "src/assets/vector/interiors-wall-torch.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "arched-window",
+      "title": "Arched Window",
+      "theme": "Halls",
+      "category": "objects",
+      "type": "prop",
+      "file": "arched-window.png",
+      "details": "One standalone arched stone window frame with four broad WHITE glass panes divided by a simple cross mullion. Thick broad stone surround, no view, curtains, wall area or black panes.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One standalone arched stone window frame with four broad WHITE glass panes divided by a simple cross mullion. Thick broad stone surround, no view, curtains, wall area or black panes.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1204970,
+      "conversion": {
+        "id": "interiors-arched-window",
+        "file": "src/assets/vector/interiors-arched-window.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "cottage-kitchen",
+      "title": "Cottage Kitchen",
+      "theme": "Cottages",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "cottage-kitchen.png",
+      "details": "An empty cozy cottage kitchen shell viewed straight on: simple plaster back wall, one broad square window with WHITE panes, exposed wooden ceiling beam and broad stone floor. A small built-in recessed wall niche. No counters, cupboards, fireplace, cookware, baskets or furniture. Floor begins near 40 percent from top.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty cozy cottage kitchen shell viewed straight on: simple plaster back wall, one broad square window with WHITE panes, exposed wooden ceiling beam and broad stone floor. A small built-in recessed wall niche. No counters, cupboards, fireplace, cookware, baskets or furniture. Floor begins near 40 percent from top.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1411138,
+      "conversion": {
+        "id": "interiors-cottage-kitchen",
+        "file": "src/assets/vector/interiors-cottage-kitchen.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "cottage-attic",
+      "title": "Cottage Attic",
+      "theme": "Cottages",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "cottage-attic.png",
+      "details": "An empty cozy cottage attic room in gentle three-quarter view with sloped ceiling, three broad timber beams, one small rear dormer window with WHITE panes, simple plaster walls and broad open plank floor. No furnishings or loose props.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty cozy cottage attic room in gentle three-quarter view with sloped ceiling, three broad timber beams, one small rear dormer window with WHITE panes, simple plaster walls and broad open plank floor. No furnishings or loose props.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1641294,
+      "conversion": {
+        "id": "interiors-cottage-attic",
+        "file": "src/assets/vector/interiors-cottage-attic.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "stone-fireplace",
+      "title": "Stone Fireplace",
+      "theme": "Cottages",
+      "category": "objects",
+      "type": "prop",
+      "file": "stone-fireplace.png",
+      "details": "One freestanding rustic stone fireplace surround with broad mantle, rectangular hearth opening outlined with WHITE interior and clear inner firebox contour, low hearth slab. No fire, logs, tools or wall scene.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One freestanding rustic stone fireplace surround with broad mantle, rectangular hearth opening outlined with WHITE interior and clear inner firebox contour, low hearth slab. No fire, logs, tools or wall scene.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1429413,
+      "conversion": {
+        "id": "interiors-stone-fireplace",
+        "file": "src/assets/vector/interiors-stone-fireplace.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "cooking-pot",
+      "title": "Cooking Pot",
+      "theme": "Cottages",
+      "category": "objects",
+      "type": "prop",
+      "file": "cooking-pot.png",
+      "details": "One squat round rustic cooking pot with two broad side handles and a closed domed lid with a simple knob, mild three-quarter view. No stove, food or steam.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One squat round rustic cooking pot with two broad side handles and a closed domed lid with a simple knob, mild three-quarter view. No stove, food or steam.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1155573,
+      "conversion": {
+        "id": "interiors-cooking-pot",
+        "file": "src/assets/vector/interiors-cooking-pot.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "cottage-cupboard",
+      "title": "Cottage Cupboard",
+      "theme": "Cottages",
+      "category": "objects",
+      "type": "prop",
+      "file": "cottage-cupboard.png",
+      "details": "One freestanding rustic wooden kitchen cupboard, two broad lower doors and two open upper shelves inside a simple frame. Shelves empty, broad clean plank lines, no props or tiny grain.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One freestanding rustic wooden kitchen cupboard, two broad lower doors and two open upper shelves inside a simple frame. Shelves empty, broad clean plank lines, no props or tiny grain.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1111645,
+      "conversion": {
+        "id": "interiors-cottage-cupboard",
+        "file": "src/assets/vector/interiors-cottage-cupboard.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "empty-woven-basket",
+      "title": "Empty Woven Basket",
+      "theme": "Cottages",
+      "category": "objects",
+      "type": "prop",
+      "file": "empty-woven-basket.png",
+      "details": "One empty rounded woven basket with a broad arched handle, wide open rim and large simple checker weave panels. No contents, no tiny crosshatching.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One empty rounded woven basket with a broad arched handle, wide open rim and large simple checker weave panels. No contents, no tiny crosshatching.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1443409,
+      "conversion": {
+        "id": "interiors-empty-woven-basket",
+        "file": "src/assets/vector/interiors-empty-woven-basket.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "home-living-room",
+      "title": "Home Living Room",
+      "theme": "Living Rooms",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "home-living-room.png",
+      "details": "An empty modern home living room shell viewed straight on. Broad smooth back wall, one large rectangular window with WHITE panes and a closed simple door near one side. Plain baseboard, wall-to-floor line near 40 percent down, broad open floor with few plank seams. No furniture, curtains, rugs, lamps or decorations.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty modern home living room shell viewed straight on. Broad smooth back wall, one large rectangular window with WHITE panes and a closed simple door near one side. Plain baseboard, wall-to-floor line near 40 percent down, broad open floor with few plank seams. No furniture, curtains, rugs, lamps or decorations.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1090341,
+      "conversion": {
+        "id": "interiors-home-living-room",
+        "file": "src/assets/vector/interiors-home-living-room.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "home-room-corner",
+      "title": "Home Room Corner",
+      "theme": "Living Rooms",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "home-room-corner.png",
+      "details": "An empty welcoming contemporary living room corner in gentle three-quarter perspective, smooth walls, a broad bay-window recess with WHITE panes, simple baseboards and spacious uncluttered floor. No furniture, curtains, rugs, plants or wall art.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty welcoming contemporary living room corner in gentle three-quarter perspective, smooth walls, a broad bay-window recess with WHITE panes, simple baseboards and spacious uncluttered floor. No furniture, curtains, rugs, plants or wall art.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1266993,
+      "conversion": {
+        "id": "interiors-home-room-corner",
+        "file": "src/assets/vector/interiors-home-room-corner.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "home-sofa",
+      "title": "Home Sofa",
+      "theme": "Living Rooms",
+      "category": "objects",
+      "type": "prop",
+      "file": "home-sofa.png",
+      "details": "One comfortable two-seat sofa in mild three-quarter view, broad two back cushions and two seat cushions, rounded armrests and four short feet. No pillows, blanket, buttons or other objects.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One comfortable two-seat sofa in mild three-quarter view, broad two back cushions and two seat cushions, rounded armrests and four short feet. No pillows, blanket, buttons or other objects.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1134565,
+      "conversion": {
+        "id": "interiors-home-sofa",
+        "file": "src/assets/vector/interiors-home-sofa.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "home-armchair",
+      "title": "Home Armchair",
+      "theme": "Living Rooms",
+      "category": "objects",
+      "type": "prop",
+      "file": "home-armchair.png",
+      "details": "One comfortable upholstered armchair in mild three-quarter view, broad back cushion, single seat cushion, rounded arms and short legs. No pattern or throw pillow.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One comfortable upholstered armchair in mild three-quarter view, broad back cushion, single seat cushion, rounded arms and short legs. No pattern or throw pillow.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1142017,
+      "conversion": {
+        "id": "interiors-home-armchair",
+        "file": "src/assets/vector/interiors-home-armchair.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "coffee-table",
+      "title": "Coffee Table",
+      "theme": "Living Rooms",
+      "category": "objects",
+      "type": "prop",
+      "file": "coffee-table.png",
+      "details": "One simple low oval coffee table with a broad smooth top and four short wooden legs, mild three-quarter view. Empty tabletop, no shelf or other objects.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One simple low oval coffee table with a broad smooth top and four short wooden legs, mild three-quarter view. Empty tabletop, no shelf or other objects.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1051540,
+      "conversion": {
+        "id": "interiors-coffee-table",
+        "file": "src/assets/vector/interiors-coffee-table.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "floor-lamp",
+      "title": "Floor Lamp",
+      "theme": "Living Rooms",
+      "category": "objects",
+      "type": "prop",
+      "file": "floor-lamp.png",
+      "details": "One simple freestanding floor lamp with broad tapered fabric shade, straight sturdy pole and round weighted base. Closed simple shade panels, no cord, light rays or surroundings.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One simple freestanding floor lamp with broad tapered fabric shade, straight sturdy pole and round weighted base. Closed simple shade panels, no cord, light rays or surroundings.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1014914,
+      "conversion": {
+        "id": "interiors-floor-lamp",
+        "file": "src/assets/vector/interiors-floor-lamp.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "office-room",
+      "title": "Office Room",
+      "theme": "Offices",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "office-room.png",
+      "details": "An empty small contemporary office interior viewed straight on, broad smooth walls, a wide rear window with WHITE panes, a closed plain side door and simple baseboards. Open floor starting near 40 percent down. No desks, chairs, cabinets, screens, shelves or decorations.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty small contemporary office interior viewed straight on, broad smooth walls, a wide rear window with WHITE panes, a closed plain side door and simple baseboards. Open floor starting near 40 percent down. No desks, chairs, cabinets, screens, shelves or decorations.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 947124,
+      "conversion": {
+        "id": "interiors-office-room",
+        "file": "src/assets/vector/interiors-office-room.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "office-corner",
+      "title": "Office Corner",
+      "theme": "Offices",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "office-corner.png",
+      "details": "An empty modern office corner in gentle three-quarter perspective, broad smooth wall planes, a simple high rectangular rear window with WHITE panes, a ceiling corner and broad uncluttered tile floor. No furniture or equipment.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty modern office corner in gentle three-quarter perspective, broad smooth wall planes, a simple high rectangular rear window with WHITE panes, a ceiling corner and broad uncluttered tile floor. No furniture or equipment.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1177783,
+      "conversion": {
+        "id": "interiors-office-corner",
+        "file": "src/assets/vector/interiors-office-corner.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "office-desk",
+      "title": "Office Desk",
+      "theme": "Offices",
+      "category": "objects",
+      "type": "prop",
+      "file": "office-desk.png",
+      "details": "One simple contemporary office desk in mild three-quarter view with broad empty rectangular worktop, two sturdy legs at one side and a three-drawer pedestal at the other. No computer, stationery or chair.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One simple contemporary office desk in mild three-quarter view with broad empty rectangular worktop, two sturdy legs at one side and a three-drawer pedestal at the other. No computer, stationery or chair.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1103879,
+      "conversion": {
+        "id": "interiors-office-desk",
+        "file": "src/assets/vector/interiors-office-desk.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "office-chair",
+      "title": "Office Chair",
+      "theme": "Offices",
+      "category": "objects",
+      "type": "prop",
+      "file": "office-chair.png",
+      "details": "One practical swivel office chair in mild three-quarter view, broad backrest and padded seat, two armrests, short central column and five-leg caster base. Clear coherent wheel structure, no texture.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One practical swivel office chair in mild three-quarter view, broad backrest and padded seat, two armrests, short central column and five-leg caster base. Clear coherent wheel structure, no texture.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1300863,
+      "conversion": {
+        "id": "interiors-office-chair",
+        "file": "src/assets/vector/interiors-office-chair.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "filing-cabinet",
+      "title": "Filing Cabinet",
+      "theme": "Offices",
+      "category": "objects",
+      "type": "prop",
+      "file": "filing-cabinet.png",
+      "details": "One freestanding three-drawer office filing cabinet in mild three-quarter view, broad drawers with simple handles and small blank label holders. No text, paper or clutter.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One freestanding three-drawer office filing cabinet in mild three-quarter view, broad drawers with simple handles and small blank label holders. No text, paper or clutter.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1140681,
+      "conversion": {
+        "id": "interiors-filing-cabinet",
+        "file": "src/assets/vector/interiors-filing-cabinet.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "desktop-computer",
+      "title": "Desktop Computer",
+      "theme": "Offices",
+      "category": "objects",
+      "type": "prop",
+      "file": "desktop-computer.png",
+      "details": "One simple desktop computer setup as a single compact prop: broad flat monitor on a short stable stand, one simple keyboard directly in front and a small mouse beside it. Screen WHITE with inner bezel contour, keyboard uses only a few broad key rows, no text, logo, cables or desk.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One simple desktop computer setup as a single compact prop: broad flat monitor on a short stable stand, one simple keyboard directly in front and a small mouse beside it. Screen WHITE with inner bezel contour, keyboard uses only a few broad key rows, no text, logo, cables or desk.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1252255,
+      "conversion": {
+        "id": "interiors-desktop-computer",
+        "file": "src/assets/vector/interiors-desktop-computer.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "bedroom-room",
+      "title": "Bedroom Room",
+      "theme": "Bedrooms",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "bedroom-room.png",
+      "details": "An empty cozy bedroom shell viewed straight on, smooth wall with one broad arched window and WHITE panes, a closed simple door near a side, plain baseboards and broad open plank floor. Floor begins near 40 percent down. No bed, furniture, curtains, rugs, lamps or decorations.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty cozy bedroom shell viewed straight on, smooth wall with one broad arched window and WHITE panes, a closed simple door near a side, plain baseboards and broad open plank floor. Floor begins near 40 percent down. No bed, furniture, curtains, rugs, lamps or decorations.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1162752,
+      "conversion": {
+        "id": "interiors-bedroom-room",
+        "file": "src/assets/vector/interiors-bedroom-room.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "bedroom-corner",
+      "title": "Bedroom Corner",
+      "theme": "Bedrooms",
+      "category": "landscapes",
+      "type": "interior-background",
+      "file": "bedroom-corner.png",
+      "details": "An empty cozy bedroom corner in gentle three-quarter perspective with smooth broad wall panels, one small square window with WHITE panes, a sloped ceiling edge at one side and broad open floor. No furniture, curtains, rugs or decorations.",
+      "status": "generated",
+      "logicalSize": {
+        "width": 1200,
+        "height": 1200
+      },
+      "preserveCanvas": true,
+      "backingPolicy": "Full interior canvas with paintable walls and floor; do not classify top-connected white as exterior sky. Hidden canvas-edge analysis closures only.",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. INTERIOR BACKGROUND, not an isolated building or framed picture: fill the full square canvas edge to edge with the inside of the room. Side walls, ceiling and floor intentionally continue off all relevant edges for cropping. No enclosing rectangle or visible outer frame. Keep essential architectural features away from extreme edges. Broad open lower foreground for later placement of separate character and furniture stickers; architecture mostly upper half. Restrained perspective and sparse large details, do not fill the floor with busy patterns. No people, animals, furniture or movable props. Subject: An empty cozy bedroom corner in gentle three-quarter perspective with smooth broad wall panels, one small square window with WHITE panes, a sloped ceiling edge at one side and broad open floor. No furniture, curtains, rugs or decorations.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1320294,
+      "conversion": {
+        "id": "interiors-bedroom-corner",
+        "file": "src/assets/vector/interiors-bedroom-corner.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "single-bed",
+      "title": "Single Bed",
+      "theme": "Bedrooms",
+      "category": "objects",
+      "type": "prop",
+      "file": "single-bed.png",
+      "details": "One simple cozy single bed in mild three-quarter view, broad rounded wooden headboard and low footboard, one clear pillow and one plain neatly spread blanket with broad fold line. Four coherent short bed legs, no patterns or other props.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One simple cozy single bed in mild three-quarter view, broad rounded wooden headboard and low footboard, one clear pillow and one plain neatly spread blanket with broad fold line. Four coherent short bed legs, no patterns or other props.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1186925,
+      "conversion": {
+        "id": "interiors-single-bed",
+        "file": "src/assets/vector/interiors-single-bed.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "bedside-table",
+      "title": "Bedside Table",
+      "theme": "Bedrooms",
+      "category": "objects",
+      "type": "prop",
+      "file": "bedside-table.png",
+      "details": "One small simple wooden bedside table in mild three-quarter view, broad square top, one drawer with round handle and open lower shelf, four short legs. Empty top and shelf.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One small simple wooden bedside table in mild three-quarter view, broad square top, one drawer with round handle and open lower shelf, four short legs. Empty top and shelf.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1182226,
+      "conversion": {
+        "id": "interiors-bedside-table",
+        "file": "src/assets/vector/interiors-bedside-table.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "bedroom-wardrobe",
+      "title": "Bedroom Wardrobe",
+      "theme": "Bedrooms",
+      "category": "objects",
+      "type": "prop",
+      "file": "bedroom-wardrobe.png",
+      "details": "One freestanding two-door wooden wardrobe in mild three-quarter view, broad plain door panels, two simple handles, shallow curved top and four short feet. No mirror, clothes or decoration.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One freestanding two-door wooden wardrobe in mild three-quarter view, broad plain door panels, two simple handles, shallow curved top and four short feet. No mirror, clothes or decoration.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1085701,
+      "conversion": {
+        "id": "interiors-bedroom-wardrobe",
+        "file": "src/assets/vector/interiors-bedroom-wardrobe.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "bedroom-dresser",
+      "title": "Bedroom Dresser",
+      "theme": "Bedrooms",
+      "category": "objects",
+      "type": "prop",
+      "file": "bedroom-dresser.png",
+      "details": "One low freestanding bedroom dresser in mild three-quarter view with three broad drawers, two round knobs per drawer and short sturdy feet. Empty flat top, no mirror or other objects.",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE reusable black-and-white coloring-book PNG source for Studioodle, approximately 1024x1024 square. Professional charming hand-drawn vector-like line art, smooth crisp consistent medium black outlines and pure white interiors. Simple spacious closed coloring shapes, clean complete contours and intentional overlaps. No color, gray, shading, hatching, fine texture, shadow, text, logo, watermark or decorative border. No solid black fill; window panes, screens, openings and cavities must be WHITE enclosed coloring areas. Suitable for children and adults. ISOLATED PROP on plain pure white background, one whole object centered with 10 percent clear margin, nothing cropped. No surrounding scene, floor line, room or cast shadow. Mild consistent three-quarter perspective when appropriate; simple recognizable structure, avoid tiny decorative lines. Subject: One low freestanding bedroom dresser in mild three-quarter view with three broad drawers, two round knobs per drawer and short sturdy feet. Empty flat top, no mirror or other objects.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1229367,
+      "conversion": {
+        "id": "interiors-bedroom-dresser",
+        "file": "src/assets/vector/interiors-bedroom-dresser.svg",
+        "status": "converted"
+      }
+    }
+  ],
+  "generated": 48
+}

@@ -1,8 +1,8 @@
-import { Shapes, Flower2, CloudSun, Apple, House, UserRound, Bird, Mountain, Gift } from 'lucide-react';
+import { Shapes, Flower2, CloudSun, Apple, House, UserRound, Bird, Mountain, Gift, Car } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { StickerKind } from '../editor/document';
 import librarySource from '../assets/assetLibrary.json?raw';
-const previews = import.meta.glob<string>('../assets/vector/*.svg', { eager: true, query: '?url', import: 'default' });
+import { vectorStickerUrl } from '../editor/vectorCatalog';
 const library = JSON.parse(librarySource) as { id: StickerKind; title: string; category: string; sortOrder: number }[];
 
 type StickerItem = { kind: StickerKind; title: string; icon: LucideIcon; preview?: string };
@@ -17,10 +17,11 @@ export const stickerCategories: { id: string; title: string; icon: LucideIcon; i
   { id: 'landscapes', title: 'Landscapes', icon: Mountain },
   { id: 'buildings', title: 'Buildings', icon: House },
   { id: 'objects', title: 'Objects', icon: Gift },
+  { id: 'vehicles', title: 'Vehicles', icon: Car },
   { id: 'food', title: 'Food', icon: Apple },
 ].map(category => ({
   ...category,
   items: library.filter(asset => asset.category === category.id).sort((a, b) => a.sortOrder - b.sortOrder).map(asset => ({
-    kind: asset.id, title: asset.title, icon: category.icon, preview: previews[`../assets/vector/${asset.id}.svg`],
+    kind: asset.id, title: asset.title, icon: category.icon, preview: vectorStickerUrl(asset.id),
   })),
 }));

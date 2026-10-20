@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const source = JSON.parse(fs.readFileSync('art/stickers.json', 'utf8'));
 const kits = JSON.parse(fs.readFileSync('art/scene-kits.json', 'utf8'));
-const categories = ['shapes', 'characters', 'animals', 'plants', 'sky', 'landscapes', 'buildings', 'objects', 'food'];
+const categories = ['shapes', 'characters', 'animals', 'plants', 'sky', 'landscapes', 'buildings', 'objects', 'vehicles', 'food'];
 const title = value => value[0].toUpperCase() + value.slice(1);
 const escape = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 const ids = new Set();
@@ -16,16 +16,23 @@ const assets = source.map(asset => {
   if (!['simple', 'moderate', 'detailed'].includes(asset.detail) || !['none', 'left', 'right', 'front'].includes(asset.facing) || !Number.isInteger(asset.sortOrder))
     throw new Error(`Invalid catalog metadata: ${asset.id}`);
   if (asset.roles.some(role => !['subject', 'background', 'foreground', 'accent'].includes(role))) throw new Error(`Invalid roles: ${asset.id}`);
-  const runtimeDefinition = `src/assets/vector/${asset.id}.json`;
+  const runtimeDefinition = `src/assets/vector/${asset.id}.svg`;
   const preview = `src/assets/vector/${asset.id}.svg`;
   if (!fs.existsSync(asset.source) || !fs.existsSync(preview)) throw new Error(`Missing source/preview: ${asset.id}`);
-  const definition = JSON.parse(fs.readFileSync(runtimeDefinition, 'utf8'));
+  let definition;
+  {
+    const svg = fs.readFileSync(runtimeDefinition, 'utf8');
+    const box = /viewBox="([^"]+)"/.exec(svg)?.[1].split(/\s+/).map(Number);
+    const bounds = /data-bounds="([^"]+)"/.exec(svg)?.[1].split(/\s+/).map(Number);
+    if (!box || !bounds || box.length !== 4 || bounds.length !== 4) throw new Error(`Missing SVG metadata: ${asset.id}`);
+    definition = { width: box[2], height: box[3], bounds: { left: bounds[0], top: bounds[1], right: bounds[2], bottom: bounds[3] } };
+  }
   if (definition.width !== asset.width || definition.height !== asset.height) throw new Error(`Stale dimensions: ${asset.id}`);
   return {
     id: asset.id, title: asset.title, category: asset.category, sortOrder: asset.sortOrder,
     description: asset.description, tags: asset.tags, roles: asset.roles, detail: asset.detail, facing: asset.facing,
     width: asset.width, height: asset.height, bounds: definition.bounds,
-    horizon: Boolean(asset.horizon), ...(asset.horizon ? { horizonStart: asset.horizonStart ?? .58 } : {}),
+    interior: Boolean(asset.interior), horizon: Boolean(asset.horizon), ...(asset.horizon ? { horizonStart: asset.horizonStart ?? .58 } : {}),
     placementNotes: asset.placementNotes, source: asset.source, runtimeDefinition, preview,
     usedIn: sceneFiles.filter(file => fs.readFileSync(`src/editor/${file}`, 'utf8').includes(`'${asset.id}'`)).map(file => `src/editor/${file}`),
   };

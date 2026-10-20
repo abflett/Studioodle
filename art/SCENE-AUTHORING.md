@@ -1,6 +1,6 @@
 # Creating Coloring Pages From The Asset Library
 
-Start with [CATALOG.md](CATALOG.md). For AI-assisted authoring, read [catalog/index.json](catalog/index.json), then the relevant subject guide or [scene-kits.json](scene-kits.json). Do not load all runtime region definitions: they are large paint masks, not the searchable inventory. The [visual browser](catalog/index.html) opens directly from disk and filters by keywords, category, scene kit and detail level.
+Start with [CATALOG.md](CATALOG.md). For AI-assisted authoring, read [catalog/index.json](catalog/index.json), then the relevant subject guide or [scene-kits.json](scene-kits.json). Use the searchable index to choose assets before opening their full region/ink SVG geometry. The [visual browser](catalog/index.html) opens directly from disk and filters by keywords, category, scene kit and detail level.
 
 ## Choose A Coherent Collection
 

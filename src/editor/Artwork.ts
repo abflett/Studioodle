@@ -1,6 +1,7 @@
 import { vectorStickerSize } from './vectorCatalog';
-import { bitAt, vectorDefinition, drawVectorInk } from './vectorStickers';
-import type { VectorDefinition } from './vectorStickers';
+import { vectorDefinition } from './vectorStickers';
+import { drawVectorInk } from './vectorDefinition';
+import type { VectorDefinition } from './vectorDefinition';
 import { defaultBrush, defaultFill, patternPixel } from './toolOptions';
 import type { BrushOptions, FillOptions } from './toolOptions';
 import type { ArtworkDocument, Point, StickerKind, SurfaceData, PaintRun } from './document';
@@ -57,10 +58,9 @@ class Surface {
         return { x: ((dx * Math.cos(a) + dy * Math.sin(a)) / s * (this.data.flipX ? -1 : 1) + Math.floor(this.logicalWidth / 2)) * this.resolution, y: ((-dx * Math.sin(a) + dy * Math.cos(a)) / s * (this.data.flipY ? -1 : 1) + Math.floor(this.logicalHeight / 2)) * this.resolution };
     }
     localIndex(x: number, y: number) { const p = this.localPoint({ x: x + .5, y: y + .5 }), lx = Math.floor(p.x), ly = Math.floor(p.y); return lx < 0 || ly < 0 || lx >= this.width || ly >= this.height ? -1 : ly * this.width + lx; }
-    regionIndex(x: number, y: number) { if (!this.vector)
-        return 0; return Math.min(this.vector.height * this.vector.regionScale - 1, Math.floor(y / this.resolution * this.vector.regionScale)) * this.vector.regionWidth + Math.min(this.vector.regionWidth - 1, Math.floor(x / this.resolution * this.vector.regionScale)); }
-    region(index: number) { return this.vector ? this.vector.regions[this.regionIndex(index % this.width, Math.floor(index / this.width))]! : 1; }
-    containsLocal(x: number, y: number) { return x >= 0 && y >= 0 && x < this.width && y < this.height && (!this.vector || bitAt(this.vector.hitCoverage, this.regionIndex(x, y))); }
+    region(index: number) { return this.vector ? this.vector.regionAt((index % this.width) / this.resolution, Math.floor(index / this.width) / this.resolution) : 1; }
+    inRegion(index: number, id: number) { return this.vector ? this.vector.inRegion((index % this.width) / this.resolution, Math.floor(index / this.width) / this.resolution, id) : id === 1; }
+    containsLocal(x: number, y: number) { return x >= 0 && y >= 0 && x < this.width && y < this.height && (!this.vector || this.vector.contains(x / this.resolution, y / this.resolution)); }
     containsPoint(point: Point) { const p = this.localPoint(point); return this.containsLocal(p.x, p.y); }
     bounds() {
         const b = this.opaqueBounds, points = [[b.left, b.top], [b.right, b.top], [b.left, b.bottom], [b.right, b.bottom]].map(([x, y]) => this.worldPoint(x!, y!));
@@ -69,7 +69,7 @@ class Surface {
     }
     editable(index: number) { return index >= 0 && index < this.paint.length && this.region(index) > 0; }
     color(index: number) { const value = this.paint[index]!; return value ? value - 1 : this.data.kind === 'canvas' ? this.data.color : 0xffffff; }
-    write(index: number, color: number, erase: boolean) { if (!this.editable(index))
+    write(index: number, color: number, erase: boolean, regionChecked = false) { if (!regionChecked && !this.editable(index))
         return false; const value = erase ? 0 : color + 1; if (this.paint[index] === value)
         return false; this.paint[index] = value; this.dirty = true; return true; }
     render() {
@@ -107,13 +107,13 @@ export class Artwork {
         seen: Uint8Array;
         queue: Int32Array;
     };
-    constructor(private readonly width: number, private readonly height: number, data: SurfaceData[]) {
-        this.surfaces = data.map((surface) => new Surface(structuredClone(surface), width, height));
+    constructor(private readonly width: number, private readonly height: number, data: SurfaceData[], private readonly definitionFor: (kind: StickerKind) => VectorDefinition = vectorDefinition) {
+        this.surfaces = data.map(surface => new Surface(structuredClone(surface), width, height, surface.kind === 'canvas' ? undefined : this.definitionFor(surface.kind)));
     }
     static create(width: number, height: number, background: string) {
         return new Artwork(width, height, [{ id: 'canvas', kind: 'canvas', x: 0, y: 0, color: parseInt(background.slice(1), 16), paint: [] }]);
     }
-    static restore(doc: ArtworkDocument) {
+    static restore(doc: ArtworkDocument, definitionFor: (kind: StickerKind) => VectorDefinition = vectorDefinition) {
         const originalHeights: Record<string, number> = { 'spring-meadow': 370, 'beach-shore': 480, 'winter-snow': 514 };
         const surfaces = doc.surfaces.map(data => {
             const height = originalHeights[data.kind];
@@ -123,11 +123,11 @@ export class Artwork {
             const angle = (data.rotation ?? 0) * Math.PI / 180;
             return { ...data, x: data.x - Math.sin(angle) * distance, y: data.y + Math.cos(angle) * distance };
         });
-        return new Artwork(doc.width, doc.height, surfaces);
+        return new Artwork(doc.width, doc.height, surfaces, definitionFor);
     }
     serialize(): ArtworkDocument { return { version: 3, horizonLayout: 2, width: this.width, height: this.height, surfaces: this.surfaces.map((surface) => surface.serialize()) }; }
     add(kind: StickerKind, color: number, point: Point) {
-        const surface = new Surface({ id: crypto.randomUUID(), kind, color, x: Math.round(point.x), y: Math.round(point.y), paint: [] }, this.width, this.height);
+        const surface = new Surface({ id: crypto.randomUUID(), kind, color, x: Math.round(point.x), y: Math.round(point.y), paint: [] }, this.width, this.height, this.definitionFor(kind));
         {
             const bounds = surface.bounds();
             surface.data.scale = Math.min(1, this.width * .6 / Math.max(1, bounds.width), this.height * .6 / Math.max(1, bounds.height));
@@ -138,8 +138,13 @@ export class Artwork {
             surface.data.y += Math.max(0, -fitted.y) - Math.max(0, fitted.y + fitted.height - this.height);
         }
         const placement = vectorStickerSize(kind);
-        if (placement.horizon) {
-            surface.data.scale = this.width / surface.logicalWidth;
+        if (placement.interior) {
+            surface.data.scale = Math.max(this.width / surface.logicalWidth, this.height / surface.logicalHeight) * 1.05;
+            surface.data.x = this.width / 2;
+            surface.data.y = this.height / 2;
+            this.surfaces.splice(1, 0, surface);
+        } else if (placement.horizon) {
+            surface.data.scale = this.width * (placement.horizonOverscan ?? 1) / surface.logicalWidth;
             surface.data.x = this.width / 2;
             const depth = surface.logicalHeight * surface.data.scale;
             const top = Math.max(this.height * (placement.horizonStart ?? .58), this.height - depth + 2);
@@ -381,12 +386,12 @@ export class Artwork {
         } };
         while (head < tail) {
             const i = queue[head++]!, x = i % surface.width, y = Math.floor(i / surface.width);
-            if (!surface.editable(i) || surface.region(i) !== region || surface.color(i) !== target)
+            if (!surface.inRegion(i, region) || surface.color(i) !== target)
                 continue;
             // Occluding stickers do not cut holes in this surface's own paint.
             // Its region IDs and paint colors remain the flood-fill boundaries.
             if (this.index(surface.worldPoint(x + .5, y + .5)) < 0) continue;
-            changed = surface.write(i, patternPixel(x / surface.resolution, y / surface.resolution, options) ? color : 0xffffff, false) || changed;
+            changed = surface.write(i, patternPixel(x / surface.resolution, y / surface.resolution, options) ? color : 0xffffff, false, true) || changed;
             if (x)
                 enqueue(i - 1);
             if (x + 1 < surface.width)

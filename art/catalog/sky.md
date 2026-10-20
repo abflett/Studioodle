@@ -17,7 +17,7 @@ Round sun surrounded by pointed rays.
 - **Detail:** simple; **Facing:** none
 - **Dimensions:** 353 x 313 scene units; **Visible Bounds:** left=2, top=1.75, right=350.75, bottom=310.75
 - **Placement:** Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.
-- **Files:** [SVG](../../src/assets/vector/garden-sun.svg), [Definition](../../src/assets/vector/garden-sun.json), [Source](../../art/source/cottage-garden-PAINT-READY.bmp)
+- **Files:** [SVG](../../src/assets/vector/garden-sun.svg), [Definition](../../src/assets/vector/garden-sun.svg), [Source](../../art/source/cottage-garden-PAINT-READY.bmp)
 - **Scene Examples:** [gardenScene.ts](../../src/editor/gardenScene.ts), [safariScene.ts](../../src/editor/safariScene.ts)
 
 ## Round Sun
@@ -33,7 +33,7 @@ Simple round sun for an uncluttered sky.
 - **Detail:** simple; **Facing:** none
 - **Dimensions:** 260 x 260 scene units; **Visible Bounds:** left=2.5, top=2.5, right=257.5, bottom=257.5
 - **Placement:** Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.
-- **Files:** [SVG](../../src/assets/vector/spring-sun.svg), [Definition](../../src/assets/vector/spring-sun.json), [Source](../../art/source/spring/sun.svg)
+- **Files:** [SVG](../../src/assets/vector/spring-sun.svg), [Definition](../../src/assets/vector/spring-sun.svg), [Source](../../art/source/spring/sun.svg)
 - **Scene Examples:** [beachScene.ts](../../src/editor/beachScene.ts), [springScene.ts](../../src/editor/springScene.ts)
 
 ## Cloud
@@ -49,7 +49,7 @@ Rounded cloud outline with large coloring space.
 - **Detail:** simple; **Facing:** none
 - **Dimensions:** 306 x 169 scene units; **Visible Bounds:** left=2, top=2, right=303.75, bottom=166.75
 - **Placement:** Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.
-- **Files:** [SVG](../../src/assets/vector/garden-cloud.svg), [Definition](../../src/assets/vector/garden-cloud.json), [Source](../../art/source/cottage-garden-PAINT-READY.bmp)
+- **Files:** [SVG](../../src/assets/vector/garden-cloud.svg), [Definition](../../src/assets/vector/garden-cloud.svg), [Source](../../art/source/cottage-garden-PAINT-READY.bmp)
 - **Scene Examples:** [gardenScene.ts](../../src/editor/gardenScene.ts), [safariScene.ts](../../src/editor/safariScene.ts)
 
 ## Simple Cloud
@@ -65,7 +65,7 @@ Simple wide rounded cloud.
 - **Detail:** simple; **Facing:** none
 - **Dimensions:** 380 x 174 scene units; **Visible Bounds:** left=5.25, top=6.5, right=378.5, bottom=170.5
 - **Placement:** Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.
-- **Files:** [SVG](../../src/assets/vector/spring-cloud.svg), [Definition](../../src/assets/vector/spring-cloud.json), [Source](../../art/source/spring/cloud.svg)
+- **Files:** [SVG](../../src/assets/vector/spring-cloud.svg), [Definition](../../src/assets/vector/spring-cloud.svg), [Source](../../art/source/spring/cloud.svg)
 - **Scene Examples:** [beachScene.ts](../../src/editor/beachScene.ts), [safariScene.ts](../../src/editor/safariScene.ts), [springScene.ts](../../src/editor/springScene.ts)
 
 ## Rainbow
@@ -81,7 +81,7 @@ Broad arched rainbow with separate bands to color.
 - **Detail:** simple; **Facing:** none
 - **Dimensions:** 800 x 398 scene units; **Visible Bounds:** left=2.5, top=2.5, right=797.5, bottom=395.5
 - **Placement:** Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.
-- **Files:** [SVG](../../src/assets/vector/garden-rainbow.svg), [Definition](../../src/assets/vector/garden-rainbow.json), [Source](../../art/source/generated/rainbow.svg)
+- **Files:** [SVG](../../src/assets/vector/garden-rainbow.svg), [Definition](../../src/assets/vector/garden-rainbow.svg), [Source](../../art/source/generated/rainbow.svg)
 - **Scene Examples:** [gardenScene.ts](../../src/editor/gardenScene.ts)
 
 ## Star
@@ -97,6 +97,54 @@ Five-pointed star outline.
 - **Detail:** simple; **Facing:** none
 - **Dimensions:** 70 x 69 scene units; **Visible Bounds:** left=2.5, top=2.5, right=67.5, bottom=65.5
 - **Placement:** Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.
-- **Files:** [SVG](../../src/assets/vector/counting-star.svg), [Definition](../../src/assets/vector/counting-star.json), [Source](../../art/source/counting/star.svg)
+- **Files:** [SVG](../../src/assets/vector/counting-star.svg), [Definition](../../src/assets/vector/counting-star.svg), [Source](../../art/source/counting/star.svg)
 - **Scene Examples:** [countingScene.ts](../../src/editor/countingScene.ts), [winterScene.ts](../../src/editor/winterScene.ts)
+
+## Twinkling Star
+
+`nursery-rhymes-twinkling-star`
+
+<img src="../../src/assets/vector/nursery-rhymes-twinkling-star.svg" alt="Twinkling Star" width="180" height="150" style="object-fit:contain;background:white" />
+
+Five broad rounded points, small smiling face in center, two tiny mitten arms and two short little feet. Three small outlined diamond sparkles nearby, separated clearly from star. The star remains the main silhouette.
+
+- **Tags:** nursery-rhymes, Twinkle Twinkle Little Star, sky, twinkling-star
+- **Roles:** subject, accent
+- **Detail:** moderate; **Facing:** none
+- **Dimensions:** 340 x 319 scene units; **Visible Bounds:** left=2.5, top=2.75, right=337.5, bottom=316.5
+- **Placement:** Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.
+- **Files:** [SVG](../../src/assets/vector/nursery-rhymes-twinkling-star.svg), [Definition](../../src/assets/vector/nursery-rhymes-twinkling-star.svg), [Source](../../art/source/nursery-rhymes/twinkling-star.png)
+- **Scene Examples:** Not yet used in a built-in scene.
+
+## Sleepy Crescent Moon
+
+`nursery-rhymes-sleepy-moon`
+
+<img src="../../src/assets/vector/nursery-rhymes-sleepy-moon.svg" alt="Sleepy Crescent Moon" width="180" height="150" style="object-fit:contain;background:white" />
+
+A generous crescent with both tips visible, gentle face on the thick left side and simple sleeping cap draped outside upper curve, tiny rounded pompom. Large inner opening entirely empty. No stars or clouds or floating words.
+
+- **Tags:** nursery-rhymes, Twinkle Twinkle Little Star, sky, sleepy-moon
+- **Roles:** subject, accent
+- **Detail:** moderate; **Facing:** none
+- **Dimensions:** 291 x 340 scene units; **Visible Bounds:** left=2.5, top=2.25, right=288.5, bottom=337.5
+- **Placement:** Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.
+- **Files:** [SVG](../../src/assets/vector/nursery-rhymes-sleepy-moon.svg), [Definition](../../src/assets/vector/nursery-rhymes-sleepy-moon.svg), [Source](../../art/source/nursery-rhymes/sleepy-moon.png)
+- **Scene Examples:** Not yet used in a built-in scene.
+
+## Cloud Pillow
+
+`nursery-rhymes-cloud-pillow`
+
+<img src="../../src/assets/vector/nursery-rhymes-cloud-pillow.svg" alt="Cloud Pillow" width="180" height="150" style="object-fit:contain;background:white" />
+
+One broad rounded puffy cloud with a gentle sleepy face near middle and a tiny nightcap perched on one end, simple clean silhouette, no limbs, no moon or stars or raindrops. Generous white interior for coloring.
+
+- **Tags:** nursery-rhymes, Twinkle Twinkle Little Star, sky, cloud-pillow
+- **Roles:** subject, accent
+- **Detail:** moderate; **Facing:** none
+- **Dimensions:** 340 x 245 scene units; **Visible Bounds:** left=2.5, top=2.25, right=337.5, bottom=242.5
+- **Placement:** Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.
+- **Files:** [SVG](../../src/assets/vector/nursery-rhymes-cloud-pillow.svg), [Definition](../../src/assets/vector/nursery-rhymes-cloud-pillow.svg), [Source](../../art/source/nursery-rhymes/cloud-pillow.png)
+- **Scene Examples:** Not yet used in a built-in scene.
 

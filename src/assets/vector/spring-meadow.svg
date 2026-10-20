@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1440"><g transform="matrix(0.05 0 0 -0.05 0 1440)" fill="white"><path d="M10290 28184 c-2398 -49 -4664 -452 -6885 -1225 -903 -314 -1694
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1440" data-region-format="1" data-region-scale="2" data-bounds="0 28 1920 1440"><defs><clipPath id="clip-base-0" clipPathUnits="userSpaceOnUse"><path transform="matrix(1 0 0 1 0 0)" clip-rule="evenodd" fill-rule="evenodd" d="M-100 -100 L2020 -100 L2020 1540 L-100 1540Z M0 166.5Q450 -74 980 111T1920 92.5V1440H0Z"/></clipPath></defs><g id="regions" fill="white" fill-rule="nonzero"><path id="region-1" data-bounds="0 30.5 1920 1440" transform="matrix(0.05 0 0 -0.05 -0.5 1440.5)" d="M10300 28194 c-2398 -49 -4664 -452 -6885 -1225 -903 -314 -1694
 -642 -2559 -1061 -335 -163 -773 -388 -816 -420 l-30 -22 0 -12728 0 -12728
 19200 0 19200 0 0 13455 0 13455 -26 6 c-19 5 -69 -14 -216 -86 -1215 -587
 -2484 -1048 -3793 -1378 -1163 -294 -2290 -476 -3520 -572 -509 -39 -835 -52
 -1475 -57 -750 -7 -1237 7 -1880 52 -2239 159 -4535 617 -6956 1389 -197 63
 -603 198 -901 300 -297 102 -660 223 -805 270 -1417 455 -2797 793 -4173 1020
--1027 170 -2073 276 -3090 315 -285 11 -1030 20 -1275 15z"/></g><g transform="scale(1 1)"><g fill="white" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 166.5Q450 -74 980 111T1920 92.5V1440H0Z"/><path fill="none" d="M0 166.5Q450 -74 980 111T1920 92.5"/></g></g></svg>
+-1027 170 -2073 276 -3090 315 -285 11 -1030 20 -1275 15z"/></g><g id="ink" stroke-linejoin="round" stroke-linecap="round"><path id="ink-2" transform="matrix(1 0 0 1 0 0)" fill="none" stroke="black" stroke-width="5" d="M0 166.5Q450 -74 980 111T1920 92.5"/></g></svg>

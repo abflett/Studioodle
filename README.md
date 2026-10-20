@@ -39,6 +39,8 @@ npm run lint        # Hand-maintained app and authoring code
 npm run build       # Static web application in dist/
 npm run preview     # Serve dist/ locally
 npm run check       # Tests, TypeScript, lint and production web build
+npm run assets:build # Rebuild sticker SVGs (ImageMagick + Potrace)
+npm run benchmark:stickers # Compare the library to the pinned pre-migration baseline
 npm run desktop:dev
 npm run desktop:build  # Windows NSIS installer
 ```
@@ -72,6 +74,8 @@ experimental save formats are unsupported.
 
 - [Architecture and maintenance](docs/ARCHITECTURE.md)
 - [Artwork catalog](art/CATALOG.md) and [scene authoring](art/SCENE-AUTHORING.md)
+- [SVG library migration results](docs/experiments/SVG-MIGRATION.md)
+- [Garden house SVG region experiment](docs/experiments/GARDEN-HOUSE.md)
 - [How stickers work: source to screen](docs/STICKER-PIPELINE.md)
 - [Hybrid artwork engine and conversion](docs/HYBRID-ENGINE.md)
 - [Startup and navigation](docs/STARTUP.md)

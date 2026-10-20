@@ -1,0 +1,1969 @@
+{
+  "environment": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0",
+  "totalAssets": 71,
+  "totalRegions": 2541,
+  "failures": [],
+  "rows": [
+    {
+      "id": "circle",
+      "regionCount": 1,
+      "beforeDecodeMs": 11.299999982118607,
+      "afterDecodeMs": 5.9000000059604645,
+      "beforeMapBytes": 2094400,
+      "afterMapBytes": 985600,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 985600,
+        "differentSamples": 321,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 104.875,
+          "y": 60.125
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "square",
+      "regionCount": 1,
+      "beforeDecodeMs": 10,
+      "afterDecodeMs": 3.7999999821186066,
+      "beforeMapBytes": 2094400,
+      "afterMapBytes": 985600,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 985600,
+        "differentSamples": 187,
+        "interiorDifferences": 1,
+        "missingIds": [],
+        "seed": {
+          "x": 36.875,
+          "y": 60.125
+        }
+      }
+    },
+    {
+      "id": "triangle",
+      "regionCount": 1,
+      "beforeDecodeMs": 9.099999994039536,
+      "afterDecodeMs": 3.4000000059604645,
+      "beforeMapBytes": 2094400,
+      "afterMapBytes": 985600,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 985600,
+        "differentSamples": 437,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 109.875,
+          "y": 57.125
+        }
+      }
+    },
+    {
+      "id": "tree",
+      "regionCount": 2,
+      "beforeDecodeMs": 9.599999994039536,
+      "afterDecodeMs": 3.800000011920929,
+      "beforeMapBytes": 2094400,
+      "afterMapBytes": 985600,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 985600,
+        "differentSamples": 433,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 77.875,
+          "y": 30.125
+        }
+      }
+    },
+    {
+      "id": "flower",
+      "regionCount": 7,
+      "beforeDecodeMs": 9.899999976158142,
+      "afterDecodeMs": 5.600000023841858,
+      "beforeMapBytes": 2094400,
+      "afterMapBytes": 985600,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 985600,
+        "differentSamples": 752,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 107.125,
+          "y": 66.125
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "garden-house",
+      "regionCount": 90,
+      "beforeDecodeMs": 17.900000005960464,
+      "afterDecodeMs": 17.5,
+      "beforeMapBytes": 2965480,
+      "afterMapBytes": 1395520,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 273,
+      "comparison": {
+        "samples": 1395520,
+        "differentSamples": 4651,
+        "interiorDifferences": 2,
+        "missingIds": [],
+        "seed": {
+          "x": 307.75,
+          "y": 18.75
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "garden-tree",
+      "regionCount": 6,
+      "beforeDecodeMs": 33.20000001788139,
+      "afterDecodeMs": 19.599999994039536,
+      "beforeMapBytes": 7435800,
+      "afterMapBytes": 3499200,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 9,
+      "comparison": {
+        "samples": 3499200,
+        "differentSamples": 1879,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 206.625,
+          "y": 9.875
+        }
+      }
+    },
+    {
+      "id": "garden-bush",
+      "regionCount": 1,
+      "beforeDecodeMs": 5.4000000059604645,
+      "afterDecodeMs": 2.2999999821186066,
+      "beforeMapBytes": 1234200,
+      "afterMapBytes": 580800,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 580800,
+        "differentSamples": 509,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 126.625,
+          "y": 19.125
+        }
+      }
+    },
+    {
+      "id": "garden-flower",
+      "regionCount": 9,
+      "beforeDecodeMs": 16.900000005960464,
+      "afterDecodeMs": 6,
+      "beforeMapBytes": 1999200,
+      "afterMapBytes": 940800,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 8,
+      "comparison": {
+        "samples": 940800,
+        "differentSamples": 1443,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 98.375,
+          "y": 6.875
+        }
+      }
+    },
+    {
+      "id": "garden-mushroom",
+      "regionCount": 6,
+      "beforeDecodeMs": 4.0999999940395355,
+      "afterDecodeMs": 2.699999988079071,
+      "beforeMapBytes": 703800,
+      "afterMapBytes": 331200,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 331200,
+        "differentSamples": 821,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 71.625,
+          "y": 4.125
+        }
+      }
+    },
+    {
+      "id": "garden-blossom",
+      "regionCount": 7,
+      "beforeDecodeMs": 0.9000000059604645,
+      "afterDecodeMs": 1.199999988079071,
+      "beforeMapBytes": 124032,
+      "afterMapBytes": 58368,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 58368,
+        "differentSamples": 264,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 26.875,
+          "y": 1.625
+        }
+      }
+    },
+    {
+      "id": "garden-rainbow",
+      "regionCount": 3,
+      "beforeDecodeMs": 13.799999982118607,
+      "afterDecodeMs": 14.100000023841858,
+      "beforeMapBytes": 2706400,
+      "afterMapBytes": 1273600,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 44,
+      "comparison": {
+        "samples": 1273600,
+        "differentSamples": 1365,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 383.75,
+          "y": 5.25
+        }
+      }
+    },
+    {
+      "id": "garden-fence",
+      "regionCount": 20,
+      "beforeDecodeMs": 11,
+      "afterDecodeMs": 5.0999999940395355,
+      "beforeMapBytes": 1811520,
+      "afterMapBytes": 852480,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 852480,
+        "differentSamples": 389,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 30.125,
+          "y": 6.625
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "garden-path",
+      "regionCount": 1,
+      "beforeDecodeMs": 18,
+      "afterDecodeMs": 9,
+      "beforeMapBytes": 4634880,
+      "afterMapBytes": 2181120,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 2181120,
+        "differentSamples": 368,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 191.875,
+          "y": 3.125
+        }
+      }
+    },
+    {
+      "id": "garden-stone",
+      "regionCount": 1,
+      "beforeDecodeMs": 1,
+      "afterDecodeMs": 1,
+      "beforeMapBytes": 167280,
+      "afterMapBytes": 78720,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 78720,
+        "differentSamples": 170,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 53.375,
+          "y": 5.375
+        }
+      }
+    },
+    {
+      "id": "garden-grass",
+      "regionCount": 1,
+      "beforeDecodeMs": 1,
+      "afterDecodeMs": 0.800000011920929,
+      "beforeMapBytes": 140624,
+      "afterMapBytes": 66176,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 66176,
+        "differentSamples": 155,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 34.125,
+          "y": 3.625
+        }
+      }
+    },
+    {
+      "id": "garden-sun",
+      "regionCount": 12,
+      "beforeDecodeMs": 17.5,
+      "afterDecodeMs": 9.199999988079071,
+      "beforeMapBytes": 3756626,
+      "afterMapBytes": 1767824,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 1767824,
+        "differentSamples": 1465,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 189.375,
+          "y": 4.625
+        }
+      }
+    },
+    {
+      "id": "garden-cloud",
+      "regionCount": 1,
+      "beforeDecodeMs": 7.0999999940395355,
+      "afterDecodeMs": 6.300000011920929,
+      "beforeMapBytes": 1758276,
+      "afterMapBytes": 827424,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 827424,
+        "differentSamples": 530,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 137.375,
+          "y": 4.625
+        }
+      }
+    },
+    {
+      "id": "garden-butterfly",
+      "regionCount": 12,
+      "beforeDecodeMs": 7.199999988079071,
+      "afterDecodeMs": 6.300000011920929,
+      "beforeMapBytes": 1410830,
+      "afterMapBytes": 663920,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 663920,
+        "differentSamples": 1178,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 157.125,
+          "y": 4.625
+        }
+      }
+    },
+    {
+      "id": "garden-apple",
+      "regionCount": 3,
+      "beforeDecodeMs": 1.4000000059604645,
+      "afterDecodeMs": 1.2999999821186066,
+      "beforeMapBytes": 240856,
+      "afterMapBytes": 113344,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 113344,
+        "differentSamples": 232,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 61.375,
+          "y": 9.125
+        }
+      }
+    },
+    {
+      "id": "garden-window",
+      "regionCount": 6,
+      "beforeDecodeMs": 3,
+      "afterDecodeMs": 2.4000000059604645,
+      "beforeMapBytes": 407252,
+      "afterMapBytes": 191648,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 191648,
+        "differentSamples": 590,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 50.125,
+          "y": 4.875
+        }
+      }
+    },
+    {
+      "id": "counting-01",
+      "regionCount": 38,
+      "beforeDecodeMs": 18.899999976158142,
+      "afterDecodeMs": 11.400000005960464,
+      "beforeMapBytes": 2647240,
+      "afterMapBytes": 1245760,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 96,
+      "comparison": {
+        "samples": 1245760,
+        "differentSamples": 2372,
+        "interiorDifferences": 1,
+        "missingIds": [],
+        "seed": {
+          "x": 107.875,
+          "y": 19.125
+        }
+      }
+    },
+    {
+      "id": "counting-02",
+      "regionCount": 37,
+      "beforeDecodeMs": 19.5,
+      "afterDecodeMs": 13.5,
+      "beforeMapBytes": 3376200,
+      "afterMapBytes": 1588800,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 242,
+      "comparison": {
+        "samples": 1588800,
+        "differentSamples": 2874,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 140.875,
+          "y": 16.625
+        }
+      }
+    },
+    {
+      "id": "counting-03",
+      "regionCount": 27,
+      "beforeDecodeMs": 18.900000005960464,
+      "afterDecodeMs": 12.599999994039536,
+      "beforeMapBytes": 2635680,
+      "afterMapBytes": 1240320,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 150,
+      "comparison": {
+        "samples": 1240320,
+        "differentSamples": 2528,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 114.125,
+          "y": 4.125
+        }
+      }
+    },
+    {
+      "id": "counting-04",
+      "regionCount": 44,
+      "beforeDecodeMs": 18.5,
+      "afterDecodeMs": 17.69999998807907,
+      "beforeMapBytes": 3121200,
+      "afterMapBytes": 1468800,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 103,
+      "comparison": {
+        "samples": 1468800,
+        "differentSamples": 2691,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 135.625,
+          "y": 22.375
+        }
+      }
+    },
+    {
+      "id": "counting-05",
+      "regionCount": 68,
+      "beforeDecodeMs": 19.700000017881393,
+      "afterDecodeMs": 11.299999982118607,
+      "beforeMapBytes": 2647240,
+      "afterMapBytes": 1245760,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 241,
+      "comparison": {
+        "samples": 1245760,
+        "differentSamples": 3060,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 74.375,
+          "y": 9.875
+        }
+      }
+    },
+    {
+      "id": "counting-06",
+      "regionCount": 41,
+      "beforeDecodeMs": 15.599999994039536,
+      "afterDecodeMs": 11.099999994039536,
+      "beforeMapBytes": 2693480,
+      "afterMapBytes": 1267520,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 188,
+      "comparison": {
+        "samples": 1267520,
+        "differentSamples": 2625,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 62.125,
+          "y": 14.875
+        }
+      }
+    },
+    {
+      "id": "counting-07",
+      "regionCount": 59,
+      "beforeDecodeMs": 17.899999976158142,
+      "afterDecodeMs": 10.900000005960464,
+      "beforeMapBytes": 3304800,
+      "afterMapBytes": 1555200,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 123,
+      "comparison": {
+        "samples": 1555200,
+        "differentSamples": 2779,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 169.375,
+          "y": 5.875
+        }
+      }
+    },
+    {
+      "id": "counting-08",
+      "regionCount": 55,
+      "beforeDecodeMs": 17.200000017881393,
+      "afterDecodeMs": 11,
+      "beforeMapBytes": 2681920,
+      "afterMapBytes": 1262080,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 232,
+      "comparison": {
+        "samples": 1262080,
+        "differentSamples": 2725,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 142.625,
+          "y": 13.125
+        }
+      }
+    },
+    {
+      "id": "counting-09",
+      "regionCount": 40,
+      "beforeDecodeMs": 23.099999994039536,
+      "afterDecodeMs": 11.900000005960464,
+      "beforeMapBytes": 3329280,
+      "afterMapBytes": 1566720,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 59,
+      "comparison": {
+        "samples": 1566720,
+        "differentSamples": 2840,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 144.125,
+          "y": 6.125
+        }
+      }
+    },
+    {
+      "id": "counting-10",
+      "regionCount": 63,
+      "beforeDecodeMs": 20,
+      "afterDecodeMs": 13.900000005960464,
+      "beforeMapBytes": 3060000,
+      "afterMapBytes": 1440000,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 115,
+      "comparison": {
+        "samples": 1440000,
+        "differentSamples": 3401,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 141.125,
+          "y": 5.125
+        }
+      }
+    },
+    {
+      "id": "counting-bunting",
+      "regionCount": 18,
+      "beforeDecodeMs": 21,
+      "afterDecodeMs": 7,
+      "beforeMapBytes": 4651200,
+      "afterMapBytes": 2188800,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 2188800,
+        "differentSamples": 1529,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 24.625,
+          "y": 8.875
+        }
+      }
+    },
+    {
+      "id": "counting-star",
+      "regionCount": 1,
+      "beforeDecodeMs": 1,
+      "afterDecodeMs": 0.699999988079071,
+      "beforeMapBytes": 164220,
+      "afterMapBytes": 77280,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 77280,
+        "differentSamples": 132,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 35.125,
+          "y": 5.625
+        }
+      }
+    },
+    {
+      "id": "spring-bunny",
+      "regionCount": 7,
+      "beforeDecodeMs": 22.5,
+      "afterDecodeMs": 11.799999982118607,
+      "beforeMapBytes": 4801480,
+      "afterMapBytes": 2259520,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 3,
+      "comparison": {
+        "samples": 2259520,
+        "differentSamples": 1723,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 60.625,
+          "y": 14.875
+        }
+      }
+    },
+    {
+      "id": "spring-butterfly",
+      "regionCount": 10,
+      "beforeDecodeMs": 12.099999994039536,
+      "afterDecodeMs": 8.599999994039536,
+      "beforeMapBytes": 2554760,
+      "afterMapBytes": 1202240,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 1202240,
+        "differentSamples": 1419,
+        "interiorDifferences": 1,
+        "missingIds": [],
+        "seed": {
+          "x": 92.625,
+          "y": 5.875
+        }
+      }
+    },
+    {
+      "id": "spring-tulip",
+      "regionCount": 4,
+      "beforeDecodeMs": 21,
+      "afterDecodeMs": 9.900000005960464,
+      "beforeMapBytes": 4198320,
+      "afterMapBytes": 1975680,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 1975680,
+        "differentSamples": 1497,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 144.375,
+          "y": 23.375
+        }
+      }
+    },
+    {
+      "id": "spring-bird",
+      "regionCount": 5,
+      "beforeDecodeMs": 14,
+      "afterDecodeMs": 7.0999999940395355,
+      "beforeMapBytes": 3253800,
+      "afterMapBytes": 1531200,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 1531200,
+        "differentSamples": 1205,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 108.375,
+          "y": 34.375
+        }
+      }
+    },
+    {
+      "id": "spring-watering-can",
+      "regionCount": 6,
+      "beforeDecodeMs": 16.5,
+      "afterDecodeMs": 8.300000011920929,
+      "beforeMapBytes": 3720960,
+      "afterMapBytes": 1751040,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 3,
+      "comparison": {
+        "samples": 1751040,
+        "differentSamples": 1249,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 54.125,
+          "y": 34.875
+        }
+      }
+    },
+    {
+      "id": "spring-sun",
+      "regionCount": 1,
+      "beforeDecodeMs": 10.599999994039536,
+      "afterDecodeMs": 5.300000011920929,
+      "beforeMapBytes": 2298400,
+      "afterMapBytes": 1081600,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 1081600,
+        "differentSamples": 432,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 124.375,
+          "y": 5.125
+        }
+      }
+    },
+    {
+      "id": "spring-cloud",
+      "regionCount": 1,
+      "beforeDecodeMs": 8.800000011920929,
+      "afterDecodeMs": 5.699999988079071,
+      "beforeMapBytes": 2248080,
+      "afterMapBytes": 1057920,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 1057920,
+        "differentSamples": 657,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 109.125,
+          "y": 9.125
+        }
+      }
+    },
+    {
+      "id": "spring-meadow",
+      "regionCount": 1,
+      "beforeDecodeMs": 94.40000000596046,
+      "afterDecodeMs": 55.5,
+      "beforeMapBytes": 23500800,
+      "afterMapBytes": 11059200,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 11059200,
+        "differentSamples": 511,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 514.75,
+          "y": 30.75
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "beach-palm",
+      "regionCount": 13,
+      "beforeDecodeMs": 25,
+      "afterDecodeMs": 6.9000000059604645,
+      "beforeMapBytes": 3319590,
+      "afterMapBytes": 1562160,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 25,
+      "comparison": {
+        "samples": 1562160,
+        "differentSamples": 1417,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 157.75,
+          "y": 34.75
+        }
+      }
+    },
+    {
+      "id": "beach-umbrella",
+      "regionCount": 5,
+      "beforeDecodeMs": 12.900000005960464,
+      "afterDecodeMs": 5.899999976158142,
+      "beforeMapBytes": 3091110,
+      "afterMapBytes": 1454640,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 1,
+      "comparison": {
+        "samples": 1454640,
+        "differentSamples": 882,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 357.75,
+          "y": 20.25
+        }
+      }
+    },
+    {
+      "id": "beach-ball",
+      "regionCount": 8,
+      "beforeDecodeMs": 12.099999994039536,
+      "afterDecodeMs": 8.600000023841858,
+      "beforeMapBytes": 2637040,
+      "afterMapBytes": 1240960,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 1240960,
+        "differentSamples": 1123,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 131.375,
+          "y": 18.125
+        }
+      }
+    },
+    {
+      "id": "beach-shore",
+      "regionCount": 2,
+      "beforeDecodeMs": 86.69999998807907,
+      "afterDecodeMs": 63.400000005960464,
+      "beforeMapBytes": 23500800,
+      "afterMapBytes": 11059200,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 75,
+      "comparison": {
+        "samples": 11059200,
+        "differentSamples": 750,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 66.75,
+          "y": 3.25
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "beach-towel",
+      "regionCount": 3,
+      "beforeDecodeMs": 18.30000001192093,
+      "afterDecodeMs": 10.099999994039536,
+      "beforeMapBytes": 2815200,
+      "afterMapBytes": 1324800,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 1324800,
+        "differentSamples": 1513,
+        "interiorDifferences": 6,
+        "missingIds": [],
+        "seed": {
+          "x": 56.625,
+          "y": 3.125
+        }
+      }
+    },
+    {
+      "id": "beach-shell",
+      "regionCount": 1,
+      "beforeDecodeMs": 3,
+      "afterDecodeMs": 2.0999999940395355,
+      "beforeMapBytes": 696320,
+      "afterMapBytes": 327680,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 327680,
+        "differentSamples": 275,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 59.125,
+          "y": 3.875
+        }
+      }
+    },
+    {
+      "id": "winter-santa-sleigh",
+      "regionCount": 30,
+      "beforeDecodeMs": 28.19999998807907,
+      "afterDecodeMs": 20.599999994039536,
+      "beforeMapBytes": 5548800,
+      "afterMapBytes": 2611200,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 35,
+      "comparison": {
+        "samples": 2611200,
+        "differentSamples": 4503,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 224.375,
+          "y": 8.125
+        }
+      }
+    },
+    {
+      "id": "winter-reindeer",
+      "regionCount": 20,
+      "beforeDecodeMs": 13.200000017881393,
+      "afterDecodeMs": 7.799999982118607,
+      "beforeMapBytes": 2703680,
+      "afterMapBytes": 1272320,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 157,
+      "comparison": {
+        "samples": 1272320,
+        "differentSamples": 1805,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 201.375,
+          "y": 4.125
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "winter-cabin",
+      "regionCount": 66,
+      "beforeDecodeMs": 32.79999998211861,
+      "afterDecodeMs": 27.900000005960464,
+      "beforeMapBytes": 6948240,
+      "afterMapBytes": 3269760,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 102,
+      "comparison": {
+        "samples": 3269760,
+        "differentSamples": 5737,
+        "interiorDifferences": 2,
+        "missingIds": [],
+        "seed": {
+          "x": 367.875,
+          "y": 14.375
+        }
+      }
+    },
+    {
+      "id": "winter-pine",
+      "regionCount": 16,
+      "beforeDecodeMs": 15.299999982118607,
+      "afterDecodeMs": 9.400000005960464,
+      "beforeMapBytes": 3391840,
+      "afterMapBytes": 1596160,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 48,
+      "comparison": {
+        "samples": 1596160,
+        "differentSamples": 2037,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 144.375,
+          "y": 5.875
+        }
+      }
+    },
+    {
+      "id": "winter-skater",
+      "regionCount": 68,
+      "beforeDecodeMs": 11.599999994039536,
+      "afterDecodeMs": 10.5,
+      "beforeMapBytes": 1931540,
+      "afterMapBytes": 908960,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 285,
+      "comparison": {
+        "samples": 908960,
+        "differentSamples": 2507,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 93.625,
+          "y": 4.625
+        }
+      }
+    },
+    {
+      "id": "winter-skater-friend",
+      "regionCount": 51,
+      "beforeDecodeMs": 10.5,
+      "afterDecodeMs": 8.5,
+      "beforeMapBytes": 1931540,
+      "afterMapBytes": 908960,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 257,
+      "comparison": {
+        "samples": 908960,
+        "differentSamples": 2231,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 101.875,
+          "y": 4.375
+        }
+      }
+    },
+    {
+      "id": "winter-snow",
+      "regionCount": 1,
+      "beforeDecodeMs": 107.59999999403954,
+      "afterDecodeMs": 67,
+      "beforeMapBytes": 23500800,
+      "afterMapBytes": 11059200,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 11059200,
+        "differentSamples": 541,
+        "interiorDifferences": 40,
+        "missingIds": [],
+        "seed": {
+          "x": 1696.25,
+          "y": 17.75
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "winter-pond",
+      "regionCount": 1,
+      "beforeDecodeMs": 42.70000001788139,
+      "afterDecodeMs": 20.399999976158142,
+      "beforeMapBytes": 8893720,
+      "afterMapBytes": 4185280,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 4185280,
+        "differentSamples": 877,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 308.875,
+          "y": 7.375
+        }
+      }
+    },
+    {
+      "id": "winter-present",
+      "regionCount": 7,
+      "beforeDecodeMs": 4.799999982118607,
+      "afterDecodeMs": 2.5,
+      "beforeMapBytes": 770100,
+      "afterMapBytes": 362400,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 362400,
+        "differentSamples": 254,
+        "interiorDifferences": 1,
+        "missingIds": [],
+        "seed": {
+          "x": 28.875,
+          "y": 13.875
+        }
+      }
+    },
+    {
+      "id": "animal-giraffe",
+      "regionCount": 47,
+      "beforeDecodeMs": 9.399999976158142,
+      "afterDecodeMs": 9.300000011920929,
+      "beforeMapBytes": 1560600,
+      "afterMapBytes": 734400,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 28,
+      "comparison": {
+        "samples": 734400,
+        "differentSamples": 1736,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 128.875,
+          "y": 9.375
+        }
+      }
+    },
+    {
+      "id": "animal-elephant",
+      "regionCount": 19,
+      "beforeDecodeMs": 11.300000011920929,
+      "afterDecodeMs": 7.799999982118607,
+      "beforeMapBytes": 2392580,
+      "afterMapBytes": 1125920,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 2,
+      "comparison": {
+        "samples": 1125920,
+        "differentSamples": 1367,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 98.625,
+          "y": 9.875
+        }
+      }
+    },
+    {
+      "id": "animal-lion",
+      "regionCount": 13,
+      "beforeDecodeMs": 8.099999994039536,
+      "afterDecodeMs": 5.300000011920929,
+      "beforeMapBytes": 1583244,
+      "afterMapBytes": 745056,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 745056,
+        "differentSamples": 1428,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 62.875,
+          "y": 9.875
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "animal-hippo",
+      "regionCount": 22,
+      "beforeDecodeMs": 11.300000011920929,
+      "afterDecodeMs": 7.799999982118607,
+      "beforeMapBytes": 2001580,
+      "afterMapBytes": 941920,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 1,
+      "comparison": {
+        "samples": 941920,
+        "differentSamples": 1082,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 60.625,
+          "y": 9.375
+        }
+      }
+    },
+    {
+      "id": "animal-zebra",
+      "regionCount": 74,
+      "beforeDecodeMs": 12.699999988079071,
+      "afterDecodeMs": 12.600000023841858,
+      "beforeMapBytes": 2107014,
+      "afterMapBytes": 991536,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 18,
+      "comparison": {
+        "samples": 991536,
+        "differentSamples": 2681,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 212.875,
+          "y": 9.875
+        }
+      }
+    },
+    {
+      "id": "animal-rhino",
+      "regionCount": 19,
+      "beforeDecodeMs": 9.599999994039536,
+      "afterDecodeMs": 6.199999988079071,
+      "beforeMapBytes": 1991992,
+      "afterMapBytes": 937408,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 4,
+      "comparison": {
+        "samples": 937408,
+        "differentSamples": 1152,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 106.125,
+          "y": 10.375
+        }
+      }
+    },
+    {
+      "id": "animal-leopard",
+      "regionCount": 89,
+      "beforeDecodeMs": 12.5,
+      "afterDecodeMs": 11.099999994039536,
+      "beforeMapBytes": 2086716,
+      "afterMapBytes": 981984,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 16,
+      "comparison": {
+        "samples": 981984,
+        "differentSamples": 2389,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 292.375,
+          "y": 9.625
+        }
+      }
+    },
+    {
+      "id": "animal-ostrich",
+      "regionCount": 18,
+      "beforeDecodeMs": 8.400000005960464,
+      "afterDecodeMs": 4.5,
+      "beforeMapBytes": 1710336,
+      "afterMapBytes": 804864,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 2,
+      "comparison": {
+        "samples": 804864,
+        "differentSamples": 1210,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 37.375,
+          "y": 9.875
+        }
+      }
+    },
+    {
+      "id": "animal-buffalo",
+      "regionCount": 19,
+      "beforeDecodeMs": 11,
+      "afterDecodeMs": 6,
+      "beforeMapBytes": 2118438,
+      "afterMapBytes": 996912,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 3,
+      "comparison": {
+        "samples": 996912,
+        "differentSamples": 1618,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 150.375,
+          "y": 10.375
+        }
+      }
+    },
+    {
+      "id": "animal-meerkat",
+      "regionCount": 17,
+      "beforeDecodeMs": 5.699999988079071,
+      "afterDecodeMs": 4.200000017881393,
+      "beforeMapBytes": 1004088,
+      "afterMapBytes": 472512,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 2,
+      "comparison": {
+        "samples": 472512,
+        "differentSamples": 943,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 38.875,
+          "y": 9.875
+        }
+      }
+    },
+    {
+      "id": "animal-warthog",
+      "regionCount": 18,
+      "beforeDecodeMs": 8.300000011920929,
+      "afterDecodeMs": 5.5,
+      "beforeMapBytes": 1701768,
+      "afterMapBytes": 800832,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 0,
+      "comparison": {
+        "samples": 800832,
+        "differentSamples": 1211,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 49.125,
+          "y": 9.875
+        }
+      }
+    },
+    {
+      "id": "animal-crocodile",
+      "regionCount": 44,
+      "beforeDecodeMs": 8,
+      "afterDecodeMs": 7.4000000059604645,
+      "beforeMapBytes": 1601808,
+      "afterMapBytes": 753792,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 9,
+      "comparison": {
+        "samples": 753792,
+        "differentSamples": 1326,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 237.375,
+          "y": 9.625
+        }
+      }
+    },
+    {
+      "id": "space-alien",
+      "regionCount": 99,
+      "beforeDecodeMs": 24.900000005960464,
+      "afterDecodeMs": 19,
+      "beforeMapBytes": 4501600,
+      "afterMapBytes": 2118400,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 57,
+      "comparison": {
+        "samples": 2118400,
+        "differentSamples": 5130,
+        "interiorDifferences": 2,
+        "missingIds": [],
+        "seed": {
+          "x": 232.875,
+          "y": 7.125
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "space-spaceship",
+      "regionCount": 599,
+      "beforeDecodeMs": 34.099999994039536,
+      "afterDecodeMs": 51.099999994039536,
+      "beforeMapBytes": 3908640,
+      "afterMapBytes": 3678720,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 1330,
+      "comparison": {
+        "samples": 1839360,
+        "differentSamples": 14306,
+        "interiorDifferences": 5,
+        "missingIds": [],
+        "seed": {
+          "x": 776.25,
+          "y": 7.75
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    },
+    {
+      "id": "space-crater",
+      "regionCount": 435,
+      "beforeDecodeMs": 137.30000001192093,
+      "afterDecodeMs": 149.69999998807907,
+      "beforeMapBytes": 23500800,
+      "afterMapBytes": 22118400,
+      "inkPixelDifferences": 0,
+      "previewPixelDifferences": 683,
+      "comparison": {
+        "samples": 11059200,
+        "differentSamples": 15017,
+        "interiorDifferences": 0,
+        "missingIds": [],
+        "seed": {
+          "x": 1399.25,
+          "y": 38.25
+        }
+      },
+      "checks": {
+        "filled": true,
+        "saveRestore": true,
+        "flip": true,
+        "transform": true,
+        "duplicated": true,
+        "png": true
+      }
+    }
+  ],
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Edg/155.0.4283.62",
+    "revision": "@aa3a7406ba8c53a83536df539f07124d73c899bd",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0",
+    "jsVersion": "15.5.9.7"
+  },
+  "files": {
+    "beforeCommit": "c460b3e16d31cd67754b40531271b4f36612a8c8",
+    "beforeBytes": 28004263,
+    "beforeGzipBytes": 2446830,
+    "afterBytes": 2416210,
+    "afterGzipBytes": 888158,
+    "assets": [
+      {
+        "id": "circle",
+        "bytes": 1159,
+        "gzipBytes": 621,
+        "sha256": "c9492aff287eb90214aab2cb37ab359e0b6b9805764fcdd9db4efafb4aa9f614"
+      },
+      {
+        "id": "square",
+        "bytes": 1117,
+        "gzipBytes": 564,
+        "sha256": "4fefc3f5f0b7eadac643f12ec00edea69b12835f16487422c3a79ffd058af4da"
+      },
+      {
+        "id": "triangle",
+        "bytes": 908,
+        "gzipBytes": 504,
+        "sha256": "3851433d659888b5f83f3ab591d823db6c6e7804512ae4a5cafeed30783ff5b3"
+      },
+      {
+        "id": "tree",
+        "bytes": 2274,
+        "gzipBytes": 957,
+        "sha256": "2553c522f2048b27b59eebd29f598c97699c2f6e60c8375f8e2603d717527344"
+      },
+      {
+        "id": "flower",
+        "bytes": 8234,
+        "gzipBytes": 2432,
+        "sha256": "8f2c42077815ba572504c74f3f507bd728ab3dc786716c7caefb5123231dc058"
+      },
+      {
+        "id": "garden-house",
+        "bytes": 67776,
+        "gzipBytes": 26653,
+        "sha256": "eb595f2821d632d13871065e62d90aa3047490b5107350b1e17f0fb510558182"
+      },
+      {
+        "id": "garden-tree",
+        "bytes": 17799,
+        "gzipBytes": 7660,
+        "sha256": "cd01f888684c654b4cf1a41a75dfae128e3275ec863ef26ac1547c2235be455f"
+      },
+      {
+        "id": "garden-bush",
+        "bytes": 6204,
+        "gzipBytes": 2817,
+        "sha256": "97dacd477f7fd45a11086859ccdd6806b380748e8a4384b2d507ef38498d0e5a"
+      },
+      {
+        "id": "garden-flower",
+        "bytes": 10367,
+        "gzipBytes": 4627,
+        "sha256": "13f63fc7c8d754f38b7e4d911672e9a873935e4f9f7c1e38d5b92a525c91c869"
+      },
+      {
+        "id": "garden-mushroom",
+        "bytes": 6554,
+        "gzipBytes": 2792,
+        "sha256": "f8a5a349151cb11d1f21016469fcf4bee8865473c7cdc36e02407c40148486b5"
+      },
+      {
+        "id": "garden-blossom",
+        "bytes": 7117,
+        "gzipBytes": 1883,
+        "sha256": "dda31ec050bb1de3d4594c7dd6fcca818c9374853cc9b6ec71c9e0bb05548330"
+      },
+      {
+        "id": "garden-rainbow",
+        "bytes": 4081,
+        "gzipBytes": 1861,
+        "sha256": "4b1175b6d162cee71c0c7baade013d2af8a5ba7d67dba1666df3609cc39f8fab"
+      },
+      {
+        "id": "garden-fence",
+        "bytes": 11419,
+        "gzipBytes": 1387,
+        "sha256": "6f2c6114d9f3713e9b9f04e962096f7693499f08fef2874e037d01e421940ed0"
+      },
+      {
+        "id": "garden-path",
+        "bytes": 1591,
+        "gzipBytes": 804,
+        "sha256": "cb14cb584dde1c7619c937a4ddcea83b04f3be1c11c28ff422528ec60b2201da"
+      },
+      {
+        "id": "garden-stone",
+        "bytes": 1234,
+        "gzipBytes": 634,
+        "sha256": "a67e70ff54ac5d34c6774f72158c294ddc1bc6621d3191ed962f3a491a1ecded"
+      },
+      {
+        "id": "garden-grass",
+        "bytes": 1593,
+        "gzipBytes": 788,
+        "sha256": "c9052b7579dab95aa2a490c8fe8d024f4aa7cbc9e5813a57e5947ced995453be"
+      },
+      {
+        "id": "garden-sun",
+        "bytes": 11826,
+        "gzipBytes": 4946,
+        "sha256": "ad37a68871d93b6d0adbbd1887f31a941226abe8a5790efd86917cf90fd63879"
+      },
+      {
+        "id": "garden-cloud",
+        "bytes": 3109,
+        "gzipBytes": 1525,
+        "sha256": "20cb5272b619386f242fef28b0ad080ac913c54fb1e2ebcc3bd7c9352d07e213"
+      },
+      {
+        "id": "garden-butterfly",
+        "bytes": 11739,
+        "gzipBytes": 4704,
+        "sha256": "196eea008f5d8c8a7d49285e328939e9fe1c01022117a893b962b24f9ad2b0dc"
+      },
+      {
+        "id": "garden-apple",
+        "bytes": 2909,
+        "gzipBytes": 1092,
+        "sha256": "bd11b7806c63532ce342b5412939eb379247c135893275bc9b0264b40877226c"
+      },
+      {
+        "id": "garden-window",
+        "bytes": 5441,
+        "gzipBytes": 2315,
+        "sha256": "4599df827cc9087c7249d81620ee6b5746d1d36623a5160e290d237d1c1b798d"
+      },
+      {
+        "id": "counting-01",
+        "bytes": 32205,
+        "gzipBytes": 12905,
+        "sha256": "993d7b11d9c9a3d5df8832481454aa16f10975db6ebeaee21a1cfa2e68356308"
+      },
+      {
+        "id": "counting-02",
+        "bytes": 36345,
+        "gzipBytes": 14790,
+        "sha256": "7dd949e2d0fee89e981f537c92120da2b4f3a95163a5935b9c6909d7a0e78dea"
+      },
+      {
+        "id": "counting-03",
+        "bytes": 30263,
+        "gzipBytes": 12377,
+        "sha256": "c0ef1af5a82ef3956e85a0e5c0facf48e389c83b9963b4773bf157a865c5767b"
+      },
+      {
+        "id": "counting-04",
+        "bytes": 43600,
+        "gzipBytes": 16050,
+        "sha256": "274fe0f6f16221c4e1a6fad81088dc5407793f5173a6b00f96454dcedf98143d"
+      },
+      {
+        "id": "counting-05",
+        "bytes": 50665,
+        "gzipBytes": 19258,
+        "sha256": "e1ff15d71730de2291a87a0161de903c29f1ed9f59b79fa7cb34df66545f6d97"
+      },
+      {
+        "id": "counting-06",
+        "bytes": 41730,
+        "gzipBytes": 16729,
+        "sha256": "0fc043708ddce8c90c053208d9e5fdf3c12684b62d92f7e84ae78fa218af1ca1"
+      },
+      {
+        "id": "counting-07",
+        "bytes": 45923,
+        "gzipBytes": 18000,
+        "sha256": "e761039f8d5c5ba1230b36112d9b183382cd8573beec1ebc2b54654941ef980d"
+      },
+      {
+        "id": "counting-08",
+        "bytes": 46044,
+        "gzipBytes": 18024,
+        "sha256": "e5f59140ee85d694de30b112841402cfe3ae3b31a7d6a688adb2de163fccba39"
+      },
+      {
+        "id": "counting-09",
+        "bytes": 34725,
+        "gzipBytes": 13948,
+        "sha256": "4cb192b906ba46d99d5a8bf2521c51b58aa3e17fd4a4264ef726cae7110615fe"
+      },
+      {
+        "id": "counting-10",
+        "bytes": 50474,
+        "gzipBytes": 19700,
+        "sha256": "61cb42fab6ec88150c469df878978d09db7fed21c8f99fe1b46aff6131bac6b4"
+      },
+      {
+        "id": "counting-bunting",
+        "bytes": 20073,
+        "gzipBytes": 2493,
+        "sha256": "f4a1caff35778215595907ef981013cc705f271f64a0061e40a39678b0a137e3"
+      },
+      {
+        "id": "counting-star",
+        "bytes": 1486,
+        "gzipBytes": 736,
+        "sha256": "774ef2e44d2af41c1f019975234a85d49f5c05bc17406262f7adf56fa86a8d78"
+      },
+      {
+        "id": "spring-bunny",
+        "bytes": 10740,
+        "gzipBytes": 4697,
+        "sha256": "b5ba58e156568eba16ed36148dd934597d896a2f9c85ccd66305597c7606e1f4"
+      },
+      {
+        "id": "spring-butterfly",
+        "bytes": 10803,
+        "gzipBytes": 4609,
+        "sha256": "d206c8f2c623ab89157f1ea61723e79d0faa9df28e875612ccaf674f779de3ca"
+      },
+      {
+        "id": "spring-tulip",
+        "bytes": 5925,
+        "gzipBytes": 2779,
+        "sha256": "ab2f4015bd8ea81c0178648cba17a172b62c6111c305d0d2a05c44810f0bf4ef"
+      },
+      {
+        "id": "spring-bird",
+        "bytes": 7242,
+        "gzipBytes": 3281,
+        "sha256": "ca61cf87ae5d2bdfca1c61be025e0ebac1ce62d154e0058728264db6457409e0"
+      },
+      {
+        "id": "spring-watering-can",
+        "bytes": 8059,
+        "gzipBytes": 3653,
+        "sha256": "10dc6945e0aa3385996b26c58692d89caea191b730888cb114137864e2989dd9"
+      },
+      {
+        "id": "spring-sun",
+        "bytes": 1732,
+        "gzipBytes": 747,
+        "sha256": "544073fcc28e34253639ae01cad4d5bd87c644b84848b1a095cd7438bca6cce0"
+      },
+      {
+        "id": "spring-cloud",
+        "bytes": 2009,
+        "gzipBytes": 984,
+        "sha256": "b1029ff061ee962b7183795fe1d9694d63713a9140d60d75e17f5c26e657fe87"
+      },
+      {
+        "id": "spring-meadow",
+        "bytes": 1241,
+        "gzipBytes": 666,
+        "sha256": "5c997e9eec651b6545d0b0f73fb2e031d23b7da5c4975eb74e8f85d0ed0130d6"
+      },
+      {
+        "id": "beach-palm",
+        "bytes": 15792,
+        "gzipBytes": 6872,
+        "sha256": "50993ddff467a379fcb08ef1635491b5f0c8b8db46f2f131b084a1d2d53256c3"
+      },
+      {
+        "id": "beach-umbrella",
+        "bytes": 6734,
+        "gzipBytes": 3087,
+        "sha256": "039d72da18818069a9eb9bafe9ad92eab80e9db3041681ca133fdd4e79270c92"
+      },
+      {
+        "id": "beach-ball",
+        "bytes": 7396,
+        "gzipBytes": 3335,
+        "sha256": "7ccd2d55806c37f419d84dfcf9638900a5ea697116bce29d5f5e36e58c43d392"
+      },
+      {
+        "id": "beach-shore",
+        "bytes": 2295,
+        "gzipBytes": 1106,
+        "sha256": "21399b162f2323a13ca6728454fb86bfabe67865303916d0404ad400fccbdee8"
+      },
+      {
+        "id": "beach-towel",
+        "bytes": 1872,
+        "gzipBytes": 898,
+        "sha256": "db76929494df9c71cf48fdbbe031257006dc1a0f3f31aa29dc31b9198e9c60ac"
+      },
+      {
+        "id": "beach-shell",
+        "bytes": 1957,
+        "gzipBytes": 918,
+        "sha256": "a6749c1ea1e4826bb3f47e9e8b848b7ae391c73e823d2321bba28d86625a5b31"
+      },
+      {
+        "id": "winter-santa-sleigh",
+        "bytes": 38655,
+        "gzipBytes": 16073,
+        "sha256": "506f1f20c9da8c6d9d72bf4ca0a67356000ea6130cdfcd5808d39207c015e52c"
+      },
+      {
+        "id": "winter-reindeer",
+        "bytes": 24336,
+        "gzipBytes": 10131,
+        "sha256": "6ba60fc16bcf9f174c75e1960441a88209c7b994597b89d28d27f6aa7101b086"
+      },
+      {
+        "id": "winter-cabin",
+        "bytes": 59847,
+        "gzipBytes": 24119,
+        "sha256": "7cc1c5355396a9a66183f401bc086550457d6af865d20f1f56503f7e3d2d71bb"
+      },
+      {
+        "id": "winter-pine",
+        "bytes": 23312,
+        "gzipBytes": 9949,
+        "sha256": "5a0bf7c086064ccf6c89c05940c74f6fc8444f78344e4951c1e9041cb104996e"
+      },
+      {
+        "id": "winter-skater",
+        "bytes": 51858,
+        "gzipBytes": 20179,
+        "sha256": "40eca8853f7dde35df061ddd73412a9d55a6af4ef99debf722991319d7fe979c"
+      },
+      {
+        "id": "winter-skater-friend",
+        "bytes": 47435,
+        "gzipBytes": 18468,
+        "sha256": "5cf7e9e032eb742a1822581160f686f795b5a623b18a0817401ee3aab51e4eb8"
+      },
+      {
+        "id": "winter-snow",
+        "bytes": 1396,
+        "gzipBytes": 724,
+        "sha256": "dc6077494149bb34792daf739795a2ebb694332bcb1c9dbc72a8cc12318a312a"
+      },
+      {
+        "id": "winter-pond",
+        "bytes": 2033,
+        "gzipBytes": 980,
+        "sha256": "174c6d9464f7ce4162d2a352697c85b0b2b526c8e39bd8521962be742d54aa4b"
+      },
+      {
+        "id": "winter-present",
+        "bytes": 4686,
+        "gzipBytes": 1469,
+        "sha256": "ee299962490b5c7eb831d69f3870fd222fb5b421615a329d6276608143892cfa"
+      },
+      {
+        "id": "animal-giraffe",
+        "bytes": 35271,
+        "gzipBytes": 12695,
+        "sha256": "5e2e369c781df497333f9f0f7813c65c955df694b3dda1113b049af08e8e7dd6"
+      },
+      {
+        "id": "animal-elephant",
+        "bytes": 18351,
+        "gzipBytes": 7384,
+        "sha256": "1a24a421c7f73390e02d27bece8f81473c776d88a1900da3f24e173ee479f16f"
+      },
+      {
+        "id": "animal-lion",
+        "bytes": 20207,
+        "gzipBytes": 8126,
+        "sha256": "737b41d76bcf024d04e6f943c69d2c29d85702c9cd5687f2b08f2edb21c647cf"
+      },
+      {
+        "id": "animal-hippo",
+        "bytes": 20540,
+        "gzipBytes": 7401,
+        "sha256": "93f6d180b91ca44af0094e2420ee01c91fd6872873a21a83f5c3b65013a3067b"
+      },
+      {
+        "id": "animal-zebra",
+        "bytes": 50009,
+        "gzipBytes": 18993,
+        "sha256": "6beb295a288b838c84e66efaa8a8a497d387a5bb0b69cca9dd7fad93ca270992"
+      },
+      {
+        "id": "animal-rhino",
+        "bytes": 17590,
+        "gzipBytes": 6762,
+        "sha256": "4768aa2ffe05c5abd754f8308298ba11e61d8b3f37a7300c1d7fda3a5c051d26"
+      },
+      {
+        "id": "animal-leopard",
+        "bytes": 70129,
+        "gzipBytes": 21721,
+        "sha256": "2a532983d05e2552bf492ba1352873d34739eb72e26ec5bcbd76168d32a742a1"
+      },
+      {
+        "id": "animal-ostrich",
+        "bytes": 18549,
+        "gzipBytes": 7530,
+        "sha256": "90b1aff42a940a71dd04b34b2058b89b71601bc02542609ee900a13d432a91f8"
+      },
+      {
+        "id": "animal-buffalo",
+        "bytes": 18833,
+        "gzipBytes": 7597,
+        "sha256": "9ef1e3e0d509ef0c16eb3da3b8152b9b046dcada2f822d603852e6e36635cad4"
+      },
+      {
+        "id": "animal-meerkat",
+        "bytes": 15711,
+        "gzipBytes": 6190,
+        "sha256": "3688a54d97901d6ac3cf2670ed821a5be5543554a21f2a011a18187ac8596fe7"
+      },
+      {
+        "id": "animal-warthog",
+        "bytes": 19396,
+        "gzipBytes": 7559,
+        "sha256": "1d7272112c9c523166c058b82f1cddd0f496bf1ca9f982a7fe83e1ad1d741dce"
+      },
+      {
+        "id": "animal-crocodile",
+        "bytes": 31852,
+        "gzipBytes": 11434,
+        "sha256": "f086061cc714043d77606b8f38c55c561c01a446692106f855275d7f79d5e217"
+      },
+      {
+        "id": "space-alien",
+        "bytes": 79350,
+        "gzipBytes": 29768,
+        "sha256": "330ce3e6629b3529825da6edfa79e27f3b4587ba192faca3812ff895ad7da0aa"
+      },
+      {
+        "id": "space-spaceship",
+        "bytes": 345452,
+        "gzipBytes": 115066,
+        "sha256": "bdfe1dd318f80202026a80a0afee0b318fd23a4e7c68b120fde8e318f31b8188"
+      },
+      {
+        "id": "space-crater",
+        "bytes": 699631,
+        "gzipBytes": 243632,
+        "sha256": "47bdb9a6cb23f36876273b0a6920460f503096c5e526c662d83d2c23fa969260"
+      }
+    ]
+  },
+  "memory": {
+    "note": "Typed-array bytes are reported per asset; full-process/native graphics memory and peak allocation are not measured."
+  }
+}

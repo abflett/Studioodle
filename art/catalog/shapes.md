@@ -17,7 +17,7 @@ Plain round shape for simple designs.
 - **Detail:** simple; **Facing:** none
 - **Dimensions:** 220 x 280 scene units; **Visible Bounds:** left=27.5, top=57.5, right=192.5, bottom=222.5
 - **Placement:** Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.
-- **Files:** [SVG](../../src/assets/vector/circle.svg), [Definition](../../src/assets/vector/circle.json), [Source](../../art/source/shapes/circle.svg)
+- **Files:** [SVG](../../src/assets/vector/circle.svg), [Definition](../../src/assets/vector/circle.svg), [Source](../../art/source/shapes/circle.svg)
 - **Scene Examples:** Not yet used in a built-in scene.
 
 ## Square
@@ -33,7 +33,7 @@ Plain square shape for blocks or abstract compositions.
 - **Detail:** simple; **Facing:** none
 - **Dimensions:** 220 x 280 scene units; **Visible Bounds:** left=27.5, top=57.5, right=192.5, bottom=222.5
 - **Placement:** Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.
-- **Files:** [SVG](../../src/assets/vector/square.svg), [Definition](../../src/assets/vector/square.json), [Source](../../art/source/shapes/square.svg)
+- **Files:** [SVG](../../src/assets/vector/square.svg), [Definition](../../src/assets/vector/square.svg), [Source](../../art/source/shapes/square.svg)
 - **Scene Examples:** Not yet used in a built-in scene.
 
 ## Triangle
@@ -49,6 +49,6 @@ Plain triangle shape for geometric compositions.
 - **Detail:** simple; **Facing:** none
 - **Dimensions:** 220 x 280 scene units; **Visible Bounds:** left=22.5, top=52.5, right=197.5, bottom=217.5
 - **Placement:** Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.
-- **Files:** [SVG](../../src/assets/vector/triangle.svg), [Definition](../../src/assets/vector/triangle.json), [Source](../../art/source/shapes/triangle.svg)
+- **Files:** [SVG](../../src/assets/vector/triangle.svg), [Definition](../../src/assets/vector/triangle.svg), [Source](../../art/source/shapes/triangle.svg)
 - **Scene Examples:** Not yet used in a built-in scene.
 

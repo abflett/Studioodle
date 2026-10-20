@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import ts from 'typescript';
 const out = 'work/hybrid/scenes'; fs.mkdirSync(out, { recursive: true });
 const requested = process.argv.slice(2);
+const catalog = JSON.parse(fs.readFileSync('src/assets/vector/catalog.json', 'utf8'));
 for (const name of requested.length ? requested : ['garden','counting','spring','beach','winter','safari']) {
   if (!['garden','counting','spring','beach','winter','safari'].includes(name)) throw new Error(`Unknown scene: ${name}`);
   const source = fs.readFileSync(`src/editor/${name}Scene.ts`, 'utf8');
@@ -16,8 +17,9 @@ for (const name of requested.length ? requested : ['garden','counting','spring',
   doc.width = 1123; doc.height = 794;
   let body = `<rect width="${doc.width}" height="${doc.height}" fill="${scene.background}"/>`;
   for (const surface of doc.surfaces.slice(1)) {
-    const definition = JSON.parse(fs.readFileSync(`src/assets/vector/${surface.kind}.json`, 'utf8'));
-    const svg = fs.readFileSync(`src/assets/vector/${surface.kind}.svg`, 'utf8').replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
+    const definition = catalog[surface.kind];
+    const prefix = `instance-${surface.id}-`;
+    const svg = fs.readFileSync(`src/assets/vector/${surface.kind}.svg`, 'utf8').replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'').replace(/\bid="([^"]+)"/g, (_, id) => `id="${prefix}${id}"`).replace(/url\(#([^)]*)\)/g, (_, id) => `url(#${prefix}${id})`);
     body += `<g transform="translate(${surface.x} ${surface.y}) rotate(${surface.rotation??0}) scale(${(surface.scale??1)*(surface.flipX?-1:1)} ${(surface.scale??1)*(surface.flipY?-1:1)}) translate(${-Math.floor(definition.width/2)} ${-Math.floor(definition.height/2)})">${svg}</g>`;
   }
   fs.writeFileSync(`${out}/${name}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="${doc.width}" height="${doc.height}">${body}</svg>`);

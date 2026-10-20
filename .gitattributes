@@ -1,0 +1,5 @@
+# Keep generated sticker packages and measurement fixtures reproducible across Windows checkouts.
+/src/assets/vector/*.svg text eol=lf
+/src/assets/vector/catalog.json text eol=lf
+/experiments/**/*.json text eol=lf
+/experiments/**/*.svg text eol=lf

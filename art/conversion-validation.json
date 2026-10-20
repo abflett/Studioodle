@@ -1,0 +1,1371 @@
+{
+  "checkedSources": 194,
+  "failures": [],
+  "checks": [
+    "Runtime SVG load and decode",
+    "Raster hit coverage",
+    "Canvas line-art render",
+    "Artwork add and save/restore",
+    "Horizon transparent center sky, paintable bottom ground and overscan placement on three page sizes"
+  ],
+  "assets": [
+    {
+      "id": "alphabet-a-astronaut",
+      "regions": 62,
+      "ms": 60.900000005960464,
+      "mapBytes": 1588480,
+      "samples": 1406
+    },
+    {
+      "id": "alphabet-b-bee",
+      "regions": 39,
+      "ms": 33.79999998211861,
+      "mapBytes": 1637440,
+      "samples": 1306
+    },
+    {
+      "id": "alphabet-c-cat",
+      "regions": 12,
+      "ms": 27.099999994039536,
+      "mapBytes": 1642880,
+      "samples": 1107
+    },
+    {
+      "id": "alphabet-d-dragon",
+      "regions": 35,
+      "ms": 36.30000001192093,
+      "mapBytes": 1800640,
+      "samples": 1410
+    },
+    {
+      "id": "alphabet-e-elephant",
+      "regions": 21,
+      "ms": 34.5,
+      "mapBytes": 1686400,
+      "samples": 1288
+    },
+    {
+      "id": "alphabet-f-firefighter",
+      "regions": 64,
+      "ms": 34.69999998807907,
+      "mapBytes": 1360000,
+      "samples": 1217
+    },
+    {
+      "id": "alphabet-g-giraffe",
+      "regions": 37,
+      "ms": 42.099999994039536,
+      "mapBytes": 1648320,
+      "samples": 1114
+    },
+    {
+      "id": "alphabet-h-horse",
+      "regions": 33,
+      "ms": 33.39999997615814,
+      "mapBytes": 1789760,
+      "samples": 1291
+    },
+    {
+      "id": "alphabet-i-ice-cream",
+      "regions": 53,
+      "ms": 26.900000005960464,
+      "mapBytes": 1055360,
+      "samples": 1310
+    },
+    {
+      "id": "alphabet-j-jellyfish",
+      "regions": 33,
+      "ms": 29.399999976158142,
+      "mapBytes": 1349120,
+      "samples": 1193
+    },
+    {
+      "id": "alphabet-k-kangaroo",
+      "regions": 23,
+      "ms": 30.600000023841858,
+      "mapBytes": 1599360,
+      "samples": 1248
+    },
+    {
+      "id": "alphabet-l-lion",
+      "regions": 22,
+      "ms": 29.399999976158142,
+      "mapBytes": 1354560,
+      "samples": 1236
+    },
+    {
+      "id": "alphabet-m-monkey",
+      "regions": 24,
+      "ms": 34.79999998211861,
+      "mapBytes": 1588480,
+      "samples": 1387
+    },
+    {
+      "id": "alphabet-n-nurse",
+      "regions": 35,
+      "ms": 34.10000002384186,
+      "mapBytes": 1822400,
+      "samples": 1346
+    },
+    {
+      "id": "alphabet-o-octopus",
+      "regions": 42,
+      "ms": 34.400000005960464,
+      "mapBytes": 1757120,
+      "samples": 1576
+    },
+    {
+      "id": "alphabet-p-pirate",
+      "regions": 37,
+      "ms": 29,
+      "mapBytes": 1577600,
+      "samples": 1134
+    },
+    {
+      "id": "alphabet-q-queen",
+      "regions": 45,
+      "ms": 41.400000005960464,
+      "mapBytes": 1778880,
+      "samples": 1397
+    },
+    {
+      "id": "alphabet-r-robot",
+      "regions": 55,
+      "ms": 44,
+      "mapBytes": 1773440,
+      "samples": 1096
+    },
+    {
+      "id": "alphabet-s-snake",
+      "regions": 48,
+      "ms": 33.400000005960464,
+      "mapBytes": 1403520,
+      "samples": 1282
+    },
+    {
+      "id": "alphabet-t-tiger",
+      "regions": 51,
+      "ms": 41,
+      "mapBytes": 1447040,
+      "samples": 1389
+    },
+    {
+      "id": "alphabet-u-unicorn",
+      "regions": 38,
+      "ms": 31.299999982118607,
+      "mapBytes": 1713600,
+      "samples": 1153
+    },
+    {
+      "id": "alphabet-v-viking",
+      "regions": 43,
+      "ms": 37.400000005960464,
+      "mapBytes": 1800640,
+      "samples": 1210
+    },
+    {
+      "id": "alphabet-w-wizard",
+      "regions": 37,
+      "ms": 34.30000001192093,
+      "mapBytes": 1729920,
+      "samples": 1017
+    },
+    {
+      "id": "alphabet-x-x-ray",
+      "regions": 26,
+      "ms": 37.5,
+      "mapBytes": 1610240,
+      "samples": 1329
+    },
+    {
+      "id": "alphabet-y-yak",
+      "regions": 25,
+      "ms": 38,
+      "mapBytes": 1457920,
+      "samples": 992
+    },
+    {
+      "id": "alphabet-z-zebra",
+      "regions": 45,
+      "ms": 38.5,
+      "mapBytes": 1506880,
+      "samples": 1291
+    },
+    {
+      "id": "nursery-rhymes-twinkling-star",
+      "regions": 13,
+      "ms": 31.599999994039536,
+      "mapBytes": 1735360,
+      "samples": 1232
+    },
+    {
+      "id": "nursery-rhymes-humpty-dumpty",
+      "regions": 59,
+      "ms": 36.099999994039536,
+      "mapBytes": 1599360,
+      "samples": 1217
+    },
+    {
+      "id": "nursery-rhymes-baby-cradle",
+      "regions": 121,
+      "ms": 60.400000005960464,
+      "mapBytes": 1822400,
+      "samples": 1491
+    },
+    {
+      "id": "nursery-rhymes-fiddle-cat",
+      "regions": 79,
+      "ms": 37.29999998211861,
+      "mapBytes": 1626560,
+      "samples": 917
+    },
+    {
+      "id": "nursery-rhymes-jumping-cow",
+      "regions": 25,
+      "ms": 33.30000001192093,
+      "mapBytes": 1632000,
+      "samples": 1025
+    },
+    {
+      "id": "nursery-rhymes-sleepy-moon",
+      "regions": 2,
+      "ms": 22.5,
+      "mapBytes": 1583040,
+      "samples": 1254
+    },
+    {
+      "id": "nursery-rhymes-grandfather-clock",
+      "regions": 70,
+      "ms": 26.099999994039536,
+      "mapBytes": 503360,
+      "samples": 1628
+    },
+    {
+      "id": "nursery-rhymes-climbing-mouse",
+      "regions": 15,
+      "ms": 32.19999998807907,
+      "mapBytes": 1517760,
+      "samples": 982
+    },
+    {
+      "id": "nursery-rhymes-friendly-spider",
+      "regions": 25,
+      "ms": 23.5,
+      "mapBytes": 1811520,
+      "samples": 801
+    },
+    {
+      "id": "nursery-rhymes-drainpipe",
+      "regions": 33,
+      "ms": 33.400000005960464,
+      "mapBytes": 1620480,
+      "samples": 1064
+    },
+    {
+      "id": "nursery-rhymes-shepherd-child",
+      "regions": 69,
+      "ms": 40,
+      "mapBytes": 1229440,
+      "samples": 1109
+    },
+    {
+      "id": "nursery-rhymes-woolly-lamb",
+      "regions": 17,
+      "ms": 33.5,
+      "mapBytes": 1680960,
+      "samples": 1252
+    },
+    {
+      "id": "nursery-rhymes-jack-pail",
+      "regions": 96,
+      "ms": 35.80000001192093,
+      "mapBytes": 1185920,
+      "samples": 1055
+    },
+    {
+      "id": "nursery-rhymes-jill",
+      "regions": 84,
+      "ms": 36.5,
+      "mapBytes": 1131520,
+      "samples": 1253
+    },
+    {
+      "id": "nursery-rhymes-stone-well",
+      "regions": 174,
+      "ms": 62.19999998807907,
+      "mapBytes": 3133440,
+      "samples": 1683
+    },
+    {
+      "id": "nursery-rhymes-rowboat",
+      "regions": 79,
+      "ms": 32.20000001788139,
+      "mapBytes": 1077120,
+      "samples": 1425
+    },
+    {
+      "id": "nursery-rhymes-friendly-bus",
+      "regions": 60,
+      "ms": 44.30000001192093,
+      "mapBytes": 1381760,
+      "samples": 1927
+    },
+    {
+      "id": "nursery-rhymes-mother-duck",
+      "regions": 9,
+      "ms": 32.30000001192093,
+      "mapBytes": 1447040,
+      "samples": 1112
+    },
+    {
+      "id": "nursery-rhymes-duckling",
+      "regions": 9,
+      "ms": 28.799999982118607,
+      "mapBytes": 1185920,
+      "samples": 1264
+    },
+    {
+      "id": "nursery-rhymes-farmer",
+      "regions": 95,
+      "ms": 34.5,
+      "mapBytes": 1196800,
+      "samples": 1274
+    },
+    {
+      "id": "nursery-rhymes-barn",
+      "regions": 190,
+      "ms": 87.09999999403954,
+      "mapBytes": 3671040,
+      "samples": 1602
+    },
+    {
+      "id": "nursery-rhymes-dish-spoon",
+      "regions": 40,
+      "ms": 36.80000001192093,
+      "mapBytes": 1479680,
+      "samples": 1092
+    },
+    {
+      "id": "nursery-rhymes-royal-horse",
+      "regions": 84,
+      "ms": 32,
+      "mapBytes": 1659200,
+      "samples": 1079
+    },
+    {
+      "id": "nursery-rhymes-royal-guard",
+      "regions": 63,
+      "ms": 24.599999994039536,
+      "mapBytes": 1039040,
+      "samples": 996
+    },
+    {
+      "id": "nursery-rhymes-brick-wall",
+      "regions": 17,
+      "ms": 46.69999998807907,
+      "mapBytes": 2181120,
+      "samples": 2022
+    },
+    {
+      "id": "nursery-rhymes-cradle-tree",
+      "regions": 41,
+      "ms": 19,
+      "mapBytes": 1069120,
+      "samples": 108
+    },
+    {
+      "id": "nursery-rhymes-cloud-pillow",
+      "regions": 4,
+      "ms": 24.099999994039536,
+      "mapBytes": 1332800,
+      "samples": 1715
+    },
+    {
+      "id": "nursery-rhymes-baa-baa-sheep",
+      "regions": 38,
+      "ms": 34.70000001788139,
+      "mapBytes": 1691840,
+      "samples": 1424
+    },
+    {
+      "id": "nursery-rhymes-wool-sacks",
+      "regions": 20,
+      "ms": 23.599999994039536,
+      "mapBytes": 802880,
+      "samples": 1764
+    },
+    {
+      "id": "nursery-rhymes-mary",
+      "regions": 73,
+      "ms": 28,
+      "mapBytes": 946560,
+      "samples": 1314
+    },
+    {
+      "id": "nursery-rhymes-schoolhouse",
+      "regions": 165,
+      "ms": 61.599999994039536,
+      "mapBytes": 3456000,
+      "samples": 1458
+    },
+    {
+      "id": "nursery-rhymes-miss-muffet",
+      "regions": 177,
+      "ms": 49.60000002384186,
+      "mapBytes": 1153280,
+      "samples": 1483
+    },
+    {
+      "id": "nursery-rhymes-little-teapot",
+      "regions": 24,
+      "ms": 26.900000005960464,
+      "mapBytes": 985920,
+      "samples": 1345
+    },
+    {
+      "id": "nursery-rhymes-baker",
+      "regions": 56,
+      "ms": 26.099999994039536,
+      "mapBytes": 1136960,
+      "samples": 1275
+    },
+    {
+      "id": "nursery-rhymes-muffin-tray",
+      "regions": 49,
+      "ms": 32.69999998807907,
+      "mapBytes": 711360,
+      "samples": 1904
+    },
+    {
+      "id": "nursery-rhymes-candlestick",
+      "regions": 14,
+      "ms": 21.200000017881393,
+      "mapBytes": 1015040,
+      "samples": 894
+    },
+    {
+      "id": "nursery-rhymes-little-boy-blue",
+      "regions": 52,
+      "ms": 30.19999998807907,
+      "mapBytes": 848640,
+      "samples": 1203
+    },
+    {
+      "id": "nursery-rhymes-mother-goose",
+      "regions": 145,
+      "ms": 48,
+      "mapBytes": 1234880,
+      "samples": 1534
+    },
+    {
+      "id": "nursery-rhymes-goose",
+      "regions": 15,
+      "ms": 25.400000005960464,
+      "mapBytes": 1169600,
+      "samples": 946
+    },
+    {
+      "id": "nursery-rhymes-grassy-hill",
+      "regions": 3,
+      "ms": 27.30000001192093,
+      "mapBytes": 843200,
+      "samples": 1596
+    },
+    {
+      "id": "nursery-rhymes-duck-pond",
+      "regions": 24,
+      "ms": 21.899999976158142,
+      "mapBytes": 1033600,
+      "samples": 1505
+    },
+    {
+      "id": "nursery-rhymes-stone-bridge",
+      "regions": 88,
+      "ms": 41.400000005960464,
+      "mapBytes": 2042880,
+      "samples": 1441
+    },
+    {
+      "id": "nursery-rhymes-storybook-castle",
+      "regions": 157,
+      "ms": 66.2999999821186,
+      "mapBytes": 3532800,
+      "samples": 1676
+    },
+    {
+      "id": "nursery-rhymes-shoe-house",
+      "regions": 80,
+      "ms": 77.19999998807907,
+      "mapBytes": 3386880,
+      "samples": 1471
+    },
+    {
+      "id": "nursery-rhymes-jack-be-nimble",
+      "regions": 55,
+      "ms": 42.5,
+      "mapBytes": 1719040,
+      "samples": 654
+    },
+    {
+      "id": "nursery-rhymes-old-king-cole",
+      "regions": 123,
+      "ms": 51.30000001192093,
+      "mapBytes": 1512320,
+      "samples": 1685
+    },
+    {
+      "id": "nursery-rhymes-storybook-fiddler",
+      "regions": 120,
+      "ms": 35.599999994039536,
+      "mapBytes": 1272960,
+      "samples": 874
+    },
+    {
+      "id": "nursery-rhymes-storybook-kettle",
+      "regions": 28,
+      "ms": 25,
+      "mapBytes": 1015040,
+      "samples": 1674
+    },
+    {
+      "id": "nursery-rhymes-storybook-pie",
+      "regions": 78,
+      "ms": 36.400000005960464,
+      "mapBytes": 807040,
+      "samples": 1818
+    },
+    {
+      "id": "nursery-rhymes-singing-blackbird",
+      "regions": 41,
+      "ms": 34.80000001192093,
+      "mapBytes": 1806080,
+      "samples": 1081
+    },
+    {
+      "id": "nursery-rhymes-porridge-pot",
+      "regions": 13,
+      "ms": 25.5,
+      "mapBytes": 956800,
+      "samples": 1508
+    },
+    {
+      "id": "nursery-rhymes-hot-cross-buns",
+      "regions": 33,
+      "ms": 27.700000017881393,
+      "mapBytes": 669760,
+      "samples": 1893
+    },
+    {
+      "id": "nursery-rhymes-garden-bells",
+      "regions": 46,
+      "ms": 28.299999982118607,
+      "mapBytes": 1077440,
+      "samples": 1005
+    },
+    {
+      "id": "nursery-rhymes-cockle-shell",
+      "regions": 13,
+      "ms": 42.80000001192093,
+      "mapBytes": 1664640,
+      "samples": 1727
+    },
+    {
+      "id": "nursery-rhymes-garden-child",
+      "regions": 102,
+      "ms": 45.19999998807907,
+      "mapBytes": 1305600,
+      "samples": 1244
+    },
+    {
+      "id": "nursery-rhymes-rowing-child",
+      "regions": 60,
+      "ms": 27.400000005960464,
+      "mapBytes": 1632000,
+      "samples": 787
+    },
+    {
+      "id": "nursery-rhymes-bus-driver",
+      "regions": 70,
+      "ms": 27.400000005960464,
+      "mapBytes": 1218560,
+      "samples": 922
+    },
+    {
+      "id": "fall-pumpkin",
+      "regions": 16,
+      "ms": 30.299999982118607,
+      "mapBytes": 1052480,
+      "samples": 1773
+    },
+    {
+      "id": "fall-maple-leaf",
+      "regions": 2,
+      "ms": 21,
+      "mapBytes": 1069120,
+      "samples": 1237
+    },
+    {
+      "id": "fall-scarecrow",
+      "regions": 201,
+      "ms": 49.19999998807907,
+      "mapBytes": 1691840,
+      "samples": 917
+    },
+    {
+      "id": "fall-squirrel-acorn",
+      "regions": 47,
+      "ms": 29.599999994039536,
+      "mapBytes": 1572160,
+      "samples": 1761
+    },
+    {
+      "id": "fall-autumn-tree",
+      "regions": 29,
+      "ms": 18.5,
+      "mapBytes": 1073280,
+      "samples": 112
+    },
+    {
+      "id": "fall-leaf-pile",
+      "regions": 71,
+      "ms": 24,
+      "mapBytes": 574080,
+      "samples": 1430
+    },
+    {
+      "id": "fall-hedgehog",
+      "regions": 11,
+      "ms": 30.599999994039536,
+      "mapBytes": 1680960,
+      "samples": 1653
+    },
+    {
+      "id": "fall-apple-basket",
+      "regions": 117,
+      "ms": 38,
+      "mapBytes": 1060800,
+      "samples": 1878
+    },
+    {
+      "id": "fall-fox",
+      "regions": 29,
+      "ms": 27.099999994039536,
+      "mapBytes": 1517760,
+      "samples": 1327
+    },
+    {
+      "id": "fall-acorn",
+      "regions": 7,
+      "ms": 20.200000017881393,
+      "mapBytes": 798720,
+      "samples": 1497
+    },
+    {
+      "id": "fall-owl",
+      "regions": 46,
+      "ms": 45,
+      "mapBytes": 1555840,
+      "samples": 1494
+    },
+    {
+      "id": "fall-rain-boots",
+      "regions": 26,
+      "ms": 25.799999982118607,
+      "mapBytes": 1035840,
+      "samples": 1648
+    },
+    {
+      "id": "fall-wheelbarrow-leaves",
+      "regions": 64,
+      "ms": 25.80000001192093,
+      "mapBytes": 819520,
+      "samples": 1186
+    },
+    {
+      "id": "fall-corn",
+      "regions": 75,
+      "ms": 25.69999998807907,
+      "mapBytes": 890240,
+      "samples": 1127
+    },
+    {
+      "id": "fall-turkey",
+      "regions": 63,
+      "ms": 39.900000005960464,
+      "mapBytes": 1708160,
+      "samples": 1469
+    },
+    {
+      "id": "fall-harvest-basket",
+      "regions": 143,
+      "ms": 42.60000002384186,
+      "mapBytes": 1010880,
+      "samples": 1765
+    },
+    {
+      "id": "fall-rake",
+      "regions": 25,
+      "ms": 20.900000005960464,
+      "mapBytes": 1048320,
+      "samples": 299
+    },
+    {
+      "id": "fall-hay-bale",
+      "regions": 49,
+      "ms": 26.599999994039536,
+      "mapBytes": 769600,
+      "samples": 1111
+    },
+    {
+      "id": "fall-oak-leaf",
+      "regions": 4,
+      "ms": 15.799999982118607,
+      "mapBytes": 682240,
+      "samples": 1296
+    },
+    {
+      "id": "fall-wheat-sheaf",
+      "regions": 113,
+      "ms": 27.299999982118607,
+      "mapBytes": 948480,
+      "samples": 1077
+    },
+    {
+      "id": "fall-pumpkin-cluster",
+      "regions": 45,
+      "ms": 27.80000001192093,
+      "mapBytes": 931840,
+      "samples": 1641
+    },
+    {
+      "id": "fall-child-raking",
+      "regions": 108,
+      "ms": 30.5,
+      "mapBytes": 1196800,
+      "samples": 899
+    },
+    {
+      "id": "fall-child-leaf-jump",
+      "regions": 83,
+      "ms": 28.400000005960464,
+      "mapBytes": 1474240,
+      "samples": 1015
+    },
+    {
+      "id": "fall-pumpkin-wagon",
+      "regions": 133,
+      "ms": 57,
+      "mapBytes": 1496000,
+      "samples": 1384
+    },
+    {
+      "id": "fall-cornstalk",
+      "regions": 131,
+      "ms": 32.5,
+      "mapBytes": 615680,
+      "samples": 737
+    },
+    {
+      "id": "fall-apple-tree",
+      "regions": 52,
+      "ms": 34,
+      "mapBytes": 1015040,
+      "samples": 1431
+    },
+    {
+      "id": "fall-mushroom-cluster",
+      "regions": 35,
+      "ms": 32.80000001192093,
+      "mapBytes": 1044160,
+      "samples": 1656
+    },
+    {
+      "id": "fall-chestnuts",
+      "regions": 19,
+      "ms": 28.399999976158142,
+      "mapBytes": 852800,
+      "samples": 1429
+    },
+    {
+      "id": "fall-hollow-log",
+      "regions": 22,
+      "ms": 26.799999982118607,
+      "mapBytes": 682240,
+      "samples": 1697
+    },
+    {
+      "id": "fall-snail",
+      "regions": 16,
+      "ms": 37.400000005960464,
+      "mapBytes": 1544960,
+      "samples": 1477
+    },
+    {
+      "id": "fall-flying-kite",
+      "regions": 31,
+      "ms": 23.900000005960464,
+      "mapBytes": 740480,
+      "samples": 781
+    },
+    {
+      "id": "fall-autumn-scarf",
+      "regions": 52,
+      "ms": 28.5,
+      "mapBytes": 1081600,
+      "samples": 1322
+    },
+    {
+      "id": "fall-mittens",
+      "regions": 23,
+      "ms": 25.69999998807907,
+      "mapBytes": 940160,
+      "samples": 1263
+    },
+    {
+      "id": "fall-chrysanthemum-pot",
+      "regions": 186,
+      "ms": 46.900000005960464,
+      "mapBytes": 1027520,
+      "samples": 1451
+    },
+    {
+      "id": "fall-raccoon",
+      "regions": 26,
+      "ms": 31.299999982118607,
+      "mapBytes": 1610240,
+      "samples": 899
+    },
+    {
+      "id": "fall-badger",
+      "regions": 27,
+      "ms": 31.600000023841858,
+      "mapBytes": 1387200,
+      "samples": 238
+    },
+    {
+      "id": "fall-beaver",
+      "regions": 43,
+      "ms": 34.599999994039536,
+      "mapBytes": 1827840,
+      "samples": 1377
+    },
+    {
+      "id": "fall-gourds",
+      "regions": 39,
+      "ms": 31.799999982118607,
+      "mapBytes": 1040000,
+      "samples": 1410
+    },
+    {
+      "id": "fall-pear",
+      "regions": 4,
+      "ms": 22.099999994039536,
+      "mapBytes": 802880,
+      "samples": 1452
+    },
+    {
+      "id": "fall-plum",
+      "regions": 6,
+      "ms": 23,
+      "mapBytes": 911040,
+      "samples": 1556
+    },
+    {
+      "id": "fall-cornucopia",
+      "regions": 180,
+      "ms": 43.79999998211861,
+      "mapBytes": 856960,
+      "samples": 1637
+    },
+    {
+      "id": "fall-harvest-lantern",
+      "regions": 43,
+      "ms": 25.400000005960464,
+      "mapBytes": 619840,
+      "samples": 1665
+    },
+    {
+      "id": "fall-apple-picking-child",
+      "regions": 161,
+      "ms": 33.29999998211861,
+      "mapBytes": 783360,
+      "samples": 1399
+    },
+    {
+      "id": "horizons-alpine-peaks",
+      "regions": 66,
+      "ms": 117,
+      "mapBytes": 5760000,
+      "samples": 1824
+    },
+    {
+      "id": "horizons-rounded-mountains",
+      "regions": 13,
+      "ms": 124.90000000596046,
+      "mapBytes": 5760000,
+      "samples": 1853
+    },
+    {
+      "id": "horizons-layered-foothills",
+      "regions": 14,
+      "ms": 116.90000000596046,
+      "mapBytes": 5760000,
+      "samples": 1791
+    },
+    {
+      "id": "horizons-flat-prairie",
+      "regions": 8,
+      "ms": 107.09999999403954,
+      "mapBytes": 5760000,
+      "samples": 1780
+    },
+    {
+      "id": "horizons-rolling-farmland",
+      "regions": 29,
+      "ms": 128.7000000178814,
+      "mapBytes": 5760000,
+      "samples": 1891
+    },
+    {
+      "id": "horizons-desert-dunes",
+      "regions": 7,
+      "ms": 104.5,
+      "mapBytes": 5760000,
+      "samples": 1784
+    },
+    {
+      "id": "horizons-red-rock-mesas",
+      "regions": 55,
+      "ms": 118,
+      "mapBytes": 5760000,
+      "samples": 1838
+    },
+    {
+      "id": "horizons-canyon-valley",
+      "regions": 97,
+      "ms": 140.19999998807907,
+      "mapBytes": 5760000,
+      "samples": 1839
+    },
+    {
+      "id": "horizons-river-valley",
+      "regions": 45,
+      "ms": 132.7000000178814,
+      "mapBytes": 5760000,
+      "samples": 1884
+    },
+    {
+      "id": "horizons-lake-basin",
+      "regions": 8,
+      "ms": 114.5,
+      "mapBytes": 5760000,
+      "samples": 1868
+    },
+    {
+      "id": "horizons-pine-forest",
+      "regions": 53,
+      "ms": 118.69999998807907,
+      "mapBytes": 5760000,
+      "samples": 1730
+    },
+    {
+      "id": "horizons-deciduous-forest",
+      "regions": 115,
+      "ms": 142,
+      "mapBytes": 5760000,
+      "samples": 1922
+    },
+    {
+      "id": "horizons-forest-clearing",
+      "regions": 114,
+      "ms": 136.2000000178814,
+      "mapBytes": 5760000,
+      "samples": 1790
+    },
+    {
+      "id": "horizons-woodland-trail",
+      "regions": 87,
+      "ms": 152.09999999403954,
+      "mapBytes": 5760000,
+      "samples": 1818
+    },
+    {
+      "id": "horizons-jungle-opening",
+      "regions": 171,
+      "ms": 151.10000002384186,
+      "mapBytes": 5760000,
+      "samples": 1850
+    },
+    {
+      "id": "horizons-birch-woodland",
+      "regions": 119,
+      "ms": 144.90000000596046,
+      "mapBytes": 5760000,
+      "samples": 1865
+    },
+    {
+      "id": "horizons-autumn-woodland",
+      "regions": 111,
+      "ms": 159.40000000596046,
+      "mapBytes": 5760000,
+      "samples": 1909
+    },
+    {
+      "id": "horizons-snowy-forest",
+      "regions": 151,
+      "ms": 122.40000000596046,
+      "mapBytes": 5760000,
+      "samples": 1716
+    },
+    {
+      "id": "horizons-coastal-cliffs",
+      "regions": 88,
+      "ms": 116,
+      "mapBytes": 5760000,
+      "samples": 1814
+    },
+    {
+      "id": "horizons-beach-dunes",
+      "regions": 117,
+      "ms": 107.69999998807907,
+      "mapBytes": 5760000,
+      "samples": 1718
+    },
+    {
+      "id": "horizons-village-rooftops",
+      "regions": 203,
+      "ms": 126.30000001192093,
+      "mapBytes": 5760000,
+      "samples": 1946
+    },
+    {
+      "id": "horizons-suburban-neighborhood",
+      "regions": 226,
+      "ms": 139.7999999821186,
+      "mapBytes": 5760000,
+      "samples": 1826
+    },
+    {
+      "id": "horizons-city-skyline",
+      "regions": 228,
+      "ms": 146.5,
+      "mapBytes": 5760000,
+      "samples": 1749
+    },
+    {
+      "id": "horizons-harbor-skyline",
+      "regions": 272,
+      "ms": 160.40000000596046,
+      "mapBytes": 11520000,
+      "samples": 1839
+    },
+    {
+      "id": "category-expansion-compact-car",
+      "regions": 84,
+      "ms": 87.5,
+      "mapBytes": 1136960,
+      "samples": 1731
+    },
+    {
+      "id": "category-expansion-farm-tractor",
+      "regions": 115,
+      "ms": 50.30000001192093,
+      "mapBytes": 1436160,
+      "samples": 1347
+    },
+    {
+      "id": "category-expansion-fire-engine",
+      "regions": 237,
+      "ms": 70.19999998807907,
+      "mapBytes": 1321920,
+      "samples": 1855
+    },
+    {
+      "id": "category-expansion-propeller-airplane",
+      "regions": 59,
+      "ms": 40.400000005960464,
+      "mapBytes": 1343680,
+      "samples": 1235
+    },
+    {
+      "id": "category-expansion-sea-turtle",
+      "regions": 121,
+      "ms": 46.60000002384186,
+      "mapBytes": 1414400,
+      "samples": 1233
+    },
+    {
+      "id": "category-expansion-octopus",
+      "regions": 77,
+      "ms": 48.80000001192093,
+      "mapBytes": 1719040,
+      "samples": 1283
+    },
+    {
+      "id": "category-expansion-dolphin",
+      "regions": 8,
+      "ms": 32.400000005960464,
+      "mapBytes": 1713600,
+      "samples": 994
+    },
+    {
+      "id": "category-expansion-tropical-fish",
+      "regions": 48,
+      "ms": 41.60000002384186,
+      "mapBytes": 1653760,
+      "samples": 1488
+    },
+    {
+      "id": "category-expansion-banana-bunch",
+      "regions": 14,
+      "ms": 38,
+      "mapBytes": 1002560,
+      "samples": 1246
+    },
+    {
+      "id": "category-expansion-strawberry",
+      "regions": 31,
+      "ms": 31.799999982118607,
+      "mapBytes": 861120,
+      "samples": 1572
+    },
+    {
+      "id": "category-expansion-sandwich",
+      "regions": 84,
+      "ms": 36.29999998211861,
+      "mapBytes": 877760,
+      "samples": 1563
+    },
+    {
+      "id": "category-expansion-birthday-cake",
+      "regions": 37,
+      "ms": 32.69999998807907,
+      "mapBytes": 1040000,
+      "samples": 1461
+    },
+    {
+      "id": "category-expansion-town-house",
+      "regions": 88,
+      "ms": 98.7999999821186,
+      "mapBytes": 3578880,
+      "samples": 2023
+    },
+    {
+      "id": "category-expansion-fire-station",
+      "regions": 94,
+      "ms": 79.30000001192093,
+      "mapBytes": 3655680,
+      "samples": 1611
+    },
+    {
+      "id": "category-expansion-lighthouse",
+      "regions": 67,
+      "ms": 37.20000001788139,
+      "mapBytes": 1589760,
+      "samples": 1465
+    },
+    {
+      "id": "category-expansion-windmill",
+      "regions": 263,
+      "ms": 100.2000000178814,
+      "mapBytes": 6451200,
+      "samples": 1182
+    },
+    {
+      "id": "category-expansion-teddy-bear",
+      "regions": 28,
+      "ms": 26.900000005960464,
+      "mapBytes": 985920,
+      "samples": 1656
+    },
+    {
+      "id": "category-expansion-toy-blocks",
+      "regions": 32,
+      "ms": 31.599999994039536,
+      "mapBytes": 682240,
+      "samples": 1476
+    },
+    {
+      "id": "category-expansion-toy-drum",
+      "regions": 44,
+      "ms": 41.69999998807907,
+      "mapBytes": 1044160,
+      "samples": 1920
+    },
+    {
+      "id": "category-expansion-soccer-ball",
+      "regions": 18,
+      "ms": 26.799999982118607,
+      "mapBytes": 1077440,
+      "samples": 1863
+    },
+    {
+      "id": "collection-expansion-pet-dog",
+      "regions": 14,
+      "ms": 24.30000001192093,
+      "mapBytes": 1365440,
+      "samples": 949
+    },
+    {
+      "id": "collection-expansion-pet-cat",
+      "regions": 15,
+      "ms": 31.099999994039536,
+      "mapBytes": 1283840,
+      "samples": 1597
+    },
+    {
+      "id": "collection-expansion-farm-pig",
+      "regions": 23,
+      "ms": 29.80000001192093,
+      "mapBytes": 1708160,
+      "samples": 1420
+    },
+    {
+      "id": "collection-expansion-farm-goat",
+      "regions": 30,
+      "ms": 32.80000001192093,
+      "mapBytes": 1593920,
+      "samples": 1017
+    },
+    {
+      "id": "collection-expansion-farm-hen",
+      "regions": 38,
+      "ms": 29.400000005960464,
+      "mapBytes": 1621120,
+      "samples": 1234
+    },
+    {
+      "id": "collection-expansion-farm-donkey",
+      "regions": 18,
+      "ms": 30.200000017881393,
+      "mapBytes": 1555840,
+      "samples": 969
+    },
+    {
+      "id": "collection-expansion-child-waving",
+      "regions": 58,
+      "ms": 27.799999982118607,
+      "mapBytes": 952000,
+      "samples": 1165
+    },
+    {
+      "id": "collection-expansion-child-with-backpack",
+      "regions": 109,
+      "ms": 32.80000001192093,
+      "mapBytes": 968320,
+      "samples": 1228
+    },
+    {
+      "id": "collection-expansion-child-wheelchair",
+      "regions": 311,
+      "ms": 62.20000001788139,
+      "mapBytes": 2850560,
+      "samples": 1385
+    },
+    {
+      "id": "collection-expansion-grandparent",
+      "regions": 54,
+      "ms": 33.5,
+      "mapBytes": 913920,
+      "samples": 1297
+    },
+    {
+      "id": "collection-expansion-firefighter",
+      "regions": 99,
+      "ms": 31.900000005960464,
+      "mapBytes": 886720,
+      "samples": 1411
+    },
+    {
+      "id": "collection-expansion-gardener",
+      "regions": 85,
+      "ms": 31.19999998807907,
+      "mapBytes": 1017280,
+      "samples": 1184
+    },
+    {
+      "id": "collection-expansion-seaweed-fronds",
+      "regions": 17,
+      "ms": 27.69999998807907,
+      "mapBytes": 948480,
+      "samples": 1045
+    },
+    {
+      "id": "collection-expansion-branching-coral",
+      "regions": 4,
+      "ms": 36.099999994039536,
+      "mapBytes": 1800640,
+      "samples": 1299
+    },
+    {
+      "id": "collection-expansion-tube-sponge",
+      "regions": 5,
+      "ms": 27.600000023841858,
+      "mapBytes": 1849600,
+      "samples": 1532
+    },
+    {
+      "id": "collection-expansion-underwater-rocks",
+      "regions": 14,
+      "ms": 34.599999994039536,
+      "mapBytes": 1512320,
+      "samples": 1655
+    },
+    {
+      "id": "collection-expansion-clam-with-pearl",
+      "regions": 50,
+      "ms": 66.69999998807907,
+      "mapBytes": 1844160,
+      "samples": 1808
+    },
+    {
+      "id": "collection-expansion-seabed-horizon",
+      "regions": 104,
+      "ms": 118.90000000596046,
+      "mapBytes": 5760000,
+      "samples": 1635
+    },
+    {
+      "id": "collection-expansion-triceratops",
+      "regions": 38,
+      "ms": 34.70000001788139,
+      "mapBytes": 1599360,
+      "samples": 1242
+    },
+    {
+      "id": "collection-expansion-stegosaurus",
+      "regions": 35,
+      "ms": 23.200000017881393,
+      "mapBytes": 1283840,
+      "samples": 1161
+    },
+    {
+      "id": "collection-expansion-brachiosaurus",
+      "regions": 25,
+      "ms": 31.900000005960464,
+      "mapBytes": 1708160,
+      "samples": 744
+    },
+    {
+      "id": "collection-expansion-tyrannosaurus",
+      "regions": 15,
+      "ms": 42.39999997615814,
+      "mapBytes": 1762560,
+      "samples": 966
+    },
+    {
+      "id": "collection-expansion-parasaurolophus",
+      "regions": 29,
+      "ms": 33.69999998807907,
+      "mapBytes": 1724480,
+      "samples": 797
+    },
+    {
+      "id": "collection-expansion-pteranodon",
+      "regions": 31,
+      "ms": 37.39999997615814,
+      "mapBytes": 1496000,
+      "samples": 825
+    }
+  ]
+}

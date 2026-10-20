@@ -1,0 +1,27 @@
+{
+  "count": 3,
+  "failures": [],
+  "rows": [
+    {
+      "id": "dinosaur-spotted-long-neck",
+      "regions": 122,
+      "ms": 40.10000002384186,
+      "mapBytes": 1795200,
+      "samples": 845
+    },
+    {
+      "id": "dinosaur-striped-tyrannosaurus",
+      "regions": 91,
+      "ms": 41.400000005960464,
+      "mapBytes": 1670080,
+      "samples": 1056
+    },
+    {
+      "id": "dinosaur-spotted-triceratops",
+      "regions": 121,
+      "ms": 46.70000001788139,
+      "mapBytes": 1544960,
+      "samples": 1298
+    }
+  ]
+}

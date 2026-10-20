@@ -1,0 +1,32 @@
+{
+  "origin": "User-supplied files from Downloads/pics",
+  "assets": [
+    {
+      "id": "dinosaur-spotted-long-neck",
+      "file": "spotted-long-neck.jpg",
+      "originalFile": "Gemini_Generated_Image_4zhnjf4zhnjf4zhn.jpg",
+      "sourcePixels": [
+        1408,
+        768
+      ]
+    },
+    {
+      "id": "dinosaur-striped-tyrannosaurus",
+      "file": "striped-tyrannosaurus.jpg",
+      "originalFile": "Gemini_Generated_Image_9h47uq9h47uq9h47.jpg",
+      "sourcePixels": [
+        1408,
+        768
+      ]
+    },
+    {
+      "id": "dinosaur-spotted-triceratops",
+      "file": "spotted-triceratops.jpg",
+      "originalFile": "Gemini_Generated_Image_on5k2von5k2von5k.jpg",
+      "sourcePixels": [
+        1408,
+        768
+      ]
+    }
+  ]
+}

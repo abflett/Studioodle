@@ -1,0 +1,148 @@
+{
+  "applicationFormat": "svg",
+  "checks": {
+    "before:fill": true,
+    "before:saveRestore": true,
+    "before:flip": true,
+    "before:transform": true,
+    "before:duplicate": true,
+    "before:pngRender": true,
+    "before:remove": true,
+    "before:focusRejectsOutsidePaint": true,
+    "after:fill": true,
+    "after:saveRestore": true,
+    "after:flip": true,
+    "after:transform": true,
+    "after:duplicate": true,
+    "after:pngRender": true,
+    "after:remove": true,
+    "after:focusRejectsOutsidePaint": true
+  },
+  "environment": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0",
+  "quality": {
+    "samples": 852250,
+    "baselinePaintableSamples": 509604,
+    "differingRegionSamples": 4605,
+    "interiorDifferences": 4,
+    "svgRegionIdsSeenAtPaintResolution": 90
+  },
+  "measurements": {
+    "before": {
+      "format": "raster",
+      "regionCount": 90,
+      "decodedMapArrayBytes": 2965480,
+      "decode": {
+        "medianMs": 19.19999998807907,
+        "p95Ms": 19.5
+      },
+      "regionQueries10000": {
+        "medianMs": 0.09999999403953552,
+        "p95Ms": 0.30000001192092896
+      },
+      "hitQueries10000": {
+        "medianMs": 0.10000002384185791,
+        "p95Ms": 0.30000001192092896
+      },
+      "fullArtworkRender": {
+        "medianMs": 13.200000017881393,
+        "p95Ms": 13.800000011920929
+      },
+      "firstBucketFill": {
+        "medianMs": 14.299999982118607,
+        "p95Ms": 17.599999994039536
+      },
+      "repeatedBucketFill": {
+        "medianMs": 0.9000000059604645,
+        "p95Ms": 1.300000011920929
+      },
+      "brushStroke": {
+        "medianMs": 1.5,
+        "p95Ms": 1.9000000059604645
+      }
+    },
+    "after": {
+      "format": "svg",
+      "regionCount": 90,
+      "decodedMapArrayBytes": 0,
+      "decode": {
+        "medianMs": 1.5999999940395355,
+        "p95Ms": 1.800000011920929
+      },
+      "regionQueries10000": {
+        "medianMs": 27.600000023841858,
+        "p95Ms": 28.80000001192093
+      },
+      "hitQueries10000": {
+        "medianMs": 28.400000005960464,
+        "p95Ms": 29
+      },
+      "fullArtworkRender": {
+        "medianMs": 16.299999982118607,
+        "p95Ms": 16.599999994039536
+      },
+      "firstBucketFill": {
+        "medianMs": 905,
+        "p95Ms": 912.2999999821186
+      },
+      "repeatedBucketFill": {
+        "medianMs": 17.5,
+        "p95Ms": 18.799999982118607
+      },
+      "brushStroke": {
+        "medianMs": 9.300000011920929,
+        "p95Ms": 10.599999994039536
+      }
+    }
+  },
+  "notes": [
+    "Timings use warm-up, median and p95; this is a local CPU benchmark, not a network test.",
+    "Map array bytes exclude native Path2D storage and paint/canvas memory, which remain in both methods.",
+    "Ownership at the outer half of ink differs: SVG selection uses the union of paint regions."
+  ],
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Edg/155.0.4283.62",
+    "revision": "@aa3a7406ba8c53a83536df539f07124d73c899bd",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0",
+    "jsVersion": "15.5.9.7"
+  },
+  "memory": {
+    "none": {
+      "usedSize": 1769184,
+      "totalSize": 2154496,
+      "embedderHeapUsedSize": 608592,
+      "backingStorageSize": 1108327
+    },
+    "before": {
+      "usedSize": 4149300,
+      "totalSize": 4579328,
+      "embedderHeapUsedSize": 634344,
+      "backingStorageSize": 32416742
+    },
+    "after": {
+      "usedSize": 1885468,
+      "totalSize": 2416640,
+      "embedderHeapUsedSize": 1179384,
+      "backingStorageSize": 1108327
+    },
+    "cleanup": {
+      "usedSize": 1769844,
+      "totalSize": 2416640,
+      "embedderHeapUsedSize": 599864,
+      "backingStorageSize": 1108327
+    },
+    "note": "Ten retained definitions per method after forced GC; JS/backing-storage values do not include all native graphics memory. The second none sample is the cleanup baseline."
+  },
+  "files": {
+    "beforeCommit": "c460b3e16d31cd67754b40531271b4f36612a8c8",
+    "before": {
+      "bytes": 427149,
+      "gzipBytes": 53448
+    },
+    "after": {
+      "bytes": 67754,
+      "gzipBytes": 26643,
+      "sha256": "d707b07c0d232c88f9c5044f5ea941a10978c870d66baf489f7b51d1dfa8bb82"
+    }
+  }
+}

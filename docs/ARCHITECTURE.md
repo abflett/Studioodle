@@ -20,6 +20,9 @@ base repository, or interface for every class.
 - **`bridge.ts`** is the typed UI command/event boundary. Notifications are
   deduplicated by value so paint redraws do not repeatedly update React with
   unchanged tool, focus or selection state. Command delivery stays synchronous.
+- **`svgDefinition.ts` / `rasterizeRegions.ts`** decode the shared SVG sticker format
+  and generate immutable region-ID lookup arrays once per loaded definition. The
+  legacy JSON decoder lives only in `experiments/` for reproducible comparisons.
 - **`savedPicture.ts`** defines the saved model and the three-method repository
   contract. **`pictureValidation.ts`** validates untrusted records using lightweight
   catalog metadata; it does not load sticker definitions.

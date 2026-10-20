@@ -1,0 +1,221 @@
+{
+  "tool": "built-in image_gen",
+  "requestedSize": "approximately 1024x1024; no explicit size control available",
+  "status": "PNG source artwork; not converted or registered",
+  "reviewNotes": [
+    "A astronaut: helmet makes the silhouette more costume-heavy; review letter recognition.",
+    "V viking: belt/tunic softens bottom point; review silhouette before conversion.",
+    "All sources require region/cutout review during later SVG conversion."
+  ],
+  "assets": [
+    {
+      "letter": "A",
+      "subject": "Astronaut",
+      "file": "a-astronaut.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter A, wearing a Astronaut costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume: rounded space helmet surrounding the top of the A without obscuring its triangular counter, simple space suit seams and a small chest control patch, space boots. No flags.",
+      "runtimeDefinition": "src/assets/vector/alphabet-a-astronaut.svg",
+      "converted": true
+    },
+    {
+      "letter": "B",
+      "subject": "Bee",
+      "file": "b-bee.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter B, wearing a Bee costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Bee costume: two small antennae on the upper left stem, two simple oval wings behind, a few outlined stripe bands across the B, small rounded shoes. Preserve TWO clear B counters; no black-filled stripes.",
+      "runtimeDefinition": "src/assets/vector/alphabet-b-bee.svg",
+      "converted": true
+    },
+    {
+      "letter": "C",
+      "subject": "Cat",
+      "file": "c-cat.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter C, wearing a Cat costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Cat costume: small triangular ears on the upper curve, whiskers beside a face on upper curve, a small curled tail outside the lower curve, soft paws. Keep C right opening wide and unmistakable.",
+      "runtimeDefinition": "src/assets/vector/alphabet-c-cat.svg",
+      "converted": true
+    },
+    {
+      "letter": "D",
+      "subject": "Dragon",
+      "file": "d-dragon.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter D, wearing a Dragon costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Dragon costume: small horns and rounded dorsal spikes outside the upright and outer curved edge, a small dragon wing, little claw slippers. Keep large D counter open.",
+      "runtimeDefinition": "src/assets/vector/alphabet-d-dragon.svg",
+      "converted": true
+    },
+    {
+      "letter": "E",
+      "subject": "Elephant",
+      "file": "e-elephant.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter E, wearing a Elephant costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Elephant costume: two simple floppy elephant ears and a short trunk near the upper arm's end, small tusks optional. Keep THREE E arms and both right-hand gaps clearly legible.",
+      "runtimeDefinition": "src/assets/vector/alphabet-e-elephant.svg",
+      "converted": true
+    },
+    {
+      "letter": "F",
+      "subject": "Firefighter",
+      "file": "f-firefighter.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter F, wearing a Firefighter costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Firefighter costume: simple firefighter helmet on the F top bar, small jacket buttons and boots, a short coiled hose beside one mitten. Keep F unmistakable with two horizontal bars and no bottom bar.",
+      "runtimeDefinition": "src/assets/vector/alphabet-f-firefighter.svg",
+      "converted": true
+    },
+    {
+      "letter": "G",
+      "subject": "Giraffe",
+      "file": "g-giraffe.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter G, wearing a Giraffe costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Giraffe costume: two ossicones and small ears on the top curve, a few large outlined patches, hoof shoes. Keep the right-hand opening and G's inner horizontal bar clearly readable.",
+      "runtimeDefinition": "src/assets/vector/alphabet-g-giraffe.svg",
+      "converted": true
+    },
+    {
+      "letter": "H",
+      "subject": "Horse",
+      "file": "h-horse.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter H, wearing a Horse costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Horse costume: horse ears and short mane along top, friendly face integrated in upper left upright, small horseshoe-style hoof shoes and a simple tail. Preserve both upright H stems and central crossbar.",
+      "runtimeDefinition": "src/assets/vector/alphabet-h-horse.svg",
+      "converted": true
+    },
+    {
+      "letter": "I",
+      "subject": "Ice Cream",
+      "file": "i-ice-cream.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter I, wearing a Ice Cream costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Ice cream costume: uppercase I with unmistakable broad top and bottom horizontal bars and narrow central stem. A small scooped ice-cream cap on top with a few round sprinkles, central stem wearing simple waffle-cone diamond lines, face on stem and mitten arms. Keep I silhouette readable.",
+      "runtimeDefinition": "src/assets/vector/alphabet-i-ice-cream.svg",
+      "converted": true
+    },
+    {
+      "letter": "J",
+      "subject": "Jellyfish",
+      "file": "j-jellyfish.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter J, wearing a Jellyfish costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Jellyfish costume: domed jellyfish cap on upper J, three short wavy costume streamers outside the letter that do not hide J's hook, friendly face on upper stem and two mitten arms. Clearly show J lower left hook.",
+      "runtimeDefinition": "src/assets/vector/alphabet-j-jellyfish.svg",
+      "converted": true
+    },
+    {
+      "letter": "K",
+      "subject": "Kangaroo",
+      "file": "k-kangaroo.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter K, wearing a Kangaroo costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Kangaroo costume: two long ears above upper stem, friendly face on stem, small outlined pouch at central joint and tail extending outside to left, little feet. Keep both diagonal K arms unobstructed.",
+      "runtimeDefinition": "src/assets/vector/alphabet-k-kangaroo.svg",
+      "converted": true
+    },
+    {
+      "letter": "L",
+      "subject": "Lion",
+      "file": "l-lion.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter L, wearing a Lion costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Lion costume: rounded mane framing a face on the upper upright, two small rounded ears, little tufted tail and paw shoes. Preserve clear upright and bottom horizontal L foot.",
+      "runtimeDefinition": "src/assets/vector/alphabet-l-lion.svg",
+      "converted": true
+    },
+    {
+      "letter": "M",
+      "subject": "Monkey",
+      "file": "m-monkey.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter M, wearing a Monkey costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Monkey costume: small round ears at upper outer corners, friendly face on upper left stem, one curling tail outside and mitten paws. Preserve M's two outer stems and deep central V-shaped notch.",
+      "runtimeDefinition": "src/assets/vector/alphabet-m-monkey.svg",
+      "converted": true
+    },
+    {
+      "letter": "N",
+      "subject": "Nurse",
+      "file": "n-nurse.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter N, wearing a Nurse costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Nurse costume: simple nurse cap with a small outlined plus symbol above left stem, simple scrub collar/seam and pocket, friendly face on left stem, comfortable shoes. Preserve N diagonal and two upright stems.",
+      "runtimeDefinition": "src/assets/vector/alphabet-n-nurse.svg",
+      "converted": true
+    },
+    {
+      "letter": "O",
+      "subject": "Octopus",
+      "file": "o-octopus.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter O, wearing a Octopus costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Octopus costume: the O is a clear circular outlined ring with a large empty central counter, two smiling eyes on upper ring. Four short curled costume tentacles extending from lower OUTSIDE edge and two small waving tentacle arms outside sides. Do not fill or cross the O hole.",
+      "runtimeDefinition": "src/assets/vector/alphabet-o-octopus.svg",
+      "converted": true
+    },
+    {
+      "letter": "P",
+      "subject": "Pirate",
+      "file": "p-pirate.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter P, wearing a Pirate costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Pirate costume: small tricorn hat with no skull graphic, friendly face on upper stem, simple sash and belt, little boots. Preserve large P counter and long lower stem. No weapon.",
+      "runtimeDefinition": "src/assets/vector/alphabet-p-pirate.svg",
+      "converted": true
+    },
+    {
+      "letter": "Q",
+      "subject": "Queen",
+      "file": "q-queen.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter Q, wearing a Queen costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Queen costume: small simple crown on upper ring, friendly face on ring, short royal cape behind outer sides, little shoes. Preserve large Q counter and prominent diagonal lower-right Q tail.",
+      "runtimeDefinition": "src/assets/vector/alphabet-q-queen.svg",
+      "converted": true
+    },
+    {
+      "letter": "R",
+      "subject": "Robot",
+      "file": "r-robot.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter R, wearing a Robot costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Robot costume: small antenna on top, two round bolt ears outside upper body, small outlined panel buttons on stem and simple jointed mitten arms/boots. Preserve R counter and diagonal lower-right leg.",
+      "runtimeDefinition": "src/assets/vector/alphabet-r-robot.svg",
+      "converted": true
+    },
+    {
+      "letter": "S",
+      "subject": "Snake",
+      "file": "s-snake.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter S, wearing a Snake costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Snake costume: S-shaped thick letter body wearing a snake hood on upper end, a few large outlined scales, friendly eyes and tiny forked tongue, two small cartoon mitten arms and shoes. Preserve clear uppercase S rather than a coiled snake.",
+      "runtimeDefinition": "src/assets/vector/alphabet-s-snake.svg",
+      "converted": true
+    },
+    {
+      "letter": "T",
+      "subject": "Tiger",
+      "file": "t-tiger.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter T, wearing a Tiger costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Tiger costume: rounded ears above T top bar, face centered at junction, a few broad outlined stripe shapes left white, short striped tail outside and paw shoes. Preserve wide T crossbar and central upright.",
+      "runtimeDefinition": "src/assets/vector/alphabet-t-tiger.svg",
+      "converted": true
+    },
+    {
+      "letter": "U",
+      "subject": "Unicorn",
+      "file": "u-unicorn.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter U, wearing a Unicorn costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Unicorn costume: one small spiral horn and two ears on upper left stem, simple flowing mane outside left stem, friendly face near top, small hoof shoes and tail outside right. Keep U upper opening completely clear.",
+      "runtimeDefinition": "src/assets/vector/alphabet-u-unicorn.svg",
+      "converted": true
+    },
+    {
+      "letter": "V",
+      "subject": "Viking",
+      "file": "v-viking.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter V, wearing a Viking costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Viking costume: simple rounded historical helmet with nose guard, NO horns, friendly face on upper left diagonal, small belt detail and little boots, mitten hands. Keep sharp bottom V point and large open top; no weapons.",
+      "runtimeDefinition": "src/assets/vector/alphabet-v-viking.svg",
+      "converted": true
+    },
+    {
+      "letter": "W",
+      "subject": "Wizard",
+      "file": "w-wizard.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter W, wearing a Wizard costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Wizard costume: small pointed wizard hat on upper left peak, friendly face on left diagonal, a few large outlined stars on letter body, little slippers and one hand holding a simple star-tipped wand outside letter. Preserve W two lower points and central upper notch.",
+      "runtimeDefinition": "src/assets/vector/alphabet-w-wizard.svg",
+      "converted": true
+    },
+    {
+      "letter": "X",
+      "subject": "X-ray",
+      "file": "x-x-ray.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter X, wearing a X-ray costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: X-ray costume: clear broad uppercase X body as a friendly radiography character, face on upper left arm. Inside the diagonals draw a very simple outlined cartoon bone motif with rounded ends, white bones on white body separated by black outlines, a small clinician cap on upper left end. No black background or anatomical complexity. Preserve X diagonal crossing.",
+      "runtimeDefinition": "src/assets/vector/alphabet-x-x-ray.svg",
+      "converted": true
+    },
+    {
+      "letter": "Y",
+      "subject": "Yak",
+      "file": "y-yak.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter Y, wearing a Yak costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Yak costume: two small curved horns and rounded ears at top outer tips, shaggy fur tufts along OUTSIDE edges only, friendly face near central joint, little hoof boots. Preserve two Y branches and long lower stem; keep branch opening empty.",
+      "runtimeDefinition": "src/assets/vector/alphabet-y-yak.svg",
+      "converted": true
+    },
+    {
+      "letter": "Z",
+      "subject": "Zebra",
+      "file": "z-zebra.png",
+      "prompt": "Use case: illustration-story. Create ONE standalone black-and-white coloring-book PNG character for Studioodle's alphabet costume collection, approximately 1024x1024 square. The character IS the uppercase block letter Z, wearing a Zebra costume: the actual letter silhouette must remain instantly legible to a child. NOT a human holding a letter, NOT a subject next to a letter. A large rounded outlined uppercase letter body, cheerful small face integrated into its upper body, two small mitten hands and little shoes as appropriate, costume features integrated sparingly around the letter. Keep letter counters and openings unobstructed. Professional friendly hand-drawn vector-like line art, smooth crisp consistent medium black outlines, white interiors, minimal solid black only pupils, NO shading, NO gray, NO color, NO texture, NO hatching, NO shadow, NO background scene, no ground line, no labels or words or extra letters. Plain pure white background. Center the entire single character with 10% clear margins, nothing cropped. Simple spacious closed coloring regions suitable for later SVG tracing; avoid tiny detail and overly thick outlines. A balanced charming style suitable for children and adults. Costume specifics: Zebra costume: small zebra ears and short mane on upper left, friendly face on upper bar, a few broad outlined stripe shapes left white, a short tail outside and hoof shoes. Preserve Z's two horizontal bars and connecting diagonal.",
+      "runtimeDefinition": "src/assets/vector/alphabet-z-zebra.svg",
+      "converted": true
+    }
+  ],
+  "conversionStatus": "Converted to single region SVGs and registered for review"
+}

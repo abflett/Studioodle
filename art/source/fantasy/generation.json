@@ -1,0 +1,880 @@
+{
+  "tool": "built-in image_gen",
+  "status": "Converted to region SVG and registered in the app; visual review remains open",
+  "assets": [
+    {
+      "id": "wandering-wizard",
+      "title": "Wandering Wizard",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "An elderly wizard with a long beard, floppy pointed hat, plain layered robe and simple wooden staff topped with a smooth orb. No runes.",
+      "file": "wandering-wizard.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: An elderly wizard with a long beard, floppy pointed hat, plain layered robe and simple wooden staff topped with a smooth orb. No runes.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1503461,
+      "conversion": {
+        "id": "fantasy-wandering-wizard",
+        "file": "src/assets/vector/fantasy-wandering-wizard.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "moon-sorceress",
+      "title": "Moon Sorceress",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "An adult sorceress with flowing braided hair, modest long layered gown, crescent hair ornament and a slim wand held away from her body. No spell effect or floating objects.",
+      "file": "moon-sorceress.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: An adult sorceress with flowing braided hair, modest long layered gown, crescent hair ornament and a slim wand held away from her body. No spell effect or floating objects.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1488694,
+      "conversion": {
+        "id": "fantasy-moon-sorceress",
+        "file": "src/assets/vector/fantasy-moon-sorceress.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "armored-warrior",
+      "title": "Armored Warrior",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "A friendly adult woman warrior in practical full plate armor, closed sheathed sword at hip and a broad plain shield held at her side. Face visible, no emblem.",
+      "file": "armored-warrior.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: A friendly adult woman warrior in practical full plate armor, closed sheathed sword at hip and a broad plain shield held at her side. Face visible, no emblem.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1414886,
+      "conversion": {
+        "id": "fantasy-armored-warrior",
+        "file": "src/assets/vector/fantasy-armored-warrior.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "woodland-ranger",
+      "title": "Woodland Ranger",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "An adult elf ranger with pointed ears, hood down, simple tunic and boots, holding an unstrung curved bow at side, small quiver behind shoulder. Clear separated equipment.",
+      "file": "woodland-ranger.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: An adult elf ranger with pointed ears, hood down, simple tunic and boots, holding an unstrung curved bow at side, small quiver behind shoulder. Clear separated equipment.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1367695,
+      "conversion": {
+        "id": "fantasy-woodland-ranger",
+        "file": "src/assets/vector/fantasy-woodland-ranger.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "dwarf-guardian",
+      "title": "Dwarf Guardian",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "A stocky dwarf guardian with broad beard, round helmet, simple scale tunic and boots, one compact hammer resting head-down at side. No insignia.",
+      "file": "dwarf-guardian.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: A stocky dwarf guardian with broad beard, round helmet, simple scale tunic and boots, one compact hammer resting head-down at side. No insignia.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1589175,
+      "conversion": {
+        "id": "fantasy-dwarf-guardian",
+        "file": "src/assets/vector/fantasy-dwarf-guardian.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "halfling-traveler",
+      "title": "Halfling Traveler",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "A short adult fantasy traveler with curly hair, rounded ears, cloak, waistcoat, bare large feet and a walking stick. One compact backpack, no other props.",
+      "file": "halfling-traveler.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: A short adult fantasy traveler with curly hair, rounded ears, cloak, waistcoat, bare large feet and a walking stick. One compact backpack, no other props.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1474279,
+      "conversion": {
+        "id": "fantasy-halfling-traveler",
+        "file": "src/assets/vector/fantasy-halfling-traveler.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "human-bard",
+      "title": "Traveling Bard",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "An adult woman bard in simple fantasy travel clothes, holding one lute naturally against her body, broad clear strings and sound hole, no ornate embroidery.",
+      "file": "human-bard.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: An adult woman bard in simple fantasy travel clothes, holding one lute naturally against her body, broad clear strings and sound hole, no ornate embroidery.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1309302,
+      "conversion": {
+        "id": "fantasy-human-bard",
+        "file": "src/assets/vector/fantasy-human-bard.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "hooded-scout",
+      "title": "Hooded Scout",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "An adult human scout in a simple hooded cloak with face visible, soft boots and belt pouch, crouched slightly in a friendly alert pose, no weapon.",
+      "file": "hooded-scout.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: An adult human scout in a simple hooded cloak with face visible, soft boots and belt pouch, crouched slightly in a friendly alert pose, no weapon.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1462066,
+      "conversion": {
+        "id": "fantasy-hooded-scout",
+        "file": "src/assets/vector/fantasy-hooded-scout.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "nature-druid",
+      "title": "Nature Druid",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "An adult druid with curly hair, a simple leaf-shaped mantle over a plain robe, holding one gently curved wooden staff with a single broad leaf at its top. No antlers or extra animals.",
+      "file": "nature-druid.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: An adult druid with curly hair, a simple leaf-shaped mantle over a plain robe, holding one gently curved wooden staff with a single broad leaf at its top. No antlers or extra animals.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1482721,
+      "conversion": {
+        "id": "fantasy-nature-druid",
+        "file": "src/assets/vector/fantasy-nature-druid.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "healing-cleric",
+      "title": "Healing Cleric",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "An adult fantasy healer in a simple robe and short cape, holding a closed satchel at one side and a plain staff in the other. A generic sunburst clasp, no real-world religious symbols.",
+      "file": "healing-cleric.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: An adult fantasy healer in a simple robe and short cape, holding a closed satchel at one side and a plain staff in the other. A generic sunburst clasp, no real-world religious symbols.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1433442,
+      "conversion": {
+        "id": "fantasy-healing-cleric",
+        "file": "src/assets/vector/fantasy-healing-cleric.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "young-apprentice",
+      "title": "Young Apprentice",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "A child magic apprentice with oversized pointed hat, short robe over trousers and boots, holding one closed spellbook against chest with both arms, excited gentle expression.",
+      "file": "young-apprentice.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: A child magic apprentice with oversized pointed hat, short robe over trousers and boots, holding one closed spellbook against chest with both arms, excited gentle expression.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1381768,
+      "conversion": {
+        "id": "fantasy-young-apprentice",
+        "file": "src/assets/vector/fantasy-young-apprentice.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "potion-alchemist",
+      "title": "Potion Alchemist",
+      "theme": "Adventurers",
+      "category": "characters",
+      "details": "An adult alchemist with round goggles on forehead, practical apron over fantasy travel clothes, holding one large stoppered potion bottle with an enclosed liquid line. No other bottles.",
+      "file": "potion-alchemist.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: An adult alchemist with round goggles on forehead, practical apron over fantasy travel clothes, holding one large stoppered potion bottle with an enclosed liquid line. No other bottles.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1351013,
+      "conversion": {
+        "id": "fantasy-potion-alchemist",
+        "file": "src/assets/vector/fantasy-potion-alchemist.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "goblin-tinkerer",
+      "title": "Goblin Tinkerer",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One friendly small goblin with large pointed ears, broad nose, simple vest and boots, holding one oversized wrench. Clever playful expression, no weapons.",
+      "file": "goblin-tinkerer.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly small goblin with large pointed ears, broad nose, simple vest and boots, holding one oversized wrench. Clever playful expression, no weapons.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1490571,
+      "conversion": {
+        "id": "fantasy-goblin-tinkerer",
+        "file": "src/assets/vector/fantasy-goblin-tinkerer.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "goblin-traveler",
+      "title": "Goblin Traveler",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One friendly small goblin with large pointed ears, a hooded travel cape, small backpack and walking stick. Full standing pose, simple face.",
+      "file": "goblin-traveler.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly small goblin with large pointed ears, a hooded travel cape, small backpack and walking stick. Full standing pose, simple face.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1531225,
+      "conversion": {
+        "id": "fantasy-goblin-traveler",
+        "file": "src/assets/vector/fantasy-goblin-traveler.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "forest-elf",
+      "title": "Forest Elf",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One adult forest elf with long pointed ears, flowing hair and a simple long tunic with broad leaf-shaped belt detail, holding hands loosely at sides. No weapon.",
+      "file": "forest-elf.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One adult forest elf with long pointed ears, flowing hair and a simple long tunic with broad leaf-shaped belt detail, holding hands loosely at sides. No weapon.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1301860,
+      "conversion": {
+        "id": "fantasy-forest-elf",
+        "file": "src/assets/vector/fantasy-forest-elf.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "flower-fairy",
+      "title": "Flower Fairy",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One cheerful adult fairy with two pairs of broad butterfly wings, modest petal-shaped dress and simple shoes, hovering with knees gently bent. Four wings readable, no wand or particles.",
+      "file": "flower-fairy.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One cheerful adult fairy with two pairs of broad butterfly wings, modest petal-shaped dress and simple shoes, hovering with knees gently bent. Four wings readable, no wand or particles.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1576693,
+      "conversion": {
+        "id": "fantasy-flower-fairy",
+        "file": "src/assets/vector/fantasy-flower-fairy.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "mushroom-fairy",
+      "title": "Mushroom Fairy",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One cheerful small fairy wearing a mushroom-cap hat and modest tunic, two broad insect wings with simple closed panels, standing naturally. No surrounding mushrooms.",
+      "file": "mushroom-fairy.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One cheerful small fairy wearing a mushroom-cap hat and modest tunic, two broad insect wings with simple closed panels, standing naturally. No surrounding mushrooms.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1440236,
+      "conversion": {
+        "id": "fantasy-mushroom-fairy",
+        "file": "src/assets/vector/fantasy-mushroom-fairy.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "shell-mermaid",
+      "title": "Shell Mermaid",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One friendly adult mermaid with long wavy hair, modest sleeveless vest and a single broad fish tail curved sideways with a large tail fin, hands relaxed, no shell bra or props.",
+      "file": "shell-mermaid.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly adult mermaid with long wavy hair, modest sleeveless vest and a single broad fish tail curved sideways with a large tail fin, hands relaxed, no shell bra or props.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1489184,
+      "conversion": {
+        "id": "fantasy-shell-mermaid",
+        "file": "src/assets/vector/fantasy-shell-mermaid.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "merfolk-explorer",
+      "title": "Merfolk Explorer",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One friendly adult merman with short curly hair, modest fitted fantasy vest, single broad fish tail and clear fan fin, holding a small closed travel satchel. No trident.",
+      "file": "merfolk-explorer.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly adult merman with short curly hair, modest fitted fantasy vest, single broad fish tail and clear fan fin, holding a small closed travel satchel. No trident.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1408778,
+      "conversion": {
+        "id": "fantasy-merfolk-explorer",
+        "file": "src/assets/vector/fantasy-merfolk-explorer.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "centaur-guide",
+      "title": "Centaur Guide",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One friendly adult woman centaur, modest sleeveless tunic on human torso joined clearly to horse body with exactly four horse legs and one tail. Two relaxed human arms, simple hair, no weapons.",
+      "file": "centaur-guide.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly adult woman centaur, modest sleeveless tunic on human torso joined clearly to horse body with exactly four horse legs and one tail. Two relaxed human arms, simple hair, no weapons.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1346304,
+      "conversion": {
+        "id": "fantasy-centaur-guide",
+        "file": "src/assets/vector/fantasy-centaur-guide.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "faun-musician",
+      "title": "Faun Musician",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One cheerful adult faun with two small curved horns, modest tunic, two goat legs with cloven hooves, holding one simple panpipe at waist height. Clear complete arm outlines.",
+      "file": "faun-musician.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One cheerful adult faun with two small curved horns, modest tunic, two goat legs with cloven hooves, holding one simple panpipe at waist height. Clear complete arm outlines.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1229368,
+      "conversion": {
+        "id": "fantasy-faun-musician",
+        "file": "src/assets/vector/fantasy-faun-musician.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "stone-giant",
+      "title": "Stone Giant",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One gentle large fantasy giant with broad rounded features, simple patchwork tunic and boots, holding a small plain walking staff. Broad body, no stone texture.",
+      "file": "stone-giant.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One gentle large fantasy giant with broad rounded features, simple patchwork tunic and boots, holding a small plain walking staff. Broad body, no stone texture.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1447422,
+      "conversion": {
+        "id": "fantasy-stone-giant",
+        "file": "src/assets/vector/fantasy-stone-giant.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "woodland-gnome",
+      "title": "Woodland Gnome",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One friendly small adult gnome with pointed hat, round nose, short beard, simple coat and boots, carrying one small closed toolbox. No garden scene.",
+      "file": "woodland-gnome.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly small adult gnome with pointed hat, round nose, short beard, simple coat and boots, carrying one small closed toolbox. No garden scene.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1336754,
+      "conversion": {
+        "id": "fantasy-woodland-gnome",
+        "file": "src/assets/vector/fantasy-woodland-gnome.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "kindly-orc",
+      "title": "Orc Adventurer",
+      "theme": "Magical Folk",
+      "category": "characters",
+      "details": "One friendly adult orc adventurer with small lower tusks, broad ears, sturdy build, practical plain tunic, trousers and boots, a round shield at side and no weapon. Original generic fantasy design.",
+      "file": "kindly-orc.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly adult orc adventurer with small lower tusks, broad ears, sturdy build, practical plain tunic, trousers and boots, a round shield at side and no weapon. Original generic fantasy design.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1396518,
+      "conversion": {
+        "id": "fantasy-kindly-orc",
+        "file": "src/assets/vector/fantasy-kindly-orc.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "dragon-hatchling",
+      "title": "Dragon Hatchling",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One playful baby dragon sitting, four legs plus two small separate membrane wings, rounded head, two short horns, curled tail, broad belly plates. No egg or props.",
+      "file": "dragon-hatchling.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One playful baby dragon sitting, four legs plus two small separate membrane wings, rounded head, two short horns, curled tail, broad belly plates. No egg or props.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1489464,
+      "conversion": {
+        "id": "fantasy-dragon-hatchling",
+        "file": "src/assets/vector/fantasy-dragon-hatchling.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "mountain-dragon",
+      "title": "Mountain Dragon",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One majestic friendly adult western dragon standing in three-quarter side view, exactly four legs plus two folded membrane wings, two horns, long tail and broad belly plates. Sparse large scale details.",
+      "file": "mountain-dragon.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One majestic friendly adult western dragon standing in three-quarter side view, exactly four legs plus two folded membrane wings, two horns, long tail and broad belly plates. Sparse large scale details.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1569367,
+      "conversion": {
+        "id": "fantasy-mountain-dragon",
+        "file": "src/assets/vector/fantasy-mountain-dragon.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "flying-wyvern",
+      "title": "Flying Wyvern",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One graceful wyvern flying in profile, exactly two hind legs and two membrane wings that serve as forelimbs, long neck and tapering tail. Entire wings within frame, no extra front legs.",
+      "file": "flying-wyvern.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One graceful wyvern flying in profile, exactly two hind legs and two membrane wings that serve as forelimbs, long neck and tapering tail. Entire wings within frame, no extra front legs.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1369918,
+      "conversion": {
+        "id": "fantasy-flying-wyvern",
+        "file": "src/assets/vector/fantasy-flying-wyvern.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "cloud-serpent",
+      "title": "Cloud Serpent",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One friendly long serpentine dragon curled in a spacious S pose, four small clawed legs, no wings, two small branching horns and a simple flowing mane. No clouds or whisker tangles.",
+      "file": "cloud-serpent.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly long serpentine dragon curled in a spacious S pose, four small clawed legs, no wings, two small branching horns and a simple flowing mane. No clouds or whisker tangles.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1575593,
+      "conversion": {
+        "id": "fantasy-cloud-serpent",
+        "file": "src/assets/vector/fantasy-cloud-serpent.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "three-headed-hydra",
+      "title": "Three-Headed Hydra",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One friendly hydra with exactly three distinct long necks and three heads, one shared broad reptile body, four legs and one tail. Spacious readable neck gaps, no wings.",
+      "file": "three-headed-hydra.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly hydra with exactly three distinct long necks and three heads, one shared broad reptile body, four legs and one tail. Spacious readable neck gaps, no wings.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1539991,
+      "conversion": {
+        "id": "fantasy-three-headed-hydra",
+        "file": "src/assets/vector/fantasy-three-headed-hydra.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "griffin",
+      "title": "Griffin",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One proud friendly griffin standing, eagle head and beak, two broad folded feathered wings, two eagle front legs and two lion hind legs, one lion tail. Coherent clean hybrid anatomy.",
+      "file": "griffin.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One proud friendly griffin standing, eagle head and beak, two broad folded feathered wings, two eagle front legs and two lion hind legs, one lion tail. Coherent clean hybrid anatomy.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1613992,
+      "conversion": {
+        "id": "fantasy-griffin",
+        "file": "src/assets/vector/fantasy-griffin.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "phoenix",
+      "title": "Phoenix",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One graceful fantasy phoenix perched in a balanced pose with two wings partly spread, two feet, small head crest and three broad sweeping tail feathers. Feather shapes only, no fire or particles.",
+      "file": "phoenix.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One graceful fantasy phoenix perched in a balanced pose with two wings partly spread, two feet, small head crest and three broad sweeping tail feathers. Feather shapes only, no fire or particles.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1596327,
+      "conversion": {
+        "id": "fantasy-phoenix",
+        "file": "src/assets/vector/fantasy-phoenix.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "pegasus",
+      "title": "Pegasus",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One friendly winged horse standing in three-quarter side view, four horse legs, two clearly separate folded feathered wings, flowing mane and one tail, no horn.",
+      "file": "pegasus.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly winged horse standing in three-quarter side view, four horse legs, two clearly separate folded feathered wings, flowing mane and one tail, no horn.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1598108,
+      "conversion": {
+        "id": "fantasy-pegasus",
+        "file": "src/assets/vector/fantasy-pegasus.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "unicorn",
+      "title": "Unicorn",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One friendly unicorn standing side three-quarter view, exactly one spiral forehead horn, four horse legs, flowing mane and tail. No wings or accessories.",
+      "file": "unicorn.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly unicorn standing side three-quarter view, exactly one spiral forehead horn, four horse legs, flowing mane and tail. No wings or accessories.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1400654,
+      "conversion": {
+        "id": "fantasy-unicorn",
+        "file": "src/assets/vector/fantasy-unicorn.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "stone-golem",
+      "title": "Stone Golem",
+      "theme": "Creatures",
+      "category": "characters",
+      "details": "One gentle humanoid stone golem made of a few large smooth boulder shapes, one head, two arms and two legs, simple round eyes, broad panel divisions. No rune or fine cracks.",
+      "file": "stone-golem.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One gentle humanoid stone golem made of a few large smooth boulder shapes, one head, two arms and two legs, simple round eyes, broad panel divisions. No rune or fine cracks.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1385940,
+      "conversion": {
+        "id": "fantasy-stone-golem",
+        "file": "src/assets/vector/fantasy-stone-golem.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "forest-treant",
+      "title": "Walking Tree",
+      "theme": "Creatures",
+      "category": "characters",
+      "details": "One friendly walking tree creature, expressive face on broad trunk, exactly two branch arms and two root feet, a broad leafy crown. Sparse large bark divisions, no surrounding scene.",
+      "file": "forest-treant.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly walking tree creature, expressive face on broad trunk, exactly two branch arms and two root feet, a broad leafy crown. Sparse large bark divisions, no surrounding scene.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1650783,
+      "conversion": {
+        "id": "fantasy-forest-treant",
+        "file": "src/assets/vector/fantasy-forest-treant.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "cave-troll",
+      "title": "Cave Troll",
+      "theme": "Creatures",
+      "category": "characters",
+      "details": "One friendly squat cave troll with large rounded nose, small ears, shaggy hair, simple patchwork tunic and bare feet, hands relaxed. No weapon, spikes or frightening expression.",
+      "file": "cave-troll.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly squat cave troll with large rounded nose, small ears, shaggy hair, simple patchwork tunic and bare feet, hands relaxed. No weapon, spikes or frightening expression.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1473661,
+      "conversion": {
+        "id": "fantasy-cave-troll",
+        "file": "src/assets/vector/fantasy-cave-troll.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "cave-bat",
+      "title": "Cave Bat",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One friendly fantasy bat flying front three-quarter view, two large membrane wings, two small feet, pointed ears and a rounded furry body. Entire wing tips in frame.",
+      "file": "cave-bat.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly fantasy bat flying front three-quarter view, two large membrane wings, two small feet, pointed ears and a rounded furry body. Entire wing tips in frame.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1329851,
+      "conversion": {
+        "id": "fantasy-cave-bat",
+        "file": "src/assets/vector/fantasy-cave-bat.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "smiling-slime",
+      "title": "Smiling Slime",
+      "theme": "Creatures",
+      "category": "animals",
+      "details": "One friendly fantasy slime creature, low rounded translucent-looking blob outlined in black, simple eyes and smile, two broad enclosed highlight shapes. White interiors only, no drips detached from body.",
+      "file": "smiling-slime.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly fantasy slime creature, low rounded translucent-looking blob outlined in black, simple eyes and smile, two broad enclosed highlight shapes. White interiors only, no drips detached from body.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1096691,
+      "conversion": {
+        "id": "fantasy-smiling-slime",
+        "file": "src/assets/vector/fantasy-smiling-slime.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "skeleton-guardian",
+      "title": "Skeleton Guardian",
+      "theme": "Creatures",
+      "category": "characters",
+      "details": "One friendly cartoon skeleton standing in a simple helmet and short tabard, broad simple rib shapes, exactly two arms and two legs, one plain round shield at side. No gore or weapon.",
+      "file": "skeleton-guardian.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One friendly cartoon skeleton standing in a simple helmet and short tabard, broad simple rib shapes, exactly two arms and two legs, one plain round shield at side. No gore or weapon.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1394388,
+      "conversion": {
+        "id": "fantasy-skeleton-guardian",
+        "file": "src/assets/vector/fantasy-skeleton-guardian.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "enchanted-armour",
+      "title": "Enchanted Armour",
+      "theme": "Creatures",
+      "category": "characters",
+      "details": "One empty suit of enchanted medieval armor standing, closed helmet with broad visor slots, two arms and two legs, large plain plate shapes and gauntlets. No weapon, no glowing particles.",
+      "file": "enchanted-armour.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One empty suit of enchanted medieval armor standing, closed helmet with broad visor slots, two arms and two legs, large plain plate shapes and gauntlets. No weapon, no glowing particles.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1412985,
+      "conversion": {
+        "id": "fantasy-enchanted-armour",
+        "file": "src/assets/vector/fantasy-enchanted-armour.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "treasure-chest",
+      "title": "Treasure Chest",
+      "theme": "Fantasy Props",
+      "category": "objects",
+      "details": "One open wooden treasure chest in three-quarter view, simple metal bands, broad lid and a small mound of large coins inside. No floating coins or text.",
+      "file": "treasure-chest.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One open wooden treasure chest in three-quarter view, simple metal bands, broad lid and a small mound of large coins inside. No floating coins or text.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1618276,
+      "conversion": {
+        "id": "fantasy-treasure-chest",
+        "file": "src/assets/vector/fantasy-treasure-chest.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "spellbook",
+      "title": "Spellbook",
+      "theme": "Fantasy Props",
+      "category": "objects",
+      "details": "One closed thick fantasy spellbook in three-quarter view, broad plain cover, simple crescent clasp and large corner pieces. No words, letters, runes or sigils.",
+      "file": "spellbook.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One closed thick fantasy spellbook in three-quarter view, broad plain cover, simple crescent clasp and large corner pieces. No words, letters, runes or sigils.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1505394,
+      "conversion": {
+        "id": "fantasy-spellbook",
+        "file": "src/assets/vector/fantasy-spellbook.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "potion-bottle",
+      "title": "Potion Bottle",
+      "theme": "Fantasy Props",
+      "category": "objects",
+      "details": "One rounded stoppered potion flask, broad neck, simple cork, enclosed liquid level and one large bubble inside, no label or surrounding effects.",
+      "file": "potion-bottle.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One rounded stoppered potion flask, broad neck, simple cork, enclosed liquid level and one large bubble inside, no label or surrounding effects.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1183129,
+      "conversion": {
+        "id": "fantasy-potion-bottle",
+        "file": "src/assets/vector/fantasy-potion-bottle.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "wizard-tower",
+      "title": "Wizard Tower",
+      "theme": "Fantasy Props",
+      "category": "buildings",
+      "details": "One standalone whimsical wizard tower, slightly crooked stone cylinder, broad pointed roof, two arched windows and one door with short steps. No scenery, stars, runes or flags.",
+      "file": "wizard-tower.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One standalone whimsical wizard tower, slightly crooked stone cylinder, broad pointed roof, two arched windows and one door with short steps. No scenery, stars, runes or flags.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1295990,
+      "conversion": {
+        "id": "fantasy-wizard-tower",
+        "file": "src/assets/vector/fantasy-wizard-tower.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "castle-gate",
+      "title": "Castle Gate",
+      "theme": "Fantasy Props",
+      "category": "buildings",
+      "details": "One freestanding fantasy castle gateway with two simple crenellated towers joined by an arched gate opening and a broad wooden gate with clear panels. No flags, text or landscape.",
+      "file": "castle-gate.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One freestanding fantasy castle gateway with two simple crenellated towers joined by an arched gate opening and a broad wooden gate with clear panels. No flags, text or landscape.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1355372,
+      "conversion": {
+        "id": "fantasy-castle-gate",
+        "file": "src/assets/vector/fantasy-castle-gate.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "dragon-egg",
+      "title": "Dragon Egg",
+      "theme": "Fantasy Props",
+      "category": "objects",
+      "details": "One large unhatched dragon egg standing upright, broad overlapping scale-like shell panels, no cracks, pedestal or surrounding nest.",
+      "file": "dragon-egg.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One large unhatched dragon egg standing upright, broad overlapping scale-like shell panels, no cracks, pedestal or surrounding nest.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1320288,
+      "conversion": {
+        "id": "fantasy-dragon-egg",
+        "file": "src/assets/vector/fantasy-dragon-egg.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "crystal-cluster",
+      "title": "Crystal Cluster",
+      "theme": "Fantasy Props",
+      "category": "objects",
+      "details": "One compact cluster of five large faceted fantasy crystals joined at a broad rock base, clear polygonal planes and overlaps, no glow or particles.",
+      "file": "crystal-cluster.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One compact cluster of five large faceted fantasy crystals joined at a broad rock base, clear polygonal planes and overlaps, no glow or particles.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1339470,
+      "conversion": {
+        "id": "fantasy-crystal-cluster",
+        "file": "src/assets/vector/fantasy-crystal-cluster.svg",
+        "status": "converted"
+      }
+    },
+    {
+      "id": "enchanted-door",
+      "title": "Enchanted Door",
+      "theme": "Fantasy Props",
+      "category": "buildings",
+      "details": "One freestanding arched wooden fantasy door in a simple stone frame with broad hinges, round handle and one large leaf motif at top. No text, runes, landscape or light effect.",
+      "file": "enchanted-door.png",
+      "status": "generated",
+      "prompt": "Use case: illustration-story. Create ONE original reusable fantasy coloring-book sticker PNG for Studioodle, approximately 1024x1024 square. Smooth crisp consistent medium black outlines, pure white interiors, pure white background. Charming professional storybook line art for children and adults; expressive without oversized baby proportions. Broad clearly enclosed coloring areas, minimal solid black only small pupils/nose. Whole subject centered with at least 10 percent clear margin, no cropping. Coherent anatomy, readable complete limb outlines, clean intentional gaps and overlaps. No color, gray, shading, hatching, tiny texture, cast shadow, ground line, background scene, border, text, watermark or logo. Independent generic fantasy design; do not copy named game characters, franchise costume designs or distinctive proprietary monsters. No gore or threatening violence. Subject: One freestanding arched wooden fantasy door in a simple stone frame with broad hinges, round handle and one large leaf motif at top. No text, runes, landscape or light effect.",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 1450942,
+      "conversion": {
+        "id": "fantasy-enchanted-door",
+        "file": "src/assets/vector/fantasy-enchanted-door.svg",
+        "status": "converted"
+      }
+    }
+  ],
+  "generated": 48,
+  "designApproach": "Original generic fantasy archetypes, without requested franchise characters, logos or distinctive proprietary creature designs. This is a creative direction, not a legal clearance claim.",
+  "reviewNotes": [
+    "Wizard Tower: solid black window panes should become outlined, colorable regions at conversion.",
+    "Walking Tree: simplify fine bark lines and inspect the nose contour before tracing.",
+    "Several humanoid faces and hairstyles are similar; additional future variants can broaden facial and age diversity.",
+    "Some sources use fine secondary lines on hair, armor, scales, feathers, wood grain and page edges. Inspect which details survive tracing and simplify as needed.",
+    "Review intentional negative spaces between wings/limbs, hands and held props, handles, and folded clothing when authoring cutouts.",
+    "All sources are PNG artwork only; normal line/region cleanup and app registration remain pending."
+  ]
+}

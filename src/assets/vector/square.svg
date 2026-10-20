@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 280"><g transform="matrix(0.025 0 0 -0.025 0 280)" fill="white"><path d="M1271 8781 c-19 -10 -42 -33 -52 -52 -17 -33 -18 -162 -19 -3131 0
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 280" data-region-format="1" data-region-scale="4" data-bounds="27.5 57.5 192.5 222.5"><defs><clipPath id="clip-base-0" clipPathUnits="userSpaceOnUse"><path transform="matrix(1 0 0 1 0 0)" clip-rule="evenodd" fill-rule="evenodd" d="M-100 -100 L320 -100 L320 380 L-100 380Z M30 60H190Q190 60 190 60V220Q190 220 190 220H30Q30 220 30 220V60Q30 60 30 60Z"/></clipPath></defs><g id="regions" fill="white" fill-rule="nonzero"><path id="region-1" data-bounds="30 60 190 220" transform="matrix(0.025 0 0 -0.025 29.75 220.25)" d="M81 6391 c-19 -10 -42 -33 -52 -52 -17 -33 -18 -162 -19 -3131 0
 -2839 1 -3100 16 -3131 10 -20 31 -41 51 -51 31 -15 292 -16 3133 -16 2841 0
 3102 1 3133 16 20 10 41 31 51 51 15 31 16 292 16 3129 0 3022 0 3096 -19
 3132 -12 23 -33 44 -55 55 -35 16 -216 17 -3129 17 -2964 -1 -3093 -2 -3126
--19z"/></g><g transform="scale(1 1)"><g fill="white" stroke="black" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"><rect x="30" y="60" width="160" height="160"/></g></g></svg>
+-19z"/></g><g id="ink" stroke-linejoin="round" stroke-linecap="round"><path id="ink-1" transform="matrix(1 0 0 1 0 0)" fill="none" stroke="black" stroke-width="5" d="M30 60H190Q190 60 190 60V220Q190 220 190 220H30Q30 220 30 220V60Q30 60 30 60Z"/></g></svg>
