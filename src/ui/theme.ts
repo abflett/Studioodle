@@ -19,6 +19,6 @@ export function applyTheme(preference: ThemePreference) {
   const dark = preference === 'dark' || (preference === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
   document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
-    meta.content = dark ? '#101e2b' : '#f7dfae';
+    meta.content = dark ? '#111f34' : '#eadcc1';
   });
 }

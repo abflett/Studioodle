@@ -1,16 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="12 12 156 156">
-        <rect x="18" y="18" width="144" height="144" rx="44" fill="#87b999" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="12 12 156 156"><style>:root{--brand-tile: #b7d5ce;--brand-paper: #faf4e6;--brand-ink: #304c50;--brand-gold: #ddc799;--brand-pencil: #d6aa83;--brand-paint: #376b65;}@media(prefers-color-scheme:dark){:root{--brand-tile: #344761;--brand-paper: #22334c;--brand-ink: #f6f0e2;--brand-gold: #ddc799;--brand-pencil: #8390a8;--brand-paint: #b7d5ce;}}</style>
+        <rect class="brand-tile" x="18" y="18" width="144" height="144" rx="44" fill="var(--brand-tile)" />
         <g transform="rotate(-9 90 90)">
-          <path d="M49 42h65l21 23v65a12 12 0 0 1-12 12H49a12 12 0 0 1-12-12V54a12 12 0 0 1 12-12Z" fill="#fff5df" stroke="#46584c" stroke-width="4" stroke-linejoin="round" />
-          <path d="M113 43v22h21" fill="#e7c46e" stroke="#46584c" stroke-width="4" stroke-linejoin="round" />
-          <path d="M57 111c-15-30 23-40 24-18s-15 29-14 11 32-26 37-7" fill="none" stroke="#a38bc9" stroke-width="8" stroke-linecap="round" />
+          <path d="M49 42h65l21 23v65a12 12 0 0 1-12 12H49a12 12 0 0 1-12-12V54a12 12 0 0 1 12-12Z" fill="var(--brand-paper)" stroke="var(--brand-ink)" stroke-width="3.5" stroke-linejoin="round" />
+          <path d="M113 43v22h21" fill="var(--brand-gold)" stroke="var(--brand-ink)" stroke-width="3.5" stroke-linejoin="round" />
+          <path d="M57 111c-15-30 23-40 24-18s-15 29-14 11 32-26 37-7" fill="none" stroke="var(--brand-paint)" stroke-width="8" stroke-linecap="round" />
         </g>
         <g transform="rotate(33 121 87)">
-          <rect x="110" y="44" width="22" height="67" rx="5" fill="#e9a07e" stroke="#46584c" stroke-width="4" />
-          <path d="m110 110 11 24 11-24" fill="#e7c46e" stroke="#46584c" stroke-width="4" stroke-linejoin="round" />
-          <path d="m117 125 4 9 4-9" fill="#46584c" />
-          <path d="M112 60h18" stroke="#fff5df" stroke-width="5" />
+          <rect x="110" y="44" width="22" height="67" rx="5" fill="var(--brand-pencil)" stroke="var(--brand-ink)" stroke-width="3.5" />
+          <path d="m110 110 11 24 11-24" fill="var(--brand-gold)" stroke="var(--brand-ink)" stroke-width="3.5" stroke-linejoin="round" />
+          <path d="m117 125 4 9 4-9" fill="var(--brand-ink)" />
+          <path d="M112 60h18" stroke="var(--brand-paper)" stroke-width="5" />
         </g>
-        <path d="m151 20 3 9 9 3-9 3-3 9-3-9-9-3 9-3Z" fill="#e7c46e" />
-        <circle cx="22" cy="135" r="7" fill="#b3a0d4" />
+        <path class="brand-spark" d="m151 20 3 9 9 3-9 3-3 9-3-9-9-3 9-3Z" fill="var(--brand-gold)" />
+        <circle cx="22" cy="135" r="7" fill="var(--brand-paint)" />
       </svg>

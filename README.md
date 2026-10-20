@@ -42,6 +42,7 @@ npm run lint        # Hand-maintained app and authoring code
 npm run build       # Static web application in dist/
 npm run preview     # Serve dist/ locally
 npm run check       # Tests, TypeScript, lint and production web build
+npm run brand:icons  # Rebuild favicon, touch and desktop icons (ImageMagick)
 npm run assets:build # Rebuild sticker SVGs (ImageMagick + Potrace)
 npm run benchmark:stickers # Compare the library to the pinned pre-migration baseline
 npm run desktop:dev
@@ -52,6 +53,10 @@ npm run desktop:build  # Windows NSIS installer
 builds require Rust, C++ build tools and WebView2; see [desktop setup](docs/DESKTOP.md).
 Generated release packages live in ignored `release/` and `src-tauri/target/` paths.
 A source change does not update an already installed desktop build.
+
+Brand geometry lives in `src/ui/Brand.tsx`, with light/dark brand colors in
+`src/ui/styles.css`. Run `npm run brand:icons` after changing either to keep the
+SVG favicon and raster app icons aligned. This regenerates assets without building Tauri.
 
 ## Code and artwork
 

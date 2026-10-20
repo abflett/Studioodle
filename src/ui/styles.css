@@ -13,6 +13,12 @@
   --action-text: #fffaf0;
   --shadow: #314f4930;
   --ribbon-shadow: #263d394d;
+  --brand-tile: #b7d5ce;
+  --brand-paper: #faf4e6;
+  --brand-ink: #304c50;
+  --brand-gold: #ddc799;
+  --brand-pencil: #d6aa83;
+  --brand-paint: #376b65;
   --ribbon-well: color-mix(in srgb, var(--text) 6.5%, transparent);
   --sky: radial-gradient(ellipse at 16% 8%, #fff8cf 0%, transparent 48%), radial-gradient(ellipse at 95% 0%, #b7e4e7 0%, transparent 53%), linear-gradient(160deg, #fdf0ce 0%, #f6e1ba 62%, #eecfa0 100%);
   --panel: linear-gradient(145deg, #fcf7eb, #eee5d0);
@@ -43,6 +49,12 @@
     --action-text: #243148;
     --shadow: #050c1c70;
     --ribbon-shadow: #050c1c99;
+    --brand-tile: #344761;
+    --brand-paper: #22334c;
+    --brand-ink: #f6f0e2;
+    --brand-gold: #ddc799;
+    --brand-pencil: #8390a8;
+    --brand-paint: #b7d5ce;
     --ribbon-well: color-mix(in srgb, var(--text) 5%, transparent);
     --sky: radial-gradient(ellipse at 82% 2%, #64718c48 0%, transparent 42%), radial-gradient(ellipse at 12% 100%, #bc75421a 0%, transparent 38%), linear-gradient(155deg, #18243e 0%, #101d2c 53%, #142f2c 100%);
     --panel: linear-gradient(145deg, #293b56, #1c2b43);
@@ -66,10 +78,10 @@ button:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
 .splash-credit { position: absolute; bottom: max(20px, env(safe-area-inset-bottom)); margin: 0; font-size: 14px; color: var(--text); }
 .brand { display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .brand-icon { width: clamp(100px, 25vmin, 210px); overflow: visible; }
-.brand-tile { color: #87b999; }
+.brand-tile { color: var(--brand-tile); }
 .brand-name { margin: 0; color: var(--text); font-weight: 850; font-size: clamp(36px, 9vmin, 76px); line-height: 1.15; letter-spacing: -.055em; }
 .brand-loop { display: inline-block; color: var(--accent); transform: rotate(-7deg) translateY(3px); letter-spacing: -.08em; margin-right: .025em; }
-.brand-dot { color: #b3a0d4; }
+.brand-dot { color: var(--brand-paint); }
 .brand-spark { transform-origin: 151px 32px; animation: sparkle 2.2s ease-in-out infinite; }
 @keyframes sparkle { 50% { transform: scale(.72) rotate(18deg); } }
 progress { width: min(260px, 65vw); height: 12px; border: 0; border-radius: 10px; overflow: hidden; background: var(--badge); accent-color: var(--action); }
