@@ -1,16 +1,14 @@
 // Unified offline vector/region authoring pipeline. No app tests or builds.
 import fs from 'node:fs';
+import { discoverRegions } from './discover-regions.mjs';
+import { cleanInkComponents } from './clean-ink-components.mjs';
 import { regionSvg } from './svg-regions.mjs';
 import { stickerInspection } from './sticker-inspection.mjs';
-import { cleanA4InkPockets, cleanTinyInkPockets } from './ink-pocket-cleanup.mjs';
 import { execFileSync } from 'node:child_process';
 const inspectionDirectory=process.argv.find(arg=>arg.startsWith('--inspect='))?.slice('--inspect='.length);
 const experimentOutput=process.argv.find(arg=>arg.startsWith('--experiment-output='))?.slice('--experiment-output='.length);
 const cleanupComponents=process.argv.includes('--cleanup-components');
 if(cleanupComponents&&!experimentOutput)throw Error('Component cleanup requires experimental output');
-const cleanupA4=process.argv.includes('--cleanup-a4-pockets');
-const cleanupPockets=process.argv.includes('--cleanup-small-pockets')||cleanupA4;
-if(cleanupPockets&&!experimentOutput)throw new Error('Pocket cleanup is experimental; specify --experiment-output');
 const authoringOnly=inspectionDirectory||experimentOutput;
 const inspectionThreshold=Number(process.argv.find(arg=>arg.startsWith('--inspect-threshold='))?.split('=')[1]??50);
 const inspectionPrefix=process.argv.find(arg=>arg.startsWith('--inspect-prefix='))?.split('=')[1]??'';
@@ -86,11 +84,6 @@ for(const asset of assets) {
     trace(`${base}.pbm`,`${base}-ink.svg`,1.2,.5*stroke/12,Math.max(2,Math.round(8*(stroke/12)**2)));
     inspection?.ink(`${base}-ink.svg`);
     commands=paths(fs.readFileSync(`${base}-ink.svg`,'utf8')).map(d=>({d,fill:'ink',stroke:false,width:0}));
-    if(cleanupPockets){
-      const cleaned=cleanupA4?cleanA4InkPockets(commands.map(c=>c.d),sw,sh,Number(process.argv.find(arg=>arg.startsWith('--cleanup-area='))?.split('=')[1]??3)):cleanTinyInkPockets(commands.map(c=>c.d));
-      commands=[{d:cleaned.d,fill:'ink',stroke:false,width:0}];cleanupReport=cleaned.report;
-      fs.writeFileSync(`${base}-pocket-cleanup.json`,JSON.stringify(cleanupReport,null,2));
-    }
     matrix=[.1*width/sw,0,0,-.1*height/sh,0,height];
     inkSvg=`<g fill="black" transform="matrix(${matrix.join(' ')})">${commands.map(c=>`<path d="${c.d}"/>`).join('')}</g>`;
   }
@@ -102,69 +95,28 @@ for(const asset of assets) {
   const w=width*scale,h=height*scale,count=w*h;
   // Hidden closures keep fill regions enclosed without drawing boxed scenery edges.
   const barriers=asset.horizon ? `<g transform="matrix(${matrix.join(' ')})" fill="none" stroke="black" stroke-width="5">${commands.filter(c=>c.fill==='base').map(c=>`<path d="${c.d}"/>`).join('')}</g>` : '';
+  const originalInkSvg=inkSvg;
   const preview=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${width} ${height}"><rect width="${width}" height="${height}" fill="white"/>${inkSvg}${barriers}</svg>`;
   fs.writeFileSync(`${base}-render.svg`,preview);
-  const gray=run('-background','white',`${base}-render.svg`,...(asset.analysisGapClosure?['-morphology','Open',`Disk:${asset.analysisGapClosure*scale}`]:[]),'-alpha','remove','-colorspace','Gray','-depth','8','gray:-');
+  let gray=run('-background','white',`${base}-render.svg`,...(asset.analysisGapClosure?['-morphology','Open',`Disk:${asset.analysisGapClosure*scale}`]:[]),'-alpha','remove','-colorspace','Gray','-depth','8','gray:-');
   inspection?.analysis(`${base}-render.svg`,gray,w,h,scale,lookupScale);
   if(gray.length!==count)throw new Error(`${id}: raster dimensions`);
-  const labels=new Int32Array(count);labels.fill(-1);for(let i=0;i<count;i++)if(gray[i]<128)labels[i]=-2;
-  const queue=new Int32Array(count),areas=[];
-  function flood(seed,label){let head=0,tail=1;queue[0]=seed;labels[seed]=label;while(head<tail){const i=queue[head++],x=i%w;const visit=n=>{if(labels[n]===-1){labels[n]=label;queue[tail++]=n;}};if(x)visit(i-1);if(x+1<w)visit(i+1);if(i>=w)visit(i-w);if(i+w<count)visit(i+w);}return tail;}
-  // Raster horizons continue off the canvas: only top-connected white is sky.
-  // Side/bottom canvas edges implicitly close ground regions without visible ink.
-  if(asset.interior) {
-    // Canvas edges close interior walls and floors; none is outside sky.
-  } else if(asset.horizon && asset.mode!=='svg') {
-    if(asset.skySeeds) {
-      for(const [x,y] of asset.skySeeds) {
-        const px=Math.floor(x*scale),py=Math.floor(y*scale);
-        if(px<0||py<0||px>=w||py>=h||labels[py*w+px]!==-1)throw new Error(`${id}: invalid sky seed`);
-        flood(py*w+px,0);
-      }
-    } else for(let x=0;x<w;x++)if(labels[x]===-1)flood(x,0);
-  } else {
-    for(let x=0;x<w;x++)for(const i of [x,(h-1)*w+x])if(labels[i]===-1)flood(i,0);
-    for(let y=0;y<h;y++)for(const i of [y*w,y*w+w-1])if(labels[i]===-1)flood(i,0);
-  }
-  // Authored seeds mark enclosed negative space, not paintable sticker regions.
-  // Keep them in logical asset coordinates so source rebuilds remain reproducible.
-  for(const [x,y] of asset.cutouts??[]) {
-    const px=Math.floor(x*scale),py=Math.floor(y*scale),index=py*w+px;
-    if(px<0||py<0||px>=w||py>=h||labels[index]!==-1)
-      throw new Error(`${id}: cutout (${x}, ${y}) must lie inside an enclosed white region`);
-    flood(index,0);
-  }
-  let regionCount=0;for(let i=0;i<count;i++)if(labels[i]===-1)areas.push(flood(i,++regionCount));
+  let {labels,queue,areas,regionCount}=discoverRegions(gray,w,h,asset,scale);
   if(cleanupComponents||asset.minimumRegionAreaPixels){
-    // flood() has already assigned each connected white glob its own ID.
-    // Measure those globs, not the potentially self-intersecting ink subpaths.
-    const a4w=210/25.4*150,a4h=297/25.4*150;
-    const fit=Math.max(Math.min(a4w/width,a4h/height),Math.min(a4h/width,a4w/height));
-    const cutoff=asset.minimumRegionAreaPixels??10.2, pixelArea=(fit/scale)**2;
-    if(!Number.isFinite(cutoff)||cutoff<=0)throw Error('Minimum region area must be positive');
-    const removed=new Set(areas.flatMap((area,index)=>area*pixelArea<cutoff?[index+1]:[]));
-    const stride=Math.ceil(w/8),bitmap=Buffer.alloc(stride*h),mapping=new Int32Array(regionCount+1);
-    let next=0;
-    for(let id=1;id<=regionCount;id++)if(!removed.has(id))mapping[id]=++next;
-    for(let i=0;i<count;i++){
-      if(removed.has(labels[i])){bitmap[Math.floor(i/w)*stride+((i%w)>>3)]|=1<<(7-(i%w&7));labels[i]=-2;gray[i]=0;}
-      else if(labels[i]>0)labels[i]=mapping[labels[i]];
-    }
-    if(removed.size){
-      const file=`${base}-component-patches.pbm`,output=`${base}-component-patches.svg`;
-      fs.writeFileSync(file,Buffer.concat([Buffer.from(`P4\n${w} ${h}\n`),bitmap]));
-      trace(file,output,0,0,0);
-      const factors=[(.1/scale)/matrix[0],(-.1/scale)/matrix[3]];
-      for(const d of paths(fs.readFileSync(output,'utf8'))){let axis=0;
-        commands.push({d:d.replace(/[-+]?(?:\d*\.\d+|\d+\.?\d*)(?:[eE][-+]?\d+)?/g,n=>String(Number(n)*factors[axis++%2])),fill:'ink',stroke:false,width:0});
-      }
-    }
-    cleanupReport={method:'connected white components',maximumAreaPixels:cutoff,beforeRegions:regionCount,removed:removed.size,
-      pockets:[...removed].map(id=>({id,areaPixels:areas[id-1]*pixelArea}))};
+    const cleaned=cleanInkComponents({commands,matrix,width,height,scale,w,h,labels,areas,cutoff:asset.minimumRegionAreaPixels??10.2});
+    cleanupReport=cleaned.report;
     fs.writeFileSync(`${base}-component-cleanup.json`,JSON.stringify(cleanupReport,null,2));
-    const retainedAreas=areas.filter((_,index)=>!removed.has(index+1));
-    areas.splice(0,areas.length,...retainedAreas);
-    regionCount=next;
+    if(cleaned.d){
+      commands=[{d:cleaned.d,fill:'ink',stroke:false,width:0}];
+      inkSvg=`<g fill="black" transform="matrix(${matrix.join(' ')})"><path d="${cleaned.d}"/></g>`;
+      fs.writeFileSync(`${base}-render.svg`,preview.replace(originalInkSvg,inkSvg));
+      gray=run('-background','white',`${base}-render.svg`,'-alpha','remove','-colorspace','Gray','-depth','8','gray:-');
+      ({labels,queue,areas,regionCount}=discoverRegions(gray,w,h,asset,scale));
+      cleanupReport.finalRegions=regionCount;
+      cleanupReport.remainingSmallComponents=areas.filter(area=>area*cleanupReport.analysisPixelArea<(asset.minimumRegionAreaPixels??10.2)).length;
+      fs.writeFileSync(`${base}-component-cleanup.json`,JSON.stringify(cleanupReport,null,2));
+      inspection?.analysis(`${base}-render.svg`,gray,w,h,scale,lookupScale);
+    }
   }
   inspection?.discovered(labels,w,h,regionCount);
   // No regions is a real conversion failure, never silently emit an empty sticker.
@@ -176,9 +128,9 @@ for(const asset of assets) {
   let head=0,tail=0;for(let i=0;i<count;i++){if(labels[i]<0)continue;const x=i%w;if((x&&labels[i-1]===-2)||(x+1<w&&labels[i+1]===-2)||(i>=w&&labels[i-w]===-2)||(i+w<count&&labels[i+w]===-2))queue[tail++]=i;}
   while(head<tail){const i=queue[head++],x=i%w;const visit=n=>{if(labels[n]===-2){labels[n]=labels[i];queue[tail++]=n;}};if(x)visit(i-1);if(x+1<w)visit(i+1);if(i>=w)visit(i-w);if(i+w<count)visit(i+w);}
   inspection?.extended(labels,w,h);
-  let svg=regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix,inkMask:gray,overlapPixels:asset.regionOverlapPixels??1});
+  let svg=regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix});
   if(experimentOutput){
-    if(cleanupReport)svg=svg.replace('<g id="regions"',`<metadata>${JSON.stringify({experiment:cleanupComponents?'connected component cleanup':cleanupA4?'A4 area pocket cleanup':'line-width pocket cleanup',...cleanupReport,pockets:undefined})}</metadata><g id="regions"`);
+    if(cleanupReport)svg=svg.replace('<g id="regions"',`<metadata>${JSON.stringify({experiment:'curve-unioned ink cleanup',...cleanupReport,pockets:undefined})}</metadata><g id="regions"`);
     fs.writeFileSync(experimentOutput,svg);console.log(`${id}: ${cleanupReport?.removed??0} pockets absorbed into ink; ${regionCount} final regions; ${experimentOutput}`);continue;
   }
   if(inspection){inspection.finish(svg);console.log(`${id}: captured current pipeline in ${inspectionDirectory}`);continue;}

@@ -30,10 +30,11 @@ is independent of the shipped 4x/2x interaction lookup. It discovers
 closed regions, excludes authored cutouts, and extends region ownership beneath the
 ink to approximately its centerline. That raster analysis is an offline intermediate.
 Each region is traced into one closed vector path with a tighter fitting tolerance.
-A one-analysis-pixel overlap, confined to actual ink, prevents independently fitted
-neighboring curves from leaving seams. Ink paths remain unchanged. Higher sampling
-can remove tiny aliasing artifacts or recover thin regions, so region counts may change;
-IDs are not stored in saved paint. Existing assets are not silently bulk-regenerated.
+Region ownership stops at the discovered centerline; there is no extra overlap to push a lookup boundary toward a thin line edge. Higher sampling can recover thin regions or change IDs. Vector paint stores region IDs, and pre-release rebuilds may invalidate old development drawings. Existing assets are not silently bulk-regenerated.
+
+For traced ink with a minimum-region rule, `discover-regions.mjs` measures individual connected white components at the largest proportional A4 fit, 150 DPI. `clean-ink-components.mjs` resolves the original Bezier contours with authoring-only Paper.js. True tiny holes are removed directly; raster-split pockets are intersected with their curved white contour and united into the ink. No bitmap patch is traced or overlaid. Tiny slivers are removed again after unions. The ink is rendered again and all regions are rediscovered from the final geometry.
+
+Moon Sorceress remains the only asset with this tuning enabled (10.2 pixels squared). It has 199 final regions, no remaining below-cutoff components, unchanged eye sparkles and no added detached black components. Review other assets before enabling or rebuilding them.
 
 ```xml
 <svg viewBox="0 0 623 560" data-region-format="1"
@@ -50,8 +51,7 @@ IDs are not stored in saved paint. Existing assets are not silently bulk-regener
 
 Region IDs are generated for reproducibility and diagnostics. They are optional for
 conforming authored region paths: the loader assigns unused numeric IDs in document
-order when they are absent. IDs are internal to the lookup array, not stored in the
-user's paint runs. The union of regions supplies the backing/silhouette; a separate
+order when they are absent. IDs connect the lookup and saved vector paint to the SVG region paths. The union of regions supplies the backing/silhouette; a separate
 serialized silhouette is unnecessary.
 
 Authored overlapping white shapes need more than dropping their fill attributes.
@@ -95,4 +95,4 @@ See [Vector Painting](VECTOR-PAINT.md) for runtime geometry, worker merging, pai
 
 Document/picture format 5 stores vector paint, transforms and asset IDs. It does not store color rasters or hit arrays. The app is pre-release: old drawing formats and compatibility engines have been removed. Bundled page geometry is updated directly; the local library uses a fresh namespace.
 
-The Moon Sorceress is the reference asset for small-region cleanup and centerline tuning. Bulk rebuilding is deferred until the tiny-hole ink patches follow the original line-art geometry cleanly.
+The Moon Sorceress is the reference asset for small-region cleanup and centerline tuning. The corrected Moon Sorceress is ready for inspection; bulk rebuilding remains deferred until review.

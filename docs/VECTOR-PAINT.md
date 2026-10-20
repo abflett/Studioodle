@@ -24,4 +24,4 @@ Geometry-only coloring-page export removes vector paint. PNG and normal print ou
 
 `npm test` covers geometry, compaction, serialization, validation, books and session transactions. `npm run check:regions` runs real browser/worker checks for SVG hits, solid fill edges, vector textures and patterns, page outline filling, save/restore, undo after compaction, concurrent edits, erasing and rendering at a higher resolution. It writes a crop to `work/moon-vector-paint.png`.
 
-Runtime painting is independent of offline source conversion. Tiny-region ink cleanup still needs tuning on Moon Sorceress before bulk sticker rebuilding. Generated SVGs are not being blanket-reprocessed as part of the paint engine change.
+Runtime painting is independent of offline source conversion. Tiny-region ink cleanup has been changed to edit and unite original Bezier curves on Moon Sorceress; bulk rebuilding is still deferred for review. Generated SVGs are not being blanket-reprocessed as part of the paint engine change.
