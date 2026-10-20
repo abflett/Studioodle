@@ -759,14 +759,14 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .selection-screen .selection { --picture-height: min(184px, 32vw, 25dvh); --label-gap: 20px; gap: clamp(18px, 3.5dvh, 32px); }
 }
 /* Shared painted artwork for selection, splash, and ribbon surfaces. */
-:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --ribbon-tint: linear-gradient(#fff7e9b8, #fff7e9b8); }
-:root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --ribbon-tint: linear-gradient(#10233299, #10233299); }
+:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b493019, #5b493019); }
+:root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --canvas-tint: linear-gradient(#06111f38, #06111f38); }
 .selection-screen, .splash { position: relative; isolation: isolate; overflow: hidden; }
 :is(.selection-screen, .splash)::before, :is(.selection-screen, .splash)::after { content: ''; position: absolute; pointer-events: none; }
-:is(.selection-screen, .splash)::before { inset: 0; z-index: -2; background-image: var(--scene-art); background-size: cover; background-position: center top; }
+:is(.selection-screen, .splash)::before { inset: 0; z-index: -2; background-image: var(--scene-art); background-size: cover; background-position: center; }
 :is(.selection-screen, .splash)::after { inset: 0; z-index: -1; background: var(--scene-tint); }
-.ribbon-shell .main-ribbon { background-image: var(--ribbon-tint), var(--scene-art); background-size: auto, 100vw auto; background-position: center, center 75%; background-repeat: no-repeat; }
-.ribbon-shell .sticker-ribbon { background-image: linear-gradient(var(--ribbon-well), var(--ribbon-well)), var(--ribbon-tint), var(--scene-art); background-size: auto, auto, 100vw auto; background-position: center, center, center 75%; background-repeat: no-repeat; }
+.art-studio { background-image: var(--scene-tint), var(--scene-art); background-size: cover; background-position: center; background-repeat: no-repeat; }
+.art-studio .art-canvas:not(.focus-mode) { background: var(--canvas-tint); }
 .saved-picture-card .choice-art { padding: 0; }
 
 /* Fixed preview stage with browsing controls outside the hover card. */
