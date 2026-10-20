@@ -157,12 +157,14 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   return (
     <main className="selection-screen" aria-label="Choose a picture">
       <section className="selection">
-        <div className="selection-preferences">
+        <nav className="selection-preferences studio-actions" aria-label="Studio controls">
+          <button className="icon-button" title="Settings" aria-label="Settings" aria-haspopup="dialog" onClick={() => setSettingsOpen(true)}><Settings aria-hidden="true" /></button>
         {(isDesktop || document.fullscreenEnabled) && <button className="fullscreen-toggle icon-button" title={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} aria-label={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} onClick={() => {
           const action = isDesktop ? toggleDesktopFullscreen().then(setFullscreen) : document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
           void action.catch(() => setActionError('Fullscreen is unavailable in this window.'));
         }}>{fullscreen ? <Minimize aria-hidden="true" /> : <Fullscreen aria-hidden="true" />}</button>}
-        </div>
+          <button className="icon-button" title="Exit Studioodle" aria-label="Exit Studioodle" onClick={onExit}><LogOut aria-hidden="true" /></button>
+        </nav>
         <div className="choice-grid">
           {pictureChoices.map((item) => (
             <button className={`choice-card choice-${item.id}`} key={item.id}
@@ -226,14 +228,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
       </dialog>
       <DeletePictureDialog picture={pendingDelete} onCancel={() => { setPendingDelete(undefined); setDeletingPage(false); }} onConfirm={removeCurrent} />
       <SelectionSettings settings={settings} onSettingsChange={onSettingsChange} open={settingsOpen} onClose={() => setSettingsOpen(false)} theme={theme} onThemeChange={onThemeChange} />
-      <footer className="selection-footer">
 
-      <nav className="studio-actions" aria-label="Studio controls">
-
-        <button className="icon-button" title="Settings" aria-label="Settings" aria-haspopup="dialog" onClick={() => setSettingsOpen(true)}><Settings aria-hidden="true" /></button>
-      <button className="icon-button exit-control" title="Exit Studioodle" aria-label="Exit Studioodle" onClick={onExit}><LogOut aria-hidden="true" /></button>
-      </nav>
-      </footer>
       {bookState.error && <p className="workshop-storage-error" role="alert">Workshop pages could not be loaded. Saved revisions have not been changed.</p>}
       {(removed || actionError || notice) && <div className="save-notice library-notice" role="status" onPointerEnter={() => setToastPaused(true)} onPointerLeave={() => setToastPaused(false)} onFocusCapture={() => setToastPaused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setToastPaused(false); }}>
         <span>{actionError ?? notice ?? 'Picture removed'}</span>

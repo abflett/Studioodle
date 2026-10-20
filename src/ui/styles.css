@@ -744,3 +744,11 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .saved-picture-card .library-actions { pointer-events: none; }
 .saved-picture-card .library-actions button { pointer-events: auto; }
 .saved-picture-card .saved-preview { box-shadow: 0 4px 14px var(--shadow); }
+
+/* Matching, inset studio controls in one top-right group. */
+.selection-preferences.studio-actions { gap: 8px; }
+.selection-preferences .icon-button { width: 44px; height: 44px; padding: 10px; color: var(--text); background: color-mix(in srgb, var(--border) 65%, var(--page)); }
+@media (hover: hover) {
+  .selection-preferences .icon-button:is(:hover, .app-mouse-hover) { background: var(--button-border); }
+}
+.selection-screen { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
