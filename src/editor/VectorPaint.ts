@@ -4,7 +4,7 @@ import { paintStyleKey, normalizedPattern } from './vectorPaintTypes';
 import { drawPaint, geometryBounds, rectangleGeometry } from './vectorPaintStyles';
 import { brushBlob, compactRegion, polygonPath, filledRegion } from './vectorPaintGeometry';
 import type { MultiPolygon, Pair } from './polygonGeometry';
-import type { PaintJob, VectorPaintData, VectorPaintRegion } from './vectorPaintTypes';
+import type { PaintBlob, PaintJob, VectorPaintData, VectorPaintRegion } from './vectorPaintTypes';
 import type { VectorDefinition } from './vectorDefinition';
 
 let worker: Worker|undefined, nextJob=0;
@@ -44,6 +44,14 @@ export class VectorPaint {
     private pendingMerge?:Promise<(VectorPaintRegion|undefined)[]>;
     private failed=false;
     private paths=new WeakMap<MultiPolygon,Path2D>();
+    private coveragePaths=new WeakMap<VectorPaintRegion,{blobs:PaintBlob[];count:number;path:Path2D}>();
+    private path(geometry:MultiPolygon){let path=this.paths.get(geometry);if(!path){path=new Path2D(polygonPath(geometry));this.paths.set(geometry,path);}return path;}
+    private coveragePath(paint:VectorPaintRegion){
+        let cached=this.coveragePaths.get(paint);
+        if(!cached||cached.blobs!==paint.blobs){cached={blobs:paint.blobs,count:0,path:new Path2D()};this.coveragePaths.set(paint,cached);}
+        for(;cached.count<paint.blobs.length;cached.count++)cached.path.addPath(this.path(paint.blobs[cached.count]!.geometry));
+        return cached.path;
+    }
     // Restore is read-only: previews/exports must never queue paint maintenance.
     constructor(data?:VectorPaintData,private readonly defaultColor=0xffffff){this.regions=structuredClone(data?.regions??[]);}
     private region(id:number){let r=this.regions.find(r=>r.id===id);if(!r){r={id,base:this.defaultColor,blobs:[]};this.regions.push(r);}return r;}
@@ -119,9 +127,22 @@ export class VectorPaint {
             if(paint.base!==this.defaultColor||paint.pattern)drawPaint(ctx,region.path,paint.base,region.bounds,paint.pattern);
             if(!paint?.blobs.length)continue;
             ctx.save();ctx.clip(region.path);
+            const first=paint.blobs[0]!,style=paintStyleKey(first.color,first.pattern);
+            if(paint.blobs.some(blob=>paintStyleKey(blob.color,blob.pattern)!==style)){
+                // Disjoint color partitions antialias independently. Cover the
+                // shared edge first, then draw the original paths over it. Clip
+                // the underpaint to their combined coverage, including holes,
+                // so neither brush outlines nor the silhouette grow.
+                ctx.save();ctx.clip(this.coveragePath(paint));
+                const m=ctx.getTransform(),scale=Math.min(Math.hypot(m.a,m.b),Math.hypot(m.c,m.d));
+                ctx.lineWidth=2/Math.max(.0001,scale);ctx.lineJoin='round';ctx.lineCap='round';
+                for(const blob of paint.blobs)if(!blob.pattern||blob.pattern.pattern==='solid'){
+                    ctx.strokeStyle=`#${blob.color.toString(16).padStart(6,'0')}`;ctx.stroke(this.path(blob.geometry));
+                }
+                ctx.restore();
+            }
             for(const blob of paint.blobs){
-                let path=this.paths.get(blob.geometry);if(!path){path=new Path2D(polygonPath(blob.geometry));this.paths.set(blob.geometry,path);}
-                drawPaint(ctx,path,blob.color,region.bounds,blob.pattern);
+                drawPaint(ctx,this.path(blob.geometry),blob.color,region.bounds,blob.pattern);
             }
             ctx.restore();
         }

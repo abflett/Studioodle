@@ -31,13 +31,23 @@ try {
   await new Promise((resolve, reject) => { ws.addEventListener('open', resolve, { once: true }); ws.addEventListener('error', reject, { once: true }); });
   let id = 0; const pending = new Map(), runtimeErrors=[];
   ws.addEventListener('message', event => { const message = JSON.parse(event.data);
+    if(message.method==='Target.attachedToTarget')void (async()=>{
+      const sessionId=message.params.sessionId;
+      await cdp('Debugger.enable',{},sessionId);
+      await cdp('Debugger.setAsyncCallStackDepth',{maxDepth:32},sessionId);
+      await cdp('Runtime.runIfWaitingForDebugger',{},sessionId);
+    })().catch(error=>runtimeErrors.push(String(error)));
     if(message.method==='Runtime.exceptionThrown')runtimeErrors.push(message.params.exceptionDetails);
     if(message.method==='Runtime.consoleAPICalled'&&message.params.type==='error')runtimeErrors.push(message.params.args);
     if (!message.id) return; const request = pending.get(message.id); pending.delete(message.id); if (message.error) request?.reject(Error(JSON.stringify(message.error))); else request?.resolve(message.result); });
-  cdp = (method, params = {}) => new Promise((resolve, reject) => { const key = ++id; pending.set(key, { resolve, reject }); ws.send(JSON.stringify({ id: key, method, params })); });
+  cdp = (method, params = {}, sessionId) => new Promise((resolve, reject) => { const key = ++id; pending.set(key, { resolve, reject }); ws.send(JSON.stringify({ id: key, method, params, sessionId })); });
   const evaluate = async expression => { const result = await cdp('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (result.exceptionDetails) throw new Error(JSON.stringify(result.exceptionDetails)); return result.result.value; };
   await cdp('Page.enable');
   await cdp('Runtime.enable');
+  if(process.argv.includes('--debugger')){
+    await cdp('Debugger.enable');await cdp('Debugger.setAsyncCallStackDepth',{maxDepth:32});
+    await cdp('Target.setAutoAttach',{autoAttach:true,waitForDebuggerOnStart:true,flatten:true});
+  }
   await cdp('Page.navigate', { url: 'http://127.0.0.1:1433/' });
   for (let i = 0; i < 100; i++) {
     if (await evaluate('location.origin === "http://127.0.0.1:1433" && document.readyState !== "loading"')) break;
@@ -49,6 +59,11 @@ try {
   const vectorPaint = await evaluate("import('/experiments/vector-paint/check.ts').then(m => m.checkVectorPaint())");
   if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   if(vectorPaint.diagnosticPng){await fs.writeFile('work/moon-vector-paint.png',Buffer.from(vectorPaint.diagnosticPng.split(',')[1],'base64'));delete vectorPaint.diagnosticPng;}
+  const seams=await evaluate("import('/experiments/vector-paint/seams.ts').then(m => m.checkPaintSeams())");
+  await fs.writeFile('work/paint-seams.png',Buffer.from(seams.diagnosticPng.split(',')[1],'base64'));delete seams.diagnosticPng;
+  console.log('Paint seams:',JSON.stringify(seams));
+  if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
+  result.paintSeams=seams;
   result.vectorPaint=vectorPaint;
   result.firstFill=firstFill;
   if(result.diagnosticPng){await fs.writeFile('work/moon-belt-runtime.png',Buffer.from(result.diagnosticPng.split(',')[1],'base64'));delete result.diagnosticPng;}
