@@ -31,6 +31,10 @@ export class EditorSession {
   private activePointer?: number;
   private gestureUndo?: { document: ArtworkDocument; history: ArtworkDocument[]; selected?: string; tool: EditorTool; focusHistoryStart: number };
   private nextSpray = 0;
+  private pendingFill?: Promise<void>;
+  private deferred: (()=>void)[] = [];
+  private defer(action:()=>void){if(!this.pendingFill)return false;this.deferred.push(action);return true;}
+  async settled(){while(this.pendingFill)await this.pendingFill;}
   constructor(private readonly setup: EditorSetup, private readonly ports: EditorSessionPorts) {
     if (!setup.id) throw new Error('An editor document must have an ID before opening.');
     const initial = initialDrawingSettings(setup);
@@ -50,6 +54,7 @@ export class EditorSession {
   }
 
   execute(command: EditorCommand) {
+    if(this.defer(()=>this.execute(command)))return;
     const size = paperSize(this.setup.format, this.setup.size);
     if (command.type === 'snapshot') {
       this.end();
@@ -79,7 +84,14 @@ export class EditorSession {
       this.document.setFocus(); this.tool = 'bucket';
     }
     if (command.type === 'fill-at' && this.tool === 'bucket') {
-      this.edit(() => this.document.fill(command.point, this.color, this.fillOptions));
+      const before=this.document.serialize();
+      const result=this.document.fill(command.point,this.color,this.fillOptions);
+      const finish=(changed:boolean)=>{if(changed){this.pending=before;this.recordChange();}this.notifyChanged();};
+      if(typeof result==='boolean')finish(result);
+      else this.pendingFill=result.then(finish).catch(error=>console.error('Vector bucket fill failed; paint was preserved.',error)).finally(()=>{
+        this.pendingFill=undefined;
+        while(!this.pendingFill&&this.deferred.length)this.deferred.shift()!();
+      });
     }
     if (command.type === 'order-selection' && this.selected) {
       const selected = this.selected;
@@ -136,6 +148,7 @@ export class EditorSession {
       background: this.setup.background, leafColor: this.setup.leafColor, version: document.version, updatedAt: Date.now(), document };
   }
   update(time: number) {
+    if(this.pendingFill)return;
     if (this.tool !== 'brush' || this.brushOptions.kind !== 'spray' || !this.previous || this.activePointer === undefined || time < this.nextSpray) return;
     this.nextSpray = time + 40;
     if (this.document.brush(this.previous, this.previous, this.color, false, this.brushOptions)) { this.recordChange(); this.notifyChanged(); }
@@ -156,6 +169,7 @@ export class EditorSession {
     }
   }
   begin(point: Point, pointerId: number, button: number) {
+    if(this.defer(()=>this.begin(point,pointerId,button)))return;
     if ((button !== 0 && button !== 2) || this.activePointer !== undefined || this.tool === 'pan' || this.tool === 'bucket') return;
     this.activePointer = pointerId;
     const snapshot = this.document.serialize();
@@ -178,6 +192,7 @@ export class EditorSession {
     this.notifyChanged();
   }
   move(point: Point, pointerId: number, isDown: boolean, zoom: number) {
+    if(this.defer(()=>this.move(point,pointerId,isDown,zoom)))return;
     if (pointerId !== this.activePointer) return;
     if (!isDown) { this.end(); return; }
     if (this.drag) {
@@ -200,6 +215,7 @@ export class EditorSession {
     }
   }
   release(point: Point, pointerId: number, zoom: number) {
+    if(this.defer(()=>this.release(point,pointerId,zoom)))return;
     if (pointerId !== this.activePointer) return;
     if (this.previous && this.stroke) this.paintStroke(point, zoom);
     this.end();

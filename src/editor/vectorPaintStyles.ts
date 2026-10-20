@@ -1,5 +1,5 @@
-import polygonClipping from 'polygon-clipping';
-import type { MultiPolygon, Pair } from 'polygon-clipping';
+import polygonClipping from './polygonGeometry';
+import type { MultiPolygon, Pair } from './polygonGeometry';
 import type { BrushOptions, FillOptions } from './toolOptions';
 import { brushBlob } from './vectorPaintGeometry';
 

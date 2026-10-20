@@ -23,14 +23,14 @@ export async function checkRegionCoverage() {
     { id: 'sticker', kind: 'circle', x: 100, y: 100, scale: 4, color: 0 },
   ] };
   const art = Artwork.restore(doc, () => definition);
-  assert(art.fill({ x: 34, y: 80 }, 0x743dad), 'Bucket on outer line must color the sticker');
+  assert((await art.fill({ x: 34, y: 80 }, 0x743dad)), 'Bucket on outer line must color the sticker');
   assert(!art.serialize().surfaces[0]!.vectorPaint!.regions.length && art.serialize().surfaces[1]!.vectorPaint!.regions.length, 'Line click must never fill the page');
-  assert(!art.fill({ x: 160, y: 160 }, 0xabcdef), 'Unfillable isolated ink must block click-through');
+  assert(!(await art.fill({ x: 160, y: 160 }, 0xabcdef)), 'Unfillable isolated ink must block click-through');
   assert(!art.serialize().surfaces[0]!.vectorPaint!.regions.length, 'Isolated ink must not fill the page');
   const transformed = structuredClone(doc);
   Object.assign(transformed.surfaces[1]!, { rotation: 90, flipX: true });
   const rotated = Artwork.restore(transformed, () => definition);
-  assert(rotated.fill({ x: 120, y: 166 }, 0x743dad), 'Rotated/flipped outlines must resolve in local coordinates');
+  assert((await rotated.fill({ x: 120, y: 166 }, 0x743dad)), 'Rotated/flipped outlines must resolve in local coordinates');
   assert(!rotated.serialize().surfaces[0]!.vectorPaint!.regions.length, 'Transformed line click must not fill the page');
   // Regress enlarged bucket edges, rather than checking hit coverage alone.
   const diagonalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" data-bounds="10 10 40 40" data-region-format="1" data-region-scale="4"><g id="regions"><path id="region-1" data-bounds="10 10 40 40" d="M10 10L40 40H10Z"/><path id="region-2" data-bounds="10 10 40 40" d="M10 10H40V40Z"/></g><g id="ink"><path d="M10 10L40 40" fill="none" stroke="black" stroke-width="0.1"/></g></svg>`;
@@ -39,7 +39,7 @@ export async function checkRegionCoverage() {
   enlargedDoc.width = enlargedDoc.height = 800;
   Object.assign(enlargedDoc.surfaces[1]!, { x: 400, y: 400, scale: 16 });
   const enlarged = Artwork.restore(enlargedDoc, () => diagonal);
-  assert(enlarged.fill({ x: 320, y: 480 }, 0x743dad), 'Diagonal fixture must fill');
+  assert((await enlarged.fill({ x: 320, y: 480 }, 0x743dad)), 'Diagonal fixture must fill');
   const rendered = document.createElement('canvas'); rendered.width = rendered.height = 800;
   const renderedContext = rendered.getContext('2d')!;
   enlarged.render(renderedContext);

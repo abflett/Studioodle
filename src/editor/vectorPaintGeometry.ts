@@ -1,7 +1,8 @@
 import { paintStyleKey } from './vectorPaintTypes';
-import polygonClipping from 'polygon-clipping';
-import type { MultiPolygon, Pair } from 'polygon-clipping';
+import polygonClipping from './polygonGeometry';
+import type { MultiPolygon, Pair } from './polygonGeometry';
 import type { PaintBlob, VectorPaintRegion } from './vectorPaintTypes';
+import type { FillOptions } from './toolOptions';
 
 export const brushGrid = 64;
 const snap = (n: number) => Math.round(n * brushGrid) / brushGrid;
@@ -57,6 +58,24 @@ export function compactRegion(region: VectorPaintRegion): VectorPaintRegion {
     }
     const blobs=[...colors.values()];
     return {...region,blobs};
+}
+/** Bucket topology is calculated in the worker, never during pointer dispatch. */
+export function filledRegion(region:VectorPaintRegion,color:number,point:Pair,pattern?:FillOptions,boundary?:MultiPolygon):VectorPaintRegion|undefined {
+    const r=compactRegion(region),key=paintStyleKey(color,pattern);
+    // Compaction makes visible color components disjoint. Test topmost first.
+    for(const blob of [...r.blobs].reverse())for(const polygon of blob.geometry)if(containsGeometry([polygon],point)){
+        if(paintStyleKey(blob.color,blob.pattern)===key)return;
+        return {...r,blobs:[...r.blobs,{color,pattern,geometry:[polygon]}]};
+    }
+    if(paintStyleKey(r.base,r.pattern)===key)return;
+    if(boundary){
+        const background=polygonClipping.difference(boundary,...r.blobs.map(blob=>blob.geometry));
+        if(background.length>1){
+            const component=background.find(polygon=>containsGeometry([polygon],point));
+            if(component)return {...r,blobs:[...r.blobs,{color,pattern,geometry:[component]}]};
+        }
+    }
+    return {...r,base:color,pattern};
 }
 export function polygonPath(geometry: MultiPolygon) {
     return geometry.flatMap(p=>p.map(r=>r.map(([x,y],i)=>`${i?'L':'M'}${x} ${y}`).join('')+'Z')).join('');

@@ -1,6 +1,6 @@
 import { SVGPathData } from 'svg-pathdata';
-import polygonClipping from 'polygon-clipping';
-import type { MultiPolygon, Pair, Ring } from 'polygon-clipping';
+import polygonClipping from './polygonGeometry';
+import type { MultiPolygon, Pair, Ring } from './polygonGeometry';
 import { containsGeometry } from './vectorPaintGeometry';
 
 /** Boolean geometry is flattened adaptively; display clipping retains the exact SVG curves. */

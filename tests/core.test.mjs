@@ -155,6 +155,25 @@ function session() {
   return { editor, saved };
 }
 
+test('worker fill queues following brush input, save and undo in order', async () => {
+  const {editor,saved}=session(),before=editor.artwork.serialize();
+  const original=editor.artwork.fill.bind(editor.artwork);let complete;
+  editor.artwork.fill=(...args)=>new Promise(resolve=>{complete=()=>resolve(original(...args));});
+  editor.execute({type:'set-tool',tool:'bucket'});
+  editor.execute({type:'fill-at',point:{x:2,y:2}});
+  editor.artwork.fill=original;
+  editor.execute({type:'set-tool',tool:'brush'});
+  editor.begin({x:3,y:3},1,0);editor.move({x:6,y:6},1,true,1);editor.release({x:6,y:6},1,1);
+  editor.execute({type:'save',onComplete:()=>{}});
+  editor.execute({type:'undo'});
+  assert.deepEqual(editor.artwork.serialize(),before);assert.equal(saved.length,0);
+  complete();await editor.settled();
+  assert.equal(saved.length,1);
+  assert.ok(saved[0].document.surfaces[0].vectorPaint.regions[0].blobs.length>1);
+  assert.equal(editor.artwork.serialize().surfaces[0].vectorPaint.regions[0].blobs.length,1);
+  editor.execute({type:'undo'});assert.deepEqual(editor.artwork.serialize(),before);
+});
+
 test('session saves through its port and reports a failed save without changing the artwork', () => {
   const { editor, saved } = session(); let succeeded;
   editor.execute({ type: 'save', onComplete: value => { succeeded = value; } });

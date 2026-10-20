@@ -38,7 +38,7 @@ test('input nodes use the fine grid and saved snapshots survive later merging',a
  await state.settled();
  assert.equal(snapshot.regions[0].blobs.length,1);
  assert.equal(state.serialize().regions[0].blobs.length,1);
- state.fill(1,0x112233,[6,6]);await state.settled();
+ await state.fill(1,0x112233,[6,6]);await state.settled();
  assert.equal(state.serialize().regions[0].blobs[0].color,0x112233);
  assert.equal(snapshot.regions[0].blobs[0].color,0x00ffff);
 });
@@ -78,4 +78,35 @@ test('pattern styles merge by color and pattern rather than color alone',()=>{
  ]});
  assert.equal(result.blobs.length,1);
  assert.equal(result.blobs[0].pattern.pattern,'stripes');
+});
+
+test('near-coincident curved strokes remain valid through repeated unions, fills and differences', async()=>{
+ const state=new VectorPaint();
+ const definition={regions:[{id:1,bounds:[0,0,200,200],geometry:()=>svgGeometry('M0 100A100 100 0 1 0 200 100A100 100 0 1 0 0 100Z',[1,0,0,1,0,0])}]};
+ for(let i=0;i<160;i++){
+  const x=116.01259777301146+Math.sin(i*.21)*15,y=97.17914246109615+Math.cos(i*.31)*12;
+  state.brush(definition,[x,y],[121.24579098191879+Math.sin(i*.21)*15,93.43833454370352+Math.cos(i*.31)*12],3,i%2?0x773399:0x42aadd,false);
+ }
+ assert.equal(await state.fill(1,0xff8811,[116,97],undefined,definition.regions[0].geometry),true);
+ await state.settled();
+ assert.equal(await state.fill(1,0x112233,[116,97],undefined,definition.regions[0].geometry),true);
+ await state.settled();
+ const result=state.serialize().regions[0];
+ assert.ok(result.blobs.some(b=>b.color===0x112233&&geometry.containsGeometry(b.geometry,[116,97])));
+ for(const blob of result.blobs)for(const point of blob.geometry.flat(2))for(const value of point){
+  assert.ok(Number.isFinite(value));assert.equal(value*4096,Math.round(value*4096));
+ }
+});
+
+test('fixed-precision booleans preserve nested islands and holes independent of input winding',async()=>{
+ const {default:polygons}=await server.ssrLoadModule('/src/editor/polygonGeometry.ts');
+ const square=(a,b)=>[[a,a],[a,b],[b,b],[b,a],[a,a]];
+ const result=polygons.union([[square(0,100),square(20,80)],[square(40,60)]]);
+ assert.equal(result.length,2);
+ assert.equal(geometry.containsGeometry(result,[10,10]),true);
+ assert.equal(geometry.containsGeometry(result,[30,30]),false);
+ assert.equal(geometry.containsGeometry(result,[50,50]),true);
+ const cut=polygons.difference(result,[[square(45,55)]]);
+ assert.equal(geometry.containsGeometry(cut,[50,50]),false);
+ assert.equal(geometry.containsGeometry(cut,[42,42]),true);
 });

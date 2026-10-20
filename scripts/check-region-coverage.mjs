@@ -29,11 +29,15 @@ try {
   if (!target) throw new Error('Benchmark page did not open');
   ws = new WebSocket(target.webSocketDebuggerUrl);
   await new Promise((resolve, reject) => { ws.addEventListener('open', resolve, { once: true }); ws.addEventListener('error', reject, { once: true }); });
-  let id = 0; const pending = new Map();
-  ws.addEventListener('message', event => { const message = JSON.parse(event.data); if (!message.id) return; const request = pending.get(message.id); pending.delete(message.id); if (message.error) request?.reject(Error(JSON.stringify(message.error))); else request?.resolve(message.result); });
+  let id = 0; const pending = new Map(), runtimeErrors=[];
+  ws.addEventListener('message', event => { const message = JSON.parse(event.data);
+    if(message.method==='Runtime.exceptionThrown')runtimeErrors.push(message.params.exceptionDetails);
+    if(message.method==='Runtime.consoleAPICalled'&&message.params.type==='error')runtimeErrors.push(message.params.args);
+    if (!message.id) return; const request = pending.get(message.id); pending.delete(message.id); if (message.error) request?.reject(Error(JSON.stringify(message.error))); else request?.resolve(message.result); });
   cdp = (method, params = {}) => new Promise((resolve, reject) => { const key = ++id; pending.set(key, { resolve, reject }); ws.send(JSON.stringify({ id: key, method, params })); });
   const evaluate = async expression => { const result = await cdp('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (result.exceptionDetails) throw new Error(JSON.stringify(result.exceptionDetails)); return result.result.value; };
   await cdp('Page.enable');
+  await cdp('Runtime.enable');
   await cdp('Page.navigate', { url: 'http://127.0.0.1:1433/' });
   for (let i = 0; i < 100; i++) {
     if (await evaluate('location.origin === "http://127.0.0.1:1433" && document.readyState !== "loading"')) break;
@@ -41,6 +45,7 @@ try {
   }
   const result = await evaluate("import('/experiments/region-coverage/check.ts').then(m => m.checkRegionCoverage())");
   const vectorPaint = await evaluate("import('/experiments/vector-paint/check.ts').then(m => m.checkVectorPaint())");
+  if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   if(vectorPaint.diagnosticPng){await fs.writeFile('work/moon-vector-paint.png',Buffer.from(vectorPaint.diagnosticPng.split(',')[1],'base64'));delete vectorPaint.diagnosticPng;}
   result.vectorPaint=vectorPaint;
   if(result.diagnosticPng){await fs.writeFile('work/moon-belt-runtime.png',Buffer.from(result.diagnosticPng.split(',')[1],'base64'));delete result.diagnosticPng;}

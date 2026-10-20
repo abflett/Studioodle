@@ -1,4 +1,4 @@
-import polygonClipping from 'polygon-clipping';
+import polygonClipping from './polygonGeometry';
 import { vectorStickerSize } from './vectorCatalog';
 import { vectorDefinition } from './vectorStickers';
 import { drawVectorInk } from './vectorDefinition';

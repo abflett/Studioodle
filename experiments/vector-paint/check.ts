@@ -3,6 +3,7 @@ import { prepareStickers } from '../../src/editor/vectorStickers';
 import { Artwork } from '../../src/editor/Artwork';
 import { decodeSvgDefinition } from '../../src/editor/svgDefinition';
 import { VectorPaint } from '../../src/editor/VectorPaint';
+import { brushBlob } from '../../src/editor/vectorPaintGeometry';
 import type { ArtworkDocument } from '../../src/editor/document';
 function assert(value:unknown,message:string):asserts value{if(!value)throw Error(message);}
 /** Real worker, Path2D and Canvas regression. Paint remains vector at every display scale. */
@@ -12,7 +13,7 @@ export async function checkVectorPaint(){
  const doc:ArtworkDocument={version:5,width:400,height:500,surfaces:[{id:'page',kind:'canvas',x:0,y:0,color:0xffffff},
  {id:'moon',kind:'fantasy-moon-sorceress',x:170,y:240,color:0x242428}]};
  const art=Artwork.restore(doc,()=>vector);
- assert(art.fill({x:170,y:174},0x773399),'Vector bucket fills');
+ assert((await art.fill({x:170,y:174},0x773399)),'Vector bucket fills');
  assert(art.brush({x:168,y:175},{x:172,y:175},0x42aadd,false,{size:2,kind:'ink',shape:'round'}),'Vector brush paints');
  let saved=art.serialize();
  assert(!('paint' in saved.surfaces[1]!)&&!!saved.surfaces[1]!.vectorPaint,'No raster paint allocated/serialized');
@@ -57,13 +58,13 @@ export async function checkVectorPaint(){
  assert(bytes<20_000,`Repeated strokes retained excessive geometry: ${bytes}`);
  assert(art.brush({x:170,y:175},{x:170,y:175},0,true),'Vector eraser works');
  await art.compactPaint();
- // Advanced texture tools retain a working raster fallback, without losing vector paint.
- assert(restored.brush({x:170,y:175},{x:171,y:175},0xff8800,false,{size:3,kind:'pencil',shape:'round'}),'Textured fallback works');
+ // Advanced texture tools use vector coverage too.
+ assert(restored.brush({x:170,y:175},{x:171,y:175},0xff8800,false,{size:3,kind:'pencil',shape:'round'}),'Textured brush works');
  assert(restored.serialize().surfaces[1]!.vectorPaint&&!('paint' in restored.serialize().surfaces[1]!),'Textured brushes remain vector');
  const page=Artwork.create(100,100,'#ffffff');
  const corners=[{x:20,y:20},{x:80,y:20},{x:80,y:80},{x:20,y:80},{x:20,y:20}];
  for(let i=1;i<corners.length;i++)assert(page.brush(corners[i-1]!,corners[i]!,0,false,{size:6,kind:'ink',shape:'round'}),'Page outline stroke');
- await page.compactPaint();assert(page.fill({x:50,y:50},0x22aa66),'Fill inside a closed page outline');
+ await page.compactPaint();assert((await page.fill({x:50,y:50},0x22aa66)),'Fill inside a closed page outline');
  const pc=document.createElement('canvas');pc.width=pc.height=100;const pctx=pc.getContext('2d',{willReadFrequently:true})!;page.render(pctx);
  const rgb=(x:number,y:number)=>{const p=pctx.getImageData(x,y,1,1).data;return(p[0]!<<16)|(p[1]!<<8)|p[2]!;};
  assert(rgb(50,50)===0x22aa66&&rgb(5,5)===0xffffff&&rgb(20,50)===0,'Page bucket must preserve its closed vector boundary');
@@ -73,9 +74,46 @@ export async function checkVectorPaint(){
   await styled.compactPaint();assert(styled.serialize().surfaces[0]!.vectorPaint!.regions.some(r=>r.blobs.length),`${kind} remains vector`);
  }
  for(const pattern of ['dots','stripes','checker'] as const){
-  assert(page.fill({x:50,y:50},0x2244aa,{pattern,spacing:8}),`${pattern} vector fill`);
+  assert((await page.fill({x:50,y:50},0x2244aa,{pattern,spacing:8})),`${pattern} vector fill`);
   await page.compactPaint();page.render(pctx);
   assert(page.serialize().surfaces[0]!.vectorPaint!.regions.some(r=>r.blobs.some(b=>b.pattern?.pattern===pattern)),`${pattern} persists as a vector style`);
  }
- return {vectorRoundtrip:true,undo:true,higherResolutionRender:true,workerRace:true,eraser:true,vectorTextures:true,pageClosedFill:true,vectorPatterns:true,repeatedStrokes:400,compactedBytes:bytes,diagnosticPng:canvas.toDataURL('image/png')};
+ // Real curved regions, intersecting multicolor strokes and bucket clicks both
+ // before and after idle compaction. The former floating sweep failed here.
+ const stress=new VectorPaint();let maxStrokeMs=0;
+ for(let i=0;i<180;i++){
+  const a:[number,number]=[100+(i*13.17)%95,75+(i*7.73)%120];
+  const b:[number,number]=[a[0]+Math.sin(i)*17,a[1]+Math.cos(i)*12];
+  const start=performance.now();stress.brush(vector,a,b,5,0x773399+(i%3)*0x112200,false);
+  maxStrokeMs=Math.max(maxStrokeMs,performance.now()-start);
+  if(i%4===0)await new Promise(resolve=>setTimeout(resolve,0));
+ }
+ const painted=stress.serialize().regions.filter(r=>r.blobs.length).sort((a,b)=>b.blobs.flatMap(b=>b.geometry.flat(2)).length-a.blobs.flatMap(b=>b.geometry.flat(2)).length)[0]!;
+ const target=vector.regions.find(r=>r.id===painted.id)!;
+ // Select a point inside actual brush coverage (a triangle centroid avoids edges).
+ const ring=painted.blobs.at(-1)!.geometry[0]![0]!;
+ const point:[number,number]=[(ring[0]![0]+ring[1]![0]+ring[2]![0])/3,(ring[0]![1]+ring[1]![1]+ring[2]![1])/3];
+ const filling=stress.fill(painted.id,0xff1188,point,undefined,target.geometry);
+ assert(filling instanceof Promise,'Bucket topology must run asynchronously');
+ assert(await filling,'Bucket must recolor intersecting brush geometry');
+ await stress.settled();
+ assert(await stress.fill(painted.id,0x11aaff,point,undefined,target.geometry),'Bucket must work again after compaction');
+ await stress.settled();
+ assert(maxStrokeMs<250,`A brush segment blocked for ${maxStrokeMs.toFixed(1)}ms`);
+ // A dense pending region gives enough work to verify event-loop progress even
+ // on fast machines; a small region can finish before a browser timer fires.
+ const dense=new VectorPaint({version:1,regions:[{id:1,base:0xffffff,blobs:Array.from({length:600},(_,i)=>({color:i%2?0x773399:0x42aadd,geometry:brushBlob([i%30*3,Math.floor(i/30)*3],[i%30*3+8,Math.floor(i/30)*3+6],3)}))}]});
+ let heartbeats=0;const heartbeat=setInterval(()=>heartbeats++,0);
+ try {assert(await dense.fill(1,0xff8800,[50,30]),'Dense pending brush region must fill');}
+ finally {clearInterval(heartbeat);}
+ assert(heartbeats>0,'Bucket geometry must leave the UI event loop responsive');
+ await dense.settled();
+ // Commands arriving during a worker fill preserve order and one undo per fill.
+ const pageSession=new EditorSession({id:'fill-order',title:'Fill order',format:'portrait',size:{width:100,height:100},background:'#ffffff',leafColor:0,document:page.serialize()},{save:()=>{},changed:()=>{}});
+ const orderedBefore=JSON.stringify(pageSession.artwork.serialize());
+ pageSession.execute({type:'set-tool',tool:'bucket'});pageSession.execute({type:'set-color',color:0x551188});
+ pageSession.execute({type:'fill-at',point:{x:50,y:50}});
+ pageSession.execute({type:'undo'});await pageSession.settled();
+ assert(JSON.stringify(pageSession.artwork.serialize())===orderedBefore,'Queued undo must restore the state before async fill');
+ return {vectorRoundtrip:true,undo:true,higherResolutionRender:true,workerRace:true,eraser:true,vectorTextures:true,pageClosedFill:true,vectorPatterns:true,fillAfterComplexBrush:true,queuedFillUndo:true,maxStrokeMs,fillHeartbeats:heartbeats,repeatedStrokes:400,compactedBytes:bytes,diagnosticPng:canvas.toDataURL('image/png')};
 }

@@ -1,4 +1,4 @@
-import type { MultiPolygon } from 'polygon-clipping';
+import type { MultiPolygon } from './polygonGeometry';
 export type InkCommand = {
     path: Path2D;
     fill: boolean;

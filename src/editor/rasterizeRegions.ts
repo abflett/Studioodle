@@ -1,7 +1,7 @@
 import { drawVectorInk } from './vectorDefinition';
 import type { InkCommand } from './vectorDefinition';
 
-export type RegionPath = { id: number; path: Path2D; bounds: number[]; geometry?: () => import('polygon-clipping').MultiPolygon };
+export type RegionPath = { id: number; path: Path2D; bounds: number[]; geometry?: () => import('./polygonGeometry').MultiPolygon };
 
 /** Build shared categorical lookups once; separate alpha masks prevent blended IDs. */
 export function rasterizeRegions(regions: RegionPath[], width: number, height: number, scale: number, ink: InkCommand[] = []) {
