@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react';
+import { paperSize } from '../editor/document';
 import { DialogHeader } from './DialogHeader';
 import { workshopPages, workshopRepository } from '../app/coloringBookWorkshop';
 import { coloringPages } from '../app/coloringPages';
@@ -133,6 +135,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   useEffect(() => { if (step) stepHeading.current?.focus({ preventScroll: true }); }, [step]);
 
   const current = saved[sampleIndex];
+  const previewSize = current ? paperSize(current.format, current.size) : { width: 4, height: 3 };
   const scene = scenes[Math.min(sceneIndex, scenes.length - 1)]!;
   const customScene = !coloringPages.some(page => page.id === scene.id) ? scene as SavedPicture : undefined;
   const addColoringPage = () => {
@@ -176,7 +179,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
         </div>
         <section className="previous-section" aria-label="Previous pictures">
 
-          <div className="picture-carousel">
+          <div className="picture-carousel" style={{ '--saved-picture-ratio': previewSize.width / previewSize.height } as CSSProperties}>
             <button className="icon-button" aria-label="Previous saved picture" disabled={saved.length < 2} onClick={() => setSampleIndex((value) => (value + saved.length - 1) % saved.length)}><Arrow direction="left" /></button>
             <div className="saved-picture-card" role="group" aria-labelledby="your-pictures-label">
               <button className="choice-card previous-picture" aria-label={current ? `Open saved picture: ${current.title}` : 'No saved pictures yet'} disabled={!current} onClick={() => { if (current) onOpen(current); }}><span className="choice-art"><>{current ? <SavedPreview picture={current} /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}</></span></button>

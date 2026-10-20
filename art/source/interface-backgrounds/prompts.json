@@ -1,0 +1,18 @@
+{
+  "tool": "built-in image_gen",
+  "purpose": "Decorative selection-screen backgrounds; not sticker assets",
+  "assets": [
+    {
+      "name": "selection-night",
+      "file": "selection-night.png",
+      "runtime": "src/assets/backgrounds/selection-night.webp",
+      "prompt": "Create ONE landscape 3:2 painterly background image for a calm drawing app home screen, not a screenshot or UI mockup. A dreamy moonlit night in deep navy and muted indigo, a small softly luminous moon high in the upper LEFT quadrant (about 18% from left, 18% from top), a broad faint Milky Way nebula drifting diagonally across the upper sky, sparse tiny soft stars. Very low contrast teal and dusty lavender atmospheric wisps, distant barely visible dark hills at the bottom edge. Gouache and watercolor painted color masses, tastefully diffuse, softly out of focus, no hard outlines, no sharp tiny glitter. The central 65% must stay quiet, dark and low-detail so cream illustrations and labels overlaid later stay readable. Avoid bright white central areas, oversaturated purple, dramatic space spectacle, photographic realism, people, objects, text, typography, logos, borders or interface elements. Full bleed, premium serene storybook atmosphere for all ages; subdued but clearly evocative of a starry night. Output an opaque background."
+    },
+    {
+      "name": "selection-beach",
+      "file": "selection-beach.png",
+      "runtime": "src/assets/backgrounds/selection-beach.webp",
+      "prompt": "Create ONE full-bleed landscape 3:2 painterly background for the home screen of a calm drawing app, a light-mode companion to an indigo moonlit watercolor painting. A dreamy sunlit beach: luminous pale cream sky, diffuse warm golden sunlight high in the upper LEFT, misty pale turquoise ocean toward the distant lower-middle horizon, creamy peach sand along the bottom with a soft sweep of shoreline at the lower right edge, only faint distant coastal shapes. Tasteful watercolor and gouache, soft painted masses with beautiful restrained texture, deliberately out of focus, serene and airy, no sharp outlines or fine gritty sand. Keep the central 65% very light, quiet and low-detail, mostly warm ivory and pale sea mist, so dark teal text and cream paper illustrations added later remain readable. Restrained teal, pale aqua, warm ivory and apricot palette. Enough luminous sea and beach atmosphere to be recognisable while remaining an unobtrusive backdrop. No people, buildings, umbrellas, boats, palm trees, objects, lettering, text, logos, borders or interface elements. Not a screenshot, not photorealistic. Opaque background, premium storybook painting for all ages."
+    }
+  ]
+}
