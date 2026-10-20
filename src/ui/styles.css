@@ -759,8 +759,8 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .selection-screen .selection { --picture-height: min(184px, 32vw, 25dvh); --label-gap: 20px; gap: clamp(18px, 3.5dvh, 32px); }
 }
 /* Shared painted artwork for selection, splash, and ribbon surfaces. */
-:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b493019, #5b493019); --ribbon-glaze: linear-gradient(#fff8e82e, #fff8e82e); }
-:root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --canvas-tint: linear-gradient(#06111f38, #06111f38); --ribbon-glaze: linear-gradient(#10233230, #10233230); }
+:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b49302b, #5b49302b); --ribbon-glaze: linear-gradient(#fffaf052, #fffaf052); }
+:root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --canvas-tint: linear-gradient(#06111f38, #06111f38); --ribbon-glaze: linear-gradient(#d8e9f225, #d8e9f225); }
 .selection-screen, .splash { position: relative; isolation: isolate; overflow: hidden; }
 :is(.selection-screen, .splash)::before, :is(.selection-screen, .splash)::after { content: ''; position: absolute; pointer-events: none; }
 :is(.selection-screen, .splash)::before { inset: 0; z-index: -2; background-image: var(--scene-art); background-size: cover; background-position: center; }
