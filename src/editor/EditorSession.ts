@@ -51,10 +51,14 @@ export class EditorSession {
 
   execute(command: EditorCommand) {
     const size = paperSize(this.setup.format, this.setup.size);
+    if (command.type === 'snapshot') {
+      this.end();
+      command.onComplete(this.snapshot());
+      return;
+    }
     if (command.type === 'save') {
       try {
-        this.ports.save({ id: this.setup.id!, title: this.setup.title, format: this.setup.format, size, background: this.setup.background, leafColor: this.setup.leafColor,
-          version: 3, updatedAt: Date.now(), document: this.document.serialize() });
+        this.ports.save(this.snapshot());
         command.onComplete(true);
       } catch { command.onComplete(false); }
       return;
@@ -125,6 +129,10 @@ export class EditorSession {
       this.tool = 'select';
     }
     this.notifyChanged();
+  }
+  private snapshot(): SavedPicture {
+    return { id: this.setup.id!, title: this.setup.title, format: this.setup.format, size: paperSize(this.setup.format, this.setup.size),
+      background: this.setup.background, leafColor: this.setup.leafColor, version: 3, updatedAt: Date.now(), document: this.document.serialize() };
   }
   update(time: number) {
     if (this.tool !== 'brush' || this.brushOptions.kind !== 'spray' || !this.previous || this.activePointer === undefined || time < this.nextSpray) return;

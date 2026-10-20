@@ -24,7 +24,8 @@
     "assets:build": "node scripts/build-stickers.mjs",
     "assets:catalog": "node scripts/build-asset-catalog.mjs",
     "assets:preview": "node scripts/preview-scenes.mjs",
-    "benchmark:stickers": "node scripts/benchmark-garden-house.mjs --library"
+    "benchmark:stickers": "node scripts/benchmark-garden-house.mjs --library",
+    "books:install": "node scripts/install-coloring-book.mjs"
   },
   "dependencies": {
     "@fontsource-variable/nunito": "5.3.0",

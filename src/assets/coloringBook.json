@@ -1,0 +1,1313 @@
+{
+  "format": "studioodle-coloring-book",
+  "version": 1,
+  "title": "Studioodle Coloring Book",
+  "pages": [
+    {
+      "id": "winter",
+      "title": "Christmas Skating Village",
+      "version": 3,
+      "updatedAt": 0,
+      "format": "landscape",
+      "size": {
+        "width": 1123,
+        "height": 794
+      },
+      "background": "#ffffff",
+      "leafColor": 2368552,
+      "document": {
+        "version": 3,
+        "horizonLayout": 2,
+        "width": 1123,
+        "height": 794,
+        "surfaces": [
+          {
+            "id": "canvas",
+            "kind": "canvas",
+            "x": 0,
+            "y": 0,
+            "color": 16777215,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-0",
+            "kind": "winter-snow",
+            "x": 561.5,
+            "y": 816.9552083333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-1",
+            "kind": "winter-pond",
+            "x": 660.9322916666666,
+            "y": 578.3177083333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-2",
+            "kind": "winter-pine",
+            "x": 965.0781249999999,
+            "y": 420.3958333333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-3",
+            "kind": "winter-pine",
+            "x": 1029.4166666666665,
+            "y": 525.6770833333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-4",
+            "kind": "winter-cabin",
+            "x": 204.71354166666666,
+            "y": 496.43229166666663,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-5",
+            "kind": "winter-santa-sleigh",
+            "x": 175.46874999999997,
+            "y": 242.00260416666666,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-6",
+            "kind": "winter-reindeer",
+            "x": 444.5208333333333,
+            "y": 242.00260416666666,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-7",
+            "kind": "winter-reindeer",
+            "x": 666.7812499999999,
+            "y": 242.00260416666666,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-8",
+            "kind": "winter-present",
+            "x": 356.7864583333333,
+            "y": 613.4114583333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-9",
+            "kind": "winter-present",
+            "x": 462.0677083333333,
+            "y": 622.1848958333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-10",
+            "kind": "winter-skater",
+            "x": 584.8958333333333,
+            "y": 519.828125,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-11",
+            "kind": "winter-skater-friend",
+            "x": 748.6666666666666,
+            "y": 522.7526041666666,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-12",
+            "kind": "counting-star",
+            "x": 877.3437499999999,
+            "y": 209.83333333333331,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "winter-instance-13",
+            "kind": "counting-star",
+            "x": 1029.4166666666665,
+            "y": 280.0208333333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "beach",
+      "title": "Sunny Beach Day",
+      "version": 3,
+      "updatedAt": 0,
+      "format": "landscape",
+      "size": {
+        "width": 1123,
+        "height": 794
+      },
+      "background": "#ffffff",
+      "leafColor": 2368552,
+      "document": {
+        "version": 3,
+        "horizonLayout": 2,
+        "width": 1123,
+        "height": 794,
+        "surfaces": [
+          {
+            "id": "canvas",
+            "kind": "canvas",
+            "x": 0,
+            "y": 0,
+            "color": 16777215,
+            "paint": []
+          },
+          {
+            "id": "beach-instance-0",
+            "kind": "beach-shore",
+            "x": 561.5,
+            "y": 819.0023437499999,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "beach-instance-1",
+            "kind": "spring-sun",
+            "x": 561.5,
+            "y": 215.68229166666666,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "beach-instance-2",
+            "kind": "spring-cloud",
+            "x": 871.4947916666666,
+            "y": 209.83333333333331,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "beach-instance-3",
+            "kind": "beach-palm",
+            "x": 210.56249999999997,
+            "y": 402.8489583333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "beach-instance-4",
+            "kind": "beach-towel",
+            "x": 766.2135416666666,
+            "y": 595.8645833333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "beach-instance-5",
+            "kind": "beach-umbrella",
+            "x": 813.0052083333333,
+            "y": 432.09375,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "beach-instance-6",
+            "kind": "beach-ball",
+            "x": 497.1614583333333,
+            "y": 560.7708333333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "beach-instance-7",
+            "kind": "beach-shell",
+            "x": 374.3333333333333,
+            "y": 630.9583333333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "beach-instance-8",
+            "kind": "beach-shell",
+            "x": 1006.0208333333333,
+            "y": 613.4114583333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "spring",
+      "title": "Spring Garden",
+      "version": 3,
+      "updatedAt": 0,
+      "format": "landscape",
+      "size": {
+        "width": 1123,
+        "height": 794
+      },
+      "background": "#ffffff",
+      "leafColor": 2368552,
+      "document": {
+        "version": 3,
+        "horizonLayout": 2,
+        "width": 1123,
+        "height": 794,
+        "surfaces": [
+          {
+            "id": "canvas",
+            "kind": "canvas",
+            "x": 0,
+            "y": 0,
+            "color": 16777215,
+            "paint": []
+          },
+          {
+            "id": "spring-instance-0",
+            "kind": "spring-meadow",
+            "x": 561.5,
+            "y": 882.4635416666666,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "spring-instance-1",
+            "kind": "spring-sun",
+            "x": 128.67708333333331,
+            "y": 221.53125,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "spring-instance-2",
+            "kind": "spring-cloud",
+            "x": 345.08854166666663,
+            "y": 198.13541666666666,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "spring-instance-3",
+            "kind": "spring-cloud",
+            "x": 935.8333333333333,
+            "y": 203.984375,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "spring-instance-4",
+            "kind": "spring-butterfly",
+            "x": 567.3489583333333,
+            "y": 280.0208333333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "spring-instance-5",
+            "kind": "spring-bird",
+            "x": 795.4583333333333,
+            "y": 572.46875,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "spring-instance-6",
+            "kind": "spring-tulip",
+            "x": 146.22395833333331,
+            "y": 496.43229166666663,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "spring-instance-7",
+            "kind": "spring-tulip",
+            "x": 970.9270833333333,
+            "y": 525.6770833333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "spring-instance-8",
+            "kind": "spring-bunny",
+            "x": 596.59375,
+            "y": 513.9791666666666,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "spring-instance-9",
+            "kind": "spring-watering-can",
+            "x": 327.54166666666663,
+            "y": 560.7708333333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "counting",
+      "title": "Counting Costume Parade",
+      "version": 3,
+      "updatedAt": 0,
+      "format": "landscape",
+      "size": {
+        "width": 1123,
+        "height": 794
+      },
+      "background": "#ffffff",
+      "leafColor": 2368552,
+      "document": {
+        "version": 3,
+        "horizonLayout": 2,
+        "width": 1123,
+        "height": 794,
+        "surfaces": [
+          {
+            "id": "canvas",
+            "kind": "canvas",
+            "x": 0,
+            "y": 0,
+            "color": 16777215,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-0",
+            "kind": "counting-bunting",
+            "x": 561.5,
+            "y": 148.41927083333331,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-1",
+            "kind": "counting-01",
+            "x": 112.29999999999998,
+            "y": 294.64322916666663,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-2",
+            "kind": "counting-02",
+            "x": 336.9,
+            "y": 294.64322916666663,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-3",
+            "kind": "counting-03",
+            "x": 561.5,
+            "y": 294.64322916666663,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-4",
+            "kind": "counting-04",
+            "x": 786.0999999999999,
+            "y": 294.64322916666663,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-5",
+            "kind": "counting-05",
+            "x": 1010.6999999999999,
+            "y": 294.64322916666663,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-6",
+            "kind": "counting-06",
+            "x": 112.29999999999998,
+            "y": 546.1484375,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-7",
+            "kind": "counting-07",
+            "x": 336.9,
+            "y": 546.1484375,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-8",
+            "kind": "counting-08",
+            "x": 561.5,
+            "y": 546.1484375,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-9",
+            "kind": "counting-09",
+            "x": 786.0999999999999,
+            "y": 546.1484375,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-10",
+            "kind": "counting-10",
+            "x": 1010.6999999999999,
+            "y": 546.1484375,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-11",
+            "kind": "counting-star",
+            "x": 222.26041666666666,
+            "y": 420.3958333333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-12",
+            "kind": "counting-star",
+            "x": 446.86041666666665,
+            "y": 420.3958333333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-13",
+            "kind": "counting-star",
+            "x": 671.4604166666666,
+            "y": 420.3958333333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          },
+          {
+            "id": "counting-instance-14",
+            "kind": "counting-star",
+            "x": 896.0604166666666,
+            "y": 420.3958333333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "paint": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "garden",
+      "title": "Cottage Garden",
+      "version": 3,
+      "updatedAt": 0,
+      "format": "landscape",
+      "size": {
+        "width": 1123,
+        "height": 794
+      },
+      "background": "#ffffff",
+      "leafColor": 2368552,
+      "document": {
+        "version": 3,
+        "horizonLayout": 2,
+        "width": 1123,
+        "height": 794,
+        "surfaces": [
+          {
+            "id": "canvas",
+            "kind": "canvas",
+            "x": 0,
+            "y": 0,
+            "color": 16777215,
+            "paint": []
+          },
+          {
+            "id": "garden-0",
+            "kind": "spring-meadow",
+            "x": 561.5,
+            "y": 775.7200520833333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-1",
+            "kind": "garden-rainbow",
+            "x": 614.140625,
+            "y": 183.51302083333334,
+            "color": 0,
+            "scale": 0.6214518229166667,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-2",
+            "kind": "garden-sun",
+            "x": 150.61067708333331,
+            "y": 150.61263020833334,
+            "color": 0,
+            "scale": 0.6580078125,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-3",
+            "kind": "garden-cloud",
+            "x": 372.87109375,
+            "y": 106.74544270833334,
+            "color": 0,
+            "scale": 0.6214518229166667,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-4",
+            "kind": "garden-cloud",
+            "x": 994.3229166666666,
+            "y": 106.74544270833334,
+            "color": 0,
+            "scale": 0.6214518229166667,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-5",
+            "kind": "garden-bush",
+            "x": 106.01236979166666,
+            "y": 457.6829427083333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-6",
+            "kind": "garden-bush",
+            "x": 1008.9453125,
+            "y": 446.7161458333333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-7",
+            "kind": "garden-fence",
+            "x": 131.6015625,
+            "y": 490.5833333333333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-8",
+            "kind": "garden-fence",
+            "x": 394.8046875,
+            "y": 490.5833333333333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-9",
+            "kind": "garden-fence",
+            "x": 658.0078125,
+            "y": 490.5833333333333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-10",
+            "kind": "garden-fence",
+            "x": 921.2109375,
+            "y": 490.5833333333333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-11",
+            "kind": "garden-fence",
+            "x": 1184.4140625,
+            "y": 490.5833333333333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-12",
+            "kind": "garden-path",
+            "x": 700.4127604166666,
+            "y": 651.4296875,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-13",
+            "kind": "garden-house",
+            "x": 764.0201822916666,
+            "y": 369.9485677083333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-14",
+            "kind": "garden-blossom",
+            "x": 793.2649739583333,
+            "y": 483.2721354166667,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-15",
+            "kind": "garden-blossom",
+            "x": 840.7877604166666,
+            "y": 483.2721354166667,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-16",
+            "kind": "garden-blossom",
+            "x": 888.310546875,
+            "y": 483.2721354166667,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-17",
+            "kind": "garden-tree",
+            "x": 361.904296875,
+            "y": 377.259765625,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-18",
+            "kind": "garden-apple",
+            "x": 281.48111979166663,
+            "y": 304.1477864583333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-19",
+            "kind": "garden-apple",
+            "x": 365.5598958333333,
+            "y": 252.96940104166669,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-20",
+            "kind": "garden-apple",
+            "x": 442.3274739583333,
+            "y": 293.1809895833333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-21",
+            "kind": "garden-apple",
+            "x": 296.103515625,
+            "y": 388.2265625,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-22",
+            "kind": "garden-apple",
+            "x": 383.837890625,
+            "y": 362.6373697916667,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-23",
+            "kind": "garden-apple",
+            "x": 460.60546875,
+            "y": 395.5377604166667,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-24",
+            "kind": "garden-bush",
+            "x": 127.94596354166666,
+            "y": 567.3509114583333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-25",
+            "kind": "garden-bush",
+            "x": 994.3229166666666,
+            "y": 578.3177083333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-26",
+            "kind": "garden-stone",
+            "x": 694.5638020833333,
+            "y": 596.595703125,
+            "color": 0,
+            "scale": 0.32900390625,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-27",
+            "kind": "garden-stone",
+            "x": 679.94140625,
+            "y": 629.49609375,
+            "color": 0,
+            "scale": 0.4752278645833333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-28",
+            "kind": "garden-stone",
+            "x": 683.5970052083333,
+            "y": 666.0520833333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-29",
+            "kind": "garden-stone",
+            "x": 709.1861979166666,
+            "y": 702.6080729166667,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-30",
+            "kind": "garden-stone",
+            "x": 734.775390625,
+            "y": 742.8196614583333,
+            "color": 0,
+            "scale": 0.8407877604166666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-31",
+            "kind": "garden-flower",
+            "x": 102.35677083333333,
+            "y": 651.4296875,
+            "color": 0,
+            "scale": 0.54833984375,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-32",
+            "kind": "garden-flower",
+            "x": 255.89192708333331,
+            "y": 680.6744791666667,
+            "color": 0,
+            "scale": 0.5117838541666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-33",
+            "kind": "garden-flower",
+            "x": 431.3606770833333,
+            "y": 698.9524739583333,
+            "color": 0,
+            "scale": 0.4752278645833333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-34",
+            "kind": "garden-flower",
+            "x": 1016.2565104166666,
+            "y": 651.4296875,
+            "color": 0,
+            "scale": 0.54833984375,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-35",
+            "kind": "garden-flower",
+            "x": 902.9329427083333,
+            "y": 698.9524739583333,
+            "color": 0,
+            "scale": 0.4752278645833333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-36",
+            "kind": "garden-mushroom",
+            "x": 555.6510416666666,
+            "y": 684.330078125,
+            "color": 0,
+            "scale": 0.5117838541666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-37",
+            "kind": "garden-mushroom",
+            "x": 566.6178385416666,
+            "y": 731.8528645833333,
+            "color": 0,
+            "scale": 0.40211588541666665,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-38",
+            "kind": "garden-grass",
+            "x": 402.11588541666663,
+            "y": 596.595703125,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-39",
+            "kind": "garden-grass",
+            "x": 467.91666666666663,
+            "y": 753.7864583333333,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-40",
+            "kind": "garden-grass",
+            "x": 811.54296875,
+            "y": 746.4752604166667,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-41",
+            "kind": "garden-grass",
+            "x": 1067.4348958333333,
+            "y": 746.4752604166667,
+            "color": 0,
+            "scale": 0.7311197916666666,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "garden-42",
+            "kind": "garden-butterfly",
+            "x": 102.35677083333333,
+            "y": 333.392578125,
+            "color": 0,
+            "scale": 0.6360742187499999,
+            "flipX": true,
+            "paint": []
+          },
+          {
+            "id": "garden-43",
+            "kind": "garden-butterfly",
+            "x": 1034.5345052083333,
+            "y": 263.9361979166667,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "flipX": false,
+            "paint": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "safari",
+      "title": "Safari Watering Hole",
+      "version": 3,
+      "updatedAt": 0,
+      "format": "landscape",
+      "size": {
+        "width": 1123,
+        "height": 794
+      },
+      "background": "#ffffff",
+      "leafColor": 2368552,
+      "document": {
+        "version": 3,
+        "horizonLayout": 2,
+        "width": 1123,
+        "height": 794,
+        "surfaces": [
+          {
+            "id": "canvas",
+            "kind": "canvas",
+            "x": 0,
+            "y": 0,
+            "color": 16777215,
+            "paint": []
+          },
+          {
+            "id": "safari-0",
+            "kind": "spring-meadow",
+            "x": 561.5,
+            "y": 736.2395833333333,
+            "color": 0,
+            "scale": 0.5848958333333333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-1",
+            "kind": "garden-sun",
+            "x": 842.2499999999999,
+            "y": 116.25000000000001,
+            "color": 0,
+            "scale": 0.29244791666666664,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-2",
+            "kind": "garden-cloud",
+            "x": 374.3333333333333,
+            "y": 113.32552083333334,
+            "color": 0,
+            "scale": 0.46791666666666665,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-3",
+            "kind": "spring-cloud",
+            "x": 637.5364583333333,
+            "y": 163.04166666666669,
+            "color": 0,
+            "scale": 0.35093749999999996,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-4",
+            "kind": "garden-tree",
+            "x": 143.29947916666666,
+            "y": 253.70052083333334,
+            "color": 0,
+            "scale": 0.52640625,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-5",
+            "kind": "garden-tree",
+            "x": 994.3229166666666,
+            "y": 329.7369791666667,
+            "color": 0,
+            "scale": 0.46791666666666665,
+            "flipX": true,
+            "paint": []
+          },
+          {
+            "id": "safari-6",
+            "kind": "garden-bush",
+            "x": 330.4661458333333,
+            "y": 411.6223958333333,
+            "color": 0,
+            "scale": 0.4094270833333333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-7",
+            "kind": "garden-bush",
+            "x": 1044.0390625,
+            "y": 537.375,
+            "color": 0,
+            "scale": 0.46791666666666665,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-8",
+            "kind": "animal-giraffe",
+            "x": 201.78906249999997,
+            "y": 399.92447916666663,
+            "color": 0,
+            "scale": 1.0235677083333332,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-9",
+            "kind": "animal-elephant",
+            "x": 473.76562499999994,
+            "y": 402.8489583333333,
+            "color": 0,
+            "scale": 0.7603645833333333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-10",
+            "kind": "animal-zebra",
+            "x": 736.9687499999999,
+            "y": 411.6223958333333,
+            "color": 0,
+            "scale": 0.7018749999999999,
+            "flipX": true,
+            "paint": []
+          },
+          {
+            "id": "safari-11",
+            "kind": "animal-ostrich",
+            "x": 959.2291666666666,
+            "y": 405.7734375,
+            "color": 0,
+            "scale": 0.6726302083333332,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-12",
+            "kind": "winter-pond",
+            "x": 643.3854166666666,
+            "y": 625.109375,
+            "color": 0,
+            "scale": 0.7018749999999999,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-13",
+            "kind": "animal-hippo",
+            "x": 883.1927083333333,
+            "y": 563.6953125,
+            "color": 0,
+            "scale": 0.6726302083333332,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-14",
+            "kind": "animal-crocodile",
+            "x": 608.2916666666666,
+            "y": 660.203125,
+            "color": 0,
+            "scale": 0.6433854166666667,
+            "flipX": true,
+            "paint": []
+          },
+          {
+            "id": "safari-15",
+            "kind": "animal-lion",
+            "x": 181.31770833333331,
+            "y": 636.8072916666667,
+            "color": 0,
+            "scale": 0.7018749999999999,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-16",
+            "kind": "animal-meerkat",
+            "x": 312.9192708333333,
+            "y": 671.9010416666665,
+            "color": 0,
+            "scale": 0.43867187499999993,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-17",
+            "kind": "garden-stone",
+            "x": 362.63541666666663,
+            "y": 590.015625,
+            "color": 0,
+            "scale": 0.46791666666666665,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-18",
+            "kind": "garden-stone",
+            "x": 970.9270833333333,
+            "y": 689.4479166666665,
+            "color": 0,
+            "scale": 0.6433854166666667,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-19",
+            "kind": "garden-stone",
+            "x": 1014.7942708333333,
+            "y": 709.9192708333333,
+            "color": 0,
+            "scale": 0.35093749999999996,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-20",
+            "kind": "garden-grass",
+            "x": 76.03645833333333,
+            "y": 718.6927083333333,
+            "color": 0,
+            "scale": 0.7603645833333333,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-21",
+            "kind": "garden-grass",
+            "x": 271.9765625,
+            "y": 736.2395833333333,
+            "color": 0,
+            "scale": 0.6433854166666667,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-22",
+            "kind": "garden-grass",
+            "x": 403.57812499999994,
+            "y": 490.5833333333333,
+            "color": 0,
+            "scale": 0.46791666666666665,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-23",
+            "kind": "garden-grass",
+            "x": 821.7786458333333,
+            "y": 484.734375,
+            "color": 0,
+            "scale": 0.46791666666666665,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-24",
+            "kind": "garden-grass",
+            "x": 1035.265625,
+            "y": 619.2604166666667,
+            "color": 0,
+            "scale": 0.7018749999999999,
+            "flipX": false,
+            "paint": []
+          },
+          {
+            "id": "safari-25",
+            "kind": "garden-grass",
+            "x": 889.0416666666666,
+            "y": 736.2395833333333,
+            "color": 0,
+            "scale": 0.7018749999999999,
+            "flipX": false,
+            "paint": []
+          }
+        ]
+      }
+    }
+  ]
+}

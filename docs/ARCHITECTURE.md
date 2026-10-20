@@ -80,3 +80,9 @@ For UI/engine changes, also manually review drawing, fills, focus, transforms,
 undo, gesture cancellation, save/reopen, print/export, and desktop close/reopen as
 applicable. Automated checks do not establish visual correctness or native-dialog
 behavior. Rebuild the desktop installer to test changed sources in the installed app.
+
+## Coloring book authoring
+
+`editor/coloringBook.ts` defines versioned portable books, geometry-only page normalization, and stable-ID merging. `platform/localColoringBook.ts` stores workshop revisions in one atomic local-storage record, separate from saved pictures and custom templates. `app/coloringBookWorkshop.ts` composes bundled, custom and revised pages. The canonical shipped collection is `src/assets/coloringBook.json`; workshop JSON can replace it through `npm run books:install -- file.json` after review.
+
+The optional workshop UI requests an immutable document snapshot from the editor session rather than reading saved-picture storage or reaching into Phaser. Normal saves keep their existing behavior. Browser and native JSON exports are adapted in `platform/coloringBookOutput.ts`. See [the workflow and schema](COLORING-BOOKS.md).

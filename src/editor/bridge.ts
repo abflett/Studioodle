@@ -1,3 +1,4 @@
+import type { SavedPicture } from './savedPicture';
 import type { Point, StickerKind } from './document';
 import type { BrushOptions, FillOptions } from './toolOptions';
 export type EditorTool = 'brush' | 'bucket' | 'select' | 'pan' | 'erase';
@@ -15,6 +16,7 @@ export type EditorCommand =
   | { type: 'add-sticker'; sticker: StickerKind; outlineColor: number; point: Point }
   | { type: 'undo' | 'exit-focus' | 'cancel-input' }
   | { type: 'clear-selection' | 'duplicate-selection' | 'delete-selection' }
+  | { type: 'snapshot'; onComplete: (picture: SavedPicture) => void }
   | { type: 'save'; onComplete: (saved: boolean) => void };
 
 export function createEditorBridge() {

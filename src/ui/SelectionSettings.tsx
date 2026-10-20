@@ -1,3 +1,4 @@
+import { ColoringBookLibrary } from './ColoringBookLibrary';
 import { useEffect, useRef, useState } from 'react';
 import { Monitor, Sun, Moon, X, Keyboard } from 'lucide-react';
 import { closeOnBackdrop } from './dialog';
@@ -5,12 +6,14 @@ import { startAppMouse, stopAppMouse, useAppMouseStatus } from './appMouse';
 import type { AppSettings } from './settings';
 import type { ThemePreference } from './theme';
 
-export function SelectionSettings({ open, onClose, theme, onThemeChange, settings, onSettingsChange }: {
+export function SelectionSettings({ open, onClose, theme, onThemeChange, settings, onSettingsChange, onBooksChange }: {
   open: boolean; onClose: () => void; theme: ThemePreference;
   onThemeChange: (theme: ThemePreference) => void;
+  onBooksChange: () => void;
   settings: AppSettings; onSettingsChange: (settings: AppSettings) => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const [booksOpen, setBooksOpen] = useState(false);
   const mouse = useAppMouseStatus();
   const [guideOpen, setGuideOpen] = useState(false);
   const guide = useRef<HTMLDialogElement>(null);
@@ -48,6 +51,10 @@ export function SelectionSettings({ open, onClose, theme, onThemeChange, setting
           <span className="settings-description"><span id="advanced-painting-label">Advanced painting controls</span><small id="advanced-painting-description">Brush sizes, brush types, and fill patterns</small></span>
           <span className="settings-switch" aria-hidden="true"><span /></span>
         </button>
+        <button className="advanced-controls-setting" role="switch" aria-checked={settings.workshop} aria-labelledby="workshop-label" onClick={() => onSettingsChange({ ...settings, workshop: !settings.workshop })}>
+          <span className="settings-description"><span id="workshop-label">Coloring page workshop</span><small>Temporary editing tools for creating and revising book pages</small></span><span className="settings-switch" aria-hidden="true"><span /></span>
+        </button>
+        {settings.workshop && <button className="shortcut-guide-button" aria-haspopup="dialog" onClick={() => setBooksOpen(true)}>Coloring Books</button>}
         <button className="shortcut-guide-button" aria-haspopup="dialog" onClick={() => setGuideOpen(true)}><Keyboard aria-hidden="true" /><span>Shortcuts &amp; gestures</span></button>
       </div>
     </div>
@@ -71,5 +78,5 @@ export function SelectionSettings({ open, onClose, theme, onThemeChange, setting
           </dl>
       </div>
     </div>
-  </dialog></>;
+  </dialog><ColoringBookLibrary open={open && booksOpen && settings.workshop} onClose={() => setBooksOpen(false)} onChange={onBooksChange} /></>;
 }

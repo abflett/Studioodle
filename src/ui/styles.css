@@ -591,3 +591,13 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   /* The short inward press cue conveys hold progress; omit the decorative wobble. */
   .precision-fill-aim.is-released .precision-fill-cross { animation: none; }
 }
+/* Workshop controls are opt-in; their dialogs size to content. */
+.workshop-dialog p { margin: 0; color: var(--muted); line-height: 1.5; }
+.workshop-field { display: grid; gap: 8px; font-weight: 750; }
+.workshop-field input { width: 100%; min-width: 0; padding: 12px; border: 2px solid var(--button-border); border-radius: 12px; background: var(--surface); color: var(--text); font: inherit; }
+.workshop-field input:focus { outline: 2px solid var(--action); outline-offset: 2px; }
+.workshop-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.workshop-actions .go-button { flex: 1 1 160px; justify-content: center; gap: 8px; }
+.secondary-action { background: var(--ribbon-well); color: var(--text); }
+.workshop-import { display: grid; gap: 12px; padding: 16px; background: var(--ribbon-well); border-radius: 16px; }
+.workshop-storage-error { position: fixed; bottom: 100px; left: 16px; right: 16px; text-align: center; color: var(--text); background: var(--panel); padding: 12px; border-radius: 12px; }

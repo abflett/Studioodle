@@ -12,12 +12,15 @@ Pictures and preferences stay on the device; no account is required.
 - Hold the bucket for half a second to zoom for precision; release to fill and return.
 - Sticker focus for painting details without surrounding artwork in the way.
 - Saved pictures, custom coloring templates, PNG export, and printing.
+- Optional offline coloring-page workshop with JSON book import/export and local revisions.
 - Mouse, touch, keyboard shortcuts, light/dark themes, and optional painting controls.
 - Windows desktop preview with native dialogs and remembered window/mouse preferences.
 
 The web app runs in modern browsers. Windows x64 packaging uses Tauri 2; other native
 platforms are not configured. Desktop builds are currently unsigned tester previews.
 Browser and desktop libraries are separate local profiles.
+
+See [Coloring Books and the Page Workshop](docs/COLORING-BOOKS.md) for editing, sharing, and installing a reviewed collection.
 
 ## Development
 

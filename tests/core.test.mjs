@@ -208,3 +208,17 @@ test('flipping through the session is undoable and releases do not paint with an
   assert.deepEqual(editor.artwork.serialize(), pressed);
   editor.execute({ type: 'cancel-input' }); assert.deepEqual(editor.artwork.serialize(), before);
 });
+
+test('workshop snapshots read current geometry without saving or exporting editor metadata', () => {
+  let saves = 0;
+  const editor = new EditorSession({ ...fixture(), authoringPageId: 'winter' }, { save() { saves++; }, changed() {} });
+  assert.equal(editor.state.tool, 'select');
+  editor.execute({ type: 'add-sticker', sticker: 'animal-lion', outlineColor: 0, point: { x: 5, y: 5 } });
+  let snapshot;
+  editor.execute({ type: 'snapshot', onComplete: value => { snapshot = value; } });
+  assert.equal(saves, 0);
+  assert.equal(snapshot.id, fixture().id);
+  assert.equal(snapshot.authoringPageId, undefined);
+  assert.deepEqual(snapshot.document, editor.artwork.serialize());
+  assert.equal(snapshot.document.surfaces.length, 2);
+});

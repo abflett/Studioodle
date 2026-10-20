@@ -1,3 +1,5 @@
+import { ColoringPageWorkshop } from './ColoringPageWorkshop';
+import type { SavedPicture } from '../editor/savedPicture';
 import { PrecisionFillFeedback } from './PrecisionFillFeedback';
 import { useToolCursorStyle } from './toolCursors';
 import { guardDesktopClose, isDesktop } from '../platform/desktop';
@@ -16,7 +18,7 @@ import { paperSize } from '../editor/document';
 import { usePaperView } from './usePaperView';
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
-import { ArrowLeft, Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Check, Eraser, ScanSearch, MousePointer2, Move, ZoomIn, Maximize2, RotateCw, RotateCcw, Minimize2, FlipHorizontal2, FlipVertical2, Copy, Trash2 } from 'lucide-react';
+import { ArrowLeft, Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Check, Eraser, ScanSearch, MousePointer2, Move, ZoomIn, Maximize2, RotateCw, RotateCcw, Minimize2, FlipHorizontal2, FlipVertical2, Copy, Trash2, BookOpen } from 'lucide-react';
 import { PhaserGame } from '../PhaserGame';
 import { createEditorBridge } from '../editor/bridge';
 import type { EditorTool } from '../editor/bridge';
@@ -26,6 +28,9 @@ import { prepareStickers } from '../editor/vectorStickers';
 
 type Picker = 'stickers' | 'colors' | 'brush' | 'fill';
 export default function EditorPreview({ setup, onBack, settings }: { setup: EditorSetup; onBack: () => void; settings: AppSettings }) {
+  const [workshopPicture, setWorkshopPicture] = useState<SavedPicture>();
+  const [workshopTarget, setWorkshopTarget] = useState(setup.authoringPageId);
+  const [workshopTitle, setWorkshopTitle] = useState(setup.title);
   const [bridge] = useState(createEditorBridge);
   const [color, setColor] = useState(() => initialDrawingSettings(setup).color);
   const [tool, setTool] = useState<EditorTool>(() => initialDrawingSettings(setup).tool);
@@ -161,6 +166,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
         <button title={focused ? "Finish focus to add stickers" : "Stickers (S)"} aria-label="Stickers" disabled={!!focused} onClick={openStickers} aria-haspopup="dialog"><Shapes aria-hidden="true" /></button>
         <button title="Colors (C)" aria-keyshortcuts="C" aria-label="Colors" onClick={() => setPicker('colors')} aria-haspopup="dialog"><Palette aria-hidden="true" /><span className="ribbon-color-dot" aria-hidden="true" style={{ background: `#${color.toString(16).padStart(6, '0')}` }} /></button>
       </div>
+      {settings.workshop && <div className="ribbon-group" role="group" aria-label="Coloring page workshop"><button title="Save coloring page" aria-label="Coloring page workshop" aria-haspopup="dialog" onClick={() => bridge.send({ type: 'snapshot', onComplete: picture => setWorkshopPicture({ ...picture, title: workshopTitle }) })}><BookOpen aria-hidden="true" /></button></div>}
       <div className="ribbon-group" role="group" aria-label="History">
         <button title="Undo (Ctrl/Cmd+Z or Backspace)" aria-keyshortcuts="Control+Z Meta+Z Backspace" aria-label="Undo" onClick={() => bridge.send({ type: 'undo' })}><Undo2 aria-hidden="true" /></button>
       </div>
@@ -217,5 +223,6 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
         {(picker === 'brush' || picker === 'fill') && <footer className="tool-settings-footer"><button className="go-button" onClick={() => setPicker(null)}><Check /><span>Done</span></button></footer>}
       </div>
     </dialog>
+    {settings.workshop && workshopPicture && <ColoringPageWorkshop picture={workshopPicture} targetId={workshopTarget} onClose={() => setWorkshopPicture(undefined)} onSaved={(id, title) => { setWorkshopTarget(id); setWorkshopTitle(title); }} />}
   </main>;
 }

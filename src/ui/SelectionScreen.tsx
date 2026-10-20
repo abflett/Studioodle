@@ -1,3 +1,4 @@
+import { workshopPages, workshopRepository } from '../app/coloringBookWorkshop';
 import { coloringPages } from '../app/coloringPages';
 import { DeletePictureDialog } from './DeletePictureDialog';
 import { isDesktop, toggleDesktopFullscreen, watchDesktopFullscreen } from '../platform/desktop';
@@ -14,7 +15,7 @@ import type { SavedPicture } from '../editor/savedPicture';
 import { exportPicture, printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Monitor, Moon, Sun, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, BookPlus } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Monitor, Moon, Sun, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, BookPlus, Pencil } from 'lucide-react';
 import { pictureChoices } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
@@ -68,7 +69,9 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   const [customPages, setCustomPages] = useState(() => {
     try { return coloringPageRepository.load(); } catch { return []; }
   });
-  const scenes: EditorSetup[] = [...coloringPages, ...customPages];
+  const [bookState, setBookState] = useState(() => { try { return { pages: workshopPages(), error: false }; } catch { return { pages: [], error: true }; } });
+  const scenes: EditorSetup[] = bookState.error ? [...coloringPages, ...customPages] : bookState.pages;
+  const refreshBooks = () => { try { setBookState({ pages: workshopPages(), error: false }); } catch { setBookState(previous => ({ ...previous, error: true })); } };
   const [notice, setNotice] = useState<string>();
   useEffect(() => {
     if (!notice) return;
@@ -89,8 +92,10 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     setPendingDelete(undefined);
     try {
       if (deletingPage) {
+        workshopRepository.delete(picture.id);
         coloringPageRepository.delete(picture.id);
         setCustomPages(pages => pages.filter(item => item.id !== picture.id));
+        refreshBooks();
         setSceneIndex(index => Math.max(0, Math.min(index, scenes.length - 2)));
         setDeletingPage(false); setRemoved(undefined); setActionError(undefined); setNotice('Coloring page removed');
         return;
@@ -128,7 +133,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
 
   const current = saved[sampleIndex];
   const scene = scenes[Math.min(sceneIndex, scenes.length - 1)]!;
-  const customScene = customPages.find(page => page.id === scene.id);
+  const customScene = !coloringPages.some(page => page.id === scene.id) ? scene as SavedPicture : undefined;
   const addColoringPage = () => {
     if (!current || current.document.surfaces.length < 2) return;
     try {
@@ -136,7 +141,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
       const page = createColoringPage(current, `Coloring Page ${number}`);
       coloringPageRepository.save(page);
       setCustomPages(pages => [page, ...pages]);
-      setSceneIndex(coloringPages.length); setStep('scene');
+      refreshBooks();
+      setSceneIndex(Math.max(0, workshopPages().findIndex(p => p.id === page.id))); setStep('scene');
       setRemoved(undefined); setActionError(undefined); setNotice('Added to coloring pages');
     } catch { setActionError('Could not save coloring page. Device storage may be full or unavailable.'); }
   };
@@ -209,7 +215,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             </div>}
           </div>
           <footer className="wizard-footer">
-            {step === 'scene' && customScene ? <button className="icon-button" aria-label="Delete this custom coloring page" title="Delete coloring page" onClick={() => { setDeletingPage(true); setPendingDelete(customScene); }}><Trash2 /></button> : step === 'paper' ? <button className="icon-button" aria-label="Back to paper shape" onClick={() => setStep('shape')}><ArrowLeft aria-hidden="true" /></button> : <span />}
+            {step === 'scene' && settings.workshop ? <button className="go-button secondary-action" onClick={() => { dialog.current?.close(); onOpen({ ...scene, id: undefined, authoringPageId: scene.id }); }}><Pencil /><span>Edit Page</span></button> : step === 'scene' && customScene ? <button className="icon-button" aria-label="Delete this custom coloring page" title="Delete coloring page" onClick={() => { setDeletingPage(true); setPendingDelete(customScene); }}><Trash2 /></button> : step === 'paper' ? <button className="icon-button" aria-label="Back to paper shape" onClick={() => setStep('shape')}><ArrowLeft aria-hidden="true" /></button> : <span />}
             <button className="go-button" onClick={() => {
               if (step === 'shape') setStep('paper');
               else openPicture(step === 'scene' ? scene : { title: 'Blank Page', format: paperPreset === 'square' ? 'square' : orientation, size: presetSize(paperPreset, orientation), background, leafColor: contrastingDrawingColor(background) });
@@ -218,7 +224,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
         </div>
       </dialog>
       <DeletePictureDialog picture={pendingDelete} onCancel={() => { setPendingDelete(undefined); setDeletingPage(false); }} onConfirm={removeCurrent} />
-      <SelectionSettings settings={settings} onSettingsChange={onSettingsChange} open={settingsOpen} onClose={() => setSettingsOpen(false)} theme={theme} onThemeChange={onThemeChange} />
+      <SelectionSettings onBooksChange={refreshBooks} settings={settings} onSettingsChange={onSettingsChange} open={settingsOpen} onClose={() => setSettingsOpen(false)} theme={theme} onThemeChange={onThemeChange} />
       <footer className="selection-footer">
       <nav className="library-actions" aria-label="Selected saved picture actions">
         <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) { setDeletingPage(false); setPendingDelete(current); } }}><Trash2 /></button>
@@ -232,6 +238,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
       <button className="icon-button exit-control" title="Exit Studioodle" aria-label="Exit Studioodle" onClick={onExit}><LogOut aria-hidden="true" /></button>
       </nav>
       </footer>
+      {bookState.error && <p className="workshop-storage-error" role="alert">Workshop pages could not be loaded. Saved revisions have not been changed.</p>}
       {(removed || actionError || notice) && <div className="save-notice library-notice" role="status" onPointerEnter={() => setToastPaused(true)} onPointerLeave={() => setToastPaused(false)} onFocusCapture={() => setToastPaused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setToastPaused(false); }}>
         <span>{actionError ?? notice ?? 'Picture removed'}</span>
         {removed && <button className="icon-button" aria-label="Undo delete" onClick={undoRemove}><Undo2 /></button>}
