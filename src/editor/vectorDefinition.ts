@@ -19,6 +19,7 @@ export type VectorDefinition = {
     mapSize?: { width: number; height: number; scale: number };
     typedArrayBytes: number;
     silhouette: Path2D;
+    rasterOnly?: boolean;
     regions?: ReadonlyArray<{ id: number; path: Path2D }>;
     ink: InkCommand[];
 };

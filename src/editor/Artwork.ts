@@ -6,6 +6,7 @@ import { defaultBrush, defaultFill, patternPixel } from './toolOptions';
 import type { BrushOptions, FillOptions } from './toolOptions';
 import type { ArtworkDocument, Point, StickerKind, SurfaceData, PaintRun } from './document';
 import { paintScale } from './document';
+import { stickerRasterSettings } from './stickerRasterSettings';
 import { resizeStickerPaint, stickerPaintScale } from './paintRaster';
 const hex = (color: number) => '#' + color.toString(16).padStart(6, '0');
 class Surface {
@@ -51,7 +52,7 @@ class Surface {
         if (!this.vector) return;
         // Allocate only when painting needs it. Density only grows, so shrinking
         // and enlarging repeatedly never throws existing brush detail away.
-        const factor = stickerPaintScale(this.logicalWidth, this.logicalHeight, this.data.scale ?? 1, this.data.paintScale ?? 1);
+        const factor = stickerPaintScale(this.logicalWidth, this.logicalHeight, this.data.scale ?? 1, this.data.paintScale ?? 1, stickerRasterSettings(this.data.kind));
         if (factor === (this.data.paintScale ?? 1)) return;
         const oldPaint = this.paint, oldWidth = this.width, oldHeight = this.height, oldResolution = this.resolution;
         this.resolution = paintScale() * factor;
@@ -129,7 +130,7 @@ class Surface {
         const image = this.context.createImageData(this.width, this.height), base = this.data.kind === 'canvas' ? this.data.color : 0xffffff;
         for (let i = 0; i < this.paint.length; i++) {
             let value = this.paint[i]!;
-            if (this.vector?.regions) {
+            if (this.vector?.regions && !this.vector.rasterOnly) {
                 const id = this.region(i);
                 if (id) {
                     const previous = this.solidRegions.get(id);
@@ -518,7 +519,7 @@ export class Artwork {
                     // Bucket fills and untouched regions have exact SVG edges.
                     // Enlarging the raster must not expose its staircase boundary
                     // or interpolate color into an adjacent unpainted region.
-                    for (const region of surface.vector.regions ?? []) {
+                    for (const region of surface.vector.rasterOnly ? [] : surface.vector.regions ?? []) {
                         const value = surface.solidRegions.get(region.id) ?? 0;
                         if (value < 0) continue; // Mixed brush paint remains raster.
                         ctx.fillStyle = hex(value ? value - 1 : 0xffffff);

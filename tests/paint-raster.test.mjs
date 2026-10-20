@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
 import { createServer } from 'vite';
-let server, resize, density, valid;
+let server, resize, density, valid, settings;
 before(async () => {
   server = await createServer({ configFile: false, server: { middlewareMode: true }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
   ({ resizeStickerPaint: resize, stickerPaintScale: density } = await server.ssrLoadModule('/src/editor/paintRaster.ts'));
+  ({ stickerRasterSettings: settings } = await server.ssrLoadModule('/src/editor/stickerRasterSettings.ts'));
   ({ isSavedPicture: valid } = await server.ssrLoadModule('/src/editor/pictureValidation.ts'));
 });
 after(async () => { await server?.close(); });
@@ -57,4 +58,20 @@ test('saved pictures accept legacy rasters and explicit density without misreadi
   p.document.surfaces[0].paintScale = 1;
   sticker.kind = 'spring-meadow';
   assert.equal(valid(p), false); // Reject an oversized upgraded raster.
+});
+
+
+test('Moon Sorceress trial allocates 8x paint and preserves its density on shrink', () => {
+  const trial = settings('fantasy-moon-sorceress');
+  assert.equal(trial.lookupScale, 16);
+  assert.equal(trial.rasterOnly, true);
+  assert.equal(density(340, 480, 1, 1, trial), 8);
+  assert.equal(density(340, 480, .5, 8, trial), 8);
+  assert.equal(settings('garden-house'), undefined);
+  const p = picture();
+  p.document.surfaces[1].paintScale = 8;
+  p.document.surfaces[1].paint = [[25_499_999, 1, 0xabcdef]];
+  assert.equal(valid(p), true);
+  p.document.surfaces[1].kind = 'garden-house';
+  assert.equal(valid(p), false);
 });

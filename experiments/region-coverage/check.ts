@@ -1,3 +1,4 @@
+import { stickerRasterSettings } from '../../src/editor/stickerRasterSettings';
 import { Artwork } from '../../src/editor/Artwork';
 import { decodeSvgDefinition } from '../../src/editor/svgDefinition';
 import { drawVectorInk } from '../../src/editor/vectorDefinition';
@@ -65,7 +66,9 @@ export async function checkRegionCoverage() {
   for (const id of ['fantasy-moon-sorceress', 'winter-reindeer', 'garden-house', 'garden-fence', 'dinosaur-striped-tyrannosaurus', 'horizons-forest-clearing']) {
     const response = await fetch(`/src/assets/vector/${id}.svg`);
     assert(response.ok, `Missing ${id}`);
-    const vector = decodeSvgDefinition(await response.text());
+    const settings = stickerRasterSettings(id);
+    const vector = decodeSvgDefinition(await response.text(), { scale: settings?.lookupScale });
+    vector.rasterOnly = settings?.rasterOnly;
     const scale = vector.mapSize!.scale;
     const canvas = document.createElement('canvas');
     canvas.width = vector.mapSize!.width; canvas.height = vector.mapSize!.height;
@@ -79,7 +82,28 @@ export async function checkRegionCoverage() {
       if (!vector.contains((x + .5) / scale, (y + .5) / scale)) missingHits++;
     }
     assert(!missingHits, `${id}: ${missingHits} visible ink pixels click through`);
-    rows.push({ id, visibleInk, missingHits, lookupScale: scale, sharedBytes: vector.typedArrayBytes });
+        let paintPixels = 0;
+    if(settings) {
+      const trialDoc = structuredClone(doc);
+      trialDoc.width=800;trialDoc.height=1000;
+      Object.assign(trialDoc.surfaces[1]!, {kind:id,x:400,y:500,scale:1});
+      const trial = Artwork.restore(trialDoc, () => vector);
+      let seed: {x:number;y:number}|undefined;
+      for(let y=100;y<380&&!seed;y++)for(let x=80;x<260;x++)if(vector.regionAt(x,y)){
+        seed={x:400+x-170,y:500+y-240};break;
+      }
+      assert(seed, 'Moon trial needs a paintable seed');
+      assert(trial.fill(seed,0x743dad),'High-resolution Moon bucket must work');
+      assert(trial.brush(seed,seed,0x42aadd,false,{size:3,kind:'ink',shape:'round'}),'High-resolution Moon brush must work');
+      const saved=trial.serialize().surfaces[1]!;
+      assert(saved.paintScale===8,'Moon must retain 8x paint density after brushing');
+      const colors=new Set(saved.paint.map(run=>run[2]));
+      assert(colors.has(0x743dad)&&colors.has(0x42aadd),'Both bucket and brush colors must remain raster');
+      const preview=document.createElement('canvas');preview.width=800;preview.height=1000;
+      trial.render(preview.getContext('2d')!);
+      paintPixels=Math.ceil(vector.width*12.5)*Math.ceil(vector.height*12.5);
+    }
+    rows.push({ id, visibleInk, missingHits, lookupScale: scale, sharedBytes: vector.typedArrayBytes, paintPixels });
     canvas.width = canvas.height = 1;
   }
   return { enlargedFillEdges: true, lineFill: true, isolatedInkBlocksPage: true, paintSilhouetteUnchanged: true, rows };

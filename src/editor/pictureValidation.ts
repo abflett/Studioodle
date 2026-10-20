@@ -1,3 +1,4 @@
+import { stickerRasterSettings } from './stickerRasterSettings';
 import { isVectorSticker, vectorStickerSize } from './vectorCatalog';
 import { paperSize, paintScale } from './document';
 import { maximumStickerPaintPixels, paintScaleMultipliers } from './paintRaster';
@@ -50,11 +51,13 @@ function isArtworkDocument(value: unknown): value is ArtworkDocument {
             return false;
         if (surface.kind === 'canvas' && ((surface.scale ?? 1) !== 1 || (surface.rotation ?? 0) !== 0))
             return false;
+        const settings = stickerRasterSettings(surface.kind);
         const density = surface.paintScale ?? 1;
+        if (density > 4 && !settings) return false;
         if (!paintScaleMultipliers.some(value => value === density) || (surface.kind === 'canvas' && density !== 1)) return false;
         const size = surface.kind === 'canvas' ? doc : vectorStickerSize(surface.kind);
         const pixels = Math.ceil(size.width * paintScale() * density) * Math.ceil(size.height * paintScale() * density);
-        if (density > 1 && pixels > maximumStickerPaintPixels) return false;
+        if (density > 1 && pixels > (settings?.maximumPixels ?? maximumStickerPaintPixels)) return false;
         if (!Array.isArray(surface.paint))
             return false;
         let end = 0;

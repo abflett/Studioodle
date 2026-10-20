@@ -1,15 +1,15 @@
 import { paintScale } from './document';
 
 export const maximumStickerPaintPixels = 8_000_000;
-export const paintScaleMultipliers = [1, 2, 4] as const;
+export const paintScaleMultipliers = [1, 2, 4, 8] as const;
 
 /** Grow in a few bounded steps; never downsample already-painted detail. */
-export function stickerPaintScale(width: number, height: number, scale: number, current = 1) {
+export function stickerPaintScale(width: number, height: number, scale: number, current = 1, settings?: { minimumScale: number; maximumPixels: number }) {
     let factor = current;
-    const desired = Math.min(4, Math.max(1, scale));
+    const desired = Math.max(settings?.minimumScale ?? 1, Math.min(4, Math.max(1, scale)));
     while (factor < desired) {
         const next = factor * 2, resolution = paintScale() * next;
-        if (Math.ceil(width * resolution) * Math.ceil(height * resolution) > maximumStickerPaintPixels) break;
+        if (Math.ceil(width * resolution) * Math.ceil(height * resolution) > (settings?.maximumPixels ?? maximumStickerPaintPixels)) break;
         factor = next;
     }
     return factor;
