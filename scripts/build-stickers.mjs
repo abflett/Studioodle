@@ -6,6 +6,8 @@ import { cleanA4InkPockets, cleanTinyInkPockets } from './ink-pocket-cleanup.mjs
 import { execFileSync } from 'node:child_process';
 const inspectionDirectory=process.argv.find(arg=>arg.startsWith('--inspect='))?.slice('--inspect='.length);
 const experimentOutput=process.argv.find(arg=>arg.startsWith('--experiment-output='))?.slice('--experiment-output='.length);
+const cleanupComponents=process.argv.includes('--cleanup-components');
+if(cleanupComponents&&!experimentOutput)throw Error('Component cleanup requires experimental output');
 const cleanupA4=process.argv.includes('--cleanup-a4-pockets');
 const cleanupPockets=process.argv.includes('--cleanup-small-pockets')||cleanupA4;
 if(cleanupPockets&&!experimentOutput)throw new Error('Pocket cleanup is experimental; specify --experiment-output');
@@ -133,6 +135,34 @@ for(const asset of assets) {
     flood(index,0);
   }
   let regionCount=0;for(let i=0;i<count;i++)if(labels[i]===-1)areas.push(flood(i,++regionCount));
+  if(cleanupComponents){
+    // flood() has already assigned each connected white glob its own ID.
+    // Measure those globs, not the potentially self-intersecting ink subpaths.
+    const a4w=210/25.4*150,a4h=297/25.4*150;
+    const fit=Math.max(Math.min(a4w/width,a4h/height),Math.min(a4h/width,a4w/height));
+    const cutoff=10.2, pixelArea=(fit/scale)**2;
+    const removed=new Set(areas.flatMap((area,index)=>area*pixelArea<cutoff?[index+1]:[]));
+    const stride=Math.ceil(w/8),bitmap=Buffer.alloc(stride*h),mapping=new Int32Array(regionCount+1);
+    let next=0;
+    for(let id=1;id<=regionCount;id++)if(!removed.has(id))mapping[id]=++next;
+    for(let i=0;i<count;i++){
+      if(removed.has(labels[i])){bitmap[Math.floor(i/w)*stride+((i%w)>>3)]|=1<<(7-(i%w&7));labels[i]=-2;gray[i]=0;}
+      else if(labels[i]>0)labels[i]=mapping[labels[i]];
+    }
+    if(removed.size){
+      const file=`${base}-component-patches.pbm`,output=`${base}-component-patches.svg`;
+      fs.writeFileSync(file,Buffer.concat([Buffer.from(`P4\n${w} ${h}\n`),bitmap]));
+      trace(file,output,0,0,0);
+      const factors=[(.1/scale)/matrix[0],(-.1/scale)/matrix[3]];
+      for(const d of paths(fs.readFileSync(output,'utf8'))){let axis=0;
+        commands.push({d:d.replace(/[-+]?(?:\d*\.\d+|\d+\.?\d*)(?:[eE][-+]?\d+)?/g,n=>String(Number(n)*factors[axis++%2])),fill:'ink',stroke:false,width:0});
+      }
+    }
+    cleanupReport={method:'connected white components',maximumAreaPixels:cutoff,beforeRegions:regionCount,removed:removed.size,
+      pockets:[...removed].map(id=>({id,areaPixels:areas[id-1]*pixelArea}))};
+    fs.writeFileSync(`${base}-component-cleanup.json`,JSON.stringify(cleanupReport,null,2));
+    regionCount=next;
+  }
   inspection?.discovered(labels,w,h,regionCount);
   // No regions is a real conversion failure, never silently emit an empty sticker.
   if(!regionCount)throw new Error(`${id}: no enclosed coloring regions`);
@@ -145,7 +175,7 @@ for(const asset of assets) {
   inspection?.extended(labels,w,h);
   let svg=regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix,inkMask:gray});
   if(experimentOutput){
-    if(cleanupReport)svg=svg.replace('<g id="regions"',`<metadata>${JSON.stringify({experiment:cleanupA4?'A4 area pocket cleanup':'line-width pocket cleanup',...cleanupReport,pockets:undefined})}</metadata><g id="regions"`);
+    if(cleanupReport)svg=svg.replace('<g id="regions"',`<metadata>${JSON.stringify({experiment:cleanupComponents?'connected component cleanup':cleanupA4?'A4 area pocket cleanup':'line-width pocket cleanup',...cleanupReport,pockets:undefined})}</metadata><g id="regions"`);
     fs.writeFileSync(experimentOutput,svg);console.log(`${id}: ${cleanupReport?.removed??0} pockets absorbed into ink; ${regionCount} final regions; ${experimentOutput}`);continue;
   }
   if(inspection){inspection.finish(svg);console.log(`${id}: captured current pipeline in ${inspectionDirectory}`);continue;}

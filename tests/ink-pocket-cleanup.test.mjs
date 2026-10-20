@@ -41,3 +41,17 @@ test('A4 area-only cleanup removes six pinholes at nine pixels while preserving 
   const landscape = cleanA4InkPockets(paths, 1254, 888, 9);
   assert.deepEqual(landscape.report.pockets, result.report.pockets);
 });
+
+
+test('connected-component experiment emits one connected outer contour per region', () => {
+  const svg = fs.readFileSync('experiments/moon-sorceress/connected-component-cleanup.svg', 'utf8');
+  const regions = [...svg.matchAll(/<path id="region-(\d+)"[^>]* d="([^"]+)"/g)];
+  assert.equal(regions.length, 199);
+  for (const region of regions) {
+    assert.equal(traceContours([region[2]]).filter(c => c.signedArea > 0).length, 1, region[1]);
+  }
+  const report = JSON.parse(svg.match(/<metadata>(.*?)<\/metadata>/)[1]);
+  assert.equal(report.method, 'connected white components');
+  assert.equal(report.maximumAreaPixels, 10.2);
+  assert.equal(report.removed, 13);
+});
