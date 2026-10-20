@@ -1,0 +1,39 @@
+{
+  "asset": "fantasy-moon-sorceress",
+  "source": "art/source/fantasy/moon-sorceress.png",
+  "crop": "888x1254+193+0",
+  "logicalSize": [
+    340,
+    480
+  ],
+  "estimatedStrokePixels": 3,
+  "inkTrace": {
+    "blurSigma": 0.12,
+    "threshold": "40%",
+    "alphamax": 1.2,
+    "opttolerance": 0.125,
+    "turdsize": 2,
+    "unit": 10
+  },
+  "ink": {
+    "paths": 129,
+    "closedContours": 292
+  },
+  "regionAnalysis": {
+    "width": 2720,
+    "height": 3840,
+    "scale": 8,
+    "lookupScale": 4,
+    "threshold": 128,
+    "regionTraceAlphamax": 1,
+    "regionTraceTolerance": 0.12,
+    "overlapAnalysisPixels": 1
+  },
+  "regionCount": 168,
+  "final": {
+    "regionPaths": 168,
+    "inkPaths": 129,
+    "paths": 297,
+    "closedContours": 466
+  }
+}

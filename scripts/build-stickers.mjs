@@ -4,6 +4,12 @@ import { regionSvg } from './svg-regions.mjs';
 import { stickerInspection } from './sticker-inspection.mjs';
 import { execFileSync } from 'node:child_process';
 const inspectionDirectory=process.argv.find(arg=>arg.startsWith('--inspect='))?.slice('--inspect='.length);
+const inspectionThreshold=Number(process.argv.find(arg=>arg.startsWith('--inspect-threshold='))?.split('=')[1]??50);
+const inspectionPrefix=process.argv.find(arg=>arg.startsWith('--inspect-prefix='))?.split('=')[1]??'';
+const inspectionSharedSource=process.argv.find(arg=>arg.startsWith('--inspect-shared-source='))?.split('=')[1]??'';
+if(!Number.isFinite(inspectionThreshold)||inspectionThreshold<=0||inspectionThreshold>=100)throw new Error('Inspection threshold must be between 0 and 100');
+if(!inspectionDirectory && inspectionThreshold!==50)throw new Error('Threshold comparisons require --inspect');
+if(!/^[a-z0-9-]*$/.test(inspectionPrefix))throw new Error('Invalid inspection filename prefix');
 const assets = JSON.parse(fs.readFileSync('art/stickers.json','utf8'));
 const out='src/assets/vector', work='work/hybrid';
 fs.mkdirSync(out,{recursive:true}); fs.mkdirSync(work,{recursive:true});
@@ -40,7 +46,7 @@ for(const asset of assets) {
   if(pending && report.some(item=>item.id===id) && fs.existsSync(`${out}/${id}.svg`)) continue;
   const base=`${work}/${id}`, source=asset.source;
   if(inspectionDirectory && asset.mode==='svg')throw new Error('Stage inspection currently supports raster sources only');
-  const inspection=inspectionDirectory?stickerInspection(inspectionDirectory,asset):undefined;
+  const inspection=inspectionDirectory?stickerInspection(inspectionDirectory,asset,{threshold:inspectionThreshold,prefix:inspectionPrefix,sharedSource:inspectionSharedSource}):undefined;
   let commands,matrix,inkSvg;
   if(asset.mode==='svg') {
     const original=fs.readFileSync(source,'utf8'), parsed=svgCommands(original);
@@ -67,7 +73,7 @@ for(const asset of assets) {
     for(let y=0;y<sh;y++){let n=0;for(let x=0;x<=sw;x++){if(x<sw&&gray[y*sw+x]<128)n++;else{record(n);n=0;}}}
     for(let x=0;x<sw;x++){let n=0;for(let y=0;y<=sh;y++){if(y<sh&&gray[y*sw+x]<128)n++;else{record(n);n=0;}}}
     let stroke=3;for(let n=4;n<histogram.length;n++)if(histogram[n]>histogram[stroke])stroke=n;
-    run(`${base}-gray.png`,'-blur',`0x${stroke*.04}`,'-threshold','50%',`${base}.pbm`);
+    run(`${base}-gray.png`,'-blur',`0x${stroke*.04}`,'-threshold',`${inspectionDirectory?inspectionThreshold:50}%`,`${base}.pbm`);
     inspection?.bitmap(`${base}-gray.png`,`${base}.pbm`,stroke);
     trace(`${base}.pbm`,`${base}-ink.svg`,1.2,.5*stroke/12,Math.max(2,Math.round(8*(stroke/12)**2)));
     inspection?.ink(`${base}-ink.svg`);
