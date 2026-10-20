@@ -131,8 +131,9 @@ export class EditorSession {
     this.notifyChanged();
   }
   private snapshot(): SavedPicture {
+    const document=this.document.serialize();
     return { id: this.setup.id!, title: this.setup.title, format: this.setup.format, size: paperSize(this.setup.format, this.setup.size),
-      background: this.setup.background, leafColor: this.setup.leafColor, version: 3, updatedAt: Date.now(), document: this.document.serialize() };
+      background: this.setup.background, leafColor: this.setup.leafColor, version: document.version, updatedAt: Date.now(), document };
   }
   update(time: number) {
     if (this.tool !== 'brush' || this.brushOptions.kind !== 'spray' || !this.previous || this.activePointer === undefined || time < this.nextSpray) return;
@@ -212,6 +213,7 @@ export class EditorSession {
         changed = this.document.brush(this.previous, tip, this.color, false, this.brushOptions);
       if (changed) this.recordChange();
     }
+    void this.document.compactPaint();
     this.stroke = undefined; this.gestureUndo = undefined; this.previous = undefined;
     this.drag = undefined; this.pending = undefined; this.activePointer = undefined;
     // Include the release position even when the tail writes no additional pixels.

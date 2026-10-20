@@ -222,3 +222,25 @@ test('workshop snapshots read current geometry without saving or exporting edito
   assert.deepEqual(snapshot.document, editor.artwork.serialize());
   assert.equal(snapshot.document.surfaces.length, 2);
 });
+
+
+test('coloring page creation strips vector paint without mutating the saved drawing', () => {
+  const source=fixture();
+  source.document.surfaces.push({id:'moon',kind:'fantasy-moon-sorceress',x:10,y:10,color:0,paint:[],vectorPaint:{version:1,regions:[{id:1,base:0x773399,blobs:[]}]}});
+  const page=createColoringPage(source,'Clean');
+  assert.equal(page.document.surfaces[1].vectorPaint,undefined);
+  assert.equal(source.document.surfaces[1].vectorPaint.regions[0].base,0x773399);
+});
+
+
+test('vector-painted v4 pictures round-trip beside existing v3 pictures', () => {
+  const {pictures}=library();
+  const raster=fixture('legacy');const vector=fixture('vector');
+  vector.version=4;vector.document.version=4;
+  vector.document.surfaces.push({id:'moon',kind:'fantasy-moon-sorceress',x:10,y:10,color:0,paint:[],vectorPaint:{version:1,regions:[{id:1,base:0x773399,blobs:[]}]}});
+  pictures.save(raster);pictures.save(vector);
+  const loaded=pictures.load();
+  assert.equal(loaded.length,2);
+  assert.deepEqual(loaded.find(p=>p.id==='vector'),vector);
+  assert.deepEqual(loaded.find(p=>p.id==='legacy'),raster);
+});

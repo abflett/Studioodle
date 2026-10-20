@@ -1,3 +1,4 @@
+import type { VectorPaintData } from './vectorPaintTypes';
 import type { StickerKind } from './stickerKinds';
 export type { StickerKind } from './stickerKinds';
 export type Point = {
@@ -21,12 +22,13 @@ export type SurfaceData = {
     flipY?: boolean;
     /** Optional local raster density multiplier; page-aligned stickers use their placed scale. */
     paintScale?: number;
+    vectorPaint?: VectorPaintData;
     paint: PaintRun[];
 };
 export const defaultPaintDpi = 150;
 export const paintScale = () => defaultPaintDpi / 96;
 export type ArtworkDocument = {
-    version: 3;
+    version: 3 | 4;
     horizonLayout?: 2;
     width: number;
     height: number;

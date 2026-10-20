@@ -6,12 +6,14 @@ import { defaultBrush, defaultFill, patternPixel } from './toolOptions';
 import type { BrushOptions, FillOptions } from './toolOptions';
 import type { ArtworkDocument, Point, StickerKind, SurfaceData, PaintRun } from './document';
 import { paintScale } from './document';
+import { VectorPaint } from './VectorPaint';
 import { rasterizeRegions } from './rasterizeRegions';
 import { stickerRasterSettings } from './stickerRasterSettings';
 import { resizeStickerPaint, stickerPaintScale } from './paintRaster';
 const hex = (color: number) => '#' + color.toString(16).padStart(6, '0');
 class Surface {
     vector?: VectorDefinition;
+    vectorPaint?: VectorPaint;
     resolution: number;
     readonly logicalWidth: number;
     readonly logicalHeight: number;
@@ -34,23 +36,24 @@ class Surface {
         this.vector = data.kind === 'canvas' ? undefined : definition ?? vectorDefinition(data.kind);
         this.logicalWidth = this.vector?.width ?? width;
         this.logicalHeight = this.vector?.height ?? height;
+        if (data.vectorPaint || (stickerRasterSettings(data.kind)?.vectorPaint && !data.paint.length && data.paintScale === undefined)) { this.vectorPaint = new VectorPaint(data.vectorPaint); delete data.vectorPaint; }
         this.width = Math.ceil(this.logicalWidth * this.resolution);
         this.height = Math.ceil(this.logicalHeight * this.resolution);
         const canvas = document.createElement('canvas');
-        canvas.width = this.width;
-        canvas.height = this.height;
+        canvas.width = this.vectorPaint ? 1 : this.width;
+        canvas.height = this.vectorPaint ? 1 : this.height;
         const context = canvas.getContext('2d', { willReadFrequently: true });
         if (!context)
             throw new Error('Unable to create paint surface');
         this.context = context;
         const b = this.vector?.bounds;
         this.opaqueBounds = b ? { left: Math.floor(b.left * this.resolution), top: Math.floor(b.top * this.resolution), right: Math.ceil(b.right * this.resolution), bottom: Math.ceil(b.bottom * this.resolution) } : { left: 0, top: 0, right: this.width, bottom: this.height };
-        this.paint = new Uint32Array(this.width * this.height);
+        this.paint = new Uint32Array(this.vectorPaint ? 0 : this.width * this.height);
         for (const [start, length, color] of data.paint)
             this.paint.fill(color + 1, start, start + length);
     }
     ensurePaintResolution() {
-        if (!this.vector) return;
+        if (!this.vector || this.vectorPaint) return;
         // Allocate when painting needs it. Normal stickers only grow; the
         // page-aligned trial resamples to match its current placed size.
         const factor = stickerPaintScale(this.logicalWidth, this.logicalHeight, this.data.scale ?? 1, this.data.paintScale ?? 1, stickerRasterSettings(this.data.kind));
@@ -128,6 +131,7 @@ class Surface {
         return false; const value = erase ? 0 : color + 1; if (this.paint[index] === value)
         return false; this.paint[index] = value; this.hasPaint = true; this.dirty = true; return true; }
     render() {
+        if (this.vectorPaint) return;
         if (this.hasPaint) this.ensurePaintResolution();
         if (!this.dirty)
             return;
@@ -163,7 +167,20 @@ class Surface {
         this.context.putImageData(image, 0, 0);
         this.dirty = false;
     }
-    serialize(): SurfaceData { const runs: PaintRun[] = []; for (let i = 0; i < this.paint.length;) {
+    rasterizeVectorPaint() {
+        if(!this.vectorPaint||!this.vector)return;
+        const vectorPaint=this.vectorPaint;this.vectorPaint=undefined;delete this.data.vectorPaint;
+        this.ensurePaintResolution();
+        const ctx=this.context;ctx.canvas.width=this.width;ctx.canvas.height=this.height;ctx.save();ctx.setTransform(this.resolution,0,0,this.resolution,0,0);
+        vectorPaint.draw(ctx,this.vector);ctx.restore();
+        const pixels=ctx.getImageData(0,0,this.width,this.height).data;
+        this.paint=new Uint32Array(this.width*this.height);
+        for(let i=0;i<this.paint.length;i++)if(this.region(i))this.paint[i]=((pixels[i*4]!<<16)|(pixels[i*4+1]!<<8)|pixels[i*4+2]!)+1;
+        this.hasPaint=true;this.dirty=true;
+    }
+    serialize(): SurfaceData {
+        if(this.vectorPaint)return {...this.data,paint:[],vectorPaint:this.vectorPaint.serialize()};
+        const runs: PaintRun[] = []; for (let i = 0; i < this.paint.length;) {
         const value = this.paint[i]!;
         if (!value) {
             i++;
@@ -202,7 +219,11 @@ export class Artwork {
         });
         return new Artwork(doc.width, doc.height, surfaces, definitionFor);
     }
-    serialize(): ArtworkDocument { return { version: 3, horizonLayout: 2, width: this.width, height: this.height, surfaces: this.surfaces.map((surface) => surface.serialize()) }; }
+    async compactPaint() { await Promise.all(this.surfaces.map(surface=>surface.vectorPaint?.settled())); }
+    serialize(): ArtworkDocument {
+        const surfaces=this.surfaces.map(surface=>surface.serialize());
+        return {version:surfaces.some(surface=>surface.vectorPaint)?4:3,horizonLayout:2,width:this.width,height:this.height,surfaces};
+    }
     add(kind: StickerKind, color: number, point: Point) {
         const surface = new Surface({ id: crypto.randomUUID(), kind, color, x: Math.round(point.x), y: Math.round(point.y), paint: [] }, this.width, this.height, this.definitionFor(kind));
         {
@@ -421,6 +442,14 @@ export class Artwork {
             const bounds = surface.bounds();
             if (Math.max(from.x, to.x) + radius < bounds.x || Math.min(from.x, to.x) - radius > bounds.x + bounds.width ||
                 Math.max(from.y, to.y) + radius < bounds.y || Math.min(from.y, to.y) - radius > bounds.y + bounds.height) return;
+            if(surface.vectorPaint&&surface.vector){
+                if(erase||options.kind==='ink'){
+                    const a=surface.localPoint(from),b=surface.localPoint(to);
+                    changed=surface.vectorPaint.brush(surface.vector,[a.x/surface.resolution,a.y/surface.resolution],[b.x/surface.resolution,b.y/surface.resolution],radius/(surface.data.scale??1),erase?0xffffff:color,options.shape==='square')||changed;
+                    return;
+                }
+                surface.rasterizeVectorPaint();
+            }
             surface.ensurePaintResolution();
             const a = surface.localPoint(from), b = surface.localPoint(to);
             const reach = radius * Math.SQRT2 * surface.resolution / (surface.data.scale ?? 1);
@@ -491,6 +520,14 @@ export class Artwork {
         const owners = this.ownership(), owner = owners[start]!;
         if (owner < 0) return false;
         const surface = this.surfaces[owner]!;
+        if(surface.vectorPaint&&surface.vector){
+            if(options.pattern==='solid'){
+                const p=surface.localPoint(point),x=p.x/surface.resolution,y=p.y/surface.resolution;
+                const id=surface.vector.hitRegionAt?.(x,y)??surface.vector.regionAt(x,y);
+                return !!id&&surface.vectorPaint.fill(id,color,[x,y]);
+            }
+            surface.rasterizeVectorPaint();
+        }
         surface.ensurePaintResolution();
         const local = surface.fillIndex(surface.localIndex(start % this.width, Math.floor(start / this.width)));
         if (!surface.editable(local))
@@ -516,7 +553,11 @@ export class Artwork {
                 }
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
-                if (surface.vector) {
+                if (surface.vectorPaint && surface.vector) {
+                    surface.vectorPaint.draw(ctx,surface.vector);
+                    drawVectorInk(ctx,surface.vector,hex(surface.data.color),thumbnail);
+                }
+                else if (surface.vector) {
                     ctx.save();
                     ctx.clip(surface.vector.silhouette);
                     ctx.drawImage(surface.context.canvas, 0, 0, surface.width / surface.resolution, surface.height / surface.resolution);

@@ -124,7 +124,7 @@ export async function checkRegionCoverage() {
     if(settings) {
       const trialDoc = structuredClone(doc);
       trialDoc.width=800;trialDoc.height=1000;
-      Object.assign(trialDoc.surfaces[1]!, {kind:id,x:400,y:500,scale:1});
+      Object.assign(trialDoc.surfaces[1]!, {kind:id,x:400,y:500,scale:1,paintScale:1});
       const trial = Artwork.restore(trialDoc, () => vector);
       const seed={x:400+170-170,y:500+174-240};
       assert(trial.fill(seed,0x743dad),'Page-resolution Moon bucket must work');

@@ -40,6 +40,9 @@ try {
     await new Promise(resolve => setTimeout(resolve, 100));
   }
   const result = await evaluate("import('/experiments/region-coverage/check.ts').then(m => m.checkRegionCoverage())");
+  const vectorPaint = await evaluate("import('/experiments/vector-paint/check.ts').then(m => m.checkVectorPaint())");
+  if(vectorPaint.diagnosticPng){await fs.writeFile('work/moon-vector-paint.png',Buffer.from(vectorPaint.diagnosticPng.split(',')[1],'base64'));delete vectorPaint.diagnosticPng;}
+  result.vectorPaint=vectorPaint;
   if(result.diagnosticPng){await fs.writeFile('work/moon-belt-runtime.png',Buffer.from(result.diagnosticPng.split(',')[1],'base64'));delete result.diagnosticPng;}
   await fs.writeFile('work/region-coverage-results.json', JSON.stringify(result, null, 2));
   console.log(JSON.stringify(result, null, 2));

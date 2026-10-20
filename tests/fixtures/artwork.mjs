@@ -3,6 +3,7 @@ export class Artwork {
   constructor(document) { this.document = structuredClone(document); }
   static create(width, height) { return new Artwork({ version: 3, width, height, surfaces: [{ id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff, paint: [] }] }); }
   static restore(document) { return new Artwork(document); }
+  async compactPaint() {}
   serialize() { return structuredClone(this.document); }
   setFocus(id) { this.focused = id; }
   bounds(id) { return this.document.surfaces.some(s => s.id === id) ? { x: 0, y: 0, width: 10, height: 10 } : undefined; }

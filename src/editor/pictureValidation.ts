@@ -8,7 +8,7 @@ import type { ArtworkDocument } from './document';
 export function isSavedPicture(value: unknown): value is SavedPicture {
   if (!value || typeof value !== 'object') return false;
   const picture = value as SavedPicture;
-  return picture.version === 3 && typeof picture.id === 'string' &&
+  return (picture.version === 3 || picture.version === 4) && picture.version === picture.document?.version && typeof picture.id === 'string' &&
     typeof picture.title === 'string' && typeof picture.background === 'string' && /^#[0-9a-f]{6}$/i.test(picture.background) &&
     ['square', 'landscape', 'portrait'].includes(picture.format) && validSize(picture.size) && Number.isFinite(picture.leafColor) && Number.isFinite(picture.updatedAt) &&
     isArtworkDocument(picture.document) && picture.document.width === paperSize(picture.format, picture.size).width && picture.document.height === paperSize(picture.format, picture.size).height;
@@ -30,7 +30,7 @@ function isArtworkDocument(value: unknown): value is ArtworkDocument {
     if (!value || typeof value !== 'object')
         return false;
     const doc = value as ArtworkDocument;
-    if (doc.version !== 3 || !validSize(doc) || !Array.isArray(doc.surfaces) || !doc.surfaces.length)
+    if ((doc.version !== 3 && doc.version !== 4) || !validSize(doc) || !Array.isArray(doc.surfaces) || !doc.surfaces.length)
         return false;
     const ids = new Set<string>();
     return doc.surfaces.every((surface, order) => {
@@ -51,6 +51,9 @@ function isArtworkDocument(value: unknown): value is ArtworkDocument {
             return false;
         if (surface.kind === 'canvas' && ((surface.scale ?? 1) !== 1 || (surface.rotation ?? 0) !== 0))
             return false;
+        if(surface.vectorPaint!==undefined){
+            if(doc.version!==4||surface.kind==='canvas'||!validVectorPaint(surface.vectorPaint)||!Array.isArray(surface.paint)||surface.paint.length)return false;
+        }
         const settings = stickerRasterSettings(surface.kind);
         const density = surface.paintScale ?? 1;
         if (density > 4 && !settings) return false;
@@ -73,5 +76,21 @@ function isArtworkDocument(value: unknown): value is ArtworkDocument {
             end = start + length;
             return true;
         });
+    });
+}
+
+function validVectorPaint(value: unknown): boolean {
+    if(!value||typeof value!=='object')return false;
+    const data=value as NonNullable<ArtworkDocument['surfaces'][number]['vectorPaint']>;
+    if(data.version!==1||!Array.isArray(data.regions)||data.regions.length>65535)return false;
+    const ids=new Set<number>();let nodes=0;
+    const color=(n:number)=>Number.isInteger(n)&&n>=0&&n<=0xffffff;
+    return data.regions.every(region=>{
+        if(!region||!Number.isInteger(region.id)||region.id<1||region.id>65535||ids.has(region.id)||!color(region.base)||!Array.isArray(region.blobs))return false;
+        ids.add(region.id);
+        return region.blobs.every(blob=>blob&&color(blob.color)&&Array.isArray(blob.geometry)&&blob.geometry.every(polygon=>
+            Array.isArray(polygon)&&polygon.length>0&&polygon.every(ring=>Array.isArray(ring)&&ring.length>=4&&ring.every(point=>
+                ++nodes<=2_000_000&&Array.isArray(point)&&point.length===2&&point.every(n=>Number.isFinite(n)&&Math.abs(n)<=16384))&&
+                ring[0]![0]===ring.at(-1)![0]&&ring[0]![1]===ring.at(-1)![1])));
     });
 }

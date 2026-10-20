@@ -3,7 +3,7 @@ import type { ArtworkDocument } from './document';
 
 export type SavedPicture = EditorSetup & {
   id: string;
-  version: 3;
+  version: 3 | 4;
   updatedAt: number;
   document: ArtworkDocument;
 };
