@@ -53,7 +53,7 @@ export function SelectionSettings({ open, onClose, theme, onThemeChange, setting
           </section>
           <section className="settings-well mouse-setting" aria-labelledby="mouse-speed-label">
             <label className="mouse-speed-label" htmlFor="mouse-speed"><span id="mouse-speed-label">Mouse speed</span><output htmlFor="mouse-speed">{settings.mouseSpeed}%</output></label>
-            <input id="mouse-speed" type="range" min="10" max="100" step="5" value={settings.mouseSpeed} aria-describedby="mouse-speed-help" aria-valuetext={`${settings.mouseSpeed} percent of normal speed`} onChange={event => {
+            <input id="mouse-speed" type="range" min="10" max="100" step="5" value={settings.mouseSpeed} aria-describedby={isDesktop ? undefined : 'mouse-speed-help'} aria-valuetext={`${settings.mouseSpeed} percent of normal speed`} onChange={event => {
               const mouseSpeed = Number(event.target.value);
               onSettingsChange({ ...settings, mouseSpeed });
               if (isDesktop && mouseSpeed === 100) stopAppMouse();
@@ -61,7 +61,7 @@ export function SelectionSettings({ open, onClose, theme, onThemeChange, setting
             {!isDesktop && <button className="advanced-controls-setting mouse-speed-toggle" role="switch" aria-checked={mouse === 'active'} aria-label="Adjusted mouse speed" disabled={mouse === 'unsupported' || mouse === 'starting'} onClick={mouse === 'active' ? stopAppMouse : startAppMouse}>
               <span>{mouse === 'starting' ? 'Starting...' : 'Adjusted speed'}</span><span className="settings-switch" aria-hidden="true"><span /></span>
             </button>}
-            <p id="mouse-speed-help" className="mouse-speed-caption">Space toggles adjusted speed</p>
+            {!isDesktop && <p id="mouse-speed-help" className="mouse-speed-caption">Space toggles adjusted speed</p>}
             {['error', 'unsupported'].includes(mouse) && <p className="mouse-speed-status" role="status">{mouse === 'error' ? 'Could not start. Press Space to retry.' : 'Unavailable in this browser.'}</p>}
           </section>
           <nav className="settings-navigation" aria-label="More settings">
