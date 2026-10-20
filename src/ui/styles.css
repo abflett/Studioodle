@@ -55,7 +55,11 @@ body { background: var(--sky); }
 button { font: inherit; cursor: var(--app-cursor-pointer, pointer); touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform 160ms ease, filter 160ms ease, background-color 160ms ease, box-shadow 160ms ease; }
 button:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-.splash { height: 100dvh; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(20px, 6vh, 48px); }
+.splash { height: 100dvh; padding: clamp(16px, 3vw, 32px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; background: var(--page); }
+.splash-panel { width: min(760px, 100%); height: min(520px, 100%); min-height: 0; flex-shrink: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(16px, 4vh, 32px); padding: 32px 20px 64px; border: 1px solid var(--border); border-radius: 32px; box-shadow: 0 16px 56px var(--shadow); }
+.splash-panel .brand-icon { width: clamp(72px, 22vmin, 156px); }
+.splash-panel .brand-name { font-size: clamp(32px, 7vmin, 60px); }
+@media (max-height: 420px) { .splash-panel { padding: 16px 20px 44px; gap: 12px; border-radius: 24px; } .splash-panel .brand { gap: 8px; } .splash-panel .splash-credit { bottom: 14px; } }
 .splash-progress { height: 12px; display: flex; align-items: center; }
 .splash-credit { position: absolute; bottom: max(20px, env(safe-area-inset-bottom)); margin: 0; font-size: 14px; color: var(--text); }
 .brand { display: flex; flex-direction: column; align-items: center; gap: 18px; }
@@ -763,10 +767,10 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 /* Shared painted artwork for selection, splash, and ribbon surfaces. */
 :root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b49302b, #5b49302b); --tool-well: #e7e4d3; --preview-border: #758e80; }
 :root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --canvas-tint: linear-gradient(#06111f38, #06111f38); --tool-well: #2c3e59; --preview-border: #8797af; }
-.selection-screen, .splash { position: relative; isolation: isolate; overflow: hidden; }
-:is(.selection-screen, .splash)::before, :is(.selection-screen, .splash)::after { content: ''; position: absolute; pointer-events: none; }
-:is(.selection-screen, .splash)::before { inset: 0; z-index: -2; background-image: var(--scene-art); background-size: cover; background-position: center; }
-:is(.selection-screen, .splash)::after { inset: 0; z-index: -1; background: var(--scene-tint); }
+.selection-screen, .splash-panel { position: relative; isolation: isolate; overflow: hidden; }
+:is(.selection-screen, .splash-panel)::before, :is(.selection-screen, .splash-panel)::after { content: ''; position: absolute; pointer-events: none; }
+:is(.selection-screen, .splash-panel)::before { inset: 0; z-index: -2; background-image: var(--scene-art); background-size: cover; background-position: center; }
+:is(.selection-screen, .splash-panel)::after { inset: 0; z-index: -1; background: var(--scene-tint); }
 .art-studio { background-image: var(--scene-tint), var(--scene-art); background-size: cover; background-position: center; background-repeat: no-repeat; }
 .art-studio .art-canvas:not(.focus-mode) { background: var(--canvas-tint); }
 /* The drawer overlaps the page, so reproduce the viewport-aligned artwork beneath it. */
