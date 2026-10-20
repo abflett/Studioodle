@@ -2,23 +2,23 @@
   color-scheme: light;
   --page: #eadcc1;
   --surface: #faf4e6;
-  --text: #304c50;
-  --muted: #596b65;
+  --text: #304b63;
+  --muted: #5b6d7e;
   --badge: #e1dac5;
-  --border: #b6b6a0;
-  --divider: #d7d5c1;
-  --button-border: #8a9e91;
+  --border: #a8b8c2;
+  --divider: #d0d9dc;
+  --button-border: #8199ad;
   --accent: #97593d;
-  --action: #376b65;
+  --action: #38688d;
   --action-text: #fffaf0;
-  --shadow: #314f4930;
-  --ribbon-shadow: #263d394d;
-  --brand-tile: #b7d5ce;
+  --shadow: #304b6330;
+  --ribbon-shadow: #263f574d;
+  --brand-tile: #c2d9e5;
   --brand-paper: #faf4e6;
-  --brand-ink: #304c50;
+  --brand-ink: #304b63;
   --brand-gold: #ddc799;
   --brand-pencil: #d6aa83;
-  --brand-paint: #376b65;
+  --brand-paint: #38688d;
   --ribbon-well: color-mix(in srgb, var(--text) 6.5%, transparent);
   --sky: radial-gradient(ellipse at 16% 8%, #fff8cf 0%, transparent 48%), radial-gradient(ellipse at 95% 0%, #b7e4e7 0%, transparent 53%), linear-gradient(160deg, #fdf0ce 0%, #f6e1ba 62%, #eecfa0 100%);
   --panel: linear-gradient(145deg, #fcf7eb, #eee5d0);
@@ -779,7 +779,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .selection-screen .selection { --picture-height: min(184px, 32vw, 25dvh); --label-gap: 20px; gap: clamp(18px, 3.5dvh, 32px); }
 }
 /* Shared painted artwork for selection, splash, and ribbon surfaces. */
-:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b49302b, #5b49302b); --tool-well: #e7e4d3; --preview-border: #758e80; }
+:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b49302b, #5b49302b); --tool-well: #e6e9e6; --preview-border: #6786a0; }
 :root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --canvas-tint: linear-gradient(#06111f38, #06111f38); --tool-well: #2c3e59; --preview-border: #8797af; }
 .selection-screen, .splash-panel { position: relative; isolation: isolate; overflow: hidden; }
 :is(.selection-screen, .splash-panel)::before, :is(.selection-screen, .splash-panel)::after { content: ''; position: absolute; pointer-events: none; }
