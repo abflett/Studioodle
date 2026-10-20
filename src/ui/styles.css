@@ -666,3 +666,33 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .scene-preview-button { display: grid; place-items: center; width: 100%; min-width: 0; padding: 0; border: 0; border-radius: 16px; background: transparent; color: inherit; }
 .scene-preview-button:focus-visible { outline: none; }
 .scene-preview-button:focus-visible .saved-preview { outline: 3px solid var(--action); outline-offset: 4px; }
+
+/* Picture actions belong to the selected preview, above its caption. */
+.previous-section { gap: 12px; }
+.previous-section .picture-carousel > .icon-button { transform: none; }
+.previous-section .previous-picture { gap: 0; padding-bottom: 0; }
+.previous-section .library-actions { position: static; inset: auto; transform: none; display: flex; justify-content: center; gap: 12px; }
+.previous-section .library-actions .icon-button { width: 48px; height: 48px; padding: 12px; }
+.previous-section h2 { margin-top: 4px; }
+@media (max-width: 420px), (max-height: 520px) {
+  .previous-section { gap: 8px; }
+  .previous-section .library-actions { gap: 10px; }
+  .previous-section .library-actions .icon-button { width: 44px; height: 44px; padding: 10px; }
+}
+/* Reserve a stable picture box while leaving room for its local actions. */
+.selection-screen { padding-top: max(80px, calc(env(safe-area-inset-top) + 68px)); }
+.selection-screen .selection { --label-gap: clamp(16px, 3dvh, 28px); --saved-picture-height: min(220px, 25dvh); gap: clamp(16px, 4dvh, 36px); }
+.selection .choice-card { padding: 8px; }
+.previous-section .previous-picture { padding: 0; }
+.previous-picture .choice-art { height: var(--saved-picture-height); }
+.previous-picture .saved-preview { --preview-height: var(--saved-picture-height); }
+@media (max-height: 700px) {
+  .selection-screen .selection { --label-gap: 16px; --saved-picture-height: min(180px, 22dvh); gap: 20px; }
+}
+@media (min-width: 560px) and (max-height: 520px) {
+  .selection-screen .selection { width: min(960px, 100%); grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto; --label-gap: 12px; --picture-height: min(100px, 20dvh); --saved-picture-height: min(120px, 20dvh); gap: 20px; align-items: center; }
+  .selection .choice-grid { gap: 8px; }
+  .previous-section { gap: 6px; }
+  .previous-section .picture-carousel { gap: 8px; }
+  .previous-section .picture-carousel > .icon-button { width: 44px; height: 44px; padding: 10px; }
+}
