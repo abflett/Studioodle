@@ -16,7 +16,7 @@ import type { SavedPicture } from '../editor/savedPicture';
 import { exportPicture, printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Monitor, Moon, Sun, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, Save, Pencil } from 'lucide-react';
+import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, Save, Pencil } from 'lucide-react';
 import { pictureChoices } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
@@ -158,13 +158,6 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     <main className="selection-screen" aria-label="Choose a picture">
       <section className="selection">
         <div className="selection-preferences">
-        <div className="theme-picker" role="group" aria-label="Color theme">
-          {(['system', 'light', 'dark'] as const).map((value) => (
-            <button key={value} aria-label={value === 'system' ? 'Follow system theme' : `${value} theme`} title={value === 'system' ? 'Follow system' : `${value === 'light' ? 'Light' : 'Dark'} theme`} aria-pressed={theme === value} onClick={() => onThemeChange(value)}>
-              {value === 'system' ? <Monitor aria-hidden="true" /> : value === 'light' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
-            </button>
-          ))}
-        </div>
         {(isDesktop || document.fullscreenEnabled) && <button className="fullscreen-toggle icon-button" title={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} aria-label={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} onClick={() => {
           const action = isDesktop ? toggleDesktopFullscreen().then(setFullscreen) : document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
           void action.catch(() => setActionError('Fullscreen is unavailable in this window.'));
