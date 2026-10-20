@@ -72,3 +72,19 @@ export function cleanTinyInkPockets(paths) {
       pockets: removed.map(c => ({ index: c.index, area: c.area, width: c.width, compactness: c.compactness, center: [c.points.reduce((s, p) => s + p[0], 0) / c.points.length, c.points.reduce((s, p) => s + p[1], 0) / c.points.length] })) },
   };
 }
+
+
+// Experimental size-only cleanup measured at the largest proportional A4 fit.
+export function cleanA4InkPockets(paths, sourceWidth, sourceHeight, maximumAreaPixels = 3) {
+  if (!(sourceWidth > 0 && sourceHeight > 0 && maximumAreaPixels > 0)) throw Error('Invalid A4 cleanup dimensions or area');
+  const pageWidth = 210 / 25.4 * 150, pageHeight = 297 / 25.4 * 150;
+  const scale = Math.max(Math.min(pageWidth / sourceWidth, pageHeight / sourceHeight),
+    Math.min(pageHeight / sourceWidth, pageWidth / sourceHeight));
+  const contours = traceContours(paths), holes = contours.filter(c => c.signedArea < 0);
+  const removed = holes.filter(c => c.area * scale ** 2 < maximumAreaPixels);
+  const ids = new Set(removed.map(c => c.index));
+  return { d: contours.filter(c => !ids.has(c.index)).map(c => c.d).join(''),
+    report: { method: 'A4 area only', dpi: 150, maximumAreaPixels, scale, beforeHoles: holes.length,
+      afterHoles: holes.length - removed.length, removed: removed.length,
+      pockets: removed.map(c => ({ index: c.index, areaPixels: c.area * scale ** 2 })) } };
+}

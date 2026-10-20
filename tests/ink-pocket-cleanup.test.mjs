@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { test } from 'node:test';
-import { cleanTinyInkPockets, traceContours } from '../scripts/ink-pocket-cleanup.mjs';
+import { cleanA4InkPockets, cleanTinyInkPockets, traceContours } from '../scripts/ink-pocket-cleanup.mjs';
 const source = fs.readFileSync('experiments/moon-sorceress/06-traced-ink.svg', 'utf8');
 const paths = [...source.matchAll(/<path\s+d="([^"]+)"/g)].map(match => match[1]);
 
@@ -29,4 +29,15 @@ test('combining unmodified Potrace contours preserves cubic geometry', () => {
     assert.ok(Math.abs(combined[i].signedArea - contours[i].signedArea) < 1e-8);
     assert.ok(Math.abs(combined[i].perimeter - contours[i].perimeter) < 1e-8);
   }
+});
+
+
+test('A4 area-only cleanup removes six pinholes at nine pixels while preserving eye highlights', () => {
+  assert.equal(cleanA4InkPockets(paths, 888, 1254, 3).report.removed, 0);
+  const result = cleanA4InkPockets(paths, 888, 1254, 9);
+  assert.equal(result.report.removed, 6);
+  assert.equal(result.report.pockets.some(p => p.index === 31 || p.index === 40), false);
+  assert.ok(result.report.pockets.every(p => p.areaPixels < 9));
+  const landscape = cleanA4InkPockets(paths, 1254, 888, 9);
+  assert.deepEqual(landscape.report.pockets, result.report.pockets);
 });

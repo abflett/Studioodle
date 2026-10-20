@@ -2,11 +2,12 @@
 import fs from 'node:fs';
 import { regionSvg } from './svg-regions.mjs';
 import { stickerInspection } from './sticker-inspection.mjs';
-import { cleanTinyInkPockets } from './ink-pocket-cleanup.mjs';
+import { cleanA4InkPockets, cleanTinyInkPockets } from './ink-pocket-cleanup.mjs';
 import { execFileSync } from 'node:child_process';
 const inspectionDirectory=process.argv.find(arg=>arg.startsWith('--inspect='))?.slice('--inspect='.length);
 const experimentOutput=process.argv.find(arg=>arg.startsWith('--experiment-output='))?.slice('--experiment-output='.length);
-const cleanupPockets=process.argv.includes('--cleanup-small-pockets');
+const cleanupA4=process.argv.includes('--cleanup-a4-pockets');
+const cleanupPockets=process.argv.includes('--cleanup-small-pockets')||cleanupA4;
 if(cleanupPockets&&!experimentOutput)throw new Error('Pocket cleanup is experimental; specify --experiment-output');
 const authoringOnly=inspectionDirectory||experimentOutput;
 const inspectionThreshold=Number(process.argv.find(arg=>arg.startsWith('--inspect-threshold='))?.split('=')[1]??50);
@@ -84,7 +85,7 @@ for(const asset of assets) {
     inspection?.ink(`${base}-ink.svg`);
     commands=paths(fs.readFileSync(`${base}-ink.svg`,'utf8')).map(d=>({d,fill:'ink',stroke:false,width:0}));
     if(cleanupPockets){
-      const cleaned=cleanTinyInkPockets(commands.map(c=>c.d));
+      const cleaned=cleanupA4?cleanA4InkPockets(commands.map(c=>c.d),sw,sh,Number(process.argv.find(arg=>arg.startsWith('--cleanup-area='))?.split('=')[1]??3)):cleanTinyInkPockets(commands.map(c=>c.d));
       commands=[{d:cleaned.d,fill:'ink',stroke:false,width:0}];cleanupReport=cleaned.report;
       fs.writeFileSync(`${base}-pocket-cleanup.json`,JSON.stringify(cleanupReport,null,2));
     }
@@ -144,7 +145,7 @@ for(const asset of assets) {
   inspection?.extended(labels,w,h);
   let svg=regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix,inkMask:gray});
   if(experimentOutput){
-    if(cleanupReport)svg=svg.replace('<g id="regions"',`<metadata>${JSON.stringify({experiment:'line-width pocket cleanup',...cleanupReport,pockets:undefined})}</metadata><g id="regions"`);
+    if(cleanupReport)svg=svg.replace('<g id="regions"',`<metadata>${JSON.stringify({experiment:cleanupA4?'A4 area pocket cleanup':'line-width pocket cleanup',...cleanupReport,pockets:undefined})}</metadata><g id="regions"`);
     fs.writeFileSync(experimentOutput,svg);console.log(`${id}: ${cleanupReport?.removed??0} pockets absorbed into ink; ${regionCount} final regions; ${experimentOutput}`);continue;
   }
   if(inspection){inspection.finish(svg);console.log(`${id}: captured current pipeline in ${inspectionDirectory}`);continue;}
