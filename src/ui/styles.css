@@ -663,3 +663,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .setup-dialog .dialog-header { gap: 8px; }
   .setup-dialog .dialog-header h2 { font-size: 20px; }
 }
+.scene-preview-button { display: grid; place-items: center; width: 100%; min-width: 0; padding: 0; border: 0; border-radius: 16px; background: transparent; color: inherit; }
+.scene-preview-button:focus-visible { outline: none; }
+.scene-preview-button:focus-visible .saved-preview { outline: 3px solid var(--action); outline-offset: 4px; }

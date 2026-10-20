@@ -147,7 +147,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
       setRemoved(undefined); setActionError(undefined); setNotice('Added to coloring pages');
     } catch { setActionError('Could not save coloring page. Device storage may be full or unavailable.'); }
   };
-  const stepTitle = step === 'shape' ? 'Pick your paper' : step === 'paper' ? 'Pick a paper color' : 'Pick a picture';
+  const stepTitle = step === 'shape' ? 'Pick your paper' : step === 'paper' ? 'Pick a paper color' : 'Coloring Pages';
   const openPicture = (setup: EditorSetup) => {
     dialog.current?.close();
     // Templates are immutable starting points, each use gets a fresh saved-picture id.
@@ -175,7 +175,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             <button className={`choice-card choice-${item.id}`} key={item.id}
               onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
               <span className="choice-art"><img src={item.image} alt="" width="320" height="220" /></span>
-              <span className="choice-label">{item.id === 'blank' ? 'Blank Page' : 'Coloring Page'}</span>
+              <span className="choice-label">{item.id === 'blank' ? 'Blank Page' : 'Coloring Pages'}</span>
             </button>
           ))}
         </div>
@@ -208,7 +208,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             {step === 'paper' && <ColorPicker label="Canvas background colors" color={parseInt(background.slice(1), 16)} onChoose={(value) => setBackground(`#${value.toString(16).padStart(6, '0')}`)} />}
             {step === 'scene' && <div className="scene-picker">
               <button className="icon-button" aria-label="Previous coloring page" onClick={() => setSceneIndex((value) => (value + scenes.length - 1) % scenes.length)}><Arrow direction="left" /></button>
-              <figure><SavedPreview picture={scene} /><figcaption aria-live="polite">{scene.title}</figcaption></figure>
+              <figure><button type="button" className="scene-preview-button" aria-label={`Draw ${scene.title}`} onClick={() => openPicture(scene)}><SavedPreview picture={scene} /></button><figcaption aria-live="polite">{scene.title}</figcaption></figure>
               <button className="icon-button" aria-label="Next coloring page" onClick={() => setSceneIndex((value) => (value + 1) % scenes.length)}><Arrow direction="right" /></button>
             </div>}
           </div>
