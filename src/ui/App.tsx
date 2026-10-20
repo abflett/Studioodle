@@ -72,7 +72,8 @@ export function App() {
       <main className="splash" aria-label="Studioodle">
         <Brand />
         <span className="sr-only" role="status">{failed ? 'Unable to load. Check your connection and try again.' : 'Getting your studio ready.'}</span>
-        {!failed && <progress aria-label="Preparing Studioodle" max={startup.total} value={startup.completed} />}
+        {!failed && <div className="splash-progress">{startup.completed < startup.total && <progress aria-label="Preparing Studioodle" max={startup.total} value={startup.completed} />}</div>}
+        <p className="splash-credit">Designed by Adam Flett</p>
         {failed && <button className="icon-button" aria-label="Try loading again" onClick={() => {
           setStartup({ phase: 'loading', completed: 0, total: startupTaskCount });
           setAttempt((value) => value + 1);
