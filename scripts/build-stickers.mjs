@@ -176,7 +176,7 @@ for(const asset of assets) {
   let head=0,tail=0;for(let i=0;i<count;i++){if(labels[i]<0)continue;const x=i%w;if((x&&labels[i-1]===-2)||(x+1<w&&labels[i+1]===-2)||(i>=w&&labels[i-w]===-2)||(i+w<count&&labels[i+w]===-2))queue[tail++]=i;}
   while(head<tail){const i=queue[head++],x=i%w;const visit=n=>{if(labels[n]===-2){labels[n]=labels[i];queue[tail++]=n;}};if(x)visit(i-1);if(x+1<w)visit(i+1);if(i>=w)visit(i-w);if(i+w<count)visit(i+w);}
   inspection?.extended(labels,w,h);
-  let svg=regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix,inkMask:gray});
+  let svg=regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix,inkMask:gray,overlapPixels:asset.regionOverlapPixels??1});
   if(experimentOutput){
     if(cleanupReport)svg=svg.replace('<g id="regions"',`<metadata>${JSON.stringify({experiment:cleanupComponents?'connected component cleanup':cleanupA4?'A4 area pocket cleanup':'line-width pocket cleanup',...cleanupReport,pockets:undefined})}</metadata><g id="regions"`);
     fs.writeFileSync(experimentOutput,svg);console.log(`${id}: ${cleanupReport?.removed??0} pockets absorbed into ink; ${regionCount} final regions; ${experimentOutput}`);continue;

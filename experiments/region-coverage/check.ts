@@ -63,6 +63,7 @@ export async function checkRegionCoverage() {
   }
   assert(edgeMismatches === 0, `Enlarged solid fill differs from SVG reference at ${edgeMismatches} edge pixels`);
   const rows = [];
+  let diagnosticPng: string|undefined;
   for (const id of ['fantasy-moon-sorceress', 'winter-reindeer', 'garden-house', 'garden-fence', 'dinosaur-striped-tyrannosaurus', 'horizons-forest-clearing']) {
     const response = await fetch(`/src/assets/vector/${id}.svg`);
     assert(response.ok, `Missing ${id}`);
@@ -82,29 +83,76 @@ export async function checkRegionCoverage() {
       if (!vector.contains((x + .5) / scale, (y + .5) / scale)) missingHits++;
     }
     assert(!missingHits, `${id}: ${missingHits} visible ink pixels click through`);
-        let paintPixels = 0;
+    let exposedBoundaries=0;
+    const boundaryExamples: number[][]=[];
+    if(settings)for(let y=1;y<canvas.height-1;y+=2)for(let x=1;x<canvas.width-1;x+=2){
+      const region=vector.regionAt((x+.5)/scale,(y+.5)/scale);
+      if(!region)continue;
+      const neighbor=vector.regionAt((x+1.5)/scale,(y+.5)/scale);
+      const below=vector.regionAt((x+.5)/scale,(y+1.5)/scale);
+      if(((neighbor&&neighbor!==region)||(below&&below!==region))&&pixels[(y*canvas.width+x)*4+3]!<128){
+        exposedBoundaries++;
+        if(boundaryExamples.length<30)boundaryExamples.push([x/scale,y/scale,region,neighbor,below]);
+      }
+    }
+    const beltCrossSection: number[][]=[];
+    if(settings){let previous='';for(let y=160*scale;y<190*scale;y++){
+      const x=170*scale;
+      const r=vector.regionAt((x+.5)/scale,(y+.5)/scale),alpha=pixels[(y*canvas.width+x)*4+3]!;
+      const key=`${r}/${alpha>=128}`;
+      if(key!==previous){beltCrossSection.push([y/scale,r,alpha]);previous=key;}
+    }}
+    let minimumBeltInkMargin: number|undefined;
+    if(settings){
+      const x=170*scale,alphaAt=(y:number)=>pixels[(y*canvas.width+x)*4+3]!;
+      const margins: number[]=[];
+      for(let y=171*scale;y<185*scale;y++){
+        const a=vector.regionAt((x+.5)/scale,(y-.5)/scale);
+        const b=vector.regionAt((x+.5)/scale,(y+.5)/scale);
+        if(!a||!b||a===b)continue;
+        let top=y,bottom=y;
+        while(top>0&&alphaAt(top-1)>=128)top--;
+        while(bottom<canvas.height&&alphaAt(bottom)>=128)bottom++;
+        margins.push(Math.min(y-top,bottom-y)/scale);
+      }
+      assert(margins.length===4,'Expected four internal belt boundaries');
+      minimumBeltInkMargin=Math.min(...margins);
+      assert(minimumBeltInkMargin>=.125,`Belt boundary has only ${minimumBeltInkMargin} logical units of ink margin`);
+      assert(exposedBoundaries<=8,`Unexpected exposed region boundaries: ${exposedBoundaries}`);
+    }
+    let paintPixels = 0;
     if(settings) {
       const trialDoc = structuredClone(doc);
       trialDoc.width=800;trialDoc.height=1000;
       Object.assign(trialDoc.surfaces[1]!, {kind:id,x:400,y:500,scale:1});
       const trial = Artwork.restore(trialDoc, () => vector);
-      let seed: {x:number;y:number}|undefined;
-      for(let y=100;y<380&&!seed;y++)for(let x=80;x<260;x++)if(vector.regionAt(x,y)){
-        seed={x:400+x-170,y:500+y-240};break;
-      }
-      assert(seed, 'Moon trial needs a paintable seed');
+      const seed={x:400+170-170,y:500+174-240};
       assert(trial.fill(seed,0x743dad),'High-resolution Moon bucket must work');
+      trial.fill({x:400,y:426},0x743dad);
+      trial.fill({x:400,y:439},0x482561);
+      trial.fill({x:400,y:442},0x35ad9c);
+      const preview=document.createElement('canvas');preview.width=960;preview.height=480;
+      const pc=preview.getContext('2d')!;pc.setTransform(16,0,0,16,-(400+145-170)*16,-(500+162-240)*16);
+      trial.render(pc);
+      const beforeBrush=pc.getImageData(0,0,960,480).data;
       assert(trial.brush(seed,seed,0x42aadd,false,{size:3,kind:'ink',shape:'round'}),'High-resolution Moon brush must work');
       const saved=trial.serialize().surfaces[1]!;
       assert(saved.paintScale===8,'Moon must retain 8x paint density after brushing');
       const colors=new Set(saved.paint.map(run=>run[2]));
       assert(colors.has(0x743dad)&&colors.has(0x42aadd),'Both bucket and brush colors must remain raster');
-      const preview=document.createElement('canvas');preview.width=800;preview.height=1000;
-      trial.render(preview.getContext('2d')!);
+      trial.render(pc);diagnosticPng=preview.toDataURL('image/png');
+      const afterBrush=pc.getImageData(0,0,960,480).data;
+      let changedOutsideBrush=0;
+      for(let y=0;y<480;y++)for(let x=0;x<960;x++){
+        if(Math.hypot(x-400,y-192)<40)continue;
+        const i=(y*960+x)*4;
+        if([0,1,2].some(channel=>beforeBrush[i+channel]!==afterBrush[i+channel]))changedOutsideBrush++;
+      }
+      assert(changedOutsideBrush===0, `Brushing changed ${changedOutsideBrush} distant belt pixels`);
       paintPixels=Math.ceil(vector.width*12.5)*Math.ceil(vector.height*12.5);
     }
-    rows.push({ id, visibleInk, missingHits, lookupScale: scale, sharedBytes: vector.typedArrayBytes, paintPixels });
+    rows.push({ id, visibleInk, missingHits, lookupScale: scale, sharedBytes: vector.typedArrayBytes, paintPixels, minimumBeltInkMargin, beltCrossSection, exposedBoundaries, boundaryExamples });
     canvas.width = canvas.height = 1;
   }
-  return { enlargedFillEdges: true, lineFill: true, isolatedInkBlocksPage: true, paintSilhouetteUnchanged: true, rows };
+  return { enlargedFillEdges: true, lineFill: true, isolatedInkBlocksPage: true, paintSilhouetteUnchanged: true, rows, diagnosticPng };
 }

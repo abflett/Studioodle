@@ -11,3 +11,9 @@ Enabled only for `fantasy-moon-sorceress` through `src/editor/stickerRasterSetti
 - Saves retain paintScale=8 and validation accepts that density only for this trial asset. Fresh stickers give a clean comparison; upsampling old mixed brush paint cannot recover lost source detail.
 
 Browser regression `npm run check:regions` exercises the real Moon SVG, checks visible ink hits at lookup scale 16, applies a bucket and a brush stroke, verifies both raster colors and saved density, and renders the result. This is a mechanics check, not a claim that visual inspection is no longer needed.
+
+## Centerline correction
+
+The one-analysis-pixel region overlap biased first-path lookup precedence. At the belt cross-section x=170, the minimum ink margin at four internal boundaries was only 0.0625 logical units. Setting this asset's `regionOverlapPixels` to zero moved that minimum to 0.25. Sampled exposed boundary points across the asset fell from 168 to 2; these are samples, not a guarantee of perfect coverage everywhere.
+
+The browser check now enforces belt ink margin, paints multiple neighboring belt regions, applies a brush dab, and checks that pixels beyond the dab stay unchanged. It writes a zoomed runtime crop to `work/moon-belt-runtime.png`. The old SVG fails the margin check; the rebuilt SVG passes. High-resolution paint remains enabled to keep geometry and density trials separate.
