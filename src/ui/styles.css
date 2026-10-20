@@ -532,13 +532,12 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .app-mouse-cursor { position: fixed; inset: 0 auto auto 0; width: 40px; height: 40px; margin: 0; padding: 0; border: 0; background-color: transparent; background-size: 40px 40px; background-repeat: no-repeat; overflow: visible; pointer-events: none; z-index: 2147483647; will-change: transform; }
 .app-mouse-cursor::backdrop { display: none; }
 .mouse-setting { display: grid; gap: 8px; padding: 14px; border-radius: 18px; background: var(--ribbon-well); }
-.mouse-speed-label, .mouse-speed-scale { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mouse-speed-label { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .mouse-speed-label { font-weight: 750; }
 .mouse-speed-label output { font-variant-numeric: tabular-nums; }
 .mouse-setting input[type='range'] { width: 100%; min-height: 32px; margin: 0; accent-color: var(--action); }
-.mouse-speed-scale, .mouse-setting p, .mouse-speed-status { font-size: 13px; color: var(--muted); }
+.mouse-setting p, .mouse-speed-status { font-size: 13px; color: var(--muted); }
 .mouse-setting p { margin: 0; }
-.mouse-speed-action { min-height: 42px; padding: 8px 16px; border: 0; border-radius: 14px; color: var(--action-text); background: var(--action); font-weight: 750; }
 .mouse-speed-status { line-height: 1.35; }
 
 .shortcut-help { color: var(--muted); font-size: 13px; }
@@ -661,3 +660,5 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .shortcut-guide-dialog .wizard { padding: 12px; gap: 8px; }
   .shortcut-guide-dialog .shortcut-help dl { gap: 8px; }
 }
+
+.compact-settings .mouse-speed-toggle { min-height: 44px; padding: 4px 0; border-radius: 0; background: transparent; font-size: 14px; font-weight: 750; }

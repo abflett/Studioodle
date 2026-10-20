@@ -57,8 +57,9 @@ export function SelectionSettings({ open, onClose, theme, onThemeChange, setting
               onSettingsChange({ ...settings, mouseSpeed });
               if (isDesktop && mouseSpeed === 100) stopAppMouse();
             }} onPointerUp={applyDesktopSpeed} onKeyUp={event => { if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(event.key)) applyDesktopSpeed(); }} />
-            <div className="mouse-speed-scale" aria-hidden="true"><span>Slower</span><span>System</span></div>
-            {!isDesktop && <button className="mouse-speed-action" disabled={mouse === 'unsupported' || mouse === 'starting'} onClick={mouse === 'active' ? stopAppMouse : startAppMouse}>{mouse === 'active' ? 'Use system mouse' : mouse === 'starting' ? 'Starting...' : 'Enable adjusted speed'}</button>}
+            {!isDesktop && <button className="advanced-controls-setting mouse-speed-toggle" role="switch" aria-checked={mouse === 'active'} aria-label="Adjusted mouse speed" disabled={mouse === 'unsupported' || mouse === 'starting'} onClick={mouse === 'active' ? stopAppMouse : startAppMouse}>
+              <span>{mouse === 'starting' ? 'Starting...' : 'Adjusted speed'}</span><span className="settings-switch" aria-hidden="true"><span /></span>
+            </button>}
             <p id="mouse-speed-help" className="mouse-speed-caption">Space toggles adjusted speed</p>
             {['error', 'unsupported'].includes(mouse) && <p className="mouse-speed-status" role="status">{mouse === 'error' ? 'Could not start. Press Space to retry.' : 'Unavailable in this browser.'}</p>}
           </section>
