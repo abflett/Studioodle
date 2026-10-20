@@ -1121,7 +1121,7 @@ An adult sorceress with flowing braided hair, modest long layered gown, crescent
 - **Detail:** moderate; **Facing:** none
 - **Dimensions:** 340 x 480 scene units; **Visible Bounds:** left=3.125, top=2.25, right=336.875, bottom=477.875
 - **Placement:** Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.
-- **Files:** [SVG](../../src/assets/vector/fantasy-moon-sorceress.svg), [Definition](../../src/assets/vector/fantasy-moon-sorceress.svg), [Source](../../art/source/fantasy/moon-sorceress.png)
+- **Files:** [SVG](../../src/assets/vector/fantasy-moon-sorceress.svg), [Definition](../../src/assets/vector/fantasy-moon-sorceress.svg), [Source](../../art/source/fantasy/moon-sorceress.svg)
 - **Scene Examples:** Not yet used in a built-in scene.
 
 ## Armored Warrior

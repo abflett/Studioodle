@@ -1,6 +1,6 @@
 # Curve-unioned small-region cleanup
 
-Final result: [SVG](curve-unioned-cleanup.svg). Production is updated only for Moon Sorceress; no bulk library rebuild.
+Historical cleanup result: [SVG](curve-unioned-cleanup.svg). The production source has since received a localized [cape correction](cape-correction.md); this reference remains unchanged. Production is updated only for Moon Sorceress; no bulk library rebuild.
 
 The previous pixel patch left a visible white rim around the small teardrop near logical (172, 197). The replacement removes that exact hole contour from the ink. It does not insert a stair-stepped bitmap shape into the hole. The updated source is one compound ink path with original Bezier curves.
 

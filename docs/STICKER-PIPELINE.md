@@ -34,7 +34,7 @@ Region ownership stops at the discovered centerline; there is no extra overlap t
 
 For traced ink with a minimum-region rule, `discover-regions.mjs` measures individual connected white components at the largest proportional A4 fit, 150 DPI. `clean-ink-components.mjs` resolves the original Bezier contours with authoring-only Paper.js. True tiny holes are removed directly; raster-split pockets are intersected with their curved white contour and united into the ink. No bitmap patch is traced or overlaid. Tiny slivers are removed again after unions. The ink is rendered again and all regions are rediscovered from the final geometry.
 
-Moon Sorceress remains the only asset with this tuning enabled (10.2 pixels squared). It has 199 final regions, no remaining below-cutoff components, unchanged eye sparkles and no added detached black components. Review other assets before enabling or rebuilding them.
+Moon Sorceress remains the only asset with this tuning enabled (10.2 pixels squared). The historical cleanup reference has 199 regions, no remaining below-cutoff components, unchanged eye sparkles and no added detached black components. The current curated SVG source removes the misplaced hair behind the left sleeve and produces 194 regions. Review other assets before enabling or rebuilding them.
 
 ```xml
 <svg viewBox="0 0 623 560" data-region-format="1"

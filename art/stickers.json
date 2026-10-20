@@ -6612,7 +6612,8 @@
     "minimumRegionAreaPixels": 10.2,
     "width": 340,
     "height": 480,
-    "source": "art/source/fantasy/moon-sorceress.png",
+    "source": "art/source/fantasy/moon-sorceress.svg",
+    "mode": "svg",
     "title": "Moon Sorceress",
     "category": "characters",
     "sortOrder": 1401,
@@ -6628,8 +6629,7 @@
     ],
     "detail": "moderate",
     "facing": "none",
-    "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "888x1254+193+0"
+    "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion."
   },
   {
     "id": "fantasy-armored-warrior",

@@ -2907,10 +2907,10 @@
     "id": "fantasy-moon-sorceress",
     "width": 340,
     "height": 480,
-    "regionCount": 199,
+    "regionCount": 194,
     "tinyRegions": 1,
     "analysisScale": 8,
     "lookupScale": 4,
-    "mode": "potrace-light"
+    "mode": "svg"
   }
 ]

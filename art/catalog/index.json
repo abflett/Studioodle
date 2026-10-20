@@ -2667,7 +2667,7 @@
       "interior": false,
       "horizon": false,
       "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-      "source": "art/source/fantasy/moon-sorceress.png",
+      "source": "art/source/fantasy/moon-sorceress.svg",
       "runtimeDefinition": "src/assets/vector/fantasy-moon-sorceress.svg",
       "preview": "src/assets/vector/fantasy-moon-sorceress.svg",
       "usedIn": []
