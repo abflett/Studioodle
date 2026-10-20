@@ -1,4 +1,6 @@
 import { DialogHeader } from './DialogHeader';
+import blankArt from '../assets/blank.svg?raw';
+import coloringArt from '../assets/coloring.svg?raw';
 import { workshopPages, workshopRepository } from '../app/coloringBookWorkshop';
 import { coloringPages } from '../app/coloringPages';
 import { DeletePictureDialog } from './DeletePictureDialog';
@@ -20,6 +22,13 @@ import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, L
 import { pictureChoices } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
+
+// Trusted bundled SVGs inherit the same theme border as saved-picture previews.
+function themeArtwork(svg: string) {
+  return svg.replaceAll('#46584c', 'var(--preview-border)')
+    .replace('<svg ', '<svg aria-hidden="true" focusable="false" ');
+}
+const themedArtwork = { blank: themeArtwork(blankArt), coloring: themeArtwork(coloringArt) };
 
 function Arrow({ direction }: { direction: 'left' | 'right' }) {
   return direction === 'left' ? <ArrowLeft aria-hidden="true" /> : <ArrowRight aria-hidden="true" />;
@@ -169,7 +178,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
           {pictureChoices.map((item) => (
             <button className={`choice-card choice-${item.id}`} key={item.id}
               onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
-              <span className="choice-art"><img src={item.image} alt="" width="320" height="220" /></span>
+              <span className="choice-art" dangerouslySetInnerHTML={{ __html: themedArtwork[item.id] }} />
               <span className="choice-label">{item.id === 'blank' ? 'Blank Page' : 'Coloring Pages'}</span>
             </button>
           ))}

@@ -2,23 +2,23 @@
   color-scheme: light;
   --page: #eadcc1;
   --surface: #faf4e6;
-  --text: #304b63;
-  --muted: #5b6d7e;
+  --text: #35545c;
+  --muted: #5d7175;
   --badge: #e1dac5;
-  --border: #a8b8c2;
-  --divider: #d0d9dc;
-  --button-border: #8199ad;
+  --border: #a7bdbd;
+  --divider: #d2dcd8;
+  --button-border: #829fa3;
   --accent: #97593d;
-  --action: #38688d;
+  --action: #3e747d;
   --action-text: #fffaf0;
-  --shadow: #304b6330;
-  --ribbon-shadow: #263f574d;
-  --brand-tile: #c2d9e5;
+  --shadow: #35545c30;
+  --ribbon-shadow: #294a514d;
+  --brand-tile: #c3dcdb;
   --brand-paper: #faf4e6;
-  --brand-ink: #304b63;
+  --brand-ink: #35545c;
   --brand-gold: #ddc799;
   --brand-pencil: #d6aa83;
-  --brand-paint: #38688d;
+  --brand-paint: #3e747d;
   --ribbon-well: color-mix(in srgb, var(--text) 6.5%, transparent);
   --sky: radial-gradient(ellipse at 16% 8%, #fff8cf 0%, transparent 48%), radial-gradient(ellipse at 95% 0%, #b7e4e7 0%, transparent 53%), linear-gradient(160deg, #fdf0ce 0%, #f6e1ba 62%, #eecfa0 100%);
   --panel: linear-gradient(145deg, #fcf7eb, #eee5d0);
@@ -97,7 +97,7 @@ progress::-moz-progress-bar { background: var(--action); border-radius: 10px; }
 .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 3vw, 26px); min-height: 0; }
 .choice-card { min-height: 0; display: flex; flex-direction: column; align-items: center; gap: var(--label-gap); padding: 16px; border: 0; border-radius: 28px; background: transparent; color: var(--text); }
 .choice-art { display: grid; place-items: end center; height: var(--picture-height); min-height: 0; width: 100%; }
-.choice-art img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: bottom; min-height: 0; pointer-events: none; user-select: none; }
+.choice-art img, .choice-grid .choice-art > svg { display: block; width: 100%; height: 100%; object-fit: contain; object-position: bottom; min-height: 0; pointer-events: none; user-select: none; }
 .choice-label { display: block; padding: 0; font-size: clamp(17px, 2.6vw, 21px); font-weight: 750; line-height: 1.25; }
 .previous-section { position: relative; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--label-gap); text-align: center; }
 .previous-section h2 { flex-shrink: 0; margin: 0; font-size: clamp(17px, 2.6vw, 21px); font-weight: 750; line-height: 1.25; color: var(--text); }
@@ -774,12 +774,12 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .selection-screen { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
 
 /* The two starting pages share one paper proportion and a lifted art treatment. */
-.selection .choice-grid .choice-art img { filter: drop-shadow(0 7px 9px var(--shadow)); }
+.selection .choice-grid .choice-art img, .choice-grid .choice-art > svg { filter: drop-shadow(0 7px 9px var(--shadow)); }
 @media (min-height: 701px) {
   .selection-screen .selection { --picture-height: min(184px, 32vw, 25dvh); --label-gap: 20px; gap: clamp(18px, 3.5dvh, 32px); }
 }
 /* Shared painted artwork for selection, splash, and ribbon surfaces. */
-:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b49302b, #5b49302b); --tool-well: #e6e9e6; --preview-border: #6786a0; }
+:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b49302b, #5b49302b); --tool-well: #e6e9e6; --preview-border: #65878b; }
 :root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --canvas-tint: linear-gradient(#06111f38, #06111f38); --tool-well: #2c3e59; --preview-border: #8797af; }
 .selection-screen, .splash-panel { position: relative; isolation: isolate; overflow: hidden; }
 :is(.selection-screen, .splash-panel)::before, :is(.selection-screen, .splash-panel)::after { content: ''; position: absolute; pointer-events: none; }

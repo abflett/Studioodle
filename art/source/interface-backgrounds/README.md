@@ -13,4 +13,6 @@ magick art/source/interface-backgrounds/selection-beach.png -define webp:lossles
 
 ## Interface palette
 
-The light theme follows the beach painting: warm paper and sand surfaces, pale neutral control wells, deep coastal blue text, blue-gray borders, and ocean-blue actions. The dark theme follows the night painting: navy/slate surfaces, blue control wells, warm ivory text, and moonlight-gold actions. Opaque control wells and fine borders separate the controls from detailed artwork; preview borders also follow the active theme. Artwork remains continuous through the ribbons, with additional darkening confined to canvas letterboxing.
+The light theme follows the beach painting: warm paper and sand surfaces, pale neutral control wells, deep water-slate text, muted water-blue borders, and soft lagoon-blue actions. The dark theme follows the night painting: navy/slate surfaces, blue control wells, warm ivory text, and moonlight-gold actions. Opaque control wells and fine borders separate the controls from detailed artwork; preview borders also follow the active theme. Artwork remains continuous through the ribbons, with additional darkening confined to canvas letterboxing.
+
+The home illustrations inherit the same preview-border token as saved pictures, so their outlines follow both themes consistently.

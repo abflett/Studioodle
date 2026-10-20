@@ -27,12 +27,12 @@ export const draggingCursorGraphics = {
 function darkTheme() { return document.documentElement.dataset.theme === 'dark'; }
 export function cursorImage(graphic: CursorGraphic, color: number, dark = darkTheme()) {
   const paint = `#${color.toString(16).padStart(6, '0')}`;
-  return `data:image/svg+xml,${encodeURIComponent(graphic.svg.replaceAll('#233b48', dark ? '#f6f0e2' : '#304b63')
-    .replaceAll('#27465a', dark ? '#b7d5ce' : '#38688d')
+  return `data:image/svg+xml,${encodeURIComponent(graphic.svg.replaceAll('#233b48', dark ? '#f6f0e2' : '#35545c')
+    .replaceAll('#27465a', dark ? '#b7d5ce' : '#3e747d')
     .replaceAll('#fff8e9', dark ? '#293b56' : '#faf4e6')
     .replaceAll('#e3e9e4', dark ? '#344761' : '#e0e7ec')
-    .replaceAll('#c5d5d0', dark ? '#8390a8' : '#acbfce')
-    .replaceAll('#e4e9e4', dark ? '#8390a8' : '#acbfce')
+    .replaceAll('#c5d5d0', dark ? '#8390a8' : '#adc5c5')
+    .replaceAll('#e4e9e4', dark ? '#8390a8' : '#adc5c5')
     .replaceAll('#e9a07e', dark ? '#ddc799' : '#d6aa83')
     .replaceAll('#4caaa2', paint))}`;
 }
