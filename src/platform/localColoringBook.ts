@@ -3,7 +3,7 @@ import type { ColoringBook } from '../editor/coloringBook';
 
 /** One storage write makes an import atomic, including on storage quota failure. */
 export function createLocalColoringBook(storage: () => Storage = () => localStorage) {
-  const key = 'studioodle.workshop.v1';
+  const key = 'studioodle.workshop.v2';
   return {
     load(): ColoringBook {
       const text = storage().getItem(key);

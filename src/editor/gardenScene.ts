@@ -34,11 +34,11 @@ export const gardenScene: EditorSetup = {
   title: 'Cottage Garden', format: 'landscape', size: { width: 1536, height: 1024 },
   background: '#ffffff', leafColor: 0x000000,
   document: {
-    version: 3, horizonLayout: 2, width: 1536, height: 1024,
+    version: 5, width: 1536, height: 1024,
     surfaces: [
-      { id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff, paint: [] },
+      { id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff },
       ...objects.map(([kind, x, y, scale = 1, flipX = false], index): SurfaceData => ({
-        id: `garden-${index}`, kind, x, y, scale, flipX, color: 0, paint: [],
+        id: `garden-${index}`, kind, x, y, scale, flipX, color: 0,
       })),
     ],
   },

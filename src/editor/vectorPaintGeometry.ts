@@ -1,3 +1,4 @@
+import { paintStyleKey } from './vectorPaintTypes';
 import polygonClipping from 'polygon-clipping';
 import type { MultiPolygon, Pair } from 'polygon-clipping';
 import type { PaintBlob, VectorPaintRegion } from './vectorPaintTypes';
@@ -26,13 +27,13 @@ export function brushBlob(a: Pair, b: Pair, radius: number, square = false): Mul
 
 /** Last paint wins; compact each color and discard coverage hidden by other colors. */
 export function compactRegion(region: VectorPaintRegion): VectorPaintRegion {
-    const colors=new Map<number,MultiPolygon>();
+    const colors=new Map<string,PaintBlob>();
     // Union consecutive same-color strokes in batches, deduplicating repeated
     // coverage before running any boolean work. Color order remains intact.
     const runs:PaintBlob[]=[];
     for(let index=0;index<region.blobs.length;){
-        const color=region.blobs[index]!.color,unique=new Map<string,MultiPolygon>();
-        while(index<region.blobs.length&&region.blobs[index]!.color===color){
+        const style=region.blobs[index]!,color=style.color,key=paintStyleKey(color,style.pattern),unique=new Map<string,MultiPolygon>();
+        while(index<region.blobs.length&&paintStyleKey(region.blobs[index]!.color,region.blobs[index]!.pattern)===key){
             const geometry=region.blobs[index++]!.geometry;
             if(geometry.length)unique.set(JSON.stringify(geometry),geometry);
         }
@@ -41,19 +42,20 @@ export function compactRegion(region: VectorPaintRegion): VectorPaintRegion {
             const batch=shapes.slice(i,i+64);
             geometry=polygonClipping.union(geometry.length?geometry:batch.shift()!,...batch);
         }
-        if(geometry.length)runs.push({color,geometry});
+        if(geometry.length)runs.push({color,pattern:style.pattern,geometry});
     }
     for(const blob of runs){
-        for(const [color,geometry] of colors)if(color!==blob.color){
-            const remaining=polygonClipping.difference(geometry,blob.geometry);
-            if(remaining.length)colors.set(color,remaining);else colors.delete(color);
+        const key=paintStyleKey(blob.color,blob.pattern);
+        for(const [other,paint] of colors)if(other!==key){
+            const remaining=polygonClipping.difference(paint.geometry,blob.geometry);
+            if(remaining.length)colors.set(other,{...paint,geometry:remaining});else colors.delete(other);
         }
-        if(blob.color!==region.base){
-            const previous=colors.get(blob.color);
-            colors.set(blob.color,previous?polygonClipping.union(previous,blob.geometry):blob.geometry);
+        if(key!==paintStyleKey(region.base,region.pattern)){
+            const previous=colors.get(key);
+            colors.set(key,{...blob,geometry:previous?polygonClipping.union(previous.geometry,blob.geometry):blob.geometry});
         }
     }
-    const blobs:PaintBlob[]=[...colors].map(([color,geometry])=>({color,geometry}));
+    const blobs=[...colors.values()];
     return {...region,blobs};
 }
 export function polygonPath(geometry: MultiPolygon) {

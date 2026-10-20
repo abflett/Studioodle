@@ -22,12 +22,12 @@ base repository, or interface for every class.
   unchanged tool, focus or selection state. Command delivery stays synchronous.
 - **`svgDefinition.ts` / `rasterizeRegions.ts`** decode the shared SVG sticker format
   and generate immutable region-ID lookup arrays once per loaded definition. The
-  legacy JSON decoder lives only in `experiments/` for reproducible comparisons.
+  old JSON decoder and executable raster comparisons have been retired. Captured experiment reports remain historical artifacts.
 - **`savedPicture.ts`** defines the saved model and the three-method repository
   contract. **`pictureValidation.ts`** validates untrusted records using lightweight
   catalog metadata; it does not load sticker definitions.
 - **`localPictureRepository.ts`** implements that contract. **`app/pictures.ts`**
-  composes the ordinary-picture and custom-template libraries with their existing
+  composes the ordinary-picture and custom-template libraries with their current
   namespaces. Storage access is resolved at call time; UI callers handle errors.
 - **`app/pictureOutput.ts`** coordinates rendering, names and PNG resolution.
   **`platform/pictureOutput.ts`** handles browser/native download and print behavior.
@@ -45,22 +45,9 @@ objects. `useLatest` exposes committed callbacks to long-lived DOM listeners;
 do not mutate callback refs during render. Modal and pointer listener cleanup must
 remain symmetric, including React development effect replay.
 
-Version-3 picture keys are `studioodle.v3.picture.<id>`; custom templates use
-`studioodle.v3.coloring.<id>`. Keep these and the desktop app identity stable.
-Changing paint density, asset logical dimensions, document fields or mask semantics
-requires explicitly considering existing saved paint. Never silently regenerate or
-rewrite users' documents during catalog cleanup.
+Current picture keys are `studioodle.v5.picture.<id>`; custom templates use `studioodle.v5.coloring.<id>`. Documents use vector-only format 5. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
 
-Sticker paint defaults to the original 150 DPI local raster. Enlarged stickers lazily
-increase its density in 2x/4x steps, capped at 8 million pixels for an upgraded surface.
-Unpainted placement stays cheap; existing paint upgrades on rendering, and brush/fill
-ensure density before editing. Density never shrinks. The optional surface `paintScale`
-field records that multiplier; old saves omit it and retain their original pixel indexing.
-`paintRaster.ts` reconstructs uniform region colors and transfers mixed brushwork with
-region-aware nearest-neighbor sampling. The immutable SVG lookup remains shared; it
-is not rebuilt for each transform. Rendering pads colored edges under the ink and exact
-SVG clip, without adding those padding pixels to saved paint or hit regions. This avoids
-white interpolation fringes without expanding the sticker silhouette.
+`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges coverage without changing undo snapshots. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no instance paint arrays or canvases. Shared lookup arrays support only hit testing. See [Vector Painting](VECTOR-PAINT.md).
 
 ## Adding features
 
@@ -82,7 +69,7 @@ white interpolation fringes without expanding the sticker silhouette.
 framework. It checks persistence isolation/corruption handling, document validation,
 coloring-page copies, output naming, bridge notification/lifecycle behavior, and
 session save, undo, focus and gesture-cancellation rules. Session tests use a small
-in-memory artwork double; they do not test raster painting or Canvas2D rendering.
+in-memory artwork double; they do not test Canvas2D rendering. The browser regression exercises the real vector paint engine and its worker.
 `npm run check` also runs TypeScript, ESLint and the production web build.
 Lint excludes generated output and local experiments, and prevents editor/Phaser
 modules from importing application composition or platform adapters.

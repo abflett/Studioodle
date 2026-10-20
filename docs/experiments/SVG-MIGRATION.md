@@ -1,3 +1,5 @@
+> Historical snapshot. The raster paint engine and its executable benchmarks have been retired; current runtime behavior is documented in `docs/VECTOR-PAINT.md`.
+
 # Entire library: single-SVG migration
 
 All 71 production stickers now use one SVG each. SVG contains region geometry,

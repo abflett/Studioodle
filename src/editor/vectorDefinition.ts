@@ -1,3 +1,4 @@
+import type { MultiPolygon } from 'polygon-clipping';
 export type InkCommand = {
     path: Path2D;
     fill: boolean;
@@ -14,13 +15,12 @@ export type VectorDefinition = {
     inRegion: (x: number, y: number, id: number) => boolean;
     contains: (x: number, y: number) => boolean;
     regionCount: number;
-    format: 'raster' | 'svg';
+    format: 'svg';
     lookup: 'raster' | 'paths';
     mapSize?: { width: number; height: number; scale: number };
     typedArrayBytes: number;
     silhouette: Path2D;
-    rasterOnly?: boolean;
-    regions?: ReadonlyArray<{ id: number; path: Path2D; bounds: number[] }>;
+    regions: ReadonlyArray<{ id: number; path: Path2D; bounds: number[]; geometry?: () => MultiPolygon }>;
     ink: InkCommand[];
 };
 

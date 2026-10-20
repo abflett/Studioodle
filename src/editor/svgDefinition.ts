@@ -1,3 +1,4 @@
+import { svgPathGeometry } from './svgPathGeometry';
 import { rasterizeRegions } from './rasterizeRegions';
 import type { RegionPath } from './rasterizeRegions';
 import type { InkCommand, VectorDefinition } from './vectorDefinition';
@@ -26,7 +27,11 @@ export function decodeSvgDefinition(text: string, options: { lookup?: 'paths' | 
   const regions: Region[] = regionElements.map(element => {
     const explicit = /^region-(\d+)$/.exec(element.id);
     while (explicitIds.has(nextId)) nextId++;
-    return { id: explicit ? Number(explicit[1]) : nextId++, path: path(element), bounds: numbers(element.getAttribute('data-bounds')) };
+    let geometry: ReturnType<typeof svgPathGeometry> | undefined;
+    const data=element.getAttribute('d')??'';
+    const matrix=element.hasAttribute('transform')?numbers(element.getAttribute('transform')!.replace(/^matrix\(|\)$/g,'')):[1,0,0,1,0,0];
+    return { id: explicit ? Number(explicit[1]) : nextId++, path: path(element), bounds: numbers(element.getAttribute('data-bounds')),
+      geometry: () => geometry ??= svgPathGeometry(data,matrix) };
   });
   if (!regions.length || regions.some(r => !Number.isInteger(r.id) || r.id <= 0 || r.id > 65535 || r.bounds.length !== 4)) throw new Error('Invalid SVG regions');
   if (new Set(regions.map(region => region.id)).size !== regions.length) throw new Error('Duplicate SVG region IDs');

@@ -5,11 +5,6 @@ export type Point = {
     x: number;
     y: number;
 };
-export type PaintRun = [
-    start: number,
-    length: number,
-    color: number
-];
 export type SurfaceData = {
     id: string;
     kind: StickerKind | 'canvas';
@@ -20,16 +15,12 @@ export type SurfaceData = {
     rotation?: number;
     flipX?: boolean;
     flipY?: boolean;
-    /** Optional local raster density multiplier; page-aligned stickers use their placed scale. */
-    paintScale?: number;
     vectorPaint?: VectorPaintData;
-    paint: PaintRun[];
 };
 export const defaultPaintDpi = 150;
-export const paintScale = () => defaultPaintDpi / 96;
+export const exportScale = (dpi = defaultPaintDpi) => dpi / 96;
 export type ArtworkDocument = {
-    version: 3 | 4;
-    horizonLayout?: 2;
+    version: 5;
     width: number;
     height: number;
     surfaces: SurfaceData[];

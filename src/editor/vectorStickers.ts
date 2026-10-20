@@ -1,7 +1,6 @@
 import type { StickerKind } from './stickerKinds';
 import type { VectorDefinition } from './vectorDefinition';
 import { decodeSvgDefinition } from './svgDefinition';
-import { stickerRasterSettings } from './stickerRasterSettings';
 import { vectorStickerUrl } from './vectorCatalog';
 
 const sources = new Map<StickerKind, string>();
@@ -41,9 +40,7 @@ export function vectorDefinition(kind: StickerKind): VectorDefinition {
   }
   const source = sources.get(kind);
   if (!source) throw new Error(`Sticker is not prepared: ${kind}`);
-  const settings = stickerRasterSettings(kind);
-  const definition = decodeSvgDefinition(source, { scale: settings?.lookupScale });
-  definition.rasterOnly = settings?.rasterOnly;
+  const definition = decodeSvgDefinition(source);
   definitions.set(kind, definition);
   return definition;
 }

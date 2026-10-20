@@ -28,11 +28,11 @@ export const safariScene: EditorSetup = {
   title: 'Safari Watering Hole', format: 'landscape', size: { width: 1920, height: 1280 },
   background: '#ffffff', leafColor: 0x000000,
   document: {
-    version: 3, horizonLayout: 2, width: 1920, height: 1280,
+    version: 5, width: 1920, height: 1280,
     surfaces: [
-      { id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff, paint: [] },
+      { id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff },
       ...placements.map(([kind, x, y, scale, flipX = false], index): SurfaceData => ({
-        id: `safari-${index}`, kind, x, y, scale, flipX, color: 0, paint: [],
+        id: `safari-${index}`, kind, x, y, scale, flipX, color: 0,
       })),
     ],
   },

@@ -38,30 +38,13 @@ first-region precedence for overlaps. Zero denotes outside and provides hit cove
 No RGB ID blending or repeated geometric queries are used during normal painting.
 The temporary masks are released after loading.
 
-Each placed sticker owns 150-DPI raster paint. Rendering clips its white base and
-paint to the union of region paths, then draws vector ink. Canvas2D composites at
-visible device resolution; Phaser supplies input adaptation and selection graphics.
-Bucket flood fill follows the selected surface's region IDs and connected paint color,
-including behind foreground stickers. Brushes use visible ownership; erasing reveals
-the base. Fill queues and ownership are reused until their relevant state changes.
-
-Source text is cached up to 24 entries. Definitions remain available for duplicate/undo
-during editing and are released when leaving the editor. Geometry and lookup arrays
-are shared, but each instance has its own paint array/canvas. Picture thumbnails still
-prepare editable definitions. There is no preload of the complete collection at splash.
+Every page and sticker uses vector backing styles and brush blobs. Exact SVG region paths clip display/output; a worker compacts same-style coverage and removes occluded colors. Shared hit maps remain independent of painting. See [Vector Painting](VECTOR-PAINT.md).
 
 ## Persistence and verification
 
-Version-3 saves and `studioodle.v3.picture.` / `studioodle.v3.coloring.` keys remain
-unchanged. IDs, logical dimensions, paint density and transforms are preserved. Earlier
-experimental save formats remain unsupported. No user paint is rewritten by conversion.
-Region-boundary rasterization can differ slightly from the former masks; see the
-[full-library migration report](experiments/SVG-MIGRATION.md) and preserved baseline.
+Current documents use format 5 and fresh v5 picture/template namespaces. Old raster drawing formats are unsupported. Captured migration reports describe historical implementations; executable legacy paint comparisons have been removed. See `AGENTS.md` for the pre-release breaking-change policy.
 
-Run `npm run assets:preview` for offline scene compositions. Embedding SVGs in one
-scene prefixes IDs per instance so clip references cannot collide. Inspect generated
-contact sheets in `work/hybrid/` and review fills, cutouts, overlaps, undo, save/reopen,
-PNG export and printing in the app after artwork changes.
+Run `npm run check:regions` for browser paint/hit/worker regressions and `npm run assets:preview` for offline compositions. No bulk sticker conversion is being performed while tiny-region cleanup is under review.
 
 ## Sticker focus
 

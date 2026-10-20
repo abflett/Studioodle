@@ -1,12 +1,12 @@
 {
   "format": "studioodle-coloring-book",
-  "version": 1,
+  "version": 2,
   "title": "Studioodle Coloring Book",
   "pages": [
     {
       "id": "winter",
       "title": "Christmas Skating Village",
-      "version": 3,
+      "version": 5,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -16,8 +16,7 @@
       "background": "#ffffff",
       "leafColor": 2368552,
       "document": {
-        "version": 3,
-        "horizonLayout": 2,
+        "version": 5,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -26,8 +25,7 @@
             "kind": "canvas",
             "x": 0,
             "y": 0,
-            "color": 16777215,
-            "paint": []
+            "color": 16777215
           },
           {
             "id": "winter-instance-0",
@@ -35,8 +33,7 @@
             "x": 561.5,
             "y": 816.9552083333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-1",
@@ -44,8 +41,7 @@
             "x": 660.9322916666666,
             "y": 578.3177083333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-2",
@@ -53,8 +49,7 @@
             "x": 965.0781249999999,
             "y": 420.3958333333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-3",
@@ -62,8 +57,7 @@
             "x": 1029.4166666666665,
             "y": 525.6770833333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-4",
@@ -71,8 +65,7 @@
             "x": 204.71354166666666,
             "y": 496.43229166666663,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-5",
@@ -80,8 +73,7 @@
             "x": 175.46874999999997,
             "y": 242.00260416666666,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-6",
@@ -89,8 +81,7 @@
             "x": 444.5208333333333,
             "y": 242.00260416666666,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-7",
@@ -98,8 +89,7 @@
             "x": 666.7812499999999,
             "y": 242.00260416666666,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-8",
@@ -107,8 +97,7 @@
             "x": 356.7864583333333,
             "y": 613.4114583333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-9",
@@ -116,8 +105,7 @@
             "x": 462.0677083333333,
             "y": 622.1848958333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-10",
@@ -125,8 +113,7 @@
             "x": 584.8958333333333,
             "y": 519.828125,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-11",
@@ -134,8 +121,7 @@
             "x": 748.6666666666666,
             "y": 522.7526041666666,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-12",
@@ -143,8 +129,7 @@
             "x": 877.3437499999999,
             "y": 209.83333333333331,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "winter-instance-13",
@@ -152,8 +137,7 @@
             "x": 1029.4166666666665,
             "y": 280.0208333333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           }
         ]
       }
@@ -161,7 +145,7 @@
     {
       "id": "beach",
       "title": "Sunny Beach Day",
-      "version": 3,
+      "version": 5,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -171,8 +155,7 @@
       "background": "#ffffff",
       "leafColor": 2368552,
       "document": {
-        "version": 3,
-        "horizonLayout": 2,
+        "version": 5,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -181,8 +164,7 @@
             "kind": "canvas",
             "x": 0,
             "y": 0,
-            "color": 16777215,
-            "paint": []
+            "color": 16777215
           },
           {
             "id": "beach-instance-0",
@@ -190,8 +172,7 @@
             "x": 561.5,
             "y": 819.0023437499999,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "beach-instance-1",
@@ -199,8 +180,7 @@
             "x": 561.5,
             "y": 215.68229166666666,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "beach-instance-2",
@@ -208,8 +188,7 @@
             "x": 871.4947916666666,
             "y": 209.83333333333331,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "beach-instance-3",
@@ -217,8 +196,7 @@
             "x": 210.56249999999997,
             "y": 402.8489583333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "beach-instance-4",
@@ -226,8 +204,7 @@
             "x": 766.2135416666666,
             "y": 595.8645833333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "beach-instance-5",
@@ -235,8 +212,7 @@
             "x": 813.0052083333333,
             "y": 432.09375,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "beach-instance-6",
@@ -244,8 +220,7 @@
             "x": 497.1614583333333,
             "y": 560.7708333333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "beach-instance-7",
@@ -253,8 +228,7 @@
             "x": 374.3333333333333,
             "y": 630.9583333333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "beach-instance-8",
@@ -262,8 +236,7 @@
             "x": 1006.0208333333333,
             "y": 613.4114583333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           }
         ]
       }
@@ -271,7 +244,7 @@
     {
       "id": "spring",
       "title": "Spring Garden",
-      "version": 3,
+      "version": 5,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -281,8 +254,7 @@
       "background": "#ffffff",
       "leafColor": 2368552,
       "document": {
-        "version": 3,
-        "horizonLayout": 2,
+        "version": 5,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -291,8 +263,7 @@
             "kind": "canvas",
             "x": 0,
             "y": 0,
-            "color": 16777215,
-            "paint": []
+            "color": 16777215
           },
           {
             "id": "spring-instance-0",
@@ -300,8 +271,7 @@
             "x": 561.5,
             "y": 882.4635416666666,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "spring-instance-1",
@@ -309,8 +279,7 @@
             "x": 128.67708333333331,
             "y": 221.53125,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "spring-instance-2",
@@ -318,8 +287,7 @@
             "x": 345.08854166666663,
             "y": 198.13541666666666,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "spring-instance-3",
@@ -327,8 +295,7 @@
             "x": 935.8333333333333,
             "y": 203.984375,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "spring-instance-4",
@@ -336,8 +303,7 @@
             "x": 567.3489583333333,
             "y": 280.0208333333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "spring-instance-5",
@@ -345,8 +311,7 @@
             "x": 795.4583333333333,
             "y": 572.46875,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "spring-instance-6",
@@ -354,8 +319,7 @@
             "x": 146.22395833333331,
             "y": 496.43229166666663,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "spring-instance-7",
@@ -363,8 +327,7 @@
             "x": 970.9270833333333,
             "y": 525.6770833333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "spring-instance-8",
@@ -372,8 +335,7 @@
             "x": 596.59375,
             "y": 513.9791666666666,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "spring-instance-9",
@@ -381,8 +343,7 @@
             "x": 327.54166666666663,
             "y": 560.7708333333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           }
         ]
       }
@@ -390,7 +351,7 @@
     {
       "id": "counting",
       "title": "Counting Costume Parade",
-      "version": 3,
+      "version": 5,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -400,8 +361,7 @@
       "background": "#ffffff",
       "leafColor": 2368552,
       "document": {
-        "version": 3,
-        "horizonLayout": 2,
+        "version": 5,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -410,8 +370,7 @@
             "kind": "canvas",
             "x": 0,
             "y": 0,
-            "color": 16777215,
-            "paint": []
+            "color": 16777215
           },
           {
             "id": "counting-instance-0",
@@ -419,8 +378,7 @@
             "x": 561.5,
             "y": 148.41927083333331,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-1",
@@ -428,8 +386,7 @@
             "x": 112.29999999999998,
             "y": 294.64322916666663,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-2",
@@ -437,8 +394,7 @@
             "x": 336.9,
             "y": 294.64322916666663,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-3",
@@ -446,8 +402,7 @@
             "x": 561.5,
             "y": 294.64322916666663,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-4",
@@ -455,8 +410,7 @@
             "x": 786.0999999999999,
             "y": 294.64322916666663,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-5",
@@ -464,8 +418,7 @@
             "x": 1010.6999999999999,
             "y": 294.64322916666663,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-6",
@@ -473,8 +426,7 @@
             "x": 112.29999999999998,
             "y": 546.1484375,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-7",
@@ -482,8 +434,7 @@
             "x": 336.9,
             "y": 546.1484375,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-8",
@@ -491,8 +442,7 @@
             "x": 561.5,
             "y": 546.1484375,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-9",
@@ -500,8 +450,7 @@
             "x": 786.0999999999999,
             "y": 546.1484375,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-10",
@@ -509,8 +458,7 @@
             "x": 1010.6999999999999,
             "y": 546.1484375,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-11",
@@ -518,8 +466,7 @@
             "x": 222.26041666666666,
             "y": 420.3958333333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-12",
@@ -527,8 +474,7 @@
             "x": 446.86041666666665,
             "y": 420.3958333333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-13",
@@ -536,8 +482,7 @@
             "x": 671.4604166666666,
             "y": 420.3958333333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           },
           {
             "id": "counting-instance-14",
@@ -545,8 +490,7 @@
             "x": 896.0604166666666,
             "y": 420.3958333333333,
             "color": 0,
-            "scale": 0.5848958333333333,
-            "paint": []
+            "scale": 0.5848958333333333
           }
         ]
       }
@@ -554,7 +498,7 @@
     {
       "id": "garden",
       "title": "Cottage Garden",
-      "version": 3,
+      "version": 5,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -564,8 +508,7 @@
       "background": "#ffffff",
       "leafColor": 2368552,
       "document": {
-        "version": 3,
-        "horizonLayout": 2,
+        "version": 5,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -574,8 +517,7 @@
             "kind": "canvas",
             "x": 0,
             "y": 0,
-            "color": 16777215,
-            "paint": []
+            "color": 16777215
           },
           {
             "id": "garden-0",
@@ -584,8 +526,7 @@
             "y": 775.7200520833333,
             "color": 0,
             "scale": 0.5848958333333333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-1",
@@ -594,8 +535,7 @@
             "y": 183.51302083333334,
             "color": 0,
             "scale": 0.6214518229166667,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-2",
@@ -604,8 +544,7 @@
             "y": 150.61263020833334,
             "color": 0,
             "scale": 0.6580078125,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-3",
@@ -614,8 +553,7 @@
             "y": 106.74544270833334,
             "color": 0,
             "scale": 0.6214518229166667,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-4",
@@ -624,8 +562,7 @@
             "y": 106.74544270833334,
             "color": 0,
             "scale": 0.6214518229166667,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-5",
@@ -634,8 +571,7 @@
             "y": 457.6829427083333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-6",
@@ -644,8 +580,7 @@
             "y": 446.7161458333333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-7",
@@ -654,8 +589,7 @@
             "y": 490.5833333333333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-8",
@@ -664,8 +598,7 @@
             "y": 490.5833333333333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-9",
@@ -674,8 +607,7 @@
             "y": 490.5833333333333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-10",
@@ -684,8 +616,7 @@
             "y": 490.5833333333333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-11",
@@ -694,8 +625,7 @@
             "y": 490.5833333333333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-12",
@@ -704,8 +634,7 @@
             "y": 651.4296875,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-13",
@@ -714,8 +643,7 @@
             "y": 369.9485677083333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-14",
@@ -724,8 +652,7 @@
             "y": 483.2721354166667,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-15",
@@ -734,8 +661,7 @@
             "y": 483.2721354166667,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-16",
@@ -744,8 +670,7 @@
             "y": 483.2721354166667,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-17",
@@ -754,8 +679,7 @@
             "y": 377.259765625,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-18",
@@ -764,8 +688,7 @@
             "y": 304.1477864583333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-19",
@@ -774,8 +697,7 @@
             "y": 252.96940104166669,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-20",
@@ -784,8 +706,7 @@
             "y": 293.1809895833333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-21",
@@ -794,8 +715,7 @@
             "y": 388.2265625,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-22",
@@ -804,8 +724,7 @@
             "y": 362.6373697916667,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-23",
@@ -814,8 +733,7 @@
             "y": 395.5377604166667,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-24",
@@ -824,8 +742,7 @@
             "y": 567.3509114583333,
             "color": 0,
             "scale": 0.5848958333333333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-25",
@@ -834,8 +751,7 @@
             "y": 578.3177083333333,
             "color": 0,
             "scale": 0.5848958333333333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-26",
@@ -844,8 +760,7 @@
             "y": 596.595703125,
             "color": 0,
             "scale": 0.32900390625,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-27",
@@ -854,8 +769,7 @@
             "y": 629.49609375,
             "color": 0,
             "scale": 0.4752278645833333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-28",
@@ -864,8 +778,7 @@
             "y": 666.0520833333333,
             "color": 0,
             "scale": 0.5848958333333333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-29",
@@ -874,8 +787,7 @@
             "y": 702.6080729166667,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-30",
@@ -884,8 +796,7 @@
             "y": 742.8196614583333,
             "color": 0,
             "scale": 0.8407877604166666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-31",
@@ -894,8 +805,7 @@
             "y": 651.4296875,
             "color": 0,
             "scale": 0.54833984375,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-32",
@@ -904,8 +814,7 @@
             "y": 680.6744791666667,
             "color": 0,
             "scale": 0.5117838541666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-33",
@@ -914,8 +823,7 @@
             "y": 698.9524739583333,
             "color": 0,
             "scale": 0.4752278645833333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-34",
@@ -924,8 +832,7 @@
             "y": 651.4296875,
             "color": 0,
             "scale": 0.54833984375,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-35",
@@ -934,8 +841,7 @@
             "y": 698.9524739583333,
             "color": 0,
             "scale": 0.4752278645833333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-36",
@@ -944,8 +850,7 @@
             "y": 684.330078125,
             "color": 0,
             "scale": 0.5117838541666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-37",
@@ -954,8 +859,7 @@
             "y": 731.8528645833333,
             "color": 0,
             "scale": 0.40211588541666665,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-38",
@@ -964,8 +868,7 @@
             "y": 596.595703125,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-39",
@@ -974,8 +877,7 @@
             "y": 753.7864583333333,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-40",
@@ -984,8 +886,7 @@
             "y": 746.4752604166667,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-41",
@@ -994,8 +895,7 @@
             "y": 746.4752604166667,
             "color": 0,
             "scale": 0.7311197916666666,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "garden-42",
@@ -1004,8 +904,7 @@
             "y": 333.392578125,
             "color": 0,
             "scale": 0.6360742187499999,
-            "flipX": true,
-            "paint": []
+            "flipX": true
           },
           {
             "id": "garden-43",
@@ -1014,8 +913,7 @@
             "y": 263.9361979166667,
             "color": 0,
             "scale": 0.5848958333333333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           }
         ]
       }
@@ -1023,7 +921,7 @@
     {
       "id": "safari",
       "title": "Safari Watering Hole",
-      "version": 3,
+      "version": 5,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -1033,8 +931,7 @@
       "background": "#ffffff",
       "leafColor": 2368552,
       "document": {
-        "version": 3,
-        "horizonLayout": 2,
+        "version": 5,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -1043,8 +940,7 @@
             "kind": "canvas",
             "x": 0,
             "y": 0,
-            "color": 16777215,
-            "paint": []
+            "color": 16777215
           },
           {
             "id": "safari-0",
@@ -1053,8 +949,7 @@
             "y": 736.2395833333333,
             "color": 0,
             "scale": 0.5848958333333333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-1",
@@ -1063,8 +958,7 @@
             "y": 116.25000000000001,
             "color": 0,
             "scale": 0.29244791666666664,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-2",
@@ -1073,8 +967,7 @@
             "y": 113.32552083333334,
             "color": 0,
             "scale": 0.46791666666666665,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-3",
@@ -1083,8 +976,7 @@
             "y": 163.04166666666669,
             "color": 0,
             "scale": 0.35093749999999996,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-4",
@@ -1093,8 +985,7 @@
             "y": 253.70052083333334,
             "color": 0,
             "scale": 0.52640625,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-5",
@@ -1103,8 +994,7 @@
             "y": 329.7369791666667,
             "color": 0,
             "scale": 0.46791666666666665,
-            "flipX": true,
-            "paint": []
+            "flipX": true
           },
           {
             "id": "safari-6",
@@ -1113,8 +1003,7 @@
             "y": 411.6223958333333,
             "color": 0,
             "scale": 0.4094270833333333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-7",
@@ -1123,8 +1012,7 @@
             "y": 537.375,
             "color": 0,
             "scale": 0.46791666666666665,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-8",
@@ -1133,8 +1021,7 @@
             "y": 399.92447916666663,
             "color": 0,
             "scale": 1.0235677083333332,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-9",
@@ -1143,8 +1030,7 @@
             "y": 402.8489583333333,
             "color": 0,
             "scale": 0.7603645833333333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-10",
@@ -1153,8 +1039,7 @@
             "y": 411.6223958333333,
             "color": 0,
             "scale": 0.7018749999999999,
-            "flipX": true,
-            "paint": []
+            "flipX": true
           },
           {
             "id": "safari-11",
@@ -1163,8 +1048,7 @@
             "y": 405.7734375,
             "color": 0,
             "scale": 0.6726302083333332,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-12",
@@ -1173,8 +1057,7 @@
             "y": 625.109375,
             "color": 0,
             "scale": 0.7018749999999999,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-13",
@@ -1183,8 +1066,7 @@
             "y": 563.6953125,
             "color": 0,
             "scale": 0.6726302083333332,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-14",
@@ -1193,8 +1075,7 @@
             "y": 660.203125,
             "color": 0,
             "scale": 0.6433854166666667,
-            "flipX": true,
-            "paint": []
+            "flipX": true
           },
           {
             "id": "safari-15",
@@ -1203,8 +1084,7 @@
             "y": 636.8072916666667,
             "color": 0,
             "scale": 0.7018749999999999,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-16",
@@ -1213,8 +1093,7 @@
             "y": 671.9010416666665,
             "color": 0,
             "scale": 0.43867187499999993,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-17",
@@ -1223,8 +1102,7 @@
             "y": 590.015625,
             "color": 0,
             "scale": 0.46791666666666665,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-18",
@@ -1233,8 +1111,7 @@
             "y": 689.4479166666665,
             "color": 0,
             "scale": 0.6433854166666667,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-19",
@@ -1243,8 +1120,7 @@
             "y": 709.9192708333333,
             "color": 0,
             "scale": 0.35093749999999996,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-20",
@@ -1253,8 +1129,7 @@
             "y": 718.6927083333333,
             "color": 0,
             "scale": 0.7603645833333333,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-21",
@@ -1263,8 +1138,7 @@
             "y": 736.2395833333333,
             "color": 0,
             "scale": 0.6433854166666667,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-22",
@@ -1273,8 +1147,7 @@
             "y": 490.5833333333333,
             "color": 0,
             "scale": 0.46791666666666665,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-23",
@@ -1283,8 +1156,7 @@
             "y": 484.734375,
             "color": 0,
             "scale": 0.46791666666666665,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-24",
@@ -1293,8 +1165,7 @@
             "y": 619.2604166666667,
             "color": 0,
             "scale": 0.7018749999999999,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           },
           {
             "id": "safari-25",
@@ -1303,8 +1174,7 @@
             "y": 736.2395833333333,
             "color": 0,
             "scale": 0.7018749999999999,
-            "flipX": false,
-            "paint": []
+            "flipX": false
           }
         ]
       }

@@ -1,3 +1,5 @@
+> Historical snapshot. The raster paint engine and its executable benchmarks have been retired; current runtime behavior is documented in `docs/VECTOR-PAINT.md`.
+
 # Garden house: single-SVG region experiment
 
 Historical experiment: the house validated SVG transport with runtime raster lookups.

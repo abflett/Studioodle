@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { before,after,test } from 'node:test';
 import { createServer } from 'vite';
-let server,geometry,VectorPaint,valid;
+let server,geometry,VectorPaint,valid,svgGeometry;
 before(async()=>{
  server=await createServer({configFile:false,server:{middlewareMode:true},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});
  geometry=await server.ssrLoadModule('/src/editor/vectorPaintGeometry.ts');
+ ({svgPathGeometry:svgGeometry}=await server.ssrLoadModule('/src/editor/svgPathGeometry.ts'));
  ({VectorPaint}=await server.ssrLoadModule('/src/editor/VectorPaint.ts'));
  ({isSavedPicture:valid}=await server.ssrLoadModule('/src/editor/pictureValidation.ts'));
 });
@@ -43,14 +44,38 @@ test('input nodes use the fine grid and saved snapshots survive later merging',a
 });
 test('saved vector paint validates and cannot be mixed with raster runs',()=>{
  const shape=geometry.brushBlob([1,1],[2,2],1);
- const picture={version:4,id:'v',title:'v',format:'landscape',size:{width:100,height:70},background:'#ffffff',leafColor:0,updatedAt:1,
- document:{version:4,width:100,height:70,surfaces:[{id:'page',kind:'canvas',x:0,y:0,color:0xffffff,paint:[]},
- {id:'moon',kind:'fantasy-moon-sorceress',x:50,y:35,color:0,paint:[],vectorPaint:{version:1,regions:[{id:1,base:0xffffff,blobs:[{color:2,geometry:shape}]}]}}]}};
+ const picture={version:5,id:'v',title:'v',format:'landscape',size:{width:100,height:70},background:'#ffffff',leafColor:0,updatedAt:1,
+ document:{version:5,width:100,height:70,surfaces:[{id:'page',kind:'canvas',x:0,y:0,color:0xffffff},
+ {id:'moon',kind:'fantasy-moon-sorceress',x:50,y:35,color:0,vectorPaint:{version:1,regions:[{id:1,base:0xffffff,blobs:[{color:2,geometry:shape}]}]}}]}};
  assert.equal(valid(picture),true);
  picture.version=3;picture.document.version=3;assert.equal(valid(picture),false);
- picture.version=4;picture.document.version=4;
+ picture.version=5;picture.document.version=5;
  picture.document.surfaces[1].paint=[[0,1,0]];assert.equal(valid(picture),false);
- picture.document.surfaces[1].paint=[];
+ delete picture.document.surfaces[1].paint;
  picture.document.surfaces[1].vectorPaint.regions[0].blobs[0].geometry[0][0][0][0]=NaN;
  assert.equal(valid(picture),false);
+});
+
+
+test('SVG region boolean geometry preserves holes, separate components, arcs and transformed curves',()=>{
+ const identity=[1,0,0,1,0,0];
+ const donut=svgGeometry('M0 0H100V100H0Z M20 20H80V80H20Z',identity);
+ assert.ok(geometry.containsGeometry(donut,[10,10]));
+ assert.equal(geometry.containsGeometry(donut,[50,50]),false);
+ const separate=svgGeometry('M0 0H10V10H0Z M20 0H30V10H20Z',identity);
+ assert.equal(separate.length,2);
+ const circle=svgGeometry('M0 10A10 10 0 1 0 20 10A10 10 0 1 0 0 10Z',[2,0,0,2,50,20]);
+ assert.ok(geometry.containsGeometry(circle,[70,40]));
+ assert.equal(geometry.containsGeometry(circle,[40,40]),false);
+ assert.ok(circle.flat(2).length>32);
+});
+
+test('pattern styles merge by color and pattern rather than color alone',()=>{
+ const shape=geometry.brushBlob([5,5],[15,5],2);
+ const result=geometry.compactRegion({id:1,base:0xffffff,blobs:[
+  {color:0x773399,pattern:{pattern:'dots',spacing:8},geometry:shape},
+  {color:0x773399,pattern:{pattern:'stripes',spacing:8},geometry:shape},
+ ]});
+ assert.equal(result.blobs.length,1);
+ assert.equal(result.blobs[0].pattern.pattern,'stripes');
 });

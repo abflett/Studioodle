@@ -1,5 +1,4 @@
 import type { Point } from './document';
-import { paintScale } from './document';
 
 /** Small rounded joins, flattened immediately into ordinary raster brush segments. */
 export class StrokeSmoothing {
@@ -30,8 +29,8 @@ export class StrokeSmoothing {
       ? Math.max(0, Math.min(1, ((control.x - start.x) * chordX + (control.y - start.y) * chordY) / length2)) : 0;
     const bend = Math.hypot(control.x - start.x - projection * chordX, control.y - start.y - projection * chordY);
     // Subpixel curve approximation at native paint resolution, without
-    // subdividing long straight lines or changing the raster paint format.
-    const steps = Math.min(24, Math.max(1, Math.ceil(Math.sqrt(bend * paintScale() / .2))));
+    // subdividing long straight lines or oversampling the vector brush path.
+    const steps = Math.min(24, Math.max(1, Math.ceil(Math.sqrt(bend / .128))));
     const points: Point[] = [];
     for (let step = 1; step <= steps; step++) {
       const t = step / steps, u = 1 - t;

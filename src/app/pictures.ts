@@ -1,5 +1,5 @@
 import { createLocalPictureRepository } from '../platform/localPictureRepository';
 
-// Stable namespaces preserve existing browser and desktop saves.
-export const pictureRepository = createLocalPictureRepository('studioodle.v3.picture.');
-export const coloringPageRepository = createLocalPictureRepository('studioodle.v3.coloring.');
+// Fresh vector-only development format; old drawing data is intentionally unsupported.
+export const pictureRepository = createLocalPictureRepository('studioodle.v5.picture.');
+export const coloringPageRepository = createLocalPictureRepository('studioodle.v5.coloring.');

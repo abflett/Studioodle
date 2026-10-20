@@ -20,7 +20,7 @@ test('bundled collection shares the portable format and stable IDs', () => {
 test('book pages remove paint and colors while preserving exact geometry and source', () => {
   const source = structuredClone(pages[0]);
   source.background = '#ff0000'; source.leafColor = 0xff0000;
-  source.document.surfaces[1].paint = [[0, 1, 0xff0000]];
+  source.document.surfaces[1].vectorPaint = {version:1,regions:[{id:1,base:0xff0000,blobs:[]}]};
   source.document.surfaces[1].color = 0xff0000;
   source.document.surfaces[1].flipX = true;
   const before = structuredClone(source);
@@ -28,14 +28,14 @@ test('book pages remove paint and colors while preserving exact geometry and sou
   assert.equal(page.id, 'revised'); assert.equal(page.title, 'Revised Page');
   assert.equal(page.background, '#ffffff');
   for (const [i, s] of page.document.surfaces.entries()) {
-    assert.deepEqual(s.paint, []); assert.equal(s.color, i === 0 ? 0xffffff : 0);
+    assert.equal(s.vectorPaint, undefined); assert.equal(s.color, i === 0 ? 0xffffff : 0);
     assert.deepEqual([s.kind,s.x,s.y,s.scale,s.rotation,s.flipX,s.flipY], [source.document.surfaces[i].kind,source.document.surfaces[i].x,source.document.surfaces[i].y,source.document.surfaces[i].scale,source.document.surfaces[i].rotation,source.document.surfaces[i].flipX,source.document.surfaces[i].flipY]);
   }
   assert.deepEqual(source, before);
 });
 
 test('imports reject unsupported versions, duplicate IDs, missing stickers and unsafe geometry', () => {
-  const mutations = [b=>b.version=2, b=>b.pages.push(b.pages[0]), b=>b.pages[0].id='../bad', b=>b.pages[0].document.surfaces[1].kind='unknown-sticker', b=>b.pages[0].document.surfaces[1].scale=-1, b=>b.pages[0].document.width++, b=>b.pages[0].document.horizonLayout=undefined];
+  const mutations = [b=>b.version=1, b=>b.pages.push(b.pages[0]), b=>b.pages[0].id='../bad', b=>b.pages[0].document.surfaces[1].kind='unknown-sticker', b=>b.pages[0].document.surfaces[1].scale=-1, b=>b.pages[0].document.width++, b=>b.pages[0].document.version=4];
   for (const change of mutations) { const book = domain.makeColoringBook('Test', pages); change(book); assert.throws(() => domain.parseColoringBook(JSON.stringify(book))); }
   assert.throws(()=>domain.parseColoringBook('{'));
 });

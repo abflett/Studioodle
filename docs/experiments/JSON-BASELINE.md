@@ -1,3 +1,5 @@
+> Historical snapshot. The raster paint engine and its executable benchmarks have been retired; current runtime behavior is documented in `docs/VECTOR-PAINT.md`.
+
 # How stickers actually work
 
 Historical reference: this describes the JSON-map baseline before the SVG migration. `garden-house` was the first asset with an

@@ -49,7 +49,7 @@ The browser downloads JSON; Windows uses a native JSON Save dialog. Canceling th
 }
 ```
 
-Book format version 1 wraps the existing document/saved-picture version 3. The current geometry convention requires `horizonLayout: 2`. Page IDs must be unique, 1–120 letters/digits/dots/underscores/hyphens, starting with a letter or digit. Limits: 20 MB per import/export, 1,000 pages, 1,000 surfaces per page, and 160-character titles. Unknown sticker IDs, unsupported versions, malformed geometry, and duplicate IDs reject the entire import. Additional fields are discarded during normalization. An ID collision deliberately means a revision, so use Save New Page for an independent variant.
+Book format version 2 wraps vector-only document/saved-picture format 5. Old development exports are intentionally unsupported. Page IDs must be unique, 1–120 letters/digits/dots/underscores/hyphens, starting with a letter or digit. Limits: 20 MB per import/export, 1,000 pages, 1,000 surfaces per page, and 160-character titles. Unknown sticker IDs, unsupported versions, malformed geometry, and duplicate IDs reject the entire import. Additional fields are discarded during normalization. An ID collision deliberately means a revision, so use Save New Page for an independent variant.
 
 ## Updating the production collection
 

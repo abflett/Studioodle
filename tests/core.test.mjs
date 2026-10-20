@@ -22,10 +22,10 @@ after(async () => { await server?.close(); });
 
 function fixture(id = 'picture-1') {
   return {
-    id, version: 3, title: 'Blank Page', format: 'landscape',
+    id, version: 5, title: 'Blank Page', format: 'landscape',
     size: { width: 32, height: 24 }, background: '#ffffff', leafColor: 0x242428, updatedAt: 1,
-    document: { version: 3, width: 32, height: 24, surfaces: [
-      { id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff, paint: [] },
+    document: { version: 5, width: 32, height: 24, surfaces: [
+      { id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff },
     ] },
   };
 }
@@ -43,16 +43,16 @@ function storage() {
 
 function library() {
   const store = storage();
-  const pictures = createRepository('studioodle.v3.picture.', () => store);
-  const pages = createRepository('studioodle.v3.coloring.', () => store);
+  const pictures = createRepository('studioodle.v5.picture.', () => store);
+  const pages = createRepository('studioodle.v5.coloring.', () => store);
   return { store, pictures, pages };
 }
 
-test('existing v3 keys round-trip and picture/template libraries stay isolated', () => {
+test('current vector keys round-trip and picture/template libraries stay isolated', () => {
   const { store, pictures, pages } = library();
   const picture = fixture();
   pictures.save(picture); pages.save({ ...picture, title: 'Template' });
-  assert.deepEqual(JSON.parse(store.getItem('studioodle.v3.picture.picture-1')), picture);
+  assert.deepEqual(JSON.parse(store.getItem('studioodle.v5.picture.picture-1')), picture);
   assert.deepEqual(pictures.load(), [picture]);
   assert.equal(pages.load()[0].title, 'Template');
   pictures.delete(picture.id);
@@ -63,14 +63,14 @@ test('existing v3 keys round-trip and picture/template libraries stay isolated',
 test('corrupt, foreign and mismatched records do not hide valid pictures', () => {
   const { store, pictures } = library();
   pictures.save(fixture());
-  store.setItem('studioodle.v3.picture.bad-json', '{');
-  store.setItem('studioodle.v3.picture.null', 'null');
-  store.setItem('studioodle.v3.picture.wrong-id', JSON.stringify(fixture('another-id')));
+  store.setItem('studioodle.v5.picture.bad-json', '{');
+  store.setItem('studioodle.v5.picture.null', 'null');
+  store.setItem('studioodle.v5.picture.wrong-id', JSON.stringify(fixture('another-id')));
   store.setItem('unrelated', JSON.stringify(fixture('other')));
   assert.deepEqual(pictures.load(), [fixture()]);
 });
 
-test('validation rejects unsafe geometry, paint runs and unsupported stickers', () => {
+test('validation rejects unsafe geometry, obsolete paint fields and unsupported stickers', () => {
   const changes = [
     p => { p.size.width = 0; },
     p => { p.document.width++; },
@@ -78,7 +78,7 @@ test('validation rejects unsafe geometry, paint runs and unsupported stickers', 
     p => { p.document.surfaces[0].paint = [[0, 99999999, 0]]; },
     p => { p.document.surfaces[0].paint = [[4, 2, 0], [5, 2, 0]]; },
     p => { p.document.surfaces.push({ ...p.document.surfaces[0] }); },
-    p => { p.document.surfaces.push({ id: 'unknown', kind: 'not-a-sticker', x: 1, y: 1, color: 0, paint: [] }); },
+    p => { p.document.surfaces.push({ id: 'unknown', kind: 'not-a-sticker', x: 1, y: 1, color: 0 }); },
     p => { p.version = 2; },
   ];
   for (const change of changes) {
@@ -105,14 +105,14 @@ test('storage is resolved lazily and failures propagate for UI recovery', () => 
 
 test('custom coloring pages preserve transforms but clear paint without changing the source', () => {
   const source = fixture(); source.background = '#123456';
-  source.document.surfaces[0].paint = [[0, 2, 0xff0000]];
-  source.document.surfaces.push({ id: 'animal', kind: 'animal-lion', x: 5, y: 10, scale: .5, rotation: 90, flipX: true, color: 0x123456, paint: [[0, 3, 0xabcdef]] });
+  source.document.surfaces[0].vectorPaint = {version:1,regions:[{id:1,base:0xff0000,blobs:[]}]};
+  source.document.surfaces.push({ id: 'animal', kind: 'animal-lion', x: 5, y: 10, scale: .5, rotation: 90, flipX: true, color: 0x123456 });
   const original = structuredClone(source);
   const page = createColoringPage(source, 'My Template');
   assert.notEqual(page.id, source.id);
   assert.equal(page.background, '#ffffff');
-  assert.deepEqual(page.document.surfaces[1], { ...source.document.surfaces[1], color: 0, paint: [] });
-  assert.deepEqual(page.document.surfaces[0].paint, []);
+  assert.deepEqual(page.document.surfaces[1], { ...source.document.surfaces[1], color: 0 });
+  assert.equal(page.document.surfaces[0].vectorPaint, undefined);
   assert.deepEqual(source, original);
 });
 
@@ -226,21 +226,21 @@ test('workshop snapshots read current geometry without saving or exporting edito
 
 test('coloring page creation strips vector paint without mutating the saved drawing', () => {
   const source=fixture();
-  source.document.surfaces.push({id:'moon',kind:'fantasy-moon-sorceress',x:10,y:10,color:0,paint:[],vectorPaint:{version:1,regions:[{id:1,base:0x773399,blobs:[]}]}});
+  source.document.surfaces.push({id:'moon',kind:'fantasy-moon-sorceress',x:10,y:10,color:0,vectorPaint:{version:1,regions:[{id:1,base:0x773399,blobs:[]}]}});
   const page=createColoringPage(source,'Clean');
   assert.equal(page.document.surfaces[1].vectorPaint,undefined);
   assert.equal(source.document.surfaces[1].vectorPaint.regions[0].base,0x773399);
 });
 
 
-test('vector-painted v4 pictures round-trip beside existing v3 pictures', () => {
+test('current vector pictures round-trip and obsolete formats are ignored', () => {
   const {pictures}=library();
-  const raster=fixture('legacy');const vector=fixture('vector');
-  vector.version=4;vector.document.version=4;
-  vector.document.surfaces.push({id:'moon',kind:'fantasy-moon-sorceress',x:10,y:10,color:0,paint:[],vectorPaint:{version:1,regions:[{id:1,base:0x773399,blobs:[]}]}});
-  pictures.save(raster);pictures.save(vector);
+  const first=fixture('first');const vector=fixture('vector');
+  vector.version=5;vector.document.version=5;
+  vector.document.surfaces.push({id:'moon',kind:'fantasy-moon-sorceress',x:10,y:10,color:0,vectorPaint:{version:1,regions:[{id:1,base:0x773399,blobs:[]}]}});
+  pictures.save(first);pictures.save(vector);
   const loaded=pictures.load();
   assert.equal(loaded.length,2);
   assert.deepEqual(loaded.find(p=>p.id==='vector'),vector);
-  assert.deepEqual(loaded.find(p=>p.id==='legacy'),raster);
+  assert.deepEqual(loaded.find(p=>p.id==='first'),first);
 });

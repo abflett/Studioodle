@@ -1,4 +1,3 @@
-import { stickerRasterSettings } from '../../src/editor/stickerRasterSettings';
 import { Artwork } from '../../src/editor/Artwork';
 import { decodeSvgDefinition } from '../../src/editor/svgDefinition';
 import { drawVectorInk } from '../../src/editor/vectorDefinition';
@@ -19,20 +18,20 @@ export async function checkRegionCoverage() {
   assert(highestId.hitRegionAt?.(8.5, 20) === 65535, 'Ink marker must not overflow maximum region IDs');
   const clipped = decodeSvgDefinition(fixture.replace('<g id="ink">', '<defs><clipPath id="left"><path d="M0 0H35V50H0Z"/></clipPath></defs><g id="ink" clip-path="url(#left)">'));
   assert(!clipped.contains(40, 40), 'Invisible clipped ink must not receive hits');
-  const doc: ArtworkDocument = { version: 3, width: 200, height: 200, surfaces: [
-    { id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff, paint: [] },
-    { id: 'sticker', kind: 'circle', x: 100, y: 100, scale: 4, color: 0, paint: [] },
+  const doc: ArtworkDocument = { version: 5, width: 200, height: 200, surfaces: [
+    { id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff },
+    { id: 'sticker', kind: 'circle', x: 100, y: 100, scale: 4, color: 0 },
   ] };
   const art = Artwork.restore(doc, () => definition);
   assert(art.fill({ x: 34, y: 80 }, 0x743dad), 'Bucket on outer line must color the sticker');
-  assert(!art.serialize().surfaces[0]!.paint.length && art.serialize().surfaces[1]!.paint.length, 'Line click must never fill the page');
+  assert(!art.serialize().surfaces[0]!.vectorPaint!.regions.length && art.serialize().surfaces[1]!.vectorPaint!.regions.length, 'Line click must never fill the page');
   assert(!art.fill({ x: 160, y: 160 }, 0xabcdef), 'Unfillable isolated ink must block click-through');
-  assert(!art.serialize().surfaces[0]!.paint.length, 'Isolated ink must not fill the page');
+  assert(!art.serialize().surfaces[0]!.vectorPaint!.regions.length, 'Isolated ink must not fill the page');
   const transformed = structuredClone(doc);
   Object.assign(transformed.surfaces[1]!, { rotation: 90, flipX: true });
   const rotated = Artwork.restore(transformed, () => definition);
   assert(rotated.fill({ x: 120, y: 166 }, 0x743dad), 'Rotated/flipped outlines must resolve in local coordinates');
-  assert(!rotated.serialize().surfaces[0]!.paint.length, 'Transformed line click must not fill the page');
+  assert(!rotated.serialize().surfaces[0]!.vectorPaint!.regions.length, 'Transformed line click must not fill the page');
   // Regress enlarged bucket edges, rather than checking hit coverage alone.
   const diagonalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" data-bounds="10 10 40 40" data-region-format="1" data-region-scale="4"><g id="regions"><path id="region-1" data-bounds="10 10 40 40" d="M10 10L40 40H10Z"/><path id="region-2" data-bounds="10 10 40 40" d="M10 10H40V40Z"/></g><g id="ink"><path d="M10 10L40 40" fill="none" stroke="black" stroke-width="0.1"/></g></svg>`;
   const diagonal = decodeSvgDefinition(diagonalSvg);
@@ -63,29 +62,23 @@ export async function checkRegionCoverage() {
   }
   assert(edgeMismatches === 0, `Enlarged solid fill differs from SVG reference at ${edgeMismatches} edge pixels`);
   const rows = [];
-  let diagnosticPng: string|undefined;
-  for (const id of ['fantasy-moon-sorceress', 'winter-reindeer', 'garden-house', 'garden-fence', 'dinosaur-striped-tyrannosaurus', 'horizons-forest-clearing']) {
-    const response = await fetch(`/src/assets/vector/${id}.svg`);
-    assert(response.ok, `Missing ${id}`);
-    const settings = stickerRasterSettings(id);
-    const vector = decodeSvgDefinition(await response.text(), { scale: settings ? 16 : undefined });
-    vector.rasterOnly = settings?.rasterOnly;
-    const scale = vector.mapSize!.scale;
-    const canvas = document.createElement('canvas');
-    canvas.width = vector.mapSize!.width; canvas.height = vector.mapSize!.height;
-    const context = canvas.getContext('2d', { willReadFrequently: true })!;
-    context.scale(scale, scale); drawVectorInk(context, vector, 'black');
-    const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
-    let visibleInk = 0, missingHits = 0;
-    for (let y = 0; y < canvas.height; y++) for (let x = 0; x < canvas.width; x++) {
-      if (pixels[(y * canvas.width + x) * 4 + 3]! <= 128) continue;
-      visibleInk++;
-      if (!vector.contains((x + .5) / scale, (y + .5) / scale)) missingHits++;
+  for(const id of ['fantasy-moon-sorceress','winter-reindeer','garden-house','garden-fence','dinosaur-striped-tyrannosaurus','horizons-forest-clearing']){
+    const response=await fetch(`/src/assets/vector/${id}.svg`);assert(response.ok,`Missing ${id}`);
+    const vector=decodeSvgDefinition(await response.text(),{scale:id==='fantasy-moon-sorceress'?16:undefined});
+    const scale=vector.mapSize!.scale,canvas=document.createElement('canvas');
+    canvas.width=vector.mapSize!.width;canvas.height=vector.mapSize!.height;
+    const context=canvas.getContext('2d',{willReadFrequently:true})!;
+    context.scale(scale,scale);drawVectorInk(context,vector,'black');
+    const pixels=context.getImageData(0,0,canvas.width,canvas.height).data;
+    let visibleInk=0,missingHits=0;
+    for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++){
+      if(pixels[(y*canvas.width+x)*4+3]!<=128)continue;visibleInk++;
+      if(!vector.contains((x+.5)/scale,(y+.5)/scale))missingHits++;
     }
-    assert(!missingHits, `${id}: ${missingHits} visible ink pixels click through`);
+    assert(!missingHits,`${id}: ${missingHits} visible ink pixels click through`);
     let exposedBoundaries=0;
     const boundaryExamples: number[][]=[];
-    if(settings)for(let y=1;y<canvas.height-1;y+=2)for(let x=1;x<canvas.width-1;x+=2){
+    if(id==='fantasy-moon-sorceress')for(let y=1;y<canvas.height-1;y+=2)for(let x=1;x<canvas.width-1;x+=2){
       const region=vector.regionAt((x+.5)/scale,(y+.5)/scale);
       if(!region)continue;
       const neighbor=vector.regionAt((x+1.5)/scale,(y+.5)/scale);
@@ -96,14 +89,14 @@ export async function checkRegionCoverage() {
       }
     }
     const beltCrossSection: number[][]=[];
-    if(settings){let previous='';for(let y=160*scale;y<190*scale;y++){
+    if(id==='fantasy-moon-sorceress'){let previous='';for(let y=160*scale;y<190*scale;y++){
       const x=170*scale;
       const r=vector.regionAt((x+.5)/scale,(y+.5)/scale),alpha=pixels[(y*canvas.width+x)*4+3]!;
       const key=`${r}/${alpha>=128}`;
       if(key!==previous){beltCrossSection.push([y/scale,r,alpha]);previous=key;}
     }}
     let minimumBeltInkMargin: number|undefined;
-    if(settings){
+    if(id==='fantasy-moon-sorceress'){
       const x=170*scale,alphaAt=(y:number)=>pixels[(y*canvas.width+x)*4+3]!;
       const margins: number[]=[];
       for(let y=171*scale;y<185*scale;y++){
@@ -120,46 +113,8 @@ export async function checkRegionCoverage() {
       assert(minimumBeltInkMargin>=.125,`Belt boundary has only ${minimumBeltInkMargin} logical units of ink margin`);
       assert(exposedBoundaries<=8,`Unexpected exposed region boundaries: ${exposedBoundaries}`);
     }
-    let paintPixels = 0;
-    if(settings) {
-      const trialDoc = structuredClone(doc);
-      trialDoc.width=800;trialDoc.height=1000;
-      Object.assign(trialDoc.surfaces[1]!, {kind:id,x:400,y:500,scale:1,paintScale:1});
-      const trial = Artwork.restore(trialDoc, () => vector);
-      const seed={x:400+170-170,y:500+174-240};
-      assert(trial.fill(seed,0x743dad),'Page-resolution Moon bucket must work');
-      trial.fill({x:400,y:426},0x743dad);
-      trial.fill({x:400,y:439},0x482561);
-      trial.fill({x:400,y:442},0x35ad9c);
-      const preview=document.createElement('canvas');preview.width=960;preview.height=480;
-      const pc=preview.getContext('2d')!;pc.setTransform(16,0,0,16,-(400+145-170)*16,-(500+162-240)*16);
-      trial.render(pc);
-      const beforeBrush=pc.getImageData(0,0,960,480).data;
-      assert(trial.brush(seed,seed,0x42aadd,false,{size:3,kind:'ink',shape:'round'}),'Page-resolution Moon brush must work');
-      const saved=trial.serialize().surfaces[1]!;
-      assert(saved.paintScale===1,'Moon must use page-aligned 150 DPI after brushing');
-      const colors=new Set(saved.paint.map(run=>run[2]));
-      assert(colors.has(0x743dad)&&colors.has(0x42aadd),'Both bucket and brush colors must remain raster');
-      trial.render(pc);diagnosticPng=preview.toDataURL('image/png');
-      const afterBrush=pc.getImageData(0,0,960,480).data;
-      let changedOutsideBrush=0;
-      for(let y=0;y<480;y++)for(let x=0;x<960;x++){
-        // Brush radius plus raster interpolation and edge-padding footprint.
-        if(Math.hypot(x-400,y-192)<24+6*16/(1.5625*saved.paintScale!))continue;
-        const i=(y*960+x)*4;
-        if([0,1,2].some(channel=>beforeBrush[i+channel]!==afterBrush[i+channel]))changedOutsideBrush++;
-      }
-      assert(changedOutsideBrush===0, `Brushing changed ${changedOutsideBrush} distant belt pixels`);
-      assert(trial.transform('sticker',1.3,0),'Moon must resize to fractional placed scale');
-      trial.render(pc);
-      assert(trial.serialize().surfaces[1]!.paintScale===2.3,'Paint density must follow 2.3x placement');
-      assert(trial.transform('sticker',-.8,0),'Moon must shrink');
-      trial.render(pc);
-      assert(trial.serialize().surfaces[1]!.paintScale===1.5,'Paint density must follow shrinking placement');
-      paintPixels=Math.ceil(vector.width*1.5625)*Math.ceil(vector.height*1.5625);
-    }
-    rows.push({ id, visibleInk, missingHits, lookupScale: scale, sharedBytes: vector.typedArrayBytes, paintPixels, minimumBeltInkMargin, beltCrossSection, exposedBoundaries, boundaryExamples });
-    canvas.width = canvas.height = 1;
+    rows.push({id,visibleInk,missingHits,lookupScale:scale,sharedBytes:vector.typedArrayBytes,minimumBeltInkMargin,exposedBoundaries,boundaryExamples});
+    canvas.width=canvas.height=1;
   }
-  return { enlargedFillEdges: true, lineFill: true, isolatedInkBlocksPage: true, paintSilhouetteUnchanged: true, rows, diagnosticPng };
+  return{enlargedFillEdges:true,lineFill:true,isolatedInkBlocksPage:true,rows};
 }

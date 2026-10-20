@@ -12,11 +12,11 @@ export const springScene: EditorSetup = {
   title: 'Spring Garden', format: 'landscape', size: { width: 1920, height: 960 },
   background: '#ffffff', leafColor: 0x242428,
   document: {
-    version: 3, width: 1920, height: 960,
+    version: 5, width: 1920, height: 960,
     surfaces: [
-      { id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff, paint: [] },
+      { id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff },
       ...placements.map(([kind, x, y], index): SurfaceData => ({
-        id: `spring-instance-${index}`, kind, x, y, color: 0, paint: [],
+        id: `spring-instance-${index}`, kind, x, y, color: 0,
       })),
     ],
   },

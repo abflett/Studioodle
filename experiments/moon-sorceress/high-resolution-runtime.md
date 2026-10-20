@@ -1,3 +1,5 @@
+> Historical snapshot. The raster paint engine and its executable benchmarks have been retired; current runtime behavior is documented in `docs/VECTOR-PAINT.md`.
+
 # Moon Sorceress raster resolution trials
 
 ## Current: 150 DPI in page space

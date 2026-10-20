@@ -7,7 +7,7 @@ Pictures and preferences stay on the device; no account is required.
 ## Features
 
 - A4, A5, photo and square paper, with portrait and landscape orientations.
-- Smooth vector sticker outlines with editable raster paint at 150 DPI.
+- Vector region fills and merged vector brushwork on stickers and the page.
 - Brush, bucket, eraser, pan/zoom, undo, and sticker transforms and layer ordering.
 - Hold the bucket for half a second to zoom for precision; release to fill and return.
 - Sticker focus for painting details without surrounding artwork in the way.
@@ -21,6 +21,9 @@ platforms are not configured. Desktop builds are currently unsigned tester previ
 Browser and desktop libraries are separate local profiles.
 
 See [Coloring Books and the Page Workshop](docs/COLORING-BOOKS.md) for editing, sharing, and installing a reviewed collection.
+
+This is a pre-release app. Breaking changes are expected; old development drawing formats are intentionally unsupported.
+See [Vector Painting](docs/VECTOR-PAINT.md) for the current paint model.
 
 ## Development
 
@@ -45,7 +48,6 @@ npm run check       # Tests, TypeScript, lint and production web build
 npm run check:regions # Browser regression for region/ink hit coverage
 npm run brand:icons  # Rebuild favicon, touch and desktop icons (ImageMagick)
 npm run assets:build # Rebuild sticker SVGs (ImageMagick + Potrace)
-npm run benchmark:stickers # Compare the library to the pinned pre-migration baseline
 npm run desktop:dev
 npm run desktop:build  # Windows NSIS installer
 ```

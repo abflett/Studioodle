@@ -9,13 +9,13 @@ function assert(value:unknown,message:string):asserts value{if(!value)throw Erro
 export async function checkVectorPaint(){
  const svg=await(await fetch('/src/assets/vector/fantasy-moon-sorceress.svg')).text();
  const vector=decodeSvgDefinition(svg);
- const doc:ArtworkDocument={version:3,width:400,height:500,surfaces:[{id:'page',kind:'canvas',x:0,y:0,color:0xffffff,paint:[]},
- {id:'moon',kind:'fantasy-moon-sorceress',x:170,y:240,color:0x242428,paint:[]}]};
+ const doc:ArtworkDocument={version:5,width:400,height:500,surfaces:[{id:'page',kind:'canvas',x:0,y:0,color:0xffffff},
+ {id:'moon',kind:'fantasy-moon-sorceress',x:170,y:240,color:0x242428}]};
  const art=Artwork.restore(doc,()=>vector);
  assert(art.fill({x:170,y:174},0x773399),'Vector bucket fills');
  assert(art.brush({x:168,y:175},{x:172,y:175},0x42aadd,false,{size:2,kind:'ink',shape:'round'}),'Vector brush paints');
  let saved=art.serialize();
- assert(saved.surfaces[1]!.paint.length===0&&!!saved.surfaces[1]!.vectorPaint,'No raster paint allocated/serialized');
+ assert(!('paint' in saved.surfaces[1]!)&&!!saved.surfaces[1]!.vectorPaint,'No raster paint allocated/serialized');
  const canvas=document.createElement('canvas');canvas.width=960;canvas.height=480;
  const ctx=canvas.getContext('2d',{willReadFrequently:true})!;ctx.setTransform(16,0,0,16,-145*16,-162*16);
  art.render(ctx);const before=ctx.getImageData(0,0,960,480).data;
@@ -42,7 +42,7 @@ export async function checkVectorPaint(){
  const high=document.createElement('canvas');high.width=1920;high.height=960;
  const hc=high.getContext('2d')!;hc.setTransform(32,0,0,32,-145*32,-162*32);
  const highArt=Artwork.restore(saved,()=>vector);highArt.render(hc);
- assert(highArt.serialize().surfaces[1]!.paint.length===0,'Higher output resolution must not create a raster paint layer');
+ assert(!('paint' in highArt.serialize().surfaces[1]!),'Higher output resolution must not create a raster paint layer');
  const fixture={...vector,regions:[{id:1,path:new Path2D('M0 0H50V50H0Z'),bounds:[0,0,50,50]}]};
  const state=new VectorPaint();
  for(let i=0;i<200;i++)state.brush(fixture,[10,10],[20,20],3,0x773399,false);
@@ -59,6 +59,23 @@ export async function checkVectorPaint(){
  await art.compactPaint();
  // Advanced texture tools retain a working raster fallback, without losing vector paint.
  assert(restored.brush({x:170,y:175},{x:171,y:175},0xff8800,false,{size:3,kind:'pencil',shape:'round'}),'Textured fallback works');
- assert(!restored.serialize().surfaces[1]!.vectorPaint&&restored.serialize().surfaces[1]!.paint.length,'Fallback converts paint coherently');
- return {vectorRoundtrip:true,undo:true,higherResolutionRender:true,workerRace:true,eraser:true,texturedFallback:true,repeatedStrokes:400,compactedBytes:bytes,diagnosticPng:canvas.toDataURL('image/png')};
+ assert(restored.serialize().surfaces[1]!.vectorPaint&&!('paint' in restored.serialize().surfaces[1]!),'Textured brushes remain vector');
+ const page=Artwork.create(100,100,'#ffffff');
+ const corners=[{x:20,y:20},{x:80,y:20},{x:80,y:80},{x:20,y:80},{x:20,y:20}];
+ for(let i=1;i<corners.length;i++)assert(page.brush(corners[i-1]!,corners[i]!,0,false,{size:6,kind:'ink',shape:'round'}),'Page outline stroke');
+ await page.compactPaint();assert(page.fill({x:50,y:50},0x22aa66),'Fill inside a closed page outline');
+ const pc=document.createElement('canvas');pc.width=pc.height=100;const pctx=pc.getContext('2d',{willReadFrequently:true})!;page.render(pctx);
+ const rgb=(x:number,y:number)=>{const p=pctx.getImageData(x,y,1,1).data;return(p[0]!<<16)|(p[1]!<<8)|p[2]!;};
+ assert(rgb(50,50)===0x22aa66&&rgb(5,5)===0xffffff&&rgb(20,50)===0,'Page bucket must preserve its closed vector boundary');
+ for(const kind of ['ink','pencil','brush','spray'] as const){
+  const styled=Artwork.create(100,100,'#ffffff');
+  assert(styled.brush({x:40,y:40},{x:60,y:60},0x773399,false,{size:12,kind,shape:'round'}),`${kind} must paint`);
+  await styled.compactPaint();assert(styled.serialize().surfaces[0]!.vectorPaint!.regions.some(r=>r.blobs.length),`${kind} remains vector`);
+ }
+ for(const pattern of ['dots','stripes','checker'] as const){
+  assert(page.fill({x:50,y:50},0x2244aa,{pattern,spacing:8}),`${pattern} vector fill`);
+  await page.compactPaint();page.render(pctx);
+  assert(page.serialize().surfaces[0]!.vectorPaint!.regions.some(r=>r.blobs.some(b=>b.pattern?.pattern===pattern)),`${pattern} persists as a vector style`);
+ }
+ return {vectorRoundtrip:true,undo:true,higherResolutionRender:true,workerRace:true,eraser:true,vectorTextures:true,pageClosedFill:true,vectorPatterns:true,repeatedStrokes:400,compactedBytes:bytes,diagnosticPng:canvas.toDataURL('image/png')};
 }

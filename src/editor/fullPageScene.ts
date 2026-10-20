@@ -8,7 +8,7 @@ export function fullPageScene(source: EditorSetup): EditorSetup {
   const scale = Math.min(size.width / document.width, size.height / document.height);
   const dx = (size.width - document.width * scale) / 2;
   const dy = (size.height - document.height * scale) / 2;
-  return { ...source, format: 'landscape', size, document: { ...document, ...size, horizonLayout: 2,
+  return { ...source, format: 'landscape', size, document: { ...document, ...size,
     surfaces: document.surfaces.map(surface => surface.kind === 'canvas' ? { ...surface } : {
       ...surface, x: surface.x * scale + dx, y: surface.y * scale + dy,
       scale: (surface.scale ?? 1) * scale,
