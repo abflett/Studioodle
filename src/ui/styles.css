@@ -758,20 +758,37 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @media (min-height: 701px) {
   .selection-screen .selection { --picture-height: min(184px, 32vw, 25dvh); --label-gap: 20px; gap: clamp(18px, 3.5dvh, 32px); }
 }
-/* Browse arrows follow the displayed page width, not the entire column. */
-.previous-section .picture-carousel { width: min(460px, 100%); --saved-card-padding: 16px; --browse-size: 48px; --preview-width: min(calc(var(--saved-picture-height) * var(--saved-picture-ratio)), calc(min(380px, 100%) - var(--saved-card-padding) * 2 - 88px)); }
-.previous-section .picture-carousel > .icon-button { position: absolute; top: calc(var(--saved-card-padding) + (var(--saved-picture-height) - var(--browse-size)) / 2); margin: 0; width: var(--browse-size); height: var(--browse-size); padding: 11px; }
-.previous-section .picture-carousel > .icon-button:first-child { left: calc(50% - var(--preview-width) / 2 - var(--browse-size) - 12px); }
-.previous-section .picture-carousel > .icon-button:last-child { right: calc(50% - var(--preview-width) / 2 - var(--browse-size) - 12px); }
-.previous-section .picture-carousel > .icon-button svg { stroke-width: 2.25; }
-@media (max-height: 700px) { .previous-section .picture-carousel { --saved-card-padding: 12px; } }
-@media (max-width: 420px), (max-height: 520px) { .previous-section .picture-carousel { --browse-size: 44px; } }
-@media (min-width: 560px) and (max-height: 520px) { .previous-section .picture-carousel { --saved-card-padding: 8px; } }
 /* Painted selection backdrops are decorative, quiet, and separate from the editor. */
 .selection-screen { position: relative; isolation: isolate; overflow: hidden; --selection-scene: url('../assets/backgrounds/selection-beach.webp'); --selection-tint: linear-gradient(180deg, #fff8e536, #fff4df55); }
 :root[data-theme='dark'] .selection-screen { --selection-scene: url('../assets/backgrounds/selection-night.webp'); --selection-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); }
 .selection-screen::before, .selection-screen::after { content: ''; position: absolute; pointer-events: none; }
-.selection-screen::before { inset: 0; z-index: -2; background-image: var(--selection-scene); background-size: cover; background-position: 18% center; filter: blur(3px); }
+.selection-screen::before { inset: 0; z-index: -2; background-image: var(--selection-scene); background-size: cover; background-position: 18% center; }
 .selection-screen::after { inset: 0; z-index: -1; background: var(--selection-tint); }
-.previous-section .picture-carousel > .icon-button:is(:first-child, :last-child) { grid-column: 1 / -1; justify-self: auto; }
 .saved-picture-card .choice-art { padding: 0; }
+
+/* Fixed preview stage with browsing controls outside the hover card. */
+.previous-section .picture-carousel { --browse-size: 48px; --saved-card-padding: 16px; display: grid; grid-template-columns: var(--browse-size) minmax(0, 380px) var(--browse-size); gap: 12px; width: min(500px, 100%); align-items: start; }
+.saved-picture-card { grid-column: 2; width: 100%; }
+.saved-picture-card .previous-picture .choice-art { width: 100%; height: var(--saved-picture-height); }
+.previous-section .picture-carousel > .icon-button { position: static; grid-row: 1; width: var(--browse-size); height: var(--browse-size); padding: 11px; margin: calc(var(--saved-card-padding) + (var(--saved-picture-height) - var(--browse-size)) / 2) 0 0; }
+.previous-section .picture-carousel > .icon-button:first-child { grid-column: 1; justify-self: start; }
+.previous-section .picture-carousel > .icon-button:last-child { grid-column: 3; justify-self: end; }
+.previous-section .picture-carousel > .icon-button svg { stroke-width: 2.25; }
+@media (max-height: 700px) { .previous-section .picture-carousel { --saved-card-padding: 12px; } }
+@media (max-width: 420px), (max-height: 520px) {
+  .previous-section .picture-carousel { --browse-size: 44px; gap: 8px; }
+}
+@media (max-width: 360px) {
+  .previous-section .picture-carousel { gap: 4px; }
+  .saved-picture-card { padding-inline: 4px; }
+  .previous-section .saved-picture-card .library-actions { gap: 4px; }
+}
+@media (min-width: 560px) and (max-height: 520px) {
+  .selection-screen .selection { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .previous-section .picture-carousel { --saved-card-padding: 8px; }
+}
+@media (min-width: 560px) and (max-width: 680px) and (max-height: 520px) {
+  .previous-section .picture-carousel { gap: 4px; }
+  .saved-picture-card { padding-inline: 4px; }
+  .previous-section .saved-picture-card .library-actions { gap: 4px; }
+}
