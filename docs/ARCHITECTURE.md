@@ -51,6 +51,17 @@ Changing paint density, asset logical dimensions, document fields or mask semant
 requires explicitly considering existing saved paint. Never silently regenerate or
 rewrite users' documents during catalog cleanup.
 
+Sticker paint defaults to the original 150 DPI local raster. Enlarged stickers lazily
+increase its density in 2x/4x steps, capped at 8 million pixels for an upgraded surface.
+Unpainted placement stays cheap; existing paint upgrades on rendering, and brush/fill
+ensure density before editing. Density never shrinks. The optional surface `paintScale`
+field records that multiplier; old saves omit it and retain their original pixel indexing.
+`paintRaster.ts` reconstructs uniform region colors and transfers mixed brushwork with
+region-aware nearest-neighbor sampling. The immutable SVG lookup remains shared; it
+is not rebuilt for each transform. Rendering pads colored edges under the ink and exact
+SVG clip, without adding those padding pixels to saved paint or hit regions. This avoids
+white interpolation fringes without expanding the sticker silhouette.
+
 ## Adding features
 
 - Add editing actions to `EditorCommand`, implement their behavior in the session

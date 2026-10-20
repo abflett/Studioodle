@@ -19,6 +19,8 @@ export type SurfaceData = {
     rotation?: number;
     flipX?: boolean;
     flipY?: boolean;
+    /** Optional raster density multiplier; omitted in existing 150 DPI saves. */
+    paintScale?: number;
     paint: PaintRun[];
 };
 export const defaultPaintDpi = 150;

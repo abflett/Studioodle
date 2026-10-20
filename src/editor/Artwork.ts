@@ -6,17 +6,19 @@ import { defaultBrush, defaultFill, patternPixel } from './toolOptions';
 import type { BrushOptions, FillOptions } from './toolOptions';
 import type { ArtworkDocument, Point, StickerKind, SurfaceData, PaintRun } from './document';
 import { paintScale } from './document';
+import { resizeStickerPaint, stickerPaintScale } from './paintRaster';
 const hex = (color: number) => '#' + color.toString(16).padStart(6, '0');
 class Surface {
     readonly vector?: VectorDefinition;
-    readonly resolution = paintScale();
+    resolution: number;
     readonly logicalWidth: number;
     readonly logicalHeight: number;
-    readonly width: number;
-    readonly height: number;
+    width: number;
+    height: number;
     readonly context: CanvasRenderingContext2D;
-    readonly paint: Uint32Array;
-    readonly opaqueBounds: {
+    paint: Uint32Array;
+    private hasPaint: boolean;
+    opaqueBounds: {
         left: number;
         top: number;
         right: number;
@@ -24,6 +26,8 @@ class Surface {
     };
     dirty = true;
     constructor(readonly data: SurfaceData, width: number, height: number, definition?: VectorDefinition) {
+        this.resolution = paintScale() * (data.paintScale ?? 1);
+        this.hasPaint = data.paint.length > 0;
         this.vector = data.kind === 'canvas' ? undefined : definition ?? vectorDefinition(data.kind);
         this.logicalWidth = this.vector?.width ?? width;
         this.logicalHeight = this.vector?.height ?? height;
@@ -41,6 +45,25 @@ class Surface {
         this.paint = new Uint32Array(this.width * this.height);
         for (const [start, length, color] of data.paint)
             this.paint.fill(color + 1, start, start + length);
+    }
+    ensurePaintResolution() {
+        if (!this.vector) return;
+        // Allocate only when painting needs it. Density only grows, so shrinking
+        // and enlarging repeatedly never throws existing brush detail away.
+        const factor = stickerPaintScale(this.logicalWidth, this.logicalHeight, this.data.scale ?? 1, this.data.paintScale ?? 1);
+        if (factor === (this.data.paintScale ?? 1)) return;
+        const oldPaint = this.paint, oldWidth = this.width, oldHeight = this.height, oldResolution = this.resolution;
+        this.resolution = paintScale() * factor;
+        this.width = Math.ceil(this.logicalWidth * this.resolution);
+        this.height = Math.ceil(this.logicalHeight * this.resolution);
+        this.context.canvas.width = this.width; this.context.canvas.height = this.height;
+        this.paint = this.hasPaint
+            ? resizeStickerPaint(oldPaint, oldWidth, oldHeight, oldResolution, this.width, this.height, this.resolution, this.vector.regionAt)
+            : new Uint32Array(this.width * this.height);
+        const b = this.vector.bounds;
+        this.opaqueBounds = { left: Math.floor(b.left * this.resolution), top: Math.floor(b.top * this.resolution), right: Math.ceil(b.right * this.resolution), bottom: Math.ceil(b.bottom * this.resolution) };
+        this.data.paintScale = factor;
+        this.dirty = true;
     }
     worldPoint(x: number, y: number) {
         x /= this.resolution;
@@ -71,13 +94,27 @@ class Surface {
     color(index: number) { const value = this.paint[index]!; return value ? value - 1 : this.data.kind === 'canvas' ? this.data.color : 0xffffff; }
     write(index: number, color: number, erase: boolean, regionChecked = false) { if (!regionChecked && !this.editable(index))
         return false; const value = erase ? 0 : color + 1; if (this.paint[index] === value)
-        return false; this.paint[index] = value; this.dirty = true; return true; }
+        return false; this.paint[index] = value; this.hasPaint = true; this.dirty = true; return true; }
     render() {
+        if (this.hasPaint) this.ensurePaintResolution();
         if (!this.dirty)
             return;
         const image = this.context.createImageData(this.width, this.height), base = this.data.kind === 'canvas' ? this.data.color : 0xffffff;
         for (let i = 0; i < this.paint.length; i++) {
-            const color = this.paint[i] ? this.paint[i]! - 1 : base, p = i * 4;
+            let value = this.paint[i]!;
+            if (!value && this.hasPaint && this.vector && !this.region(i)) {
+                // Bleed color underneath the ink/outside the exact clip, rather
+                // than letting white backing pixels blur into a colored edge.
+                const x = i % this.width, y = Math.floor(i / this.width);
+                let nearest = Infinity;
+                for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) {
+                    const nx = x + dx, ny = y + dy, distance = dx * dx + dy * dy;
+                    if (distance >= nearest || nx < 0 || ny < 0 || nx >= this.width || ny >= this.height) continue;
+                    const candidate = this.paint[ny * this.width + nx]!;
+                    if (candidate) { value = candidate; nearest = distance; }
+                }
+            }
+            const color = value ? value - 1 : base, p = i * 4;
             image.data[p] = color >> 16 & 255;
             image.data[p + 1] = color >> 8 & 255;
             image.data[p + 2] = color & 255;
@@ -341,6 +378,10 @@ export class Artwork {
         let changed = false;
         this.surfaces.forEach((surface, order) => {
             if (this.focusedId && surface.data.id !== this.focusedId) return;
+            const bounds = surface.bounds();
+            if (Math.max(from.x, to.x) + radius < bounds.x || Math.min(from.x, to.x) - radius > bounds.x + bounds.width ||
+                Math.max(from.y, to.y) + radius < bounds.y || Math.min(from.y, to.y) - radius > bounds.y + bounds.height) return;
+            surface.ensurePaintResolution();
             const a = surface.localPoint(from), b = surface.localPoint(to);
             const reach = radius * Math.SQRT2 * surface.resolution / (surface.data.scale ?? 1);
             for (let y = Math.max(0, Math.floor(Math.min(a.y, b.y) - reach)); y < Math.min(surface.height, Math.ceil(Math.max(a.y, b.y) + reach)); y++) {
@@ -410,6 +451,7 @@ export class Artwork {
         const owners = this.ownership(), owner = owners[start]!;
         if (owner < 0) return false;
         const surface = this.surfaces[owner]!;
+        surface.ensurePaintResolution();
         const local = surface.localIndex(start % this.width, Math.floor(start / this.width));
         if (!surface.editable(local))
             return false;
