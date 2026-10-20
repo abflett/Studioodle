@@ -135,12 +135,13 @@ for(const asset of assets) {
     flood(index,0);
   }
   let regionCount=0;for(let i=0;i<count;i++)if(labels[i]===-1)areas.push(flood(i,++regionCount));
-  if(cleanupComponents){
+  if(cleanupComponents||asset.minimumRegionAreaPixels){
     // flood() has already assigned each connected white glob its own ID.
     // Measure those globs, not the potentially self-intersecting ink subpaths.
     const a4w=210/25.4*150,a4h=297/25.4*150;
     const fit=Math.max(Math.min(a4w/width,a4h/height),Math.min(a4h/width,a4w/height));
-    const cutoff=10.2, pixelArea=(fit/scale)**2;
+    const cutoff=asset.minimumRegionAreaPixels??10.2, pixelArea=(fit/scale)**2;
+    if(!Number.isFinite(cutoff)||cutoff<=0)throw Error('Minimum region area must be positive');
     const removed=new Set(areas.flatMap((area,index)=>area*pixelArea<cutoff?[index+1]:[]));
     const stride=Math.ceil(w/8),bitmap=Buffer.alloc(stride*h),mapping=new Int32Array(regionCount+1);
     let next=0;
@@ -161,6 +162,8 @@ for(const asset of assets) {
     cleanupReport={method:'connected white components',maximumAreaPixels:cutoff,beforeRegions:regionCount,removed:removed.size,
       pockets:[...removed].map(id=>({id,areaPixels:areas[id-1]*pixelArea}))};
     fs.writeFileSync(`${base}-component-cleanup.json`,JSON.stringify(cleanupReport,null,2));
+    const retainedAreas=areas.filter((_,index)=>!removed.has(index+1));
+    areas.splice(0,areas.length,...retainedAreas);
     regionCount=next;
   }
   inspection?.discovered(labels,w,h,regionCount);

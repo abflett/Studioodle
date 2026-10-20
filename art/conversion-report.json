@@ -2907,8 +2907,8 @@
     "id": "fantasy-moon-sorceress",
     "width": 340,
     "height": 480,
-    "regionCount": 212,
-    "tinyRegions": 14,
+    "regionCount": 199,
+    "tinyRegions": 1,
     "analysisScale": 8,
     "lookupScale": 4,
     "mode": "potrace-light"

@@ -6609,6 +6609,7 @@
   },
   {
     "id": "fantasy-moon-sorceress",
+    "minimumRegionAreaPixels": 10.2,
     "width": 340,
     "height": 480,
     "source": "art/source/fantasy/moon-sorceress.png",
