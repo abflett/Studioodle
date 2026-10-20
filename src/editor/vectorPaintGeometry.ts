@@ -38,11 +38,15 @@ export function compactRegion(region: VectorPaintRegion): VectorPaintRegion {
             const geometry=region.blobs[index++]!.geometry;
             if(geometry.length)unique.set(JSON.stringify(geometry),geometry);
         }
-        const shapes=[...unique.values()];let geometry:MultiPolygon=[];
-        for(let i=0;i<shapes.length;i+=64){
-            const batch=shapes.slice(i,i+64);
-            geometry=polygonClipping.union(geometry.length?geometry:batch.shift()!,...batch);
+        // Balanced reduction avoids repeatedly clipping an ever-growing outline
+        // against the next 64 samples on long first strokes.
+        let shapes=[...unique.values()];
+        while(shapes.length>1){
+            const next:MultiPolygon[]=[];
+            for(let i=0;i<shapes.length;i+=8)next.push(polygonClipping.union(shapes[i]!,...shapes.slice(i+1,i+8)));
+            shapes=next;
         }
+        const geometry=shapes[0]??[];
         if(geometry.length)runs.push({color,pattern:style.pattern,geometry});
     }
     for(const blob of runs){

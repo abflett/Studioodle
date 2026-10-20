@@ -43,11 +43,14 @@ try {
     if (await evaluate('location.origin === "http://127.0.0.1:1433" && document.readyState !== "loading"')) break;
     await new Promise(resolve => setTimeout(resolve, 100));
   }
+  const firstFill = await evaluate("import('/experiments/vector-paint/first-fill.ts').then(m => m.checkFirstFill())");
+  console.log('First fill:',JSON.stringify(firstFill));
   const result = await evaluate("import('/experiments/region-coverage/check.ts').then(m => m.checkRegionCoverage())");
   const vectorPaint = await evaluate("import('/experiments/vector-paint/check.ts').then(m => m.checkVectorPaint())");
   if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   if(vectorPaint.diagnosticPng){await fs.writeFile('work/moon-vector-paint.png',Buffer.from(vectorPaint.diagnosticPng.split(',')[1],'base64'));delete vectorPaint.diagnosticPng;}
   result.vectorPaint=vectorPaint;
+  result.firstFill=firstFill;
   if(result.diagnosticPng){await fs.writeFile('work/moon-belt-runtime.png',Buffer.from(result.diagnosticPng.split(',')[1],'base64'));delete result.diagnosticPng;}
   await fs.writeFile('work/region-coverage-results.json', JSON.stringify(result, null, 2));
   console.log(JSON.stringify(result, null, 2));

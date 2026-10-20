@@ -9,15 +9,30 @@ import type { VectorDefinition } from './vectorDefinition';
 
 let worker: Worker|undefined, nextJob=0;
 const jobs=new Map<number,{resolve:(regions:(VectorPaintRegion|undefined)[])=>void;reject:(error:Error)=>void}>();
+const timings:{kind:string;totalMs:number;computeMs:number}[]=[];
+const starts=new Map<number,{kind:string;time:number}>();
+let startupMs=0,createdAt=0;
+export const paintWorkerMetrics=()=>({startupMs,jobs:[...timings]});
+export function preparePaintWorker(){
+    if(typeof Worker==='undefined')return;
+    if(!worker){
+        createdAt=performance.now();
+        worker=new Worker(new URL('./vectorPaint.worker.ts',import.meta.url),{type:'module'});
+        worker.onmessage=event=>{
+            if(event.data.ready){startupMs=performance.now()-createdAt;return;}
+            const started=starts.get(event.data.id);starts.delete(event.data.id);
+            if(started){timings.push({kind:started.kind,totalMs:performance.now()-started.time,computeMs:event.data.computeMs??0});if(timings.length>30)timings.shift();}
+            const job=jobs.get(event.data.id);jobs.delete(event.data.id);if(event.data.error)job?.reject(Error(event.data.error));else job?.resolve(event.data.regions);
+        };
+        worker.onerror=()=>{for(const job of jobs.values())job.reject(Error('Vector paint worker failed'));jobs.clear();starts.clear();worker?.terminate();worker=undefined;};
+    }
+}
 function compute(job:PaintJob):Promise<(VectorPaintRegion|undefined)[]> {
     if(typeof Worker==='undefined')return Promise.resolve(job.fill?[filledRegion(job.regions[0]!,job.fill.color,job.fill.point,job.fill.pattern,job.fill.boundary)]:job.regions.map(compactRegion));
-    if(!worker){
-        worker=new Worker(new URL('./vectorPaint.worker.ts',import.meta.url),{type:'module'});
-        worker.onmessage=event=>{const job=jobs.get(event.data.id);jobs.delete(event.data.id);if(event.data.error)job?.reject(Error(event.data.error));else job?.resolve(event.data.regions);};
-        worker.onerror=()=>{for(const job of jobs.values())job.reject(Error('Vector paint worker failed'));jobs.clear();worker?.terminate();worker=undefined;};
-    }
+    preparePaintWorker();
     return new Promise((resolve,reject)=>{const id=++nextJob;jobs.set(id,{resolve,reject});
-        try{worker!.postMessage({id,...job});}catch(error){jobs.delete(id);reject(error);}
+        starts.set(id,{kind:job.fill?'fill':'compact',time:performance.now()});
+        try{worker!.postMessage({id,...job});}catch(error){jobs.delete(id);starts.delete(id);reject(error);}
     });
 }
 export class VectorPaint {
@@ -26,15 +41,20 @@ export class VectorPaint {
     private mergedRevision=0;
     private timer?:ReturnType<typeof setTimeout>;
     private busy=false;
+    private pendingMerge?:Promise<(VectorPaintRegion|undefined)[]>;
     private failed=false;
     private paths=new WeakMap<MultiPolygon,Path2D>();
-    constructor(data?:VectorPaintData,private readonly defaultColor=0xffffff){this.regions=structuredClone(data?.regions??[]);if(this.regions.some(r=>r.blobs.length)){this.mergedRevision=-1;this.schedule();}}
+    // Restore is read-only: previews/exports must never queue paint maintenance.
+    constructor(data?:VectorPaintData,private readonly defaultColor=0xffffff){this.regions=structuredClone(data?.regions??[]);}
     private region(id:number){let r=this.regions.find(r=>r.id===id);if(!r){r={id,base:this.defaultColor,blobs:[]};this.regions.push(r);}return r;}
     fill(id:number,color:number,point?:Pair,options?:FillOptions,boundary?:()=>MultiPolygon):boolean|Promise<boolean>{
         const r=this.region(id),pattern=normalizedPattern(options),key=paintStyleKey(color,pattern);
         if(point&&r.blobs.length){
             const revision=this.revision;
-            return compute({regions:[structuredClone(r)],fill:{color,point,pattern,boundary:boundary?.()}}).then(([result])=>{
+            // Reuse completed maintenance instead of queuing the same raw strokes
+            // twice. Read the latest accepted prefix after maintenance completes.
+            const prepare=()=>compute({regions:[structuredClone(r)],fill:{color,point,pattern,boundary:boundary?.()}});
+            return (this.pendingMerge?this.pendingMerge.then(prepare,prepare):prepare()).then(([result])=>{
                 // A different edit supersedes an in-flight fill; never paint stale topology.
                 if(!result||revision!==this.revision)return false;
                 this.regions[this.regions.indexOf(r)]=result;this.revision++;this.schedule();return true;
@@ -71,7 +91,8 @@ export class VectorPaint {
         this.busy=true;
         const revision=this.revision,snapshot=this.regions.map(r=>({...r,blobs:[...r.blobs]}));
         try {
-            const merged=await compute({regions:snapshot});
+            this.pendingMerge=compute({regions:snapshot});
+            const merged=await this.pendingMerge;
             // Compact a completed prefix even while new strokes arrive. A fill
             // replaces that prefix, so identity/base checks reject stale work.
             for(const result of merged){
@@ -83,7 +104,7 @@ export class VectorPaint {
             }
             if(revision!==this.revision)this.schedule();else this.mergedRevision=revision;
         } catch(error){this.failed=true;console.error('Vector merging stopped; original paint is preserved.',error);}
-        finally{this.busy=false;}
+        finally{this.busy=false;this.pendingMerge=undefined;}
     }
     async settled(){
         do { await this.flush();if(this.busy||this.timer)await new Promise(resolve=>setTimeout(resolve,10)); }

@@ -1,4 +1,5 @@
 import { Artwork } from './Artwork';
+import { preparePaintWorker } from './VectorPaint';
 import { StrokeSmoothing } from './strokeSmoothing';
 import { defaultBrush, defaultFill } from './toolOptions';
 import type { EditorCommand, EditorTool } from './bridge';
@@ -37,6 +38,7 @@ export class EditorSession {
   async settled(){while(this.pendingFill)await this.pendingFill;}
   constructor(private readonly setup: EditorSetup, private readonly ports: EditorSessionPorts) {
     if (!setup.id) throw new Error('An editor document must have an ID before opening.');
+    preparePaintWorker();
     const initial = initialDrawingSettings(setup);
     this.color = initial.color;
     this.tool = initial.tool;

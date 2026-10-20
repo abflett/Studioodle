@@ -1,6 +1,6 @@
 import type { Point } from './document';
 
-/** Small rounded joins, flattened immediately into ordinary raster brush segments. */
+/** Small rounded joins, flattened immediately into ordinary vector brush segments. */
 export class StrokeSmoothing {
   private raw: Point;
   private painted: Point;
