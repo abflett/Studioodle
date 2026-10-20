@@ -54,10 +54,13 @@ function isArtworkDocument(value: unknown): value is ArtworkDocument {
         const settings = stickerRasterSettings(surface.kind);
         const density = surface.paintScale ?? 1;
         if (density > 4 && !settings) return false;
-        if (!paintScaleMultipliers.some(value => value === density) || (surface.kind === 'canvas' && density !== 1)) return false;
+        const validDensity = settings?.pageAligned
+            ? (Number.isFinite(density) && density >= .1 && density <= 4) || density === 8 // Read previous high-resolution trial saves.
+            : paintScaleMultipliers.some(value => value === density);
+        if (!validDensity || (surface.kind === 'canvas' && density !== 1)) return false;
         const size = surface.kind === 'canvas' ? doc : vectorStickerSize(surface.kind);
         const pixels = Math.ceil(size.width * paintScale() * density) * Math.ceil(size.height * paintScale() * density);
-        if (density > 1 && pixels > (settings?.maximumPixels ?? maximumStickerPaintPixels)) return false;
+        if (density > 1 && pixels > (density === 8 && settings ? 32_000_000 : settings?.maximumPixels ?? maximumStickerPaintPixels)) return false;
         if (!Array.isArray(surface.paint))
             return false;
         let end = 0;

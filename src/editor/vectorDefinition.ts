@@ -20,7 +20,7 @@ export type VectorDefinition = {
     typedArrayBytes: number;
     silhouette: Path2D;
     rasterOnly?: boolean;
-    regions?: ReadonlyArray<{ id: number; path: Path2D }>;
+    regions?: ReadonlyArray<{ id: number; path: Path2D; bounds: number[] }>;
     ink: InkCommand[];
 };
 

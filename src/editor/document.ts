@@ -19,7 +19,7 @@ export type SurfaceData = {
     rotation?: number;
     flipX?: boolean;
     flipY?: boolean;
-    /** Optional raster density multiplier; omitted in existing 150 DPI saves. */
+    /** Optional local raster density multiplier; page-aligned stickers use their placed scale. */
     paintScale?: number;
     paint: PaintRun[];
 };

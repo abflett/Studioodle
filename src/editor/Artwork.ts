@@ -6,11 +6,12 @@ import { defaultBrush, defaultFill, patternPixel } from './toolOptions';
 import type { BrushOptions, FillOptions } from './toolOptions';
 import type { ArtworkDocument, Point, StickerKind, SurfaceData, PaintRun } from './document';
 import { paintScale } from './document';
+import { rasterizeRegions } from './rasterizeRegions';
 import { stickerRasterSettings } from './stickerRasterSettings';
 import { resizeStickerPaint, stickerPaintScale } from './paintRaster';
 const hex = (color: number) => '#' + color.toString(16).padStart(6, '0');
 class Surface {
-    readonly vector?: VectorDefinition;
+    vector?: VectorDefinition;
     resolution: number;
     readonly logicalWidth: number;
     readonly logicalHeight: number;
@@ -50,15 +51,19 @@ class Surface {
     }
     ensurePaintResolution() {
         if (!this.vector) return;
-        // Allocate only when painting needs it. Density only grows, so shrinking
-        // and enlarging repeatedly never throws existing brush detail away.
+        // Allocate when painting needs it. Normal stickers only grow; the
+        // page-aligned trial resamples to match its current placed size.
         const factor = stickerPaintScale(this.logicalWidth, this.logicalHeight, this.data.scale ?? 1, this.data.paintScale ?? 1, stickerRasterSettings(this.data.kind));
-        if (factor === (this.data.paintScale ?? 1)) return;
+        const pageAligned = stickerRasterSettings(this.data.kind)?.pageAligned;
+        if (factor === (this.data.paintScale ?? 1) && (!pageAligned || this.vector.mapSize?.scale === paintScale() * factor)) return;
         const oldPaint = this.paint, oldWidth = this.width, oldHeight = this.height, oldResolution = this.resolution;
         this.resolution = paintScale() * factor;
         this.width = Math.ceil(this.logicalWidth * this.resolution);
         this.height = Math.ceil(this.logicalHeight * this.resolution);
         this.context.canvas.width = this.width; this.context.canvas.height = this.height;
+        if (pageAligned && this.vector.regions) {
+            this.vector = { ...this.vector, ...rasterizeRegions([...this.vector.regions], this.logicalWidth, this.logicalHeight, this.resolution, this.vector.ink) };
+        }
         this.paint = this.hasPaint
             ? resizeStickerPaint(oldPaint, oldWidth, oldHeight, oldResolution, this.width, this.height, this.resolution, this.vector.regionAt)
             : new Uint32Array(this.width * this.height);
@@ -83,8 +88,8 @@ class Surface {
         return { x: ((dx * Math.cos(a) + dy * Math.sin(a)) / s * (this.data.flipX ? -1 : 1) + Math.floor(this.logicalWidth / 2)) * this.resolution, y: ((-dx * Math.sin(a) + dy * Math.cos(a)) / s * (this.data.flipY ? -1 : 1) + Math.floor(this.logicalHeight / 2)) * this.resolution };
     }
     localIndex(x: number, y: number) { const p = this.localPoint({ x: x + .5, y: y + .5 }), lx = Math.floor(p.x), ly = Math.floor(p.y); return lx < 0 || ly < 0 || lx >= this.width || ly >= this.height ? -1 : ly * this.width + lx; }
-    region(index: number) { return this.vector ? this.vector.regionAt((index % this.width) / this.resolution, Math.floor(index / this.width) / this.resolution) : 1; }
-    inRegion(index: number, id: number) { return this.vector ? this.vector.inRegion((index % this.width) / this.resolution, Math.floor(index / this.width) / this.resolution, id) : id === 1; }
+    region(index: number) { return this.vector ? this.vector.regionAt(((index % this.width) + .5) / this.resolution, (Math.floor(index / this.width) + .5) / this.resolution) : 1; }
+    inRegion(index: number, id: number) { return this.vector ? this.vector.inRegion(((index % this.width) + .5) / this.resolution, (Math.floor(index / this.width) + .5) / this.resolution, id) : id === 1; }
     containsLocal(x: number, y: number) { return x >= 0 && y >= 0 && x < this.width && y < this.height && (!this.vector || this.vector.contains(x / this.resolution, y / this.resolution)); }
     containsPoint(point: Point) { const p = this.localPoint(point); return this.containsLocal(p.x, p.y); }
     bounds() {
@@ -514,7 +519,7 @@ export class Artwork {
                 if (surface.vector) {
                     ctx.save();
                     ctx.clip(surface.vector.silhouette);
-                    ctx.drawImage(surface.context.canvas, 0, 0, surface.logicalWidth, surface.logicalHeight);
+                    ctx.drawImage(surface.context.canvas, 0, 0, surface.width / surface.resolution, surface.height / surface.resolution);
                     ctx.restore();
                     // Bucket fills and untouched regions have exact SVG edges.
                     // Enlarging the raster must not expose its staircase boundary

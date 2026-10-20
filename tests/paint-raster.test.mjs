@@ -52,7 +52,7 @@ test('saved pictures accept legacy rasters and explicit density without misreadi
   sticker.paintScale = 4; sticker.paint = [[1_000_000, 3, 0xabcdef]];
   assert.equal(valid(p), true);
   delete sticker.paintScale; assert.equal(valid(p), false);
-  sticker.paintScale = 3; assert.equal(valid(p), false);
+  sticker.paintScale = 4.1; assert.equal(valid(p), false);
   sticker.paintScale = 4; p.document.surfaces[0].paintScale = 2;
   assert.equal(valid(p), false);
   p.document.surfaces[0].paintScale = 1;
@@ -61,16 +61,21 @@ test('saved pictures accept legacy rasters and explicit density without misreadi
 });
 
 
-test('Moon Sorceress trial allocates 8x paint and preserves its density on shrink', () => {
+test('Moon Sorceress raster follows placed page size at 150 DPI', () => {
   const trial = settings('fantasy-moon-sorceress');
-  assert.equal(trial.lookupScale, 16);
+  assert.equal(trial.lookupScale, 4);
   assert.equal(trial.rasterOnly, true);
-  assert.equal(density(340, 480, 1, 1, trial), 8);
-  assert.equal(density(340, 480, .5, 8, trial), 8);
+  assert.equal(density(340, 480, 1, 1, trial), 1);
+  assert.equal(density(340, 480, 2.3, 1, trial), 2.3);
+  assert.equal(density(340, 480, .5, 8, trial), .5);
+  assert.equal(density(340, 480, 4, 1, trial), 4);
   assert.equal(settings('garden-house'), undefined);
   const p = picture();
   p.document.surfaces[1].paintScale = 8;
   p.document.surfaces[1].paint = [[25_499_999, 1, 0xabcdef]];
+  assert.equal(valid(p), true);
+  p.document.surfaces[1].paintScale = 2.3;
+  p.document.surfaces[1].paint = [[0, 1, 0xabcdef]];
   assert.equal(valid(p), true);
   p.document.surfaces[1].kind = 'garden-house';
   assert.equal(valid(p), false);

@@ -4,7 +4,13 @@ export const maximumStickerPaintPixels = 8_000_000;
 export const paintScaleMultipliers = [1, 2, 4, 8] as const;
 
 /** Grow in a few bounded steps; never downsample already-painted detail. */
-export function stickerPaintScale(width: number, height: number, scale: number, current = 1, settings?: { minimumScale: number; maximumPixels: number }) {
+export function stickerPaintScale(width: number, height: number, scale: number, current = 1, settings?: { minimumScale: number; maximumPixels: number; pageAligned?: boolean }) {
+    if (settings?.pageAligned) {
+        const desired = Math.max(.1, Math.min(4, scale));
+        const density = paintScale() * desired;
+        if (Math.ceil(width * density) * Math.ceil(height * density) > settings.maximumPixels) throw Error('Page-aligned raster exceeds its pixel budget');
+        return desired;
+    }
     let factor = current;
     const desired = Math.max(settings?.minimumScale ?? 1, Math.min(4, Math.max(1, scale)));
     while (factor < desired) {

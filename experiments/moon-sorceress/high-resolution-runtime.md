@@ -1,16 +1,12 @@
-# High-resolution raster runtime trial
+# Moon Sorceress raster resolution trials
 
-Enabled only for `fantasy-moon-sorceress` through `src/editor/stickerRasterSettings.ts`.
+## Current: 150 DPI in page space
 
-- Paint density multiplier: minimum 8 (12.5 samples per logical unit).
-- Paint raster: 4250 x 6000 = 25,500,000 pixels; 102,000,000 bytes for Uint32 paint, plus about the same RGBA canvas backing.
-- Shared region lookup: 5440 x 7680, scale 16; retained typed arrays 47,001,600 bytes.
-- Combined nominal paint + canvas + lookup: 251,001,600 bytes (~239 MiB), excluding temporary buffers, browser overhead, undo history and other surfaces. Fill scratch adds roughly 127.5 MB and an image upload can add another 102 MB temporarily.
-- Uniform SVG fill rendering is disabled for this asset. Both bucket and brush paint use the raster path; SVG ink and silhouette clipping remain.
-- Other stickers retain their existing resolution policy.
-- Saves retain paintScale=8 and validation accepts that density only for this trial asset. Fresh stickers give a clean comparison; upsampling old mixed brush paint cannot recover lost source detail.
+The Moon Sorceress now sets its local paint density multiplier to its placed sticker scale, including fractional scales. After the sticker transform this is one paint pixel per page pixel at 150 DPI. Zoom does not change paint density. Resizing rebuilds the raster and its per-surface hit/region lookup at the same density; uniform fills are reconstructed and mixed brush paint is resampled. The raster dimensions are rounded up, but drawing uses the exact density so the rounding does not stretch the image. Sampled region queries use pixel centers.
 
-Browser regression `npm run check:regions` exercises the real Moon SVG, checks visible ink hits at lookup scale 16, applies a bucket and a brush stroke, verifies both raster colors and saved density, and renders the result. This is a mechanics check, not a claim that visual inspection is no longer needed.
+At sticker scale 1 the grid is 532 x 750 (399,000 pixels). Paint array and canvas backing are about 1.6 MB each, plus approximately 0.45 MB for this surface lookup. Larger placements scale with their actual page footprint. The original decoded lookup is still shared and bounded at scale 4. Existing 8x-trial saves remain readable and are resampled when rendered/edited. Other stickers retain their existing resolution policy.
+
+The SVG solid-fill shortcut remains disabled for the sorceress. The centerline correction and tiny-component cleanup remain enabled. Test with a newly placed sticker for a comparison free of old mixed-raster artifacts.
 
 ## Centerline correction
 

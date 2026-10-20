@@ -68,7 +68,7 @@ export async function checkRegionCoverage() {
     const response = await fetch(`/src/assets/vector/${id}.svg`);
     assert(response.ok, `Missing ${id}`);
     const settings = stickerRasterSettings(id);
-    const vector = decodeSvgDefinition(await response.text(), { scale: settings?.lookupScale });
+    const vector = decodeSvgDefinition(await response.text(), { scale: settings ? 16 : undefined });
     vector.rasterOnly = settings?.rasterOnly;
     const scale = vector.mapSize!.scale;
     const canvas = document.createElement('canvas');
@@ -127,7 +127,7 @@ export async function checkRegionCoverage() {
       Object.assign(trialDoc.surfaces[1]!, {kind:id,x:400,y:500,scale:1});
       const trial = Artwork.restore(trialDoc, () => vector);
       const seed={x:400+170-170,y:500+174-240};
-      assert(trial.fill(seed,0x743dad),'High-resolution Moon bucket must work');
+      assert(trial.fill(seed,0x743dad),'Page-resolution Moon bucket must work');
       trial.fill({x:400,y:426},0x743dad);
       trial.fill({x:400,y:439},0x482561);
       trial.fill({x:400,y:442},0x35ad9c);
@@ -135,21 +135,28 @@ export async function checkRegionCoverage() {
       const pc=preview.getContext('2d')!;pc.setTransform(16,0,0,16,-(400+145-170)*16,-(500+162-240)*16);
       trial.render(pc);
       const beforeBrush=pc.getImageData(0,0,960,480).data;
-      assert(trial.brush(seed,seed,0x42aadd,false,{size:3,kind:'ink',shape:'round'}),'High-resolution Moon brush must work');
+      assert(trial.brush(seed,seed,0x42aadd,false,{size:3,kind:'ink',shape:'round'}),'Page-resolution Moon brush must work');
       const saved=trial.serialize().surfaces[1]!;
-      assert(saved.paintScale===8,'Moon must retain 8x paint density after brushing');
+      assert(saved.paintScale===1,'Moon must use page-aligned 150 DPI after brushing');
       const colors=new Set(saved.paint.map(run=>run[2]));
       assert(colors.has(0x743dad)&&colors.has(0x42aadd),'Both bucket and brush colors must remain raster');
       trial.render(pc);diagnosticPng=preview.toDataURL('image/png');
       const afterBrush=pc.getImageData(0,0,960,480).data;
       let changedOutsideBrush=0;
       for(let y=0;y<480;y++)for(let x=0;x<960;x++){
-        if(Math.hypot(x-400,y-192)<40)continue;
+        // Brush radius plus raster interpolation and edge-padding footprint.
+        if(Math.hypot(x-400,y-192)<24+6*16/(1.5625*saved.paintScale!))continue;
         const i=(y*960+x)*4;
         if([0,1,2].some(channel=>beforeBrush[i+channel]!==afterBrush[i+channel]))changedOutsideBrush++;
       }
       assert(changedOutsideBrush===0, `Brushing changed ${changedOutsideBrush} distant belt pixels`);
-      paintPixels=Math.ceil(vector.width*12.5)*Math.ceil(vector.height*12.5);
+      assert(trial.transform('sticker',1.3,0),'Moon must resize to fractional placed scale');
+      trial.render(pc);
+      assert(trial.serialize().surfaces[1]!.paintScale===2.3,'Paint density must follow 2.3x placement');
+      assert(trial.transform('sticker',-.8,0),'Moon must shrink');
+      trial.render(pc);
+      assert(trial.serialize().surfaces[1]!.paintScale===1.5,'Paint density must follow shrinking placement');
+      paintPixels=Math.ceil(vector.width*1.5625)*Math.ceil(vector.height*1.5625);
     }
     rows.push({ id, visibleInk, missingHits, lookupScale: scale, sharedBytes: vector.typedArrayBytes, paintPixels, minimumBeltInkMargin, beltCrossSection, exposedBoundaries, boundaryExamples });
     canvas.width = canvas.height = 1;
