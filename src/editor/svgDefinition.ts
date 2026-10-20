@@ -70,6 +70,6 @@ export function decodeSvgDefinition(text: string, options: { lookup?: 'paths' | 
   }
   return {
     width: viewBox[2]!, height: viewBox[3]!, bounds: { left: bounds[0]!, top: bounds[1]!, right: bounds[2]!, bottom: bounds[3]! },
-    regionCount: regions.length, format: 'svg', lookup: options.lookup === 'paths' ? 'paths' : 'raster', silhouette, ink, ...lookup,
+    regionCount: regions.length, format: 'svg', lookup: options.lookup === 'paths' ? 'paths' : 'raster', silhouette, regions, ink, ...lookup,
   };
 }

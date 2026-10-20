@@ -18,6 +18,7 @@ class Surface {
     readonly context: CanvasRenderingContext2D;
     paint: Uint32Array;
     private hasPaint: boolean;
+    readonly solidRegions = new Map<number, number>();
     opaqueBounds: {
         left: number;
         top: number;
@@ -124,9 +125,17 @@ class Surface {
         if (this.hasPaint) this.ensurePaintResolution();
         if (!this.dirty)
             return;
+        this.solidRegions.clear();
         const image = this.context.createImageData(this.width, this.height), base = this.data.kind === 'canvas' ? this.data.color : 0xffffff;
         for (let i = 0; i < this.paint.length; i++) {
             let value = this.paint[i]!;
+            if (this.vector?.regions) {
+                const id = this.region(i);
+                if (id) {
+                    const previous = this.solidRegions.get(id);
+                    this.solidRegions.set(id, previous === undefined || previous === value ? value : -1);
+                }
+            }
             if (!value && this.hasPaint && this.vector && !this.region(i)) {
                 // Bleed color underneath the ink/outside the exact clip, rather
                 // than letting white backing pixels blur into a colored edge.
@@ -506,6 +515,15 @@ export class Artwork {
                     ctx.clip(surface.vector.silhouette);
                     ctx.drawImage(surface.context.canvas, 0, 0, surface.logicalWidth, surface.logicalHeight);
                     ctx.restore();
+                    // Bucket fills and untouched regions have exact SVG edges.
+                    // Enlarging the raster must not expose its staircase boundary
+                    // or interpolate color into an adjacent unpainted region.
+                    for (const region of surface.vector.regions ?? []) {
+                        const value = surface.solidRegions.get(region.id) ?? 0;
+                        if (value < 0) continue; // Mixed brush paint remains raster.
+                        ctx.fillStyle = hex(value ? value - 1 : 0xffffff);
+                        ctx.fill(region.path);
+                    }
                     drawVectorInk(ctx, surface.vector, hex(surface.data.color), thumbnail);
                 }
                 else

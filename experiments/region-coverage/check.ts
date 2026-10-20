@@ -32,6 +32,35 @@ export async function checkRegionCoverage() {
   const rotated = Artwork.restore(transformed, () => definition);
   assert(rotated.fill({ x: 120, y: 166 }, 0x743dad), 'Rotated/flipped outlines must resolve in local coordinates');
   assert(!rotated.serialize().surfaces[0]!.paint.length, 'Transformed line click must not fill the page');
+  // Regress enlarged bucket edges, rather than checking hit coverage alone.
+  const diagonalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" data-bounds="10 10 40 40" data-region-format="1" data-region-scale="4"><g id="regions"><path id="region-1" data-bounds="10 10 40 40" d="M10 10L40 40H10Z"/><path id="region-2" data-bounds="10 10 40 40" d="M10 10H40V40Z"/></g><g id="ink"><path d="M10 10L40 40" fill="none" stroke="black" stroke-width="0.1"/></g></svg>`;
+  const diagonal = decodeSvgDefinition(diagonalSvg);
+  const enlargedDoc = structuredClone(doc);
+  enlargedDoc.width = enlargedDoc.height = 800;
+  Object.assign(enlargedDoc.surfaces[1]!, { x: 400, y: 400, scale: 16 });
+  const enlarged = Artwork.restore(enlargedDoc, () => diagonal);
+  assert(enlarged.fill({ x: 320, y: 480 }, 0x743dad), 'Diagonal fixture must fill');
+  const rendered = document.createElement('canvas'); rendered.width = rendered.height = 800;
+  const renderedContext = rendered.getContext('2d')!;
+  enlarged.render(renderedContext);
+  const reference = document.createElement('canvas'); reference.width = reference.height = 800;
+  const referenceContext = reference.getContext('2d')!;
+  referenceContext.fillStyle = 'white'; referenceContext.fillRect(0, 0, 800, 800);
+  referenceContext.scale(16, 16);
+  for (const region of diagonal.regions!) {
+    referenceContext.fillStyle = region.id === 1 ? '#743dad' : 'white';
+    referenceContext.fill(region.path);
+  }
+  drawVectorInk(referenceContext, diagonal, 'black');
+  const actual = renderedContext.getImageData(0, 0, 800, 800).data;
+  const expected = referenceContext.getImageData(0, 0, 800, 800).data;
+  let edgeMismatches = 0;
+  // Stay inside the outer silhouette; include both sides of the diagonal.
+  for(let y=180;y<620;y++)for(let x=Math.max(180,y-8);x<Math.min(620,y+8);x++){
+    const i=(y*800+x)*4;
+    if([0,1,2].some(channel=>Math.abs(actual[i+channel]!-expected[i+channel]!)>3))edgeMismatches++;
+  }
+  assert(edgeMismatches === 0, `Enlarged solid fill differs from SVG reference at ${edgeMismatches} edge pixels`);
   const rows = [];
   for (const id of ['fantasy-moon-sorceress', 'winter-reindeer', 'garden-house', 'garden-fence', 'dinosaur-striped-tyrannosaurus', 'horizons-forest-clearing']) {
     const response = await fetch(`/src/assets/vector/${id}.svg`);
@@ -53,5 +82,5 @@ export async function checkRegionCoverage() {
     rows.push({ id, visibleInk, missingHits, lookupScale: scale, sharedBytes: vector.typedArrayBytes });
     canvas.width = canvas.height = 1;
   }
-  return { lineFill: true, isolatedInkBlocksPage: true, paintSilhouetteUnchanged: true, rows };
+  return { enlargedFillEdges: true, lineFill: true, isolatedInkBlocksPage: true, paintSilhouetteUnchanged: true, rows };
 }
