@@ -1,21 +1,21 @@
 :root {
   color-scheme: light;
-  --page: #f7dfae;
-  --surface: #fff8e8;
-  --text: #27465a;
-  --muted: #576b71;
-  --badge: #f3dfb7;
-  --border: #dfcda7;
-  --divider: #e7d8b9;
-  --button-border: #ccbc97;
-  --accent: #bb583d;
-  --action: #247e85;
+  --page: #eadcc1;
+  --surface: #faf4e6;
+  --text: #304c50;
+  --muted: #596b65;
+  --badge: #e1dac5;
+  --border: #b6b6a0;
+  --divider: #d7d5c1;
+  --button-border: #8a9e91;
+  --accent: #97593d;
+  --action: #376b65;
   --action-text: #fffaf0;
-  --shadow: #754b2220;
+  --shadow: #314f4930;
   --ribbon-well: color-mix(in srgb, var(--text) 6.5%, transparent);
   --sky: radial-gradient(ellipse at 16% 8%, #fff8cf 0%, transparent 48%), radial-gradient(ellipse at 95% 0%, #b7e4e7 0%, transparent 53%), linear-gradient(160deg, #fdf0ce 0%, #f6e1ba 62%, #eecfa0 100%);
-  --panel: linear-gradient(145deg, #fffdf0, #fae9cb);
-  --card: linear-gradient(150deg, #fffaf0, #f5e7ca);
+  --panel: linear-gradient(145deg, #fcf7eb, #eee5d0);
+  --card: linear-gradient(150deg, #f9f3e5, #e8e2ce);
   --art-blank: linear-gradient(145deg, #b9e2df70, #f8edce);
   --art-coloring: linear-gradient(145deg, #ffcfb178, #fae4ae);
   --veil: #293f5766;
@@ -29,22 +29,22 @@
 }
 :root[data-theme='dark'] {
     color-scheme: dark;
-    --page: #101e2b;
-    --surface: #1c3040;
-    --text: #edf0e1;
-    --muted: #b0c1c9;
-    --badge: #2a4052;
-    --border: #405364;
-    --divider: #344b5a;
-    --button-border: #536777;
-    --accent: #f2b47e;
-    --action: #edb87f;
-    --action-text: #263241;
-    --shadow: #020a1660;
+    --page: #111f34;
+    --surface: #22334c;
+    --text: #f6f0e2;
+    --muted: #bec8da;
+    --badge: #354660;
+    --border: #64738d;
+    --divider: #3d4e69;
+    --button-border: #8390a8;
+    --accent: #ddc799;
+    --action: #ddc799;
+    --action-text: #243148;
+    --shadow: #050c1c70;
     --ribbon-well: color-mix(in srgb, var(--text) 5%, transparent);
     --sky: radial-gradient(ellipse at 82% 2%, #64718c48 0%, transparent 42%), radial-gradient(ellipse at 12% 100%, #bc75421a 0%, transparent 38%), linear-gradient(155deg, #18243e 0%, #101d2c 53%, #142f2c 100%);
-    --panel: linear-gradient(145deg, #293c52, #1b3036);
-    --card: linear-gradient(145deg, #2b3c50, #1d3338);
+    --panel: linear-gradient(145deg, #293b56, #1c2b43);
+    --card: linear-gradient(145deg, #2f405c, #24334d);
     --art-blank: linear-gradient(145deg, #294e5c85, #2c3c5650);
     --art-coloring: linear-gradient(145deg, #61494365, #334d4b70);
     --veil: #050c1caa;
@@ -204,7 +204,7 @@ button:is(:active, .app-mouse-pressed) { transform: scale(.96); filter: brightne
 .art-canvas .canvas-host { flex-shrink: 0; box-shadow: 0 8px 36px var(--shadow); }
 .save-notice { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 20px; background: var(--surface); color: var(--text); box-shadow: 0 6px 24px var(--shadow); z-index: 2; max-width: calc(100vw - 32px); }
 button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); transform: none; filter: none; }
-.saved-preview { border-radius: 16px; border: 4px solid #46584c; }
+.saved-preview { border-radius: 16px; border: 4px solid var(--preview-border); }
 .previous-picture .choice-art { height: min(260px, 30dvh); flex: 0 0 auto; display: grid; place-items: center; padding: 0; }
 .previous-picture .saved-preview { --preview-height: min(260px, 30dvh); display: block; max-width: 100%; flex-shrink: 0; }
 .scene-picker .saved-preview { --preview-height: min(240px, 40dvh); flex-shrink: 0; }
@@ -761,8 +761,8 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .selection-screen .selection { --picture-height: min(184px, 32vw, 25dvh); --label-gap: 20px; gap: clamp(18px, 3.5dvh, 32px); }
 }
 /* Shared painted artwork for selection, splash, and ribbon surfaces. */
-:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b49302b, #5b49302b); --tool-well: #eee9d9; }
-:root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --canvas-tint: linear-gradient(#06111f38, #06111f38); --tool-well: #304653; }
+:root { --scene-art: url('../assets/backgrounds/selection-beach.webp'); --scene-tint: linear-gradient(180deg, #fff8e536, #fff4df55); --canvas-tint: linear-gradient(#5b49302b, #5b49302b); --tool-well: #e7e4d3; --preview-border: #758e80; }
+:root[data-theme='dark'] { --scene-art: url('../assets/backgrounds/selection-night.webp'); --scene-tint: linear-gradient(180deg, #08142610, #08142625 55%, #08142645); --canvas-tint: linear-gradient(#06111f38, #06111f38); --tool-well: #2c3e59; --preview-border: #8797af; }
 .selection-screen, .splash { position: relative; isolation: isolate; overflow: hidden; }
 :is(.selection-screen, .splash)::before, :is(.selection-screen, .splash)::after { content: ''; position: absolute; pointer-events: none; }
 :is(.selection-screen, .splash)::before { inset: 0; z-index: -2; background-image: var(--scene-art); background-size: cover; background-position: center; }
@@ -798,4 +798,11 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .previous-section .picture-carousel { gap: 4px; }
   .saved-picture-card { padding-inline: 4px; }
   .previous-section .saved-picture-card .library-actions { gap: 4px; }
+}
+
+/* Opaque, palette-matched controls stay distinct from the painted scenes. */
+.main-ribbon .ribbon-group, .sticker-ribbon .sticker-adjustment { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--button-border) 55%, transparent), 0 2px 5px var(--shadow); }
+:is(.selection-preferences, .library-actions, .picture-carousel, .scene-picker) > .icon-button { background: var(--tool-well); box-shadow: inset 0 0 0 1px var(--button-border), 0 2px 7px var(--shadow); }
+@media (hover: hover) {
+  :is(.selection-preferences, .library-actions, .picture-carousel, .scene-picker) > .icon-button:is(:hover, .app-mouse-hover) { background: color-mix(in srgb, var(--tool-well) 88%, var(--text)); }
 }

@@ -10,3 +10,7 @@ Re-encode with ImageMagick:
 magick art/source/interface-backgrounds/selection-night.png -define webp:lossless=true -quality 100 src/assets/backgrounds/selection-night.webp
 magick art/source/interface-backgrounds/selection-beach.png -define webp:lossless=true -quality 100 src/assets/backgrounds/selection-beach.webp
 ```
+
+## Interface palette
+
+The light theme follows the beach painting: warm paper and sand surfaces, sea-glass control wells, deep coastal slate text, and muted teal actions. The dark theme follows the night painting: navy/slate surfaces, blue control wells, warm ivory text, and moonlight-gold actions. Opaque control wells and fine borders separate the controls from detailed artwork; preview borders also follow the active theme. Artwork remains continuous through the ribbons, with additional darkening confined to canvas letterboxing.
