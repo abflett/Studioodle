@@ -1,6 +1,6 @@
 export type AppSettings = { workshop: boolean; advancedPainting: boolean; mouseSpeed: number };
 const storageKey = 'studioodle.settings';
-const defaults: AppSettings = { workshop: false, advancedPainting: false, mouseSpeed: 50 };
+const defaults: AppSettings = { workshop: false, advancedPainting: false, mouseSpeed: 100 };
 export function readSettings(): AppSettings {
   try {
     const saved: unknown = JSON.parse(localStorage.getItem(storageKey) ?? 'null');

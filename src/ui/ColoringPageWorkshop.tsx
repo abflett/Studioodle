@@ -15,7 +15,7 @@ export function ColoringPageWorkshop({ picture, targetId, onSaved, onClose }: {
   const [busy, setBusy] = useState(false);
   useEffect(() => { const modal = dialog.current; modal?.showModal(); return () => modal?.close(); }, []);
   const save = (id: string) => {
-    try { const p = saveWorkshopPage(picture, id, title); onSaved(p.id, p.title); setMessage('Coloring page saved locally. Export the collection from Home → Settings → Coloring Books.'); }
+    try { const p = saveWorkshopPage(picture, id, title); onSaved(p.id, p.title); setMessage('Coloring page saved locally. Use Export Page to download this revision.'); }
     catch { setMessage('Could not save this page. Check its title and device storage.'); }
   };
   return <dialog ref={dialog} className="setup-dialog settings-dialog workshop-dialog" aria-labelledby="page-workshop-title" onCancel={onClose} onClick={e => closeOnBackdrop(e, onClose)}>

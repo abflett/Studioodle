@@ -219,7 +219,7 @@ function installAppMouse() {
     if (event.key === 'Escape') { stopAppMouse(); release(); return; }
     if (event.code !== 'Space' || event.repeat || event.isComposing || event.altKey || event.ctrlKey || event.metaKey || press) return;
     const target = event.target;
-    if (target instanceof Element && target.closest('input, textarea, select, summary, [contenteditable]:not([contenteditable="false"])')) return;
+    if (target instanceof Element && target.closest('input:not([type="range"]), textarea, select, summary, [contenteditable]:not([contenteditable="false"])')) return;
     if (document.querySelector('dialog[open]') && target instanceof Element && target.closest('button, a, summary, [role="button"], [role="switch"]')) return;
     event.preventDefault();
     if (locked) { stopAppMouse(); release(); } else startAppMouse();
