@@ -1,3 +1,4 @@
+import { DialogHeader } from './DialogHeader';
 import { workshopPages, workshopRepository } from '../app/coloringBookWorkshop';
 import { coloringPages } from '../app/coloringPages';
 import { DeletePictureDialog } from './DeletePictureDialog';
@@ -192,12 +193,9 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
 
       <dialog className="setup-dialog" ref={dialog} aria-labelledby="setup-title" onCancel={() => setStep(null)} onClick={(event) => closeOnBackdrop(event, () => setStep(null))} onAuxClick={(event) => { if (event.button === 2) closeOnBackdrop(event, () => setStep(null)); }}>
         <div className="wizard">
-          <header className="wizard-header">
-            <div className="wizard-heading"><h2 id="setup-title" ref={stepHeading} tabIndex={-1}>{stepTitle}</h2>
-              {step !== 'scene' && <div className="wizard-steps" aria-label={`Step ${step === 'shape' ? 1 : 2} of 2`}><span className={step === 'shape' ? 'active' : ''} /><span className={step === 'paper' ? 'active' : ''} /></div>}
-            </div>
-            <button className="icon-button" aria-label="Close setup" onClick={() => setStep(null)}><X aria-hidden="true" /></button>
-          </header>
+          <DialogHeader id="setup-title" title={stepTitle} headingRef={stepHeading} onClose={() => setStep(null)} closeLabel="Close setup">
+            {step !== 'scene' && <div className="wizard-steps" aria-label={`Step ${step === 'shape' ? 1 : 2} of 2`}><span className={step === 'shape' ? 'active' : ''} /><span className={step === 'paper' ? 'active' : ''} /></div>}
+          </DialogHeader>
           <div className="wizard-body">
             {step === 'shape' && <div className="paper-setup">
               <div className="format-options" role="group" aria-label="Paper size">

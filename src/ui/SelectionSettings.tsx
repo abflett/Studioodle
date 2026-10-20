@@ -1,5 +1,6 @@
+import { DialogHeader } from './DialogHeader';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Monitor, Sun, Moon, X, Keyboard, SlidersHorizontal, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Monitor, Sun, Moon, Keyboard, SlidersHorizontal, ChevronRight } from 'lucide-react';
 import { closeOnBackdrop } from './dialog';
 import { startAppMouse, stopAppMouse, useAppMouseStatus } from './appMouse';
 import { isDesktop } from '../platform/desktop';
@@ -40,7 +41,7 @@ export function SelectionSettings({ open, onClose, theme, onThemeChange, setting
   return <>
     <dialog className="setup-dialog settings-dialog main-settings-dialog" ref={dialog} aria-labelledby="settings-title" onCancel={close} onClick={e => closeOnBackdrop(e, close)}>
       <div className="wizard">
-        <header className="wizard-header"><h2 id="settings-title">Settings</h2><button className="icon-button" aria-label="Close settings" onClick={close}><X aria-hidden="true" /></button></header>
+        <DialogHeader id="settings-title" title="Settings" onClose={close} closeLabel="Close settings" />
         <div className="settings-options compact-settings">
           <section className="settings-well theme-setting" aria-labelledby="theme-setting-title">
             <h3 id="theme-setting-title">Color theme</h3>
@@ -72,7 +73,7 @@ export function SelectionSettings({ open, onClose, theme, onThemeChange, setting
     </dialog>
     <dialog className="setup-dialog settings-dialog advanced-settings-dialog" ref={advanced} aria-labelledby="advanced-settings-title" onCancel={back} onClick={e => closeOnBackdrop(e, back)}>
       <div className="wizard">
-        <header className="wizard-header"><button className="icon-button" aria-label="Back to settings" onClick={back}><ArrowLeft /></button><h2 id="advanced-settings-title">Advanced Settings</h2><button className="icon-button" aria-label="Close advanced settings" onClick={close}><X /></button></header>
+        <DialogHeader id="advanced-settings-title" title="Advanced Settings" onClose={close} closeLabel="Close advanced settings" back={{ label: "Back to settings", onClick: back }} />
         <div className="advanced-settings-options">
           <button className="advanced-controls-setting" role="switch" aria-checked={settings.advancedPainting} aria-labelledby="advanced-painting-label" onClick={() => onSettingsChange({ ...settings, advancedPainting: !settings.advancedPainting })}>
             <span className="settings-description"><span id="advanced-painting-label">Painting controls</span><small>Brush sizes, types, and fill patterns</small></span><span className="settings-switch" aria-hidden="true"><span /></span>
@@ -85,7 +86,7 @@ export function SelectionSettings({ open, onClose, theme, onThemeChange, setting
     </dialog>
     <dialog className="setup-dialog settings-dialog shortcut-guide-dialog" ref={guide} aria-labelledby="shortcut-guide-title" onCancel={back} onClick={e => closeOnBackdrop(e, back)}>
       <div className="wizard">
-        <header className="wizard-header"><button className="icon-button" aria-label="Back from shortcuts" onClick={back}><ArrowLeft /></button><h2 id="shortcut-guide-title">Shortcuts &amp; gestures</h2><button className="icon-button" aria-label="Close shortcut guide" onClick={close}><X /></button></header>
+        <DialogHeader id="shortcut-guide-title" title="Shortcuts & gestures" onClose={close} closeLabel="Close shortcut guide" back={{ label: "Back from shortcuts", onClick: back }} />
         <div className="shortcut-help"><dl>{shortcuts.slice(guidePage * 6, guidePage * 6 + 6).map(([title, detail]) => <div key={title}><dt>{title}</dt><dd>{detail}</dd></div>)}</dl></div>
         <nav className="shortcut-pages" aria-label="Shortcut pages"><button className="icon-button" aria-label="Previous shortcuts" disabled={guidePage === 0} onClick={() => setGuidePage(0)}><ArrowLeft /></button><span role="status">{guidePage + 1} / 2</span><button className="icon-button" aria-label="Next shortcuts" disabled={guidePage === 1} onClick={() => setGuidePage(1)}><ArrowRight /></button></nav>
       </div>

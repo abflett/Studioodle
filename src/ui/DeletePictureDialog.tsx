@@ -1,3 +1,4 @@
+import { DialogHeader } from './DialogHeader';
 import { useEffect, useRef } from 'react';
 import { Trash2, X } from 'lucide-react';
 import type { SavedPicture } from '../editor/savedPicture';
@@ -17,7 +18,7 @@ export function DeletePictureDialog({ picture, onCancel, onConfirm }: {
   }, [picture]);
   return <dialog className="setup-dialog delete-picture-dialog" ref={dialog} aria-labelledby="delete-picture-title" onCancel={onCancel} onClick={event => closeOnBackdrop(event, onCancel)} onAuxClick={event => { if (event.button === 2) closeOnBackdrop(event, onCancel); }}>
     <div className="wizard">
-      <h2 id="delete-picture-title">Delete this picture?</h2>
+      <DialogHeader id="delete-picture-title" title="Delete this picture?" onClose={onCancel} closeLabel="Cancel deleting picture" />
       <div className="delete-picture-preview">{picture && <SavedPreview picture={picture} />}</div>
       <div className="delete-picture-actions">
         <button ref={cancel} className="go-button" onClick={onCancel}><X aria-hidden="true" /><span>Keep it</span></button>

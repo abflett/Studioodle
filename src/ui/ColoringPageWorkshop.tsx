@@ -1,5 +1,6 @@
+import { DialogHeader } from './DialogHeader';
 import { useEffect, useRef, useState } from 'react';
-import { BookPlus, Download, Save, X } from 'lucide-react';
+import { BookPlus, Download, Save } from 'lucide-react';
 import type { SavedPicture } from '../editor/savedPicture';
 import { coloringBookPage, makeColoringBook } from '../editor/coloringBook';
 import { saveWorkshopPage } from '../app/coloringBookWorkshop';
@@ -20,7 +21,7 @@ export function ColoringPageWorkshop({ picture, targetId, onSaved, onClose }: {
   };
   return <dialog ref={dialog} className="setup-dialog settings-dialog workshop-dialog" aria-labelledby="page-workshop-title" onCancel={onClose} onClick={e => closeOnBackdrop(e, onClose)}>
     <div className="wizard">
-      <header className="wizard-header"><h2 id="page-workshop-title">Save Coloring Page</h2><button className="icon-button" aria-label="Close page workshop" onClick={onClose}><X /></button></header>
+      <DialogHeader id="page-workshop-title" title="Save Coloring Page" onClose={onClose} closeLabel="Close page workshop" />
       <p>Saves sticker positions, sizes, flips, and layer order. Paint is removed and outlines are black on white paper.</p>
       <label className="workshop-field">Page title<input value={title} maxLength={160} onChange={e => setTitle(e.target.value)} /></label>
       <div className="workshop-actions">

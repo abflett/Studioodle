@@ -1,3 +1,4 @@
+import { DialogHeader } from './DialogHeader';
 import { ColoringPageWorkshop } from './ColoringPageWorkshop';
 import type { SavedPicture } from '../editor/savedPicture';
 import { PrecisionFillFeedback } from './PrecisionFillFeedback';
@@ -18,7 +19,7 @@ import { paperSize } from '../editor/document';
 import { usePaperView } from './usePaperView';
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
-import { ArrowLeft, Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Check, Eraser, ScanSearch, MousePointer2, Move, ZoomIn, Maximize2, RotateCw, RotateCcw, Minimize2, FlipHorizontal2, FlipVertical2, Copy, Trash2, BookOpen } from 'lucide-react';
+import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Check, Eraser, ScanSearch, MousePointer2, Move, ZoomIn, Maximize2, RotateCw, RotateCcw, Minimize2, FlipHorizontal2, FlipVertical2, Copy, Trash2, BookOpen } from 'lucide-react';
 import { PhaserGame } from '../PhaserGame';
 import { createEditorBridge } from '../editor/bridge';
 import type { EditorTool } from '../editor/bridge';
@@ -208,7 +209,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       <div className="wizard" aria-busy={loadingSticker}>
         {loadingSticker && <progress aria-label="Loading sticker" />}
         {stickerError && <button onClick={() => setStickerError(false)}>Could not load sticker. Tap to dismiss.</button>}
-        <header className="wizard-header">{picker === 'stickers' && category && <button className="icon-button" aria-label="Back to sticker categories" onClick={() => setCategoryId(null)}><ArrowLeft /></button>}<h2 id="art-picker-title" ref={pickerTitle} tabIndex={-1}>{picker === 'stickers' ? category?.title ?? 'Stickers' : picker === 'colors' ? 'Pick a color' : picker === 'brush' ? 'Brush' : 'Fill'}</h2><button className="icon-button" onClick={() => setPicker(null)} aria-label="Close picker"><X /></button></header>
+        <DialogHeader id="art-picker-title" headingRef={pickerTitle} title={picker === 'stickers' ? category?.title ?? 'Stickers' : picker === 'colors' ? 'Pick a color' : picker === 'brush' ? 'Brush' : 'Fill'} onClose={() => setPicker(null)} closeLabel="Close picker" back={picker === 'stickers' && category ? { label: 'Back to sticker categories', onClick: () => setCategoryId(null) } : undefined} />
         <div className="wizard-body">
 
           {picker === 'colors' && <ColorPicker color={color} onChoose={(value) => { setColor(value); bridge.send({ type: 'set-color', color: value }); setPicker(null); }} />}

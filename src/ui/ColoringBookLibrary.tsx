@@ -1,5 +1,6 @@
+import { DialogHeader } from './DialogHeader';
 import { useEffect, useRef, useState } from 'react';
-import { Download, Upload, X } from 'lucide-react';
+import { Download, Upload } from 'lucide-react';
 import { closeOnBackdrop } from './dialog';
 import { makeColoringBook, maxBookBytes, parseColoringBook } from '../editor/coloringBook';
 import type { ColoringBook } from '../editor/coloringBook';
@@ -30,7 +31,7 @@ export function ColoringBookLibrary({ open, onClose, onChange }: { open: boolean
   };
   return <dialog ref={dialog} className="setup-dialog settings-dialog workshop-dialog" aria-labelledby="book-library-title" onCancel={onClose} onClick={e => closeOnBackdrop(e, onClose)}>
     <div className="wizard">
-      <header className="wizard-header"><h2 id="book-library-title">Coloring Books</h2><button className="icon-button" aria-label="Close coloring books" onClick={onClose}><X /></button></header>
+      <DialogHeader id="book-library-title" title="Coloring Books" onClose={onClose} closeLabel="Close coloring books" />
       <p>Import a JSON book to edit its pages locally. Export the collection to share it or update the bundled pages later.</p>
       <label className="workshop-field">Book title<input value={title} maxLength={160} onChange={e => setTitle(e.target.value)} /></label>
       <div className="workshop-actions">

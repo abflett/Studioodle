@@ -86,3 +86,7 @@ behavior. Rebuild the desktop installer to test changed sources in the installed
 `editor/coloringBook.ts` defines versioned portable books, geometry-only page normalization, and stable-ID merging. `platform/localColoringBook.ts` stores workshop revisions in one atomic local-storage record, separate from saved pictures and custom templates. `app/coloringBookWorkshop.ts` composes bundled, custom and revised pages. The canonical shipped collection is `src/assets/coloringBook.json`; workshop JSON can replace it through `npm run books:install -- file.json` after review.
 
 The optional workshop UI requests an immutable document snapshot from the editor session rather than reading saved-picture storage or reaching into Phaser. Normal saves keep their existing behavior. Browser and native JSON exports are adapted in `platform/coloringBookOutput.ts`. See [the workflow and schema](COLORING-BOOKS.md).
+
+## Shared overlay headers
+
+All React overlays use `ui/DialogHeader.tsx` for title and close/back controls. Its styles keep the heading block and controls vertically centered, with labelled 44px targets, decorative SVG semantics, hover feedback, and visible keyboard focus. Native dialogs continue to own focus containment and restoration; destructive confirmations keep initial focus on the safe action. Keep future header changes in this component and its shared CSS rather than introducing per-overlay sizes.
