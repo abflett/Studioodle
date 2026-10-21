@@ -3,7 +3,7 @@ import { before, after, test } from 'node:test';
 import { createServer } from 'vite';
 let server, domain, createStore, pages;
 before(async () => {
-  server = await createServer({ configFile: false, server: { middlewareMode: true }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
+  server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
   domain = await server.ssrLoadModule('/src/editor/coloringBook.ts');
   ({ createLocalColoringBook: createStore } = await server.ssrLoadModule('/src/platform/localColoringBook.ts'));
   ({ coloringPages: pages } = await server.ssrLoadModule('/src/app/coloringPages.ts'));

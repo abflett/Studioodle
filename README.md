@@ -40,7 +40,7 @@ remain available as `desktop:dev` and `desktop:build`; they are not part of chec
 | --- | --- |
 | `src/app/` | Startup, page libraries, persistence composition and output workflows |
 | `src/editor/` | Documents, editing sessions, vector painting and SVG loading |
-| `src/game/` | Phaser input and viewport adapter |
+| `src/canvas/` | Browser pointer adapter and viewport renderer |
 | `src/ui/` | React screens, controls, gestures and styles |
 | `src/platform/` | Browser storage/output and Tauri integration |
 | `src/assets/` | Shipped sticker SVGs, interface assets and the canonical coloring book |
@@ -69,3 +69,5 @@ retired experiments; the current tree contains the supported implementation.
 ## License
 
 [Apache License 2.0](LICENSE).
+
+See [the architecture review](docs/ARCHITECTURE-REVIEW.md) for dependency decisions, optimization measurements and remaining priorities.

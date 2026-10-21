@@ -1,0 +1,118 @@
+# Architecture and optimization review
+
+Reviewed 21 October 2026, against the vector-only editor. This is an incremental
+architecture review, not a claim that every path has been profiled or that native
+platform behavior has been retested. Original art, sticker SVGs, bundled page data
+and the saved-document format are unchanged.
+
+## Changes implemented
+
+| Finding | Change and reason |
+| --- | --- |
+| Phaser only adapted input, ran the frame loop and drew selection; Canvas2D already rendered all artwork separately. | Removed Phaser and its WebGL canvas. A browser adapter uses Pointer Events, the existing session, and one visible Canvas2D display. No physics, game scenes, audio, tweens or sprite systems needed replacing. |
+| Idle editor performed frame-loop work and layout queries. | Coalesce edits/view changes into one requested frame. Continuous frames run only during an active spray gesture. Resize, scroll, React view updates and visibility changes invalidate display. |
+| Every paint maintenance job cloned every region. | Track dirty region IDs; send only those regions. Whole-region base fills need no boolean maintenance. Region access uses a Map instead of repeated array searches during rendering and brush application. |
+| Restored/replaced/deleted artwork could retain maintenance timers; late fills could notify detached editors. | Explicit disposal for sessions, artwork and paint. Undo, cancellation, deletion and unmount release their resources. Late fill results cannot run queued commands after disposal. |
+| Worker and fallback dispatch were duplicated in paint state. | A small worker-client module owns transport; both paths share the same geometry job implementation. No service container or new framework. |
+| Decoded sticker maps accumulated without a reuse limit. | LRU reuse cache capped at 24 definitions and 64 MiB of lookup arrays. Source text remains available for synchronous restoration after eviction. Active artwork retains its references. |
+| Late UI subscriptions could miss already-published state. | Replay the latest tool, focus and selection values on subscription. Commands remain synchronous. |
+| Metadata validation imported the asset-URL glob; Node tests opened unnecessary watchers/WebSockets. | Separate metadata from URL resolution. Disable watching and WebSockets in source-loader unit tests. |
+
+Pointer capture handles native drawing outside the page; virtual mouse and touch
+streams keep their existing UI routing. The selection outline shares the artwork
+canvas. Rendering still evaluates vector paths at display resolution; this does
+not introduce a raster paint engine.
+
+## Measurements and checks
+
+Baseline was cleanup commit `626cfa0`. Summing all production `dist/assets/*.js`
+files (including the worker and lazy chunks), the final comparison was:
+
+| Measure | Before | After | Reduction |
+| --- | ---: | ---: | ---: |
+| Minified JavaScript | 2,009,023 bytes | 636,861 bytes | about 68% |
+| Gzipped JavaScript | 533,566 bytes | 181,829 bytes | about 66% |
+
+These are build-output totals, not measured first-load transfer sizes; images,
+fonts and CSS are excluded. Gzip was calculated consistently over each JS file.
+The removed Phaser chunk alone was 1,374,128 minified bytes. The existing artwork
+quality/compression settings were preserved.
+
+Unit tests went from roughly 10?12 seconds during this session to roughly
+1.5 seconds after separating metadata and disabling test server infrastructure.
+This is a local observation, not a cross-machine benchmark. Browser first-fill
+measurements varied between runs; no stable fill-speed improvement is claimed.
+
+Verification covers persistence, schema validation, sessions, cancellation, undo,
+cache eviction, dirty worker jobs, stale asynchronous results and geometry. Browser
+regressions cover the actual worker, fills after brushes, seams, queued edits,
+zoomed pointer coordinates, idle rendering, frame coalescing, stationary spray,
+viewport allocation and disposal. Full-app browser input also verifies native mouse
+drawing, save/reopen and two-finger rollback through React's gesture routing.
+TypeScript, lint and the production web build are required. Native builds remain
+on request; an installed desktop application still needs its usual platform check.
+
+## Dependency decisions
+
+| Technology | Decision | Rationale |
+| --- | --- | --- |
+| React / React DOM | Keep | Owns dialogs, settings, navigation and responsive controls. Replacing it would rebuild useful state/lifecycle/accessibility infrastructure with little demonstrated benefit. Drawing stays outside React renders. |
+| Phaser | Remove | Its remaining responsibilities were small browser adapters; the game framework and extra WebGL surface outweighed their value here. Future animations alone do not require a game engine. Reassess only for a concrete game-style feature. |
+| Clipper2 | Keep | Fixed-precision polygon operations are central to stable vector brush compaction and bucket topology. A handwritten replacement would add substantial numerical risk. |
+| svg-pathdata | Keep | Normalizes SVG curves for polygon geometry while retaining exact SVG curves for display clipping. This is substantive parser work. |
+| Tauri | Keep | Supplies the desktop shell, window state, native save dialogs and printing. Browser workflows remain usable independently. No native build or shell migration was performed. |
+| Lucide | Keep | Supplies consistent React icons; named imports allow the production build to remove unused icons. Recreating the icon set would be maintenance churn. |
+| Paper.js | Keep offline only | Used for authored curve/component cleanup. It remains a development dependency and is not part of the runtime painting engine. |
+| Vite / TypeScript / ESLint / Node tests | Keep | Appropriate build, type, boundary and test tooling. No extra test framework or state library is needed. |
+
+## Boundaries worth keeping
+
+The useful direction is UI/composition -> editor session/contracts -> artwork and
+geometry, with platform adapters outside the editing rules. ESLint enforces the
+editor/canvas import boundaries. A static runtime-import review found no cycles.
+Canvas2D/Path2D are intentional editor dependencies; making the whole artwork model
+platform-neutral would be a separate portability feature, not an automatic SOLID win.
+
+Small save/change ports and discriminated commands already provide useful dependency
+inversion. Keep concrete classes where there is one implementation. Avoid one-method
+repository wrappers, generic managers, deep inheritance and an interface per class.
+The session and artwork own different responsibilities; the browser adapter does
+not mutate paint or reach into persistence directly.
+
+## Next improvements, in order of evidence needed
+
+1. **Undo memory on large paintings.** History is capped at 50 full document
+   snapshots, not by bytes. Measure large drawings; consider immutable region-level
+   sharing or a memory budget before building a command/delta undo system. This is
+   the strongest remaining memory concern.
+2. **Complex pointer-time clipping.** Brush intersection and occlusion subtraction
+   still run on the main thread; compaction and bucket topology run in the worker.
+   Profile worst-case stickers first. Candidate improvements are a spatial region
+   index and batching/coalesced pointer samples, while preserving immediate feedback.
+3. **Worker contention.** One shared worker serializes jobs from different surfaces.
+   Dirty jobs reduce the work, but priority/coalescing or cancellable jobs may help
+   under sustained painting. Do not add a worker pool without a repeatable case.
+4. **Live-document memory.** The 64 MiB limit applies only to cached lookup arrays.
+   Active surfaces, flattened geometry, Path2D objects, retained SVG text and undo
+   are additional memory. The full shipped SVG catalog is about 24 MB on disk; source
+   strings could use more in memory. Avoid presenting the cache limit as an app limit.
+5. **UI component size.** EditorPreview and SelectionScreen coordinate several
+   workflows but are still only about 20 KB each. Extract cohesive workflows when
+   touched by features, rather than splitting JSX into arbitrary tiny components.
+   Native dialogs and the shared DialogHeader are useful existing foundations.
+6. **Persistence and output.** Synchronous localStorage/JSON snapshots are reasonable
+   for the current manual offline app. Profile quota and large-save behavior before
+   moving to IndexedDB. PNG export and current print output remain rasterized from
+   vectors; true SVG/PDF output would be a distinct feature.
+
+The two-second splash minimum is an explicit presentation choice, not a rendering
+bottleneck. Existing painting quality and sticker conversion were not retuned in
+this pass. Manual stylus, multi-monitor DPI, pointer-lock and installed-platform
+checks remain valuable beyond the automated mouse/touch coverage.
+
+## Browser API references
+
+The replacement uses standard [Pointer Events capture](https://developer.mozilla.org/en-US/docs/Web/API/Element/setPointerCapture)
+and [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame).
+Phaser's [pointer API](https://docs.phaser.io/api-documentation/class/input-pointer)
+provides mouse/touch adaptation, which was its main remaining use in this repository.

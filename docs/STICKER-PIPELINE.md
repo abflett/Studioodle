@@ -89,7 +89,7 @@ paintable space. Temporary masks and propagation scratch are released.
 
 IDs use one byte where possible, otherwise two (four at the maximum ID limit), plus
 compact ink flags. Instances share the immutable lookup and lazy boolean geometry.
-Original SVG curves clip rendering. Source text has a bounded cache; decoded
+Original SVG curves clip rendering. Source text is retained up to the shipped catalog (about 24 MB of SVG files); decoded
 interaction definitions are released when leaving the editor.
 
 [Vector painting](VECTOR-PAINT.md) explains brush geometry, worker merging,

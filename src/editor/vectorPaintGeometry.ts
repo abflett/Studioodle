@@ -1,7 +1,7 @@
 import { paintStyleKey } from './vectorPaintTypes';
 import polygonClipping from './polygonGeometry';
 import type { MultiPolygon, Pair } from './polygonGeometry';
-import type { PaintBlob, VectorPaintRegion } from './vectorPaintTypes';
+import type { PaintBlob, PaintJob, VectorPaintRegion } from './vectorPaintTypes';
 import type { FillOptions } from './toolOptions';
 
 const brushGrid = 64;
@@ -96,4 +96,11 @@ export function containsGeometry(geometry: MultiPolygon, point: Pair) {
         }
         return inside;
     });
+}
+
+/** Identical job semantics in the browser worker and the non-worker test fallback. */
+export function runPaintJob(job: PaintJob) {
+    return job.fill
+        ? [filledRegion(job.regions[0]!, job.fill.color, job.fill.point, job.fill.pattern, job.fill.boundary)]
+        : job.regions.map(compactRegion);
 }

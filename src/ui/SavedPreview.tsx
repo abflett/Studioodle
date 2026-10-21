@@ -41,7 +41,7 @@ export function SavedPreview({ picture }: { picture: EditorSetup }) {
       setResult({ picture, failed: false });
     }).catch(() => { if (active) setResult({ picture, failed: true }); });
     }); });
-    return () => { active = false; cancelAnimationFrame(frame); observer.disconnect(); };
+    return () => { active = false; cancelAnimationFrame(frame); observer.disconnect(); artwork?.dispose(); };
   }, [picture, width, height]);
   return <span className="saved-preview preview-frame" aria-busy={!ready && !failed} style={{ background: picture.background, aspectRatio: `${width} / ${height}`, width: `min(100%, calc(var(--preview-height, 240px) * ${width / height}))`, height: 'auto' }}>
     <canvas ref={canvas} width={width} height={height} aria-hidden="true" style={{ visibility: ready ? 'visible' : 'hidden' }} />

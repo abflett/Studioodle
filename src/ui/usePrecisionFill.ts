@@ -11,7 +11,7 @@ type Options = {
   fill: (client: Point) => void;
 };
 
-/** Own the bucket gesture above Phaser so coordinates follow the zoomed view. */
+/** Own the bucket gesture above drawing input so coordinates follow the zoomed view. */
 export function usePrecisionFill(options: Options) {
   const latest = useLatest(options);
   const active = useRef<Gesture | undefined>(undefined);

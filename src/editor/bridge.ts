@@ -36,6 +36,7 @@ export function createEditorBridge() {
     },
     onFocus(listener: (id: string | undefined) => void) {
       focusListeners.add(listener);
+      if (focusPublished) listener(previousFocus);
       return () => { focusListeners.delete(listener); };
     },
     toolChanged(tool: EditorTool) {
@@ -45,6 +46,7 @@ export function createEditorBridge() {
     },
     onTool(listener: (tool: EditorTool) => void) {
       toolListeners.add(listener);
+      if (previousTool !== undefined) listener(previousTool);
       return () => { toolListeners.delete(listener); };
     },
     selectionChanged(id: string | undefined, order: SelectionOrder) {
@@ -54,6 +56,7 @@ export function createEditorBridge() {
     },
     onSelection(listener: (id: string | undefined, order: SelectionOrder) => void) {
       selectionListeners.add(listener);
+      if (previousSelection) listener(previousSelection.id, { ...previousSelection.order });
       return () => { selectionListeners.delete(listener); };
     },
     send(command: EditorCommand) { for (const listener of listeners) listener(command); },

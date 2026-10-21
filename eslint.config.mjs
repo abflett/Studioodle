@@ -22,12 +22,12 @@ export default tseslint.config(
     rules: {
       'no-restricted-imports': ['error', { patterns: [
         'react', 'react/*', 'phaser', '@tauri-apps/*',
-        '../app/*', '../ui/*', '../game/*', '../platform/*',
+        '../app/*', '../ui/*', '../canvas/*', '../platform/*',
       ] }],
     },
   },
   {
-    files: ['src/game/**/*.ts'],
+    files: ['src/canvas/**/*.ts'],
     rules: {
       'no-restricted-imports': ['error', { patterns: ['../app/*', '../../app/*', '../ui/*', '../../ui/*', '../platform/*', '../../platform/*'] }],
     },

@@ -1,12 +1,27 @@
 import type { StickerKind } from './stickerKinds';
 import type { VectorDefinition } from './vectorDefinition';
 import { decodeSvgDefinition } from './svgDefinition';
-import { vectorStickerUrl } from './vectorCatalog';
+import { vectorStickerUrl } from './stickerUrls';
 
 const sources = new Map<StickerKind, string>();
 const definitions = new Map<StickerKind, VectorDefinition>();
 const pending = new Map<StickerKind, Promise<void>>();
+// Keep lightweight source text for synchronous re-decoding. The catalog bounds
+// this cache; expensive lookup arrays have a separate LRU budget. Live artwork
+// retains its own references when a definition leaves this reuse cache.
 const maxCached = 24;
+const maxLookupBytes = 64 * 1024 * 1024;
+let lookupBytes = 0;
+
+function cacheDefinition(kind: StickerKind, definition: VectorDefinition) {
+  definitions.set(kind, definition);
+  lookupBytes += definition.typedArrayBytes;
+  while (definitions.size > maxCached || lookupBytes > maxLookupBytes) {
+    const oldest = definitions.keys().next().value!;
+    lookupBytes -= definitions.get(oldest)!.typedArrayBytes;
+    definitions.delete(oldest);
+  }
+}
 
 export async function prepareStickers(kinds: Iterable<StickerKind | 'canvas'>) {
   await Promise.all([...new Set(kinds)].filter((kind): kind is StickerKind => kind !== 'canvas').map(async kind => {
@@ -24,7 +39,6 @@ export async function prepareStickers(kinds: Iterable<StickerKind | 'canvas'>) {
     const task = loader().then(text => {
       sources.set(kind, text);
       vectorDefinition(kind);
-      while (sources.size > maxCached) sources.delete(sources.keys().next().value!);
     }).finally(() => pending.delete(kind));
     pending.set(kind, task);
     return task;
@@ -34,15 +48,14 @@ export async function prepareStickers(kinds: Iterable<StickerKind | 'canvas'>) {
 export function vectorDefinition(kind: StickerKind): VectorDefinition {
   const cached = definitions.get(kind);
   if (cached) {
-    const source = sources.get(kind);
-    if (source) { sources.delete(kind); sources.set(kind, source); }
+    definitions.delete(kind); definitions.set(kind, cached);
     return cached;
   }
   const source = sources.get(kind);
   if (!source) throw new Error(`Sticker is not prepared: ${kind}`);
   const definition = decodeSvgDefinition(source);
-  definitions.set(kind, definition);
+  cacheDefinition(kind, definition);
   return definition;
 }
 
-export function releaseStickerDefinitions() { definitions.clear(); }
+export function releaseStickerDefinitions() { definitions.clear(); lookupBytes = 0; }

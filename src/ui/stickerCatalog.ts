@@ -2,7 +2,7 @@ import { Shapes, Flower2, CloudSun, Apple, House, UserRound, Bird, Mountain, Gif
 import type { LucideIcon } from 'lucide-react';
 import type { StickerKind } from '../editor/document';
 import librarySource from '../assets/assetLibrary.json?raw';
-import { vectorStickerUrl } from '../editor/vectorCatalog';
+import { vectorStickerUrl } from '../editor/stickerUrls';
 const library = JSON.parse(librarySource) as { id: StickerKind; title: string; category: string; sortOrder: number }[];
 
 type StickerItem = { kind: StickerKind; title: string; icon: LucideIcon; preview?: string };

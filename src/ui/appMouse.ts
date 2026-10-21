@@ -118,7 +118,7 @@ function installAppMouse() {
     if (!active) return;
     active.target.closest('button')?.classList.remove('app-mouse-pressed');
     pointer(active.target, 'pointercancel', lastEvent);
-    // Phaser listens to compatibility mouse events; release without a click.
+    // Release compatibility mouse listeners without synthesizing a click.
     if (active.compatibility) mouse(active.target, 'mouseup', lastEvent);
   };
   const lockChange = () => {

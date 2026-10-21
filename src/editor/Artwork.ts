@@ -63,6 +63,8 @@ export class Artwork {
         if(doc.version!==5)throw Error('Unsupported drawing format; start a new picture.');
         return new Artwork(doc.width,doc.height,doc.surfaces,definitionFor);
     }
+    get size() { return { width: this.width, height: this.height }; }
+    dispose() { for (const surface of this.surfaces) surface.vectorPaint.dispose(); }
     async compactPaint(){await Promise.all(this.surfaces.map(surface=>surface.vectorPaint.settled()));}
     serialize():ArtworkDocument{return{version:5,width:this.width,height:this.height,surfaces:this.surfaces.map(surface=>surface.serialize())};}
     add(kind: StickerKind, color: number, point: Point) {
@@ -178,7 +180,11 @@ export class Artwork {
         return true;
     }
     remove(id: string) {
-        this.surfaces = this.surfaces.filter((s) => s.data.kind === 'canvas' || s.data.id !== id);
+        this.surfaces = this.surfaces.filter(surface => {
+            if (surface.data.kind === 'canvas' || surface.data.id !== id) return true;
+            surface.vectorPaint.dispose();
+            return false;
+        });
         this.overlapCache.clear();
     }
     private index(point:Point){const x=Math.floor(point.x),y=Math.floor(point.y);return x<0||y<0||x>=this.width||y>=this.height?-1:y*this.width+x;}

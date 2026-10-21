@@ -20,7 +20,7 @@ import { usePaperView } from './usePaperView';
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Check, Eraser, ScanSearch, MousePointer2, Move, ZoomIn, Maximize2, RotateCw, RotateCcw, Minimize2, FlipHorizontal2, FlipVertical2, Copy, Trash2, BookOpen } from 'lucide-react';
-import { PhaserGame } from '../PhaserGame';
+import { EditorCanvas } from './EditorCanvas';
 import { createEditorBridge } from '../editor/bridge';
 import type { EditorTool } from '../editor/bridge';
 import type { EditorSetup } from '../editor/setup';
@@ -201,7 +201,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     }}>
       <PrecisionFillFeedback aim={precisionFill.aim} magnified={precisionFill.magnified} releasedAim={precisionFill.releasedAim} />
       <div className="canvas-envelope" style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
-        <PhaserGame focused={!!focused} bridge={bridge} setup={setup} zoom={zoom} offsetX={position.x} offsetY={position.y} />
+        <EditorCanvas focused={!!focused} bridge={bridge} setup={setup} zoom={zoom} offsetX={position.x} offsetY={position.y} />
       </div>
     </section>
     {saveStatus !== 'idle' && <div className="save-notice" role="status"><span>{saveStatus === 'saved' ? 'Saved to Your pictures' : 'Could not save. Device storage may be full or unavailable.'}</span><button className="icon-button" aria-label="Dismiss save message" onClick={() => setSaveStatus('idle')}><X /></button></div>}

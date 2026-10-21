@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 let server, createRepository, createBridge, createColoringPage, outputTitle, EditorSession;
 before(async () => {
-  server = await createServer({ configFile: false, server: { middlewareMode: true }, appType: 'custom', plugins: [{
+  server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', plugins: [{
     name: 'session-artwork-double', enforce: 'pre',
     resolveId(source, importer) {
       if (source === './Artwork' && importer?.replaceAll('\\', '/').endsWith('/src/editor/EditorSession.ts'))
@@ -262,4 +262,24 @@ test('current vector pictures round-trip and obsolete formats are ignored', () =
   assert.equal(loaded.length,2);
   assert.deepEqual(loaded.find(p=>p.id==='vector'),vector);
   assert.deepEqual(loaded.find(p=>p.id==='first'),first);
+});
+
+
+test('late UI subscriptions receive the current session state', () => {
+ const bridge=createBridge();
+ bridge.toolChanged('select');bridge.focusChanged('moon');bridge.selectionChanged('moon',{forward:false,backward:true});
+ let tool,focus,selection;
+ bridge.onTool(value=>{tool=value;});bridge.onFocus(value=>{focus=value;});bridge.onSelection((id,order)=>{selection={id,order};});
+ assert.equal(tool,'select');assert.equal(focus,'moon');assert.deepEqual(selection,{id:'moon',order:{forward:false,backward:true}});
+});
+
+test('disposing a session drops queued commands and late asynchronous fill notifications', async () => {
+ let notifications=0,complete,saves=0;
+ const editor=new EditorSession(fixture(),{save(){saves++;},changed(){notifications++;}});
+ editor.artwork.fill=()=>new Promise(resolve=>{complete=resolve;});
+ editor.execute({type:'fill-at',point:{x:2,y:2}});
+ editor.execute({type:'save',onComplete:()=>{throw Error('Disposed save must not run');}});
+ const before=notifications;editor.dispose();complete(true);
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(notifications,before);assert.equal(saves,0);
 });

@@ -37,3 +37,9 @@ The browser suite begins with a fresh-worker ink test on a blank A4 canvas, befo
 The seam regression leaves a pale pocket beside dark ink, purple fill and dark background, then checks five output scales (0.75–8x) for leaked pale pixels, retained antialiasing and unchanged outer paint bounds. `node scripts/test-browser.mjs --debugger` also attaches the browser debugger to the page and worker with async stack tracking; this does not emulate every DevTools panel or setting.
 
 Runtime painting is independent of offline source conversion. See [the sticker pipeline](STICKER-PIPELINE.md) for current source authoring and region cleanup.
+
+Paint maintenance is indexed by region ID and submits only dirty regions. Solid
+whole-region fills avoid worker geometry entirely. The shared `paintWorker.ts`
+client owns transport, and both execution paths call the same `runPaintJob`.
+Closing/deleting/replacing artwork cancels delayed maintenance and rejects stale
+results; undo snapshots remain independent.

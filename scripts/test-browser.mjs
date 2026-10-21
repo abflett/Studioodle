@@ -60,6 +60,9 @@ try {
   const vectorPaint = await evaluate("import('/tests/browser/vector-paint.ts').then(m => m.checkVectorPaint())");
   if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   if(vectorPaint.diagnosticPng){await fs.writeFile('work/tests/moon-vector-paint.png',Buffer.from(vectorPaint.diagnosticPng.split(',')[1],'base64'));delete vectorPaint.diagnosticPng;}
+  const canvasEditor = await evaluate("import('/tests/browser/canvas-editor.ts').then(m => m.checkCanvasEditor())");
+  console.log('Canvas editor:', JSON.stringify(canvasEditor));
+  result.canvasEditor = canvasEditor;
   const seams=await evaluate("import('/tests/browser/seams.ts').then(m => m.checkPaintSeams())");
   await fs.writeFile('work/tests/paint-seams.png',Buffer.from(seams.diagnosticPng.split(',')[1],'base64'));delete seams.diagnosticPng;
   console.log('Paint seams:',JSON.stringify(seams));
@@ -68,6 +71,45 @@ try {
   result.vectorPaint=vectorPaint;
   result.firstFill=firstFill;
   if(result.diagnosticPng){await fs.writeFile('work/tests/moon-belt-runtime.png',Buffer.from(result.diagnosticPng.split(',')[1],'base64'));delete result.diagnosticPng;}
+  // Real React composition and trusted browser input, including the touch router.
+  const waitFor = async expression => {
+    for (let attempt = 0; attempt < 100; attempt++) {
+      if (await evaluate(expression)) return;
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+    throw Error(`App interaction timed out: ${expression}`);
+  };
+  await waitFor('!!document.querySelector(".choice-blank")');
+  await evaluate('document.querySelector(".choice-blank").click()');
+  await waitFor('!!document.querySelector("dialog[open] .wizard-footer .go-button")');
+  await evaluate('document.querySelector("dialog[open] .wizard-footer .go-button").click()');
+  await waitFor('!!document.querySelector("[aria-label^=Canvas]")');
+  await evaluate('document.querySelector("dialog[open] .wizard-footer .go-button").click()');
+  await waitFor('!!document.querySelector(".canvas-host canvas")');
+  await evaluate('document.querySelector("button[aria-label=Brush]").click()');
+  const at = await evaluate('(()=>{const b=document.querySelector(".canvas-host").getBoundingClientRect();return {x:b.left+b.width*.4,y:b.top+b.height*.4};})()');
+  await cdp('Input.dispatchMouseEvent', {type:'mousePressed',...at,button:'left',buttons:1,clickCount:1});
+  await cdp('Input.dispatchMouseEvent', {type:'mouseMoved',x:at.x+40,y:at.y+20,buttons:1});
+  await cdp('Input.dispatchMouseEvent', {type:'mouseReleased',x:at.x+40,y:at.y+20,button:'left',buttons:0,clickCount:1});
+  await evaluate('document.querySelector("button[aria-label^=Save]").click()');
+  await waitFor('!!document.querySelector(".choice-blank")');
+  const savedDocument = await evaluate('JSON.parse(localStorage.getItem(Object.keys(localStorage).find(key=>key.startsWith("studioodle.v5.picture.")))).document');
+  if (!savedDocument.surfaces[0].vectorPaint?.regions[0]?.blobs.length) throw Error('Trusted mouse drawing was not saved');
+  await evaluate('document.querySelector(".previous-picture").click()');
+  await waitFor('!!document.querySelector(".canvas-host canvas")');
+  await evaluate('document.querySelector("button[aria-label=Brush]").click()');
+  const touchAt = await evaluate('(()=>{const b=document.querySelector(".canvas-host").getBoundingClientRect();return {x:b.left+b.width*.6,y:b.top+b.height*.6};})()');
+  await cdp('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...touchAt,id:1}]});
+  await cdp('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:touchAt.x+15,y:touchAt.y,id:1}]});
+  await cdp('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:touchAt.x+15,y:touchAt.y,id:1},{x:touchAt.x+50,y:touchAt.y+30,id:2}]});
+  await cdp('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await evaluate('document.querySelector("button[aria-label^=Save]").click()');
+  await waitFor('!!document.querySelector(".choice-blank")');
+  const afterPinch = await evaluate('JSON.parse(localStorage.getItem(Object.keys(localStorage).find(key=>key.startsWith("studioodle.v5.picture.")))).document');
+  if(JSON.stringify(afterPinch)!==JSON.stringify(savedDocument))throw Error('Two-finger gesture did not roll back its partial stroke');
+  result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true};
+  const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
+  await fs.writeFile('work/tests/app-after-reopen.png',Buffer.from(screenshot.data,'base64'));
   await fs.writeFile('work/tests/region-coverage-results.json', JSON.stringify(result, null, 2));
   console.log(JSON.stringify(result, null, 2));
 

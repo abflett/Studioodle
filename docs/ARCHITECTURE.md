@@ -8,15 +8,18 @@ base repository, or interface for every class.
 
 - **`EditorSession`** owns active tools, selection/focus, gesture transactions,
   undo history and command execution. It receives primitive points/pointer IDs,
-  a save function and a change callback. It never imports Phaser, React, storage
+  a save function and a change callback. It never imports React, storage
   adapters or Tauri. Undo remains capped at 50 snapshots; a gesture records one
   snapshot, and cancellation restores both artwork and history.
 - **`Artwork`** owns surface transforms, paint ownership, hit testing, fills,
   ordering and serialization. It uses browser Canvas2D and prepared vector
   definitions. It is rendering-aware, not a server-safe pure domain model.
-- **`StudioScene`** translates Phaser pointers to session calls, draws the
-  selection rectangle, publishes session state, and owns rendering cleanup.
-  **`PhaserGame`** binds the application repository at the React/engine boundary.
+- **`canvas/CanvasEditor`** translates DOM pointer events to session calls and
+  publishes session state. **`CanvasViewport`** renders artwork and selection into
+  one display canvas, allocating only the visible workspace at device resolution.
+  **`ui/EditorCanvas`** binds the repository and React lifecycle. Display changes
+  coalesce into one animation frame; only an active spray needs continuous frames.
+  Resize, view movement, scrolling and visibility changes invalidate the display.
 - **`bridge.ts`** is the typed UI command/event boundary. Notifications are
   deduplicated by value so paint redraws do not repeatedly update React with
   unchanged tool, focus or selection state. Command delivery stays synchronous.
@@ -33,20 +36,20 @@ base repository, or interface for every class.
   The browser print window must open synchronously from the click handler.
 
 The practical dependency direction is UI/composition -> session/contracts ->
-artwork/document logic. Platform implementations depend on contracts. The Phaser
+artwork/document logic. Platform implementations depend on contracts. The canvas
 adapter receives its save dependency rather than constructing storage itself.
 
 ## State ownership
 
 React owns navigation, settings, dialogs, page pan/zoom and temporary bucket zoom.
-The session owns editable picture state. The bridge carries commands, not Phaser
+The session owns editable picture state. The bridge carries commands, not renderer
 objects. `useLatest` exposes committed callbacks to long-lived DOM listeners;
 do not mutate callback refs during render. Modal and pointer listener cleanup must
 remain symmetric, including React development effect replay.
 
 Current picture keys are `studioodle.v5.picture.<id>`; custom templates use `studioodle.v5.coloring.<id>`. Documents use vector-only format 5. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
 
-`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges coverage without changing undo snapshots. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no instance paint arrays or canvases. Shared lookup arrays support only hit testing. See [Vector Painting](VECTOR-PAINT.md).
+`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges coverage without changing undo snapshots. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no instance paint arrays or canvases. Shared lookup arrays support only hit testing. See [Vector Painting](VECTOR-PAINT.md).
 
 ## Adding features
 
@@ -71,20 +74,36 @@ session save, undo, focus and gesture-cancellation rules. Session tests use a sm
 in-memory artwork double; they do not test Canvas2D rendering. The browser regression exercises the real vector paint engine and its worker.
 `npm run check` also runs TypeScript, ESLint and the production web build.
 Browser regressions live in `tests/browser/` and run with `npm run test:browser`.
-Lint excludes generated output and prevents editor/Phaser
+Lint excludes generated output and prevents editor/canvas
 modules from importing application composition or platform adapters.
 
 For UI/engine changes, also manually review drawing, fills, focus, transforms,
 undo, gesture cancellation, save/reopen, print/export, and desktop close/reopen as
 applicable. Automated checks do not establish visual correctness or native-dialog
-behavior. Rebuild the desktop installer to test changed sources in the installed app.
+behavior. Build the desktop installer only when requested to test changes in the installed app.
 
 ## Coloring book authoring
 
 `editor/coloringBook.ts` defines versioned portable books, geometry-only page normalization, and stable-ID merging. `platform/localColoringBook.ts` stores workshop revisions in one atomic local-storage record, separate from saved pictures and custom templates. `app/coloringBookWorkshop.ts` composes bundled, custom and revised pages. The canonical shipped collection is `src/assets/coloringBook.json`; workshop JSON can replace it through `npm run books:install -- file.json` after review.
 
-The optional workshop UI requests an immutable document snapshot from the editor session rather than reading saved-picture storage or reaching into Phaser. Normal saves keep their existing behavior. Browser and native JSON exports are adapted in `platform/coloringBookOutput.ts`. See [the workflow and schema](COLORING-BOOKS.md).
+The optional workshop UI requests an immutable document snapshot from the editor session rather than reading saved-picture storage or reaching into the canvas adapter. Normal saves keep their existing behavior. Browser and native JSON exports are adapted in `platform/coloringBookOutput.ts`. See [the workflow and schema](COLORING-BOOKS.md).
 
 ## Shared overlay headers
 
 All React overlays use `ui/DialogHeader.tsx` for title and close/back controls. Its styles keep the heading block and controls vertically centered, with labelled 44px targets, decorative SVG semantics, hover feedback, and visible keyboard focus. Native dialogs continue to own focus containment and restoration; destructive confirmations keep initial focus on the safe action. Keep future header changes in this component and its shared CSS rather than introducing per-overlay sizes.
+
+## Resource lifetime
+
+Undo/cancellation disposes superseded artwork; deletion disposes the removed
+surface. Closing an editor disconnects commands, observers and pointer listeners,
+cancels display/paint timers, and ignores late asynchronous fill results. Worker
+transport is shared for the application lifetime rather than restarted per stroke.
+
+The definition reuse cache holds at most 24 entries and 64 MiB of typed lookup
+data. Eviction does not invalidate live artwork. Source SVG text is retained for
+synchronous decoding after eviction; total text is bounded by the shipped catalog.
+The limit covers cached lookups, not live documents, Path2D objects, geometry or undo.
+
+State subscriptions replay the latest published state, so mounting React listeners
+after the browser adapter cannot miss the initial selection/tool/focus state.
+See [the architecture review](ARCHITECTURE-REVIEW.md) for measurements and remaining work.

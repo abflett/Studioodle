@@ -13,7 +13,7 @@ Sticker selection loads only the chosen definition before placing it. Failures r
 the selection view with a dismissible message rather than opening an incomplete scene.
 
 Artwork owns surface paint, regions, placement, order, serialization and compositing.
-Canvas2D renders vector ink and vector paint at display resolution. `EditorSession` handles editing commands, undo and gesture transactions; Phaser adapts
+Canvas2D renders vector ink and vector paint at display resolution. `EditorSession` handles editing commands, undo and gesture transactions; the browser canvas adapter handles
 pointer input and draws the selection overlay. React positions the page and controls Fit-relative zoom.
 
 Home saves the editable version-5 document before returning; autosave runs every minute.

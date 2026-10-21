@@ -14,30 +14,27 @@ type Options = {
   cancelInput: () => void;
 };
 
-/** Own touch input before Phaser: one finger draws, two manipulate the view. */
+/** Own touch input before editor input: one finger draws, two manipulate the view. */
 export function useCanvasGestures(options: Options) {
   const latest = useLatest(options);
   useEffect(() => {
     const element = options.viewport.current;
     if (!element) return;
-    let single: { id: number; target: Element; point: Point; compatibility: boolean } | undefined;
+    let single: { id: number; target: Element; point: Point } | undefined;
     let multi = false;
     let pinch: { view: View; center: Point; distance: number; ids: [number, number] } | undefined;
     const point = (touch: Touch): Point => ({ x: touch.clientX, y: touch.clientY });
     const emit = (target: Element, type: string, at: Point, down: boolean) => {
       const init = { bubbles: true, cancelable: true, composed: true, clientX: at.x, clientY: at.y, button: 0, buttons: down ? 1 : 0 };
-      return target.dispatchEvent(type.startsWith('pointer')
-        ? new PointerEvent(type, { ...init, pointerId: appMousePointerId, pointerType: 'touch', isPrimary: true, pressure: down ? .5 : 0 })
-        : new MouseEvent(type, init));
+      target.dispatchEvent(new PointerEvent(type, { ...init, pointerId: appMousePointerId, pointerType: 'touch', isPrimary: true, pressure: down ? .5 : 0 }));
     };
     const cancelSingle = () => {
       const active = single;
       single = undefined;
       if (!active) return;
       emit(active.target, 'pointercancel', active.point, false);
-      // Roll back a partial stroke/drag before releasing the compatibility mouse.
+      // Roll back partial drawing even when a parent gesture consumed cancellation.
       latest.current.cancelInput();
-      if (active.compatibility) emit(active.target, 'mouseup', active.point, false);
     };
     const sample = (touches: Touch[]) => {
       const a = touches[0], b = touches[1];
@@ -69,15 +66,13 @@ export function useCanvasGestures(options: Options) {
         const touch = touches[0];
         if (!touch || !(touch.target instanceof Element)) return;
         const at = point(touch), target = touch.target;
-        const compatibility = emit(target, 'pointerdown', at, true);
-        single = { id: touch.identifier, target, point: at, compatibility };
-        if (compatibility) emit(target, 'mousedown', at, true);
+        single = { id: touch.identifier, target, point: at };
+        emit(target, 'pointerdown', at, true);
       } else if (single && event.type === 'touchmove') {
         const touch = touches.find(item => item.identifier === single?.id);
         if (!touch) { cancelSingle(); return; }
         single.point = point(touch);
         emit(single.target, 'pointermove', single.point, true);
-        if (single.compatibility) emit(single.target, 'mousemove', single.point, true);
       } else if (single && event.type === 'touchend') {
         const active = single;
         const touch = Array.from(event.changedTouches).find(item => item.identifier === active.id);
@@ -85,7 +80,6 @@ export function useCanvasGestures(options: Options) {
         single = undefined;
         const at = point(touch);
         emit(active.target, 'pointerup', at, false);
-        if (active.compatibility) emit(active.target, 'mouseup', at, false);
       }
     };
     const suppressPointer = (event: PointerEvent) => {

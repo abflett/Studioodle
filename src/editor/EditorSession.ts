@@ -1,5 +1,5 @@
 import { Artwork } from './Artwork';
-import { preparePaintWorker } from './VectorPaint';
+import { preparePaintWorker } from './paintWorker';
 import { StrokeSmoothing } from './strokeSmoothing';
 import { defaultBrush, defaultFill } from './toolOptions';
 import type { EditorCommand, EditorTool } from './bridge';
@@ -14,9 +14,10 @@ export type EditorSessionPorts = {
   changed: () => void;
 };
 
-/** Editing rules and gesture transactions; no React, Phaser, storage or window APIs. */
+/** Editing rules and gesture transactions; no UI framework, storage or window APIs. */
 export class EditorSession {
   private document: Artwork;
+  private disposed = false;
   private history: ArtworkDocument[] = [];
   private pending?: ArtworkDocument;
   private color: number;
@@ -55,6 +56,7 @@ export class EditorSession {
   }
 
   execute(command: EditorCommand) {
+    if (this.disposed) return;
     if(this.defer(()=>this.execute(command)))return;
     const size = paperSize(this.setup.format, this.setup.size);
     if (command.type === 'snapshot') {
@@ -72,7 +74,7 @@ export class EditorSession {
     if (command.type === 'cancel-input') {
       const before = this.gestureUndo;
       if (before) {
-        this.document = Artwork.restore(before.document); this.document.setFocus(this.focused);
+        this.document.dispose(); this.document = Artwork.restore(before.document); this.document.setFocus(this.focused);
         this.history = before.history; this.selected = before.selected; this.tool = before.tool;
         this.focusHistoryStart = before.focusHistoryStart;
       }
@@ -87,7 +89,7 @@ export class EditorSession {
     if (command.type === 'fill-at' && this.tool === 'bucket') {
       const before=this.document.serialize();
       const result=this.document.fill(command.point,this.color,this.fillOptions);
-      const finish=(changed:boolean)=>{if(changed){this.pending=before;this.recordChange();}this.notifyChanged();};
+      const finish=(changed:boolean)=>{if(this.disposed)return;if(changed){this.pending=before;this.recordChange();}this.notifyChanged();};
       if(typeof result==='boolean')finish(result);
       else this.pendingFill=result.then(finish).catch(error=>console.error('Vector bucket fill failed; paint was preserved.',error)).finally(()=>{
         this.pendingFill=undefined;
@@ -128,7 +130,7 @@ export class EditorSession {
     }
     if (command.type === 'undo' && (!this.focused || this.history.length > this.focusHistoryStart)) {
       const snapshot = this.history.pop();
-      if (snapshot) this.document = Artwork.restore(snapshot);
+      if (snapshot) { this.document.dispose(); this.document = Artwork.restore(snapshot); }
       this.document.setFocus(this.focused);
       this.selected = this.focused;
       if (this.tool === 'select') this.tool = 'bucket';
@@ -147,6 +149,16 @@ export class EditorSession {
     const document=this.document.serialize();
     return { id: this.setup.id!, title: this.setup.title, format: this.setup.format, size: paperSize(this.setup.format, this.setup.size),
       background: this.setup.background, leafColor: this.setup.leafColor, version: document.version, updatedAt: Date.now(), document };
+  }
+  get needsAnimation() { return !this.disposed && !this.pendingFill && this.tool === 'brush' && this.brushOptions.kind === 'spray' && this.activePointer !== undefined; }
+  dispose() {
+    this.disposed = true;
+    this.deferred = [];
+    this.history = [];
+    this.gestureUndo = undefined;
+    this.stroke = undefined; this.previous = undefined; this.drag = undefined;
+    this.activePointer = undefined; this.pending = undefined;
+    this.document.dispose();
   }
   update(time: number) {
     if(this.pendingFill)return;

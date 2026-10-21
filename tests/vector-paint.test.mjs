@@ -3,7 +3,7 @@ import { before,after,test } from 'node:test';
 import { createServer } from 'vite';
 let server,geometry,VectorPaint,valid,svgGeometry;
 before(async()=>{
- server=await createServer({configFile:false,server:{middlewareMode:true},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});
+ server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});
  geometry=await server.ssrLoadModule('/src/editor/vectorPaintGeometry.ts');
  ({svgPathGeometry:svgGeometry}=await server.ssrLoadModule('/src/editor/svgPathGeometry.ts'));
  ({VectorPaint}=await server.ssrLoadModule('/src/editor/VectorPaint.ts'));
@@ -123,4 +123,31 @@ test('restoring saved paint does not start a worker or queue maintenance',async(
   await new Promise(resolve=>setTimeout(resolve,150));
   assert.equal(created,0);assert.ok(restored.every(p=>JSON.stringify(p.serialize())===JSON.stringify(data)));
  }finally{if(PreviousWorker===undefined)delete globalThis.Worker;else globalThis.Worker=PreviousWorker;}
+});
+
+
+test('base fills skip worker maintenance and brush jobs contain only dirty regions', async () => {
+ const PreviousWorker=globalThis.Worker; const instances=[], jobs=[];
+ globalThis.Worker=class {
+  constructor(){instances.push(this); }
+  postMessage(job){jobs.push(job);queueMicrotask(()=>this.onmessage({data:{id:job.id,regions:job.regions}}));}
+  terminate(){}
+ };
+ try {
+  const state=new VectorPaint();
+  for(let id=1;id<=100;id++)state.fill(id,0x112233);
+  await state.settled();
+  assert.equal(instances.length,0,'Whole-region fills need no boolean job');
+  const definition={regions:[{id:37,bounds:[0,0,40,40]}]};
+  stroke(state,definition,[10,10],[20,20],2,0xff0000,false);
+  await state.settled();
+  assert.deepEqual(jobs.map(job=>job.regions.map(region=>region.id)),[[37]]);
+  stroke(state,definition,[20,20],[25,25],2,0x00ff00,false);
+  state.dispose();
+  await new Promise(resolve=>setTimeout(resolve,150));
+  assert.equal(jobs.length,1,'Disposed paint must not submit delayed maintenance');
+ } finally {
+  instances[0]?.onerror();
+  if(PreviousWorker===undefined)delete globalThis.Worker;else globalThis.Worker=PreviousWorker;
+ }
 });
