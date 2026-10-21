@@ -11,10 +11,14 @@ export async function renderPicture(picture: EditorSetup, dpi = 150) {
   await prepareStickers(picture.document?.surfaces.map(surface => surface.kind) ?? []);
   const canvas = document.createElement('canvas');
   canvas.width = pixels.width; canvas.height = pixels.height;
-  const context = canvas.getContext('2d');
-  if (!context) throw new Error('Unable to render picture');
-  context.scale(canvas.width / width, canvas.height / height);
-  const artwork = picture.document ? Artwork.restore(picture.document) : Artwork.create(width, height, picture.background);
-  try { artwork.render(context); } finally { artwork.dispose(); }
-  return canvas;
+  let artwork: Artwork | undefined;
+  try {
+    const context = canvas.getContext('2d');
+    if (!context) throw new Error('Unable to render picture');
+    context.scale(canvas.width / width, canvas.height / height);
+    artwork = picture.document ? Artwork.restore(picture.document) : Artwork.create(width, height, picture.background);
+    artwork.render(context);
+    return canvas;
+  } catch (error) { canvas.width = canvas.height = 1; throw error; }
+  finally { artwork?.dispose(); }
 }

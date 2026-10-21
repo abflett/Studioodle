@@ -1,7 +1,8 @@
 # Startup and navigation
 
-The splash loads the editor module and home illustrations, stays visible for at least
-two seconds and proceeds when ready. It does not download every sticker definition.
+The splash loads the editor module, stays visible for at least two seconds and
+proceeds when ready. Home illustrations are already bundled inline; they do not
+need separate image requests or decoding. It does not download every sticker definition.
 
 React owns home/setup, the ribbon and overlays. Blank setup selects a physical paper
 preset, Tall/Wide orientation inferred from the window, then background color. The

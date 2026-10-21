@@ -53,9 +53,10 @@ export class CanvasEditor {
 
   private draw = (time: number) => {
     // Keep the current frame marked pending while update publishes changes.
-    this.session.update(time);
-    this.viewport.render(this.session.artwork, this.session.state);
-    this.frame = 0;
+    try {
+      this.session.update(time);
+      this.viewport.render(this.session.artwork, this.session.state);
+    } finally { this.frame = 0; }
     if (this.session.needsAnimation) this.invalidate();
   };
 

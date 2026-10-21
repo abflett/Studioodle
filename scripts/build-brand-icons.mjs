@@ -1,6 +1,6 @@
-import { readFile, writeFile, mkdtemp, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdtemp, mkdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, dirname, basename } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 // Brand.tsx owns the vector geometry; CSS owns both theme palettes.
@@ -22,15 +22,19 @@ await writeFile('public/favicon.svg', svg.replace(/(<svg[^>]+>)/, '$1' + style) 
 const colors = Object.fromEntries([...light.matchAll(/(--brand-[\w-]+):\s*(#[\da-f]+);/g)].map(m => [m[1], m[2]]));
 const rasterSource = svg.replace(/var\((--brand-[\w-]+)\)/g, (_, name) => colors[name]);
 const temp = await mkdtemp(join(tmpdir(), 'studioodle-icons-'));
-const source = join(temp, 'brand.svg');
-const large = join(temp, 'brand.png');
-await writeFile(source, rasterSource);
-execFileSync('magick', ['-background', 'none', '-density', '600', source, '-resize', '1024x1024', '-depth', '8', large]);
-await mkdir('src-tauri/icons', { recursive: true });
-for (const [file, size] of [['public/apple-touch-icon.png', 180], ['src-tauri/icons/32x32.png', 32], ['src-tauri/icons/128x128.png', 128], ['src-tauri/icons/128x128@2x.png', 256]]) {
-  execFileSync('magick', [large, '-resize', `${size}x${size}`, file]);
-}
-for (const [file, sizes] of [['public/favicon.ico', '48,32,16'], ['src-tauri/icons/icon.ico', '256,128,64,48,32,16']]) {
-  execFileSync('magick', [large, '-define', `icon:auto-resize=${sizes}`, file]);
-}
-console.log('Updated theme-aware SVG favicon, touch icon, and desktop icon assets. No native build.');
+if (dirname(temp) !== tmpdir() || !basename(temp).startsWith('studioodle-icons-')) throw Error('Unexpected icon working directory');
+try {
+  const source = join(temp, 'brand.svg');
+  const large = join(temp, 'brand.png');
+  await writeFile(source, rasterSource);
+  execFileSync('magick', ['-background', 'none', '-density', '600', source, '-resize', '1024x1024', '-depth', '8', large]);
+  await mkdir('src-tauri/icons', { recursive: true });
+  for (const [file, size] of [['public/apple-touch-icon.png', 180], ['src-tauri/icons/32x32.png', 32], ['src-tauri/icons/128x128.png', 128], ['src-tauri/icons/128x128@2x.png', 256]]) {
+    execFileSync('magick', [large, '-resize', `${size}x${size}`, file]);
+  }
+  for (const [file, sizes] of [['public/favicon.ico', '48,32,16'], ['src-tauri/icons/icon.ico', '256,128,64,48,32,16']]) {
+    execFileSync('magick', [large, '-define', `icon:auto-resize=${sizes}`, file]);
+  }
+  console.log('Updated theme-aware SVG favicon, touch icon, and desktop icon assets. No native build.');
+
+} finally { await rm(temp, { recursive: true, force: true }); }

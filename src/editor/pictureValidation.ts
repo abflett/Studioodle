@@ -6,9 +6,9 @@ import type { ArtworkDocument } from './document';
 export function isSavedPicture(value: unknown): value is SavedPicture {
   if (!value || typeof value !== 'object') return false;
   const picture = value as SavedPicture;
-  return picture.version === 5 && picture.version === picture.document?.version && typeof picture.id === 'string' &&
+  return picture.version === 5 && picture.version === picture.document?.version && typeof picture.id === 'string' && picture.id.length > 0 &&
     typeof picture.title === 'string' && typeof picture.background === 'string' && /^#[0-9a-f]{6}$/i.test(picture.background) &&
-    ['square', 'landscape', 'portrait'].includes(picture.format) && validSize(picture.size) && Number.isFinite(picture.leafColor) && Number.isFinite(picture.updatedAt) &&
+    ['square', 'landscape', 'portrait'].includes(picture.format) && validSize(picture.size) && Number.isInteger(picture.leafColor) && picture.leafColor >= 0 && picture.leafColor <= 0xffffff && Number.isFinite(picture.updatedAt) &&
     isArtworkDocument(picture.document) && picture.document.width === paperSize(picture.format, picture.size).width && picture.document.height === paperSize(picture.format, picture.size).height;
 }
 
@@ -37,7 +37,7 @@ function isArtworkDocument(value: unknown): value is ArtworkDocument {
         ids.add(surface.id);
         if (order === 0 ? surface.kind !== 'canvas' : !isVectorSticker(surface.kind))
             return false;
-        if (![surface.x, surface.y, surface.color].every(Number.isFinite) || !Number.isInteger(surface.color) || surface.color < 0 || surface.color > 0xffffff)
+        if (![surface.x, surface.y, surface.color].every(Number.isFinite) || Math.abs(surface.x) > 16384 || Math.abs(surface.y) > 16384 || !Number.isInteger(surface.color) || surface.color < 0 || surface.color > 0xffffff)
             return false;
         if (surface.scale !== undefined && (!Number.isFinite(surface.scale) || surface.scale <= 0 || surface.scale > 4))
             return false;

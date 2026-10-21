@@ -11,20 +11,24 @@ const jobs = new Map<number, PendingJob>();
 /** One transport for the app; paint instances own their data and stale-result checks. */
 export function preparePaintWorker() {
     if (typeof Worker === 'undefined' || worker) return;
-    worker = new Worker(new URL('./vectorPaint.worker.ts', import.meta.url), { type: 'module' });
-    worker.onmessage = ({ data }: MessageEvent<Reply>) => {
+    const current = new Worker(new URL('./vectorPaint.worker.ts', import.meta.url), { type: 'module' });
+    worker = current;
+    current.onmessage = ({ data }: MessageEvent<Reply>) => {
         const job = jobs.get(data.id);
         if (!job) return;
         jobs.delete(data.id);
         if (data.error !== undefined) job.reject(Error(data.error));
         else job.resolve(data.regions);
     };
-    worker.onerror = () => {
+    const failed = () => {
+        if (worker !== current) return;
         for (const job of jobs.values()) job.reject(Error('Vector paint worker failed'));
         jobs.clear();
-        worker?.terminate();
+        current.terminate();
         worker = undefined;
     };
+    current.onerror = failed;
+    current.onmessageerror = failed;
 }
 
 export function computePaint(job: PaintJob): Promise<PaintResult> {

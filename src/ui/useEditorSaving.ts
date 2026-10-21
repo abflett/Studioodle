@@ -9,9 +9,10 @@ export function useEditorSaving(bridge: EditorBridge, onBack: () => void) {
     if (!isDesktop) return;
     let disposed = false;
     let stop: (() => void) | undefined;
-    void guardDesktopClose(close => bridge.send({ type: 'save', onComplete: saved => {
-      if (saved) close(); else setSaveStatus('error');
-    } })).then(unlisten => {
+    void guardDesktopClose(
+      () => new Promise(resolve => bridge.send({ type: 'save', onComplete: resolve })),
+      () => setSaveStatus('error'),
+    ).then(unlisten => {
       if (disposed) unlisten(); else stop = unlisten;
     }).catch(() => setSaveStatus('error'));
     return () => { disposed = true; stop?.(); };

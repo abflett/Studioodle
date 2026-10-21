@@ -155,6 +155,7 @@ try {
   if(vectorPaint.diagnosticPng){await fs.writeFile('work/tests/moon-vector-paint.png',Buffer.from(vectorPaint.diagnosticPng.split(',')[1],'base64'));delete vectorPaint.diagnosticPng;}
   const paintDisplay = await evaluate("import('/tests/browser/paint-display.ts').then(m => m.checkPaintDisplay())");
   result.pictureOutput=output;
+  result.libraryState=await evaluate("import('/tests/browser/library-state.ts').then(m => m.checkLibraryState())");
   result.paintDisplay=paintDisplay;
   console.log('Paint display:',JSON.stringify(paintDisplay));
   result.pictureStorage=await evaluate("import('/tests/browser/picture-storage.ts').then(m=>m.checkPictureStorage())");

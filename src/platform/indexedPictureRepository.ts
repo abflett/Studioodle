@@ -21,7 +21,10 @@ export function createIndexedPictureRepository(name='studioodle-pictures-v5') {
     };
   });
   return {
-    async save(picture:SavedPicture){await transact('readwrite',store=>store.put(picture));},
+    async save(picture: SavedPicture) {
+      if (!isSavedPicture(picture)) throw new Error('Invalid drawing; it was not saved.');
+      await transact('readwrite', store => store.put(picture));
+    },
     async delete(id:string){await transact('readwrite',store=>store.delete(id));},
     async load():Promise<SavedPicture[]>{
       const records:unknown[]=await transact('readonly',store=>store.getAll());

@@ -4,7 +4,8 @@ Reviewed 21 October 2026, against the vector-only editor. This is an incremental
 architecture review, not a claim that every path has been profiled or that native
 platform behavior has been retested. Original art, sticker SVGs, bundled page data
 and the saved-document format are unchanged. The review and follow-up refinements
-are complete; remaining device/platform validation is tracked in
+are complete. A later [source review](SOURCE-REVIEW.md) records additional correctness
+fixes and scaling questions; remaining work and device/platform validation are tracked in
 [refinement tasks](REFINEMENT-TASKS.md).
 
 ## Changes implemented
@@ -94,7 +95,8 @@ not mutate paint or reach into persistence directly.
 | Persistence | Structured vector records in IndexedDB; success follows compaction and transaction commit. Browser checks round-trip, replace and delete a drawing larger than 7 MB. No old-save migration. |
 | Print and export | Self-contained SVG printing; PNG, SVG and vector PDF export from a format overlay. PDF conversion is lazy-loaded. Browser output and print-pipeline checks cover transforms, patterns, clips and raster-free PDFs. [Output design](PICTURE-OUTPUT.md). |
 
-No unresolved implementation item remains from this review. Device measurements,
+No unresolved implementation item remains from this original review; later findings
+are tracked in [the source review](SOURCE-REVIEW.md). Device measurements,
 physical printing and native adapter validation remain explicit follow-up checks,
 not reasons for another engine rewrite. See [refinement tasks](REFINEMENT-TASKS.md).
 

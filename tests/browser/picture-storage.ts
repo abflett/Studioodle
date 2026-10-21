@@ -11,7 +11,9 @@ export async function checkPictureStorage(){
   await repository.save(picture);const loaded=await repository.load();
   assert(loaded.length===1&&loaded[0]!.document.surfaces[0]!.vectorPaint!.regions[0]!.blobs[0]!.geometry[0]![0]!.length===ring.length,'Large vector geometry did not round trip');
   picture.title='Replacement';await repository.save(picture);assert((await repository.load())[0]!.title==='Replacement','Saving did not replace the existing drawing');
+  let rejected=false;try{await repository.save({...picture,leafColor:-1});}catch{rejected=true;}
+  assert(rejected&&(await repository.load())[0]!.title==='Replacement','Invalid replacements must fail before overwriting the valid drawing');
   await repository.delete(picture.id);assert((await repository.load()).length===0,'Deletion failed');
-  return {largeDocumentBytes:bytes,roundtrip:true,replacement:true,deletion:true};
+  return {largeDocumentBytes:bytes,roundtrip:true,replacement:true,invalidReplacement:true,deletion:true};
  }finally{await new Promise<void>((resolve,reject)=>{const request=indexedDB.deleteDatabase(name);request.onsuccess=()=>resolve();request.onerror=()=>reject(request.error);});}
 }

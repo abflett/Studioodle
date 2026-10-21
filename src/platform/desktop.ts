@@ -22,19 +22,25 @@ export async function watchDesktopFullscreen(update: (fullscreen: boolean) => vo
   return window.onResized(() => { void window.isFullscreen().then(update); });
 }
 
-export async function guardDesktopClose(save: (close: () => void) => void) {
+export async function guardDesktopClose(save: () => Promise<boolean>, onError: () => void) {
   const { getCurrentWindow } = await import('@tauri-apps/api/window');
   const window = getCurrentWindow();
-  let allowClose = false, saving = false;
-  return window.onCloseRequested(event => {
-    if (allowClose) return;
+  let active = true, allowClose = false, saving = false;
+  const stop = await window.onCloseRequested(async event => {
+    if (allowClose || !active) return;
     event.preventDefault();
     if (saving) return;
     saving = true;
-    save(() => { allowClose = true; void window.close(); });
-    // A failed save can be retried by closing again.
-    setTimeout(() => { saving = false; }, 1000);
+    try {
+      const saved = await save();
+      if (!active) return;
+      if (!saved) { onError(); return; }
+      allowClose = true;
+      await window.close();
+    } catch { allowClose = false; if (active) onError(); }
+    finally { saving = false; }
   });
+  return () => { active = false; stop(); };
 }
 
 export async function saveDesktopPicture(blob: Blob, name: string, format: 'png' | 'svg' | 'pdf') {

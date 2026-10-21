@@ -1,3 +1,5 @@
+import { Artwork } from '../../src/editor/Artwork';
+import { downloadFile } from '../../src/platform/downloadFile';
 import { pictureFile, printPicture } from '../../src/app/pictureOutput';
 import { exportDimensions } from '../../src/editor/exportResolution';
 import { pictureSvg } from '../../src/editor/pictureSvg';
@@ -69,6 +71,16 @@ export async function checkPictureOutput() {
   }
   assert(density === Math.round(300/.0254), 'PNG metadata must match the selected rendering DPI');
   assert(!exportDimensions({ ...picture, document: undefined, size: { width: 10000, height: 10000 } }, 600).fits, 'Oversized raster exports must retain a pixel budget');
+  const originalCreate = document.createElement, originalRender = Artwork.prototype.render;
+  let failedCanvas: HTMLCanvasElement | undefined;
+  document.createElement = new Proxy(originalCreate, { apply(target, receiver, args) {
+    const node = Reflect.apply(target, receiver, args); if (args[0] === 'canvas') failedCanvas = node; return node;
+  } });
+  Artwork.prototype.render = () => { throw Error('Injected export render failure'); };
+  try {
+    let failed = false;try { await renderPicture(picture,96); } catch { failed = true; }
+    assert(failed && failedCanvas?.width === 1 && failedCanvas.height === 1, 'Failed exports must release their temporary pixel backing');
+  } finally { document.createElement = originalCreate; Artwork.prototype.render = originalRender; }
   assert(JSON.stringify(picture) === before, 'Export must not mutate saved paint');
 
   // Real print adapter, without invoking an OS dialog in automated tests.
@@ -86,6 +98,25 @@ export async function checkPictureOutput() {
   window.open = (() => null) as typeof window.open;
   try { printError = false; printPicture(picture, () => { printError = true; }); assert(printError, 'Blocked print windows must report an error'); }
   finally { window.open = originalOpen; }
+  window.open = (() => { throw Error('Popup unavailable'); }) as typeof window.open;
+  try { printError = false; printPicture(picture, () => { printError = true; }); assert(printError, 'Throwing popup APIs must report a print error'); }
+  finally { window.open = originalOpen; }
+  window.open = (() => ({ document: document.implementation.createHTMLDocument(), closed: false, opener: null, focus() {}, close() {},
+    print(): void { throw Error('Print unavailable'); }, requestAnimationFrame(callback: FrameRequestCallback) { return window.setTimeout(() => callback(performance.now()),0); },
+  })) as typeof window.open;
+  try {
+    printError = false;printPicture(picture, () => { printError = true; });
+    for(let i=0;i<100&&!printError;i++)await new Promise(resolve=>setTimeout(resolve,10));
+    assert(printError, 'Asynchronous print failures must reach the UI rather than escape as runtime errors');
+  } finally { window.open = originalOpen; }
+  const originalClick=HTMLAnchorElement.prototype.click, originalRevoke=URL.revokeObjectURL;
+  let revoked=0;const anchors=document.querySelectorAll('a[download]').length;
+  HTMLAnchorElement.prototype.click=()=>{throw Error('Download unavailable');};
+  URL.revokeObjectURL=url=>{revoked++;originalRevoke.call(URL,url);};
+  try {
+    let failed=false;try{downloadFile(new Blob(['test']), 'test.txt');}catch{failed=true;}
+    assert(failed && revoked===1 && document.querySelectorAll('a[download]').length===anchors, 'Failed downloads must release their URL and temporary link');
+  } finally { HTMLAnchorElement.prototype.click=originalClick;URL.revokeObjectURL=originalRevoke; }
   return { printHtml: preview.documentElement.outerHTML, svg: new XMLSerializer().serializeToString(svg), pdf: await base64(pdf), actualPng: actual.toDataURL(), referencePng: reference.toDataURL(),
-    meanError, differentFraction, pdfBytes: pdf.size, pngBytes: png.size, vectorPrint: true, blockedPrint: true };
+    meanError, differentFraction, pdfBytes: pdf.size, pngBytes: png.size, vectorPrint: true, blockedPrint: true, printFailure: true, downloadCleanup: true, failedRenderCleanup: true };
 }

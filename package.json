@@ -24,7 +24,9 @@
     "assets:catalog": "node scripts/build-asset-catalog.mjs",
     "assets:preview": "node scripts/preview-scenes.mjs",
     "books:install": "node scripts/install-coloring-book.mjs",
-    "test:browser": "node scripts/test-browser.mjs"
+    "test:browser": "node scripts/test-browser.mjs",
+    "test:memory": "node scripts/test-browser.mjs --memory-profile",
+    "test:scene": "node scripts/test-browser.mjs --scene-profile --scene-cache-mib=64 --scene-repeat=2"
   },
   "dependencies": {
     "@fontsource-variable/nunito": "5.3.0",

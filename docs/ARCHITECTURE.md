@@ -142,3 +142,6 @@ separate from total application or graphics memory.
 
 Print uses inline SVG; SVG and PDF export retain vectors, while PNG offers 150/300/600 DPI.
 See [picture output](PICTURE-OUTPUT.md) for format, platform and validation details.
+
+The [source review](SOURCE-REVIEW.md) records later transaction/lifecycle hardening
+and scoped findings; [refinement tasks](REFINEMENT-TASKS.md) tracks the open work.

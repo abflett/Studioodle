@@ -1,3 +1,4 @@
+import { geometryBounds } from './vectorPaintStyles';
 import { paperSize } from './document';
 import type { SurfaceData, StickerKind } from './document';
 import type { EditorSetup } from './setup';
@@ -115,7 +116,11 @@ export async function pictureSvg(picture: EditorSetup): Promise<SVGSVGElement> {
         for (const blob of paint.blobs) if (!blob.pattern || blob.pattern.pattern === 'solid') underpaint.append(element('path', { d: pathData(blob.geometry), fill: 'none', stroke: hex(blob.color) }));
         blobs.append(underpaint);
       }
-      for (const blob of paint.blobs) blobs.append(paintShape(element('path', { d: pathData(blob.geometry), 'fill-rule': 'nonzero' }), blob.color, bounds, blob.pattern));
+      for (const blob of paint.blobs) {
+        const b = geometryBounds(blob.geometry);
+        const visible = [Math.max(bounds[0]!, b[0]!), Math.max(bounds[1]!, b[1]!), Math.min(bounds[2]!, b[2]!), Math.min(bounds[3]!, b[3]!)];
+        blobs.append(paintShape(element('path', { d: pathData(blob.geometry), 'fill-rule': 'nonzero' }), blob.color, visible, blob.pattern));
+      }
     }
     if (ink) {
       for (const path of ink.querySelectorAll('path')) for (const attribute of ['fill', 'stroke']) {

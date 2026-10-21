@@ -29,6 +29,14 @@ export async function checkCanvasEditor() {
     editor = new CanvasEditor(host, bridge, { id: 'adapter-test', title: 'Adapter test', format: 'landscape', size: { width: 180, height: 120 }, background: '#ffffff', leafColor: 0 }, picture => { saved = picture; });
     await frame(); await frame();
     await new Promise(resolve => setTimeout(resolve, 100));
+    const countedRender = CanvasViewport.prototype.render;
+    CanvasViewport.prototype.render = () => { throw Error('Injected display failure'); };
+    let failed = false;
+    Reflect.set(editor, 'frame', 1);
+    try { Reflect.get(editor, 'draw')(performance.now()); } catch { failed = true; }
+    finally { CanvasViewport.prototype.render = countedRender; }
+    assert(failed && Reflect.get(editor, 'frame') === 0, 'Failed display must release its pending-frame marker');
+    editor.invalidate(); await frame(); await frame();
     const initial = renders;
     await new Promise(resolve => setTimeout(resolve, 100));
     assert(renders === initial, 'Idle editor must not keep rendering');
@@ -60,9 +68,16 @@ export async function checkCanvasEditor() {
     await new Promise(resolve => setTimeout(resolve, 110));
     pointer('pointerup', 70, 70, 0);
     assert((await snapshot()).document.surfaces[0]!.vectorPaint!.regions.length > 0, 'Stationary spray must animate');
-    const afterSpray = renders; await frame(); await frame();
-    const idleSpray = renders; await new Promise(resolve => setTimeout(resolve, 80));
-    assert(renders === idleSpray && idleSpray >= afterSpray, 'Released spray must return to idle');
+    // A previously requested zoom refinement may finish after release. Require
+    // a bounded return to quiescence rather than treating that legitimate frame
+    // as an endless spray loop on a loaded machine.
+    const deadline = performance.now() + 1500;
+    let lastRender = renders, quietSince = performance.now();
+    while (performance.now() < deadline && performance.now() - quietSince < 200) {
+      await frame();
+      if (renders !== lastRender) { lastRender = renders; quietSince = performance.now(); }
+    }
+    assert(performance.now() - quietSince >= 200, 'Released spray must return to idle');
     await prepareStickers(['fantasy-moon-sorceress']);
     bridge.send({ type: 'add-sticker', sticker: 'fantasy-moon-sorceress', point: { x: 90, y: 60 }, outlineColor: 0x242428 });
     await frame();
@@ -80,7 +95,7 @@ export async function checkCanvasEditor() {
     const beforeDestroyed = renders;
     bridge.send({ type: 'undo' }); pointer('pointerdown', 20, 20); await frame();
     assert(renders === beforeDestroyed, 'Destroyed editor must unsubscribe from input and commands');
-    return { idleRendering: false, coalescedInput: true, zoomCoordinates: true, cancelledStroke: true, stationarySpray: true, savedSticker: true, viewportBounded: true, cleanup: true };
+    return { idleRendering: false, coalescedInput: true, zoomCoordinates: true, cancelledStroke: true, stationarySpray: true, savedSticker: true, viewportBounded: true, cleanup: true, renderRecovery: true };
   } finally {
     editor?.destroy(); CanvasViewport.prototype.render = original; workspace.remove();
   }

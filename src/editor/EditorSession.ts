@@ -89,10 +89,19 @@ export class EditorSession {
     }
     if (command.type === 'fill-at' && this.tool === 'bucket') {
       this.document.beginChange();
-      const result=this.document.fill(command.point,this.color,this.fillOptions);
+      const failed = (error: unknown) => {
+        if (!this.disposed) {
+          this.document.undoChange(this.document.endChange());
+          this.notifyChanged();
+        }
+        console.error('Vector bucket fill failed; paint was preserved.', error);
+      };
+      let result: boolean | Promise<boolean>;
+      try { result = this.document.fill(command.point, this.color, this.fillOptions); }
+      catch (error) { failed(error); return; }
       const finish=(changed:boolean)=>{if(this.disposed)return;const change=this.document.endChange();if(changed)this.history.push(change);this.notifyChanged();};
       if(typeof result==='boolean')finish(result);
-      else this.pendingOperation=result.then(finish).catch(error=>{if(!this.disposed)this.document.undoChange(this.document.endChange());console.error('Vector bucket fill failed; paint was preserved.',error);}).finally(()=>{
+      else this.pendingOperation=result.then(finish).catch(failed).finally(()=>{
         this.pendingOperation=undefined;
         while(!this.pendingOperation&&this.deferred.length)this.deferred.shift()!();
       });
@@ -166,7 +175,7 @@ export class EditorSession {
     this.document.dispose();
   }
   update(time: number) {
-    if(this.pendingOperation)return;
+    if(this.disposed||this.pendingOperation)return;
     if(this.stroke&&this.previous&&this.activePointer!==undefined&&time>=this.nextSmoothing){
       this.applyStrokePoints(this.stroke.settle(this.strokeTrail));
       this.nextSmoothing=time+12;this.notifyChanged();
@@ -184,6 +193,7 @@ export class EditorSession {
     } catch(error) { this.document.undoChange(this.document.endChange()); throw error; }
   }
   begin(point: Point, pointerId: number, button: number) {
+    if(this.disposed)return;
     if(this.defer(()=>this.begin(point,pointerId,button)))return;
     if ((button !== 0 && button !== 2) || this.activePointer !== undefined || this.tool === 'pan' || this.tool === 'bucket') return;
     this.activePointer = pointerId;
@@ -205,6 +215,7 @@ export class EditorSession {
     this.notifyChanged();
   }
   move(point: Point, pointerId: number, isDown: boolean, zoom: number) {
+    if(this.disposed)return;
     if(this.defer(()=>this.move(point,pointerId,isDown,zoom)))return;
     if (pointerId !== this.activePointer) return;
     if (!isDown) { this.end(); return; }
@@ -229,12 +240,17 @@ export class EditorSession {
     }
   }
   release(point: Point, pointerId: number, zoom: number) {
+    if(this.disposed)return;
     if(this.defer(()=>this.release(point,pointerId,zoom)))return;
     if (pointerId !== this.activePointer) return;
     if (this.previous && this.stroke) this.paintStroke(point, zoom);
     this.end();
   }
   end(flush = true) {
+    if(this.disposed)return;
+    // Blur/visibility can arrive while a bucket transaction awaits the worker.
+    // Do not consume that transaction as if it belonged to a pointer gesture.
+    if(this.defer(()=>this.end(flush)))return;
     const hadStroke = this.stroke !== undefined;
     if (flush && this.stroke && this.previous) {
       const tip = this.stroke.finish();

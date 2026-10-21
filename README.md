@@ -23,7 +23,9 @@ see [desktop setup](docs/DESKTOP.md).
 | Command | Purpose |
 | --- | --- |
 | `npm run check` | Unit tests, TypeScript, ESLint and production web build |
-| `npm run test:browser` | Real browser/worker painting and hit-coverage regressions |
+| `npm run test:browser` | Real browser/worker painting, storage and vector-output regressions |
+| `npm run test:memory` | Eight editor lifecycles and a definition-cache pressure probe |
+| `npm run test:scene` | Repeat the advanced scene profile at the default 64 MiB cache budget |
 | `npm run build` / `npm run preview` | Build/serve the static web app |
 | `npm run assets:catalog` | Refresh runtime metadata and generate `work/catalog/index.html` |
 | `node scripts/build-stickers.mjs <asset-id>` | Convert one sticker from its source |

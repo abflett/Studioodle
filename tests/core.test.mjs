@@ -68,6 +68,12 @@ test('corrupt, foreign and mismatched records do not hide valid pages', () => {
 test('validation rejects unsafe geometry, obsolete paint fields and unsupported stickers', () => {
   const changes = [
     p => { p.size.width = 0; },
+    p => { p.id = ''; },
+    p => { p.document.surfaces[0].x = Number.MAX_VALUE; },
+    p => { p.document.surfaces[0].y = -Number.MAX_VALUE; },
+    p => { p.leafColor = -1; },
+    p => { p.leafColor = 0x1000000; },
+    p => { p.leafColor = 1.5; },
     p => { p.document.width++; },
     p => { p.document.surfaces[0].flipX = true; },
     p => { p.document.surfaces[0].paint = [[0, 99999999, 0]]; },
@@ -287,4 +293,39 @@ test('save completion waits for asynchronous storage and reports rejection', asy
  assert.equal(completed,undefined);release(new Error('Quota exceeded'));
  await new Promise(resolve=>setTimeout(resolve,0));assert.equal(completed,false);
  editor.dispose();failing.dispose();
+});
+
+
+test('ending input during a pending fill preserves its undo transaction', async () => {
+ const {editor}=session();
+ const before=editor.artwork.serialize(), fill=editor.artwork.fill.bind(editor.artwork);
+ let complete;
+ editor.artwork.fill=(...args)=>new Promise(resolve=>{complete=()=>resolve(fill(...args));});
+ editor.execute({type:'fill-at',point:{x:2,y:2}});
+ editor.end(); // Native window blur/visibility change while the worker is busy.
+ complete(); await new Promise(resolve=>setImmediate(resolve));
+ assert.notDeepEqual(editor.artwork.serialize(),before);
+ editor.execute({type:'undo'});
+ assert.deepEqual(editor.artwork.serialize(),before);
+ editor.dispose();
+});
+
+test('synchronous fill failures roll back and leave the next edit usable', () => {
+ const {editor}=session(), before=editor.artwork.serialize(), fill=editor.artwork.fill.bind(editor.artwork);
+ const log=console.error; console.error=()=>{};
+ try {
+   editor.artwork.fill=(...args)=>{fill(...args);throw Error('Geometry failure');};
+   assert.doesNotThrow(()=>editor.execute({type:'fill-at',point:{x:2,y:2}}));
+   assert.deepEqual(editor.artwork.serialize(),before);
+   editor.artwork.fill=fill;
+   editor.execute({type:'fill-at',point:{x:2,y:2}});
+   editor.execute({type:'undo'}); assert.deepEqual(editor.artwork.serialize(),before);
+ } finally { console.error=log; editor.dispose(); }
+});
+
+test('disposed sessions ignore direct pointer and animation calls', () => {
+ const {editor}=session(); editor.execute({type:'set-tool',tool:'brush'});
+ const before=editor.artwork.serialize(); editor.dispose();
+ editor.begin({x:1,y:1},1,0);editor.move({x:3,y:3},1,true,1);editor.release({x:3,y:3},1,1);editor.update(100);editor.end();
+ assert.deepEqual(editor.artwork.serialize(),before);
 });
