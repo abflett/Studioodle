@@ -3,12 +3,12 @@ import { ColoringPageWorkshop } from './ColoringPageWorkshop';
 import type { SavedPicture } from '../editor/savedPicture';
 import { PrecisionFillFeedback } from './PrecisionFillFeedback';
 import { useToolCursorStyle } from './toolCursors';
-import { guardDesktopClose, isDesktop } from '../platform/desktop';
+import { useEditorSaving } from './useEditorSaving';
 import { usePrecisionFill } from './usePrecisionFill';
 import { useCanvasGestures } from './useCanvasGestures';
 import { useEditorShortcuts } from './useEditorShortcuts';
 import type { AppSettings } from './settings';
-import { LayerOrderIcon } from './LayerOrderIcon';
+import { StickerSelectionToolbar } from './StickerSelectionToolbar';
 import { StickerBrowser } from './StickerBrowser';
 import { BrushPicker, FillPicker } from './ToolOptions';
 import { defaultBrush, defaultFill } from '../editor/toolOptions';
@@ -19,7 +19,7 @@ import { paperSize } from '../editor/document';
 import { usePaperView } from './usePaperView';
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
-import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Check, Eraser, ScanSearch, MousePointer2, Move, ZoomIn, Maximize2, RotateCw, RotateCcw, Minimize2, FlipHorizontal2, FlipVertical2, Copy, Trash2, BookOpen } from 'lucide-react';
+import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Check, Eraser, MousePointer2, Move, ZoomIn, BookOpen } from 'lucide-react';
 import { EditorCanvas } from './EditorCanvas';
 import { createEditorBridge } from '../editor/bridge';
 import type { EditorTool } from '../editor/bridge';
@@ -48,18 +48,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     setSelected(id);
     setSelectionOrder(previous => previous.forward === order.forward && previous.backward === order.backward ? previous : order);
   }), [bridge]);
-  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
-  useEffect(() => {
-    if (!isDesktop) return;
-    let disposed = false;
-    let stop: (() => void) | undefined;
-    void guardDesktopClose(close => bridge.send({ type: 'save', onComplete: saved => { if (saved) close(); else setSaveStatus('error'); } })).then(unlisten => { if (disposed) unlisten(); else stop = unlisten; }).catch(() => setSaveStatus('error'));
-    return () => { disposed = true; stop?.(); };
-  }, [bridge]);
-  useEffect(() => {
-    const timer = window.setInterval(() => bridge.send({ type: 'save', onComplete: (saved) => setSaveStatus(saved ? 'idle' : 'error') }), 60_000);
-    return () => window.clearInterval(timer);
-  }, [bridge]);
+  const { saveStatus, dismissSaveStatus, save, saveAndLeave } = useEditorSaving(bridge, onBack);
   const [brushOptions, setBrushOptions] = useState(defaultBrush);
   const [fillOptions, setFillOptions] = useState(defaultFill);
   const [picker, setPicker] = useState<Picker | null>(null);
@@ -106,7 +95,6 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
   const selectBrush = () => { chooseTool('brush'); if (settings.advancedPainting) setPicker('brush'); else { setBrushOptions(defaultBrush); bridge.send({ type: 'set-brush', options: defaultBrush }); } };
   const selectFill = () => { chooseTool('bucket'); if (settings.advancedPainting) setPicker('fill'); else { setFillOptions(defaultFill); bridge.send({ type: 'set-fill', options: defaultFill }); } };
   const openStickers = () => { if (!focused) { setUseCurrentOutline(false); setCategoryId(null); setPicker('stickers'); } };
-  const save = () => bridge.send({ type: 'save', onComplete: saved => setSaveStatus(saved ? 'saved' : 'error') });
   const stepZoom = (factor: number) => {
     const view = captureView(), box = viewport.current?.getBoundingClientRect();
     if (!view || !box) return;
@@ -153,7 +141,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     <div className="ribbon-shell">
     <header className="art-ribbon main-ribbon" aria-label="Art tools">
       <div className="ribbon-group" role="group" aria-label="Home">
-        <button title="Home" aria-label="Save and go home" onClick={() => bridge.send({ type: 'save', onComplete: (saved) => { if (saved) onBack(); else setSaveStatus('error'); } })}><House aria-hidden="true" /></button>
+        <button title="Home" aria-label="Save and go home" onClick={saveAndLeave}><House aria-hidden="true" /></button>
       </div>
       <div className="ribbon-group" role="group" aria-label="View and selection">
         <button title="Move the page (H)" aria-keyshortcuts="H" aria-label="Move the page" aria-pressed={tool === 'pan'} onClick={() => chooseTool('pan')}><Move aria-hidden="true" /></button>
@@ -172,28 +160,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
         <button title="Undo (Ctrl/Cmd+Z or Backspace)" aria-keyshortcuts="Control+Z Meta+Z Backspace" aria-label="Undo" onClick={() => bridge.send({ type: 'undo' })}><Undo2 aria-hidden="true" /></button>
       </div>
     </header>
-      {((tool === 'select' && selected) || focused) && <div ref={selectionDrawer} className="art-ribbon sticker-ribbon" role="toolbar" aria-label="Selected sticker" onPointerDown={(event) => event.stopPropagation()}>
-        <div className="sticker-adjustment" role="group" aria-label="Sticker size"><div>
-          <button title="Shrink sticker by 10 percentage points" aria-label="Shrink sticker by 10 percentage points" onClick={() => bridge.send({ type: 'transform-selection', scaleDelta: -.1, rotationDelta: 0 })}><Minimize2 aria-hidden="true" /></button>
-          <button title="Grow sticker by 10 percentage points" aria-label="Grow sticker by 10 percentage points" onClick={() => bridge.send({ type: 'transform-selection', scaleDelta: .1, rotationDelta: 0 })}><Maximize2 aria-hidden="true" /></button>
-        </div></div>
-        <div className="sticker-adjustment" role="group" aria-label="Sticker rotation"><div>
-          <button title="Rotate sticker left 15 degrees" aria-label="Rotate sticker left 15 degrees" onClick={() => bridge.send({ type: 'transform-selection', scaleDelta: 0, rotationDelta: -15 })}><RotateCcw aria-hidden="true" /></button>
-          <button title="Rotate sticker right 15 degrees" aria-label="Rotate sticker right 15 degrees" onClick={() => bridge.send({ type: 'transform-selection', scaleDelta: 0, rotationDelta: 15 })}><RotateCw aria-hidden="true" /></button>
-        </div></div>
-        <div className="sticker-adjustment" role="group" aria-label="Flip sticker"><div>
-          <button title="Flip horizontally" aria-label="Flip sticker horizontally" onClick={() => bridge.send({ type: 'flip-selection', axis: 'horizontal' })}><FlipVertical2 aria-hidden="true" /></button>
-          <button title="Flip vertically" aria-label="Flip sticker vertically" onClick={() => bridge.send({ type: 'flip-selection', axis: 'vertical' })}><FlipHorizontal2 aria-hidden="true" /></button>
-        </div></div>
-        <div className="sticker-adjustment" role="group" aria-label="Sticker layer order"><div>
-          <button title="Move behind the next overlapping sticker" disabled={!!focused || !selectionOrder.backward} aria-label="Move behind the next overlapping sticker" onClick={() => bridge.send({ type: 'order-selection', direction: 'backward' })}><LayerOrderIcon direction="backward" /></button>
-          <button title="Move in front of the next overlapping sticker" disabled={!!focused || !selectionOrder.forward} aria-label="Move in front of the next overlapping sticker" onClick={() => bridge.send({ type: 'order-selection', direction: 'forward' })}><LayerOrderIcon direction="forward" /></button>
-        </div></div>
-        <button title={focused ? 'Refit focused sticker' : 'Focus on this sticker (F)'} aria-label={focused ? 'Refit focused sticker' : 'Focus on this sticker (F)'} aria-pressed={!!focused} onClick={focusSelection}><ScanSearch aria-hidden="true" /></button>
-        <button title="Duplicate (Ctrl/Cmd+D)" aria-keyshortcuts="Control+D Meta+D" aria-label="Duplicate" disabled={!!focused} onClick={() => bridge.send({ type: 'duplicate-selection' })}><Copy aria-hidden="true" /></button>
-        <button title="Delete (Del)" aria-keyshortcuts="Delete" aria-label="Delete" disabled={!!focused} onClick={() => bridge.send({ type: 'delete-selection' })}><Trash2 aria-hidden="true" /></button>
-        <button title={focused ? "Exit focus" : "Done"} onClick={finishSelection} aria-label="Finish selecting"><Check aria-hidden="true" /></button>
-      </div>}
+      {((tool === 'select' && selected) || focused) && <StickerSelectionToolbar bridge={bridge} focused={!!focused} order={selectionOrder} drawerRef={selectionDrawer} onFocus={focusSelection} onFinish={finishSelection} />}
     </div>
     <section className={`art-canvas ${tool === 'pan' ? 'pan-mode' : ''} ${focused ? 'focus-mode' : ''}`} ref={viewport} style={cursorStyle} aria-label="Drawing canvas" tabIndex={0} {...gestureHandlers} onPointerDown={(event) => {
       if (event.pointerType === 'touch' && event.nativeEvent.isTrusted) return;
@@ -204,7 +171,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
         <EditorCanvas focused={!!focused} bridge={bridge} setup={setup} zoom={zoom} offsetX={position.x} offsetY={position.y} />
       </div>
     </section>
-    {saveStatus !== 'idle' && <div className="save-notice" role="status"><span>{saveStatus === 'saved' ? 'Saved to Your pictures' : 'Could not save. Device storage may be full or unavailable.'}</span><button className="icon-button" aria-label="Dismiss save message" onClick={() => setSaveStatus('idle')}><X /></button></div>}
+    {saveStatus !== 'idle' && <div className="save-notice" role="status"><span>{saveStatus === 'saved' ? 'Saved to Your pictures' : 'Could not save. Device storage may be full or unavailable.'}</span><button className="icon-button" aria-label="Dismiss save message" onClick={dismissSaveStatus}><X /></button></div>}
     <dialog className={`setup-dialog art-dialog ${picker === 'stickers' ? 'sticker-dialog' : ''}`} ref={dialog} onCancel={() => setPicker(null)} onClick={(event) => closeOnBackdrop(event, () => setPicker(null))} onAuxClick={(event) => { if (event.button === 2) closeOnBackdrop(event, () => setPicker(null)); }} aria-labelledby="art-picker-title">
       <div className="wizard" aria-busy={loadingSticker}>
         {loadingSticker && <progress aria-label="Loading sticker" />}

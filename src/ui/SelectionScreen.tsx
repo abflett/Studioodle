@@ -1,3 +1,4 @@
+import { PaperSetup } from './PaperSetup';
 import { DialogHeader } from './DialogHeader';
 import blankArt from '../assets/blank.svg?raw';
 import coloringArt from '../assets/coloring.svg?raw';
@@ -8,12 +9,13 @@ import { isDesktop, toggleDesktopFullscreen, watchDesktopFullscreen } from '../p
 import type { AppSettings } from './settings';
 import { SelectionSettings } from './SelectionSettings';
 import { ColorPicker } from './ColorPicker';
-import { paperPresets, presetSize } from '../editor/paperPresets';
+import { presetSize } from '../editor/paperPresets';
 import type { PaperPresetId } from '../editor/paperPresets';
 import { contrastingDrawingColor } from '../editor/palette';
 import { closeOnBackdrop } from './dialog';
 import { createColoringPage } from '../editor/coloringPage';
-import { coloringPageRepository, pictureRepository } from '../app/pictures';
+import { coloringPageRepository } from '../app/pictures';
+import { usePictureLibrary } from './usePictureLibrary';
 import type { SavedPicture } from '../editor/savedPicture';
 import { exportPicture, printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
@@ -70,14 +72,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     return () => query.removeEventListener('change', update);
   }, [manualOrientation]);
   const [background, setBackground] = useState('#f6f2e8');
-  const [sampleIndex, setSampleIndex] = useState(0);
-  const [library, setLibrary] = useState<{pictures:SavedPicture[];error:boolean}>({pictures:[],error:false});
-  useEffect(()=>{
-    let active=true;
-    void pictureRepository.load().then(pictures=>{if(active)setLibrary({pictures,error:false});},()=>{if(active)setLibrary({pictures:[],error:true});});
-    return ()=>{active=false;};
-  },[]);
-  const saved = library.pictures;
+  const { library, saved, sampleIndex, setSampleIndex, removePicture, restorePicture } = usePictureLibrary();
   const [customPages, setCustomPages] = useState(() => {
     try { return coloringPageRepository.load(); } catch { return []; }
   });
@@ -112,19 +107,14 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
         setDeletingPage(false); setRemoved(undefined); setActionError(undefined); setNotice('Coloring page removed');
         return;
       }
-      await pictureRepository.delete(picture.id);
+      await removePicture(picture);
       setRemoved(picture); setToastPaused(false); setActionError(undefined);
-      setLibrary({ pictures: saved.filter((item) => item.id !== picture.id), error: false });
-      setSampleIndex(Math.max(0, Math.min(sampleIndex, saved.length - 2)));
     } catch { setActionError('Could not delete this picture.'); }
   };
   const undoRemove = async () => {
     if (!removed) return;
     try {
-      await pictureRepository.save(removed);
-      const pictures = await pictureRepository.load();
-      setLibrary({ pictures, error: false });
-      setSampleIndex(Math.max(0, pictures.findIndex((item) => item.id === removed.id)));
+      await restorePicture(removed);
       setRemoved(undefined); setActionError(undefined);
     } catch { setActionError('Could not restore this picture.'); }
   };
@@ -213,14 +203,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             {step !== 'scene' && <div className="wizard-steps" aria-label={`Step ${step === 'shape' ? 1 : 2} of 2`}><span className={step === 'shape' ? 'active' : ''} /><span className={step === 'paper' ? 'active' : ''} /></div>}
           </DialogHeader>
           <div className="wizard-body">
-            {step === 'shape' && <div className="paper-setup">
-              <div className="format-options" role="group" aria-label="Paper size">
-                {paperPresets.map(preset => <button key={preset.id} aria-label={`${preset.title}, ${preset.detail}`} aria-pressed={paperPreset === preset.id} onClick={() => setPaperPreset(preset.id)} className="format-button"><span className={`paper-shape paper-${preset.id === 'square' ? 'square' : orientation} preset-${preset.id}`} /><span className="shape-label">{preset.title}<small>{preset.detail}</small></span></button>)}
-              </div>
-              <div className="paper-orientation" role="group" aria-label="Paper orientation">
-                {(['portrait', 'landscape'] as const).map(value => <button key={value} className="format-button" disabled={paperPreset === 'square'} aria-pressed={paperPreset !== 'square' && orientation === value} onClick={() => { setManualOrientation(true); setOrientation(value); }}><span className={`orientation-icon paper-${value}`} />{value === 'portrait' ? 'Tall' : 'Wide'}</button>)}
-              </div>
-            </div>}
+            {step === 'shape' && <PaperSetup paperPreset={paperPreset} orientation={orientation} onPreset={setPaperPreset} onOrientation={value => { setManualOrientation(true); setOrientation(value); }} />}
             {step === 'paper' && <ColorPicker label="Canvas background colors" color={parseInt(background.slice(1), 16)} onChoose={(value) => setBackground(`#${value.toString(16).padStart(6, '0')}`)} />}
             {step === 'scene' && <div className="scene-picker">
               <button className="icon-button" aria-label="Previous coloring page" onClick={() => setSceneIndex((value) => (value + scenes.length - 1) % scenes.length)}><Arrow direction="left" /></button>

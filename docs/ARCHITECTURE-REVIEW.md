@@ -107,10 +107,13 @@ not mutate paint or reach into persistence directly.
    idle source text is cleared, redundant paint cloning is removed, and closed
    display backings shrink immediately. These are not a total app-memory limit.
    See [the lifecycle test and results](LIVE-DOCUMENT-MEMORY.md).
-5. **UI component size.** EditorPreview and SelectionScreen coordinate several
-   workflows but are still only about 20 KB each. Extract cohesive workflows when
-   touched by features, rather than splitting JSX into arbitrary tiny components.
-   Native dialogs and the shared DialogHeader are useful existing foundations.
+5. **UI component size ? focused refactor completed.** Editor saving (manual,
+   autosave and guarded exits) and saved-picture persistence/carousel selection
+   now live in `useEditorSaving` and `usePictureLibrary`. `StickerSelectionToolbar`
+   and `PaperSetup` own cohesive control groups; the screens retain orchestration,
+   view gestures and dialog navigation. Native dialogs and shared DialogHeader
+   remain unchanged. Browser checks cover paper setup, paint/save/reopen and
+   persisted library deletion/undo. Further splitting should follow feature needs.
 6. **Persistence and output ? drawings moved to IndexedDB.** A complex drawing
    exposed the localStorage quota. Drawing saves now compact paint, then commit
    structured records asynchronously. A browser regression round-trips a 7 MB

@@ -191,7 +191,20 @@ try {
     await fs.writeFile('work/tests/touch-after.json',JSON.stringify(afterPinch));
     throw Error('Two-finger gesture did not roll back its partial stroke');
   }
-  result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true};
+  // Exercise the library workflow through React, including durable delete/restore.
+  const deletedId = await evaluate('(async()=> (await (await import("/src/app/pictures.ts")).pictureRepository.load())[0].id)()');
+  await waitFor(`!!document.querySelector('button[aria-label="Delete selected saved picture"]:not(:disabled)')`);
+  await evaluate(`document.querySelector('button[aria-label="Delete selected saved picture"]').click()`);
+  await waitFor('!!document.querySelector(".delete-picture-dialog[open]")');
+  await evaluate('document.querySelector(".confirm-delete").click()');
+  await waitFor(`!!document.querySelector('button[aria-label="Undo delete"]')`);
+  const wasDeleted = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => !(await pictureRepository.load()).some(p => p.id === ${JSON.stringify(deletedId)}))`);
+  if (!wasDeleted) throw Error('Library deletion was not persisted');
+  await evaluate(`document.querySelector('button[aria-label="Undo delete"]').click()`);
+  await waitFor(`!document.querySelector('button[aria-label="Undo delete"]')`);
+  const restored = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => (await pictureRepository.load()).find(p => p.id === ${JSON.stringify(deletedId)}))`);
+  if (!restored || JSON.stringify(restored.document) !== JSON.stringify(afterPinch)) throw Error('Undo delete did not restore the saved drawing');
+  result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,deleteRestore:true};
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
   await fs.writeFile('work/tests/app-after-reopen.png',Buffer.from(screenshot.data,'base64'));
   if(process.argv.includes('--dense-profile')){
