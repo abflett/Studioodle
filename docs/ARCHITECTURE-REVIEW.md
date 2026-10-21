@@ -94,9 +94,12 @@ not mutate paint or reach into persistence directly.
    processing by about 15% and spray by about 10%; see [vector painting](VECTOR-PAINT.md)
    for scope and measurements. Deeper curve clipping or input batching should follow
    a reproducible remaining delay rather than another architectural migration.
-3. **Worker contention.** One shared worker serializes jobs from different surfaces.
-   Dirty jobs reduce the work, but priority/coalescing or cancellable jobs may help
-   under sustained painting. Do not add a worker pool without a repeatable case.
+3. **Worker contention ? measured; scheduling changes deferred.** A 26-sticker,
+   216-stroke diagnostic kept the current worker backlog at three jobs or fewer.
+   Worker execution was cheap compared with complex-scene display/cache work.
+   Prioritize cache residency at high DPI/zoom; raising the budget alone did not
+   remove churn. See [the measured workload and limits](ADVANCED-SCENE-PERFORMANCE.md).
+   Do not add a worker pool without evidence that the worker is the bottleneck.
 4. **Live-document memory.** The 64 MiB limit applies only to cached lookup arrays.
    Active surfaces, flattened geometry, Path2D objects, retained SVG text and undo
    are additional memory. The full shipped SVG catalog is about 24 MB on disk; source

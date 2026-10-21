@@ -9,13 +9,25 @@ let browser;
 for (const candidate of browserCandidates) { try { await fs.access(candidate); browser = candidate; break; } catch { /* Try next installed browser. */ } }
 if (!browser) throw new Error('Set BENCHMARK_BROWSER to a Chromium browser executable.');
 await fs.mkdir('work/tests', { recursive: true });
+const sceneProfile=process.argv.includes('--scene-profile');
+const sceneBudget=Number(process.argv.find(arg=>arg.startsWith('--scene-cache-mib='))?.split('=')[1]??32);
+if(![32,64,128].includes(sceneBudget))throw Error('Scene cache diagnostic budget must be 32, 64 or 128 MiB');
+const sceneSuffix=sceneBudget===32?'':`-cache${sceneBudget}`;
 const profile = await fs.mkdtemp(path.join(os.tmpdir(), 'studioodle-region-coverage-'));
-const server = await createServer({ configFile: 'vite/config.dev.ts', server: { host: '127.0.0.1', port: 1433, strictPort: true, open: false } });
+const plugins=sceneProfile&&sceneBudget!==32?[{
+  name:'diagnostic-cache-budget', enforce:'pre',
+  transform(code,id){
+    if(id.replaceAll('\\','/').endsWith('/src/editor/paintDisplayCache.ts'))
+      return code.replace('const budget = 32 * 1024 * 1024;',`const budget = ${sceneBudget} * 1024 * 1024;`);
+  },
+}]:[];
+const server = await createServer({ plugins, configFile: 'vite/config.dev.ts', server: { host: '127.0.0.1', port: 1433, strictPort: true, open: false } });
 if (path.dirname(profile) !== os.tmpdir() || !path.basename(profile).startsWith('studioodle-region-coverage-')) throw Error('Unexpected test profile path');
 let child, ws, cdp;
 try {
   await server.listen();
-  child = spawn(browser, ['--headless=new', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--no-first-run', '--remote-debugging-address=127.0.0.1', '--remote-debugging-port=0', `--user-data-dir=${profile}`, `http://127.0.0.1:1433/`], { windowsHide: true, stdio: 'ignore' });
+  const graphics=sceneProfile?['--disable-background-timer-throttling','--disable-renderer-backgrounding','--disable-backgrounding-occluded-windows']:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'];
+  child = spawn(browser, ['--headless=new', ...graphics, '--no-first-run', '--remote-debugging-address=127.0.0.1', '--remote-debugging-port=0', `--user-data-dir=${profile}`, `http://127.0.0.1:1433/`], { windowsHide: true, stdio: 'ignore' });
   let port;
   for (let i = 0; i < 100; i++) {
     try { port = Number((await fs.readFile(path.join(profile, 'DevToolsActivePort'), 'utf8')).split('\n')[0]); break; } catch { await new Promise(r => setTimeout(r, 100)); }
@@ -39,6 +51,7 @@ try {
       await cdp('Runtime.runIfWaitingForDebugger',{},sessionId);
     })().catch(error=>runtimeErrors.push(String(error)));
     if(message.method==='Runtime.exceptionThrown')runtimeErrors.push(message.params.exceptionDetails);
+    if(message.method==='Runtime.consoleAPICalled'&&String(message.params.args?.[0]?.value).startsWith('scene:'))console.log(...message.params.args.map(a=>a.value));
     if(message.method==='Runtime.consoleAPICalled'&&message.params.type==='error')runtimeErrors.push(message.params.args);
     if (!message.id) return; const request = pending.get(message.id); pending.delete(message.id); if (message.error) request?.reject(Error(JSON.stringify(message.error))); else request?.resolve(message.result); });
   cdp = (method, params = {}, sessionId) => new Promise((resolve, reject) => { const key = ++id; pending.set(key, { resolve, reject }); ws.send(JSON.stringify({ id: key, method, params, sessionId })); });
@@ -54,6 +67,25 @@ try {
     if (await evaluate('location.origin === "http://127.0.0.1:1433" && document.readyState !== "loading"')) break;
     await new Promise(resolve => setTimeout(resolve, 100));
   }
+  if(sceneProfile){
+    await cdp('Page.bringToFront');
+    await cdp('Emulation.setFocusEmulationEnabled',{enabled:true});
+    await cdp('Emulation.setDeviceMetricsOverride',{width:1280,height:960,deviceScaleFactor:1,mobile:false});
+    const setup=await evaluate("import('/tests/browser/advanced-scene.ts').then(m=>m.prepareAdvancedScene())");
+    console.log('Advanced scene setup:',JSON.stringify(setup));
+    const runs=[];
+    for(const [label,rate,dpr] of [['native',1,1],['high-dpi',1,2],['cpu-4x-high-dpi',4,2]]){
+      await cdp('Emulation.setCPUThrottlingRate',{rate});
+      const {diagnosticPng,document,...metrics}=await evaluate(`import('/tests/browser/advanced-scene.ts').then(m=>m.profileAdvancedScene(${dpr}))`);
+      await fs.writeFile(`work/tests/advanced-scene${sceneSuffix}-${label}.png`,Buffer.from(diagnosticPng.split(',')[1],'base64'));
+      await fs.writeFile('work/tests/advanced-scene-picture.json',JSON.stringify(document));
+      runs.push({label,mainThreadCpuSlowdown:rate,...metrics});
+      await fs.writeFile(`work/tests/advanced-scene${sceneSuffix}-results.json`,JSON.stringify({cacheBudgetMiB:sceneBudget,setup,runs},null,2));
+      console.log('Advanced scene:',label,JSON.stringify({...metrics,phases:{...metrics.phases,worker:{...metrics.phases.worker,raw:undefined,fills:undefined}}}));
+    }
+    await cdp('Emulation.setCPUThrottlingRate',{rate:1});
+    if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
+  }else{
   const firstFill = await evaluate("import('/tests/browser/first-fill.ts').then(m => m.checkFirstFill())");
   console.log('First fill:',JSON.stringify(firstFill));
   const result = await evaluate("import('/tests/browser/region-coverage.ts').then(m => m.checkRegionCoverage())");
@@ -135,6 +167,8 @@ try {
   if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   await fs.writeFile('work/tests/region-coverage-results.json', JSON.stringify(result, null, 2));
   console.log(JSON.stringify(result, null, 2));
+
+  }
 
 } finally {
   if (cdp) { try { await Promise.race([cdp('Browser.close'),new Promise(resolve => setTimeout(resolve, 1000))]); } catch { /* Browser may already have closed. */ } }
