@@ -1,4 +1,5 @@
 import { pictureFile, printPicture } from '../../src/app/pictureOutput';
+import { exportDimensions } from '../../src/editor/exportResolution';
 import { pictureSvg } from '../../src/editor/pictureSvg';
 import { renderPicture } from '../../src/editor/renderPicture';
 import { prepareStickers, vectorDefinition } from '../../src/editor/vectorStickers';
@@ -55,9 +56,19 @@ export async function checkPictureOutput() {
   const pdf = await pictureFile(picture, 'pdf');
   assert((await pdf.slice(0,5).text()) === '%PDF-', 'PDF export must produce a PDF document');
   assert(!/\/Subtype\s*\/Image\b/.test(await pdf.text()), 'PDF export must contain vectors, not image snapshots');
-  const png = await pictureFile(picture, 'png');
+  const png = await pictureFile(picture, 'png', 150);
   const pngImage = await createImageBitmap(png);
   assert(pngImage.width === 782 && pngImage.height === 625, 'PNG must retain 150 DPI output dimensions'); pngImage.close();
+  const highResolution = await pictureFile(picture, 'png');
+  const highImage = await createImageBitmap(highResolution);
+  assert(highImage.width === 1563 && highImage.height === 1250, 'Default PNG export must render vectors at 300 DPI'); highImage.close();
+  const bytes = new Uint8Array(await highResolution.arrayBuffer()), view = new DataView(bytes.buffer);
+  let density = 0;
+  for (let offset=8; offset+12<=bytes.length; offset+=view.getUint32(offset)+12) {
+    if (String.fromCharCode(...bytes.subarray(offset+4,offset+8)) === 'pHYs') density = view.getUint32(offset+8);
+  }
+  assert(density === Math.round(300/.0254), 'PNG metadata must match the selected rendering DPI');
+  assert(!exportDimensions({ ...picture, document: undefined, size: { width: 10000, height: 10000 } }, 600).fits, 'Oversized raster exports must retain a pixel budget');
   assert(JSON.stringify(picture) === before, 'Export must not mutate saved paint');
 
   // Real print adapter, without invoking an OS dialog in automated tests.

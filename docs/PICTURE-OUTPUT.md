@@ -9,7 +9,7 @@ The saved-picture Export button opens a native HTML dialog with three choices:
 
 | Format | Contents | Resolution |
 | --- | --- | --- |
-| PNG | Raster image with print-resolution metadata | 150 DPI at the document size |
+| PNG | Raster image with print-resolution metadata | 150, 300 (default) or 600 DPI at the document size |
 | SVG | Self-contained source curves, clipped polygon paint, ink and patterns | Vector; no embedded images or external asset links |
 | PDF | One page at the document's physical size, converted from the same SVG | Vector; no screenshot or canvas snapshot |
 
@@ -51,7 +51,7 @@ Browser regression uses two differently transformed instances of the Moon
 Sorceress, a clipped-ink circle, outline recoloring, stripes/dots/checker fills,
 clipped brush shapes and a polygon hole. SVG is rasterized only for comparison
 against the editor render. Tests check unique/resolved IDs, unchanged saved data,
-150 DPI PNG dimensions, PDF signature and absence of raster image objects.
+150/300 DPI PNG dimensions and matching metadata, PDF signature and absence of raster image objects.
 
 The actual print adapter's preview HTML also passes through Chromium's
 `Page.printToPDF`; its PDF is checked for raster images. Both PDFs were separately
@@ -59,3 +59,8 @@ inspected for page size and visually rendered. Export dialog choices, close
 behavior and blocked print windows have browser coverage. OS print dialogs,
 physical printers and the changed native adapter still require the manual checks
 in [refinement tasks](REFINEMENT-TASKS.md).
+
+PNG density affects actual pixel dimensions and pHYs metadata together. Options
+exceeding the shared 64-million-pixel raster budget are disabled before allocation.
+Vector source geometry remains resolution independent; raster buffers and encoding
+still require memory proportional to pixel count. SVG and PDF have no DPI setting.

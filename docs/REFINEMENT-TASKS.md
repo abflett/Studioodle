@@ -27,7 +27,7 @@ Keep additions driven by observed problems and requested features.
 
 The export overlay works for browser and desktop. A native format-filter chooser
 could replace the overlay on desktop if requested; it is not needed to save all
-three current formats. Adjustable PNG DPI is likewise a separate feature.
+three current formats. PNG already offers 150, 300 and 600 DPI with a pixel-budget guard.
 
 ## Regression commands
 

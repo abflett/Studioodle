@@ -217,6 +217,28 @@ try {
   await waitFor(`!!document.querySelector('dialog[open] button[aria-label="Export as PDF"]')`);
   const exportOptions = await evaluate(`['PNG','SVG','PDF'].every(format => document.querySelector('dialog[open] button[aria-label="Export as '+format+'"]'))`);
   if (!exportOptions) throw Error('Export picker must offer PNG, SVG and PDF');
+  if (await evaluate(`document.querySelector('#export-dpi').value`) !== '300') throw Error('Export dialog must default to 300 DPI');
+  for (const [label,width,height] of [['desktop',900,700],['phone',390,740]]) {
+    await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+    for (const theme of ['dark','light']) {
+      await evaluate(`document.documentElement.dataset.theme = '${theme}'; new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))`);
+      const layout = await evaluate(`(() => {
+        const dialog=document.querySelector('.export-dialog'), box=dialog.getBoundingClientRect();
+        const copy=document.querySelector('.export-format-copy'), title=copy.querySelector('strong').getBoundingClientRect(), caption=copy.querySelector('span').getBoundingClientRect();
+        return {inside:box.left>=0 && box.right<=innerWidth && box.top>=0 && box.bottom<=innerHeight && box.height<520, noOverflow:dialog.scrollWidth<=dialog.clientWidth, stacked:caption.top>=title.bottom && Math.abs(caption.left-title.left)<1};
+      })()`);
+      if (!layout.inside || !layout.noOverflow || !layout.stacked) throw Error('Export layout failed: '+JSON.stringify({label,theme,...layout}));
+      const shot=await cdp('Page.captureScreenshot',{format:'png'});
+      await fs.writeFile(`work/tests/export-${label}-${theme}.png`,Buffer.from(shot.data,'base64'));
+    }
+  }
+  await cdp('Emulation.clearDeviceMetricsOverride');
+  await evaluate(`document.querySelector('#export-dpi').value='600'; document.querySelector('#export-dpi').dispatchEvent(new Event('change',{bubbles:true}))`);
+  const resolutionUpdates = await evaluate(`import('/src/editor/exportResolution.ts').then(async ({exportDimensions}) => {
+    const picture=(await (await import('/src/app/pictures.ts')).pictureRepository.load())[0];
+    return document.querySelector('.export-pixel-size').textContent.includes(exportDimensions(picture,600).width.toLocaleString());
+  })`);
+  if (!resolutionUpdates) throw Error('Changing DPI must update the PNG dimensions');
   await evaluate(`document.querySelector('button[aria-label="Close export"]').click()`);
   // Export errors leave the overlay usable, then retry downloads the chosen format.
   await evaluate(`document.querySelector('button[aria-label="Export selected saved picture"]').click()`);
