@@ -20,6 +20,33 @@ test('small true holes close along the original curve instead of receiving raste
  scope.remove();
 });
 
+test('cape retouch preserves the shoulder strand and keeps hair, cape, sleeve and skirt separately fillable',()=>{
+ const scope=new paper.PaperScope();scope.setup(new scope.Size(340,480));
+ try{
+  const source=fs.readFileSync('art/source/fantasy/moon-sorceress.svg','utf8');
+  const revised=new scope.CompoundPath({pathData:/<path d="([^"]+)"/.exec(source)[1],insert:false});
+  const reference=fs.readFileSync('experiments/moon-sorceress/curve-unioned-cleanup.svg','utf8').split('<g id="ink"')[1];
+  const original=new scope.CompoundPath({pathData:/\bd="([^"]+)"/.exec(reference)[1],insert:false});
+  original.transform(new scope.Matrix(.../transform="matrix\(([^)]+)\)/.exec(reference)[1].split(/[ ,]+/).map(Number)));
+  for(let y=125.25;y<168;y+=.5)for(let x=136.25;x<154;x+=.5){
+   if(x>=136.4&&x<=137.8&&y>=153.5&&y<=160.1)continue; // two deliberately removed stray marks
+   const p=new scope.Point(x,y);assert.equal(revised.contains(p),original.contains(p),`Front strand changed at ${x},${y}`);
+  }
+  for(let y=4.25;y<478;y+=8)for(let x=4.25;x<338;x+=8){
+   if(x>121&&x<161&&y>153&&y<219)continue;
+   const p=new scope.Point(x,y);assert.equal(revised.contains(p),original.contains(p),`Unrelated artwork changed at ${x},${y}`);
+  }
+  const svg=fs.readFileSync('src/assets/vector/fantasy-moon-sorceress.svg','utf8');
+  const regions=[...svg.matchAll(/<path id="region-(\d+)"[^>]*transform="matrix\(([^)]+)\)" d="([^"]+)"/g)].map(m=>{
+   const path=new scope.CompoundPath({pathData:m[3],insert:false});path.transform(new scope.Matrix(...m[2].split(/[ ,]+/).map(Number)));return{id:+m[1],path};
+  });
+  const ids=[[141,165],[138,180],[125,180],[144,195]].map(p=>{
+   const hit=regions.filter(r=>r.path.contains(new scope.Point(...p)));assert.equal(hit.length,1);return hit[0].id;
+  });
+  assert.equal(new Set(ids).size,4,'Hair, cape, sleeve and skirt must not leak into one another');
+ }finally{scope.remove();}
+});
+
 test('refined sorceress closes the teardrop, preserves eye highlights and adds no detached ink',()=>{
  const scope=new paper.PaperScope();scope.setup(new scope.Size(100,100));
  const source=fs.readFileSync('experiments/moon-sorceress/06-traced-ink.svg','utf8');
