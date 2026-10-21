@@ -5,16 +5,19 @@ import { vectorStickerUrl } from './stickerUrls';
 
 const sources = new Map<StickerKind, string>();
 const definitions = new Map<StickerKind, VectorDefinition>();
+// Weak references share definitions still owned by open artwork, without pinning evicted maps.
+const live = new Map<StickerKind, WeakRef<VectorDefinition>>();
 const pending = new Map<StickerKind, Promise<void>>();
-// Keep lightweight source text for synchronous re-decoding. The catalog bounds
-// this cache; expensive lookup arrays have a separate LRU budget. Live artwork
-// retains its own references when a definition leaves this reuse cache.
+// Source text supports synchronous undo/restoration while editing. Drop it when
+// the editor closes; active previews can still share their live definitions.
 const maxCached = 24;
 const maxLookupBytes = 64 * 1024 * 1024;
 let lookupBytes = 0;
 
 function cacheDefinition(kind: StickerKind, definition: VectorDefinition) {
-  definitions.set(kind, definition);
+  lookupBytes -= definitions.get(kind)?.typedArrayBytes ?? 0;
+  definitions.delete(kind);definitions.set(kind, definition);
+  live.set(kind,new WeakRef(definition));
   lookupBytes += definition.typedArrayBytes;
   while (definitions.size > maxCached || lookupBytes > maxLookupBytes) {
     const oldest = definitions.keys().next().value!;
@@ -25,7 +28,8 @@ function cacheDefinition(kind: StickerKind, definition: VectorDefinition) {
 
 export async function prepareStickers(kinds: Iterable<StickerKind | 'canvas'>) {
   await Promise.all([...new Set(kinds)].filter((kind): kind is StickerKind => kind !== 'canvas').map(async kind => {
-    if (definitions.has(kind)) return;
+    const existingDefinition = definitions.get(kind) ?? live.get(kind)?.deref();
+    if (existingDefinition) { cacheDefinition(kind, existingDefinition); return; }
     if (sources.has(kind)) { vectorDefinition(kind); return; }
     const existing = pending.get(kind);
     if (existing) return existing;
@@ -46,9 +50,9 @@ export async function prepareStickers(kinds: Iterable<StickerKind | 'canvas'>) {
 }
 
 export function vectorDefinition(kind: StickerKind): VectorDefinition {
-  const cached = definitions.get(kind);
+  const cached = definitions.get(kind) ?? live.get(kind)?.deref();
   if (cached) {
-    definitions.delete(kind); definitions.set(kind, cached);
+    cacheDefinition(kind,cached);
     return cached;
   }
   const source = sources.get(kind);
@@ -58,4 +62,7 @@ export function vectorDefinition(kind: StickerKind): VectorDefinition {
   return definition;
 }
 
-export function releaseStickerDefinitions() { definitions.clear(); lookupBytes = 0; }
+export function releaseStickerDefinitions() {
+  definitions.clear(); sources.clear(); lookupBytes = 0;
+  for(const [kind,reference] of live)if(!reference.deref())live.delete(kind);
+}

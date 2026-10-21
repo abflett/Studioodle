@@ -13,6 +13,16 @@ function path(element: Element) {
   return result;
 }
 
+// A separate closure scope keeps lazy geometry from retaining the parser document
+// through the decoder's other callbacks (notably ink clip lookup).
+function region(element:Element,id:number):Region {
+  let geometry:ReturnType<typeof svgPathGeometry>|undefined;
+  const data=element.getAttribute('d')??'';
+  const matrix=element.hasAttribute('transform')?numbers(element.getAttribute('transform')!.replace(/^matrix\(|\)$/g,'')):[1,0,0,1,0,0];
+  return {id,path:path(element),bounds:numbers(element.getAttribute('data-bounds')),
+    geometry:()=>geometry??=svgPathGeometry(data,matrix)};
+}
+
 /** SVG is the transport; painting normally uses a once-built shared lookup array. */
 export function decodeSvgDefinition(text: string, options: { scale?: number } = {}): VectorDefinition {
   const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
@@ -27,11 +37,7 @@ export function decodeSvgDefinition(text: string, options: { scale?: number } = 
   const regions: Region[] = regionElements.map(element => {
     const explicit = /^region-(\d+)$/.exec(element.id);
     while (explicitIds.has(nextId)) nextId++;
-    let geometry: ReturnType<typeof svgPathGeometry> | undefined;
-    const data=element.getAttribute('d')??'';
-    const matrix=element.hasAttribute('transform')?numbers(element.getAttribute('transform')!.replace(/^matrix\(|\)$/g,'')):[1,0,0,1,0,0];
-    return { id: explicit ? Number(explicit[1]) : nextId++, path: path(element), bounds: numbers(element.getAttribute('data-bounds')),
-      geometry: () => geometry ??= svgPathGeometry(data,matrix) };
+    return region(element,explicit ? Number(explicit[1]) : nextId++);
   });
   if (!regions.length || regions.some(r => !Number.isInteger(r.id) || r.id <= 0 || r.id > 65535 || r.bounds.length !== 4)) throw new Error('Invalid SVG regions');
   if (new Set(regions.map(region => region.id)).size !== regions.length) throw new Error('Duplicate SVG region IDs');

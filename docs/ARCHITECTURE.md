@@ -100,8 +100,9 @@ cancels display/paint timers, and ignores late asynchronous fill results. Worker
 transport is shared for the application lifetime rather than restarted per stroke.
 
 The definition reuse cache holds at most 24 entries and 64 MiB of typed lookup
-data. Eviction does not invalidate live artwork. Source SVG text is retained for
-synchronous decoding after eviction; total text is bounded by the shipped catalog.
+data. Eviction does not invalidate live artwork: weak references share definitions
+still owned by active artwork or previews. Source SVG text supports synchronous
+restoration while editing and is cleared when the editor closes.
 The limit covers cached lookups, not live documents, Path2D objects, geometry or undo.
 
 State subscriptions replay the latest published state, so mounting React listeners
@@ -130,3 +131,10 @@ It clips large cache windows to the viewport with pan margins, fits their combin
 resolution to the budget, and protects this working set from same-frame eviction.
 Fills repaint fitting buffers without reallocating them. Inactive caches retain
 LRU reuse only within the remaining capacity. See [the repeated scene measurements](DISPLAY-CACHE-PERFORMANCE.md).
+
+
+Live-document memory was checked through eight editor lifecycles and a lookup-cache
+pressure probe. Definitions are weakly shared across active users, lazy region
+geometry does not retain parser documents, and restoration clones paint only once.
+See [the measured lifecycle results](LIVE-DOCUMENT-MEMORY.md). Cache budgets remain
+separate from total application or graphics memory.

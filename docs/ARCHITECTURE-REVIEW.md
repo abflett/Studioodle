@@ -100,10 +100,13 @@ not mutate paint or reach into persistence directly.
    Prioritize cache residency at high DPI/zoom; raising the budget alone did not
    remove churn. See [the measured workload and limits](ADVANCED-SCENE-PERFORMANCE.md).
    Do not add a worker pool without evidence that the worker is the bottleneck.
-4. **Live-document memory.** The 64 MiB limit applies only to cached lookup arrays.
-   Active surfaces, flattened geometry, Path2D objects, retained SVG text and undo
-   are additional memory. The full shipped SVG catalog is about 24 MB on disk; source
-   strings could use more in memory. Avoid presenting the cache limit as an app limit.
+4. **Live-document memory ? tested and refined.** Eight open/paint/save/close
+   cycles returned to a stable retained-memory baseline. Weak sharing now avoids
+   duplicate live definitions after reuse-cache eviction; the pressure probe saved
+   22.41 MiB of lookup arrays. Lazy geometry no longer retains parser documents,
+   idle source text is cleared, redundant paint cloning is removed, and closed
+   display backings shrink immediately. These are not a total app-memory limit.
+   See [the lifecycle test and results](LIVE-DOCUMENT-MEMORY.md).
 5. **UI component size.** EditorPreview and SelectionScreen coordinate several
    workflows but are still only about 20 KB each. Extract cohesive workflows when
    touched by features, rather than splitting JSX into arbitrary tiny components.

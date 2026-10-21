@@ -40,5 +40,5 @@ export class CanvasViewport {
     }
   }
 
-  destroy() { this.canvas.remove(); }
+  destroy() { this.canvas.remove(); this.canvas.width=this.canvas.height=1; }
 }

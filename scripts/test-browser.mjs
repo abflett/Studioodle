@@ -9,6 +9,7 @@ let browser;
 for (const candidate of browserCandidates) { try { await fs.access(candidate); browser = candidate; break; } catch { /* Try next installed browser. */ } }
 if (!browser) throw new Error('Set BENCHMARK_BROWSER to a Chromium browser executable.');
 await fs.mkdir('work/tests', { recursive: true });
+const memoryProfile=process.argv.includes('--memory-profile');
 const sceneProfile=process.argv.includes('--scene-profile');
 const sceneBudget=Number(process.argv.find(arg=>arg.startsWith('--scene-cache-mib='))?.split('=')[1]??64);
 if(![32,64,128].includes(sceneBudget))throw Error('Scene cache diagnostic budget must be 32, 64 or 128 MiB');
@@ -69,7 +70,45 @@ try {
     if (await evaluate('location.origin === "http://127.0.0.1:1433" && document.readyState !== "loading"')) break;
     await new Promise(resolve => setTimeout(resolve, 100));
   }
-  if(sceneProfile){
+  if(memoryProfile){
+    await cdp('Page.bringToFront');
+    const setup=await evaluate("import('/tests/browser/document-memory.ts').then(m=>m.prepareMemoryFixture())");
+    const samples=[];
+    const sample=async(label)=>{
+      await cdp('HeapProfiler.collectGarbage');
+      const heap=await cdp('Runtime.getHeapUsage'),dom=await cdp('Memory.getDOMCounters');
+      const resources=await evaluate("import('/tests/browser/document-memory.ts').then(m=>m.memoryResources())");
+      const value={label,heap,dom,resources};samples.push(value);console.log('Memory sample:',JSON.stringify(value));
+      await fs.writeFile('work/tests/document-memory-results.json',JSON.stringify({setup,samples},null,2));
+    };
+    await sample('prepared');
+    for(let cycle=1;cycle<=8;cycle++){
+      const active=await evaluate("import('/tests/browser/document-memory.ts').then(m=>m.openMemoryCycle())");
+      console.log('Memory active:',JSON.stringify({cycle,...active}));
+      await sample(`active-${cycle}`);
+      await evaluate("import('/tests/browser/document-memory.ts').then(m=>m.closeMemoryCycle())");
+      await sample(`closed-${cycle}`);
+    }
+    const probe=await evaluate("import('/tests/browser/document-memory.ts').then(m=>m.openMemoryCycle(true))");
+    console.log('Definition eviction probe:',JSON.stringify(probe));
+    await sample('probe-active');
+    await evaluate("import('/tests/browser/document-memory.ts').then(m=>m.closeMemoryCycle(false))");
+    await sample('probe-closed');
+    if(probe.duplicateDefinitions!==0)throw Error('Live sticker definitions were duplicated under cache pressure');
+    const closed=samples.filter(s=>s.label.startsWith('closed-')||s.label==='probe-closed');
+    for(const value of closed){
+      if(value.resources.retainedSessions||value.resources.retainedArtwork)throw Error('Closed editor retained document objects: '+JSON.stringify(value));
+      if(value.resources.canvasPixelBytes>value.resources.liveCanvases*4)throw Error('Closed editor retained canvas backing pixels: '+JSON.stringify(value));
+    }
+    const tail=closed.filter(s=>s.label.startsWith('closed-')).slice(-4);
+    for(const field of ['usedSize','backingStorageSize']){
+      const values=tail.map(s=>s.heap[field]);
+      if(Math.max(...values)-Math.min(...values)>2*1024*1024)throw Error('Closed memory did not plateau: '+field);
+    }
+    await evaluate("import('/tests/browser/document-memory.ts').then(m=>m.cleanupMemoryFixture())");
+    await fs.writeFile('work/tests/document-memory-results.json',JSON.stringify({setup,samples,probe},null,2));
+    if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
+  }else if(sceneProfile){
     await cdp('Page.bringToFront');
     await cdp('Emulation.setFocusEmulationEnabled',{enabled:true});
     await cdp('Emulation.setDeviceMetricsOverride',{width:1280,height:960,deviceScaleFactor:1,mobile:false});

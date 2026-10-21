@@ -57,7 +57,7 @@ export class Artwork {
     private change?: ArtworkChange;
     private overlapCache = new Map<string, boolean>();
     constructor(private readonly width: number, private readonly height: number, data: SurfaceData[], private readonly definitionFor: (kind: StickerKind) => VectorDefinition = vectorDefinition) {
-        this.surfaces = data.map(surface => new Surface(structuredClone(surface), width, height, surface.kind === 'canvas' ? undefined : this.definitionFor(surface.kind), id=>this.capturePaint(surface.id,id)));
+        this.surfaces = data.map(surface => new Surface({...surface}, width, height, surface.kind === 'canvas' ? undefined : this.definitionFor(surface.kind), id=>this.capturePaint(surface.id,id)));
     }
     static create(width: number, height: number, background: string) {
         return new Artwork(width, height, [{ id: 'canvas', kind: 'canvas', x: 0, y: 0, color: parseInt(background.slice(1), 16) }]);
