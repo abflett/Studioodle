@@ -8,6 +8,7 @@ import { defaultBrush, defaultFill } from './toolOptions';
 import type { BrushOptions, FillOptions } from './toolOptions';
 import type { ArtworkDocument, Point, StickerKind, SurfaceData } from './document';
 import { VectorPaint } from './VectorPaint';
+import { PaintDisplayCache } from './paintDisplayCache';
 import { geometryBounds, mapGeometry, rectangleGeometry, styledStroke } from './vectorPaintStyles';
 const hex = (color: number) => '#' + color.toString(16).padStart(6, '0');
 
@@ -335,16 +336,25 @@ export class Artwork {
         const region=surface.vector.regions.find(region=>region.id===id);
         return surface.vectorPaint.fill(id,color,[p.x,p.y],options,region?.geometry);
     }
+    private transformSurface(ctx:CanvasRenderingContext2D,surface:Surface){
+        if(surface.data.kind==='canvas')return;
+        ctx.translate(surface.data.x,surface.data.y);ctx.rotate((surface.data.rotation??0)*Math.PI/180);
+        ctx.scale((surface.data.scale??1)*(surface.data.flipX?-1:1),(surface.data.scale??1)*(surface.data.flipY?-1:1));
+        ctx.translate(-Math.floor(surface.logicalWidth/2),-Math.floor(surface.logicalHeight/2));
+    }
     render(ctx:CanvasRenderingContext2D,thumbnail=false,cacheDisplay:boolean|(()=>void)=false){
         ctx.clearRect(0,0,this.width,this.height);ctx.save();ctx.beginPath();ctx.rect(0,0,this.width,this.height);ctx.clip();
-        for(const surface of this.surfaces){
-            if(this.focusedId&&surface.data.id!==this.focusedId)continue;
-            ctx.save();
-            if(surface.data.kind!=='canvas'){
-                ctx.translate(surface.data.x,surface.data.y);ctx.rotate((surface.data.rotation??0)*Math.PI/180);
-                ctx.scale((surface.data.scale??1)*(surface.data.flipX?-1:1),(surface.data.scale??1)*(surface.data.flipY?-1:1));
-                ctx.translate(-Math.floor(surface.logicalWidth/2),-Math.floor(surface.logicalHeight/2));
-            }
+        const surfaces=this.focusedId?this.surfaces.filter(s=>s.data.id===this.focusedId):this.surfaces;
+        if(cacheDisplay){
+            const requests=surfaces.flatMap(surface=>{
+                ctx.save();this.transformSurface(ctx,surface);
+                const request=surface.vectorPaint.prepareDisplay(ctx,surface.vector,typeof cacheDisplay==='function'?cacheDisplay:undefined);
+                ctx.restore();return request?[request]:[];
+            });
+            PaintDisplayCache.prepareFrame(requests);
+        }
+        for(const surface of surfaces){
+            ctx.save();this.transformSurface(ctx,surface);
             surface.vectorPaint.draw(ctx,surface.vector,cacheDisplay);drawVectorInk(ctx,surface.vector,hex(surface.data.color),thumbnail);ctx.restore();
         }
         ctx.restore();

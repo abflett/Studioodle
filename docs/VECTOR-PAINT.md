@@ -76,15 +76,32 @@ speedups across devices or artwork.
 ### Dense paint rendering
 
 Brush polygons build cached `Path2D` objects with numeric `moveTo`/`lineTo` calls,
-without serializing SVG path text. The viewport caches complex paint in surface-local coordinates and adds new
-clipped coverage incrementally. Panning and rotation reuse it. Zooming reprojects
-the existing image during movement and refines it after 150 ms of quiet. The
-resolution follows the view up to the pixel budget; export always uses vectors. Worker compaction
-preserves coverage, so it does not invalidate that display. Fills and undo rebuild it. All surface caches share a 32 MiB pixel budget with
-LRU eviction; offscreen surfaces allocate nothing and oversized surfaces cap
-their display resolution to the budget. This budget excludes the main canvas, geometry and undo.
-Caches are disposed with their artwork. Saves, hit testing, previews, exports
-and print use vector data; output never enlarges cached screen pixels.
+without serializing SVG path text. The viewport adds new clipped coverage to
+complex-surface display caches incrementally. Worker compaction preserves coverage,
+so it does not invalidate that display. Fills and undo repaint the existing buffer
+in place when its dimensions still fit. Saves, hit testing, previews, exports and
+print use vector data; output never enlarges cached screen pixels.
+
+`Artwork.render` prepares the whole visible working set before drawing any member.
+Large surfaces cache the visible area plus 18% margins for panning; small surfaces
+can keep their whole image. Pan reuses covered pixels. Zoom reprojects existing
+images while moving and requests a refinement after 150 ms of quiet. Cropped
+windows rebuild when new areas become visible. Rotation and flips use inverse
+view transforms for the local coverage window.
+
+All display caches share a 64 MiB RGBA pixel ceiling with LRU retention for inactive
+surfaces. This is a ceiling, not a startup allocation. Planned members cannot evict
+one another during the same frame: the planner fits their combined target to 90%
+of the budget and evicts unused caches first. Under pressure it quantizes a shared
+resolution reduction instead of rebuilding the same visible surfaces endlessly.
+The remaining headroom handles rounding and inactive reuse. Buffers are released
+with their artwork. This is presentation data, never document paint or a hit map.
+
+The budget counts `width * height * 4`, excluding main-canvas pixels, geometry,
+undo, worker copies, browser/GPU overhead and storage. It is not a total app memory
+limit. The advanced 26-sticker fixture used roughly 9?60 MiB across its measured
+views. A repeated 128 MiB comparison did not establish a response-time advantage,
+so the default remains 64 MiB. See [the follow-up measurements](DISPLAY-CACHE-PERFORMANCE.md).
 
 Worker jobs carry the length of the already-compacted, disjoint color prefix.
 Only new coverage must be compared against those partitions. Accepted results
@@ -92,17 +109,7 @@ release obsolete native path caches; history retains immutable geometry only.
 
 `node scripts/test-browser.mjs --dense-profile` adds a dense multicolor diagnostic
 and writes metrics plus a PNG under `work/tests/`. It forces a pixel readback to
-include deferred Canvas rasterization. Its frame timing includes an intentional
-16 ms pause and is not a hardware frame-rate measurement. Initial cache builds,
-fills, undo and settled zoom refinement can still cost a full vector redraw.
-
-
-The 32 MiB budget counts RGBA cache pixels (`width * height * 4`), shared across
-complex surfaces. It excludes document geometry, undo, worker copies, the visible
-canvas, browser/GPU overhead and persisted data. It is not a total app memory
-limit or artwork complexity limit. It holds about 8.4 million pixels: roughly a
-2896-square cache, four 1448-square caches, or a 3840-by-2160 cache. Higher display
-densities consume pixels faster. The value is conservative and should be tuned
-with representative layered scenes; eviction and resolution caps trade display
-quality/rebuild work for bounded cache memory. Increasing it cannot remove the
-cost of complex geometry operations.
+include deferred Canvas rasterization; that diagnostic is not a hardware frame-rate
+measurement. The advanced scene diagnostic uses normal visible rendering without
+per-frame readbacks. Initial builds, fills, undo, newly exposed crop windows and
+settled zoom refinements still require vector drawing.

@@ -50,7 +50,7 @@ remain symmetric, including React development effect replay.
 
 Drawings use the `pictures` store in IndexedDB database `studioodle-pictures-v5`; custom templates use `studioodle.v5.coloring.<id>`. Documents use vector-only format 5. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
 
-`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no raster paint arrays. Complex surfaces have disposable viewport display canvases under a shared 32 MiB pixel budget; export and print render vectors directly. Shared lookup arrays support only hit testing. A bounds-grid index selects candidate regions for brush clipping, shared by instances of the same definition. See [Vector Painting](VECTOR-PAINT.md).
+`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no raster paint arrays. Complex surfaces have disposable viewport display canvases under a shared 64 MiB pixel budget; export and print render vectors directly. Shared lookup arrays support only hit testing. A bounds-grid index selects candidate regions for brush clipping, shared by instances of the same definition. See [Vector Painting](VECTOR-PAINT.md).
 
 ## Adding features
 
@@ -123,3 +123,10 @@ records. Save completion follows paint compaction and transaction commit; queued
 edits retain their order while saving. Settings and custom coloring templates
 still use their small localStorage repositories. Development drawings from the
 old localStorage repository are not migrated to the IndexedDB library.
+
+
+Display cache planning considers every visible complex surface before drawing.
+It clips large cache windows to the viewport with pan margins, fits their combined
+resolution to the budget, and protects this working set from same-frame eviction.
+Fills repaint fitting buffers without reallocating them. Inactive caches retain
+LRU reuse only within the remaining capacity. See [the repeated scene measurements](DISPLAY-CACHE-PERFORMANCE.md).

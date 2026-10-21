@@ -143,3 +143,11 @@ Navigation follow-up: the original display key included the viewport translation
 and zoom, forcing expensive rebuilds per gesture frame. Surface-local caches now
 reuse paint during pan/rotation and refine once zoom settles. Browser checks
 verify zero paint path fills during navigation and one requested refinement.
+
+
+The measured cache residency issue is now addressed by a frame-wide planner,
+viewport crop windows, a shared 64 MiB ceiling and in-place fill repainting.
+The 26-sticker workload was repeated twice at both 64 and 128 MiB, including 4x
+page CPU throttling. Steady paint phases stopped rebuilding caches at both budgets.
+See [the follow-up report](DISPLAY-CACHE-PERFORMANCE.md). Single-worker scheduling
+remains unchanged because queue growth was not the limiting factor.

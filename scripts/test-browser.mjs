@@ -10,15 +10,17 @@ for (const candidate of browserCandidates) { try { await fs.access(candidate); b
 if (!browser) throw new Error('Set BENCHMARK_BROWSER to a Chromium browser executable.');
 await fs.mkdir('work/tests', { recursive: true });
 const sceneProfile=process.argv.includes('--scene-profile');
-const sceneBudget=Number(process.argv.find(arg=>arg.startsWith('--scene-cache-mib='))?.split('=')[1]??32);
+const sceneBudget=Number(process.argv.find(arg=>arg.startsWith('--scene-cache-mib='))?.split('=')[1]??64);
 if(![32,64,128].includes(sceneBudget))throw Error('Scene cache diagnostic budget must be 32, 64 or 128 MiB');
-const sceneSuffix=sceneBudget===32?'':`-cache${sceneBudget}`;
+const repeat=Number(process.argv.find(arg=>arg.startsWith('--scene-repeat='))?.split('=')[1]??1);
+if(![1,2].includes(repeat))throw Error('Scene repeat must be 1 or 2');
+const sceneSuffix=`-cache${sceneBudget}`;
 const profile = await fs.mkdtemp(path.join(os.tmpdir(), 'studioodle-region-coverage-'));
-const plugins=sceneProfile&&sceneBudget!==32?[{
+const plugins=sceneProfile?[{
   name:'diagnostic-cache-budget', enforce:'pre',
   transform(code,id){
     if(id.replaceAll('\\','/').endsWith('/src/editor/paintDisplayCache.ts'))
-      return code.replace('const budget = 32 * 1024 * 1024;',`const budget = ${sceneBudget} * 1024 * 1024;`);
+      return code.replace(/export const paintDisplayBudget = \d+ \* 1024 \* 1024;/,`export const paintDisplayBudget = ${sceneBudget} * 1024 * 1024;`);
   },
 }]:[];
 const server = await createServer({ plugins, configFile: 'vite/config.dev.ts', server: { host: '127.0.0.1', port: 1433, strictPort: true, open: false } });
@@ -74,12 +76,12 @@ try {
     const setup=await evaluate("import('/tests/browser/advanced-scene.ts').then(m=>m.prepareAdvancedScene())");
     console.log('Advanced scene setup:',JSON.stringify(setup));
     const runs=[];
-    for(const [label,rate,dpr] of [['native',1,1],['high-dpi',1,2],['cpu-4x-high-dpi',4,2]]){
+    for(let repetition=1;repetition<=repeat;repetition++)for(const [label,rate,dpr] of [['native',1,1],['high-dpi',1,2],['cpu-4x-high-dpi',4,2]]){
       await cdp('Emulation.setCPUThrottlingRate',{rate});
       const {diagnosticPng,document,...metrics}=await evaluate(`import('/tests/browser/advanced-scene.ts').then(m=>m.profileAdvancedScene(${dpr}))`);
-      await fs.writeFile(`work/tests/advanced-scene${sceneSuffix}-${label}.png`,Buffer.from(diagnosticPng.split(',')[1],'base64'));
+      await fs.writeFile(`work/tests/advanced-scene${sceneSuffix}-${label}-run${repetition}.png`,Buffer.from(diagnosticPng.split(',')[1],'base64'));
       await fs.writeFile('work/tests/advanced-scene-picture.json',JSON.stringify(document));
-      runs.push({label,mainThreadCpuSlowdown:rate,...metrics});
+      runs.push({label,repetition,mainThreadCpuSlowdown:rate,...metrics});
       await fs.writeFile(`work/tests/advanced-scene${sceneSuffix}-results.json`,JSON.stringify({cacheBudgetMiB:sceneBudget,setup,runs},null,2));
       console.log('Advanced scene:',label,JSON.stringify({...metrics,phases:{...metrics.phases,worker:{...metrics.phases.worker,raw:undefined,fills:undefined}}}));
     }

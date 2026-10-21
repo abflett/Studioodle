@@ -79,7 +79,7 @@ export async function profileAdvancedScene(dpr=1){
  const refresh=()=>{refreshRequested=true;};
  const cachesSeen=new Set<PaintDisplayCache>();
  const original=PaintDisplayCache.prototype.draw;
- PaintDisplayCache.prototype.draw=function(context,definition,full,delta,callback){cachesSeen.add(this);return original.call(this,context,definition,target=>{rebuilds++;full(target);},(target,paint)=>{deltas++;delta(target,paint);},callback);};
+ PaintDisplayCache.prototype.draw=function(context,full,delta){cachesSeen.add(this);return original.call(this,context,target=>{rebuilds++;full(target);},(target,paint)=>{deltas++;delta(target,paint);});};
  const session=new EditorSession(fixture,{save:picture=>repository.save(picture),changed:()=>{}});
  const art=session.artwork,draw=()=>{ctx.resetTransform();ctx.clearRect(0,0,canvas.width,canvas.height);const scale=canvas.width/fixture.document.width*view.zoom;ctx.setTransform(scale,0,0,scale,-view.x*scale,-view.y*scale);art.render(ctx,false,refresh);draws++;refreshRequested=false;};
  const phases:Record<string,unknown>={},longTasks:number[]=[];

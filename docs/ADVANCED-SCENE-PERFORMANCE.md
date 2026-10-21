@@ -1,5 +1,7 @@
 # Advanced-scene performance investigation
 
+This records the earlier renderer. See [the implemented fix and repeated tests](DISPLAY-CACHE-PERFORMANCE.md) for current results.
+
 Measured on 2026-10-21 using headless Microsoft Edge 155 on this Windows machine.
 These are local diagnostic results, not device requirements or tablet FPS claims.
 

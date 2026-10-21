@@ -1,4 +1,5 @@
 import { Artwork } from '../../src/editor/Artwork';
+import { paintDisplayBudget } from '../../src/editor/paintDisplayCache';
 import { paintPath } from '../../src/editor/vectorPaintStyles';
 import type { ArtworkDocument } from '../../src/editor/document';
 import type { MultiPolygon } from '../../src/editor/polygonGeometry';
@@ -28,11 +29,21 @@ export async function checkPaintDisplay(){
   assert(pixel(ctx,300,300)[1]!>180,'Incremental paint was not displayed');
   await art.compactPaint();fills=0;art.render(ctx,false,true);assert(fills===0,'Worker merging must not rebuild the unchanged picture');
   art.undoChange(undo);art.render(ctx,false,true);assert(pixel(ctx,300,300).join()===pixel(ref,300,300).join(),'Undo did not invalidate cached paint');
-  await art.fill({x:5,y:5},0xff88bb);art.render(ctx,false,true);art.render(ref);
+  const widthDescriptor=Object.getOwnPropertyDescriptor(HTMLCanvasElement.prototype,'width')!;let resizes=0;
+  Object.defineProperty(HTMLCanvasElement.prototype,'width',{...widthDescriptor,set:function(this:HTMLCanvasElement,value:number){resizes++;Reflect.apply(widthDescriptor.set!,this,[value]);}});
+  try{
+   await art.fill({x:5,y:5},0xff88bb);art.render(ctx,false,true);art.render(ref);
+   assert(resizes===0,'A fill must repaint a fitting cache without reallocating its canvas');
+  }finally{Object.defineProperty(HTMLCanvasElement.prototype,'width',widthDescriptor);}
   assert(pixel(ctx,10,10).join()===pixel(ref,10,10).join(),'Bucket fill did not invalidate cached paint');
   ctx.setTransform(1.25,0,0,1.25,30.3,12.6);ref.setTransform(1.25,0,0,1.25,30.3,12.6);ctx.clearRect(-100,-100,1000,1000);ref.clearRect(-100,-100,1000,1000);
   art.render(ctx,false,true);art.render(ref);
   assert(pixel(ctx,100,100).join()===pixel(ref,100,100).join(),'Changed view transform did not rebuild cached paint');
+  ctx.resetTransform();ref.resetTransform();ctx.clearRect(0,0,600,600);ref.clearRect(0,0,600,600);
+  ctx.setTransform(-1.3,.4,.4,1.3,430,55);ref.setTransform(-1.3,.4,.4,1.3,430,55);
+  art.render(ctx,false,true);art.render(ref);
+  assert(pixel(ctx,295,310).join()===pixel(ref,295,310).join(),'Rotated/flipped cached coverage differs from vector rendering');
+  ctx.setTransform(1.25,0,0,1.25,30.3,12.6);art.render(ctx,false,true);
   let refreshes=0;const refresh=()=>{refreshes++;};
   ctx.setTransform(1.25,0,0,1.25,80,35);fills=0;art.render(ctx,false,refresh);
   assert(fills===0,'Panning must reuse the surface-local paint display');
@@ -54,15 +65,28 @@ export async function checkPaintDisplay(){
   const buffers:HTMLCanvasElement[]=[],copies:Artwork[]=[];
   Object.defineProperty(document,'createElement',{configurable:true,value:function(this:Document,...args:unknown[]){const element=Reflect.apply(create,this,args);if(args[0]==='canvas')buffers.push(element);return element;}});
   try{
-   for(let i=0;i<4;i++){const copy=Artwork.restore(doc);copies.push(copy);copy.render(largeCtx,false,true);}
-   assert(buffers.reduce((sum,c)=>sum+c.width*c.height*4,0)<=32*1024*1024+16,'Display cache exceeded its global pixel budget');
+   for(let i=0;i<8;i++){const copy=Artwork.restore(doc);copies.push(copy);copy.render(largeCtx,false,true);}
+   assert(buffers.reduce((sum,c)=>sum+c.width*c.height*4,0)<=paintDisplayBudget+32,'Display cache exceeded its global pixel budget');
    fills=0;copies[0]!.render(largeCtx,false,true);assert(fills>0,'Evicted display did not rebuild');
    fills=0;copies[0]!.render(largeCtx,false,true);assert(fills===0,'Rebuilt display was not reused');
   }finally{
    for(const copy of copies)copy.dispose();
    if(own)Object.defineProperty(document,'createElement',own);else Reflect.deleteProperty(document,'createElement');
   }
+  // All visible members must stay resident even when their ideal sizes exceed the budget.
+  const path=new Path2D();path.rect(0,0,300,300);
+  const definition={width:300,height:300,bounds:{left:0,top:0,right:300,bottom:300},regions:[{id:1,path,bounds:[0,0,300,300],rectangular:true}],regionCount:1,silhouette:path,ink:[],typedArrayBytes:0,
+   regionAt:()=>1,contains:()=>true,inRegion:()=>true};
+  const layered=Artwork.restore({...doc,surfaces:[doc.surfaces[0]!,...Array.from({length:7},(_,i)=>({...doc.surfaces[0]!,id:'layer'+i,kind:'garden-cloud' as const,x:150,y:150}))]},()=>definition);
+  try{
+   largeCtx.setTransform(6,0,0,6,0,0);layered.render(largeCtx,false,true);
+   for(let i=0;i<5;i++){fills=0;layered.render(largeCtx,false,true);assert(fills===0,'Visible surfaces evicted one another inside the same working set');}
+   largeCtx.setTransform(18,0,0,18,-600,-600);layered.render(largeCtx,false,refresh);
+   await new Promise(resolve=>setTimeout(resolve,200));layered.render(largeCtx,false,refresh);
+   fills=0;layered.render(largeCtx,false,refresh);assert(fills===0,'Settled zoom churned visible caches');
+   assert(pixel(largeCtx,900,900)[3]===255,'Cropped cache left a transparent viewport hole');
+  }finally{layered.dispose();}
   assert(buffers.every(c=>c.width===1&&c.height===1),'Disposed display retained its backing pixels');
-  return {smoothNavigation:true,boundedMemory:true,numericPaths:true,incrementalDisplay:true,noRebuildAfterMerge:true,fillUndoZoomInvalidation:true};
+  return {rotatedFlip:true,inPlaceFill:true,sharedWorkingSet:true,croppedZoom:true,smoothNavigation:true,boundedMemory:true,numericPaths:true,incrementalDisplay:true,noRebuildAfterMerge:true,fillUndoZoomInvalidation:true};
  }finally{Object.defineProperty(CanvasRenderingContext2D.prototype,'fill',descriptor);art.dispose();}
 }
