@@ -17,5 +17,5 @@
     "noEmit": true,
     "types": ["vite/client", "node"]
   },
-  "include": ["src", "vite", "experiments/**/*.ts"]
+  "include": ["src", "vite", "tests/browser/**/*.ts"]
 }

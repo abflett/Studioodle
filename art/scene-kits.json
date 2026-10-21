@@ -26,7 +26,7 @@
       "garden-cloud",
       "winter-pond"
     ],
-    "example": "src/editor/safariScene.ts"
+    "example": "src/assets/coloringBook.json#safari"
   },
   {
     "id": "garden",
@@ -47,7 +47,7 @@
       "garden-fence",
       "spring-meadow"
     ],
-    "example": "src/editor/gardenScene.ts"
+    "example": "src/assets/coloringBook.json#garden"
   },
   {
     "id": "beach",
@@ -63,7 +63,7 @@
       "garden-sun",
       "garden-cloud"
     ],
-    "example": "src/editor/beachScene.ts"
+    "example": "src/assets/coloringBook.json#beach"
   },
   {
     "id": "winter",
@@ -81,7 +81,7 @@
       "winter-present",
       "counting-star"
     ],
-    "example": "src/editor/winterScene.ts"
+    "example": "src/assets/coloringBook.json#winter"
   },
   {
     "id": "space",
@@ -114,6 +114,6 @@
       "counting-bunting",
       "counting-star"
     ],
-    "example": "src/editor/countingScene.ts"
+    "example": "src/assets/coloringBook.json#counting"
   }
 ]

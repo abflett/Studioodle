@@ -4,7 +4,7 @@ import type { MultiPolygon, Pair } from './polygonGeometry';
 import type { PaintBlob, VectorPaintRegion } from './vectorPaintTypes';
 import type { FillOptions } from './toolOptions';
 
-export const brushGrid = 64;
+const brushGrid = 64;
 const snap = (n: number) => Math.round(n * brushGrid) / brushGrid;
 /** Capsule outline, bounded chord error, with input nodes on a fine logical grid. */
 export function brushBlob(a: Pair, b: Pair, radius: number, square = false): MultiPolygon {

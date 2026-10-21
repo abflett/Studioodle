@@ -2,37 +2,28 @@ import polygonClipping from './polygonGeometry';
 import type { FillOptions } from './toolOptions';
 import { paintStyleKey, normalizedPattern } from './vectorPaintTypes';
 import { drawPaint, geometryBounds, rectangleGeometry } from './vectorPaintStyles';
-import { brushBlob, compactRegion, polygonPath, filledRegion } from './vectorPaintGeometry';
+import { compactRegion, polygonPath, filledRegion } from './vectorPaintGeometry';
 import type { MultiPolygon, Pair } from './polygonGeometry';
 import type { PaintBlob, PaintJob, VectorPaintData, VectorPaintRegion } from './vectorPaintTypes';
 import type { VectorDefinition } from './vectorDefinition';
 
 let worker: Worker|undefined, nextJob=0;
 const jobs=new Map<number,{resolve:(regions:(VectorPaintRegion|undefined)[])=>void;reject:(error:Error)=>void}>();
-const timings:{kind:string;totalMs:number;computeMs:number}[]=[];
-const starts=new Map<number,{kind:string;time:number}>();
-let startupMs=0,createdAt=0;
-export const paintWorkerMetrics=()=>({startupMs,jobs:[...timings]});
 export function preparePaintWorker(){
     if(typeof Worker==='undefined')return;
     if(!worker){
-        createdAt=performance.now();
         worker=new Worker(new URL('./vectorPaint.worker.ts',import.meta.url),{type:'module'});
         worker.onmessage=event=>{
-            if(event.data.ready){startupMs=performance.now()-createdAt;return;}
-            const started=starts.get(event.data.id);starts.delete(event.data.id);
-            if(started){timings.push({kind:started.kind,totalMs:performance.now()-started.time,computeMs:event.data.computeMs??0});if(timings.length>30)timings.shift();}
             const job=jobs.get(event.data.id);jobs.delete(event.data.id);if(event.data.error)job?.reject(Error(event.data.error));else job?.resolve(event.data.regions);
         };
-        worker.onerror=()=>{for(const job of jobs.values())job.reject(Error('Vector paint worker failed'));jobs.clear();starts.clear();worker?.terminate();worker=undefined;};
+        worker.onerror=()=>{for(const job of jobs.values())job.reject(Error('Vector paint worker failed'));jobs.clear();worker?.terminate();worker=undefined;};
     }
 }
 function compute(job:PaintJob):Promise<(VectorPaintRegion|undefined)[]> {
     if(typeof Worker==='undefined')return Promise.resolve(job.fill?[filledRegion(job.regions[0]!,job.fill.color,job.fill.point,job.fill.pattern,job.fill.boundary)]:job.regions.map(compactRegion));
     preparePaintWorker();
     return new Promise((resolve,reject)=>{const id=++nextJob;jobs.set(id,{resolve,reject});
-        starts.set(id,{kind:job.fill?'fill':'compact',time:performance.now()});
-        try{worker!.postMessage({id,...job});}catch(error){jobs.delete(id);starts.delete(id);reject(error);}
+        try{worker!.postMessage({id,...job});}catch(error){jobs.delete(id);reject(error);}
     });
 }
 export class VectorPaint {
@@ -89,11 +80,8 @@ export class VectorPaint {
         // combined coverage in one operation; no second union is needed here.
         return{changed,coverage:pieces.flat()};
     }
-    brush(definition:VectorDefinition,a:Pair,b:Pair,radius:number,color:number,square:boolean){
-        const geometry=brushBlob(a,b,radius,square);return geometry.length?this.apply(definition,geometry,color).changed:false;
-    }
     private schedule(){this.failed=false;if(this.timer)clearTimeout(this.timer);this.timer=setTimeout(()=>{this.timer=undefined;void this.flush();},120);}
-    async flush():Promise<void>{
+    private async flush():Promise<void>{
         if(this.timer){clearTimeout(this.timer);this.timer=undefined;}
         if(this.busy||this.failed||this.revision===this.mergedRevision)return;
         this.busy=true;

@@ -21,7 +21,7 @@ class Surface {
             const path=new Path2D();path.rect(0,0,width,height);
             const inside=(x:number,y:number)=>x>=0&&y>=0&&x<width&&y<height;
             this.vector={width,height,bounds:{left:0,top:0,right:width,bottom:height},regions:[{id:1,path,bounds:[0,0,width,height],geometry:()=>rectangleGeometry(0,0,width,height)}],regionCount:1,
-                silhouette:path,ink:[],format:'svg',lookup:'paths',typedArrayBytes:0,
+                silhouette:path,ink:[],typedArrayBytes:0,
                 regionAt:(x,y)=>inside(x,y)?1:0,hitRegionAt:(x,y)=>inside(x,y)?1:0,contains:inside,inRegion:(x,y,id)=>id===1&&inside(x,y)};
         }else this.vector=definition??vectorDefinition(data.kind);
         this.logicalWidth=this.vector.width;this.logicalHeight=this.vector.height;

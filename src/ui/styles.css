@@ -90,10 +90,6 @@ progress::-webkit-progress-value { background: var(--action); border-radius: 10p
 progress::-moz-progress-bar { background: var(--action); border-radius: 10px; }
 .selection-screen { height: 100dvh; padding-top: 76px; display: grid; place-items: center; padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left)); }
 .selection { --picture-height: min(164px, 30vw, 24dvh); --label-gap: 40px; width: min(620px, 100%); min-height: 0; display: grid; grid-template-rows: auto auto; gap: clamp(28px, 6vh, 56px); }
-.theme-picker { position: fixed; top: max(18px, env(safe-area-inset-top)); right: max(18px, env(safe-area-inset-right)); z-index: 1; display: flex; gap: 4px; padding: 0; }
-.theme-picker button { display: grid; place-items: center; width: 44px; height: 44px; padding: 11px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); }
-.theme-picker button[aria-pressed='true'] { background: var(--action); color: var(--action-text); }
-.theme-picker svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 3vw, 26px); min-height: 0; }
 .choice-card { min-height: 0; display: flex; flex-direction: column; align-items: center; gap: var(--label-gap); padding: 16px; border: 0; border-radius: 28px; background: transparent; color: var(--text); }
 .choice-art { display: grid; place-items: end center; height: var(--picture-height); min-height: 0; width: 100%; }
@@ -139,8 +135,7 @@ progress::-moz-progress-bar { background: var(--action); border-radius: 10px; }
 .canvas-host canvas { display: block; }
 @media (hover: hover) {
   button:is(:hover, .app-mouse-hover) { transform: translateY(-2px); filter: brightness(1.08); }
-  :is(.choice-card, .icon-button, .theme-picker button, .format-button):is(:hover, .app-mouse-hover) { background-color: color-mix(in srgb, var(--text) 8%, transparent); }
-  .theme-picker button[aria-pressed='true']:is(:hover, .app-mouse-hover) { background-color: var(--action); }
+  :is(.choice-card, .icon-button, .format-button):is(:hover, .app-mouse-hover) { background-color: color-mix(in srgb, var(--text) 8%, transparent); }
   .picture-carousel .icon-button:is(:hover, .app-mouse-hover), .scene-picker .icon-button:is(:hover, .app-mouse-hover) { background-color: var(--button-border); }
 }
 button:is(:active, .app-mouse-pressed) { transform: scale(.96); filter: brightness(.97); }
@@ -376,11 +371,6 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
   .main-ribbon .ribbon-color-dot { width: 11px; height: 11px; right: 1px; bottom: 5px; }
 }
 
-/* Secondary actions sit inward from device edges, separate from art choices. */
-.selection-footer { position: fixed; bottom: max(28px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: min(440px, calc(100% - 64px)); display: flex; justify-content: center; align-items: center; gap: 12px; }
-.selection-footer .library-actions { position: static; transform: none; gap: 12px; }
-.selection-footer .studio-actions .exit-control { width: 52px; height: 52px; padding: 13px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 18%, var(--surface)); color: var(--accent); }
-.exit-control svg { width: 26px; height: 26px; }
 .settings-dialog { overflow-y: auto; overscroll-behavior: contain; inset: 0; margin: auto; height: fit-content; max-height: calc(100dvh - 32px); width: min(460px, calc(100% - 32px)); }
 .settings-dialog .wizard { height: auto; display: flex; flex-direction: column; gap: 20px; padding: 20px; }
 .settings-dialog h2 { margin: 0; }
@@ -389,21 +379,8 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 .settings-theme-options .format-button { min-height: 80px; flex-direction: column; padding: 12px 4px; gap: 10px; }
 .settings-options svg { width: 30px; height: 30px; }
 .exit-screen p { margin: 0; color: var(--muted); }
-@media (max-width: 420px) {
-  .selection-footer { gap: 8px; }
-  .selection-footer .library-actions { gap: 8px; }
-  .selection-footer .library-actions .icon-button, .selection-footer .studio-actions .exit-control { width: 44px; height: 44px; padding: 10px; }
-}
-
-.theme-picker {
-  padding: 3px;
-  border-radius: 26px;
-  background: var(--ribbon-well);
-  box-shadow: inset 0 1px 3px color-mix(in srgb, var(--shadow) 30%, transparent);
-}
 
 .selection-preferences { position: fixed; top: max(18px, env(safe-area-inset-top)); right: max(18px, env(safe-area-inset-right)); z-index: 1; display: flex; align-items: center; gap: 8px; }
-.selection-preferences .theme-picker { position: static; }
 
 .delete-picture-dialog { inset: 0; margin: auto; height: fit-content; max-height: calc(100dvh - 32px); width: min(400px, calc(100% - 32px)); }
 .delete-picture-dialog .wizard { height: auto; display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 24px; }
@@ -423,12 +400,10 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 @media (prefers-reduced-motion: reduce) { .preview-spinner { animation: none; } }
 
 /* Picture actions and studio controls share one centered utility row. */
-.selection-footer { width: min(480px, calc(100% - 32px)); gap: 20px; }
 .studio-actions { display: flex; align-items: center; gap: 12px; }
 .studio-actions .icon-button { width: 52px; height: 52px; background: color-mix(in srgb, var(--border) 65%, var(--page)); }
 @media (max-width: 420px) {
-  .selection-footer { gap: 8px; }
-  .selection-footer .library-actions, .studio-actions { gap: 4px; }
+  .studio-actions { gap: 4px; }
   .studio-actions .icon-button { width: 44px; height: 44px; padding: 10px; }
 }
 
@@ -567,13 +542,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .shortcut-guide-dialog .shortcut-help dl > div { grid-template-columns: 1fr; gap: 3px; }
 }
 
-/* Keep six utility buttons centered and reachable on narrow phones. */
-@media (max-width: 420px) {
-  .selection-footer { width: calc(100% - 24px); gap: 6px; }
-  .selection-footer .library-actions, .selection-footer .studio-actions { gap: 6px; }
-  .selection-footer .icon-button { width: 44px; height: 44px; padding: 10px; flex-shrink: 0; }
-}
-
 .desktop-print-picture { display: none; }
 @media print {
   body { margin: 0 !important; background: white !important; overflow: visible !important; }
@@ -610,7 +578,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .workshop-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .workshop-actions .go-button { flex: 1 1 160px; justify-content: center; gap: 8px; }
 .secondary-action { background: var(--ribbon-well); color: var(--text); }
-.workshop-import { display: grid; gap: 12px; padding: 16px; background: var(--ribbon-well); border-radius: 16px; }
 .workshop-storage-error { position: fixed; bottom: 100px; left: 16px; right: 16px; text-align: center; color: var(--text); background: var(--panel); padding: 12px; border-radius: 12px; }
 /* Content-sized settings: adapt the layout instead of adding a scrolling panel. */
 .settings-dialog.main-settings-dialog,

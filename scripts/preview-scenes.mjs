@@ -1,16 +1,17 @@
 // Offline artwork composition review, independent of app/browser tests.
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import ts from 'typescript';
-const out = 'work/hybrid/scenes'; fs.mkdirSync(out, { recursive: true });
+const out = 'work/scenes'; fs.mkdirSync(out, { recursive: true });
 const requested = process.argv.slice(2);
 const catalog = JSON.parse(fs.readFileSync('src/assets/vector/catalog.json', 'utf8'));
-for (const name of requested.length ? requested : ['garden','counting','spring','beach','winter','safari']) {
-  if (!['garden','counting','spring','beach','winter','safari'].includes(name)) throw new Error(`Unknown scene: ${name}`);
-  const source = fs.readFileSync(`src/editor/${name}Scene.ts`, 'utf8');
-  const js = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext } }).outputText;
-  const module = await import(`data:text/javascript;base64,${Buffer.from(js).toString('base64')}`);
-  const scene = module[`${name}Scene`], doc = scene.document;
+const book = JSON.parse(fs.readFileSync('src/assets/coloringBook.json', 'utf8'));
+const pages = requested.length ? requested.map(id => {
+  const page = book.pages.find(page => page.id === id);
+  if (!page) throw new Error(`Unknown page: ${id}`);
+  return page;
+}) : book.pages;
+for (const scene of pages) {
+  const name = scene.id, doc = structuredClone(scene.document);
   const scale = Math.min(1123 / doc.width, 794 / doc.height);
   const dx = (1123 - doc.width * scale) / 2, dy = (794 - doc.height * scale) / 2;
   doc.surfaces = doc.surfaces.map(s => s.kind === 'canvas' ? s : ({...s, x: s.x * scale + dx, y: s.y * scale + dy, scale: (s.scale ?? 1) * scale}));

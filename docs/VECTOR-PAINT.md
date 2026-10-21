@@ -16,7 +16,7 @@ Disjoint color paths rasterized separately can expose the backing through their 
 
 A module worker batches same-style coverage, unions it, subtracts new coverage from other styles, and drops fully hidden geometry. Completed-prefix checks preserve edits made during a job. Merging runs after brief idle periods and stroke release. Pending geometry draws and saves immediately; undo snapshots are cloned and never rewritten by compaction.
 
-Opening the editor starts loading the worker before the first fill. Restoring saved paint is read-only: previews, exports and undo restoration do not enqueue maintenance. A bucket request waits for its surface's in-flight merge and then uses that result, rather than queuing a second merge of the same raw samples. Same-style samples use balanced union batches so long strokes do not repeatedly reprocess a growing outline. `paintWorkerMetrics()` retains up to 30 timing entries to distinguish worker startup/queue delay from geometry computation.
+Opening the editor starts loading the worker before the first fill. Restoring saved paint is read-only: previews, exports and undo restoration do not enqueue maintenance. A bucket request waits for its surface's in-flight merge and then uses that result, rather than queuing a second merge of the same raw samples. Same-style samples use balanced union batches so long strokes do not repeatedly reprocess a growing outline.
 
 Bucket topology on painted regions also runs in that worker. It does not compact brushes synchronously inside the pointer handler. The editor queues subsequent commands and gestures until the fill completes, preserving fill/brush/save/undo order. A revision check rejects stale results. A failed job preserves paint, and later edits may retry compaction.
 
@@ -30,10 +30,10 @@ Geometry-only coloring-page export removes vector paint. PNG and normal print ou
 
 ## Verification
 
-`npm test` covers geometry, compaction, serialization, validation, books and session transactions. `npm run check:regions` runs real browser/worker checks for SVG hits, solid fill edges, vector textures and patterns, page outline filling, save/restore, undo after compaction, concurrent edits, erasing and rendering at a higher resolution. It writes a crop to `work/moon-vector-paint.png`.
+`npm test` covers geometry, compaction, serialization, validation, books and session transactions. `npm run test:browser` runs real browser/worker checks for SVG hits, solid fill edges, vector textures and patterns, page outline filling, save/restore, undo after compaction, concurrent edits, erasing and rendering at a higher resolution. It writes a crop to `work/tests/moon-vector-paint.png`.
 
-The browser suite begins with a fresh-worker ink test on a blank A4 canvas, before other checks can warm it. Twelve read-only restores must generate no jobs; a 2,400-sample outline is filled immediately after release and filled again. Startup, merge and bucket timings are reported separately, with a first-fill latency limit.
+The browser suite begins with a fresh-worker ink test on a blank A4 canvas, before other checks can warm it. A 2,400-sample outline is filled immediately after release and filled again, with a first-fill latency limit. A unit test verifies that read-only restores do not start a worker or queue jobs.
 
-The seam regression leaves a pale pocket beside dark ink, purple fill and dark background, then checks five output scales (0.75–8x) for leaked pale pixels, retained antialiasing and unchanged outer paint bounds. `node scripts/check-region-coverage.mjs --debugger` also attaches the browser debugger to the page and worker with async stack tracking; this does not emulate every DevTools panel or setting.
+The seam regression leaves a pale pocket beside dark ink, purple fill and dark background, then checks five output scales (0.75–8x) for leaked pale pixels, retained antialiasing and unchanged outer paint bounds. `node scripts/test-browser.mjs --debugger` also attaches the browser debugger to the page and worker with async stack tracking; this does not emulate every DevTools panel or setting.
 
-Runtime painting is independent of offline source conversion. Tiny-region ink cleanup has been changed to edit and unite original Bezier curves on Moon Sorceress; bulk rebuilding is still deferred for review. Generated SVGs are not being blanket-reprocessed as part of the paint engine change.
+Runtime painting is independent of offline source conversion. See [the sticker pipeline](STICKER-PIPELINE.md) for current source authoring and region cleanup.

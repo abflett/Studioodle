@@ -11,6 +11,7 @@ before(async()=>{
 });
 after(async()=>{await server?.close();});
 const count=g=>g.flat(2).length;
+const stroke=(state,definition,a,b,radius,color,square)=>state.apply(definition,geometry.brushBlob(a,b,radius,square),color).changed;
 test('a thousand repeated strokes compact to one stable color blob',()=>{
  const shape=geometry.brushBlob([5,5],[15,15],2);
  const result=geometry.compactRegion({id:1,base:0xffffff,blobs:Array.from({length:1000},()=>({color:0x773399,geometry:shape}))});
@@ -32,9 +33,9 @@ test('input nodes use the fine grid and saved snapshots survive later merging',a
  for(const point of shape.flat(2))for(const n of point)assert.equal(n*64,Math.round(n*64));
  const state=new VectorPaint();state.fill(1,0xff00ff);
  const definition={regions:[{id:1,bounds:[0,0,30,30]}]};
- state.brush(definition,[5,5],[10,10],2,0x00ffff,false);
+ stroke(state,definition,[5,5],[10,10],2,0x00ffff,false);
  const snapshot=state.serialize();
- state.brush(definition,[5,5],[10,10],2,0x00ffff,false);
+ stroke(state,definition,[5,5],[10,10],2,0x00ffff,false);
  await state.settled();
  assert.equal(snapshot.regions[0].blobs.length,1);
  assert.equal(state.serialize().regions[0].blobs.length,1);
@@ -85,7 +86,7 @@ test('near-coincident curved strokes remain valid through repeated unions, fills
  const definition={regions:[{id:1,bounds:[0,0,200,200],geometry:()=>svgGeometry('M0 100A100 100 0 1 0 200 100A100 100 0 1 0 0 100Z',[1,0,0,1,0,0])}]};
  for(let i=0;i<160;i++){
   const x=116.01259777301146+Math.sin(i*.21)*15,y=97.17914246109615+Math.cos(i*.31)*12;
-  state.brush(definition,[x,y],[121.24579098191879+Math.sin(i*.21)*15,93.43833454370352+Math.cos(i*.31)*12],3,i%2?0x773399:0x42aadd,false);
+  stroke(state,definition,[x,y],[121.24579098191879+Math.sin(i*.21)*15,93.43833454370352+Math.cos(i*.31)*12],3,i%2?0x773399:0x42aadd,false);
  }
  assert.equal(await state.fill(1,0xff8811,[116,97],undefined,definition.regions[0].geometry),true);
  await state.settled();
@@ -109,4 +110,17 @@ test('fixed-precision booleans preserve nested islands and holes independent of 
  const cut=polygons.difference(result,[[square(45,55)]]);
  assert.equal(geometry.containsGeometry(cut,[50,50]),false);
  assert.equal(geometry.containsGeometry(cut,[42,42]),true);
+});
+
+
+test('restoring saved paint does not start a worker or queue maintenance',async()=>{
+ const PreviousWorker=globalThis.Worker;let created=0;
+ globalThis.Worker=class {constructor(){created++;}};
+ try{
+  const shape=geometry.brushBlob([3,3],[8,8],1);
+  const data={version:1,regions:[{id:1,base:0xffffff,blobs:[{color:1,geometry:shape}]}]};
+  const restored=Array.from({length:12},()=>new VectorPaint(data));
+  await new Promise(resolve=>setTimeout(resolve,150));
+  assert.equal(created,0);assert.ok(restored.every(p=>JSON.stringify(p.serialize())===JSON.stringify(data)));
+ }finally{if(PreviousWorker===undefined)delete globalThis.Worker;else globalThis.Worker=PreviousWorker;}
 });

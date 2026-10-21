@@ -14,7 +14,7 @@ function path(element: Element) {
 }
 
 /** SVG is the transport; painting normally uses a once-built shared lookup array. */
-export function decodeSvgDefinition(text: string, options: { lookup?: 'paths' | 'raster'; scale?: number } = {}): VectorDefinition {
+export function decodeSvgDefinition(text: string, options: { scale?: number } = {}): VectorDefinition {
   const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
   const root = doc.documentElement;
   if (doc.querySelector('parsererror') || root.getAttribute('data-region-format') !== '1') throw new Error('Invalid region SVG');
@@ -56,25 +56,10 @@ export function decodeSvgDefinition(text: string, options: { lookup?: 'paths' | 
     return { path: path(element), fill: element.getAttribute('fill') !== 'none', stroke: element.getAttribute('stroke') !== 'none',
       width: Number(element.getAttribute('stroke-width')) * (Math.abs(matrix[0]!) + Math.abs(matrix[3]!)) / 2, clips };
   });
-  let lookup;
-  if (options.lookup === 'paths') {
-    const byId = new Map(regions.map(region => [region.id, region]));
-    const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1;
-    const context = canvas.getContext('2d');
-    if (!context) throw new Error('Path queries are unavailable');
-    const inside = (r: Region, x: number, y: number) => x >= r.bounds[0]! - .5 && y >= r.bounds[1]! - .5 && x <= r.bounds[2]! + .5 && y <= r.bounds[3]! + .5 && context.isPointInPath(r.path, x, y);
-    const regionAt = (x: number, y: number) => regions.find(region => inside(region, x, y))?.id ?? 0;
-    lookup = {
-      regionAt, contains: (x: number, y: number) => regionAt(x, y) > 0,
-      inRegion: (x: number, y: number, id: number) => { const region = byId.get(id); return !!region && inside(region, x, y); },
-      typedArrayBytes: 0,
-    };
-  } else {
-    const scale = options.scale ?? (root.hasAttribute('data-region-scale') ? Number(root.getAttribute('data-region-scale')) : viewBox[2]! * viewBox[3]! <= 300000 ? 4 : 2);
-    lookup = rasterizeRegions(regions, viewBox[2]!, viewBox[3]!, scale, ink);
-  }
+  const scale = options.scale ?? (root.hasAttribute('data-region-scale') ? Number(root.getAttribute('data-region-scale')) : viewBox[2]! * viewBox[3]! <= 300000 ? 4 : 2);
+  const lookup = rasterizeRegions(regions, viewBox[2]!, viewBox[3]!, scale, ink);
   return {
     width: viewBox[2]!, height: viewBox[3]!, bounds: { left: bounds[0]!, top: bounds[1]!, right: bounds[2]!, bottom: bounds[3]! },
-    regionCount: regions.length, format: 'svg', lookup: options.lookup === 'paths' ? 'paths' : 'raster', silhouette, regions, ink, ...lookup,
+    regionCount: regions.length, silhouette, regions, ink, ...lookup,
   };
 }

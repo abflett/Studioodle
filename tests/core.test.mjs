@@ -167,7 +167,7 @@ test('worker fill queues following brush input, save and undo in order', async (
   editor.execute({type:'save',onComplete:()=>{}});
   editor.execute({type:'undo'});
   assert.deepEqual(editor.artwork.serialize(),before);assert.equal(saved.length,0);
-  complete();await editor.settled();
+  complete();await new Promise(resolve=>editor.execute({type:'snapshot',onComplete:resolve}));
   assert.equal(saved.length,1);
   assert.ok(saved[0].document.surfaces[0].vectorPaint.regions[0].blobs.length>1);
   assert.equal(editor.artwork.serialize().surfaces[0].vectorPaint.regions[0].blobs.length,1);

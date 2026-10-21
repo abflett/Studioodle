@@ -1,100 +1,71 @@
 # Studioodle
 
-A drawing and coloring studio for children and anyone who enjoys making pictures.
-Start with a blank page or a coloring scene, arrange stickers, and paint the result.
-Pictures and preferences stay on the device; no account is required.
+A free, offline drawing and coloring studio. Start with blank paper or a coloring
+page, arrange stickers, then paint with vector brushes and fills. Pictures and
+preferences stay on the device; no account or server is required.
 
-## Features
-
-- A4, A5, photo and square paper, with portrait and landscape orientations.
-- Vector region fills and merged vector brushwork on stickers and the page.
-- Brush, bucket, eraser, pan/zoom, undo, and sticker transforms and layer ordering.
-- Hold the bucket for half a second to zoom for precision; release to fill and return.
-- Sticker focus for painting details without surrounding artwork in the way.
-- Saved pictures, custom coloring templates, PNG export, and printing.
-- Optional offline coloring-page workshop with JSON book import/export and local revisions.
-- Mouse, touch, keyboard shortcuts, light/dark themes, and optional painting controls.
-- Windows desktop preview with native dialogs and remembered window/mouse preferences.
-
-The web app runs in modern browsers. Windows x64 packaging uses Tauri 2; other native
-platforms are not configured. Desktop builds are currently unsigned tester previews.
-Browser and desktop libraries are separate local profiles.
-
-See [Coloring Books and the Page Workshop](docs/COLORING-BOOKS.md) for editing, sharing, and installing a reviewed collection.
-
-This is a pre-release app. Breaking changes are expected; old development drawing formats are intentionally unsupported.
-See [Vector Painting](docs/VECTOR-PAINT.md) for the current paint model.
+The app is pre-release. Breaking changes are expected, and old development saves
+are intentionally unsupported.
 
 ## Development
 
-Use a Node version supported by `package.json` (Node 20.19+ or 22.12+), then:
+Use a Node version supported by `package.json`, then:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Vite prints the local URL. The splash prepares the editor and home illustrations;
-artwork definitions load on demand. `Home` saves before leaving the editor, and the
-editor autosaves every minute. Export important pictures for an external backup.
+Routine development uses Vite. Build Windows/Tauri only when explicitly requested;
+see [desktop setup](docs/DESKTOP.md).
 
-```sh
-npm test            # Repository, bridge and document behavior regressions
-npm run typecheck   # TypeScript
-npm run lint        # Hand-maintained app and authoring code
-npm run build       # Static web application in dist/
-npm run preview     # Serve dist/ locally
-npm run check       # Tests, TypeScript, lint and production web build
-npm run check:regions # Browser regression for region/ink hit coverage
-npm run brand:icons  # Rebuild favicon, touch and desktop icons (ImageMagick)
-npm run assets:build # Rebuild sticker SVGs (ImageMagick + Potrace)
-npm run desktop:dev
-npm run desktop:build  # Windows NSIS installer
-```
-
-`dist/` can be served by a static host, including under a subdirectory. Windows
-builds require Rust, C++ build tools and WebView2; see [desktop setup](docs/DESKTOP.md).
-Generated release packages live in ignored `release/` and `src-tauri/target/` paths.
-A source change does not update an already installed desktop build.
-
-Brand geometry lives in `src/ui/Brand.tsx`, with light/dark brand colors in
-`src/ui/styles.css`. Run `npm run brand:icons` after changing either to keep the
-SVG favicon and raster app icons aligned. This regenerates assets without building Tauri.
-
-## Code and artwork
-
-| Directory | Responsibility |
+| Command | Purpose |
 | --- | --- |
-| `src/app/` | Startup, built-in pages, repository composition and output workflows |
-| `src/editor/` | Documents, editing sessions, undo, paint and vector rendering |
-| `src/game/` | Phaser input adaptation, viewport rendering and selection graphics |
-| `src/ui/` | React screens, controls, gestures, cursors and styles |
-| `src/platform/` | Local storage, browser output and Tauri integration |
-| `src/assets/` | Interface artwork and generated sticker definitions |
-| `art/` | Source artwork, manifest, catalog and scene-authoring guidance |
-| `scripts/` | Offline conversion, catalog generation and scene previews |
-| `src-tauri/` | Rust desktop host, capabilities and Windows packaging |
+| `npm run check` | Unit tests, TypeScript, ESLint and production web build |
+| `npm run test:browser` | Real browser/worker painting and hit-coverage regressions |
+| `npm run build` / `npm run preview` | Build/serve the static web app |
+| `npm run assets:catalog` | Refresh runtime metadata and generate `work/catalog/index.html` |
+| `node scripts/build-stickers.mjs <asset-id>` | Convert one sticker from its source |
+| `node scripts/build-stickers.mjs --pending` | Convert stickers without an existing runtime SVG |
+| `npm run assets:preview -- <page-id>` | Render a bundled coloring page into `work/scenes/` |
+| `npm run books:install -- <book.json>` | Validate and replace the bundled coloring book |
+| `npm run brand:icons` | Regenerate favicon, touch and desktop icons |
 
-Editing rules do not import React, Phaser, local storage or Tauri. The rendering
-engine intentionally uses Canvas2D rather than abstracting every graphics API.
-See [architecture](docs/ARCHITECTURE.md) for boundaries and extension points.
-Version-3 documents and existing storage namespaces are preserved. Earlier
-experimental save formats are unsupported.
+`dist/` supports static hosting, including a subdirectory. Native desktop commands
+remain available as `desktop:dev` and `desktop:build`; they are not part of checks.
+
+## Project layout
+
+| Directory | Contents |
+| --- | --- |
+| `src/app/` | Startup, page libraries, persistence composition and output workflows |
+| `src/editor/` | Documents, editing sessions, vector painting and SVG loading |
+| `src/game/` | Phaser input and viewport adapter |
+| `src/ui/` | React screens, controls, gestures and styles |
+| `src/platform/` | Browser storage/output and Tauri integration |
+| `src/assets/` | Shipped sticker SVGs, interface assets and the canonical coloring book |
+| `art/source/stickers/` | Original sticker artwork and generation metadata, grouped by pack |
+| `art/source/interface/` | Original interface paintings and prompts |
+| `art/stickers.json` | Authoring manifest: source paths, crops, dimensions and picker metadata |
+| `scripts/` | Current authoring and verification tools |
+| `tests/` | Unit tests, fixtures and browser regressions |
+| `docs/` | Current architecture and workflows |
+| `src-tauri/` | Native desktop host and platform configuration |
+| `work/` | Ignored conversion intermediates, catalogs, previews and test output |
+
+Original images are retained even when an editable SVG supersedes them. Generated
+catalogs, diagnostics and trials do not belong in source folders. Git history holds
+retired experiments; the current tree contains the supported implementation.
 
 ## Documentation
 
-- [Architecture and maintenance](docs/ARCHITECTURE.md)
-- [Artwork catalog](art/CATALOG.md) and [scene authoring](art/SCENE-AUTHORING.md)
-- [SVG library migration results](docs/experiments/SVG-MIGRATION.md)
-- [Garden house SVG region experiment](docs/experiments/GARDEN-HOUSE.md)
-- [How stickers work: source to screen](docs/STICKER-PIPELINE.md)
-- [Hybrid artwork engine and conversion](docs/HYBRID-ENGINE.md)
-- [Startup and navigation](docs/STARTUP.md)
-- [Paper and custom coloring pages](docs/PAPER-SETUP.md)
-- [Input and shortcuts](docs/INPUT.md), [cursors](docs/CURSORS.md), [ribbons](docs/RIBBONS.md)
-- [Sticker categories](docs/STICKER-CATEGORIES.md)
-- [Windows desktop build and distribution](docs/DESKTOP.md)
+- [Architecture](docs/ARCHITECTURE.md) and [vector painting](docs/VECTOR-PAINT.md)
+- [Artwork sources](art/README.md), [sticker pipeline](docs/STICKER-PIPELINE.md),
+  [scene authoring](docs/SCENE-AUTHORING.md) and [review notes](art/REVIEW.md)
+- [Coloring books and workshop](docs/COLORING-BOOKS.md)
+- [Startup](docs/STARTUP.md), [paper setup](docs/PAPER-SETUP.md) and [sticker categories](docs/STICKER-CATEGORIES.md)
+- [Input](docs/INPUT.md), [cursors](docs/CURSORS.md), [ribbons](docs/RIBBONS.md) and [desktop](docs/DESKTOP.md)
 
 ## License
 
-Studioodle is licensed under the [Apache License 2.0](LICENSE).
+[Apache License 2.0](LICENSE).

@@ -6,26 +6,12 @@ import { regionSvg } from './svg-regions.mjs';
 import { stickerInspection } from './sticker-inspection.mjs';
 import { execFileSync } from 'node:child_process';
 const inspectionDirectory=process.argv.find(arg=>arg.startsWith('--inspect='))?.slice('--inspect='.length);
-const experimentOutput=process.argv.find(arg=>arg.startsWith('--experiment-output='))?.slice('--experiment-output='.length);
-const cleanupComponents=process.argv.includes('--cleanup-components');
-if(cleanupComponents&&!experimentOutput)throw Error('Component cleanup requires experimental output');
-const authoringOnly=inspectionDirectory||experimentOutput;
 const inspectionThreshold=Number(process.argv.find(arg=>arg.startsWith('--inspect-threshold='))?.split('=')[1]??50);
-const inspectionPrefix=process.argv.find(arg=>arg.startsWith('--inspect-prefix='))?.split('=')[1]??'';
-const inspectionSharedSource=process.argv.find(arg=>arg.startsWith('--inspect-shared-source='))?.split('=')[1]??'';
 if(!Number.isFinite(inspectionThreshold)||inspectionThreshold<=0||inspectionThreshold>=100)throw new Error('Inspection threshold must be between 0 and 100');
 if(!inspectionDirectory && inspectionThreshold!==50)throw new Error('Threshold comparisons require --inspect');
-if(!/^[a-z0-9-]*$/.test(inspectionPrefix))throw new Error('Invalid inspection filename prefix');
 const assets = JSON.parse(fs.readFileSync('art/stickers.json','utf8'));
-const out='src/assets/vector', work='work/hybrid';
+const out='src/assets/vector', work='work/assets';
 fs.mkdirSync(out,{recursive:true}); fs.mkdirSync(work,{recursive:true});
-fs.mkdirSync('art/source/shapes',{recursive:true});
-const shape = (name, body) => !authoringOnly && fs.writeFileSync(`art/source/shapes/${name}.svg`, `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="280"><g fill="white" stroke="black" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">${body}</g></svg>`);
-shape('circle','<circle cx="110" cy="140" r="80"/>');
-shape('square','<rect x="30" y="60" width="160" height="160"/>');
-shape('triangle','<path d="M110 55L25 215H195Z"/>');
-shape('tree','<rect x="88" y="140" width="44" height="120" rx="8"/><rect x="15" y="30" width="190" height="160" rx="65"/>');
-shape('flower', '<rect x="104" y="140" width="12" height="120" rx="4"/>' + Array.from({length:5},(_,i)=>{const a=i*Math.PI*2/5-Math.PI/2;return `<circle cx="${110+Math.cos(a)*42}" cy="${140+Math.sin(a)*42}" r="32"/>`;}).join('')+'<circle cx="110" cy="140" r="26"/>');
 const run=(...args)=>execFileSync('magick',args,{maxBuffer:128e6});
 const trace=(input, output, alpha=1.2, tolerance=.5, speckle=2)=>execFileSync(process.env.POTRACE_PATH??'work/tools/potrace/potrace-1.16.win64/potrace.exe',[input,'-s','-a',`${alpha}`,'-O',`${tolerance}`,'-t',`${speckle}`,'-o',output]);
 const attrs=tag=>Object.fromEntries([...tag.matchAll(/([\w-]+)="([^"]*)"/g)].map(m=>[m[1],m[2]]));
@@ -43,16 +29,17 @@ function svgCommands(svg) {
 }
 const pending=process.argv.includes('--pending');
 const target=process.argv.slice(2).find(arg=>!arg.startsWith('--'));
-if(authoringOnly && (!target || pending))throw new Error('Inspection requires one asset ID and cannot use --pending');
-const report=(pending || target) && fs.existsSync('art/conversion-report.json') ? JSON.parse(fs.readFileSync('art/conversion-report.json','utf8')).filter(item=>item.id!==target) : [];
+if(inspectionDirectory && (!target || pending))throw new Error('Inspection requires one asset ID and cannot use --pending');
+if(target&&!assets.some(asset=>asset.id===target))throw Error(`Unknown sticker: ${target}`);
+for(const arg of process.argv.slice(2).filter(arg=>arg.startsWith('--')))if(arg!=='--pending'&&!arg.startsWith('--inspect=')&&!arg.startsWith('--inspect-threshold='))throw Error(`Unknown option: ${arg}`);
 for(const asset of assets) {
   const {id,width,height}=asset;
   if (!/^[a-z0-9-]+$/.test(id)) throw new Error('Invalid asset ID');
   if(target && id!==target) continue;
-  if(pending && report.some(item=>item.id===id) && fs.existsSync(`${out}/${id}.svg`)) continue;
+  if(pending && fs.existsSync(`${out}/${id}.svg`)) continue;
   const base=`${work}/${id}`, source=asset.source;
   if(inspectionDirectory && asset.mode==='svg')throw new Error('Stage inspection currently supports raster sources only');
-  const inspection=inspectionDirectory?stickerInspection(inspectionDirectory,asset,{threshold:inspectionThreshold,prefix:inspectionPrefix,sharedSource:inspectionSharedSource}):undefined;
+  const inspection=inspectionDirectory?stickerInspection(inspectionDirectory,asset,{threshold:inspectionThreshold}):undefined;
   let commands,matrix,inkSvg,cleanupReport;
   if(asset.mode==='svg') {
     const original=fs.readFileSync(source,'utf8'), parsed=svgCommands(original);
@@ -102,7 +89,7 @@ for(const asset of assets) {
   inspection?.analysis(`${base}-render.svg`,gray,w,h,scale,lookupScale);
   if(gray.length!==count)throw new Error(`${id}: raster dimensions`);
   let {labels,queue,areas,regionCount}=discoverRegions(gray,w,h,asset,scale);
-  if(cleanupComponents||asset.minimumRegionAreaPixels){
+  if(asset.minimumRegionAreaPixels){
     const cleaned=cleanInkComponents({commands,matrix,width,height,scale,w,h,labels,areas,cutoff:asset.minimumRegionAreaPixels??10.2});
     cleanupReport=cleaned.report;
     fs.writeFileSync(`${base}-component-cleanup.json`,JSON.stringify(cleanupReport,null,2));
@@ -129,24 +116,9 @@ for(const asset of assets) {
   while(head<tail){const i=queue[head++],x=i%w;const visit=n=>{if(labels[n]===-2){labels[n]=labels[i];queue[tail++]=n;}};if(x)visit(i-1);if(x+1<w)visit(i+1);if(i>=w)visit(i-w);if(i+w<count)visit(i+w);}
   inspection?.extended(labels,w,h);
   let svg=regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix});
-  if(experimentOutput){
-    if(cleanupReport)svg=svg.replace('<g id="regions"',`<metadata>${JSON.stringify({experiment:'curve-unioned ink cleanup',...cleanupReport,pockets:undefined})}</metadata><g id="regions"`);
-    fs.writeFileSync(experimentOutput,svg);console.log(`${id}: ${cleanupReport?.removed??0} pockets absorbed into ink; ${regionCount} final regions; ${experimentOutput}`);continue;
-  }
   if(inspection){inspection.finish(svg);console.log(`${id}: captured current pipeline in ${inspectionDirectory}`);continue;}
   fs.writeFileSync(`${out}/${id}.svg`,svg);
-  // Remove obsolete generated transport only after the replacement was written.
-  if (fs.existsSync(`${out}/${id}.json`)) fs.unlinkSync(`${out}/${id}.json`);
-  run('-background','white',`${out}/${id}.svg`,'-resize','180x170','-gravity','center','-extent','200x205','-font','Arial','-pointsize','12','-gravity','south','-annotate','+0+5',id,`${base}-preview.png`);
-  report.push({id,width,height,regionCount,tinyRegions:areas.filter(a=>a<16*(scale/lookupScale)**2).length,analysisScale:scale,lookupScale,mode:asset.mode??'potrace-light'});
-  fs.writeFileSync('art/conversion-report.json',JSON.stringify(report,null,2));
   console.log(`${id}: ${regionCount} regions`);
 }
-if(!target){
-  fs.writeFileSync(`${out}/catalog.json`,JSON.stringify(Object.fromEntries(assets.map(a=>[a.id,{width:a.width,height:a.height,...(a.interior?{interior:true}:{}),...(a.horizon?{horizon:true,horizonStart:a.horizonStart??.58,...(a.horizonOverscan?{horizonOverscan:a.horizonOverscan}:{})}:{})}]))));
-  fs.writeFileSync('src/editor/stickerKinds.ts',`// Generated from art/stickers.json by scripts/build-stickers.mjs.\nexport type StickerKind = ${assets.map(a=>JSON.stringify(a.id)).join(' | ')};\n`);
-  for(let i=0;i<assets.length;i+=12)run('montage',...assets.slice(i,i+12).map(a=>`${work}/${a.id}-preview.png`),'-tile','4x3','-geometry','+6+6','-background','#eeeeee',`${work}/sheet-${i/12+1}.png`);
-}
-
 // Refresh the searchable authoring library and the UI display metadata.
-if(!authoringOnly)await import('./build-asset-catalog.mjs');
+if(!inspectionDirectory)await import('./build-asset-catalog.mjs');

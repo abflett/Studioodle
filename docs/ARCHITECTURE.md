@@ -21,8 +21,7 @@ base repository, or interface for every class.
   deduplicated by value so paint redraws do not repeatedly update React with
   unchanged tool, focus or selection state. Command delivery stays synchronous.
 - **`svgDefinition.ts` / `rasterizeRegions.ts`** decode the shared SVG sticker format
-  and generate immutable region-ID lookup arrays once per loaded definition. The
-  old JSON decoder and executable raster comparisons have been retired. Captured experiment reports remain historical artifacts.
+  and generate immutable region-ID lookup arrays once per loaded definition. There is one SVG decoder and one vector paint engine.
 - **`savedPicture.ts`** defines the saved model and the three-method repository
   contract. **`pictureValidation.ts`** validates untrusted records using lightweight
   catalog metadata; it does not load sticker definitions.
@@ -71,7 +70,8 @@ coloring-page copies, output naming, bridge notification/lifecycle behavior, and
 session save, undo, focus and gesture-cancellation rules. Session tests use a small
 in-memory artwork double; they do not test Canvas2D rendering. The browser regression exercises the real vector paint engine and its worker.
 `npm run check` also runs TypeScript, ESLint and the production web build.
-Lint excludes generated output and local experiments, and prevents editor/Phaser
+Browser regressions live in `tests/browser/` and run with `npm run test:browser`.
+Lint excludes generated output and prevents editor/Phaser
 modules from importing application composition or platform adapters.
 
 For UI/engine changes, also manually review drawing, fills, focus, transforms,

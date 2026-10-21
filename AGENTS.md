@@ -13,3 +13,7 @@ Before committing, review the diff and staged files, keep credentials and local/
 ## Pre-release architecture and compatibility
 
 This app is evolving before version 1 and has no public release. Breaking changes are expected and authorized. Prefer the simpler current architecture over compatibility layers, migrations, redundant engines, or preservation of old development saves. Old raster drawings can be discarded; do not retain a raster painting engine to read them. Use a fresh development save namespace when the format changes. Keep valid source assets and current coloring-page layouts, but update their schemas directly as needed. Tune and inspect the small-region ink cleanup before bulk sticker reprocessing; do not blanket-regenerate assets while that step is still under review.
+
+## Repository hygiene
+
+Keep original sticker art and generation metadata under `art/source/stickers/<pack>/` and original interface paintings under `art/source/interface/`. Accepted editable SVG sources may sit beside their untouched originals. Do not commit generated catalogs, conversion intermediates, diagnostic images or trial output; write those under ignored `work/` folders. Promote useful regressions into `tests/` instead of retaining an experiments tree. The sole source of bundled page layouts is `src/assets/coloringBook.json`; tools must read it rather than maintain duplicate scene builders.

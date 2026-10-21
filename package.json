@@ -19,13 +19,12 @@
     "desktop:dev": "tauri dev",
     "desktop:build": "tauri build --bundles nsis",
     "test": "node --test tests/*.test.mjs",
-    "experiment:house:convert": "node scripts/build-garden-house-svg.mjs",
-    "check:regions": "node scripts/check-region-coverage.mjs",
     "brand:icons": "node scripts/build-brand-icons.mjs",
     "assets:build": "node scripts/build-stickers.mjs",
     "assets:catalog": "node scripts/build-asset-catalog.mjs",
     "assets:preview": "node scripts/preview-scenes.mjs",
-    "books:install": "node scripts/install-coloring-book.mjs"
+    "books:install": "node scripts/install-coloring-book.mjs",
+    "test:browser": "node scripts/test-browser.mjs"
   },
   "dependencies": {
     "@fontsource-variable/nunito": "5.3.0",

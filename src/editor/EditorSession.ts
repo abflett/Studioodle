@@ -35,7 +35,6 @@ export class EditorSession {
   private pendingFill?: Promise<void>;
   private deferred: (()=>void)[] = [];
   private defer(action:()=>void){if(!this.pendingFill)return false;this.deferred.push(action);return true;}
-  async settled(){while(this.pendingFill)await this.pendingFill;}
   constructor(private readonly setup: EditorSetup, private readonly ports: EditorSessionPorts) {
     if (!setup.id) throw new Error('An editor document must have an ID before opening.');
     preparePaintWorker();

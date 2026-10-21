@@ -6,7 +6,7 @@ export type Ring = Pair[];
 export type MultiPolygon = Ring[][];
 // Much finer than both SVG curve flattening and the brush grid. Every boolean
 // input/output shares this lattice, including newly calculated intersections.
-export const geometryScale = 4096;
+const geometryScale = 4096;
 function paths(geometry: MultiPolygon): Paths64 {
     return geometry.flatMap(polygon=>polygon.flatMap((ring,index)=>{
         const points=ring.map(([x,y])=>({x:Math.round(x*geometryScale),y:Math.round(y*geometryScale)}))

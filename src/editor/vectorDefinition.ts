@@ -15,8 +15,6 @@ export type VectorDefinition = {
     inRegion: (x: number, y: number, id: number) => boolean;
     contains: (x: number, y: number) => boolean;
     regionCount: number;
-    format: 'svg';
-    lookup: 'raster' | 'paths';
     mapSize?: { width: number; height: number; scale: number };
     typedArrayBytes: number;
     silhouette: Path2D;

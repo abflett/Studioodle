@@ -1,47 +1,73 @@
-# How stickers work
+# Sticker pipeline
 
-Every sticker is shipped as one SVG. The same file supplies the sticker-picker image,
-vector line art, paintable regions and metadata. There are no per-sticker JSON masks
-or raster region-map files in the production package.
+Each runtime sticker is one SVG containing closed paint-region paths and visible
+ink. Paper and sticker paint are vector geometry; categorical raster arrays are
+shared hit-test data, not paint buffers. Original art is never shipped to the editor.
 
-```mermaid
-flowchart TD
-    A[Source SVG or illustration] --> B[Offline conversion and region discovery]
-    B --> C[One sticker SVG: regions and ink]
-    C --> D[Picker preview]
-    C --> E[Load once: rasterize regions into an ID array]
-    E --> F[Fast region and hit lookups]
-    C --> G[Vector outlines and exact region clips]
-    F --> H[Per-instance vector paint]
-    G --> I[Canvas2D composition]
-    H --> I
+## Authoring files
+
+- `art/stickers.json`: accepted source path, crop, dimensions, subject metadata and
+  optional horizon/cutout/cleanup settings.
+- `art/source/stickers/<pack>/`: original artwork, accepted editable SVGs and generation metadata.
+- `src/assets/vector/<id>.svg`: generated runtime region/ink geometry and picker image.
+- `src/assets/vector/catalog.json`, `src/assets/assetLibrary.json` and
+  `src/editor/stickerKinds.ts`: lightweight generated metadata from the manifest.
+
+`npm run assets:catalog` validates all source/runtime paths and dimensions, refreshes
+runtime metadata, and writes a searchable HTML/JSON/Markdown library into `work/catalog/`.
+Catalog page-usage references come from the canonical `src/assets/coloringBook.json`.
+
+## Convert and inspect
+
+```sh
+node scripts/build-stickers.mjs <asset-id>
+node scripts/build-stickers.mjs --pending
+node scripts/build-stickers.mjs <raster-source-id> --inspect=work/inspection/<asset-id>
 ```
 
-## From source to sticker
+Requires ImageMagick and Potrace. Set `POTRACE_PATH`, or install the portable binary at
+`work/tools/potrace/potrace-1.16.win64/potrace.exe`. Conversion intermediates live in
+`work/assets/`; inspection captures are also generated output. The inspection option
+captures the current numbered stages without replacing runtime art or catalogs.
+`--inspect-threshold=<percent>` supports diagnostic threshold comparisons for raster
+sources. Accepted authored SVGs bypass bitmap normalization and ink retracing.
 
-`art/stickers.json` supplies source paths, crop rectangles, logical dimensions,
-transparent cutouts, placement metadata and searchable descriptions. Original sources
-live in `art/source/`; the app does not download those original illustrations.
+The default build converts the complete manifest. Prefer a single asset while
+reviewing changes. `--pending` skips assets whose runtime SVG already exists;
+explicitly rebuild an ID after changing its source. Conversion never overwrites source
+art or regenerates hand-edited source shapes. It refreshes metadata after completion.
 
-The offline builder preserves authored SVG geometry or traces raster line art with
-ImageMagick and Potrace. Region discovery now supersamples the resulting ink at up to eight samples per logical
-unit, bounded to 16 million analysis pixels for large scenery. This authoring density
-is independent of the shipped 4x/2x interaction lookup. It discovers
-closed regions, excludes authored cutouts, and extends region ownership beneath the
-ink to approximately its centerline. That raster analysis is an offline intermediate.
-Each region is traced into one closed vector path with a tighter fitting tolerance.
-Region ownership stops at the discovered centerline; there is no extra overlap to push a lookup boundary toward a thin line edge. Higher sampling can recover thin regions or change IDs. Vector paint stores region IDs, and pre-release rebuilds may invalidate old development drawings. Existing assets are not silently bulk-regenerated.
+## Offline conversion
 
-For traced ink with a minimum-region rule, `discover-regions.mjs` measures individual connected white components at the largest proportional A4 fit, 150 DPI. `clean-ink-components.mjs` resolves the original Bezier contours with authoring-only Paper.js. True tiny holes are removed directly; raster-split pockets are intersected with their curved white contour and united into the ink. No bitmap patch is traced or overlaid. Tiny slivers are removed again after unions. The ink is rendered again and all regions are rediscovered from the final geometry.
+Raster sources are cropped, composited onto white and normalized to grayscale.
+Estimated stroke thickness sets a small Gaussian blur (0.04 times stroke width),
+50% threshold, Potrace tolerance and speckle suppression. Extracted sheets isolate
+the main connected outline so neighboring subjects do not enter the sticker.
 
-Moon Sorceress remains the only asset with this tuning enabled (10.2 pixels squared). The historical cleanup reference has 199 regions, no remaining below-cutoff components, unchanged eye sparkles and no added detached black components. The current curated SVG source removes the misplaced hair behind the left sleeve and produces 195 regions. Review other assets before enabling or rebuilding them.
+The final ink is analyzed independently of runtime lookup density: typically 8x
+for small artwork and 4x/2x for larger scenery, within a bounded pixel budget.
+Connected white components become regions; exterior space and explicit cutout seeds
+are excluded. Labels extend under ink toward its centerline. Each region is traced
+into a closed vector path with tight fitting tolerance. There is no extra boundary
+expansion toward neighboring line edges.
+
+Optional `minimumRegionAreaPixels` measures white components at their largest
+proportional A4 fit at 150 DPI. Authoring-only Paper.js removes true tiny hole
+contours and unions curved local caps for raster-split pockets. The updated ink is
+rendered again and regions are rediscovered. This rule remains opt-in while assets
+are reviewed; the curated Moon Sorceress uses a 10.2-square-pixel cutoff.
+
+Authored SVG sources retain curved line art. Later white shapes occlude earlier ink
+through generated inverse clips. The same clips apply to SVG previews and Canvas2D
+rendering. Horizon closures affect analysis without drawing a box around scenery;
+interior backgrounds keep their walls/floor paintable. Manifest cutout seeds define
+intentional transparent openings and fail conversion when they hit ink/outside space.
 
 ```xml
-<svg viewBox="0 0 623 560" data-region-format="1"
-     data-region-scale="2" data-bounds="...">
+<svg viewBox="0 0 340 480" data-region-format="1"
+     data-region-scale="4" data-analysis-scale="8" data-bounds="...">
   <g id="regions" fill="white">
     <path id="region-1" data-bounds="..." transform="matrix(...)" d="..."/>
-    <!-- Each independently fillable region is a closed path. -->
   </g>
   <g id="ink">
     <path id="ink-1" fill="black" stroke="none" transform="matrix(...)" d="..."/>
@@ -49,50 +75,23 @@ Moon Sorceress remains the only asset with this tuning enabled (10.2 pixels squa
 </svg>
 ```
 
-Region IDs are generated for reproducibility and diagnostics. They are optional for
-conforming authored region paths: the loader assigns unused numeric IDs in document
-order when they are absent. IDs connect the lookup and saved vector paint to the SVG region paths. The union of regions supplies the backing/silhouette; a separate
-serialized silhouette is unnecessary.
+The region union supplies the backing/silhouette. Optional authored IDs are assigned
+when absent; saved vector paint refers to those IDs. Region regeneration can change
+IDs and invalidate development drawings. This pre-release app provides no migrations.
 
-Authored overlapping white shapes need more than dropping their fill attributes.
-The converter emits inverse vector clip paths so later shapes still hide earlier
-ink. Those clips are shared by browser SVG previews and Canvas2D line rendering.
-Horizon closures remain part of region analysis without adding visible box edges.
+## Runtime loading and painting
 
-## What happens on load
+The picker and editor use the same external SVG URL. Definitions load on demand,
+not as a startup download of the entire library. The decoder samples each region
+separately so antialiased color mixtures cannot invent IDs. Visible ink inherits a
+nearby region for line clicks; isolated ink blocks click-through without inventing
+paintable space. Temporary masks and propagation scratch are released.
 
-The app fetches the SVG URL on demand. The picker and editor use the same URL, and
-Vite emits external files rather than inlining the whole collection into startup
-JavaScript. Lightweight catalog JSON contains dimensions and placement metadata only.
-The full library is not fetched or decoded at startup.
+IDs use one byte where possible, otherwise two (four at the maximum ID limit), plus
+compact ink flags. Instances share the immutable lookup and lazy boolean geometry.
+Original SVG curves clip rendering. Source text has a bounded cache; decoded
+interaction definitions are released when leaving the editor.
 
-The loader parses vector paths and builds one shared lookup array:
-
-- Each region is rasterized into a cropped temporary alpha mask at the declared scale.
-- Covered samples receive that region's integer ID. Separate masks avoid antialiased
-  RGB mixtures inventing IDs at boundaries.
-- The lookup also samples the actual visible ink, including inverse clips. Ink-only
-  samples inherit a nearby region for line clicks; isolated ink blocks clicks through
-  to the page without inventing a fill region.
-- A compact one-bit-per-sample flag distinguishes ink-only hit coverage from actual
-  paint regions. Paint clipping still uses the SVG region union.
-- IDs plus an ink-only marker use one byte per sample when possible, otherwise two
-  (four only at the 65,535-ID limit). Temporary propagation scratch is released.
-- Temporary masks are released after preparation. Instances of the same sticker share
-  the resulting immutable array and vector geometry.
-
-Source text has a 24-entry cache. Decoded definitions stay available during editing
-and are released when leaving the editor; paint remains per instance. Picture previews
-also prepare definitions; there is no separate scene-thumbnail pipeline yet.
-
-## Painting, filling and rendering
-
-Both stickers and paper own vector backing styles and merged brush blobs. Brushes, textures, fill patterns and erasing stay vector; there is no raster paint fallback. Connected-component polygon filling handles closed brush outlines. Rendering clips paint to the original SVG curves and overlays line art. Shared categorical lookup arrays are interaction data only.
-
-See [Vector Painting](VECTOR-PAINT.md) for runtime geometry, worker merging, painting ownership and output resolution.
-
-## Saving and development changes
-
-Document/picture format 5 stores vector paint, transforms and asset IDs. It does not store color rasters or hit arrays. The app is pre-release: old drawing formats and compatibility engines have been removed. Bundled page geometry is updated directly; the local library uses a fresh namespace.
-
-The Moon Sorceress is the reference asset for small-region cleanup and centerline tuning. The corrected Moon Sorceress is ready for inspection; bulk rebuilding remains deferred until review.
+[Vector painting](VECTOR-PAINT.md) explains brush geometry, worker merging,
+connected-component fills, seam rendering and output. Documents store only vector
+paint, transforms and asset IDs; they never store lookup arrays or color rasters.
