@@ -62,3 +62,16 @@ export function drawPaint(ctx:CanvasRenderingContext2D,path:Path2D,color:number,
     }
     ctx.fillStyle=hex(color);ctx.fill(tile);ctx.restore();
 }
+
+/** Construct browser paths directly from numeric paint geometry, without SVG text. */
+export function paintPath(geometry:MultiPolygon):Path2D {
+    const path=new Path2D();
+    for(const polygon of geometry)for(const ring of polygon){
+        const first=ring[0];if(!first)continue;
+        path.moveTo(first[0],first[1]);
+        const last=ring.at(-1)!,end=last[0]===first[0]&&last[1]===first[1]?ring.length-1:ring.length;
+        for(let i=1;i<end;i++)path.lineTo(ring[i]![0],ring[i]![1]);
+        path.closePath();
+    }
+    return path;
+}

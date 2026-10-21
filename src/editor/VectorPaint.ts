@@ -2,8 +2,9 @@ import { regionsNear } from './regionSearch';
 import polygonClipping from './polygonGeometry';
 import type { FillOptions } from './toolOptions';
 import { paintStyleKey, normalizedPattern } from './vectorPaintTypes';
-import { drawPaint, geometryBounds, rectangleGeometry } from './vectorPaintStyles';
-import { polygonPath } from './vectorPaintGeometry';
+import { drawPaint, geometryBounds, rectangleGeometry, paintPath } from './vectorPaintStyles';
+import { PaintDisplayCache } from './paintDisplayCache';
+import type { DisplayPaint } from './paintDisplayCache';
 import { computePaint } from './paintWorker';
 import type { MultiPolygon, Pair } from './polygonGeometry';
 import type { PaintBlob, PaintSnapshot, VectorPaintData, VectorPaintRegion } from './vectorPaintTypes';
@@ -11,6 +12,8 @@ import type { VectorDefinition } from './vectorDefinition';
 
 export class VectorPaint {
     private regions:Map<number,VectorPaintRegion>;
+    private display?:PaintDisplayCache;
+    private displayPoints=0;
     private disposed=false;
     private revision=0;
     private dirty=new Set<number>();
@@ -18,10 +21,11 @@ export class VectorPaint {
     private busy=false;
     private pendingMerge?:Promise<(VectorPaintRegion|undefined)[]>;
     private failed=false;
+    private stableCounts=new Map<number,number>();
     private compacted=new WeakSet<PaintBlob[]>();
     private paths=new WeakMap<MultiPolygon,Path2D>();
     private coveragePaths=new WeakMap<VectorPaintRegion,{blobs:PaintBlob[];count:number;path:Path2D}>();
-    private path(geometry:MultiPolygon){let path=this.paths.get(geometry);if(!path){path=new Path2D(polygonPath(geometry));this.paths.set(geometry,path);}return path;}
+    private path(geometry:MultiPolygon){let path=this.paths.get(geometry);if(!path){path=paintPath(geometry);this.paths.set(geometry,path);}return path;}
     private coveragePath(paint:VectorPaintRegion){
         let cached=this.coveragePaths.get(paint);
         if(!cached||cached.blobs!==paint.blobs){cached={blobs:paint.blobs,count:0,path:new Path2D()};this.coveragePaths.set(paint,cached);}
@@ -29,19 +33,24 @@ export class VectorPaint {
         return cached.path;
     }
     // Restore is read-only: previews/exports must never queue paint maintenance.
-    constructor(data?:VectorPaintData,private readonly defaultColor=0xffffff,private readonly changing?:(id:number)=>void){this.regions=new Map(structuredClone(data?.regions??[]).map(region=>[region.id,region]));}
+    constructor(data?:VectorPaintData,private readonly defaultColor=0xffffff,private readonly changing?:(id:number)=>void){this.regions=new Map(structuredClone(data?.regions??[]).map(region=>[region.id,region]));for(const region of this.regions.values())for(const blob of region.blobs)this.trackDisplay(blob.geometry);}
+    private trackDisplay(geometry:MultiPolygon){
+        if(this.displayPoints>=1024)return;
+        for(const polygon of geometry)for(const ring of polygon)this.displayPoints+=ring.length;
+    }
     private region(id:number){let r=this.regions.get(id);if(!r){r={id,base:this.defaultColor,blobs:[]};this.regions.set(id,r);}return r;}
     snapshotRegion(id:number):PaintSnapshot {
         const region=this.regions.get(id);
         return {region:region?{...region,blobs:[...region.blobs]}:undefined,
-            needsCompaction:!!region?.blobs.length&&!this.compacted.has(region.blobs)};
+            needsCompaction:!!region?.blobs.length&&!this.compacted.has(region.blobs),compacted:this.stableCounts.get(id)??0};
     }
     snapshotRegions(){return [...this.regions.keys()].map(id=>this.snapshotRegion(id));}
     restoreRegion(id:number,snapshot:PaintSnapshot){
-        this.revision++;this.dirty.delete(id);
+        this.display?.invalidate();
+        this.revision++;this.dirty.delete(id);this.stableCounts.set(id,snapshot.compacted??0);
         if(snapshot.region){
             const region={...snapshot.region,blobs:[...snapshot.region.blobs]};
-            this.regions.set(id,region);
+            this.regions.set(id,region);for(const blob of region.blobs)this.trackDisplay(blob.geometry);
             if(!snapshot.needsCompaction)this.compacted.add(region.blobs);
         }
         else this.regions.delete(id);
@@ -54,15 +63,15 @@ export class VectorPaint {
             const revision=this.revision;
             // Reuse completed maintenance instead of queuing the same raw strokes
             // twice. Read the latest accepted prefix after maintenance completes.
-            const prepare=()=>this.disposed?Promise.resolve([]):computePaint({regions:[structuredClone(r)],fill:{color,point,pattern,boundary:boundary?.()}});
+            const prepare=()=>this.disposed?Promise.resolve([]):computePaint({regions:[structuredClone(r)],compacted:[this.stableCounts.get(id)??0],fill:{color,point,pattern,boundary:boundary?.()}});
             return (this.pendingMerge?this.pendingMerge.then(prepare,prepare):prepare()).then(([result])=>{
                 // A different edit supersedes an in-flight fill; never paint stale topology.
                 if(!result||revision!==this.revision)return false;
-                this.changing?.(id);this.regions.set(id,result);this.revision++;this.schedule(id);return true;
+                this.changing?.(id);this.display?.invalidate();this.stableCounts.delete(id);for(const blob of result.blobs)this.trackDisplay(blob.geometry);this.regions.set(id,result);this.revision++;this.schedule(id);return true;
             });
         }
         if(paintStyleKey(r.base,r.pattern)===key)return false;
-        this.changing?.(id);this.regions.set(id,r);this.compacted.delete(r.blobs);r.base=color;r.pattern=pattern;this.revision++;if(r.blobs.length)this.schedule(id);return true;
+        this.changing?.(id);this.display?.invalidate();this.regions.set(id,r);this.compacted.delete(r.blobs);r.base=color;r.pattern=pattern;this.revision++;if(r.blobs.length)this.schedule(id);return true;
     }
     apply(definition:VectorDefinition,geometry:MultiPolygon,color:number){
         const bounds=geometryBounds(geometry),pieces:MultiPolygon[]=[];let changed=false;
@@ -77,6 +86,7 @@ export class VectorPaint {
             if((!existing||!existing.blobs.length)&&paintStyleKey(existing?.base??this.defaultColor,existing?.pattern)===paintStyleKey(color))continue;
             this.changing?.(region.id);
             const paint=this.region(region.id);this.compacted.delete(paint.blobs);
+            this.trackDisplay(coverage);this.display?.append({regionId:region.id,color,geometry:coverage});
             paint.blobs.push({color,geometry:coverage});this.dirty.add(region.id);changed=true;
         }
         if(changed){this.revision++;this.schedule();}
@@ -84,7 +94,7 @@ export class VectorPaint {
         // combined coverage in one operation; no second union is needed here.
         return{changed,coverage:pieces.flat()};
     }
-    dispose(){this.disposed=true;this.revision++;if(this.timer)clearTimeout(this.timer);this.timer=undefined;}
+    dispose(){this.display?.dispose();this.display=undefined;this.disposed=true;this.revision++;if(this.timer)clearTimeout(this.timer);this.timer=undefined;}
     private schedule(id?:number){if(this.disposed)return;if(id!==undefined)this.dirty.add(id);this.failed=false;if(this.timer)return;this.timer=setTimeout(()=>{this.timer=undefined;void this.flush();},120);}
     private async flush():Promise<void>{
         if(this.timer){clearTimeout(this.timer);this.timer=undefined;}
@@ -93,7 +103,7 @@ export class VectorPaint {
         const snapshot=[...this.dirty].map(id=>this.regions.get(id)!).map(r=>({...r,blobs:[...r.blobs]}));
         this.dirty.clear();
         try {
-            this.pendingMerge=computePaint({regions:snapshot});
+            this.pendingMerge=computePaint({regions:snapshot,compacted:snapshot.map(region=>this.stableCounts.get(region.id)??0)});
             const merged=await this.pendingMerge;
             if(this.disposed)return;
             // Compact a completed prefix even while new strokes arrive. A fill
@@ -103,6 +113,9 @@ export class VectorPaint {
                 const current=this.regions.get(result.id),source=snapshot.find(r=>r.id===result.id)!;
                 if(current&&paintStyleKey(current.base,current.pattern)===paintStyleKey(source.base,source.pattern)&&source.blobs.every((blob,i)=>current.blobs[i]===blob)){
                     current.blobs=[...result.blobs,...current.blobs.slice(source.blobs.length)];
+                    this.stableCounts.set(current.id,result.blobs.length);
+                    this.coveragePaths.delete(current);
+                    for(const blob of source.blobs)this.paths.delete(blob.geometry);
                     if(current.blobs.length===result.blobs.length)this.compacted.add(current.blobs);
                 }
             }
@@ -115,7 +128,19 @@ export class VectorPaint {
         while(this.busy||this.timer);
     }
     serialize():VectorPaintData{return {version:1,regions:structuredClone([...this.regions.values()])};}
-    draw(ctx:CanvasRenderingContext2D,definition:VectorDefinition){
+    draw(ctx:CanvasRenderingContext2D,definition:VectorDefinition,cacheDisplay=false){
+        if(cacheDisplay&&this.displayPoints>=1024){
+            this.display??=new PaintDisplayCache();
+            if(this.display.draw(ctx,definition,target=>this.drawVectors(target,definition),(target,paint)=>this.drawDelta(target,definition,paint)))return;
+        }
+        this.drawVectors(ctx,definition);
+    }
+    private drawDelta(ctx:CanvasRenderingContext2D,definition:VectorDefinition,paint:DisplayPaint){
+        const region=definition.regions.find(region=>region.id===paint.regionId);
+        if(!region)return;
+        ctx.save();ctx.clip(region.path);drawPaint(ctx,this.path(paint.geometry),paint.color,region.bounds,paint.pattern);ctx.restore();
+    }
+    private drawVectors(ctx:CanvasRenderingContext2D,definition:VectorDefinition){
         ctx.fillStyle=`#${this.defaultColor.toString(16).padStart(6,'0')}`;ctx.fill(definition.silhouette);
         for(const region of definition.regions){
             const paint=this.regions.get(region.id);

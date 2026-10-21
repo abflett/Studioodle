@@ -60,6 +60,9 @@ try {
   const vectorPaint = await evaluate("import('/tests/browser/vector-paint.ts').then(m => m.checkVectorPaint())");
   if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   if(vectorPaint.diagnosticPng){await fs.writeFile('work/tests/moon-vector-paint.png',Buffer.from(vectorPaint.diagnosticPng.split(',')[1],'base64'));delete vectorPaint.diagnosticPng;}
+  const paintDisplay = await evaluate("import('/tests/browser/paint-display.ts').then(m => m.checkPaintDisplay())");
+  result.paintDisplay=paintDisplay;
+  console.log('Paint display:',JSON.stringify(paintDisplay));
   const canvasEditor = await evaluate("import('/tests/browser/canvas-editor.ts').then(m => m.checkCanvasEditor())");
   console.log('Canvas editor:', JSON.stringify(canvasEditor));
   result.canvasEditor = canvasEditor;
@@ -116,6 +119,12 @@ try {
   result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true};
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
   await fs.writeFile('work/tests/app-after-reopen.png',Buffer.from(screenshot.data,'base64'));
+  if(process.argv.includes('--dense-profile')){
+    const {diagnosticPng,...metrics}=await evaluate("import('/tests/browser/dense-paint.ts').then(m=>m.profileDensePaint())");
+    await fs.writeFile('work/tests/dense-paint.json',JSON.stringify(metrics,null,2));
+    await fs.writeFile('work/tests/dense-paint.png',Buffer.from(diagnosticPng.split(',')[1],'base64'));
+    console.log('Dense paint profile:',JSON.stringify(metrics));
+  }
   if(process.argv.includes('--brush-profile')){
     const profile=await evaluate("import('/tests/browser/brush-performance.ts').then(m=>m.profileBrush())");
     await fs.writeFile('work/tests/brush-profile.json',JSON.stringify(profile,null,2));

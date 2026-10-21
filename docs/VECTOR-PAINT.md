@@ -1,6 +1,6 @@
 # Vector painting
 
-All page and sticker paint is vector geometry. There are no color rasters, per-surface image buffers, pixel flood-fill queues, density upgrades, or texture-tool fallbacks. Canvas2D rasterizes the vectors only at the visible/output resolution, as browsers do for SVG. Compact categorical hit arrays remain shared per sticker definition; these are interaction data, not paint.
+All page and sticker paint is vector geometry. There are no raster paint buffers, pixel flood-fill queues, density upgrades, or texture-tool fallbacks. Disposable display caches accelerate complex surfaces without becoming document paint. Canvas2D rasterizes the vectors only at the visible/output resolution, as browsers do for SVG. Compact categorical hit arrays remain shared per sticker definition; these are interaction data, not paint.
 
 `Artwork` owns transforms, layer ordering and visible surface selection. `Surface` has a vector definition (a rectangle for the page) and `VectorPaint`. A swept brush shape is transformed into each surface, intersected with its regions, and removed from the coverage passed to lower layers. Erasing restores white on stickers or the page's original background color.
 
@@ -71,3 +71,26 @@ worker time and end-to-end input latency. Region-bound reads fell from 23,400 to
 1,304 for ink and 1,693 for spray, including index construction. First-use curve
 flattening and exact clipping still have costs; this is not a promise of identical
 speedups across devices or artwork.
+
+
+### Dense paint rendering
+
+Brush polygons build cached `Path2D` objects with numeric `moveTo`/`lineTo` calls,
+without serializing SVG path text. The viewport caches complex paint at current
+screen resolution and adds new clipped coverage incrementally. Worker compaction
+preserves coverage, so it does not invalidate that display. Fills, undo and view
+transform changes rebuild it. All surface caches share a 32 MiB pixel budget with
+LRU eviction; offscreen surfaces allocate nothing and oversized views fall back
+to vector rendering. This budget excludes the main canvas, geometry and undo.
+Caches are disposed with their artwork. Saves, hit testing, previews, exports
+and print use vector data; output never enlarges cached screen pixels.
+
+Worker jobs carry the length of the already-compacted, disjoint color prefix.
+Only new coverage must be compared against those partitions. Accepted results
+release obsolete native path caches; history retains immutable geometry only.
+
+`node scripts/test-browser.mjs --dense-profile` adds a dense multicolor diagnostic
+and writes metrics plus a PNG under `work/tests/`. It forces a pixel readback to
+include deferred Canvas rasterization. Its frame timing includes an intentional
+16 ms pause and is not a hardware frame-rate measurement. Initial cache builds,
+fills, undo and zoom can still cost a full vector redraw.

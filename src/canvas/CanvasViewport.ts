@@ -32,7 +32,7 @@ export class CanvasViewport {
     ctx.resetTransform(); ctx.clearRect(0, 0, pixelWidth, pixelHeight);
     const pixelScaleX = pixelWidth / width, pixelScaleY = pixelHeight / height;
     ctx.setTransform(pixelScaleX * page.width / this.width, 0, 0, pixelScaleY * page.height / this.height, -x * pixelScaleX, -y * pixelScaleY);
-    artwork.render(ctx);
+    artwork.render(ctx,false,true);
     const { bounds, tool } = state;
     if (bounds && tool === 'select') {
       ctx.strokeStyle = '#549bd1'; ctx.lineWidth = 3;

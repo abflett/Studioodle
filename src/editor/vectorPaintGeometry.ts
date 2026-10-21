@@ -27,12 +27,19 @@ export function brushBlob(a: Pair, b: Pair, radius: number, square = false): Mul
 }
 
 /** Last paint wins; compact each color and discard coverage hidden by other colors. */
-export function compactRegion(region: VectorPaintRegion): VectorPaintRegion {
+export function compactRegion(region:VectorPaintRegion):VectorPaintRegion {return compactRegionPrefix(region,0);}
+export function compactRegionPrefix(region: VectorPaintRegion, compacted=0): VectorPaintRegion {
     const colors=new Map<string,PaintBlob>();
+    // The worker's accepted prefix is already disjoint and merged by style.
+    // Reuse it instead of serializing and clipping old colors against each other.
+    for(const blob of region.blobs.slice(0,compacted)){
+        const key=paintStyleKey(blob.color,blob.pattern);
+        if(key!==paintStyleKey(region.base,region.pattern))colors.set(key,blob);
+    }
     // Union consecutive same-color strokes in batches, deduplicating repeated
     // coverage before running any boolean work. Color order remains intact.
     const runs:PaintBlob[]=[];
-    for(let index=0;index<region.blobs.length;){
+    for(let index=compacted;index<region.blobs.length;){
         const style=region.blobs[index]!,color=style.color,key=paintStyleKey(color,style.pattern),unique=new Map<string,MultiPolygon>();
         while(index<region.blobs.length&&paintStyleKey(region.blobs[index]!.color,region.blobs[index]!.pattern)===key){
             const geometry=region.blobs[index++]!.geometry;
@@ -64,8 +71,8 @@ export function compactRegion(region: VectorPaintRegion): VectorPaintRegion {
     return {...region,blobs};
 }
 /** Bucket topology is calculated in the worker, never during pointer dispatch. */
-export function filledRegion(region:VectorPaintRegion,color:number,point:Pair,pattern?:FillOptions,boundary?:MultiPolygon):VectorPaintRegion|undefined {
-    const r=compactRegion(region),key=paintStyleKey(color,pattern);
+export function filledRegion(region:VectorPaintRegion,color:number,point:Pair,pattern?:FillOptions,boundary?:MultiPolygon,compacted=0):VectorPaintRegion|undefined {
+    const r=compactRegionPrefix(region,compacted),key=paintStyleKey(color,pattern);
     // Compaction makes visible color components disjoint. Test topmost first.
     for(const blob of [...r.blobs].reverse())for(const polygon of blob.geometry)if(containsGeometry([polygon],point)){
         if(paintStyleKey(blob.color,blob.pattern)===key)return;
@@ -80,9 +87,6 @@ export function filledRegion(region:VectorPaintRegion,color:number,point:Pair,pa
         }
     }
     return {...r,base:color,pattern};
-}
-export function polygonPath(geometry: MultiPolygon) {
-    return geometry.flatMap(p=>p.map(r=>r.map(([x,y],i)=>`${i?'L':'M'}${x} ${y}`).join('')+'Z')).join('');
 }
 export function containsGeometry(geometry: MultiPolygon, point: Pair) {
     return geometry.some(polygon=>{
@@ -101,6 +105,6 @@ export function containsGeometry(geometry: MultiPolygon, point: Pair) {
 /** Identical job semantics in the browser worker and the non-worker test fallback. */
 export function runPaintJob(job: PaintJob) {
     return job.fill
-        ? [filledRegion(job.regions[0]!, job.fill.color, job.fill.point, job.fill.pattern, job.fill.boundary)]
-        : job.regions.map(compactRegion);
+        ? [filledRegion(job.regions[0]!, job.fill.color, job.fill.point, job.fill.pattern, job.fill.boundary, job.compacted?.[0]??0)]
+        : job.regions.map((region,index)=>compactRegionPrefix(region,job.compacted?.[index]??0));
 }

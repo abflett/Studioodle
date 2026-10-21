@@ -121,3 +121,15 @@ The replacement uses standard [Pointer Events capture](https://developer.mozilla
 and [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame).
 Phaser's [pointer API](https://docs.phaser.io/api-documentation/class/input-pointer)
 provides mouse/touch adaptation, which was its main remaining use in this repository.
+
+
+### Dense multicolor follow-up
+
+The short brush trace did not cover the cost of displaying accumulated complex
+paint. A denser trace identified repeated rasterization and numeric-to-SVG-text
+path rebuilding. Paint now builds native paths numerically, uses a bounded,
+incrementally updated viewport display cache, and reuses compacted worker color
+partitions. Browser regressions cover cache reuse across worker replies, fill,
+undo, view changes, memory eviction and disposal. The optional `--dense-profile`
+diagnostic forces a pixel readback; timings include deferred raster work and
+should not be interpreted as interactive hardware frame rates.

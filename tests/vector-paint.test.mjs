@@ -151,3 +151,18 @@ test('base fills skip worker maintenance and brush jobs contain only dirty regio
   if(PreviousWorker===undefined)delete globalThis.Worker;else globalThis.Worker=PreviousWorker;
  }
 });
+
+
+test('incremental compaction reuses disjoint old colors and matches full compaction for new coverage',()=>{
+ const box=(l,t,r,b)=>[[[[l,t],[r,t],[r,b],[l,b],[l,t]]]];
+ const initial=geometry.compactRegion({id:1,base:0xffffff,blobs:[
+  {color:1,geometry:box(0,0,20,20)},{color:2,geometry:box(5,5,25,25)},{color:3,geometry:box(10,10,30,30)}]});
+ const unchanged=geometry.compactRegionPrefix(initial,initial.blobs.length);
+ assert.ok(unchanged.blobs.every((blob,i)=>blob===initial.blobs[i]));
+ for(const base of [0xffffff,2]){
+  const input={...initial,base,blobs:[...initial.blobs,{color:1,geometry:box(12,0,18,32)},{color:base,geometry:box(15,15,28,28)}]};
+  const full=geometry.compactRegion(input),fast=geometry.compactRegionPrefix(input,initial.blobs.length);
+  const color=(r,x,y)=>[...r.blobs].reverse().find(blob=>geometry.containsGeometry(blob.geometry,[x,y]))?.color??r.base;
+  for(let y=-1;y<33;y++)for(let x=-1;x<33;x++)assert.equal(color(fast,x+.37,y+.23),color(full,x+.37,y+.23));
+ }
+});

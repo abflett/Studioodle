@@ -19,10 +19,10 @@ export class ArtworkChange {
     async compact() {
         const snapshots = this.snapshots().filter(snapshot => snapshot.needsCompaction && snapshot.region);
         if (!snapshots.length) return;
-        const results = await computePaint({ regions: snapshots.map(snapshot => snapshot.region!) });
+        const results = await computePaint({ regions: snapshots.map(snapshot => snapshot.region!), compacted:snapshots.map(snapshot=>snapshot.compacted??0) });
         for (let index = 0; index < snapshots.length; index++) {
             const snapshot = snapshots[index]!;
-            if (results[index]) snapshot.region = results[index];
+            if (results[index]) { snapshot.region = results[index]; snapshot.compacted=results[index]!.blobs.length; }
             snapshot.needsCompaction = false;
         }
     }

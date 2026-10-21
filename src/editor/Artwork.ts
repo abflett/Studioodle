@@ -335,7 +335,7 @@ export class Artwork {
         const region=surface.vector.regions.find(region=>region.id===id);
         return surface.vectorPaint.fill(id,color,[p.x,p.y],options,region?.geometry);
     }
-    render(ctx:CanvasRenderingContext2D,thumbnail=false){
+    render(ctx:CanvasRenderingContext2D,thumbnail=false,cacheDisplay=false){
         ctx.clearRect(0,0,this.width,this.height);ctx.save();ctx.beginPath();ctx.rect(0,0,this.width,this.height);ctx.clip();
         for(const surface of this.surfaces){
             if(this.focusedId&&surface.data.id!==this.focusedId)continue;
@@ -345,7 +345,7 @@ export class Artwork {
                 ctx.scale((surface.data.scale??1)*(surface.data.flipX?-1:1),(surface.data.scale??1)*(surface.data.flipY?-1:1));
                 ctx.translate(-Math.floor(surface.logicalWidth/2),-Math.floor(surface.logicalHeight/2));
             }
-            surface.vectorPaint.draw(ctx,surface.vector);drawVectorInk(ctx,surface.vector,hex(surface.data.color),thumbnail);ctx.restore();
+            surface.vectorPaint.draw(ctx,surface.vector,cacheDisplay);drawVectorInk(ctx,surface.vector,hex(surface.data.color),thumbnail);ctx.restore();
         }
         ctx.restore();
     }
