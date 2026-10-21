@@ -63,6 +63,8 @@ try {
   const paintDisplay = await evaluate("import('/tests/browser/paint-display.ts').then(m => m.checkPaintDisplay())");
   result.paintDisplay=paintDisplay;
   console.log('Paint display:',JSON.stringify(paintDisplay));
+  result.pictureStorage=await evaluate("import('/tests/browser/picture-storage.ts').then(m=>m.checkPictureStorage())");
+  console.log('Picture storage:',JSON.stringify(result.pictureStorage));
   const canvasEditor = await evaluate("import('/tests/browser/canvas-editor.ts').then(m => m.checkCanvasEditor())");
   console.log('Canvas editor:', JSON.stringify(canvasEditor));
   result.canvasEditor = canvasEditor;
@@ -96,7 +98,7 @@ try {
   await cdp('Input.dispatchMouseEvent', {type:'mouseReleased',x:at.x+40,y:at.y+20,button:'left',buttons:0,clickCount:1});
   await evaluate('document.querySelector("button[aria-label^=Save]").click()');
   await waitFor('!!document.querySelector(".choice-blank")');
-  const savedDocument = await evaluate('JSON.parse(localStorage.getItem(Object.keys(localStorage).find(key=>key.startsWith("studioodle.v5.picture.")))).document');
+  const savedDocument = await evaluate('(async()=> (await (await import("/src/app/pictures.ts")).pictureRepository.load())[0].document)()');
   if (!savedDocument.surfaces[0].vectorPaint?.regions[0]?.blobs.length) throw Error('Trusted mouse drawing was not saved');
   await evaluate('document.querySelector(".previous-picture").click()');
   await waitFor('!!document.querySelector(".canvas-host canvas")');
@@ -108,7 +110,7 @@ try {
   await cdp('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await evaluate('document.querySelector("button[aria-label^=Save]").click()');
   await waitFor('!!document.querySelector(".choice-blank")');
-  const afterPinch = await evaluate('JSON.parse(localStorage.getItem(Object.keys(localStorage).find(key=>key.startsWith("studioodle.v5.picture.")))).document');
+  const afterPinch = await evaluate('(async()=> (await (await import("/src/app/pictures.ts")).pictureRepository.load())[0].document)()');
   const unchanged = await evaluate(`import('/tests/browser/helpers.ts').then(({normalizedPaintDocument}) =>
     JSON.stringify(normalizedPaintDocument(${JSON.stringify(savedDocument)})) === JSON.stringify(normalizedPaintDocument(${JSON.stringify(afterPinch)})))`);
   if(!unchanged){

@@ -105,9 +105,10 @@ not mutate paint or reach into persistence directly.
    workflows but are still only about 20 KB each. Extract cohesive workflows when
    touched by features, rather than splitting JSX into arbitrary tiny components.
    Native dialogs and the shared DialogHeader are useful existing foundations.
-6. **Persistence and output.** Synchronous localStorage/JSON snapshots are reasonable
-   for the current manual offline app. Profile quota and large-save behavior before
-   moving to IndexedDB. PNG export and current print output remain rasterized from
+6. **Persistence and output ? drawings moved to IndexedDB.** A complex drawing
+   exposed the localStorage quota. Drawing saves now compact paint, then commit
+   structured records asynchronously. A browser regression round-trips a 7 MB
+   drawing, replaces it and deletes it. Settings and templates remain separate. PNG export and current print output remain rasterized from
    vectors; true SVG/PDF output would be a distinct feature.
 
 The two-second splash minimum is an explicit presentation choice, not a rendering
@@ -133,3 +134,9 @@ partitions. Browser regressions cover cache reuse across worker replies, fill,
 undo, view changes, memory eviction and disposal. The optional `--dense-profile`
 diagnostic forces a pixel readback; timings include deferred raster work and
 should not be interpreted as interactive hardware frame rates.
+
+
+Navigation follow-up: the original display key included the viewport translation
+and zoom, forcing expensive rebuilds per gesture frame. Surface-local caches now
+reuse paint during pan/rotation and refine once zoom settles. Browser checks
+verify zero paint path fills during navigation and one requested refinement.

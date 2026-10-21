@@ -174,12 +174,12 @@ test('worker fill queues following brush input, save and undo in order', async (
   editor.execute({type:'undo'});assert.deepEqual(editor.artwork.serialize(),before);
 });
 
-test('session saves through its port and reports a failed save without changing the artwork', () => {
+test('session saves through its port and reports a failed save without changing the artwork', async () => {
   const { editor, saved } = session(); let succeeded;
-  editor.execute({ type: 'save', onComplete: value => { succeeded = value; } });
+  await new Promise(resolve=>editor.execute({ type: 'save', onComplete: value => { succeeded = value; resolve(); } }));
   assert.equal(succeeded, true); assert.equal(saved[0].id, 'picture-1');
   const failing = new EditorSession(fixture(), { save() { throw new Error('Disk full'); }, changed() {} });
-  failing.execute({ type: 'save', onComplete: value => { succeeded = value; } });
+  await new Promise(resolve=>failing.execute({ type: 'save', onComplete: value => { succeeded = value; resolve(); } }));
   assert.equal(succeeded, false); assert.deepEqual(failing.artwork.serialize(), fixture().document);
 });
 
@@ -282,4 +282,14 @@ test('disposing a session drops queued commands and late asynchronous fill notif
  const before=notifications;editor.dispose();complete(true);
  await new Promise(resolve=>setImmediate(resolve));
  assert.equal(notifications,before);assert.equal(saves,0);
+});
+
+test('save completion waits for asynchronous storage and reports rejection', async()=>{
+ const {editor}=session();let release,completed;
+ const failing=new EditorSession(fixture(),{save:()=>new Promise((_,reject)=>{release=reject;}),changed(){}});
+ failing.execute({type:'save',onComplete:value=>{completed=value;}});
+ await new Promise(resolve=>setTimeout(resolve,0));
+ assert.equal(completed,undefined);release(new Error('Quota exceeded'));
+ await new Promise(resolve=>setTimeout(resolve,0));assert.equal(completed,false);
+ editor.dispose();failing.dispose();
 });

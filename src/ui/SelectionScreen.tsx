@@ -71,10 +71,12 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   }, [manualOrientation]);
   const [background, setBackground] = useState('#f6f2e8');
   const [sampleIndex, setSampleIndex] = useState(0);
-  const [library, setLibrary] = useState(() => {
-    try { return { pictures: pictureRepository.load(), error: false }; }
-    catch { return { pictures: [], error: true }; }
-  });
+  const [library, setLibrary] = useState<{pictures:SavedPicture[];error:boolean}>({pictures:[],error:false});
+  useEffect(()=>{
+    let active=true;
+    void pictureRepository.load().then(pictures=>{if(active)setLibrary({pictures,error:false});},()=>{if(active)setLibrary({pictures:[],error:true});});
+    return ()=>{active=false;};
+  },[]);
   const saved = library.pictures;
   const [customPages, setCustomPages] = useState(() => {
     try { return coloringPageRepository.load(); } catch { return []; }
@@ -98,7 +100,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     const timeout = window.setTimeout(() => setRemoved(undefined), 8000);
     return () => window.clearTimeout(timeout);
   }, [removed, toastPaused, actionError, pendingDelete]);
-  const removeCurrent = (picture: SavedPicture) => {
+  const removeCurrent = async (picture: SavedPicture) => {
     setPendingDelete(undefined);
     try {
       if (deletingPage) {
@@ -110,17 +112,17 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
         setDeletingPage(false); setRemoved(undefined); setActionError(undefined); setNotice('Coloring page removed');
         return;
       }
-      pictureRepository.delete(picture.id);
+      await pictureRepository.delete(picture.id);
       setRemoved(picture); setToastPaused(false); setActionError(undefined);
       setLibrary({ pictures: saved.filter((item) => item.id !== picture.id), error: false });
       setSampleIndex(Math.max(0, Math.min(sampleIndex, saved.length - 2)));
     } catch { setActionError('Could not delete this picture.'); }
   };
-  const undoRemove = () => {
+  const undoRemove = async () => {
     if (!removed) return;
     try {
-      pictureRepository.save(removed);
-      const pictures = pictureRepository.load();
+      await pictureRepository.save(removed);
+      const pictures = await pictureRepository.load();
       setLibrary({ pictures, error: false });
       setSampleIndex(Math.max(0, pictures.findIndex((item) => item.id === removed.id)));
       setRemoved(undefined); setActionError(undefined);

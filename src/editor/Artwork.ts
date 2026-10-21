@@ -335,7 +335,7 @@ export class Artwork {
         const region=surface.vector.regions.find(region=>region.id===id);
         return surface.vectorPaint.fill(id,color,[p.x,p.y],options,region?.geometry);
     }
-    render(ctx:CanvasRenderingContext2D,thumbnail=false,cacheDisplay=false){
+    render(ctx:CanvasRenderingContext2D,thumbnail=false,cacheDisplay:boolean|(()=>void)=false){
         ctx.clearRect(0,0,this.width,this.height);ctx.save();ctx.beginPath();ctx.rect(0,0,this.width,this.height);ctx.clip();
         for(const surface of this.surfaces){
             if(this.focusedId&&surface.data.id!==this.focusedId)continue;

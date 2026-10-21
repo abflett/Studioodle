@@ -18,7 +18,7 @@ export class CanvasEditor {
 
   constructor(private readonly host: HTMLElement, private readonly bridge: EditorBridge, setup: EditorSetup, save: EditorSessionPorts['save']) {
     const size = paperSize(setup.format, setup.size);
-    this.viewport = new CanvasViewport(host, size.width, size.height);
+    this.viewport = new CanvasViewport(host, size.width, size.height, this.invalidate);
     this.session = new EditorSession(setup, { save, changed: this.changed });
     this.unsubscribe = bridge.subscribe(command => this.session.execute(command));
     host.addEventListener('pointerdown', this.begin);

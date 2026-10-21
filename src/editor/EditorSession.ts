@@ -11,7 +11,7 @@ import type { Point } from './document';
 import type { SavedPicture } from './savedPicture';
 
 export type EditorSessionPorts = {
-  save: (picture: SavedPicture) => void;
+  save: (picture: SavedPicture) => void|Promise<void>;
   changed: () => void;
 };
 
@@ -35,9 +35,9 @@ export class EditorSession {
   private nextSpray = 0;
   private nextSmoothing = 0;
   private strokeTrail = 2;
-  private pendingFill?: Promise<void>;
+  private pendingOperation?: Promise<void>;
   private deferred: (()=>void)[] = [];
-  private defer(action:()=>void){if(!this.pendingFill)return false;this.deferred.push(action);return true;}
+  private defer(action:()=>void){if(!this.pendingOperation)return false;this.deferred.push(action);return true;}
   constructor(private readonly setup: EditorSetup, private readonly ports: EditorSessionPorts) {
     if (!setup.id) throw new Error('An editor document must have an ID before opening.');
     preparePaintWorker();
@@ -67,10 +67,12 @@ export class EditorSession {
       return;
     }
     if (command.type === 'save') {
-      try {
-        this.ports.save(this.snapshot());
-        command.onComplete(true);
-      } catch { command.onComplete(false); }
+      this.end();
+      this.pendingOperation=this.document.compactPaint().then(()=>this.ports.save(this.snapshot())).then(
+        ()=>command.onComplete(true),()=>command.onComplete(false)).finally(()=>{
+          this.pendingOperation=undefined;
+          while(!this.pendingOperation&&this.deferred.length)this.deferred.shift()!();
+        });
       return;
     }
     if (command.type === 'cancel-input') {
@@ -90,9 +92,9 @@ export class EditorSession {
       const result=this.document.fill(command.point,this.color,this.fillOptions);
       const finish=(changed:boolean)=>{if(this.disposed)return;const change=this.document.endChange();if(changed)this.history.push(change);this.notifyChanged();};
       if(typeof result==='boolean')finish(result);
-      else this.pendingFill=result.then(finish).catch(error=>{if(!this.disposed)this.document.undoChange(this.document.endChange());console.error('Vector bucket fill failed; paint was preserved.',error);}).finally(()=>{
-        this.pendingFill=undefined;
-        while(!this.pendingFill&&this.deferred.length)this.deferred.shift()!();
+      else this.pendingOperation=result.then(finish).catch(error=>{if(!this.disposed)this.document.undoChange(this.document.endChange());console.error('Vector bucket fill failed; paint was preserved.',error);}).finally(()=>{
+        this.pendingOperation=undefined;
+        while(!this.pendingOperation&&this.deferred.length)this.deferred.shift()!();
       });
     }
     if (command.type === 'order-selection' && this.selected) {
@@ -153,7 +155,7 @@ export class EditorSession {
     return { id: this.setup.id!, title: this.setup.title, format: this.setup.format, size: paperSize(this.setup.format, this.setup.size),
       background: this.setup.background, leafColor: this.setup.leafColor, version: document.version, updatedAt: Date.now(), document };
   }
-  get needsAnimation() { return !this.disposed && !this.pendingFill && this.activePointer !== undefined && ((this.tool === 'brush' && this.brushOptions.kind === 'spray') || !!this.stroke?.remaining); }
+  get needsAnimation() { return !this.disposed && !this.pendingOperation && this.activePointer !== undefined && ((this.tool === 'brush' && this.brushOptions.kind === 'spray') || !!this.stroke?.remaining); }
   dispose() {
     this.disposed = true;
     this.deferred = [];
@@ -164,7 +166,7 @@ export class EditorSession {
     this.document.dispose();
   }
   update(time: number) {
-    if(this.pendingFill)return;
+    if(this.pendingOperation)return;
     if(this.stroke&&this.previous&&this.activePointer!==undefined&&time>=this.nextSmoothing){
       this.applyStrokePoints(this.stroke.settle(this.strokeTrail));
       this.nextSmoothing=time+12;this.notifyChanged();

@@ -76,12 +76,13 @@ speedups across devices or artwork.
 ### Dense paint rendering
 
 Brush polygons build cached `Path2D` objects with numeric `moveTo`/`lineTo` calls,
-without serializing SVG path text. The viewport caches complex paint at current
-screen resolution and adds new clipped coverage incrementally. Worker compaction
-preserves coverage, so it does not invalidate that display. Fills, undo and view
-transform changes rebuild it. All surface caches share a 32 MiB pixel budget with
-LRU eviction; offscreen surfaces allocate nothing and oversized views fall back
-to vector rendering. This budget excludes the main canvas, geometry and undo.
+without serializing SVG path text. The viewport caches complex paint in surface-local coordinates and adds new
+clipped coverage incrementally. Panning and rotation reuse it. Zooming reprojects
+the existing image during movement and refines it after 150 ms of quiet. The
+resolution follows the view up to the pixel budget; export always uses vectors. Worker compaction
+preserves coverage, so it does not invalidate that display. Fills and undo rebuild it. All surface caches share a 32 MiB pixel budget with
+LRU eviction; offscreen surfaces allocate nothing and oversized surfaces cap
+their display resolution to the budget. This budget excludes the main canvas, geometry and undo.
 Caches are disposed with their artwork. Saves, hit testing, previews, exports
 and print use vector data; output never enlarges cached screen pixels.
 
@@ -93,4 +94,4 @@ release obsolete native path caches; history retains immutable geometry only.
 and writes metrics plus a PNG under `work/tests/`. It forces a pixel readback to
 include deferred Canvas rasterization. Its frame timing includes an intentional
 16 ms pause and is not a hardware frame-rate measurement. Initial cache builds,
-fills, undo and zoom can still cost a full vector redraw.
+fills, undo and settled zoom refinement can still cost a full vector redraw.

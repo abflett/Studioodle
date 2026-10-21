@@ -33,6 +33,15 @@ export async function checkPaintDisplay(){
   ctx.setTransform(1.25,0,0,1.25,30.3,12.6);ref.setTransform(1.25,0,0,1.25,30.3,12.6);ctx.clearRect(-100,-100,1000,1000);ref.clearRect(-100,-100,1000,1000);
   art.render(ctx,false,true);art.render(ref);
   assert(pixel(ctx,100,100).join()===pixel(ref,100,100).join(),'Changed view transform did not rebuild cached paint');
+  let refreshes=0;const refresh=()=>{refreshes++;};
+  ctx.setTransform(1.25,0,0,1.25,80,35);fills=0;art.render(ctx,false,refresh);
+  assert(fills===0,'Panning must reuse the surface-local paint display');
+  for(let i=0;i<12;i++){
+   ctx.setTransform(1.3+i*.05,0,0,1.3+i*.05,80+i*5,35);fills=0;art.render(ctx,false,refresh);
+   assert(fills===0,'Continuous zoom must not rebuild complex paint every frame');
+  }
+  await new Promise(resolve=>setTimeout(resolve,200));assert(refreshes===1,'Settled zoom should request exactly one refinement');
+  fills=0;art.render(ctx,false,refresh);assert(fills>0,'Settled zoom failed to refine vector detail');
   // Numeric construction must preserve compound paths and holes exactly.
   const geometry:MultiPolygon=[[[[0,0],[40,0],[40,40],[0,40],[0,0]],[[10,10],[10,30],[30,30],[30,10],[10,10]]]];
   const text=geometry.flatMap(p=>p.map(r=>r.map(([x,y],i)=>`${i?'L':'M'}${x} ${y}`).join('')+'Z')).join('');
@@ -54,6 +63,6 @@ export async function checkPaintDisplay(){
    if(own)Object.defineProperty(document,'createElement',own);else Reflect.deleteProperty(document,'createElement');
   }
   assert(buffers.every(c=>c.width===1&&c.height===1),'Disposed display retained its backing pixels');
-  return {boundedMemory:true,numericPaths:true,incrementalDisplay:true,noRebuildAfterMerge:true,fillUndoZoomInvalidation:true};
+  return {smoothNavigation:true,boundedMemory:true,numericPaths:true,incrementalDisplay:true,noRebuildAfterMerge:true,fillUndoZoomInvalidation:true};
  }finally{Object.defineProperty(CanvasRenderingContext2D.prototype,'fill',descriptor);art.dispose();}
 }

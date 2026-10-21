@@ -128,10 +128,10 @@ export class VectorPaint {
         while(this.busy||this.timer);
     }
     serialize():VectorPaintData{return {version:1,regions:structuredClone([...this.regions.values()])};}
-    draw(ctx:CanvasRenderingContext2D,definition:VectorDefinition,cacheDisplay=false){
+    draw(ctx:CanvasRenderingContext2D,definition:VectorDefinition,cacheDisplay:boolean|(()=>void)=false){
         if(cacheDisplay&&this.displayPoints>=1024){
             this.display??=new PaintDisplayCache();
-            if(this.display.draw(ctx,definition,target=>this.drawVectors(target,definition),(target,paint)=>this.drawDelta(target,definition,paint)))return;
+            if(this.display.draw(ctx,definition,target=>this.drawVectors(target,definition),(target,paint)=>this.drawDelta(target,definition,paint),typeof cacheDisplay==='function'?cacheDisplay:undefined))return;
         }
         this.drawVectors(ctx,definition);
     }

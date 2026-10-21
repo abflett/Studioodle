@@ -117,3 +117,10 @@ fixed action-count limit. Paint checkpoints share immutable geometry; only their
 small region containers are copied during input. A single background history job
 at a time replaces pending samples with compacted color blobs. Simple fills and
 transforms need no history geometry job. See [undo history](UNDO-HISTORY.md).
+
+
+Saved drawings use asynchronous IndexedDB transactions with structured vector
+records. Save completion follows paint compaction and transaction commit; queued
+edits retain their order while saving. Settings and custom coloring templates
+still use their small localStorage repositories. Development drawings from the
+old localStorage repository are not migrated to the IndexedDB library.

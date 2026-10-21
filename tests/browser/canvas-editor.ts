@@ -68,7 +68,7 @@ export async function checkCanvasEditor() {
     await frame();
     const added = await snapshot();
     assert(added.document.surfaces.length === 2, 'Sticker insertion must survive adapter replacement');
-    bridge.send({ type: 'save', onComplete: ok => assert(ok, 'Save failed') });
+    await new Promise<void>((resolve,reject)=>bridge.send({ type: 'save', onComplete: ok => ok?resolve():reject(Error('Save failed')) }));
     assert(saved?.document.surfaces.length === 2, 'Save port must receive the document');
     // Extreme zoom must allocate only the visible workspace, not a page-sized backing.
     host.style.width = '3600px'; host.style.height = '2400px'; host.style.left = '-1200px';

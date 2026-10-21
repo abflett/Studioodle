@@ -6,7 +6,7 @@ export class CanvasViewport {
   private readonly canvas = document.createElement('canvas');
   private readonly context: CanvasRenderingContext2D;
 
-  constructor(private readonly host: HTMLElement, private readonly width: number, private readonly height: number) {
+  constructor(private readonly host: HTMLElement, private readonly width: number, private readonly height: number, private readonly refresh:()=>void) {
     const context = this.canvas.getContext('2d');
     if (!context) throw new Error('Unable to create vector display');
     this.context = context;
@@ -32,7 +32,7 @@ export class CanvasViewport {
     ctx.resetTransform(); ctx.clearRect(0, 0, pixelWidth, pixelHeight);
     const pixelScaleX = pixelWidth / width, pixelScaleY = pixelHeight / height;
     ctx.setTransform(pixelScaleX * page.width / this.width, 0, 0, pixelScaleY * page.height / this.height, -x * pixelScaleX, -y * pixelScaleY);
-    artwork.render(ctx,false,true);
+    artwork.render(ctx,false,this.refresh);
     const { bounds, tool } = state;
     if (bounds && tool === 'select') {
       ctx.strokeStyle = '#549bd1'; ctx.lineWidth = 3;
