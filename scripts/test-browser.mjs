@@ -106,7 +106,13 @@ try {
   await evaluate('document.querySelector("button[aria-label^=Save]").click()');
   await waitFor('!!document.querySelector(".choice-blank")');
   const afterPinch = await evaluate('JSON.parse(localStorage.getItem(Object.keys(localStorage).find(key=>key.startsWith("studioodle.v5.picture.")))).document');
-  if(JSON.stringify(afterPinch)!==JSON.stringify(savedDocument))throw Error('Two-finger gesture did not roll back its partial stroke');
+  const unchanged = await evaluate(`import('/tests/browser/helpers.ts').then(({normalizedPaintDocument}) =>
+    JSON.stringify(normalizedPaintDocument(${JSON.stringify(savedDocument)})) === JSON.stringify(normalizedPaintDocument(${JSON.stringify(afterPinch)})))`);
+  if(!unchanged){
+    await fs.writeFile('work/tests/touch-before.json',JSON.stringify(savedDocument));
+    await fs.writeFile('work/tests/touch-after.json',JSON.stringify(afterPinch));
+    throw Error('Two-finger gesture did not roll back its partial stroke');
+  }
   result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true};
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
   await fs.writeFile('work/tests/app-after-reopen.png',Buffer.from(screenshot.data,'base64'));

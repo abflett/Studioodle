@@ -7,3 +7,6 @@ export type PaintJob = {regions:VectorPaintRegion[];fill?:{color:number;point:Pa
 
 export const paintStyleKey=(color:number,pattern?:FillOptions)=>`${color}:${pattern?.pattern??'solid'}:${pattern&&pattern.pattern!=='solid'?pattern.spacing:0}`;
 export const normalizedPattern=(pattern?:FillOptions)=>pattern?.pattern==='solid'?undefined:pattern;
+
+// Shallow region checkpoint: immutable geometry is shared until worker compaction.
+export type PaintSnapshot = { region?: VectorPaintRegion; needsCompaction: boolean };

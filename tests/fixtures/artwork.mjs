@@ -1,10 +1,24 @@
+import { ArtworkChange } from '../../src/editor/artworkChange';
 // In-memory artwork double: session tests exercise editing orchestration, not Canvas2D.
 export class Artwork {
   constructor(document) { this.document = structuredClone(document); }
   static create(width, height) { return new Artwork({ version: 5, width, height, surfaces: [{ id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff }] }); }
   static restore(document) { return new Artwork(document); }
   async compactPaint() {}
-  dispose() {}
+  dispose() { this.before=undefined; }
+  // This orchestration double deliberately uses whole states; browser tests cover
+  // the production region journal and its worker/memory behavior.
+  beginChange() { if(this.before)throw Error('Nested test change');this.before=structuredClone(this.document); }
+  endChange() {
+    const change=new ArtworkChange(),before=this.before;this.before=undefined;
+    if(before&&JSON.stringify(before)!==JSON.stringify(this.document)){
+      change.surfaces.set('test-document',{data:{id:'test-document'},index:0});
+      change.beforeDocument=before;
+    }
+    return change;
+  }
+  undoChange(change) { if(change.beforeDocument)this.document=structuredClone(change.beforeDocument); }
+
   serialize() { return structuredClone(this.document); }
   setFocus(id) { this.focused = id; }
   bounds(id) { return this.document.surfaces.some(s => s.id === id) ? { x: 0, y: 0, width: 10, height: 10 } : undefined; }

@@ -1,3 +1,4 @@
+import { ArtworkChange } from './artworkChange';
 import polygonClipping from './polygonGeometry';
 import { vectorStickerSize } from './vectorCatalog';
 import { vectorDefinition } from './vectorStickers';
@@ -16,7 +17,7 @@ class Surface {
     readonly logicalWidth: number;
     readonly logicalHeight: number;
     readonly opaqueBounds: {left:number;top:number;right:number;bottom:number};
-    constructor(readonly data:SurfaceData,width:number,height:number,definition?:VectorDefinition){
+    constructor(readonly data:SurfaceData,width:number,height:number,definition?:VectorDefinition,changing?:(id:number)=>void){
         if(data.kind==='canvas'){
             const path=new Path2D();path.rect(0,0,width,height);
             const inside=(x:number,y:number)=>x>=0&&y>=0&&x<width&&y<height;
@@ -26,7 +27,7 @@ class Surface {
         }else this.vector=definition??vectorDefinition(data.kind);
         this.logicalWidth=this.vector.width;this.logicalHeight=this.vector.height;
         this.opaqueBounds=this.vector.bounds;
-        this.vectorPaint=new VectorPaint(data.vectorPaint,data.kind==='canvas'?data.color:0xffffff);
+        this.vectorPaint=new VectorPaint(data.vectorPaint,data.kind==='canvas'?data.color:0xffffff,changing);
         delete data.vectorPaint;
     }
     worldPoint(x:number,y:number):Point{
@@ -52,9 +53,10 @@ class Surface {
 export class Artwork {
     private surfaces: Surface[];
     private focusedId?: string;
+    private change?: ArtworkChange;
     private overlapCache = new Map<string, boolean>();
     constructor(private readonly width: number, private readonly height: number, data: SurfaceData[], private readonly definitionFor: (kind: StickerKind) => VectorDefinition = vectorDefinition) {
-        this.surfaces = data.map(surface => new Surface(structuredClone(surface), width, height, surface.kind === 'canvas' ? undefined : this.definitionFor(surface.kind)));
+        this.surfaces = data.map(surface => new Surface(structuredClone(surface), width, height, surface.kind === 'canvas' ? undefined : this.definitionFor(surface.kind), id=>this.capturePaint(surface.id,id)));
     }
     static create(width: number, height: number, background: string) {
         return new Artwork(width, height, [{ id: 'canvas', kind: 'canvas', x: 0, y: 0, color: parseInt(background.slice(1), 16) }]);
@@ -64,11 +66,68 @@ export class Artwork {
         return new Artwork(doc.width,doc.height,doc.surfaces,definitionFor);
     }
     get size() { return { width: this.width, height: this.height }; }
-    dispose() { for (const surface of this.surfaces) surface.vectorPaint.dispose(); }
+    dispose() { this.change=undefined; for (const surface of this.surfaces) surface.vectorPaint.dispose(); }
     async compactPaint(){await Promise.all(this.surfaces.map(surface=>surface.vectorPaint.settled()));}
     serialize():ArtworkDocument{return{version:5,width:this.width,height:this.height,surfaces:this.surfaces.map(surface=>surface.serialize())};}
+    beginChange() {
+        if (this.change) throw Error('An artwork change is already active');
+        this.change = new ArtworkChange();
+    }
+    endChange() {
+        const change = this.change ?? new ArtworkChange();
+        this.change = undefined;
+        for (const [id, before] of change.surfaces) {
+            const index = this.surfaces.findIndex(surface => surface.data.id === id), surface = this.surfaces[index];
+            const unchanged = before && !before.paint && surface && before.index === index && JSON.stringify(before.data) === JSON.stringify(surface.data);
+            if ((!before && !surface) || unchanged) change.surfaces.delete(id);
+        }
+        return change;
+    }
+    private capturePaint(surfaceId: string, id: number) {
+        const key = JSON.stringify([surfaceId, id]);
+        if (!this.change || this.change.regions.has(key)) return;
+        const surface = this.surfaces.find(surface => surface.data.id === surfaceId)!;
+        this.change.regions.set(key, { surfaceId, id, paint: surface.vectorPaint.snapshotRegion(id) });
+    }
+    private captureSurface(id: string, deleted = false) {
+        if (!this.change) return;
+        const index = this.surfaces.findIndex(surface => surface.data.id === id), surface = this.surfaces[index];
+        if (surface?.data.kind === 'canvas') return;
+        if (this.change.surfaces.has(id)) {
+            const before = this.change.surfaces.get(id);
+            if (deleted && before && !before.paint) before.paint = surface!.vectorPaint.snapshotRegions();
+            return;
+        }
+        this.change.surfaces.set(id, surface ? {
+            data: { ...surface.data }, index,
+            ...(deleted ? { paint: surface.vectorPaint.snapshotRegions() } : {}),
+        } : undefined);
+    }
+    undoChange(change: ArtworkChange) {
+        for (const [id, before] of [...change.surfaces].reverse()) {
+            const index = this.surfaces.findIndex(surface => surface.data.id === id);
+            let surface = this.surfaces[index];
+            if (!before) {
+                if (surface) { surface.vectorPaint.dispose(); this.surfaces.splice(index, 1); }
+                continue;
+            }
+            if (!surface) {
+                surface = new Surface({ ...before.data }, this.width, this.height, this.definitionFor(before.data.kind as StickerKind), region => this.capturePaint(id, region));
+            } else {
+                this.surfaces.splice(index, 1);
+                for (const key of Object.keys(surface.data)) Reflect.deleteProperty(surface.data, key);
+                Object.assign(surface.data, before.data);
+            }
+            this.surfaces.splice(Math.min(before.index, this.surfaces.length), 0, surface);
+            for (const paint of before.paint ?? []) if (paint.region) surface.vectorPaint.restoreRegion(paint.region.id, paint);
+        }
+        for (const { surfaceId, id, paint } of change.regions.values())
+            this.surfaces.find(surface => surface.data.id === surfaceId)?.vectorPaint.restoreRegion(id, paint);
+        this.overlapCache.clear();
+    }
     add(kind: StickerKind, color: number, point: Point) {
-        const surface = new Surface({ id: crypto.randomUUID(), kind, color, x: Math.round(point.x), y: Math.round(point.y) }, this.width, this.height, this.definitionFor(kind));
+        const id=crypto.randomUUID();this.captureSurface(id);
+        const surface = new Surface({ id, kind, color, x: Math.round(point.x), y: Math.round(point.y) }, this.width, this.height, this.definitionFor(kind),region=>this.capturePaint(id,region));
         {
             const bounds = surface.bounds();
             surface.data.scale = Math.min(1, this.width * .6 / Math.max(1, bounds.width), this.height * .6 / Math.max(1, bounds.height));
@@ -108,6 +167,7 @@ export class Artwork {
         const rotation = ((surface.data.rotation ?? 0) + rotationDelta + 360) % 360;
         if (scale === (surface.data.scale ?? 1) && rotation === (surface.data.rotation ?? 0))
             return false;
+        this.captureSurface(id);
         surface.data.scale = scale;
         surface.data.rotation = rotation;
         this.move(id, surface.data);
@@ -116,6 +176,7 @@ export class Artwork {
     flip(id: string, axis: 'horizontal' | 'vertical') {
         const surface = this.surfaces.find(s => s.data.id === id && s.data.kind !== 'canvas');
         if (!surface) return false;
+        this.captureSurface(id);
         if (axis === 'horizontal') surface.data.flipX = !surface.data.flipX;
         else surface.data.flipY = !surface.data.flipY;
         this.move(id, surface.data);
@@ -127,7 +188,8 @@ export class Artwork {
             return undefined;
         const data = original.serialize();
         data.id = crypto.randomUUID();
-        const copy = new Surface(data, this.width, this.height, original.vector);
+        this.captureSurface(data.id);
+        const copy = new Surface(data, this.width, this.height, original.vector,region=>this.capturePaint(data.id,region));
         this.surfaces.push(copy);
         this.move(data.id, { x: data.x + 24, y: data.y + 24 });
         return data.id;
@@ -174,12 +236,14 @@ export class Artwork {
         // Cross only the nearest overlapping sticker; preserve every other relative order.
         // Index zero remains the paper and can never be crossed.
         if (target < 1) return false;
+        this.captureSurface(id);
         const [surface] = this.surfaces.splice(index, 1);
         this.surfaces.splice(target, 0, surface!);
         this.overlapCache.clear();
         return true;
     }
     remove(id: string) {
+        this.captureSurface(id,true);
         this.surfaces = this.surfaces.filter(surface => {
             if (surface.data.kind === 'canvas' || surface.data.id !== id) return true;
             surface.vectorPaint.dispose();
@@ -208,6 +272,7 @@ export class Artwork {
         const surface = this.surfaces.find((s) => s.data.id === id);
         if (!surface || surface.data.kind === 'canvas')
             return;
+        this.captureSurface(id);
         const box = surface.bounds(), bounds = surface.opaqueBounds;
         const visibleX = Math.min(this.width, Math.max(8, Math.ceil(box.width * .1)));
         const visibleY = Math.min(this.height, Math.max(8, Math.ceil(box.height * .1)));

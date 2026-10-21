@@ -5,7 +5,7 @@ import { drawPaint, geometryBounds, rectangleGeometry } from './vectorPaintStyle
 import { polygonPath } from './vectorPaintGeometry';
 import { computePaint } from './paintWorker';
 import type { MultiPolygon, Pair } from './polygonGeometry';
-import type { PaintBlob, VectorPaintData, VectorPaintRegion } from './vectorPaintTypes';
+import type { PaintBlob, PaintSnapshot, VectorPaintData, VectorPaintRegion } from './vectorPaintTypes';
 import type { VectorDefinition } from './vectorDefinition';
 
 export class VectorPaint {
@@ -17,6 +17,7 @@ export class VectorPaint {
     private busy=false;
     private pendingMerge?:Promise<(VectorPaintRegion|undefined)[]>;
     private failed=false;
+    private compacted=new WeakSet<PaintBlob[]>();
     private paths=new WeakMap<MultiPolygon,Path2D>();
     private coveragePaths=new WeakMap<VectorPaintRegion,{blobs:PaintBlob[];count:number;path:Path2D}>();
     private path(geometry:MultiPolygon){let path=this.paths.get(geometry);if(!path){path=new Path2D(polygonPath(geometry));this.paths.set(geometry,path);}return path;}
@@ -27,10 +28,27 @@ export class VectorPaint {
         return cached.path;
     }
     // Restore is read-only: previews/exports must never queue paint maintenance.
-    constructor(data?:VectorPaintData,private readonly defaultColor=0xffffff){this.regions=new Map(structuredClone(data?.regions??[]).map(region=>[region.id,region]));}
+    constructor(data?:VectorPaintData,private readonly defaultColor=0xffffff,private readonly changing?:(id:number)=>void){this.regions=new Map(structuredClone(data?.regions??[]).map(region=>[region.id,region]));}
     private region(id:number){let r=this.regions.get(id);if(!r){r={id,base:this.defaultColor,blobs:[]};this.regions.set(id,r);}return r;}
+    snapshotRegion(id:number):PaintSnapshot {
+        const region=this.regions.get(id);
+        return {region:region?{...region,blobs:[...region.blobs]}:undefined,
+            needsCompaction:!!region?.blobs.length&&!this.compacted.has(region.blobs)};
+    }
+    snapshotRegions(){return [...this.regions.keys()].map(id=>this.snapshotRegion(id));}
+    restoreRegion(id:number,snapshot:PaintSnapshot){
+        this.revision++;this.dirty.delete(id);
+        if(snapshot.region){
+            const region={...snapshot.region,blobs:[...snapshot.region.blobs]};
+            this.regions.set(id,region);
+            if(!snapshot.needsCompaction)this.compacted.add(region.blobs);
+        }
+        else this.regions.delete(id);
+        if(snapshot.needsCompaction)this.schedule(id);
+    }
     fill(id:number,color:number,point?:Pair,options?:FillOptions,boundary?:()=>MultiPolygon):boolean|Promise<boolean>{
-        const r=this.region(id),pattern=normalizedPattern(options),key=paintStyleKey(color,pattern);
+        const pattern=normalizedPattern(options),key=paintStyleKey(color,pattern);
+        const r=this.regions.get(id)??{id,base:this.defaultColor,blobs:[]};
         if(point&&r.blobs.length){
             const revision=this.revision;
             // Reuse completed maintenance instead of queuing the same raw strokes
@@ -39,11 +57,11 @@ export class VectorPaint {
             return (this.pendingMerge?this.pendingMerge.then(prepare,prepare):prepare()).then(([result])=>{
                 // A different edit supersedes an in-flight fill; never paint stale topology.
                 if(!result||revision!==this.revision)return false;
-                this.regions.set(id,result);this.revision++;this.schedule(id);return true;
+                this.changing?.(id);this.regions.set(id,result);this.revision++;this.schedule(id);return true;
             });
         }
         if(paintStyleKey(r.base,r.pattern)===key)return false;
-        r.base=color;r.pattern=pattern;this.revision++;if(r.blobs.length)this.schedule(id);return true;
+        this.changing?.(id);this.regions.set(id,r);this.compacted.delete(r.blobs);r.base=color;r.pattern=pattern;this.revision++;if(r.blobs.length)this.schedule(id);return true;
     }
     apply(definition:VectorDefinition,geometry:MultiPolygon,color:number){
         const bounds=geometryBounds(geometry),pieces:MultiPolygon[]=[];let changed=false;
@@ -56,7 +74,9 @@ export class VectorPaint {
             pieces.push(coverage);
             const existing=this.regions.get(region.id);
             if((!existing||!existing.blobs.length)&&paintStyleKey(existing?.base??this.defaultColor,existing?.pattern)===paintStyleKey(color))continue;
-            this.region(region.id).blobs.push({color,geometry:coverage});this.dirty.add(region.id);changed=true;
+            this.changing?.(region.id);
+            const paint=this.region(region.id);this.compacted.delete(paint.blobs);
+            paint.blobs.push({color,geometry:coverage});this.dirty.add(region.id);changed=true;
         }
         if(changed){this.revision++;this.schedule();}
         // Regions already partition the surface. The consumer subtracts their
@@ -82,6 +102,7 @@ export class VectorPaint {
                 const current=this.regions.get(result.id),source=snapshot.find(r=>r.id===result.id)!;
                 if(current&&paintStyleKey(current.base,current.pattern)===paintStyleKey(source.base,source.pattern)&&source.blobs.every((blob,i)=>current.blobs[i]===blob)){
                     current.blobs=[...result.blobs,...current.blobs.slice(source.blobs.length)];
+                    if(current.blobs.length===result.blobs.length)this.compacted.add(current.blobs);
                 }
             }
             if(this.dirty.size)this.schedule();

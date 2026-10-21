@@ -81,10 +81,12 @@ not mutate paint or reach into persistence directly.
 
 ## Next improvements, in order of evidence needed
 
-1. **Undo memory on large paintings.** History is capped at 50 full document
-   snapshots, not by bytes. Measure large drawings; consider immutable region-level
-   sharing or a memory budget before building a command/delta undo system. This is
-   the strongest remaining memory concern.
+1. **Undo memory ? implemented in the next refinement.** Whole-scene snapshots
+   and the 50-action cap were replaced by changed-region checkpoints, small sticker
+   property records, shared immutable geometry and an estimated 128 MiB history
+   budget. Pending paint checkpoints compact one job at a time in the worker.
+   See [undo history](UNDO-HISTORY.md). Profile real mobile sessions before tuning
+   the budget; it is an estimate, not a measurement of total process memory.
 2. **Complex pointer-time clipping.** Brush intersection and occlusion subtraction
    still run on the main thread; compaction and bucket topology run in the worker.
    Profile worst-case stickers first. Candidate improvements are a spatial region

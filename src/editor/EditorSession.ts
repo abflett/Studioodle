@@ -1,4 +1,5 @@
 import { Artwork } from './Artwork';
+import { UndoHistory } from './UndoHistory';
 import { preparePaintWorker } from './paintWorker';
 import { StrokeSmoothing } from './strokeSmoothing';
 import { defaultBrush, defaultFill } from './toolOptions';
@@ -6,7 +7,7 @@ import type { EditorCommand, EditorTool } from './bridge';
 import { initialDrawingSettings } from './setup';
 import type { EditorSetup } from './setup';
 import { paperSize } from './document';
-import type { ArtworkDocument, Point } from './document';
+import type { Point } from './document';
 import type { SavedPicture } from './savedPicture';
 
 export type EditorSessionPorts = {
@@ -18,8 +19,7 @@ export type EditorSessionPorts = {
 export class EditorSession {
   private document: Artwork;
   private disposed = false;
-  private history: ArtworkDocument[] = [];
-  private pending?: ArtworkDocument;
+  private readonly history = new UndoHistory();
   private color: number;
   private selected?: string;
   private focused?: string;
@@ -31,7 +31,7 @@ export class EditorSession {
   private previous?: Point;
   private stroke?: StrokeSmoothing;
   private activePointer?: number;
-  private gestureUndo?: { document: ArtworkDocument; history: ArtworkDocument[]; selected?: string; tool: EditorTool; focusHistoryStart: number };
+  private gestureUndo?: { selected?: string; tool: EditorTool };
   private nextSpray = 0;
   private pendingFill?: Promise<void>;
   private deferred: (()=>void)[] = [];
@@ -73,12 +73,9 @@ export class EditorSession {
     }
     if (command.type === 'cancel-input') {
       const before = this.gestureUndo;
-      if (before) {
-        this.document.dispose(); this.document = Artwork.restore(before.document); this.document.setFocus(this.focused);
-        this.history = before.history; this.selected = before.selected; this.tool = before.tool;
-        this.focusHistoryStart = before.focusHistoryStart;
-      }
-      this.end(false); this.notifyChanged(); return;
+      this.end(false);
+      if (before) { this.selected = before.selected; this.tool = before.tool; }
+      this.notifyChanged(); return;
     }
     this.end();
     if (this.focused && ['add-sticker', 'duplicate-selection', 'delete-selection', 'order-selection', 'clear-selection'].includes(command.type)) return;
@@ -87,11 +84,11 @@ export class EditorSession {
       this.document.setFocus(); this.tool = 'bucket';
     }
     if (command.type === 'fill-at' && this.tool === 'bucket') {
-      const before=this.document.serialize();
+      this.document.beginChange();
       const result=this.document.fill(command.point,this.color,this.fillOptions);
-      const finish=(changed:boolean)=>{if(this.disposed)return;if(changed){this.pending=before;this.recordChange();}this.notifyChanged();};
+      const finish=(changed:boolean)=>{if(this.disposed)return;const change=this.document.endChange();if(changed)this.history.push(change);this.notifyChanged();};
       if(typeof result==='boolean')finish(result);
-      else this.pendingFill=result.then(finish).catch(error=>console.error('Vector bucket fill failed; paint was preserved.',error)).finally(()=>{
+      else this.pendingFill=result.then(finish).catch(error=>{if(!this.disposed)this.document.undoChange(this.document.endChange());console.error('Vector bucket fill failed; paint was preserved.',error);}).finally(()=>{
         this.pendingFill=undefined;
         while(!this.pendingFill&&this.deferred.length)this.deferred.shift()!();
       });
@@ -103,7 +100,7 @@ export class EditorSession {
     if (command.type === 'focus-selection' && this.selected) {
       const bounds = this.document.bounds(this.selected);
       if (bounds) {
-        if (!this.focused) this.focusHistoryStart = this.history.length;
+        if (!this.focused) this.focusHistoryStart = this.history.mark();
         this.focused = this.selected;
         this.document.setFocus(this.focused);
         this.tool = 'bucket';
@@ -124,22 +121,26 @@ export class EditorSession {
     if (command.type === 'set-tool') { this.tool = command.tool; this.selected = this.focused; }
     if (command.type === 'clear-selection') { this.selected = undefined; this.tool = 'bucket'; }
     if ((command.type === 'duplicate-selection' || command.type === 'delete-selection') && this.selected) {
-      this.pending = this.document.serialize(); this.recordChange();
-      if (command.type === 'duplicate-selection') this.selected = this.document.duplicate(this.selected);
-      else { this.document.remove(this.selected); this.selected = undefined; this.tool = 'bucket'; }
+      this.edit(() => {
+        if (command.type === 'duplicate-selection') this.selected = this.document.duplicate(this.selected!);
+        else { this.document.remove(this.selected!); this.selected = undefined; this.tool = 'bucket'; }
+        return true;
+      });
     }
-    if (command.type === 'undo' && (!this.focused || this.history.length > this.focusHistoryStart)) {
-      const snapshot = this.history.pop();
-      if (snapshot) { this.document.dispose(); this.document = Artwork.restore(snapshot); }
+    if (command.type === 'undo') {
+      const change = this.history.pop(this.focused ? this.focusHistoryStart : 0);
+      if (change) this.document.undoChange(change);
       this.document.setFocus(this.focused);
       this.selected = this.focused;
       if (this.tool === 'select') this.tool = 'bucket';
     }
     if (command.type === 'add-sticker') {
-      this.pending = this.document.serialize(); this.recordChange();
-      this.selected = this.document.add(command.sticker, command.outlineColor, {
-        x: Math.max(0, Math.min(size.width - 1, command.point.x)),
-        y: Math.max(0, Math.min(size.height - 1, command.point.y)),
+      this.edit(() => {
+        this.selected = this.document.add(command.sticker, command.outlineColor, {
+          x: Math.max(0, Math.min(size.width - 1, command.point.x)),
+          y: Math.max(0, Math.min(size.height - 1, command.point.y)),
+        });
+        return true;
       });
       this.tool = 'select';
     }
@@ -154,53 +155,44 @@ export class EditorSession {
   dispose() {
     this.disposed = true;
     this.deferred = [];
-    this.history = [];
+    this.history.clear();
     this.gestureUndo = undefined;
     this.stroke = undefined; this.previous = undefined; this.drag = undefined;
-    this.activePointer = undefined; this.pending = undefined;
+    this.activePointer = undefined;
     this.document.dispose();
   }
   update(time: number) {
     if(this.pendingFill)return;
     if (this.tool !== 'brush' || this.brushOptions.kind !== 'spray' || !this.previous || this.activePointer === undefined || time < this.nextSpray) return;
     this.nextSpray = time + 40;
-    if (this.document.brush(this.previous, this.previous, this.color, false, this.brushOptions)) { this.recordChange(); this.notifyChanged(); }
+    if (this.document.brush(this.previous, this.previous, this.color, false, this.brushOptions)) { this.notifyChanged(); }
   }
-  /** One undo snapshot per command, shared with the gesture transaction path. */
+  /** Geometry edits retain previous values only for the parts they actually change. */
   private edit(change: () => boolean) {
-    this.pending = this.document.serialize();
-    try { if (change()) this.recordChange(); }
-    finally { this.pending = undefined; }
-  }
-
-  private recordChange() {
-    if (!this.pending) return;
-    this.history.push(this.pending); this.pending = undefined;
-    if (this.history.length > 50) {
-      this.history.shift();
-      if (this.focused) this.focusHistoryStart = Math.max(0, this.focusHistoryStart - 1);
-    }
+    this.document.beginChange();
+    try {
+      const changed=change(),before=this.document.endChange();
+      if(changed)this.history.push(before);
+    } catch(error) { this.document.undoChange(this.document.endChange()); throw error; }
   }
   begin(point: Point, pointerId: number, button: number) {
     if(this.defer(()=>this.begin(point,pointerId,button)))return;
     if ((button !== 0 && button !== 2) || this.activePointer !== undefined || this.tool === 'pan' || this.tool === 'bucket') return;
     this.activePointer = pointerId;
-    const snapshot = this.document.serialize();
-    this.gestureUndo = { document: snapshot, history: this.history.slice(), selected: this.selected, tool: this.tool, focusHistoryStart: this.focusHistoryStart };
+    this.document.beginChange();
+    this.gestureUndo = { selected: this.selected, tool: this.tool };
     if (this.tool === 'select') {
       this.selected = this.focused
         ? (this.document.pick(point) === this.focused ? this.focused : undefined)
         : this.document.pick(point);
       if (this.selected) {
         const position = this.document.position(this.selected)!;
-        this.pending = snapshot;
         this.drag = { id: this.selected, dx: point.x - position.x, dy: point.y - position.y };
       } else { this.selected = this.focused; if (!this.focused) this.tool = 'bucket'; }
     } else {
-      this.pending = snapshot;
       this.previous = point;
       this.stroke = this.tool === 'brush' && this.brushOptions.kind !== 'spray' ? new StrokeSmoothing(point) : undefined;
-      if (this.document.brush(point, point, this.color, this.tool === 'erase', this.brushOptions)) this.recordChange();
+      this.document.brush(point, point, this.color, this.tool === 'erase', this.brushOptions);
     }
     this.notifyChanged();
   }
@@ -209,11 +201,8 @@ export class EditorSession {
     if (pointerId !== this.activePointer) return;
     if (!isDown) { this.end(); return; }
     if (this.drag) {
-      const old = this.document.position(this.drag.id)!;
       const next = { x: point.x - this.drag.dx, y: point.y - this.drag.dy };
       this.document.move(this.drag.id, next);
-      const actual = this.document.position(this.drag.id)!;
-      if (old.x !== actual.x || old.y !== actual.y) this.recordChange();
     } else if (this.previous) {
       this.paintStroke(point, zoom);
     }
@@ -223,7 +212,7 @@ export class EditorSession {
     const points = this.stroke ? this.stroke.append(point, 6 / Math.max(.01, zoom)) : [point];
     for (const next of points) {
       if (!this.previous) break;
-      if (this.document.brush(this.previous, next, this.color, this.tool === 'erase', this.brushOptions)) this.recordChange();
+      this.document.brush(this.previous, next, this.color, this.tool === 'erase', this.brushOptions);
       this.previous = next;
     }
   }
@@ -235,16 +224,16 @@ export class EditorSession {
   }
   end(flush = true) {
     const hadStroke = this.stroke !== undefined;
-    let changed = false;
     if (flush && this.stroke && this.previous) {
       const tip = this.stroke.finish();
       if (tip.x !== this.previous.x || tip.y !== this.previous.y)
-        changed = this.document.brush(this.previous, tip, this.color, false, this.brushOptions);
-      if (changed) this.recordChange();
+        this.document.brush(this.previous, tip, this.color, false, this.brushOptions);
     }
+    const change=this.document.endChange();
+    if(flush)this.history.push(change);else this.document.undoChange(change);
     void this.document.compactPaint();
     this.stroke = undefined; this.gestureUndo = undefined; this.previous = undefined;
-    this.drag = undefined; this.pending = undefined; this.activePointer = undefined;
+    this.drag = undefined; this.activePointer = undefined;
     // Include the release position even when the tail writes no additional pixels.
     if (flush && hadStroke) this.notifyChanged();
   }

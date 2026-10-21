@@ -17,3 +17,12 @@ This app is evolving before version 1 and has no public release. Breaking change
 ## Repository hygiene
 
 Keep original sticker art and generation metadata under `art/source/stickers/<pack>/` and original interface paintings under `art/source/interface/`. Accepted editable SVG sources may sit beside their untouched originals. Do not commit generated catalogs, conversion intermediates, diagnostic images or trial output; write those under ignored `work/` folders. Promote useful regressions into `tests/` instead of retaining an experiments tree. The sole source of bundled page layouts is `src/assets/coloringBook.json`; tools must read it rather than maintain duplicate scene builders.
+
+
+## Undo policy
+
+Keep undo memory-based rather than imposing a fixed action count. Retain previous
+states of affected regions and compacted paint blobs, not an input-stroke log or
+whole-scene copies per action. Use small property records for sticker operations.
+Keep history maintenance asynchronous and separate from live paint; immutable
+geometry may be shared, but background results must not rewrite restored history.

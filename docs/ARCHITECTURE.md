@@ -9,8 +9,9 @@ base repository, or interface for every class.
 - **`EditorSession`** owns active tools, selection/focus, gesture transactions,
   undo history and command execution. It receives primitive points/pointer IDs,
   a save function and a change callback. It never imports React, storage
-  adapters or Tauri. Undo remains capped at 50 snapshots; a gesture records one
-  snapshot, and cancellation restores both artwork and history.
+  adapters or Tauri. Undo retains changed-region checkpoints and small sticker-property records,
+  bounded by estimated memory rather than an action count. A gesture records one
+  change; cancellation restores its previous values without touching older history.
 - **`Artwork`** owns surface transforms, paint ownership, hit testing, fills,
   ordering and serialization. It uses browser Canvas2D and prepared vector
   definitions. It is rendering-aware, not a server-safe pure domain model.
@@ -49,7 +50,7 @@ remain symmetric, including React development effect replay.
 
 Current picture keys are `studioodle.v5.picture.<id>`; custom templates use `studioodle.v5.coloring.<id>`. Documents use vector-only format 5. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
 
-`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges coverage without changing undo snapshots. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no instance paint arrays or canvases. Shared lookup arrays support only hit testing. See [Vector Painting](VECTOR-PAINT.md).
+`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no instance paint arrays or canvases. Shared lookup arrays support only hit testing. See [Vector Painting](VECTOR-PAINT.md).
 
 ## Adding features
 
@@ -94,8 +95,8 @@ All React overlays use `ui/DialogHeader.tsx` for title and close/back controls. 
 
 ## Resource lifetime
 
-Undo/cancellation disposes superseded artwork; deletion disposes the removed
-surface. Closing an editor disconnects commands, observers and pointer listeners,
+Undo/cancellation restores only the touched paint or sticker properties; deletion
+disposes the removed surface. Closing an editor disconnects commands, observers and pointer listeners,
 cancels display/paint timers, and ignores late asynchronous fill results. Worker
 transport is shared for the application lifetime rather than restarted per stroke.
 
@@ -107,3 +108,12 @@ The limit covers cached lookups, not live documents, Path2D objects, geometry or
 State subscriptions replay the latest published state, so mounting React listeners
 after the browser adapter cannot miss the initial selection/tool/focus state.
 See [the architecture review](ARCHITECTURE-REVIEW.md) for measurements and remaining work.
+
+## Undo history
+
+`Artwork` journals the previous values of changed regions and sticker properties.
+`UndoHistory` retains these changes under an estimated 128 MiB budget, with no
+fixed action-count limit. Paint checkpoints share immutable geometry; only their
+small region containers are copied during input. A single background history job
+at a time replaces pending samples with compacted color blobs. Simple fills and
+transforms need no history geometry job. See [undo history](UNDO-HISTORY.md).
