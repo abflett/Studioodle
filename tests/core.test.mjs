@@ -12,7 +12,7 @@ before(async () => {
         return fileURLToPath(new URL('./fixtures/artwork.mjs', import.meta.url));
     },
   }], optimizeDeps: { noDiscovery: true, include: [] } });
-  ({ createLocalPictureRepository: createRepository } = await server.ssrLoadModule('/src/platform/localPictureRepository.ts'));
+  ({ createLocalTemplateRepository: createRepository } = await server.ssrLoadModule('/src/platform/localTemplateRepository.ts'));
   ({ createEditorBridge: createBridge } = await server.ssrLoadModule('/src/editor/bridge.ts'));
   ({ createColoringPage } = await server.ssrLoadModule('/src/editor/coloringPage.ts'));
   ({ EditorSession } = await server.ssrLoadModule('/src/editor/EditorSession.ts'));
@@ -43,31 +43,26 @@ function storage() {
 
 function library() {
   const store = storage();
-  const pictures = createRepository('studioodle.v5.picture.', () => store);
-  const pages = createRepository('studioodle.v5.coloring.', () => store);
-  return { store, pictures, pages };
+  const pages = createRepository(() => store);
+  return { store, pages };
 }
 
-test('current vector keys round-trip and picture/template libraries stay isolated', () => {
-  const { store, pictures, pages } = library();
-  const picture = fixture();
-  pictures.save(picture); pages.save({ ...picture, title: 'Template' });
-  assert.deepEqual(JSON.parse(store.getItem('studioodle.v5.picture.picture-1')), picture);
-  assert.deepEqual(pictures.load(), [picture]);
-  assert.equal(pages.load()[0].title, 'Template');
-  pictures.delete(picture.id);
-  assert.deepEqual(pictures.load(), []);
-  assert.equal(pages.load().length, 1);
+test('current template keys round-trip and deletion removes the template', () => {
+  const { store, pages } = library();
+  const page = fixture();pages.save(page);
+  assert.deepEqual(JSON.parse(store.getItem('studioodle.v5.coloring.picture-1')), page);
+  assert.deepEqual(pages.load(), [page]);pages.delete(page.id);
+  assert.deepEqual(pages.load(), []);
 });
 
-test('corrupt, foreign and mismatched records do not hide valid pictures', () => {
-  const { store, pictures } = library();
-  pictures.save(fixture());
-  store.setItem('studioodle.v5.picture.bad-json', '{');
-  store.setItem('studioodle.v5.picture.null', 'null');
-  store.setItem('studioodle.v5.picture.wrong-id', JSON.stringify(fixture('another-id')));
+test('corrupt, foreign and mismatched records do not hide valid pages', () => {
+  const { store, pages } = library();
+  pages.save(fixture());
+  store.setItem('studioodle.v5.coloring.bad-json', '{');
+  store.setItem('studioodle.v5.coloring.null', 'null');
+  store.setItem('studioodle.v5.coloring.wrong-id', JSON.stringify(fixture('another-id')));
   store.setItem('unrelated', JSON.stringify(fixture('other')));
-  assert.deepEqual(pictures.load(), [fixture()]);
+  assert.deepEqual(pages.load(), [fixture()]);
 });
 
 test('validation rejects unsafe geometry, obsolete paint fields and unsupported stickers', () => {
@@ -82,22 +77,22 @@ test('validation rejects unsafe geometry, obsolete paint fields and unsupported 
     p => { p.version = 2; },
   ];
   for (const change of changes) {
-    const { pictures } = library(); const picture = fixture(); change(picture);
-    pictures.save(picture);
-    assert.deepEqual(pictures.load(), []);
+    const { pages } = library(); const picture = fixture(); change(picture);
+    pages.save(picture);
+    assert.deepEqual(pages.load(), []);
   }
 });
 
 test('library normalizes titles and sorts newest first', () => {
-  const { pictures } = library();
-  pictures.save({ ...fixture('older'), title: 'sunny beach day' });
-  pictures.save({ ...fixture('newer'), updatedAt: 2 });
-  assert.deepEqual(pictures.load().map(p => p.id), ['newer', 'older']);
-  assert.equal(pictures.load()[1].title, 'Sunny Beach Day');
+  const { pages } = library();
+  pages.save({ ...fixture('older'), title: 'sunny beach day' });
+  pages.save({ ...fixture('newer'), updatedAt: 2 });
+  assert.deepEqual(pages.load().map(p => p.id), ['newer', 'older']);
+  assert.equal(pages.load()[1].title, 'Sunny Beach Day');
 });
 
 test('storage is resolved lazily and failures propagate for UI recovery', () => {
-  const repository = createRepository('pictures.', () => { throw new Error('Storage unavailable'); });
+  const repository = createRepository(() => { throw new Error('Storage unavailable'); });
   assert.throws(() => repository.load(), /Storage unavailable/);
   assert.throws(() => repository.save(fixture()), /Storage unavailable/);
   assert.throws(() => repository.delete('id'), /Storage unavailable/);
@@ -252,13 +247,13 @@ test('coloring page creation strips vector paint without mutating the saved draw
 });
 
 
-test('current vector pictures round-trip and obsolete formats are ignored', () => {
-  const {pictures}=library();
+test('current vector pages round-trip and obsolete formats are ignored', () => {
+  const {pages}=library();
   const first=fixture('first');const vector=fixture('vector');
   vector.version=5;vector.document.version=5;
   vector.document.surfaces.push({id:'moon',kind:'fantasy-moon-sorceress',x:10,y:10,color:0,vectorPaint:{version:1,regions:[{id:1,base:0x773399,blobs:[]}]}});
-  pictures.save(first);pictures.save(vector);
-  const loaded=pictures.load();
+  pages.save(first);pages.save(vector);
+  const loaded=pages.load();
   assert.equal(loaded.length,2);
   assert.deepEqual(loaded.find(p=>p.id==='vector'),vector);
   assert.deepEqual(loaded.find(p=>p.id==='first'),first);

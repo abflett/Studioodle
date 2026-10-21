@@ -26,10 +26,10 @@ base repository, or interface for every class.
   unchanged tool, focus or selection state. Command delivery stays synchronous.
 - **`svgDefinition.ts` / `rasterizeRegions.ts`** decode the shared SVG sticker format
   and generate immutable region-ID lookup arrays once per loaded definition. There is one SVG decoder and one vector paint engine.
-- **`savedPicture.ts`** defines the saved model and the three-method repository
-  contract. **`pictureValidation.ts`** validates untrusted records using lightweight
+- **`savedPicture.ts`** defines the saved model. **`pictureValidation.ts`** validates untrusted records using lightweight
   catalog metadata; it does not load sticker definitions.
-- **`localPictureRepository.ts`** implements that contract. **`app/pictures.ts`**
+- **`indexedPictureRepository.ts`** stores drawings asynchronously;
+  **`localTemplateRepository.ts`** stores custom templates. **`app/pictures.ts`**
   composes the ordinary-picture and custom-template libraries with their current
   namespaces. Storage access is resolved at call time; UI callers handle errors.
 - **`app/pictureOutput.ts`** coordinates rendering, names and PNG resolution.
@@ -48,7 +48,7 @@ objects. `useLatest` exposes committed callbacks to long-lived DOM listeners;
 do not mutate callback refs during render. Modal and pointer listener cleanup must
 remain symmetric, including React development effect replay.
 
-Current picture keys are `studioodle.v5.picture.<id>`; custom templates use `studioodle.v5.coloring.<id>`. Documents use vector-only format 5. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
+Drawings use the `pictures` store in IndexedDB database `studioodle-pictures-v5`; custom templates use `studioodle.v5.coloring.<id>`. Documents use vector-only format 5. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
 
 `VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no raster paint arrays. Complex surfaces have disposable viewport display canvases under a shared 32 MiB pixel budget; export and print render vectors directly. Shared lookup arrays support only hit testing. A bounds-grid index selects candidate regions for brush clipping, shared by instances of the same definition. See [Vector Painting](VECTOR-PAINT.md).
 
@@ -57,8 +57,7 @@ Current picture keys are `studioodle.v5.picture.<id>`; custom templates use `stu
 - Add editing actions to `EditorCommand`, implement their behavior in the session
   or `Artwork`, then expose UI controls. Use the session transaction helper for
   one-shot edits and the existing gesture transaction for multi-sample strokes.
-- Add persistence backends by implementing `PictureRepository` and changing the
-  application composition. Keep transport/authentication out of `Artwork`.
+- Change persistence through the adapters and application composition. Keep transport/authentication out of `Artwork`.
 - Add native features in `src/platform/` and `src-tauri/`, with only the capabilities
   needed. Keep desktop APIs out of the editor session.
 - Add artwork through `art/stickers.json` and the offline builder. Use the catalog

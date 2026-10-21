@@ -24,7 +24,7 @@ Repeated coverage compacts, but more visible islands and color edges require mor
 
 ## Current data format
 
-Picture/document format is 5; coloring-book format is 2. Surfaces optionally contain `vectorPaint` (version 1), with region IDs, backing styles and blob geometry. Old paint runs, paint-density fields and format versions are rejected. New development libraries use `studioodle.v5.picture.`, `studioodle.v5.coloring.` and `studioodle.workshop.v2`. There are no compatibility decoders or migrations. Bundled layouts have been updated directly.
+Picture/document format is 5; coloring-book format is 2. Surfaces optionally contain `vectorPaint` (version 1), with region IDs, backing styles and blob geometry. Old paint runs, paint-density fields and format versions are rejected. New development libraries use `studioodle-pictures-v5` (IndexedDB), `studioodle.v5.coloring.` and `studioodle.workshop.v2`. There are no compatibility decoders or migrations. Bundled layouts have been updated directly.
 
 Geometry-only coloring-page export removes vector paint. PNG and normal print output still default to 150 DPI; `renderPicture` accepts an output DPI without changing stored paint. SVG document export and new DPI UI controls are separate features.
 
@@ -95,3 +95,14 @@ and writes metrics plus a PNG under `work/tests/`. It forces a pixel readback to
 include deferred Canvas rasterization. Its frame timing includes an intentional
 16 ms pause and is not a hardware frame-rate measurement. Initial cache builds,
 fills, undo and settled zoom refinement can still cost a full vector redraw.
+
+
+The 32 MiB budget counts RGBA cache pixels (`width * height * 4`), shared across
+complex surfaces. It excludes document geometry, undo, worker copies, the visible
+canvas, browser/GPU overhead and persisted data. It is not a total app memory
+limit or artwork complexity limit. It holds about 8.4 million pixels: roughly a
+2896-square cache, four 1448-square caches, or a 3840-by-2160 cache. Higher display
+densities consume pixels faster. The value is conservative and should be tuned
+with representative layered scenes; eviction and resolution caps trade display
+quality/rebuild work for bounded cache memory. Increasing it cannot remove the
+cost of complex geometry operations.

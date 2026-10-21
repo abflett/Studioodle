@@ -7,9 +7,3 @@ export type SavedPicture = EditorSetup & {
   updatedAt: number;
   document: ArtworkDocument;
 };
-
-export interface PictureRepository {
-  load(): SavedPicture[];
-  save(picture: SavedPicture): void;
-  delete(id: string): void;
-}

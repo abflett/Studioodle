@@ -1,12 +1,13 @@
-import type { PictureRepository, SavedPicture } from '../editor/savedPicture';
+import type { SavedPicture } from '../editor/savedPicture';
 import { isSavedPicture } from '../editor/pictureValidation';
 import { formatPictureTitle } from '../editor/pictureTitles';
 
 /** Resolve storage at call time, so unavailable storage follows the caller's error path. */
-export function createLocalPictureRepository(prefix: string, storage: () => Storage = () => localStorage): PictureRepository {
+export function createLocalTemplateRepository(storage: () => Storage = () => localStorage) {
+  const prefix = 'studioodle.v5.coloring.';
   return {
-    save(picture) { storage().setItem(prefix + picture.id, JSON.stringify(picture)); },
-    delete(id) { storage().removeItem(prefix + id); },
+    save(picture: SavedPicture) { storage().setItem(prefix + picture.id, JSON.stringify(picture)); },
+    delete(id: string) { storage().removeItem(prefix + id); },
     load() {
       const store = storage();
       const pictures: SavedPicture[] = [];
