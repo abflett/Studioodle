@@ -21,7 +21,7 @@ class Surface {
         if(data.kind==='canvas'){
             const path=new Path2D();path.rect(0,0,width,height);
             const inside=(x:number,y:number)=>x>=0&&y>=0&&x<width&&y<height;
-            this.vector={width,height,bounds:{left:0,top:0,right:width,bottom:height},regions:[{id:1,path,bounds:[0,0,width,height],geometry:()=>rectangleGeometry(0,0,width,height)}],regionCount:1,
+            this.vector={width,height,bounds:{left:0,top:0,right:width,bottom:height},regions:[{id:1,path,bounds:[0,0,width,height],rectangular:true,geometry:()=>rectangleGeometry(0,0,width,height)}],regionCount:1,
                 silhouette:path,ink:[],typedArrayBytes:0,
                 regionAt:(x,y)=>inside(x,y)?1:0,hitRegionAt:(x,y)=>inside(x,y)?1:0,contains:inside,inRegion:(x,y,id)=>id===1&&inside(x,y)};
         }else this.vector=definition??vectorDefinition(data.kind);
@@ -308,7 +308,9 @@ export class Artwork {
         const shape=erase?{...options,kind:'ink' as const,shape:'round' as const}:options;
         let remaining=styledStroke([from.x,from.y],[to.x,to.y],erase?20:options.size/2,shape);
         if(!remaining.length)return false;
-        remaining=polygonClipping.intersection(remaining,rectangleGeometry(0,0,this.width,this.height));
+        const strokeBounds=geometryBounds(remaining);
+        if(strokeBounds[0]!<0||strokeBounds[1]!<0||strokeBounds[2]!>this.width||strokeBounds[3]!>this.height)
+            remaining=polygonClipping.intersection(remaining,rectangleGeometry(0,0,this.width,this.height));
         let changed=false;
         for(let i=this.surfaces.length-1;i>=0&&remaining.length;i--){
             const surface=this.surfaces[i]!;
@@ -319,6 +321,7 @@ export class Artwork {
             const result=surface.vectorPaint.apply(surface.vector,local,erase?(surface.data.kind==='canvas'?surface.data.color:0xffffff):color);
             if(!result.coverage.length)continue;
             changed=result.changed||changed;
+            if(i===0||this.focusedId)break;
             const world=mapGeometry(result.coverage,([x,y])=>{const p=surface.worldPoint(x,y);return[p.x,p.y];});
             remaining=polygonClipping.difference(remaining,world);
         }

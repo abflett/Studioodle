@@ -50,7 +50,12 @@ export async function checkCanvasEditor() {
     assert(!undone.document.surfaces[0]!.vectorPaint?.regions.length, 'Undo must restore blank paper');
     pointer('pointerdown', 80, 80); pointer('pointermove', 100, 90); pointer('pointercancel', 100, 90, 0);
     assert(!(await snapshot()).document.surfaces[0]!.vectorPaint?.regions.length, 'Cancelled input must roll back');
-    bridge.send({ type: 'set-brush', options: { kind: 'spray', size: 24, shape: 'round' } });
+    pointer('pointerdown', 40, 80);pointer('pointermove', 100, 80);
+    await new Promise(resolve=>setTimeout(resolve,350));
+    const settledInk=renders;await new Promise(resolve=>setTimeout(resolve,80));
+    assert(renders===settledInk,'Paused ink must settle and stop rendering before release');
+    pointer('pointerup',100,80,0);bridge.send({type:'undo'});
+    bridge.send({ type: 'set-brush', options: { kind: 'spray' , size: 24, shape: 'round' } });
     pointer('pointerdown', 70, 70);
     await new Promise(resolve => setTimeout(resolve, 110));
     pointer('pointerup', 70, 70, 0);

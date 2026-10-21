@@ -33,6 +33,8 @@ export class EditorSession {
   private activePointer?: number;
   private gestureUndo?: { selected?: string; tool: EditorTool };
   private nextSpray = 0;
+  private nextSmoothing = 0;
+  private strokeTrail = 2;
   private pendingFill?: Promise<void>;
   private deferred: (()=>void)[] = [];
   private defer(action:()=>void){if(!this.pendingFill)return false;this.deferred.push(action);return true;}
@@ -151,7 +153,7 @@ export class EditorSession {
     return { id: this.setup.id!, title: this.setup.title, format: this.setup.format, size: paperSize(this.setup.format, this.setup.size),
       background: this.setup.background, leafColor: this.setup.leafColor, version: document.version, updatedAt: Date.now(), document };
   }
-  get needsAnimation() { return !this.disposed && !this.pendingFill && this.tool === 'brush' && this.brushOptions.kind === 'spray' && this.activePointer !== undefined; }
+  get needsAnimation() { return !this.disposed && !this.pendingFill && this.activePointer !== undefined && ((this.tool === 'brush' && this.brushOptions.kind === 'spray') || !!this.stroke?.remaining); }
   dispose() {
     this.disposed = true;
     this.deferred = [];
@@ -163,6 +165,10 @@ export class EditorSession {
   }
   update(time: number) {
     if(this.pendingFill)return;
+    if(this.stroke&&this.previous&&this.activePointer!==undefined&&time>=this.nextSmoothing){
+      this.applyStrokePoints(this.stroke.settle(this.strokeTrail));
+      this.nextSmoothing=time+12;this.notifyChanged();
+    }
     if (this.tool !== 'brush' || this.brushOptions.kind !== 'spray' || !this.previous || this.activePointer === undefined || time < this.nextSpray) return;
     this.nextSpray = time + 40;
     if (this.document.brush(this.previous, this.previous, this.color, false, this.brushOptions)) { this.notifyChanged(); }
@@ -209,7 +215,11 @@ export class EditorSession {
     this.notifyChanged();
   }
   private paintStroke(point: Point, zoom: number) {
-    const points = this.stroke ? this.stroke.append(point, 6 / Math.max(.01, zoom)) : [point];
+    this.strokeTrail=2/Math.max(.01,zoom);
+    this.nextSmoothing=performance.now()+12;
+    this.applyStrokePoints(this.stroke ? this.stroke.append(point,this.strokeTrail) : [point]);
+  }
+  private applyStrokePoints(points:Point[]){
     for (const next of points) {
       if (!this.previous) break;
       this.document.brush(this.previous, next, this.color, this.tool === 'erase', this.brushOptions);

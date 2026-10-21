@@ -19,7 +19,7 @@ base repository, or interface for every class.
   publishes session state. **`CanvasViewport`** renders artwork and selection into
   one display canvas, allocating only the visible workspace at device resolution.
   **`ui/EditorCanvas`** binds the repository and React lifecycle. Display changes
-  coalesce into one animation frame; only an active spray needs continuous frames.
+  coalesce into one animation frame; only active spray or a short unsettled brush tail needs continuous frames.
   Resize, view movement, scrolling and visibility changes invalidate the display.
 - **`bridge.ts`** is the typed UI command/event boundary. Notifications are
   deduplicated by value so paint redraws do not repeatedly update React with
@@ -50,7 +50,7 @@ remain symmetric, including React development effect replay.
 
 Current picture keys are `studioodle.v5.picture.<id>`; custom templates use `studioodle.v5.coloring.<id>`. Documents use vector-only format 5. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
 
-`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no instance paint arrays or canvases. Shared lookup arrays support only hit testing. See [Vector Painting](VECTOR-PAINT.md).
+`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no instance paint arrays or canvases. Shared lookup arrays support only hit testing. A bounds-grid index selects candidate regions for brush clipping, shared by instances of the same definition. See [Vector Painting](VECTOR-PAINT.md).
 
 ## Adding features
 

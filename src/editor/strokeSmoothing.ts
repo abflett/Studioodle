@@ -41,5 +41,14 @@ export class StrokeSmoothing {
     return points;
   }
 
+  get remaining() { return Math.hypot(this.tip.x-this.painted.x,this.tip.y-this.painted.y); }
+
+  /** Settle the short trailing segment when input pauses instead of waiting for release. */
+  settle(maxTrail:number):Point[] {
+    if(!this.remaining)return [];
+    if(this.remaining<Math.max(.0002,maxTrail*.025)){this.raw=this.tip;this.painted=this.tip;return [this.tip];}
+    return this.append(this.tip,maxTrail);
+  }
+
   finish(): Point { return this.tip; }
 }

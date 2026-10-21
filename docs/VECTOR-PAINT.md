@@ -14,9 +14,9 @@ A region has a backing paint style and colored blobs. Bucket clicks on a blob re
 
 Disjoint color paths rasterized separately can expose the backing through their partially covered shared-edge pixels, even when their coordinates meet exactly. Mixed paint therefore receives a two-device-pixel solid-color underpaint before its exact paths are drawn. That underpaint is clipped to the combined paint coverage and the original region, so it cannot enlarge the brush outline or alter saved/hit geometry. Single-style paint skips this pass. The combined coverage Path2D is cached and extended as strokes arrive.
 
-A module worker batches same-style coverage, unions it, subtracts new coverage from other styles, and drops fully hidden geometry. Completed-prefix checks preserve edits made during a job. Merging runs after brief idle periods and stroke release. Pending geometry draws and saves immediately; undo captures affected regions through shallow checkpoints with shared immutable geometry. History checkpoints compact independently in the worker; they never rewrite the live drawing.
+A module worker batches same-style coverage, unions it, subtracts new coverage from other styles, and drops fully hidden geometry. Completed-prefix checks preserve edits made during a job. Merging runs periodically during continuous painting (120 ms scheduling interval, one live job per paint instance) and immediately on stroke release; input no longer restarts an idle-only timer. Pending geometry draws and saves immediately; undo captures affected regions through shallow checkpoints with shared immutable geometry. History checkpoints compact independently in the worker; they never rewrite the live drawing.
 
-Opening the editor starts loading the worker before the first fill. Restoring saved paint is read-only: previews, exports and undo restoration do not enqueue maintenance. A bucket request waits for its surface's in-flight merge and then uses that result, rather than queuing a second merge of the same raw samples. Same-style samples use balanced union batches so long strokes do not repeatedly reprocess a growing outline.
+Opening the editor starts loading the worker before the first fill. Restoring saved paint is read-only: previews and exports do not enqueue maintenance. Undo restores compacted checkpoints directly; a pending checkpoint can schedule live cleanup after restoration. A bucket request waits for its surface's in-flight merge and then uses that result, rather than queuing a second merge of the same raw samples. Same-style samples use balanced union batches so long strokes do not repeatedly reprocess a growing outline.
 
 Bucket topology on painted regions also runs in that worker. It does not compact brushes synchronously inside the pointer handler. The editor queues subsequent commands and gestures until the fill completes, preserving fill/brush/save/undo order. A revision check rejects stale results. A failed job preserves paint, and later edits may retry compaction.
 
@@ -43,3 +43,31 @@ whole-region fills avoid worker geometry entirely. The shared `paintWorker.ts`
 client owns transport, and both execution paths call the same `runPaintJob`.
 Closing/deleting/replacing artwork cancels delayed maintenance and rejects stale
 results; undo snapshots remain independent.
+
+## Brush responsiveness
+
+The smoothing trail is capped at two screen pixels rather than six, with a brief
+frame-driven catch-up when the pointer pauses. Curves remain causal; no background
+job reshapes already committed paint. Continuous input no longer postpones live
+compaction indefinitely, limiting accumulated raw blobs while a long stroke runs.
+
+`regionSearch.ts` builds a conservative bounds grid lazily for definitions with at
+least 24 regions. The grid is shared through a WeakMap and preserves original region
+order. It selects candidates only; exact polygon intersections and SVG display
+clipping remain authoritative. Small definitions keep the simple bounds scan.
+
+Fully contained paper strokes skip redundant rectangular booleans. Page-edge
+strokes still clip, and lower-layer coverage subtraction remains in place wherever
+another layer can receive the remaining paint. Focused painting and the bottom
+paper need no subtraction after their final surface.
+
+`node scripts/test-browser.mjs --brush-profile` runs the browser regressions plus a
+seeded diagnostic trace on blank paper, Moon Sorceress ink and spray, writing
+`work/tests/brush-profile.json`. Timings are diagnostic rather than test thresholds.
+A warmed local comparison against `eb5ca54` processed 120 samples in approximately
+65.4 -> 55.6 ms for ink, 269.3 -> 242.7 ms for spray and 8.3 -> 2.4 ms for blank
+paper. These are synchronous brush-processing totals, excluding display rendering,
+worker time and end-to-end input latency. Region-bound reads fell from 23,400 to
+1,304 for ink and 1,693 for spray, including index construction. First-use curve
+flattening and exact clipping still have costs; this is not a promise of identical
+speedups across devices or artwork.

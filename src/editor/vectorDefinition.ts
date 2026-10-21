@@ -18,7 +18,7 @@ export type VectorDefinition = {
     mapSize?: { width: number; height: number; scale: number };
     typedArrayBytes: number;
     silhouette: Path2D;
-    regions: ReadonlyArray<{ id: number; path: Path2D; bounds: number[]; geometry?: () => MultiPolygon }>;
+    regions: ReadonlyArray<{ id: number; path: Path2D; bounds: number[]; geometry?: () => MultiPolygon; rectangular?: boolean }>;
     ink: InkCommand[];
 };
 

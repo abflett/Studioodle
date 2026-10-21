@@ -116,6 +116,12 @@ try {
   result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true};
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
   await fs.writeFile('work/tests/app-after-reopen.png',Buffer.from(screenshot.data,'base64'));
+  if(process.argv.includes('--brush-profile')){
+    const profile=await evaluate("import('/tests/browser/brush-performance.ts').then(m=>m.profileBrush())");
+    await fs.writeFile('work/tests/brush-profile.json',JSON.stringify(profile,null,2));
+    console.log('Brush profile:',JSON.stringify(profile));
+  }
+  if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   await fs.writeFile('work/tests/region-coverage-results.json', JSON.stringify(result, null, 2));
   console.log(JSON.stringify(result, null, 2));
 

@@ -1,3 +1,4 @@
+import { regionsNear } from './regionSearch';
 import polygonClipping from './polygonGeometry';
 import type { FillOptions } from './toolOptions';
 import { paintStyleKey, normalizedPattern } from './vectorPaintTypes';
@@ -65,11 +66,11 @@ export class VectorPaint {
     }
     apply(definition:VectorDefinition,geometry:MultiPolygon,color:number){
         const bounds=geometryBounds(geometry),pieces:MultiPolygon[]=[];let changed=false;
-        for(const region of definition.regions){
+        for(const region of regionsNear(definition.regions,bounds)){
             const [left,top,right,bottom]=region.bounds;
             if(bounds[2]!<left!||bounds[0]!>right!||bounds[3]!<top!||bounds[1]!>bottom!)continue;
-            const clip=region.geometry?.()??rectangleGeometry(left!,top!,right!,bottom!);
-            const coverage=polygonClipping.intersection(geometry,clip);
+            const inside=region.rectangular&&bounds[0]!>=left!&&bounds[1]!>=top!&&bounds[2]!<=right!&&bounds[3]!<=bottom!;
+            const coverage=inside?geometry:polygonClipping.intersection(geometry,region.geometry?.()??rectangleGeometry(left!,top!,right!,bottom!));
             if(!coverage.length)continue;
             pieces.push(coverage);
             const existing=this.regions.get(region.id);
@@ -84,7 +85,7 @@ export class VectorPaint {
         return{changed,coverage:pieces.flat()};
     }
     dispose(){this.disposed=true;this.revision++;if(this.timer)clearTimeout(this.timer);this.timer=undefined;}
-    private schedule(id?:number){if(this.disposed)return;if(id!==undefined)this.dirty.add(id);this.failed=false;if(this.timer)clearTimeout(this.timer);this.timer=setTimeout(()=>{this.timer=undefined;void this.flush();},120);}
+    private schedule(id?:number){if(this.disposed)return;if(id!==undefined)this.dirty.add(id);this.failed=false;if(this.timer)return;this.timer=setTimeout(()=>{this.timer=undefined;void this.flush();},120);}
     private async flush():Promise<void>{
         if(this.timer){clearTimeout(this.timer);this.timer=undefined;}
         if(this.disposed||this.busy||this.failed||!this.dirty.size)return;

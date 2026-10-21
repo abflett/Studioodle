@@ -87,10 +87,13 @@ not mutate paint or reach into persistence directly.
    budget. Pending paint checkpoints compact one job at a time in the worker.
    See [undo history](UNDO-HISTORY.md). Profile real mobile sessions before tuning
    the budget; it is an estimate, not a measurement of total process memory.
-2. **Complex pointer-time clipping.** Brush intersection and occlusion subtraction
-   still run on the main thread; compaction and bucket topology run in the worker.
-   Profile worst-case stickers first. Candidate improvements are a spatial region
-   index and batching/coalesced pointer samples, while preserving immediate feedback.
+2. **Brush responsiveness ? refined next.** Added a shared bounds-grid candidate
+   search, safe paper/focus clipping shortcuts, periodic compaction during long
+   strokes, and a shorter smoothing tail that settles before release. Exact brush
+   intersections still run on the main thread. The local warmed trace improved ink
+   processing by about 15% and spray by about 10%; see [vector painting](VECTOR-PAINT.md)
+   for scope and measurements. Deeper curve clipping or input batching should follow
+   a reproducible remaining delay rather than another architectural migration.
 3. **Worker contention.** One shared worker serializes jobs from different surfaces.
    Dirty jobs reduce the work, but priority/coalescing or cancellable jobs may help
    under sustained painting. Do not add a worker pool without a repeatable case.
