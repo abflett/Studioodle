@@ -6,16 +6,22 @@ use tauri_plugin_window_state::StateFlags;
 
 // The only file write is to a destination explicitly chosen in a native dialog.
 #[tauri::command]
-async fn save_png(app: tauri::AppHandle, name: String, bytes: Vec<u8>) -> Result<bool, String> {
-    if bytes.len() > 64 * 1024 * 1024 || !bytes.starts_with(b"\x89PNG\r\n\x1a\n") {
-        return Err("Invalid PNG image".into());
+async fn save_picture(app: tauri::AppHandle, name: String, format: String, bytes: Vec<u8>) -> Result<bool, String> {
+    let (label, extension, valid) = match format.as_str() {
+        "png" => ("PNG Image", "png", bytes.starts_with(b"\x89PNG\r\n\x1a\n")),
+        "svg" => ("SVG Artwork", "svg", std::str::from_utf8(&bytes).map(|text| text.starts_with("<svg") && text.contains("http://www.w3.org/2000/svg")).unwrap_or(false)),
+        "pdf" => ("PDF Document", "pdf", bytes.starts_with(b"%PDF-")),
+        _ => return Err("Unsupported picture format".into()),
+    };
+    if bytes.len() > 64 * 1024 * 1024 || !valid {
+        return Err("Invalid picture file".into());
     }
     tauri::async_runtime::spawn_blocking(move || {
         let selected = app.dialog().file().set_title("Save Picture")
-            .set_file_name(&name).add_filter("PNG Image", &["png"]).blocking_save_file();
+            .set_file_name(&name).add_filter(label, &[extension]).blocking_save_file();
         let Some(selected) = selected else { return Ok(false); };
         let mut path = selected.into_path().map_err(|error| error.to_string())?;
-        if path.extension().is_none() { path.set_extension("png"); }
+        if path.extension().is_none() { path.set_extension(extension); }
         std::fs::write(path, bytes).map_err(|error| error.to_string())?;
         Ok(true)
     }).await.map_err(|error| error.to_string())?
@@ -53,7 +59,7 @@ fn main() {
             if let Some(window) = app.get_webview_window("main") { window.show()?; window.set_focus()?; }
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![save_png, save_coloring_book, print_picture])
+        .invoke_handler(tauri::generate_handler![save_picture, save_coloring_book, print_picture])
         .run(tauri::generate_context!())
         .expect("Unable to start Studioodle");
 }

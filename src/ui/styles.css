@@ -546,7 +546,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @media print {
   body { margin: 0 !important; background: white !important; overflow: visible !important; }
   body > *:not(.desktop-print-picture) { display: none !important; }
-  body > .desktop-print-picture { display: block !important; max-width: 100%; max-height: 95vh; width: auto; height: auto; object-fit: contain; margin: auto; break-inside: avoid; }
+  body > .desktop-print-picture { display: block !important; max-width: 100%; max-height: 100vh; width: auto; height: auto; object-fit: contain; margin: auto; break-inside: avoid; }
   @page { margin: 10mm; }
 }
 
@@ -791,3 +791,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @media (hover: hover) {
   :is(.selection-preferences, .library-actions, .picture-carousel, .scene-picker) > .icon-button:is(:hover, .app-mouse-hover) { background: color-mix(in srgb, var(--tool-well) 88%, var(--text)); }
 }
+
+.export-formats { display: grid; gap: 12px; }
+.export-formats .format-button { width: 100%; justify-content: flex-start; gap: 16px; text-align: left; }

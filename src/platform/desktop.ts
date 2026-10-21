@@ -37,28 +37,31 @@ export async function guardDesktopClose(save: (close: () => void) => void) {
   });
 }
 
-export async function saveDesktopPng(blob: Blob, name: string) {
+export async function saveDesktopPicture(blob: Blob, name: string, format: 'png' | 'svg' | 'pdf') {
   document.exitPointerLock?.();
-  await invoke<boolean>('save_png', { name, bytes: Array.from(new Uint8Array(await blob.arrayBuffer())) });
+  await invoke<boolean>('save_picture', { name, format, bytes: Array.from(new Uint8Array(await blob.arrayBuffer())) });
 }
 
 let clearPrint: (() => void) | undefined;
-export async function printDesktopPicture(source: string, title: string) {
+export async function printDesktopPicture(svg: SVGSVGElement, title: string) {
   document.exitPointerLock?.();
   clearPrint?.();
-  const image = new Image();
-  image.className = 'desktop-print-picture'; image.alt = title; image.src = source;
+  const artwork = svg;
+  artwork.classList.add('desktop-print-picture');
+  artwork.setAttribute('aria-label', title);
   const previousTitle = document.title;
+  const pageStyle = document.createElement('style');
+  const [, , width, height] = svg.getAttribute('viewBox')!.split(' ').map(Number);
+  pageStyle.textContent = `@page{size:${width! / 96}in ${height! / 96}in;margin:0}`;
   let timeout: ReturnType<typeof setTimeout>;
   const cleanup = () => {
-    image.remove(); document.title = previousTitle;
+    artwork.remove(); pageStyle.remove(); document.title = previousTitle;
     window.removeEventListener('afterprint', cleanup); clearTimeout(timeout);
     if (clearPrint === cleanup) clearPrint = undefined;
   };
   clearPrint = cleanup;
   try {
-    await image.decode();
-    document.body.append(image); document.title = title;
+    document.head.append(pageStyle); document.body.append(artwork); document.title = title;
     window.addEventListener('afterprint', cleanup, { once: true });
     timeout = setTimeout(cleanup, 10 * 60_000);
     await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));

@@ -17,7 +17,7 @@ Canvas2D renders vector ink and vector paint at display resolution. `EditorSessi
 pointer input and draws the selection overlay. React positions the page and controls Fit-relative zoom.
 
 Home saves the editable version-5 document before returning; autosave runs every minute.
-Your pictures browses version-5 local saves and offers delete/undo-delete, PNG and print.
+Your pictures browses version-5 local saves and offers delete/undo-delete, PNG/SVG/PDF export and vector printing.
 Old development save formats are intentionally unsupported. See [the sticker pipeline](STICKER-PIPELINE.md) for
 the authoring format, region maps, loading/caches and cleanup decisions.
 See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries.

@@ -2,7 +2,8 @@
 
 A free, offline drawing and coloring studio. Start with blank paper or a coloring
 page, arrange stickers, then paint with vector brushes and fills. Pictures and
-preferences stay on the device; no account or server is required.
+preferences stay on the device; no account or server is required. Export PNG, SVG
+or PDF, or print directly from vectors.
 
 The app is pre-release. Breaking changes are expected, and old development saves
 are intentionally unsupported.
@@ -62,6 +63,7 @@ retired experiments; the current tree contains the supported implementation.
 - [Architecture](docs/ARCHITECTURE.md) and [vector painting](docs/VECTOR-PAINT.md)
 - [Artwork sources](art/README.md), [sticker pipeline](docs/STICKER-PIPELINE.md),
   [scene authoring](docs/SCENE-AUTHORING.md) and [review notes](art/REVIEW.md)
+- [Picture output](docs/PICTURE-OUTPUT.md) and [remaining validation](docs/REFINEMENT-TASKS.md)
 - [Coloring books and workshop](docs/COLORING-BOOKS.md)
 - [Startup](docs/STARTUP.md), [paper setup](docs/PAPER-SETUP.md) and [sticker categories](docs/STICKER-CATEGORIES.md)
 - [Input](docs/INPUT.md), [cursors](docs/CURSORS.md), [ribbons](docs/RIBBONS.md) and [desktop](docs/DESKTOP.md)
@@ -70,4 +72,4 @@ retired experiments; the current tree contains the supported implementation.
 
 [Apache License 2.0](LICENSE).
 
-See [the architecture review](docs/ARCHITECTURE-REVIEW.md) for dependency decisions, optimization measurements and remaining priorities.
+See [the architecture review](docs/ARCHITECTURE-REVIEW.md) for completed dependency and optimization decisions; remaining device/platform checks are tracked separately.

@@ -127,6 +127,26 @@ try {
     await cdp('Emulation.setCPUThrottlingRate',{rate:1});
     if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   }else{
+  const output = await evaluate("import('/tests/browser/picture-output.ts').then(m => m.checkPictureOutput())");
+  await fs.writeFile('work/tests/vector-output.svg', output.svg);
+  await fs.writeFile('work/tests/vector-output.pdf', Buffer.from(output.pdf, 'base64'));
+  for (const key of ['actualPng', 'referencePng']) await fs.writeFile(`work/tests/vector-output-${key}.png`, Buffer.from(output[key].split(',')[1], 'base64'));
+  // Exercise Chromium's actual print-to-PDF pipeline using the adapter's HTML.
+  const printTarget = await cdp('Target.createTarget', { url: 'about:blank' });
+  try {
+    const { sessionId } = await cdp('Target.attachToTarget', { targetId: printTarget.targetId, flatten: true });
+    await cdp('Page.enable', {}, sessionId);
+    const { frameTree } = await cdp('Page.getFrameTree', {}, sessionId);
+    await cdp('Page.setDocumentContent', { frameId: frameTree.frame.id, html: output.printHtml }, sessionId);
+    const printed = await cdp('Page.printToPDF', { printBackground: true, preferCSSPageSize: true }, sessionId);
+    const bytes = Buffer.from(printed.data, 'base64');
+    await fs.writeFile('work/tests/vector-printed.pdf', bytes);
+    if (/\/Subtype\s*\/Image\b/.test(bytes.toString('latin1'))) throw Error('Browser printing rasterized vector artwork');
+  } finally { await cdp('Target.closeTarget', { targetId: printTarget.targetId }); }
+  for (const key of ['svg', 'pdf', 'actualPng', 'referencePng', 'printHtml']) delete output[key];
+
+  console.log('Picture output:', JSON.stringify(output));
+  if (output.meanError >= 2 || output.differentFraction >= .03) throw Error('SVG differs from editor: '+JSON.stringify(output));
   const firstFill = await evaluate("import('/tests/browser/first-fill.ts').then(m => m.checkFirstFill())");
   console.log('First fill:',JSON.stringify(firstFill));
   const result = await evaluate("import('/tests/browser/region-coverage.ts').then(m => m.checkRegionCoverage())");
@@ -134,6 +154,7 @@ try {
   if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   if(vectorPaint.diagnosticPng){await fs.writeFile('work/tests/moon-vector-paint.png',Buffer.from(vectorPaint.diagnosticPng.split(',')[1],'base64'));delete vectorPaint.diagnosticPng;}
   const paintDisplay = await evaluate("import('/tests/browser/paint-display.ts').then(m => m.checkPaintDisplay())");
+  result.pictureOutput=output;
   result.paintDisplay=paintDisplay;
   console.log('Paint display:',JSON.stringify(paintDisplay));
   result.pictureStorage=await evaluate("import('/tests/browser/picture-storage.ts').then(m=>m.checkPictureStorage())");
@@ -191,6 +212,27 @@ try {
     await fs.writeFile('work/tests/touch-after.json',JSON.stringify(afterPinch));
     throw Error('Two-finger gesture did not roll back its partial stroke');
   }
+  await waitFor(`!!document.querySelector('button[aria-label="Export selected saved picture"]:not(:disabled)')`);
+  await evaluate(`document.querySelector('button[aria-label="Export selected saved picture"]').click()`);
+  await waitFor(`!!document.querySelector('dialog[open] button[aria-label="Export as PDF"]')`);
+  const exportOptions = await evaluate(`['PNG','SVG','PDF'].every(format => document.querySelector('dialog[open] button[aria-label="Export as '+format+'"]'))`);
+  if (!exportOptions) throw Error('Export picker must offer PNG, SVG and PDF');
+  await evaluate(`document.querySelector('button[aria-label="Close export"]').click()`);
+  // Export errors leave the overlay usable, then retry downloads the chosen format.
+  await evaluate(`document.querySelector('button[aria-label="Export selected saved picture"]').click()`);
+  await waitFor(`!!document.querySelector('dialog[open] button[aria-label="Export as SVG"]')`);
+  await evaluate(`globalThis.originalExportUrl = URL.createObjectURL; URL.createObjectURL = () => { throw Error('Simulated download failure'); }; document.querySelector('button[aria-label="Export as SVG"]').click()`);
+  await waitFor(`!!document.querySelector('dialog[open] [role="alert"]')`);
+  await evaluate(`URL.createObjectURL = globalThis.originalExportUrl; delete globalThis.originalExportUrl;
+    globalThis.exportCapture = {};
+    globalThis.captureExport = event => { const link = event.target.closest('a[download]'); if (!link) return; event.preventDefault();
+      globalThis.exportCapture.name = link.download; fetch(link.href).then(response => response.text()).then(text => { globalThis.exportCapture.text = text; }); };
+    document.addEventListener('click', globalThis.captureExport, true);
+    document.querySelector('button[aria-label="Export as SVG"]').click()`);
+  await waitFor(`!!globalThis.exportCapture.text && !document.querySelector('dialog[open] button[aria-label="Export as SVG"]')`);
+  const exportedSvg = await evaluate(`globalThis.exportCapture.name.endsWith('.svg') && globalThis.exportCapture.text.startsWith('<svg') && globalThis.exportCapture.text.includes('<path')`);
+  await evaluate(`document.removeEventListener('click', globalThis.captureExport, true); delete globalThis.captureExport; delete globalThis.exportCapture;`);
+  if (!exportedSvg) throw Error('Export retry did not download the chosen SVG format');
   // Exercise the library workflow through React, including durable delete/restore.
   const deletedId = await evaluate('(async()=> (await (await import("/src/app/pictures.ts")).pictureRepository.load())[0].id)()');
   await waitFor(`!!document.querySelector('button[aria-label="Delete selected saved picture"]:not(:disabled)')`);
@@ -204,7 +246,7 @@ try {
   await waitFor(`!document.querySelector('button[aria-label="Undo delete"]')`);
   const restored = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => (await pictureRepository.load()).find(p => p.id === ${JSON.stringify(deletedId)}))`);
   if (!restored || JSON.stringify(restored.document) !== JSON.stringify(afterPinch)) throw Error('Undo delete did not restore the saved drawing');
-  result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,deleteRestore:true};
+  result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,deleteRestore:true,exportChoices:true,exportRetry:true};
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
   await fs.writeFile('work/tests/app-after-reopen.png',Buffer.from(screenshot.data,'base64'));
   if(process.argv.includes('--dense-profile')){

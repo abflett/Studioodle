@@ -1,9 +1,11 @@
-# Architecture and optimization review
+# Architecture review - completed refinements
 
 Reviewed 21 October 2026, against the vector-only editor. This is an incremental
 architecture review, not a claim that every path has been profiled or that native
 platform behavior has been retested. Original art, sticker SVGs, bundled page data
-and the saved-document format are unchanged.
+and the saved-document format are unchanged. The review and follow-up refinements
+are complete; remaining device/platform validation is tracked in
+[refinement tasks](REFINEMENT-TASKS.md).
 
 ## Changes implemented
 
@@ -25,7 +27,8 @@ not introduce a raster paint engine.
 
 ## Measurements and checks
 
-Baseline was cleanup commit `626cfa0`. Summing all production `dist/assets/*.js`
+Historical measurement of the initial Phaser removal, before subsequent paint and
+PDF-export work; these totals are not the current bundle size. Baseline was cleanup commit `626cfa0`. Summing all production `dist/assets/*.js`
 files (including the worker and lazy chunks), the final comparison was:
 
 | Measure | Before | After | Reduction |
@@ -38,7 +41,7 @@ fonts and CSS are excluded. Gzip was calculated consistently over each JS file.
 The removed Phaser chunk alone was 1,374,128 minified bytes. The existing artwork
 quality/compression settings were preserved.
 
-Unit tests went from roughly 10?12 seconds during this session to roughly
+Unit tests went from roughly 10-12 seconds during this session to roughly
 1.5 seconds after separating metadata and disabling test server infrastructure.
 This is a local observation, not a cross-machine benchmark. Browser first-fill
 measurements varied between runs; no stable fill-speed improvement is claimed.
@@ -79,51 +82,21 @@ repository wrappers, generic managers, deep inheritance and an interface per cla
 The session and artwork own different responsibilities; the browser adapter does
 not mutate paint or reach into persistence directly.
 
-## Next improvements, in order of evidence needed
+## Follow-up status
 
-1. **Undo memory ? implemented in the next refinement.** Whole-scene snapshots
-   and the 50-action cap were replaced by changed-region checkpoints, small sticker
-   property records, shared immutable geometry and an estimated 128 MiB history
-   budget. Pending paint checkpoints compact one job at a time in the worker.
-   See [undo history](UNDO-HISTORY.md). Profile real mobile sessions before tuning
-   the budget; it is an estimate, not a measurement of total process memory.
-2. **Brush responsiveness ? refined next.** Added a shared bounds-grid candidate
-   search, safe paper/focus clipping shortcuts, periodic compaction during long
-   strokes, and a shorter smoothing tail that settles before release. Exact brush
-   intersections still run on the main thread. The local warmed trace improved ink
-   processing by about 15% and spray by about 10%; see [vector painting](VECTOR-PAINT.md)
-   for scope and measurements. Deeper curve clipping or input batching should follow
-   a reproducible remaining delay rather than another architectural migration.
-3. **Worker contention ? measured; scheduling changes deferred.** A 26-sticker,
-   216-stroke diagnostic kept the current worker backlog at three jobs or fewer.
-   Worker execution was cheap compared with complex-scene display/cache work.
-   Prioritize cache residency at high DPI/zoom; raising the budget alone did not
-   remove churn. See [the measured workload and limits](ADVANCED-SCENE-PERFORMANCE.md).
-   Do not add a worker pool without evidence that the worker is the bottleneck.
-4. **Live-document memory ? tested and refined.** Eight open/paint/save/close
-   cycles returned to a stable retained-memory baseline. Weak sharing now avoids
-   duplicate live definitions after reuse-cache eviction; the pressure probe saved
-   22.41 MiB of lookup arrays. Lazy geometry no longer retains parser documents,
-   idle source text is cleared, redundant paint cloning is removed, and closed
-   display backings shrink immediately. These are not a total app-memory limit.
-   See [the lifecycle test and results](LIVE-DOCUMENT-MEMORY.md).
-5. **UI component size ? focused refactor completed.** Editor saving (manual,
-   autosave and guarded exits) and saved-picture persistence/carousel selection
-   now live in `useEditorSaving` and `usePictureLibrary`. `StickerSelectionToolbar`
-   and `PaperSetup` own cohesive control groups; the screens retain orchestration,
-   view gestures and dialog navigation. Native dialogs and shared DialogHeader
-   remain unchanged. Browser checks cover paper setup, paint/save/reopen and
-   persisted library deletion/undo. Further splitting should follow feature needs.
-6. **Persistence and output ? drawings moved to IndexedDB.** A complex drawing
-   exposed the localStorage quota. Drawing saves now compact paint, then commit
-   structured records asynchronously. A browser regression round-trips a 7 MB
-   drawing, replaces it and deletes it. Settings and templates remain separate. PNG export and current print output remain rasterized from
-   vectors; true SVG/PDF output would be a distinct feature.
+| Topic | Result |
+| --- | --- |
+| Undo memory | Changed-region compacted checkpoints and small sticker records replace whole-scene snapshots and action caps. Estimated 128 MiB history budget. [Details](UNDO-HISTORY.md). |
+| Brush responsiveness and display | Numeric browser paths, bounds-grid candidate search, incremental paint caches and frame-wide 64 MiB cache planning. The 26-sticker workload was repeated twice at 64/128 MiB, including page CPU throttling. [Current results](DISPLAY-CACHE-PERFORMANCE.md), [vector painting](VECTOR-PAINT.md). |
+| Worker contention | Measured without a growing backlog in the tested scene. Keep one shared worker; no worker pool justified. The [initial scene report](ADVANCED-SCENE-PERFORMANCE.md) is historical; the cache report supersedes its display results. |
+| Live-document memory | Eight editor lifecycles plateaued. Weak sharing removed duplicate live definitions; parser documents, redundant clones and closed canvas backings were released. [Results and limits](LIVE-DOCUMENT-MEMORY.md). |
+| UI component size | Saving/exit and picture-library hooks, selected-sticker toolbar and paper controls extracted by responsibility. Keep further extractions tied to features. |
+| Persistence | Structured vector records in IndexedDB; success follows compaction and transaction commit. Browser checks round-trip, replace and delete a drawing larger than 7 MB. No old-save migration. |
+| Print and export | Self-contained SVG printing; PNG, SVG and vector PDF export from a format overlay. PDF conversion is lazy-loaded. Browser output and print-pipeline checks cover transforms, patterns, clips and raster-free PDFs. [Output design](PICTURE-OUTPUT.md). |
 
-The two-second splash minimum is an explicit presentation choice, not a rendering
-bottleneck. Existing painting quality and sticker conversion were not retuned in
-this pass. Manual stylus, multi-monitor DPI, pointer-lock and installed-platform
-checks remain valuable beyond the automated mouse/touch coverage.
+No unresolved implementation item remains from this review. Device measurements,
+physical printing and native adapter validation remain explicit follow-up checks,
+not reasons for another engine rewrite. See [refinement tasks](REFINEMENT-TASKS.md).
 
 ## Browser API references
 
@@ -133,27 +106,11 @@ Phaser's [pointer API](https://docs.phaser.io/api-documentation/class/input-poin
 provides mouse/touch adaptation, which was its main remaining use in this repository.
 
 
-### Dense multicolor follow-up
+### Performance history
 
-The short brush trace did not cover the cost of displaying accumulated complex
-paint. A denser trace identified repeated rasterization and numeric-to-SVG-text
-path rebuilding. Paint now builds native paths numerically, uses a bounded,
-incrementally updated viewport display cache, and reuses compacted worker color
-partitions. Browser regressions cover cache reuse across worker replies, fill,
-undo, view changes, memory eviction and disposal. The optional `--dense-profile`
-diagnostic forces a pixel readback; timings include deferred raster work and
-should not be interpreted as interactive hardware frame rates.
-
-
-Navigation follow-up: the original display key included the viewport translation
-and zoom, forcing expensive rebuilds per gesture frame. Surface-local caches now
-reuse paint during pan/rotation and refine once zoom settles. Browser checks
-verify zero paint path fills during navigation and one requested refinement.
-
-
-The measured cache residency issue is now addressed by a frame-wide planner,
-viewport crop windows, a shared 64 MiB ceiling and in-place fill repainting.
-The 26-sticker workload was repeated twice at both 64 and 128 MiB, including 4x
-page CPU throttling. Steady paint phases stopped rebuilding caches at both budgets.
-See [the follow-up report](DISPLAY-CACHE-PERFORMANCE.md). Single-worker scheduling
-remains unchanged because queue growth was not the limiting factor.
+The first short brush trace did not expose accumulated paint cost. The denser
+follow-up found path-string reconstruction and cache churn rather than worker
+contention. Numeric paths, surface-local pan reuse, delayed zoom refinement and
+frame-wide cache planning addressed that measured work. Current results and
+reproduction commands live in [display cache performance](DISPLAY-CACHE-PERFORMANCE.md);
+older reports remain labelled as historical evidence.

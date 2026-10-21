@@ -1,3 +1,4 @@
+import { ExportPictureDialog } from './ExportPictureDialog';
 import { PaperSetup } from './PaperSetup';
 import { DialogHeader } from './DialogHeader';
 import blankArt from '../assets/blank.svg?raw';
@@ -17,7 +18,7 @@ import { createColoringPage } from '../editor/coloringPage';
 import { coloringPageRepository } from '../app/pictures';
 import { usePictureLibrary } from './usePictureLibrary';
 import type { SavedPicture } from '../editor/savedPicture';
-import { exportPicture, printPicture } from '../app/pictureOutput';
+import { printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, Save, Pencil } from 'lucide-react';
@@ -59,6 +60,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     document.addEventListener('fullscreenchange', update);
     return () => document.removeEventListener('fullscreenchange', update);
   }, []);
+  const [exportingPicture, setExportingPicture] = useState<SavedPicture>();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [step, setStep] = useState<WizardStep | null>(null);
   const [paperPreset, setPaperPreset] = useState<PaperPresetId>('full');
@@ -185,7 +187,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
                 <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) { setDeletingPage(false); setPendingDelete(current); } }}><Trash2 /></button>
                 <button className="icon-button" disabled={!current || current.document.surfaces.length < 2} aria-label="Save selected picture as a coloring page" title={current && current.document.surfaces.length > 1 ? "Save as coloring page" : "Arrange stickers in a picture to make a coloring page"} onClick={addColoringPage}><Save aria-hidden="true" /></button>
                 <button className="icon-button" disabled={!current} aria-label="Print selected saved picture" title="Print picture" onClick={() => { if (current) printPicture(current, () => setActionError('Could not open printing. Allow the print window and try again.')); }}><Printer /></button>
-                <button className="icon-button" disabled={!current} aria-label="Export selected saved picture as PNG" title="Export PNG" onClick={() => { if (current) void exportPicture(current).catch(() => setActionError('Could not export this picture.')); }}><Download /></button>
+                <button className="icon-button" disabled={!current} aria-label="Export selected saved picture" title="Export picture" aria-haspopup="dialog" onClick={() => setExportingPicture(current)}><Download /></button>
               </nav>
               <h2 id="your-pictures-label">Your pictures</h2>
             </div>
@@ -220,6 +222,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
           </footer>
         </div>
       </dialog>
+      {exportingPicture && <ExportPictureDialog picture={exportingPicture} onClose={() => setExportingPicture(undefined)} />}
       <DeletePictureDialog picture={pendingDelete} onCancel={() => { setPendingDelete(undefined); setDeletingPage(false); }} onConfirm={removeCurrent} />
       <SelectionSettings settings={settings} onSettingsChange={onSettingsChange} open={settingsOpen} onClose={() => setSettingsOpen(false)} theme={theme} onThemeChange={onThemeChange} />
 

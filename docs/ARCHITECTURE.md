@@ -32,7 +32,8 @@ base repository, or interface for every class.
   **`localTemplateRepository.ts`** stores custom templates. **`app/pictures.ts`**
   composes the ordinary-picture and custom-template libraries with their current
   namespaces. Storage access is resolved at call time; UI callers handle errors.
-- **`app/pictureOutput.ts`** coordinates rendering, names and PNG resolution.
+- **`app/pictureOutput.ts`** coordinates PNG/SVG/PDF output, names and PNG resolution.
+  `editor/pictureSvg.ts` serializes exact curves/paint; PDF tooling loads only on export.
   **`platform/pictureOutput.ts`** handles browser/native download and print behavior.
   The browser print window must open synchronously from the click handler.
 
@@ -107,7 +108,7 @@ The limit covers cached lookups, not live documents, Path2D objects, geometry or
 
 State subscriptions replay the latest published state, so mounting React listeners
 after the browser adapter cannot miss the initial selection/tool/focus state.
-See [the architecture review](ARCHITECTURE-REVIEW.md) for measurements and remaining work.
+See [the architecture review](ARCHITECTURE-REVIEW.md) for completed review results and [refinement tasks](REFINEMENT-TASKS.md) for remaining validation.
 
 ## Undo history
 
@@ -138,3 +139,6 @@ pressure probe. Definitions are weakly shared across active users, lazy region
 geometry does not retain parser documents, and restoration clones paint only once.
 See [the measured lifecycle results](LIVE-DOCUMENT-MEMORY.md). Cache budgets remain
 separate from total application or graphics memory.
+
+Print uses inline SVG; SVG and PDF export retain vectors, while PNG stays at 150 DPI.
+See [picture output](PICTURE-OUTPUT.md) for format, platform and validation details.
