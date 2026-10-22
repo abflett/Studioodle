@@ -790,5 +790,5 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .export-resolution { padding: 10px 12px; }
 }
 
-/* Fill the existing stage for portrait saves without resizing the stack or controls. */
-.picture-carousel[data-paper-shape="portrait"] { --sheet-fill: 1; }
+/* Fill the existing stage for portrait and square saves without moving the stack or controls. */
+.picture-carousel:is([data-paper-shape="portrait"], [data-paper-shape="square"]) { --sheet-fill: 1; }
