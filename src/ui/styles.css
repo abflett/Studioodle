@@ -12,8 +12,8 @@
   --action: #3e747d;
   --action-text: #fffaf0;
   --shadow: #35545c30;
-  --selection-highlight: #3e747d;
-  --selection-emphasis: drop-shadow(1px 0 0 var(--selection-highlight)) drop-shadow(-1px 0 0 var(--selection-highlight)) drop-shadow(0 1px 0 var(--selection-highlight)) drop-shadow(0 -1px 0 var(--selection-highlight));
+  --selection-highlight: #82afb4;
+  --selection-emphasis: drop-shadow(2px 0 0 var(--selection-highlight)) drop-shadow(-2px 0 0 var(--selection-highlight)) drop-shadow(0 2px 0 var(--selection-highlight)) drop-shadow(0 -2px 0 var(--selection-highlight));
   --ribbon-shadow: #294a514d;
   --brand-tile: #c3dcdb;
   --brand-paper: #faf4e6;
@@ -50,7 +50,7 @@
     --action: #ddc799;
     --action-text: #243148;
     --shadow: #050c1c70;
-    --selection-highlight: #ddc799;
+    --selection-highlight: #ffe1a0;
     --ribbon-shadow: #050c1c99;
     --brand-tile: #344761;
     --brand-paper: #22334c;
