@@ -2,7 +2,8 @@ import { paperLayers } from './paperLayers';
 import easelArt from '../assets/selection/easel.webp';
 import coloringArt from '../assets/selection/coloring-book.webp';
 import paperStackArt from '../assets/selection/paper-stack.webp';
-import landscapeSheet from '../assets/selection/sheet-landscape.webp';
+import landscapeSheet from '../assets/selection/sheet-landscape-overlay.svg';
+import landscapeMask from '../assets/selection/sheet-landscape-mask.svg';
 import squareSheet from '../assets/selection/sheet-square.webp';
 import portraitSheet from '../assets/selection/sheet-portrait.webp';
 
@@ -18,11 +19,15 @@ export const portfolioPapers = [
     box: { left: .048, top: .07, right: .965, bottom: .95 },
     face: 'M65 55 C320 65 740 68 955 95 C975 430 990 860 835 950 C700 965 300 960 61 950 C25 880 25 120 65 55 Z',
   },
-  { shape: 'landscape', ratio: Math.SQRT2, artwork: landscapeSheet,
-    box: { left: .045, top: .105, right: .97, bottom: .915 },
-    face: 'M63 78 C330 100 740 105 965 130 C982 520 995 840 857 917 C700 925 300 920 55 910 C20 860 20 130 63 78 Z',
-  },
 ].map(paper => ({ ...paper, ...paperLayers(paper.face, paper.box, paper.artwork) }));
+// The landscape mask and textured overlay share the exact traced A4 contour.
+portfolioPapers.push({
+  shape: 'landscape', ratio: 297 / 210, artwork: landscapeSheet,
+  box: { left: 0, top: 0, right: 1, bottom: 1 }, face: '',
+  artworkMask: landscapeMask, overlayMask: landscapeSheet,
+  artworkStyle: { inset: '0', maskImage: `url("${landscapeMask}")`, maskSize: '100% 100%', maskPosition: '0 0', maskComposite: 'intersect' },
+  overlayStyle: { maskImage: 'none' },
+});
 /** Compare proportions symmetrically, so a tall and a wide save get equal treatment. */
 export function portfolioPaper(ratio: number) {
   return portfolioPapers.reduce((best, paper) => Math.abs(Math.log(ratio / paper.ratio)) < Math.abs(Math.log(ratio / best.ratio)) ? paper : best);

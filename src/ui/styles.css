@@ -711,12 +711,13 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .saved-picture-card:has(.previous-picture:not(:disabled)):is(:focus-within, :has(.app-mouse-hover)) { background: color-mix(in srgb, var(--text) 8%, transparent); }
 .portfolio-stage { perspective: 900px; }
 .portfolio-pile { position: relative; display: block; rotate: -3deg; }
-/* Temporarily hide the base stack while inspecting the front paper and masks. */
-.portfolio-stage .portfolio-stack-art { display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; user-select: none; }
+.portfolio-stage .portfolio-stack-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; user-select: none; }
 .portfolio-page { position: absolute; inset: 0; isolation: isolate; transform-origin: left center; }
 .portfolio-artwork { position: absolute; display: grid; place-items: center; mask-size: 100% 100%; mask-repeat: no-repeat; }
 .portfolio-page .portfolio-paper-overlay { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; object-position: center; mask-size: 100% 100%; mask-repeat: no-repeat; pointer-events: none; }
 .portfolio-page .saved-preview { max-width: 100%; max-height: 100%; border: 0; border-radius: 0; box-shadow: none; }
+/* Bleed the rectangular preview slightly beneath the exact paper mask. */
+.portfolio-pile[data-paper-shape="landscape"] .saved-preview { transform: scale(1.025); }
 .portfolio-page .preview-spinner { width: 30px; height: 30px; filter: none; }
 .portfolio-page .empty-pictures { min-height: 0; border: 0; font-size: 15px; color: #687b7a; padding: 12px; }
 .portfolio-page.turn-next { animation: portfolio-next 240ms ease-out both; }
