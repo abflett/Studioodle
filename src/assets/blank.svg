@@ -10,6 +10,9 @@
   </g>
   <path d="m179 86-66 237m109-212 49 211" stroke="#efd1a5" stroke-width="3" stroke-linecap="round"/>
   <circle cx="220" cy="103" r="5" fill="#e7c46e" stroke="#796655" stroke-width="2"/>
+  <!-- The pad rests at the rear edge of this recessed tray floor. -->
+  <path d="M78 258h238l20 16H66Z" fill="#edcca0" stroke="#796655" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M83 262h229" stroke="#f7dfbb" stroke-width="2" stroke-linecap="round"/>
   <!-- One turned sheet arches away and hangs visibly behind the right edge. -->
   <path d="M81 65C78 40 93 24 116 30l174 29q35 5 40 38l9 126q-11-12-24-9l-17-116Z" fill="#eee3ca" stroke="#46584c" stroke-width="3" stroke-linejoin="round"/>
   <path d="M322 104q2 62 10 102" fill="none" stroke="#d4c5a8" stroke-width="2" stroke-linecap="round"/>
@@ -17,10 +20,9 @@
   <path d="M80 63h234v190H80Z" fill="#f3ead5" stroke="#46584c" stroke-width="2.5" stroke-linejoin="round"/>
   <path d="M80 60h234v187q0 5-6 5H86q-6 0-6-5Z" fill="#fff8e9" stroke="#46584c" stroke-width="3.5" stroke-linejoin="round"/>
   <path d="M119 185c24-51 42-43 64-15s48 23 66-20" fill="none" stroke="#4caaa2" stroke-width="10" stroke-linecap="round"/>
-  <!-- A shallow tray with a visible top and front face gives the stand depth. -->
-  <path d="m73 253 13-8h227l15 8-15 7H85Z" fill="#eed0a3" stroke="#796655" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M73 253h255v13q0 5-6 5H79q-6 0-6-5Z" fill="#c99b73" stroke="#796655" stroke-width="3.5" stroke-linejoin="round"/>
-  <path d="M83 257h233" stroke="#edcda1" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- A low front lip leaves the floor visible in front of the paper. -->
+  <path d="M66 274h270v5q0 4-5 4H71q-5 0-5-4Z" fill="#c99b73" stroke="#796655" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M75 277h252" stroke="#edcda1" stroke-width="2" stroke-linecap="round"/>
   <g transform="translate(290 127) rotate(35)" stroke="#46584c" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
     <path d="M-5-89q5-12 10 0l3 75H-8Z" fill="#e9a07e"/>
     <path d="M0-84v54" stroke="#ffdbb9" stroke-width="3"/>
