@@ -720,9 +720,9 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .portfolio-stage { perspective: 900px; }
 .portfolio-pile { position: relative; display: block; }
 .portfolio-stack { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: min(100%, calc(var(--object-height) * 1.5)); aspect-ratio: 3 / 2; container-type: inline-size; pointer-events: none; }
-.portfolio-stack-brand { position: absolute; inset: 27% 16% 29%; display: grid; place-items: center; color: #35545c; opacity: .84; rotate: -1deg; }
-.portfolio-stack-brand .brand { width: 100%; flex-direction: row; justify-content: space-between; gap: 2cqw; --text: #35545c; --accent: #97593d; --brand-tile: #c3dcdb; --brand-paper: #faf4e6; --brand-ink: #35545c; --brand-gold: #ddc799; --brand-pencil: #d6aa83; --brand-paint: #3e747d; }
-.portfolio-stack-brand .brand-icon { width: 20%; flex-shrink: 0; filter: none; }
+.portfolio-stack-brand { position: absolute; left: 52%; top: 46.5%; width: 72%; translate: -50% -50%; display: grid; place-items: center; color: #35545c; opacity: .84; rotate: -1deg; }
+.portfolio-stack-brand .brand { width: max-content; flex-direction: row; justify-content: center; align-items: center; gap: 3cqw; --text: #35545c; --accent: #97593d; --brand-tile: #c3dcdb; --brand-paper: #faf4e6; --brand-ink: #35545c; --brand-gold: #ddc799; --brand-pencil: #d6aa83; --brand-paint: #3e747d; }
+.portfolio-stack-brand .brand-icon { width: 14cqw; flex-shrink: 0; filter: none; translate: 0 -.6cqw; }
 .portfolio-stack-brand .brand-name { font-size: 9.3cqw; white-space: nowrap; }
 .portfolio-stack-brand .brand-spark { animation: none; }
 .portfolio-stack-status { position: absolute; left: 20%; right: 20%; top: 65%; display: grid; place-items: center; color: #35545c; }
