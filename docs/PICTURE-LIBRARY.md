@@ -25,6 +25,8 @@ that cached pictures are ready by the next painted frame without a spinner.
 
 The selection screen presents saved work over a permanent illustrated paper stack
 beneath the drawing easel and coloring book, with no visible choice captions.
+The static stack is temporarily hidden during the paper-mask review; its asset
+and layer are retained for restoration.
 The base artwork and browsing stage stay fixed across picture ratios. The front
 sheet selects the closest square, A4 landscape or A4 portrait illustration.
 The carousel has three layers: the unchanged stack, the complete rectangular
