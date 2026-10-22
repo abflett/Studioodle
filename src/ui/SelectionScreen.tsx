@@ -171,9 +171,10 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
         <div className="choice-grid">
           {pictureChoices.map((item) => (
             <button className={`choice-card choice-${item.id}`} key={item.id}
+              aria-label={item.id === 'blank' ? 'Start a blank picture' : 'Choose a coloring page'}
+              title={item.id === 'blank' ? 'Start a blank picture' : 'Choose a coloring page'}
               onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
               <span className="choice-art" dangerouslySetInnerHTML={{ __html: themedArtwork[item.id] }} />
-              <span className="choice-label">{item.id === 'blank' ? 'Blank Page' : 'Coloring Pages'}</span>
             </button>
           ))}
         </div>
@@ -190,7 +191,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
                 <button className="icon-button" disabled={!current} aria-label="Print selected saved picture" title="Print picture" onClick={() => { if (current) printPicture(current, () => setActionError('Could not open printing. Allow the print window and try again.')); }}><Printer /></button>
                 <button className="icon-button" disabled={!current} aria-label="Export selected saved picture" title="Export picture" aria-haspopup="dialog" onClick={() => setExportingPicture(current)}><Download /></button>
               </nav>
-              <h2 id="your-pictures-label">Your pictures</h2>
+              <h2 className="sr-only" id="your-pictures-label">Your pictures</h2>
             </div>
             <button className="icon-button" aria-label="Next saved picture" disabled={saved.length < 2} onClick={() => setSampleIndex((value) => (value + 1) % saved.length)}><Arrow direction="right" /></button>
           </div>

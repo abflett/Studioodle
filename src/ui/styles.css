@@ -94,9 +94,7 @@ progress::-moz-progress-bar { background: var(--action); border-radius: 10px; }
 .choice-card { min-height: 0; display: flex; flex-direction: column; align-items: center; gap: var(--label-gap); padding: 16px; border: 0; border-radius: 28px; background: transparent; color: var(--text); }
 .choice-art { display: grid; place-items: end center; height: var(--picture-height); min-height: 0; width: 100%; }
 .choice-art img, .choice-grid .choice-art > svg { display: block; width: 100%; height: 100%; object-fit: contain; object-position: bottom; min-height: 0; pointer-events: none; user-select: none; }
-.choice-label { display: block; padding: 0; font-size: clamp(17px, 2.6vw, 21px); font-weight: 750; line-height: 1.25; }
 .previous-section { position: relative; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--label-gap); text-align: center; }
-.previous-section h2 { flex-shrink: 0; margin: 0; font-size: clamp(17px, 2.6vw, 21px); font-weight: 750; line-height: 1.25; color: var(--text); }
 .picture-carousel { display: flex; flex: 0 1 auto; min-height: 0; width: 100%; align-items: flex-start; justify-content: center; gap: clamp(12px, 4vw, 30px); }
 .previous-picture { position: relative; width: min(292px, 54vw); min-width: 0; flex-shrink: 1; }
 .previous-picture svg { display: block; height: 100%; width: 100%; filter: drop-shadow(0 7px 12px var(--shadow)); }
@@ -141,7 +139,6 @@ progress::-moz-progress-bar { background: var(--action); border-radius: 10px; }
 button:is(:active, .app-mouse-pressed) { transform: scale(.96); filter: brightness(.97); }
 @media (max-width: 540px) {
   .selection-screen { padding: 18px 14px; }
-  .choice-label { padding: 0; }
   .choice-card { border-radius: 20px; }
   .icon-button { width: 48px; height: 48px; padding: 12px; }
   .wizard { padding: 18px; gap: 18px; }
@@ -152,9 +149,7 @@ button:is(:active, .app-mouse-pressed) { transform: scale(.96); filter: brightne
 @media (max-height: 520px) {
   .selection-screen { padding-top: 10px; padding-bottom: 10px; }
   .selection { --picture-height: min(164px, 30vw, 24dvh); --label-gap: 40px; width: min(540px, 100%); gap: 10px; }
-  .choice-label { padding: 0; font-size: 15px; }
   .selection { --label-gap: 30px; }
-  .previous-section h2 { font-size: 15px; }
 
   .wizard { padding: 14px 20px; gap: 10px; }
   .wizard .icon-button { width: 44px; height: 44px; padding: 10px; }
@@ -662,7 +657,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .previous-section .previous-picture { gap: 0; padding-bottom: 0; }
 .previous-section .library-actions { position: static; inset: auto; transform: none; display: flex; justify-content: center; gap: 12px; }
 .previous-section .library-actions .icon-button { width: 48px; height: 48px; padding: 12px; }
-.previous-section h2 { margin-top: 4px; }
 @media (max-width: 420px), (max-height: 520px) {
   .previous-section { gap: 8px; }
   .previous-section .library-actions { gap: 10px; }
@@ -698,7 +692,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .saved-picture-card:has(.previous-picture:focus-visible) { outline: 3px solid var(--action); outline-offset: 3px; }
 .saved-picture-card .library-actions { position: relative; z-index: 2; }
 .previous-section .saved-picture-card .library-actions { gap: 16px; }
-.previous-section .saved-picture-card h2 { margin: 0; }
 .previous-section .picture-carousel > .icon-button { grid-row: 1; z-index: 2; margin-top: calc(16px + (var(--saved-picture-height) - 56px) / 2); }
 .previous-section .picture-carousel > .icon-button:first-child { grid-column: 1; justify-self: start; }
 .previous-section .picture-carousel > .icon-button:last-child { grid-column: 3; justify-self: end; }
@@ -742,7 +735,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 }
 .selection-screen { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
 
-/* The two starting pages share one paper proportion and a lifted art treatment. */
+/* Wordless choices: a single drawing sheet and a stack of coloring pages. */
 .selection .choice-grid .choice-art img, .choice-grid .choice-art > svg { filter: drop-shadow(0 7px 9px var(--shadow)); }
 @media (min-height: 701px) {
   .selection-screen .selection { --picture-height: min(184px, 32vw, 25dvh); --label-gap: 20px; gap: clamp(18px, 3.5dvh, 32px); }
