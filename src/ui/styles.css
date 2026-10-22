@@ -13,7 +13,7 @@
   --action-text: #fffaf0;
   --shadow: #35545c30;
   --selection-highlight: #82afb4;
-  --selection-emphasis: drop-shadow(2px 0 0 var(--selection-highlight)) drop-shadow(-2px 0 0 var(--selection-highlight)) drop-shadow(0 2px 0 var(--selection-highlight)) drop-shadow(0 -2px 0 var(--selection-highlight));
+  --selection-emphasis: drop-shadow(3.5px 0 0 var(--selection-highlight)) drop-shadow(-3.5px 0 0 var(--selection-highlight)) drop-shadow(0 3.5px 0 var(--selection-highlight)) drop-shadow(0 -3.5px 0 var(--selection-highlight));
   --ribbon-shadow: #294a514d;
   --brand-tile: #c3dcdb;
   --brand-paper: #faf4e6;
