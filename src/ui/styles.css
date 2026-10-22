@@ -393,7 +393,9 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 
 .preview-frame { position: relative; display: block; overflow: hidden; }
 .preview-frame > canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
-.preview-loading { position: absolute; inset: 0; display: grid; place-items: center; background: var(--surface); color: var(--muted); }
+.preview-loading { animation: preview-loading-reveal 0s 120ms both; position: absolute; inset: 0; display: grid; place-items: center; background: var(--surface); color: var(--muted); }
+@keyframes preview-loading-reveal { from { visibility: hidden; } to { visibility: visible; } }
+.preview-loading.is-error { animation: none; }
 .preview-loading svg { width: 30px; height: 30px; }
 .preview-spinner { animation: preview-spin 1s linear infinite; }
 @keyframes preview-spin { to { transform: rotate(360deg); } }

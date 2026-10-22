@@ -41,6 +41,10 @@ export class PictureWindow {
       }
     })();
   }
+  cached(summary: PictureSummary) {
+    const picture = this.cache.get(summary.id);
+    return picture?.updatedAt === summary.updatedAt ? picture : undefined;
+  }
   invalidate(id: string) { this.cache.delete(id); }
   dispose() { this.controller?.abort(); this.cache.clear(); this.publish({ error: false }); }
 }

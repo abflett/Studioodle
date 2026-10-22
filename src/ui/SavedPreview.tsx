@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { LoaderCircle, ImageOff } from 'lucide-react';
 import { paperSize } from '../editor/document';
 import { Artwork } from '../editor/Artwork';
@@ -11,7 +11,7 @@ export function SavedPreview({ picture, pending = false, unavailable = false }: 
   const ready = !pending && !unavailable && result?.picture === picture && !result.failed;
   const failed = unavailable || (result?.picture === picture && result.failed);
   const { width, height } = paperSize(picture.format, picture.size);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const element = canvas.current;
     if (!element || pending || unavailable) return;
     let active = true;
@@ -32,19 +32,16 @@ export function SavedPreview({ picture, pending = false, unavailable = false }: 
     };
     const observer = new ResizeObserver(draw);
     observer.observe(element);
-    // Give the loading state a painted frame before decoding/restoring artwork.
-    let frame = requestAnimationFrame(() => { frame = requestAnimationFrame(() => {
     void prepareStickers(picture.document?.surfaces.map(surface => surface.kind) ?? []).then(() => {
       if (!active) return;
       artwork = picture.document ? Artwork.restore(picture.document) : Artwork.create(width, height, picture.background);
       draw();
       setResult({ picture, failed: false });
     }).catch(() => { if (active) setResult({ picture, failed: true }); });
-    }); });
-    return () => { active = false; cancelAnimationFrame(frame); observer.disconnect(); artwork?.dispose(); };
+    return () => { active = false; observer.disconnect(); artwork?.dispose(); };
   }, [picture, width, height, pending, unavailable]);
   return <span className="saved-preview preview-frame" aria-busy={!ready && !failed} style={{ background: picture.background, aspectRatio: `${width} / ${height}`, width: `min(100%, calc(var(--preview-height, 240px) * ${width / height}))`, height: 'auto' }}>
     <canvas ref={canvas} width={1} height={1} aria-hidden="true" style={{ visibility: ready ? 'visible' : 'hidden' }} />
-    {!ready && <span className="preview-loading">{failed ? <ImageOff aria-hidden="true" /> : <LoaderCircle className="preview-spinner" aria-hidden="true" />}<span className="sr-only" role="status">{failed ? 'Preview unavailable' : 'Loading picture preview'}</span></span>}
+    {!ready && <span className={`preview-loading${failed ? ' is-error' : ''}`}>{failed ? <ImageOff aria-hidden="true" /> : <LoaderCircle className="preview-spinner" aria-hidden="true" />}<span className="sr-only" role="status">{failed ? 'Preview unavailable' : 'Loading picture preview'}</span></span>}
   </span>;
 }

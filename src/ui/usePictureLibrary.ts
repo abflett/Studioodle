@@ -23,7 +23,7 @@ export function usePictureLibrary() {
   useEffect(() => () => window.dispose(), [window]);
   const summary = library.pictures[library.index];
   const matches = loaded.id === summary?.id && loaded.updatedAt === summary?.updatedAt;
-  const current = matches ? loaded.picture : undefined;
+  const current = summary && (window.cached(summary) ?? (matches ? loaded.picture : undefined));
   const currentError = matches && loaded.error;
   const removePicture = async (picture: SavedPicture) => {
     await pictureRepository.delete(picture.id);

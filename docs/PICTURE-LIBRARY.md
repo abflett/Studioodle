@@ -17,7 +17,11 @@ libraries deduplicate overlapping positions. Failed neighbors do not block the
 others; current-picture failures expose retry. Opening, exporting and deleting
 require the selected full drawing to be loaded. The existing preview spinner also
 covers data loading; sticker preparation and preview rendering remain lazy for
-the selected picture rather than allocating five rendered canvases.
+the selected picture rather than allocating five rendered canvases. Cached data is
+available during the selection render, and preview work starts before paint with
+no forced animation-frame delay. The visual spinner appears only after 120 ms of
+pending work; failures appear immediately. Warm-navigation browser tests verify
+that cached pictures are ready by the next painted frame without a spinner.
 
 The fresh pre-release IndexedDB database is `studioodle-library-v1` (schema 1).
 `pictures` stores full format-5 drawings; `summaries` stores explicit metadata

@@ -1,5 +1,7 @@
 import { pictureSummary } from '../../src/editor/pictureSummary';
 import { createElement, useLayoutEffect } from 'react';
+import { flushSync } from 'react-dom';
+import { SavedPreview } from '../../src/ui/SavedPreview';
 import { createRoot } from 'react-dom/client';
 import { usePictureLibrary } from '../../src/ui/usePictureLibrary';
 import { pictureRepository } from '../../src/app/pictures';
@@ -25,11 +27,22 @@ export async function checkLibraryState() {
   function Probe() {
     const state = usePictureLibrary();
     useLayoutEffect(() => { current = state; });
-    return null;
+    const summary = state.saved[state.sampleIndex];
+    return summary ? createElement(SavedPreview, { key: summary.id, picture: state.current ?? summary,
+      pending: !state.current && !state.currentError, unavailable: state.currentError }) : null;
   }
   const host=document.createElement('div');document.body.append(host);const root=createRoot(host);
   try {
     root.render(createElement(Probe));await waitFor(() => current?.saved.length === 3);
+    await waitFor(() => host.querySelector('.saved-preview')?.getAttribute('aria-busy') === 'false');
+    // Both neighbors have finished their microtask-only prefetch by this point.
+    for (const index of [1, 0, 2, 0, 1, 0]) {
+      flushSync(() => current!.setSampleIndex(index));
+      assert(current!.current?.id === initial[index]!.id, 'Cached navigation must not briefly report pending data');
+      await new Promise(requestAnimationFrame);
+      assert(host.querySelector('.saved-preview')?.getAttribute('aria-busy') === 'false', 'Warm preview must be ready for the next painted frame');
+      assert(!host.querySelector('.preview-loading'), 'Warm navigation must not flash a loading indicator');
+    }
     current!.setSampleIndex(2);await waitFor(() => current?.sampleIndex === 2);
     const actions=current!;
     const first=actions.removePicture(initial[0]!), second=actions.removePicture(initial[1]!);
@@ -38,6 +51,16 @@ export async function checkLibraryState() {
     assert(current!.saved[0]!.id === 'c' && current!.sampleIndex === 0, 'Completed deletes must compose and clamp carousel selection');
     await current!.restorePicture(initial[0]!);await waitFor(() => current?.saved.length === 2);
     assert(current!.saved[current!.sampleIndex]!.id === 'a', 'Restore must select the restored drawing');
-    return { concurrentDeletes: true, selectionClamp: true, restoreSelection: true };
+    flushSync(() => root.render(createElement(SavedPreview, { picture: initial[0]!, pending: true })));
+    const indicator = host.querySelector<HTMLElement>('.preview-loading')!;
+    const reveal = indicator.getAnimations().find(animation => (animation as CSSAnimation).animationName === 'preview-loading-reveal')!;
+    assert(reveal, 'Pending preview must have delayed loading feedback');
+    reveal.pause(); reveal.currentTime = 0;
+    assert(getComputedStyle(indicator).visibility === 'hidden', 'Brief loads must not flash a spinner');
+    reveal.currentTime = 121;
+    assert(getComputedStyle(indicator).visibility === 'visible', 'Slow loads must still show the spinner');
+    flushSync(() => root.render(createElement(SavedPreview, { picture: initial[0]!, unavailable: true })));
+    assert(getComputedStyle(indicator).visibility === 'visible' && !!indicator.querySelector('svg'), 'Load failures must display immediately');
+    return { concurrentDeletes: true, selectionClamp: true, restoreSelection: true, warmNavigation: true, delayedSpinner: true };
   } finally { root.unmount();host.remove();Object.assign(pictureRepository,original); }
 }
