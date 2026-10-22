@@ -4,9 +4,8 @@ import { paperSize } from '../editor/document';
 import { Artwork } from '../editor/Artwork';
 import { prepareStickers } from '../editor/vectorStickers';
 import type { EditorSetup } from '../editor/setup';
-import { drawPaperPreview, type PaperSurface } from './paperPreview';
 
-export function SavedPreview({ picture, pending = false, unavailable = false, paperSurface }: { picture: EditorSetup; pending?: boolean; unavailable?: boolean; paperSurface?: PaperSurface }) {
+export function SavedPreview({ picture, pending = false, unavailable = false, fillContainer = false }: { picture: EditorSetup; pending?: boolean; unavailable?: boolean; fillContainer?: boolean }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [result, setResult] = useState<{ picture: EditorSetup; failed: boolean }>();
   const ready = !pending && !unavailable && result?.picture === picture && !result.failed;
@@ -17,7 +16,6 @@ export function SavedPreview({ picture, pending = false, unavailable = false, pa
     if (!element || pending || unavailable) return;
     let active = true;
     let artwork: Artwork | undefined;
-    const source = paperSurface ? document.createElement('canvas') : undefined;
     const draw = () => {
       if (!active || !artwork) return;
       // Render vectors directly at the displayed size, with device-pixel backing.
@@ -29,11 +27,8 @@ export function SavedPreview({ picture, pending = false, unavailable = false, pa
       if (element.height !== h) element.height = h;
       const ctx = element.getContext('2d');
       if (!ctx) return;
-      if (paperSurface && source) drawPaperPreview(ctx, artwork, paperSurface, source);
-      else {
-        ctx.setTransform(w / width, 0, 0, h / height, 0, 0);
-        artwork.render(ctx, true);
-      }
+      ctx.setTransform(w / width, 0, 0, h / height, 0, 0);
+      artwork.render(ctx, true);
     };
     const observer = new ResizeObserver(draw);
     observer.observe(element);
@@ -43,9 +38,9 @@ export function SavedPreview({ picture, pending = false, unavailable = false, pa
       draw();
       setResult({ picture, failed: false });
     }).catch(() => { if (active) setResult({ picture, failed: true }); });
-    return () => { active = false; observer.disconnect(); artwork?.dispose(); if (source) { source.width = 1; source.height = 1; } };
-  }, [picture, width, height, pending, unavailable, paperSurface]);
-  return <span className="saved-preview preview-frame" data-fit={paperSurface ? 'paper' : 'contain'} aria-busy={!ready && !failed} style={{ background: paperSurface ? 'transparent' : picture.background, aspectRatio: `${width} / ${height}`, width: paperSurface ? '100%' : `min(100%, calc(var(--preview-height, 240px) * ${width / height}))`, height: paperSurface ? '100%' : 'auto' }}>
+    return () => { active = false; observer.disconnect(); artwork?.dispose(); };
+  }, [picture, width, height, pending, unavailable]);
+  return <span className="saved-preview preview-frame" data-fit={fillContainer ? 'full' : 'contain'} aria-busy={!ready && !failed} style={{ background: picture.background, aspectRatio: `${width} / ${height}`, width: fillContainer ? '100%' : `min(100%, calc(var(--preview-height, 240px) * ${width / height}))`, height: fillContainer ? '100%' : 'auto' }}>
     <canvas ref={canvas} width={1} height={1} aria-hidden="true" style={{ visibility: ready ? 'visible' : 'hidden' }} />
     {!ready && <span className={`preview-loading${failed ? ' is-error' : ''}`}>{failed ? <ImageOff aria-hidden="true" /> : <LoaderCircle className="preview-spinner" aria-hidden="true" />}<span className="sr-only" role="status">{failed ? 'Preview unavailable' : 'Loading picture preview'}</span></span>}
   </span>;

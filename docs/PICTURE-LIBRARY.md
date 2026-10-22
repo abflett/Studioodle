@@ -27,28 +27,29 @@ The selection screen presents saved work over a permanent illustrated paper stac
 beneath the drawing easel and coloring book, with no visible choice captions.
 The base artwork and browsing stage stay fixed across picture ratios. The front
 sheet selects the closest square, A4 landscape or A4 portrait illustration.
-Each asset defines the curved boundary of its printed face, excluding the folded
-underside. The complete drawing maps onto that face using a small curved mesh;
-no source pixels are cropped or extended into repeated strips. A separate layer
-preserves the original paper grain, border and folds above the drawing.
-The visible outline, rather than the PNG box, follows the saved picture's exact
-proportions. The source image is rendered at display density before this decorative
-mapping; neither the editor document nor exports are warped.
+The carousel has three layers: the unchanged stack, the complete rectangular
+picture clipped to a paper silhouette, and the original paper border/folds with
+an actually transparent center. The picture is rendered normally at display
+density, without mesh warping, cover scaling, edge copying or multiply blending.
+The image rectangle follows the saved picture's exact proportions. One shared
+coordinate system derives both its cutout and the overlay's transparent opening;
+the original paper alpha provides a second clip so artwork cannot poke outside.
+The overlay overlaps the cutout slightly to hide antialiasing seams.
 The sheet keeps a slight fixed counterclockwise tilt. Preview backing dimensions
 use local sizes so rotation does not introduce extra cropping. Browsing arrows remain
 outside the open target, and utility buttons take click priority.
 Forward/backward navigation adds a 240 ms page-turn transform without delaying
 loading or interactions. Reduced-motion preferences disable the turn animation.
-Each front sheet reuses its generated transparent silhouette as a CSS alpha mask.
-The texture overlay multiplies over the preview. There is no faded inset frame;
-full-color pictures reach the face boundary while folds retain their paper color.
+The overlay keeps its original paper colors, ink border and folded corners.
+Its center is transparent, and the saved picture shows through with its original
+colors. There is no faded inset frame.
 This decorative preview treatment does not change saved artwork or exported colors.
 
 The drawing, coloring and saved-picture choices use transparent, hand-inked
 watercolor illustrations. Original generated PNGs and exact prompts live in
 `art/source/interface/selection-objects.json` and its sibling files;
 full-resolution, lossless WebP copies live under `src/assets/selection/`.
-All six images decode during the splash alongside the editor module, so the
+All six illustrations and their six derived masks decode during the splash alongside the editor module, so the
 wordless home screen opens with its art ready. These are decorative interface
 assets; painting and output stay vector.
 

@@ -1,52 +1,57 @@
 import { Artwork } from '../../src/editor/Artwork';
 import { rectangleGeometry } from '../../src/editor/vectorPaintStyles';
 import { portfolioPapers } from '../../src/app/startup';
-import { drawPaperPreview, paperFacePath } from '../../src/ui/paperPreview';
 
 function assert(value: unknown, message: string): asserts value { if (!value) throw Error(message); }
+async function load(src: string) { const image = new Image(); image.src = src; await image.decode(); return image; }
+function canvas(width: number, height: number) {
+  const element = document.createElement('canvas'); element.width = width; element.height = height;
+  return element;
+}
 
-/** Boundary features must survive both thumbnail fitting and the real generated alpha mask. */
+/** Verify actual alpha compositing: transparent center, preserved folds and no exposed gaps. */
 export async function checkPaperPreview() {
   for (const paper of portfolioPapers) {
-    const width = Math.round(210 * paper.ratio), height = 210;
-    const colors = [0xff2020, 0x20ff20, 0x2020ff, 0xff20ff, 0x20ffff];
-    const positions = [[3, 3], [width - 11, 3], [3, height - 11], [width - 11, height - 11], [width / 2 - 4, 3]];
-    const artwork = Artwork.restore({ version: 5, width, height, surfaces: [{
+    const [original, cutout, rim] = await Promise.all([paper.artwork, paper.artworkMask, paper.overlayMask].map(load));
+    const width = 420, height = Math.round(width / paper.ratio * (paper.box.right - paper.box.left) / (paper.box.bottom - paper.box.top));
+    const x = width * paper.box.left, y = height * paper.box.top;
+    const w = width * (paper.box.right - paper.box.left), h = height * (paper.box.bottom - paper.box.top);
+    const art = Artwork.restore({ version: 5, width: 210, height: Math.round(210 / paper.ratio), surfaces: [{
       id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0x24335c,
-      vectorPaint: { version: 1, regions: [{ id: 1, base: 0x24335c, blobs: positions.map(([x, y], i) => ({
-        color: colors[i]!, geometry: rectangleGeometry(x!, y!, 8, 8),
-      })) }] },
+      vectorPaint: { version: 1, regions: [{ id: 1, base: 0x24335c, blobs: [{
+        color: 0xff2020, geometry: rectangleGeometry(101, 4, 8, 8),
+      }] }] },
     }] });
     try {
-      const canvas = document.createElement('canvas');
-      canvas.height = 300;
-      canvas.width = Math.round(canvas.height * width / height * paper.outline.height / paper.outline.width);
-      const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
-      drawPaperPreview(ctx, artwork, paper.surface, document.createElement('canvas'));
-      const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      const image = new Image(); image.src = paper.artwork; await image.decode();
-      const mask = document.createElement('canvas'); mask.width = canvas.width; mask.height = canvas.height;
-      const maskCtx = mask.getContext('2d', { willReadFrequently: true })!;
-      maskCtx.drawImage(image, 0, 0, mask.width, mask.height);
-      const alpha = maskCtx.getImageData(0, 0, mask.width, mask.height).data;
-      maskCtx.clearRect(0, 0, mask.width, mask.height);
-      maskCtx.fill(paperFacePath(paper.surface, mask.width, mask.height));
-      const face = maskCtx.getImageData(0, 0, mask.width, mask.height).data;
-      const counts = colors.map(() => 0);
+      const image = canvas(Math.round(w), Math.round(h)), ctx = image.getContext('2d')!;
+      ctx.setTransform(image.width / art.size.width, 0, 0, image.height / art.size.height, 0, 0);
+      art.render(ctx, true);
+      ctx.resetTransform(); ctx.globalCompositeOperation = 'destination-in';
+      ctx.drawImage(cutout!, 0, 0, image.width, image.height);
+      // The second CSS mask registers the original paper alpha against this image rectangle.
+      ctx.drawImage(original!, -x / w * image.width, -y / h * image.height, width / w * image.width, height / h * image.height);
+      const overlay = canvas(width, height), overlayCtx = overlay.getContext('2d', { willReadFrequently: true })!;
+      overlayCtx.drawImage(original!, 0, 0, width, height);
+      overlayCtx.globalCompositeOperation = 'destination-in'; overlayCtx.drawImage(rim!, 0, 0, width, height);
+      const overlayPixels = overlayCtx.getImageData(0, 0, width, height).data;
+      const center = (Math.floor(height / 2) * width + Math.floor(width / 2)) * 4;
+      assert(overlayPixels[center + 3] === 0, 'The paper overlay center must be actually transparent');
+      const composite = canvas(width, height), result = composite.getContext('2d', { willReadFrequently: true })!;
+      result.drawImage(image, x, y, w, h); result.drawImage(overlay, 0, 0);
+      const pixels = result.getImageData(0, 0, width, height).data;
+      assert(pixels[center] === 0x24 && pixels[center + 1] === 0x33 && pixels[center + 2] === 0x5c, 'Artwork must show through unchanged, without texture blending');
+      const reference = canvas(width, height), ref = reference.getContext('2d', { willReadFrequently: true })!;
+      ref.drawImage(original!, 0, 0, width, height);
+      const paperPixels = ref.getImageData(0, 0, width, height).data;
+      let head = 0, folds = 0;
       for (let i = 0; i < pixels.length; i += 4) {
-        const stride = canvas.width * 4;
-        if ([-4, 0, 4, -stride, stride].every(offset => (face[i + offset + 3] ?? 0) === 255)) assert(pixels[i + 3]! > 250, `${paper.shape} face has a seam at ${i / 4 % canvas.width},${Math.floor(i / 4 / canvas.width)}: alpha ${pixels[i + 3]}`);
-        if (face[i + 3] === 0 && pixels[i + 3]! > 0) {
-          assert([-4, 4, -stride, stride].some(offset => (face[i + offset + 3] ?? 0) > 0), 'Artwork must not extend beyond the face, except its one-pixel antialiased outline');
-        }
-        const color = (pixels[i]! << 16) | (pixels[i + 1]! << 8) | pixels[i + 2]!;
-        const feature = colors.indexOf(color);
-        if (feature >= 0) {
-          counts[feature]!++;
-          assert(alpha[i + 3]! > 240, `${paper.shape} mask must not cut off boundary artwork`);
-        }
+        if (paperPixels[i + 3]! >= 250) assert(pixels[i + 3]! >= 235, paper.shape + ' layers must not leave an exposed gap');
+        if (paperPixels[i + 3] === 0) assert(pixels[i + 3]! <= 8, paper.shape + ' artwork must not poke outside the paper silhouette');
+        if (pixels[i]! > 230 && pixels[i + 1]! < 60 && pixels[i + 2]! < 60) head++;
+        if (i / 4 % width > width * .85 && Math.floor(i / 4 / width) > height * .75 && overlayPixels[i + 3]! >= 250) folds++;
       }
-      assert(counts.every(count => count > 0), `${paper.shape} preview must retain its corner and top-center features`);
-    } finally { artwork.dispose(); }
+      assert(head > 5, paper.shape + ' preview must retain the top-center feature');
+      assert(folds > 20, paper.shape + ' overlay must keep its folded paper corner');
+    } finally { art.dispose(); }
   }
 }
