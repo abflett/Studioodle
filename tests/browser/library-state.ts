@@ -1,3 +1,4 @@
+import { pictureSummary } from '../../src/editor/pictureSummary';
 import { createElement, useLayoutEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { usePictureLibrary } from '../../src/ui/usePictureLibrary';
@@ -16,7 +17,8 @@ export async function checkLibraryState() {
     document: { version: 5, width: 32, height: 24, surfaces: [{ id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff }] },
   }));
   const initial = [...pictures], gates = new Map<string, () => void>();
-  pictureRepository.load = async () => [...pictures];
+  pictureRepository.list = async () => pictures.map(pictureSummary);
+  pictureRepository.get = async id => pictures.find(picture => picture.id === id);
   pictureRepository.save = async picture => { pictures = [picture, ...pictures.filter(item => item.id !== picture.id)]; };
   pictureRepository.delete = id => new Promise(resolve => { gates.set(id, () => { pictures = pictures.filter(item => item.id !== id); resolve(); }); });
   let current: ReturnType<typeof usePictureLibrary> | undefined;

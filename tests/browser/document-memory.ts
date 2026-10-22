@@ -28,7 +28,7 @@ function state(){
   uniqueLookupBytes:definitions.reduce((n,d)=>n+d.typedArrayBytes,0)};
 }
 export async function openMemoryCycle(probe=false){
- const picture=(await repository.load())[0]!;
+ const picture=(await repository.get((await repository.list())[0]!.id))!;
  if(probe){
   const paper=picture.document.surfaces[0]!;
   picture.document.surfaces=[paper,...['space-crater','winter-snow','interiors-great-hall','interiors-arched-hallway','horizons-harbor-skyline','space-crater'].map((kind,i)=>({id:'probe-'+i,kind:kind as 'space-crater'|'winter-snow'|'interiors-great-hall'|'interiors-arched-hallway'|'horizons-harbor-skyline',color:0x242428,x:350+i*400,y:600,scale:.4}))];

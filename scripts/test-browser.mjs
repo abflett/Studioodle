@@ -9,6 +9,7 @@ let browser;
 for (const candidate of browserCandidates) { try { await fs.access(candidate); browser = candidate; break; } catch { /* Try next installed browser. */ } }
 if (!browser) throw new Error('Set BENCHMARK_BROWSER to a Chromium browser executable.');
 await fs.mkdir('work/tests', { recursive: true });
+const libraryProfile=process.argv.includes('--library-profile');
 const memoryProfile=process.argv.includes('--memory-profile');
 const sceneProfile=process.argv.includes('--scene-profile');
 const sceneBudget=Number(process.argv.find(arg=>arg.startsWith('--scene-cache-mib='))?.split('=')[1]??64);
@@ -70,7 +71,28 @@ try {
     if (await evaluate('location.origin === "http://127.0.0.1:1433" && document.readyState !== "loading"')) break;
     await new Promise(resolve => setTimeout(resolve, 100));
   }
-  if(memoryProfile){
+  if(libraryProfile){
+    const setup=await evaluate("import('/tests/browser/picture-library-profile.ts').then(m=>m.prepareLibraryProfile())");
+    const samples=[];
+    const sample=async(label,metrics)=>{
+      await cdp('HeapProfiler.collectGarbage');
+      const heap=await cdp('Runtime.getHeapUsage');
+      const retained=await evaluate("import('/tests/browser/picture-library-profile.ts').then(m=>m.libraryRetained())");
+      const value={label,...metrics,heap,retained};samples.push(value);
+      console.log('Library sample:',JSON.stringify(value));
+      if(retained.liveLoadedRecords>retained.cachedDrawings)throw Error('Evicted drawings were retained');
+    };
+    await sample('summaries');
+    for(const index of [0,60,61,100,20,80]){
+      const metrics=await evaluate(`import('/tests/browser/picture-library-profile.ts').then(m=>m.selectLibraryPicture(${index}))`);
+      await sample(`selected-${index}`,metrics);
+    }
+    await evaluate("import('/tests/browser/picture-library-profile.ts').then(m=>m.disposeLibraryProfile())");
+    await sample('disposed');
+    await evaluate("import('/tests/browser/picture-library-profile.ts').then(m=>m.cleanupLibraryProfile())");
+    await fs.writeFile('work/tests/picture-library-results.json',JSON.stringify({setup,samples},null,2));
+    if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
+  }else if(memoryProfile){
     await cdp('Page.bringToFront');
     const setup=await evaluate("import('/tests/browser/document-memory.ts').then(m=>m.prepareMemoryFixture())");
     const samples=[];
@@ -193,8 +215,9 @@ try {
   await cdp('Input.dispatchMouseEvent', {type:'mouseReleased',x:at.x+40,y:at.y+20,button:'left',buttons:0,clickCount:1});
   await evaluate('document.querySelector("button[aria-label^=Save]").click()');
   await waitFor('!!document.querySelector(".choice-blank")');
-  const savedDocument = await evaluate('(async()=> (await (await import("/src/app/pictures.ts")).pictureRepository.load())[0].document)()');
+  const savedDocument = await evaluate('(async()=>{const r=(await import("/src/app/pictures.ts")).pictureRepository;return (await r.get((await r.list())[0].id)).document;})()');
   if (!savedDocument.surfaces[0].vectorPaint?.regions[0]?.blobs.length) throw Error('Trusted mouse drawing was not saved');
+  await waitFor('!!document.querySelector(".previous-picture:not(:disabled)")');
   await evaluate('document.querySelector(".previous-picture").click()');
   await waitFor('!!document.querySelector(".canvas-host canvas")');
   await evaluate('document.querySelector("button[aria-label=Brush]").click()');
@@ -205,7 +228,7 @@ try {
   await cdp('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await evaluate('document.querySelector("button[aria-label^=Save]").click()');
   await waitFor('!!document.querySelector(".choice-blank")');
-  const afterPinch = await evaluate('(async()=> (await (await import("/src/app/pictures.ts")).pictureRepository.load())[0].document)()');
+  const afterPinch = await evaluate('(async()=>{const r=(await import("/src/app/pictures.ts")).pictureRepository;return (await r.get((await r.list())[0].id)).document;})()');
   const unchanged = await evaluate(`import('/tests/browser/helpers.ts').then(({normalizedPaintDocument}) =>
     JSON.stringify(normalizedPaintDocument(${JSON.stringify(savedDocument)})) === JSON.stringify(normalizedPaintDocument(${JSON.stringify(afterPinch)})))`);
   if(!unchanged){
@@ -236,7 +259,7 @@ try {
   await cdp('Emulation.clearDeviceMetricsOverride');
   await evaluate(`document.querySelector('#export-dpi').value='600'; document.querySelector('#export-dpi').dispatchEvent(new Event('change',{bubbles:true}))`);
   const resolutionUpdates = await evaluate(`import('/src/editor/exportResolution.ts').then(async ({exportDimensions}) => {
-    const picture=(await (await import('/src/app/pictures.ts')).pictureRepository.load())[0];
+    const repository=(await import('/src/app/pictures.ts')).pictureRepository; const picture=await repository.get((await repository.list())[0].id);
     return document.querySelector('.export-pixel-size').textContent.includes(exportDimensions(picture,600).width.toLocaleString());
   })`);
   if (!resolutionUpdates) throw Error('Changing DPI must update the PNG dimensions');
@@ -257,17 +280,17 @@ try {
   await evaluate(`document.removeEventListener('click', globalThis.captureExport, true); delete globalThis.captureExport; delete globalThis.exportCapture;`);
   if (!exportedSvg) throw Error('Export retry did not download the chosen SVG format');
   // Exercise the library workflow through React, including durable delete/restore.
-  const deletedId = await evaluate('(async()=> (await (await import("/src/app/pictures.ts")).pictureRepository.load())[0].id)()');
+  const deletedId = await evaluate('(async()=> (await (await import("/src/app/pictures.ts")).pictureRepository.list())[0].id)()');
   await waitFor(`!!document.querySelector('button[aria-label="Delete selected saved picture"]:not(:disabled)')`);
   await evaluate(`document.querySelector('button[aria-label="Delete selected saved picture"]').click()`);
   await waitFor('!!document.querySelector(".delete-picture-dialog[open]")');
   await evaluate('document.querySelector(".confirm-delete").click()');
   await waitFor(`!!document.querySelector('button[aria-label="Undo delete"]')`);
-  const wasDeleted = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => !(await pictureRepository.load()).some(p => p.id === ${JSON.stringify(deletedId)}))`);
+  const wasDeleted = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => !(await pictureRepository.list()).some(p => p.id === ${JSON.stringify(deletedId)}))`);
   if (!wasDeleted) throw Error('Library deletion was not persisted');
   await evaluate(`document.querySelector('button[aria-label="Undo delete"]').click()`);
   await waitFor(`!document.querySelector('button[aria-label="Undo delete"]')`);
-  const restored = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => (await pictureRepository.load()).find(p => p.id === ${JSON.stringify(deletedId)}))`);
+  const restored = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => await pictureRepository.get(${JSON.stringify(deletedId)}))`);
   if (!restored || JSON.stringify(restored.document) !== JSON.stringify(afterPinch)) throw Error('Undo delete did not restore the saved drawing');
   result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,deleteRestore:true,exportChoices:true,exportRetry:true};
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});

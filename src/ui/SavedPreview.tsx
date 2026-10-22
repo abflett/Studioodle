@@ -5,15 +5,15 @@ import { Artwork } from '../editor/Artwork';
 import { prepareStickers } from '../editor/vectorStickers';
 import type { EditorSetup } from '../editor/setup';
 
-export function SavedPreview({ picture }: { picture: EditorSetup }) {
+export function SavedPreview({ picture, pending = false, unavailable = false }: { picture: EditorSetup; pending?: boolean; unavailable?: boolean }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [result, setResult] = useState<{ picture: EditorSetup; failed: boolean }>();
-  const ready = result?.picture === picture && !result.failed;
-  const failed = result?.picture === picture && result.failed;
+  const ready = !pending && !unavailable && result?.picture === picture && !result.failed;
+  const failed = unavailable || (result?.picture === picture && result.failed);
   const { width, height } = paperSize(picture.format, picture.size);
   useEffect(() => {
     const element = canvas.current;
-    if (!element) return;
+    if (!element || pending || unavailable) return;
     let active = true;
     let artwork: Artwork | undefined;
     const draw = () => {
@@ -42,9 +42,9 @@ export function SavedPreview({ picture }: { picture: EditorSetup }) {
     }).catch(() => { if (active) setResult({ picture, failed: true }); });
     }); });
     return () => { active = false; cancelAnimationFrame(frame); observer.disconnect(); artwork?.dispose(); };
-  }, [picture, width, height]);
+  }, [picture, width, height, pending, unavailable]);
   return <span className="saved-preview preview-frame" aria-busy={!ready && !failed} style={{ background: picture.background, aspectRatio: `${width} / ${height}`, width: `min(100%, calc(var(--preview-height, 240px) * ${width / height}))`, height: 'auto' }}>
-    <canvas ref={canvas} width={width} height={height} aria-hidden="true" style={{ visibility: ready ? 'visible' : 'hidden' }} />
+    <canvas ref={canvas} width={1} height={1} aria-hidden="true" style={{ visibility: ready ? 'visible' : 'hidden' }} />
     {!ready && <span className="preview-loading">{failed ? <ImageOff aria-hidden="true" /> : <LoaderCircle className="preview-spinner" aria-hidden="true" />}<span className="sr-only" role="status">{failed ? 'Preview unavailable' : 'Loading picture preview'}</span></span>}
   </span>;
 }

@@ -10,16 +10,16 @@ These are open findings from the [source review](SOURCE-REVIEW.md), in practical
 priority order. Confirmed code paths are distinguished from device-dependent risks.
 No compatibility layer or engine replacement is proposed.
 
-### 1. Load saved drawings on demand (high priority, confirmed scaling cost)
+### 1. Load saved drawings on demand (completed)
 
-`platform/indexedPictureRepository.ts` uses `getAll()` and validates every full
-painted document; `ui/usePictureLibrary.ts` retains the resulting array. Home-screen
-memory/startup therefore grows with the entire library, not just the selected art.
-Replace full-library reads with ordered summary/cursor access, then load only the
-current picture plus a small prefetch window. Prefer one indexed store with small
-metadata projections rather than a second inconsistent document source. Test
-100+ realistically painted drawings, measure retained memory/first interaction,
-and preserve ordering, selection, deletion/undo and export behavior.
+The library now lists small ordered summaries and loads at most five full drawings
+in priority order: current, next, previous, two ahead, two behind. Navigation
+cancels obsolete reads, evicts unrelated drawings and ignores late results.
+Summaries and artwork save/delete atomically in the same IndexedDB database.
+Existing preview loading feedback remains, with retry for unavailable drawings.
+A 120-complex-drawing browser profile verified ordering, the five-record bound and
+collection of evicted records; storage and UI regressions cover rollback,
+selection, delete/undo, reopening and export. See [measurements and limits](PICTURE-LIBRARY.md).
 
 ### 2. Define background save/recovery behavior (high priority, policy needed)
 

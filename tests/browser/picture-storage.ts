@@ -8,12 +8,27 @@ export async function checkPictureStorage(){
   const picture:SavedPicture={id:'large',version:5,title:'Large drawing',updatedAt:1,format:'landscape',size:{width:32,height:24},background:'#ffffff',leafColor:0,
    document:{version:5,width:32,height:24,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:0xffffff,vectorPaint:{version:1,regions:[{id:1,base:0xffffff,blobs:[{color:0x773399,geometry:[[ring]]}]}]}}]}};
   const bytes=JSON.stringify(picture).length;assert(bytes>5*1024*1024,'Storage regression must exceed typical localStorage quota');
-  await repository.save(picture);const loaded=await repository.load();
+  await repository.save(picture);const loaded=[(await repository.get(picture.id))!];
+  const summaries=await repository.list();assert(summaries.length===1&&!('document' in summaries[0]!), 'Browsing must return summaries only');
   assert(loaded.length===1&&loaded[0]!.document.surfaces[0]!.vectorPaint!.regions[0]!.blobs[0]!.geometry[0]![0]!.length===ring.length,'Large vector geometry did not round trip');
-  picture.title='Replacement';await repository.save(picture);assert((await repository.load())[0]!.title==='Replacement','Saving did not replace the existing drawing');
+  picture.title='Replacement';await repository.save(picture);assert((await repository.get(picture.id))!.title==='Replacement','Saving did not replace the existing drawing');
   let rejected=false;try{await repository.save({...picture,leafColor:-1});}catch{rejected=true;}
-  assert(rejected&&(await repository.load())[0]!.title==='Replacement','Invalid replacements must fail before overwriting the valid drawing');
-  await repository.delete(picture.id);assert((await repository.load()).length===0,'Deletion failed');
-  return {largeDocumentBytes:bytes,roundtrip:true,replacement:true,invalidReplacement:true,deletion:true};
+  assert(rejected&&(await repository.get(picture.id))!.title==='Replacement','Invalid replacements must fail before overwriting the valid drawing');
+  const originalPut=IDBObjectStore.prototype.put;
+  IDBObjectStore.prototype.put=function(...args){if(this.name==='pictures')throw Error('Injected document write failure');return originalPut.apply(this,args);};
+  try { rejected=false;try{await repository.save({...picture,title:'Must roll back'});}catch{rejected=true;}assert(rejected,'Injected write must fail'); }
+  finally {IDBObjectStore.prototype.put=originalPut;}
+  assert((await repository.list())[0]!.title==='Replacement'&&(await repository.get(picture.id))!.title==='Replacement','A failed document write must roll back the summary too');
+  const cancel=new AbortController();cancel.abort();
+  let aborted=false;try{await repository.get(picture.id,cancel.signal);}catch(error){aborted=error instanceof DOMException&&error.name==='AbortError';}assert(aborted,'Cancelled reads must reject before loading');
+  const pendingCancel=new AbortController(),pending=repository.get(picture.id,pendingCancel.signal);pendingCancel.abort();
+  aborted=false;try{await pending;}catch(error){aborted=error instanceof DOMException&&error.name==='AbortError';}assert(aborted,'Navigation must cancel a read waiting for its database connection');
+  const originalDelete=IDBObjectStore.prototype.delete;
+  IDBObjectStore.prototype.delete=function(...args){if(this.name==='pictures')throw Error('Injected document delete failure');return originalDelete.apply(this,args);};
+  try { rejected=false;try{await repository.delete(picture.id);}catch{rejected=true;}assert(rejected,'Injected delete must fail'); }
+  finally {IDBObjectStore.prototype.delete=originalDelete;}
+  assert((await repository.list()).length===1&&await repository.get(picture.id)!==undefined,'A failed document deletion must preserve its summary too');
+  await repository.delete(picture.id);assert((await repository.list()).length===0 && await repository.get(picture.id)===undefined,'Deletion failed');
+  return {largeDocumentBytes:bytes,roundtrip:true,replacement:true,invalidReplacement:true,deletion:true,atomicSummaryWrites:true,cancellation:true};
  }finally{await new Promise<void>((resolve,reject)=>{const request=indexedDB.deleteDatabase(name);request.onsuccess=()=>resolve();request.onerror=()=>reject(request.error);});}
 }

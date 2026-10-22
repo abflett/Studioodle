@@ -24,7 +24,7 @@ Repeated coverage compacts, but more visible islands and color edges require mor
 
 ## Current data format
 
-Picture/document format is 5; coloring-book format is 2. Surfaces optionally contain `vectorPaint` (version 1), with region IDs, backing styles and blob geometry. Old paint runs, paint-density fields and format versions are rejected. New development libraries use `studioodle-pictures-v5` (IndexedDB), `studioodle.v5.coloring.` and `studioodle.workshop.v2`. There are no compatibility decoders or migrations. Bundled layouts have been updated directly.
+Picture/document format is 5; coloring-book format is 2. Surfaces optionally contain `vectorPaint` (version 1), with region IDs, backing styles and blob geometry. Old paint runs, paint-density fields and format versions are rejected. New development libraries use `studioodle-library-v1` (IndexedDB), `studioodle.v5.coloring.` and `studioodle.workshop.v2`. There are no compatibility decoders or migrations. Bundled layouts have been updated directly.
 
 Geometry-only coloring-page export removes vector paint. PNG output defaults to 300 DPI, with 150/600 DPI choices; `renderPicture` accepts an output DPI without changing stored paint. Print, SVG and PDF output retain vectors. See [picture output](PICTURE-OUTPUT.md); PNG resolution choices do not affect SVG/PDF output.
 

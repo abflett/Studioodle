@@ -1,15 +1,23 @@
+import type { PictureSummary } from './pictureSummary';
 import { isVectorSticker } from './vectorCatalog';
 import { paperSize } from './document';
 import type { SavedPicture } from './savedPicture';
 import type { ArtworkDocument } from './document';
 
-export function isSavedPicture(value: unknown): value is SavedPicture {
+export function isPictureSummary(value: unknown): value is PictureSummary {
   if (!value || typeof value !== 'object') return false;
+  const picture = value as PictureSummary;
+  return typeof picture.id === 'string' && picture.id.length > 0 && typeof picture.title === 'string' &&
+    typeof picture.background === 'string' && /^#[0-9a-f]{6}$/i.test(picture.background) &&
+    ['square', 'landscape', 'portrait'].includes(picture.format) && validSize(picture.size) &&
+    Number.isInteger(picture.leafColor) && picture.leafColor >= 0 && picture.leafColor <= 0xffffff && Number.isFinite(picture.updatedAt);
+}
+
+export function isSavedPicture(value: unknown): value is SavedPicture {
+  if (!isPictureSummary(value)) return false;
   const picture = value as SavedPicture;
-  return picture.version === 5 && picture.version === picture.document?.version && typeof picture.id === 'string' && picture.id.length > 0 &&
-    typeof picture.title === 'string' && typeof picture.background === 'string' && /^#[0-9a-f]{6}$/i.test(picture.background) &&
-    ['square', 'landscape', 'portrait'].includes(picture.format) && validSize(picture.size) && Number.isInteger(picture.leafColor) && picture.leafColor >= 0 && picture.leafColor <= 0xffffff && Number.isFinite(picture.updatedAt) &&
-    isArtworkDocument(picture.document) && picture.document.width === paperSize(picture.format, picture.size).width && picture.document.height === paperSize(picture.format, picture.size).height;
+  return picture.version === 5 && picture.version === picture.document?.version && isArtworkDocument(picture.document) &&
+    picture.document.width === paperSize(picture.format, picture.size).width && picture.document.height === paperSize(picture.format, picture.size).height;
 }
 
 function validSize(value: unknown): value is {
