@@ -132,6 +132,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   const previewSize = paperSize(currentSummary?.format ?? 'landscape', currentSummary?.size);
   const previewRatio = previewSize.width / previewSize.height;
   const frontPaper = portfolioPaper(previewRatio);
+  // The source PNG includes transparent margins: match the interior face, not its image box.
+  const sheetRatio = previewRatio * frontPaper.outline.height / frontPaper.outline.width;
   const browseSaved = (direction: 'next' | 'previous') => {
     setPageTurn(direction);
     setSampleIndex(index => (index + (direction === 'next' ? 1 : saved.length - 1)) % saved.length);
@@ -188,10 +190,10 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
               <button className="choice-card previous-picture" aria-label={currentSummary ? `Continue saved picture: ${currentSummary.title}` : 'Continue a saved picture (no saved pictures yet)'} title={currentSummary ? `Continue ${currentSummary.title}` : 'Your pictures'} disabled={!current} onClick={() => { if (current) onOpen(current); }}>
                 <span className="choice-art portfolio-stage">
                   <img className="portfolio-stack-art" src={savedStackArtwork} alt="" aria-hidden="true" draggable={false} decoding="async" />
-                  <span className="portfolio-pile" data-paper-shape={frontPaper.shape} style={{ width: `min(90%, calc(var(--object-height) * .88 * ${previewRatio}))`, aspectRatio: `${previewRatio}` }}>
+                  <span className="portfolio-pile" data-paper-shape={frontPaper.shape} style={{ width: `min(90%, calc(var(--object-height) * .88 * ${sheetRatio}))`, aspectRatio: `${sheetRatio}` }}>
                     <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'} style={{ backgroundImage: `url("${frontPaper.artwork}")`, maskImage: `url("${frontPaper.artwork}")` }}>
                       <span className="portfolio-artwork">
-                        {currentSummary ? <SavedPreview picture={current ?? currentSummary} fit="cover" pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}
+                        {currentSummary ? <SavedPreview picture={current ?? currentSummary} paperFrame={frontPaper.frame} pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}
                       </span>
                     </span>
                   </span>

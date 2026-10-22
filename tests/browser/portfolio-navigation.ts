@@ -7,7 +7,8 @@ async function ready(previousLabel?: string | null) {
   throw Error('Portfolio preview did not become ready');
 }
 
-function paperGeometry() {
+async function paperGeometry() {
+  const { portfolioPaper } = await import('../../src/app/startup');
   const stage = document.querySelector<HTMLElement>('.portfolio-stage')!;
   const pile = document.querySelector<HTMLElement>('.portfolio-pile')!;
   const preview = document.querySelector<HTMLElement>('.portfolio-page .saved-preview')!;
@@ -15,18 +16,16 @@ function paperGeometry() {
   const ratio = pile.offsetWidth / pile.offsetHeight;
   const expected = width! / height! > Math.sqrt(Math.SQRT2) ? 'landscape' : width! / height! < 1 / Math.sqrt(Math.SQRT2) ? 'portrait' : 'square';
   assert(pile.dataset.paperShape === expected, 'The front sheet must use the closest paper format');
-  assert(Math.abs(ratio - width! / height!) < .02, 'The front sheet must match the actual picture ratio to avoid format cropping');
+  const outline = portfolioPaper(width! / height!).outline;
+  const faceRatio = ratio * outline.width / outline.height;
+  assert(Math.abs(faceRatio - width! / height!) < .03, 'The interior paper face must match the drawing, excluding transparent asset margins');
   assert(getComputedStyle(pile).rotate === '-3deg', 'The front sheet should keep its subtle fixed tilt');
   const page = document.querySelector<HTMLElement>('.portfolio-page')!;
   assert(getComputedStyle(page).maskImage.includes('sheet-'), 'The front sheet must use its artwork alpha mask');
-  assert(preview.dataset.fit === 'cover', 'The live drawing must cover the paper without stretching');
+  assert(preview.dataset.fit === 'paper', 'The drawing must fit inside the opaque paper face');
   assert(Math.abs(preview.offsetWidth - page.offsetWidth) <= 1 && Math.abs(preview.offsetHeight - page.offsetHeight) <= 1, 'Artwork must cover the entire paper, without inset margins');
   assert(getComputedStyle(preview).maskImage === 'none' && getComputedStyle(preview).opacity === '1', 'Full-color artwork must reach the silhouette without a faded inner frame');
   const canvas = preview.querySelector('canvas')!;
-  const transform = canvas.getContext('2d')!.getTransform();
-  assert(Math.abs(transform.a - transform.d) < 1e-6, 'Cover rendering must scale both drawing axes equally');
-  assert(transform.e <= 0 && transform.f <= 0 && width! * transform.a >= canvas.width - 1 && height! * transform.d >= canvas.height - 1, 'Cover rendering must not leave uncovered strips');
-  assert(Math.abs(transform.e) <= 1 && Math.abs(transform.f) <= 1, 'A matching front-sheet ratio must not crop the drawing');
   assert(Math.abs(canvas.width - canvas.clientWidth * devicePixelRatio) <= 1 && Math.abs(canvas.height - canvas.clientHeight * devicePixelRatio) <= 1, 'Page rotation must not enlarge or distort the canvas backing');
   const arrow = document.querySelector('[aria-label="Next saved picture"]')!.getBoundingClientRect();
   return { width: stage.offsetWidth, height: stage.offsetHeight, arrowY: arrow.y, ratio };
@@ -34,6 +33,8 @@ function paperGeometry() {
 
 /** Run against landscape and portrait saves after the library has opened. */
 export async function checkPortfolioNavigation() {
+  const { checkPaperPreview } = await import('./paper-preview');
+  await checkPaperPreview();
   const { portfolioPaper, portfolioPapers } = await import('../../src/app/startup');
   for (const [ratio, shape] of [[.5, 'portrait'], [1 / Math.SQRT2, 'portrait'], [.75, 'portrait'], [.85, 'square'], [1, 'square'], [1.16, 'square'], [4 / 3, 'landscape'], [Math.SQRT2, 'landscape'], [2, 'landscape']] as const) {
     assert(portfolioPaper(ratio).shape === shape, 'Paper selection must handle square and extreme picture ratios');
@@ -45,7 +46,7 @@ export async function checkPortfolioNavigation() {
   }
   await ready();
   const open = document.querySelector<HTMLButtonElement>('.previous-picture')!;
-  const firstGeometry = paperGeometry();
+  const firstGeometry = await paperGeometry();
   const stack = document.querySelector<HTMLImageElement>('.portfolio-stack-art')!;
   const stackSource = stack.currentSrc;
   const stackBox = stack.getBoundingClientRect();
@@ -57,7 +58,7 @@ export async function checkPortfolioNavigation() {
   next.click(); await ready(original);
   assert(open.getAttribute('aria-label') !== original, 'Next must change the saved picture');
   assert(getComputedStyle(document.querySelector('.portfolio-page')!).animationName === 'portfolio-next', 'Forward navigation must turn forward: ' + getComputedStyle(document.querySelector('.portfolio-page')!).animationName);
-  const secondGeometry = paperGeometry();
+  const secondGeometry = await paperGeometry();
   const nextStackBox = stack.getBoundingClientRect();
   assert(stack.currentSrc === stackSource && stackBox.width === nextStackBox.width && stackBox.height === nextStackBox.height, 'The illustrated base must not change with the picture ratio');
   assert(firstGeometry.width === secondGeometry.width && firstGeometry.height === secondGeometry.height && firstGeometry.arrowY === secondGeometry.arrowY, 'Picture proportions must not move the browsing stage or arrows');
