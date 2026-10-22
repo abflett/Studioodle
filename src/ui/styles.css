@@ -93,7 +93,7 @@ progress::-moz-progress-bar { background: var(--action); border-radius: 10px; }
 .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 3vw, 26px); min-height: 0; }
 .choice-card { min-height: 0; display: flex; flex-direction: column; align-items: center; gap: var(--label-gap); padding: 16px; border: 0; border-radius: 28px; background: transparent; color: var(--text); }
 .choice-art { display: grid; place-items: end center; height: var(--picture-height); min-height: 0; width: 100%; }
-.choice-art img, .choice-grid .choice-art > svg { display: block; width: 100%; height: 100%; object-fit: contain; object-position: bottom; min-height: 0; pointer-events: none; user-select: none; }
+.choice-art img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: bottom; min-height: 0; pointer-events: none; user-select: none; }
 .previous-section { position: relative; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--label-gap); text-align: center; }
 .picture-carousel { display: flex; flex: 0 1 auto; min-height: 0; width: 100%; align-items: flex-start; justify-content: center; gap: clamp(12px, 4vw, 30px); }
 .previous-picture { position: relative; width: min(292px, 54vw); min-width: 0; flex-shrink: 1; }
@@ -689,9 +689,8 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .selection .choice-art { position: relative; display: grid; place-items: center; width: 100%; height: var(--object-height); padding: 0; }
 .selection .choice-blank { translate: -12px -34px; }
 .selection .choice-coloring { translate: 12px 34px; }
-.choice-coloring .choice-illustration { scale: .94; rotate: 1deg; }
-.choice-illustration { display: block; width: 100%; height: 100%; pointer-events: none; }
-.choice-illustration > svg { width: 100%; height: 100%; display: block; overflow: visible; filter: none; }
+.choice-coloring .choice-illustration { scale: 1.04; }
+.selection .choice-illustration { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; }
 .selection .previous-section { min-width: 0; gap: 0; translate: -10px 0; }
 .previous-section .picture-carousel { --browse-size: 44px; display: grid; grid-template-columns: var(--browse-size) minmax(0, 1fr) var(--browse-size); align-items: start; gap: 6px; width: min(520px, calc(var(--object-height) * 1.5 + 112px), 100%); }
 .saved-picture-card { position: relative; grid-column: 2; grid-row: 1; display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; gap: 10px; padding: 12px 4px; border-radius: 32px; transition: background-color 160ms ease; }

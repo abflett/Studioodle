@@ -31,6 +31,13 @@ buttons take click priority.
 Forward/backward navigation adds a 240 ms page-turn transform without delaying
 loading or interactions. Reduced-motion preferences disable the turn animation.
 
+The drawing and coloring choices use transparent, hand-inked watercolor
+illustrations. Original generated PNGs and exact prompts live in
+`art/source/interface/selection-objects.json` and its sibling files; full-resolution,
+lossless WebP copies live under `src/assets/selection/`. Both images decode during
+the splash alongside the editor module, so the wordless home screen opens with its
+art ready. These are decorative interface assets; painting and output stay vector.
+
 The fresh pre-release IndexedDB database is `studioodle-library-v1` (schema 1).
 `pictures` stores full format-5 drawings; `summaries` stores explicit metadata
 projections with a compound update-time/ID index. Both records save and delete in
