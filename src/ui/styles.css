@@ -683,13 +683,16 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .art-studio .sticker-ribbon { background-image: var(--scene-tint), var(--scene-art); background-size: cover; background-position: center; background-attachment: fixed; }
 /* Two paper choices above the ring-bound collection of saved pictures. */
 .selection-screen { padding-top: max(84px, calc(env(safe-area-inset-top) + 72px)); padding-bottom: max(28px, env(safe-area-inset-bottom)); }
-.selection-screen .selection { --object-height: min(clamp(160px, 30vw, 300px), calc((100dvh - 240px) / 2)); --saved-picture-height: var(--object-height); width: min(820px, 100%); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 20px; }
-.selection .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(100%, calc(var(--object-height) * 3)); justify-self: center; gap: clamp(16px, 3vw, 36px); }
+.selection-screen .selection { --object-height: min(clamp(160px, 30vw, 300px), calc((100dvh - 280px) / 2)); --saved-picture-height: var(--object-height); width: min(820px, 100%); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 20px; }
+.selection .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(100%, calc(var(--object-height) * 3)); justify-self: center; padding-block: 10px; gap: clamp(16px, 3vw, 36px); }
 .selection .choice-card { position: relative; padding: 12px; gap: 0; border-radius: 32px; }
 .selection .choice-art { position: relative; display: grid; place-items: center; width: 100%; height: var(--object-height); padding: 0; }
+.selection .choice-blank { translate: -6px -8px; }
+.selection .choice-coloring { translate: 8px 10px; }
+.choice-coloring .choice-illustration { scale: .94; rotate: 1deg; }
 .choice-illustration { display: block; width: 100%; height: 100%; pointer-events: none; }
 .choice-illustration > svg { width: 100%; height: 100%; display: block; overflow: visible; filter: drop-shadow(0 9px 12px var(--shadow)); }
-.selection .previous-section { min-width: 0; gap: 0; }
+.selection .previous-section { min-width: 0; gap: 0; translate: -10px 0; }
 .previous-section .picture-carousel { --browse-size: 44px; display: grid; grid-template-columns: var(--browse-size) minmax(0, 1fr) var(--browse-size); align-items: start; gap: 6px; width: min(520px, calc(var(--object-height) * 1.5 + 112px), 100%); }
 .saved-picture-card { position: relative; grid-column: 2; grid-row: 1; display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; gap: 10px; padding: 12px 4px; border-radius: 32px; transition: background-color 160ms ease; }
 .previous-section .saved-picture-card .previous-picture { position: static; width: 100%; min-width: 0; padding: 0; background: transparent; border-radius: 0; }
@@ -723,7 +726,10 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @keyframes portfolio-previous { from { transform: rotateY(16deg) rotateZ(1deg); } to { transform: none; } }
 @media (max-width: 540px) {
   .selection-screen .selection { --object-height: min(clamp(140px, 43vw, 210px), calc((100dvh - 220px) / 2)); gap: 18px; }
-  .selection .choice-grid { gap: 8px; }
+  .selection .choice-grid { padding-block: 6px; gap: 8px; }
+  .selection .choice-blank { translate: -2px -4px; }
+  .selection .choice-coloring { translate: 2px 6px; }
+  .selection .previous-section { translate: 0; }
   .selection .choice-card { padding: 2px; border-radius: 24px; }
   .saved-picture-card .library-actions { gap: 8px; }
 }
@@ -733,9 +739,12 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 }
 @media (max-height: 540px) {
   .selection-screen { padding-top: max(72px, calc(env(safe-area-inset-top) + 64px)); padding-bottom: max(12px, env(safe-area-inset-bottom)); }
-  .selection-screen .selection { --object-height: min(140px, calc((100dvh - 160px) / 2)); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 10px; }
+  .selection-screen .selection { --object-height: min(140px, calc((100dvh - 180px) / 2)); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 10px; }
   .selection .choice-card { padding: 2px; }
-  .selection .choice-grid { display: grid; gap: 12px; }
+  .selection .choice-grid { display: grid; padding-block: 4px; gap: 12px; }
+  .selection .choice-blank { translate: -2px -3px; }
+  .selection .choice-coloring { translate: 2px 4px; }
+  .selection .previous-section { translate: 0; }
   .previous-section .picture-carousel { --browse-size: 36px; gap: 4px; }
   .saved-picture-card { gap: 6px; padding: 8px 2px; }
   .previous-section .picture-carousel > .icon-button { margin-top: calc(8px + (var(--object-height) - var(--browse-size)) / 2); }
