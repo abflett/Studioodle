@@ -1,6 +1,8 @@
-export function Brand() {
+export function Brand({ decorative = false }: { decorative?: boolean }) {
+  const Container = decorative ? 'span' : 'div';
+  const Name = decorative ? 'span' : 'h1';
   return (
-    <div className="brand" aria-label="Studioodle">
+    <Container className="brand" aria-label={decorative ? undefined : "Studioodle"} aria-hidden={decorative || undefined}>
       <svg className="brand-icon" viewBox="0 0 180 180" aria-hidden="true">
         <rect className="brand-tile" x="18" y="18" width="144" height="144" rx="44" fill="currentColor" />
         <g transform="rotate(-9 90 90)">
@@ -17,7 +19,7 @@ export function Brand() {
         <path className="brand-spark" d="m151 20 3 9 9 3-9 3-3 9-3-9-9-3 9-3Z" fill="var(--brand-gold)" />
         <circle cx="22" cy="135" r="7" fill="var(--brand-paint)" />
       </svg>
-      <h1 className="brand-name" aria-hidden="true">Studi<span className="brand-loop">oo</span>dle<span className="brand-dot">.</span></h1>
-    </div>
+      <Name className="brand-name" aria-hidden="true">Studi<span className="brand-loop">oo</span>dle<span className="brand-dot">.</span></Name>
+    </Container>
   );
 }

@@ -216,11 +216,9 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 .previous-picture .choice-art { height: min(260px, 30dvh); flex: 0 0 auto; display: grid; place-items: center; padding: 0; }
 .previous-picture .saved-preview { --preview-height: min(260px, 30dvh); display: block; max-width: 100%; flex-shrink: 0; }
 .scene-picker .saved-preview { --preview-height: min(240px, 40dvh); flex-shrink: 0; }
-.previous-picture .empty-pictures { min-height: var(--picture-height); }
 .previous-picture { gap: 24px; }
 .picture-carousel { align-items: center; }
 .picture-carousel > .icon-button { margin-top: 0; transform: translateY(-25px); }
-.empty-pictures { width: 100%; height: 100%; display: grid; place-items: center; border: 2px dashed var(--border); border-radius: 18px; color: var(--muted); font-size: 15px; }
 
 .art-ribbon { flex-wrap: wrap; gap: 4px; }
 .art-ribbon button { min-width: 56px; padding: 8px 10px; }
@@ -721,6 +719,14 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 }
 .portfolio-stage { perspective: 900px; }
 .portfolio-pile { position: relative; display: block; }
+.portfolio-stack { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: min(100%, calc(var(--object-height) * 1.5)); aspect-ratio: 3 / 2; container-type: inline-size; pointer-events: none; }
+.portfolio-stack-brand { position: absolute; inset: 27% 16% 29%; display: grid; place-items: center; color: #35545c; opacity: .84; rotate: -1deg; }
+.portfolio-stack-brand .brand { width: 100%; flex-direction: row; justify-content: space-between; gap: 2cqw; --text: #35545c; --accent: #97593d; --brand-tile: #c3dcdb; --brand-paper: #faf4e6; --brand-ink: #35545c; --brand-gold: #ddc799; --brand-pencil: #d6aa83; --brand-paint: #3e747d; }
+.portfolio-stack-brand .brand-icon { width: 20%; flex-shrink: 0; filter: none; }
+.portfolio-stack-brand .brand-name { font-size: 9.3cqw; white-space: nowrap; }
+.portfolio-stack-brand .brand-spark { animation: none; }
+.portfolio-stack-status { position: absolute; left: 20%; right: 20%; top: 65%; display: grid; place-items: center; color: #35545c; }
+.portfolio-stack-error { font-size: 13px; }
 .portfolio-stage .portfolio-stack-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; user-select: none; }
 .portfolio-page { position: absolute; inset: 0; isolation: isolate; transform-origin: left center; }
 /* Opaque paper beneath the separately antialiased artwork and border prevents stack seams. */
@@ -728,8 +734,10 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .portfolio-artwork { position: absolute; display: grid; place-items: center; mask-size: 100% 100%; mask-repeat: no-repeat; }
 .portfolio-page .portfolio-paper-overlay { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; object-position: center; mask-size: 100% 100%; mask-repeat: no-repeat; pointer-events: none; }
 .portfolio-page .saved-preview { max-width: 100%; max-height: 100%; border: 0; border-radius: 0; box-shadow: none; }
+/* Let the branded base sheet show through until the real picture is ready. */
+.portfolio-page:has(.preview-loading) > :is(.portfolio-paper-backing, .portfolio-paper-overlay) { visibility: hidden; }
+.portfolio-page .preview-loading { background: transparent; place-items: end center; padding-bottom: 8%; color: #35545c; }
 .portfolio-page .preview-spinner { width: 30px; height: 30px; filter: none; }
-.portfolio-page .empty-pictures { min-height: 0; border: 0; font-size: 15px; color: #687b7a; padding: 12px; }
 .portfolio-page.turn-next { animation: portfolio-next 240ms ease-out both; }
 .portfolio-page.turn-previous { animation: portfolio-previous 240ms ease-out both; }
 @keyframes portfolio-next { from { transform: rotateY(-16deg) rotateZ(-1deg); } to { transform: none; } }
