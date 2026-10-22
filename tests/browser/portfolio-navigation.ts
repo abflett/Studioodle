@@ -58,6 +58,7 @@ export async function checkPortfolioNavigation() {
   const firstGeometry = await paperGeometry();
   const stack = document.querySelector<HTMLImageElement>('.portfolio-stack-art')!;
   const stackSource = stack.currentSrc;
+  const stackBox = stack.getBoundingClientRect();
   assert(stack.complete && stack.naturalWidth > 0, 'The permanent illustrated stack must be ready');
   const original = open.getAttribute('aria-label');
   const next = document.querySelector<HTMLButtonElement>('[aria-label="Next saved picture"]')!;
@@ -67,7 +68,9 @@ export async function checkPortfolioNavigation() {
   assert(open.getAttribute('aria-label') !== original, 'Next must change the saved picture');
   assert(getComputedStyle(document.querySelector('.portfolio-page')!).animationName === 'portfolio-next', 'Forward navigation must turn forward: ' + getComputedStyle(document.querySelector('.portfolio-page')!).animationName);
   const secondGeometry = await paperGeometry();
-  assert(stack.currentSrc === stackSource && getComputedStyle(stack).objectFit === 'contain', 'The illustrated base must retain its source and proportions when the stage resizes');
+  const nextStackBox = stack.getBoundingClientRect();
+  assert(stack.currentSrc === stackSource && stackBox.width === nextStackBox.width && stackBox.height === nextStackBox.height, 'The illustrated base must stay fixed while cycling formats');
+  assert(firstGeometry.width === secondGeometry.width && firstGeometry.height === secondGeometry.height && firstGeometry.arrowY === secondGeometry.arrowY, 'Cycling formats must not shift the stage or arrows');
   assert(Math.abs(firstGeometry.ratio - secondGeometry.ratio) > .1, 'The fixture must exercise different picture proportions');
   assert(!document.querySelector('.portfolio-binding'), 'Saved sheets must not have booklet rings');
   const second = open.getAttribute('aria-label');
