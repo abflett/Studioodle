@@ -33,6 +33,10 @@ async function paperGeometry() {
   const canvas = preview.querySelector('canvas')!;
   assert(Math.abs(canvas.width - canvas.clientWidth * devicePixelRatio) <= 1 && Math.abs(canvas.height - canvas.clientHeight * devicePixelRatio) <= 1, 'Page rotation must not enlarge or distort the canvas backing');
   const arrow = document.querySelector('[aria-label="Next saved picture"]')!.getBoundingClientRect();
+  const stageBox = stage.getBoundingClientRect();
+  assert(Math.abs(arrow.y + arrow.height / 2 - stageBox.y - stageBox.height / 2) < 3, 'Browsing arrows must stay centered on the resized paper stage');
+  const actions = document.querySelector('.library-actions')!.getBoundingClientRect();
+  assert(page.getBoundingClientRect().bottom <= actions.top, 'The enlarged paper must stay clear of its action buttons');
   return { width: stage.offsetWidth, height: stage.offsetHeight, arrowY: arrow.y, ratio };
 }
 
@@ -54,7 +58,6 @@ export async function checkPortfolioNavigation() {
   const firstGeometry = await paperGeometry();
   const stack = document.querySelector<HTMLImageElement>('.portfolio-stack-art')!;
   const stackSource = stack.currentSrc;
-  const stackBox = stack.getBoundingClientRect();
   assert(stack.complete && stack.naturalWidth > 0, 'The permanent illustrated stack must be ready');
   const original = open.getAttribute('aria-label');
   const next = document.querySelector<HTMLButtonElement>('[aria-label="Next saved picture"]')!;
@@ -64,9 +67,7 @@ export async function checkPortfolioNavigation() {
   assert(open.getAttribute('aria-label') !== original, 'Next must change the saved picture');
   assert(getComputedStyle(document.querySelector('.portfolio-page')!).animationName === 'portfolio-next', 'Forward navigation must turn forward: ' + getComputedStyle(document.querySelector('.portfolio-page')!).animationName);
   const secondGeometry = await paperGeometry();
-  const nextStackBox = stack.getBoundingClientRect();
-  assert(stack.currentSrc === stackSource && stackBox.width === nextStackBox.width && stackBox.height === nextStackBox.height, 'The illustrated base must not change with the picture ratio');
-  assert(firstGeometry.width === secondGeometry.width && firstGeometry.height === secondGeometry.height && firstGeometry.arrowY === secondGeometry.arrowY, 'Picture proportions must not move the browsing stage or arrows');
+  assert(stack.currentSrc === stackSource && getComputedStyle(stack).objectFit === 'contain', 'The illustrated base must retain its source and proportions when the stage resizes');
   assert(Math.abs(firstGeometry.ratio - secondGeometry.ratio) > .1, 'The fixture must exercise different picture proportions');
   assert(!document.querySelector('.portfolio-binding'), 'Saved sheets must not have booklet rings');
   const second = open.getAttribute('aria-label');
@@ -77,5 +78,5 @@ export async function checkPortfolioNavigation() {
   const remove = document.querySelector<HTMLButtonElement>('[aria-label="Delete selected saved picture"]')!;
   const box = remove.getBoundingClientRect();
   assert(document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)?.closest('button') === remove, 'Utility buttons must take priority over the portfolio open target');
-  return { next: true, previous: true, cachedPreview: true, utilityPriority: true, proportionalSheets: true, stableArrows: true, permanentStack: true };
+  return { next: true, previous: true, cachedPreview: true, utilityPriority: true, proportionalSheets: true, centeredArrows: true, permanentStack: true };
 }

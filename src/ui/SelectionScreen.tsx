@@ -184,13 +184,13 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
         </div>
         <section className="previous-section" aria-label="Previous pictures">
 
-          <div className="picture-carousel">
+          <div className="picture-carousel" data-paper-shape={frontPaper.shape}>
             <button className="icon-button" aria-label="Previous saved picture" disabled={saved.length < 2} onClick={() => browseSaved('previous')}><Arrow direction="left" /></button>
             <div className="saved-picture-card" role="group" aria-labelledby="your-pictures-label">
               <button className="choice-card previous-picture" aria-label={currentSummary ? `Continue saved picture: ${currentSummary.title}` : 'Continue a saved picture (no saved pictures yet)'} title={currentSummary ? `Continue ${currentSummary.title}` : 'Your pictures'} disabled={!current} onClick={() => { if (current) onOpen(current); }}>
                 <span className="choice-art portfolio-stage">
                   <img className="portfolio-stack-art" src={savedStackArtwork} alt="" aria-hidden="true" draggable={false} decoding="async" />
-                  <span className="portfolio-pile" data-paper-shape={frontPaper.shape} style={{ width: `min(90%, calc(var(--object-height) * .88 * ${sheetRatio}))`, aspectRatio: `${sheetRatio}` }}>
+                  <span className="portfolio-pile" data-paper-shape={frontPaper.shape} style={{ width: `min(90%, calc(var(--portfolio-height, var(--object-height)) * var(--sheet-fill, .88) * ${sheetRatio}))`, aspectRatio: `${sheetRatio}` }}>
                     <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'}>
                       <span className="portfolio-paper-backing" aria-hidden="true" style={{ maskImage: `url("${frontPaper.backingMask}")`, backgroundColor: '#302b23' }} />
                       <span className="portfolio-artwork" style={frontPaper.artworkStyle}>

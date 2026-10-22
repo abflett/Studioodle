@@ -699,7 +699,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .saved-picture-card .previous-picture:disabled::after { pointer-events: none; }
 .saved-picture-card .previous-picture:disabled { opacity: .75; }
 .previous-section .saved-picture-card .previous-picture:is(:hover, .app-mouse-hover, :active, .app-mouse-pressed) { background: transparent; transform: none; filter: none; }
-.previous-section .picture-carousel > .icon-button { position: static; grid-row: 1; width: var(--browse-size); height: var(--browse-size); padding: 11px; margin: calc(12px + (var(--object-height) - var(--browse-size)) / 2) 0 0; z-index: 2; }
+.previous-section .picture-carousel > .icon-button { position: static; grid-row: 1; width: var(--browse-size); height: var(--browse-size); padding: 11px; margin: calc(12px + (var(--portfolio-height, var(--object-height)) - var(--browse-size)) / 2) 0 0; z-index: 2; }
 .previous-section .picture-carousel > .icon-button:first-child { grid-column: 1; }
 .previous-section .picture-carousel > .icon-button:last-child { grid-column: 3; }
 .saved-picture-card .library-actions { position: relative; z-index: 2; display: flex; justify-content: center; gap: 10px; pointer-events: none; }
@@ -709,7 +709,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .previous-section .previous-picture:focus-visible { outline: none; }
 @media (hover: hover) { .saved-picture-card:has(.previous-picture:not(:disabled)):hover { background: color-mix(in srgb, var(--text) 8%, transparent); } }
 .saved-picture-card:has(.previous-picture:not(:disabled)):is(:focus-within, :has(.app-mouse-hover)) { background: color-mix(in srgb, var(--text) 8%, transparent); }
-.portfolio-stage { perspective: 900px; }
+.selection .portfolio-stage { perspective: 900px; height: var(--portfolio-height, var(--object-height)); }
 .portfolio-pile { position: relative; display: block; rotate: -3deg; }
 .portfolio-stage .portfolio-stack-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; user-select: none; }
 .portfolio-page { position: absolute; inset: 0; isolation: isolate; transform-origin: left center; }
@@ -749,7 +749,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .selection .previous-section { translate: 0; }
   .previous-section .picture-carousel { --browse-size: 36px; gap: 4px; }
   .saved-picture-card { gap: 6px; padding: 8px 2px; }
-  .previous-section .picture-carousel > .icon-button { margin-top: calc(8px + (var(--object-height) - var(--browse-size)) / 2); }
+  .previous-section .picture-carousel > .icon-button { margin-top: calc(8px + (var(--portfolio-height, var(--object-height)) - var(--browse-size)) / 2); }
   .previous-section .library-actions .icon-button { width: 32px; height: 32px; padding: 7px; }
   .saved-picture-card .library-actions { gap: 4px; }
 }
@@ -788,4 +788,11 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .export-dialog .export-layout { padding: 18px 14px; gap: 18px; }
   .export-format-button { gap: 10px; padding: 14px 12px; }
   .export-resolution { padding: 10px 12px; }
+}
+
+/* A portrait sheet fills the stack width; reserve its height instead of shrinking it to landscape height. */
+.selection-screen .selection:has(.picture-carousel[data-paper-shape="portrait"]) {
+  --object-height: min(clamp(140px, 30vw, 300px), calc((100dvh - 300px) / 3));
+  --portfolio-height: calc(var(--object-height) * 2);
+  --sheet-fill: 1;
 }
