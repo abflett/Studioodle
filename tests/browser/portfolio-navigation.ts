@@ -17,7 +17,7 @@ async function paperGeometry() {
   const expected = width! / height! > Math.sqrt(Math.SQRT2) ? 'landscape' : width! / height! < 1 / Math.sqrt(Math.SQRT2) ? 'portrait' : 'square';
   assert(pile.dataset.paperShape === expected, 'The front sheet must use the closest paper format');
   const faceRatio = ratio;
-  assert(Math.abs(faceRatio - width! / height!) < .03, 'The interior paper face must match the drawing, excluding transparent asset margins');
+  assert(Math.abs(faceRatio - portfolioPaper(width! / height!).ratio) < .01, 'The paper frame must retain its template ratio for every drawing size');
   const rotation = parseFloat(getComputedStyle(pile).rotate);
   assert(Math.abs(rotation) >= 2 && Math.abs(rotation) <= 3.8, 'The sheet tilt must stay subtle in either direction');
   const page = document.querySelector<HTMLElement>('.portfolio-page')!;
@@ -27,9 +27,9 @@ async function paperGeometry() {
   assert(getComputedStyle(overlay).maskImage === 'none' && getComputedStyle(overlay).mixBlendMode === 'normal', 'The paper overlay must have a real transparent center, without multiply blending');
   const backing = page.querySelector<HTMLElement>('.portfolio-paper-backing')!;
   assert(backing && backing.style.maskImage.includes(portfolioPaper(width! / height!).backingMask) && getComputedStyle(backing).backgroundColor === 'rgb(48, 43, 35)', 'An opaque ink-colored silhouette must prevent stack bleed through the border');
-  assert(preview.dataset.fit === 'full', 'The complete unwarped drawing must fill its image rectangle');
+  assert(preview.dataset.fit === 'cover', 'The unwarped drawing must cover the paper frame');
   assert(Math.abs(preview.offsetWidth - imageLayer.offsetWidth) <= 1 && Math.abs(preview.offsetHeight - imageLayer.offsetHeight) <= 1, 'The image must fill its masked layer');
-  assert(Math.abs(preview.offsetWidth / preview.offsetHeight - width! / height!) < .03, 'The original drawing aspect ratio must be preserved');
+  assert(Math.abs(preview.offsetWidth / preview.offsetHeight - faceRatio) < .01, 'The preview viewport must match the paper frame');
   assert(getComputedStyle(preview).maskImage === 'none' && getComputedStyle(preview).opacity === '1', 'Full-color artwork must reach the silhouette without a faded inner frame');
   const canvas = preview.querySelector('canvas')!;
   assert(Math.abs(canvas.width - canvas.clientWidth * devicePixelRatio) <= 1 && Math.abs(canvas.height - canvas.clientHeight * devicePixelRatio) <= 1, 'Page rotation must not enlarge or distort the canvas backing');

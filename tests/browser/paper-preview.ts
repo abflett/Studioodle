@@ -1,3 +1,4 @@
+import { checkSavedPreviewFit } from './saved-preview-fit';
 import { Artwork } from '../../src/editor/Artwork';
 import { rectangleGeometry } from '../../src/editor/vectorPaintStyles';
 import { portfolioPapers } from '../../src/app/startup';
@@ -11,7 +12,13 @@ function canvas(width: number, height: number) {
 
 /** Verify actual alpha compositing: transparent center, preserved folds and no exposed gaps. */
 export async function checkPaperPreview() {
+  await checkSavedPreviewFit();
   for (const paper of portfolioPapers) {
+    for (const source of [paper.artwork, paper.artworkMask, paper.backingMask]) {
+      const svg = new DOMParser().parseFromString(await (await fetch(source)).text(), 'image/svg+xml').documentElement;
+      const bounds = svg.getAttribute('viewBox')!.split(/\s+/).map(Number);
+      assert(Math.abs(bounds[2]! / bounds[3]! - paper.ratio) < 1e-9, 'Overlay, mask and backing must share the exact paper aspect ratio');
+    }
     const [original, cutout, silhouette] = await Promise.all([paper.artwork, paper.artworkMask, paper.backingMask].map(load));
     const width = 420, height = Math.round(width / paper.ratio);
     const x = 0, y = 0, w = width, h = height;

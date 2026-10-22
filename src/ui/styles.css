@@ -718,12 +718,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .portfolio-artwork { position: absolute; display: grid; place-items: center; mask-size: 100% 100%; mask-repeat: no-repeat; }
 .portfolio-page .portfolio-paper-overlay { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; object-position: center; mask-size: 100% 100%; mask-repeat: no-repeat; pointer-events: none; }
 .portfolio-page .saved-preview { max-width: 100%; max-height: 100%; border: 0; border-radius: 0; box-shadow: none; }
-/* Bleed the rectangular preview slightly beneath the exact paper mask. */
-.portfolio-page .saved-preview { transform: scale(1.025); }
-/* Keep the whole landscape drawing inside bowed edges; its paper color still fills the mask. */
-.portfolio-pile[data-paper-shape="landscape"] .saved-preview { transform: none; }
-.portfolio-pile[data-paper-shape="landscape"] .saved-preview > canvas { inset: 3%; width: 94%; height: 94%; }
-
 .portfolio-page .preview-spinner { width: 30px; height: 30px; filter: none; }
 .portfolio-page .empty-pictures { min-height: 0; border: 0; font-size: 15px; color: #687b7a; padding: 12px; }
 .portfolio-page.turn-next { animation: portfolio-next 240ms ease-out both; }

@@ -133,8 +133,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   const previewSize = paperSize(currentSummary?.format ?? 'landscape', currentSummary?.size);
   const previewRatio = previewSize.width / previewSize.height;
   const frontPaper = portfolioPaper(previewRatio);
-  // The picture rectangle keeps its exact aspect ratio inside the full paper illustration.
-  const sheetRatio = previewRatio;
+  // Paper, mask and overlay keep their shared template ratio; the drawing covers that frame.
+  const sheetRatio = frontPaper.ratio;
   const browseSaved = (direction: 'next' | 'previous') => {
     setPageTurn(direction);
     setSampleIndex(index => (index + (direction === 'next' ? 1 : saved.length - 1)) % saved.length);
