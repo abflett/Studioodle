@@ -689,7 +689,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .selection .choice-art { position: relative; display: grid; place-items: center; width: 100%; height: var(--object-height); padding: 0; }
 .selection .choice-blank { translate: -12px -34px; }
 .selection .choice-coloring { translate: 12px 34px; }
-.choice-coloring .choice-illustration { scale: 1.04; }
+.choice-coloring .choice-illustration { scale: 1.04; rotate: -5deg; }
 .selection .choice-illustration { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; }
 .selection .previous-section { min-width: 0; gap: 0; translate: -10px 0; }
 .previous-section .picture-carousel { --browse-size: 44px; display: grid; grid-template-columns: var(--browse-size) minmax(0, 1fr) var(--browse-size); align-items: start; gap: 6px; width: min(520px, calc(var(--object-height) * 1.5 + 112px), 100%); }
@@ -712,10 +712,10 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .portfolio-stage { perspective: 900px; }
 .portfolio-pile { position: relative; display: block; }
 .portfolio-stage .portfolio-stack-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; user-select: none; }
-.portfolio-page { position: absolute; inset: 0; border: 2px solid var(--preview-border); border-radius: 3px; background: #f9f0d9; }
-.portfolio-page { display: grid; place-items: center; padding: 0; border: 0; background: #fff8e9; box-shadow: 0 3px 7px #18334326; transform-origin: left center; overflow: hidden; }
-.portfolio-page .saved-preview { --preview-height: calc(var(--object-height) * .6); max-width: 100%; max-height: 100%; border: 2px solid var(--preview-border); border-radius: 3px; box-shadow: none; }
-.portfolio-page > .preview-spinner { width: 30px; height: 30px; filter: none; }
+.portfolio-page { position: absolute; inset: 0; background-size: 100% 100%; background-repeat: no-repeat; mask-size: 100% 100%; mask-repeat: no-repeat; isolation: isolate; transform-origin: left center; }
+.portfolio-artwork { position: absolute; inset: 4% 4% 5%; display: grid; place-items: center; mix-blend-mode: multiply; }
+.portfolio-page .saved-preview { --preview-height: calc(var(--object-height) * .8); max-width: 100%; max-height: 100%; border: 0; border-radius: 0; box-shadow: none; opacity: .96; mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent), linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent); mask-composite: intersect; }
+.portfolio-page .preview-spinner { width: 30px; height: 30px; filter: none; }
 .portfolio-page .empty-pictures { min-height: 0; border: 0; font-size: 15px; color: #687b7a; padding: 12px; }
 .portfolio-page.turn-next { animation: portfolio-next 240ms ease-out both; }
 .portfolio-page.turn-previous { animation: portfolio-previous 240ms ease-out both; }

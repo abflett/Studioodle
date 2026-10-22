@@ -25,19 +25,21 @@ that cached pictures are ready by the next painted frame without a spinner.
 
 The selection screen presents saved work over a permanent illustrated paper stack
 beneath the drawing easel and coloring book, with no visible choice captions.
-The base artwork and browsing stage stay fixed across picture ratios while the
-live front sheet follows the saved picture aspect ratio. Browsing arrows remain
+The base artwork and browsing stage stay fixed across picture ratios. The front
+sheet selects the closest square, landscape or portrait illustration, while the
+live drawing retains its exact aspect ratio inside that sheet. Browsing arrows remain
 outside the open target, and utility buttons take click priority.
 Forward/backward navigation adds a 240 ms page-turn transform without delaying
 loading or interactions. Reduced-motion preferences disable the turn animation.
-The square/landscape/portrait curled front-sheet assets and matching masks are a
-separate visual follow-up; the current live preview keeps its straight edges.
+Each front sheet reuses its generated transparent silhouette as a CSS alpha mask.
+The preview multiplies over its ivory texture with a narrow edge fade, keeping
+the worn paper visible without changing saved artwork or exported colors.
 
 The drawing, coloring and saved-picture choices use transparent, hand-inked
 watercolor illustrations. Original generated PNGs and exact prompts live in
 `art/source/interface/selection-objects.json` and its sibling files;
 full-resolution, lossless WebP copies live under `src/assets/selection/`.
-All three images decode during the splash alongside the editor module, so the
+All six images decode during the splash alongside the editor module, so the
 wordless home screen opens with its art ready. These are decorative interface
 assets; painting and output stay vector.
 

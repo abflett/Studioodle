@@ -13,13 +13,27 @@ function paperGeometry() {
   const preview = document.querySelector<HTMLElement>('.portfolio-page .saved-preview')!;
   const [width, height] = preview.style.aspectRatio.split('/').map(Number);
   const ratio = pile.offsetWidth / pile.offsetHeight;
-  assert(Math.abs(ratio - width! / height!) < .03, 'The front sheet must follow the saved picture aspect ratio');
+  const expected = width! / height! > 1.155 ? 'landscape' : width! / height! < .866 ? 'portrait' : 'square';
+  assert(pile.dataset.paperShape === expected, 'The front sheet must use the closest paper format');
+  const page = document.querySelector<HTMLElement>('.portfolio-page')!;
+  assert(getComputedStyle(page).maskImage.includes('sheet-'), 'The front sheet must use its artwork alpha mask');
+  const canvas = preview.querySelector('canvas')!;
+  assert(Math.abs(canvas.width / canvas.height - width! / height!) < .05, 'The live drawing must retain its own proportions');
   const arrow = document.querySelector('[aria-label="Next saved picture"]')!.getBoundingClientRect();
   return { width: stage.offsetWidth, height: stage.offsetHeight, arrowY: arrow.y, ratio };
 }
 
 /** Run against landscape and portrait saves after the library has opened. */
 export async function checkPortfolioNavigation() {
+  const { portfolioPaper, portfolioPapers } = await import('../../src/app/startup');
+  for (const [ratio, shape] of [[.5, 'portrait'], [.75, 'portrait'], [1, 'square'], [4 / 3, 'landscape'], [2, 'landscape']] as const) {
+    assert(portfolioPaper(ratio).shape === shape, 'Paper selection must handle square and extreme picture ratios');
+  }
+  for (const paper of portfolioPapers) {
+    const image = new Image(); image.src = paper.artwork;
+    await image.decode();
+    assert(image.naturalWidth > 0, 'Every sheet and its alpha mask must decode');
+  }
   await ready();
   const open = document.querySelector<HTMLButtonElement>('.previous-picture')!;
   const firstGeometry = paperGeometry();
