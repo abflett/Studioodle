@@ -11,6 +11,9 @@ export function SavedPreview({ picture, pending = false, unavailable = false, fi
   const ready = !pending && !unavailable && result?.picture === picture && !result.failed;
   const failed = unavailable || (result?.picture === picture && result.failed);
   const { width, height } = paperSize(picture.format, picture.size);
+  const paper = picture.document?.surfaces.find(surface => surface.kind === 'canvas');
+  const paperColor = paper?.vectorPaint?.regions.find(region => region.id === 1)?.base ?? paper?.color;
+  const background = fillContainer && paperColor !== undefined ? `#${paperColor.toString(16).padStart(6, '0')}` : picture.background;
   useLayoutEffect(() => {
     const element = canvas.current;
     if (!element || pending || unavailable) return;
@@ -40,7 +43,7 @@ export function SavedPreview({ picture, pending = false, unavailable = false, fi
     }).catch(() => { if (active) setResult({ picture, failed: true }); });
     return () => { active = false; observer.disconnect(); artwork?.dispose(); };
   }, [picture, width, height, pending, unavailable]);
-  return <span className="saved-preview preview-frame" data-fit={fillContainer ? 'full' : 'contain'} aria-busy={!ready && !failed} style={{ background: picture.background, aspectRatio: `${width} / ${height}`, width: fillContainer ? '100%' : `min(100%, calc(var(--preview-height, 240px) * ${width / height}))`, height: fillContainer ? '100%' : 'auto' }}>
+  return <span className="saved-preview preview-frame" data-fit={fillContainer ? 'full' : 'contain'} aria-busy={!ready && !failed} style={{ background, aspectRatio: `${width} / ${height}`, width: fillContainer ? '100%' : `min(100%, calc(var(--preview-height, 240px) * ${width / height}))`, height: fillContainer ? '100%' : 'auto' }}>
     <canvas ref={canvas} width={1} height={1} aria-hidden="true" style={{ visibility: ready ? 'visible' : 'hidden' }} />
     {!ready && <span className={`preview-loading${failed ? ' is-error' : ''}`}>{failed ? <ImageOff aria-hidden="true" /> : <LoaderCircle className="preview-spinner" aria-hidden="true" />}<span className="sr-only" role="status">{failed ? 'Preview unavailable' : 'Loading picture preview'}</span></span>}
   </span>;
