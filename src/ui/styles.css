@@ -12,8 +12,6 @@
   --action: #3e747d;
   --action-text: #fffaf0;
   --shadow: #35545c30;
-  --selection-highlight: #82afb4;
-  --selection-emphasis: drop-shadow(3.5px 0 0 var(--selection-highlight)) drop-shadow(-3.5px 0 0 var(--selection-highlight)) drop-shadow(0 3.5px 0 var(--selection-highlight)) drop-shadow(0 -3.5px 0 var(--selection-highlight));
   --ribbon-shadow: #294a514d;
   --brand-tile: #c3dcdb;
   --brand-paper: #faf4e6;
@@ -50,7 +48,6 @@
     --action: #ddc799;
     --action-text: #243148;
     --shadow: #050c1c70;
-    --selection-highlight: #ffe1a0;
     --ribbon-shadow: #050c1c99;
     --brand-tile: #344761;
     --brand-paper: #22334c;
@@ -714,13 +711,13 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .previous-section .library-actions .icon-button { width: 44px; height: 44px; padding: 11px; }
 .saved-picture-card:has(.previous-picture:focus-visible) { outline: 3px solid var(--action); outline-offset: 4px; }
 .previous-section .previous-picture:focus-visible { outline: none; }
-/* Emphasize the artwork silhouette, while preserving the larger transparent button targets. */
+/* Enlarge only the artwork on hover; transparent hit areas and layout stay fixed. */
 .selection .choice-card:is(:hover, .app-mouse-hover, :active, .app-mouse-pressed, :focus-visible) {
   background: transparent; transform: none; filter: none;
 }
-.selection .choice-art { transition: filter 160ms ease; }
-.selection .choice-card:not(:disabled):is(:hover, .app-mouse-hover, :active, .app-mouse-pressed, :focus-visible) > .choice-art {
-  filter: var(--selection-emphasis);
+.selection .choice-art { transition: transform 160ms ease; transform-origin: center; }
+.selection .choice-card:not(:disabled):is(:hover, .app-mouse-hover) > .choice-art {
+  transform: scale(1.015);
 }
 .portfolio-stage { perspective: 900px; }
 .portfolio-pile { position: relative; display: block; }
