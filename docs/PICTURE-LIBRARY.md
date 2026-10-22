@@ -27,13 +27,15 @@ The selection screen presents saved work over a permanent illustrated paper stac
 beneath the drawing easel and coloring book, with no visible choice captions.
 The base artwork and browsing stage stay fixed across picture ratios. The front
 sheet selects the closest square, landscape or portrait illustration, while the
-live drawing retains its exact aspect ratio inside that sheet. Browsing arrows remain
+live drawing covers that sheet without stretching (center-cropping excess at
+different aspect ratios). Browsing arrows remain
 outside the open target, and utility buttons take click priority.
 Forward/backward navigation adds a 240 ms page-turn transform without delaying
 loading or interactions. Reduced-motion preferences disable the turn animation.
 Each front sheet reuses its generated transparent silhouette as a CSS alpha mask.
-The preview multiplies over its ivory texture with a narrow edge fade, keeping
-the worn paper visible without changing saved artwork or exported colors.
+The preview extends to the whole silhouette and multiplies over its ivory texture.
+There is no inset frame or edge fade; full-color backgrounds reach the paper edges.
+This decorative preview treatment does not change saved artwork or exported colors.
 
 The drawing, coloring and saved-picture choices use transparent, hand-inked
 watercolor illustrations. Original generated PNGs and exact prompts live in

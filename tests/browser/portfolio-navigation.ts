@@ -17,8 +17,13 @@ function paperGeometry() {
   assert(pile.dataset.paperShape === expected, 'The front sheet must use the closest paper format');
   const page = document.querySelector<HTMLElement>('.portfolio-page')!;
   assert(getComputedStyle(page).maskImage.includes('sheet-'), 'The front sheet must use its artwork alpha mask');
+  assert(preview.dataset.fit === 'cover', 'The live drawing must cover the paper without stretching');
+  assert(Math.abs(preview.offsetWidth - page.offsetWidth) <= 1 && Math.abs(preview.offsetHeight - page.offsetHeight) <= 1, 'Artwork must cover the entire paper, without inset margins');
+  assert(getComputedStyle(preview).maskImage === 'none' && getComputedStyle(preview).opacity === '1', 'Full-color artwork must reach the silhouette without a faded inner frame');
   const canvas = preview.querySelector('canvas')!;
-  assert(Math.abs(canvas.width / canvas.height - width! / height!) < .05, 'The live drawing must retain its own proportions');
+  const transform = canvas.getContext('2d')!.getTransform();
+  assert(Math.abs(transform.a - transform.d) < 1e-6, 'Cover rendering must scale both drawing axes equally');
+  assert(transform.e <= 0 && transform.f <= 0 && width! * transform.a >= canvas.width - 1 && height! * transform.d >= canvas.height - 1, 'Cover rendering must not leave uncovered strips');
   const arrow = document.querySelector('[aria-label="Next saved picture"]')!.getBoundingClientRect();
   return { width: stage.offsetWidth, height: stage.offsetHeight, arrowY: arrow.y, ratio };
 }

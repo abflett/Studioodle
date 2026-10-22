@@ -190,7 +190,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
                   <span className="portfolio-pile" data-paper-shape={frontPaper.shape} style={{ width: `min(90%, calc(var(--object-height) * .88 * ${frontPaper.ratio}))`, aspectRatio: `${frontPaper.ratio}` }}>
                     <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'} style={{ backgroundImage: `url("${frontPaper.artwork}")`, maskImage: `url("${frontPaper.artwork}")` }}>
                       <span className="portfolio-artwork">
-                        {currentSummary ? <SavedPreview picture={current ?? currentSummary} pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}
+                        {currentSummary ? <SavedPreview picture={current ?? currentSummary} fit="cover" pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}
                       </span>
                     </span>
                   </span>
