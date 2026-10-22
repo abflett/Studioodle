@@ -10,6 +10,7 @@ import { isDesktop, toggleDesktopFullscreen, watchDesktopFullscreen } from '../p
 import type { AppSettings } from './settings';
 import { SelectionSettings } from './SelectionSettings';
 import { ColorPicker } from './ColorPicker';
+import { paperSize } from '../editor/document';
 import { presetSize } from '../editor/paperPresets';
 import type { PaperPresetId } from '../editor/paperPresets';
 import { contrastingDrawingColor } from '../editor/palette';
@@ -137,6 +138,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   useEffect(() => { if (step) stepHeading.current?.focus({ preventScroll: true }); }, [step]);
 
   const currentSummary = saved[sampleIndex];
+  const previewSize = paperSize(currentSummary?.format ?? 'landscape', currentSummary?.size);
   const browseSaved = (direction: 'next' | 'previous') => {
     setPageTurn(direction);
     setSampleIndex(index => (index + (direction === 'next' ? 1 : saved.length - 1)) % saved.length);
@@ -192,12 +194,14 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             <div className="saved-picture-card" role="group" aria-labelledby="your-pictures-label">
               <button className="choice-card previous-picture" aria-label={currentSummary ? `Continue saved picture: ${currentSummary.title}` : 'Continue a saved picture (no saved pictures yet)'} title={currentSummary ? `Continue ${currentSummary.title}` : 'Your pictures'} disabled={!current} onClick={() => { if (current) onOpen(current); }}>
                 <span className="choice-art portfolio-stage">
-                  <span className="portfolio-sheet portfolio-sheet-back" aria-hidden="true" />
-                  <span className="portfolio-sheet portfolio-sheet-middle" aria-hidden="true" />
-                  <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'}>
-                    {currentSummary ? <SavedPreview picture={current ?? currentSummary} pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}
+                  <span className="portfolio-pile" style={{ width: `min(calc(100% - 28px), calc((var(--object-height) - 30px) * ${previewSize.width / previewSize.height}))`, aspectRatio: `${previewSize.width} / ${previewSize.height}` }}>
+                    <span className="portfolio-sheet portfolio-sheet-back" aria-hidden="true" />
+                    <span className="portfolio-sheet portfolio-sheet-middle" aria-hidden="true" />
+                    <span className="portfolio-sheet portfolio-sheet-near" aria-hidden="true" />
+                    <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'}>
+                      {currentSummary ? <SavedPreview picture={current ?? currentSummary} pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}
+                    </span>
                   </span>
-                  <span className="portfolio-binding" aria-hidden="true"><i /><i /><i /></span>
                 </span>
               </button>
               <nav className="library-actions" aria-label="Selected saved picture actions">

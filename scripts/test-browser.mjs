@@ -292,7 +292,7 @@ try {
   await waitFor(`!document.querySelector('button[aria-label="Undo delete"]')`);
   const restored = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => await pictureRepository.get(${JSON.stringify(deletedId)}))`);
   if (!restored || JSON.stringify(restored.document) !== JSON.stringify(afterPinch)) throw Error('Undo delete did not restore the saved drawing');
-  await evaluate(`import('/src/app/pictures.ts').then(({pictureRepository:r})=>r.save({...${JSON.stringify(restored)},id:'portfolio-second',title:'Second drawing',updatedAt:${restored.updatedAt}-1}))`);
+  await evaluate(`import('/src/app/pictures.ts').then(({pictureRepository:r})=>r.save({...${JSON.stringify(restored)},id:'portfolio-second',title:'Second drawing',updatedAt:${restored.updatedAt}-1,format:'portrait',size:{width:24,height:32},document:{version:5,width:24,height:32,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:16777215}]}}))`);
   await evaluate("document.documentElement.dataset.beforeReload='yes'");
   await cdp('Page.reload');
   await waitFor('!document.documentElement?.dataset.beforeReload && !!document.querySelector(".choice-blank") && !!document.querySelector(".previous-picture:not(:disabled)")');
@@ -305,7 +305,7 @@ try {
     await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
     const fits=await evaluate(`(()=>{const elements=document.querySelectorAll('.choice-grid .choice-card,.saved-picture-card,.selection .icon-button');return [...elements].every(e=>{const r=e.getBoundingClientRect();return r.x>=-1&&r.y>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1})&&document.documentElement.scrollWidth<=innerWidth})()`);
     if(!fits)throw Error(`Selection controls exceed viewport ${width}x${height}`);
-    const paperLayout=await evaluate(`(()=>{const draw=document.querySelector('.choice-blank').getBoundingClientRect(),color=document.querySelector('.choice-coloring').getBoundingClientRect(),saved=document.querySelector('.saved-picture-card').getBoundingClientRect();return color.top>draw.top&&color.top-draw.top<=24&&Math.max(draw.bottom,color.bottom)<=saved.top&&!document.querySelector('.choice-tab,.portfolio-cover')})()`);
+    const paperLayout=await evaluate(`(()=>{const draw=document.querySelector('.choice-blank').getBoundingClientRect(),color=document.querySelector('.choice-coloring').getBoundingClientRect(),saved=document.querySelector('.saved-picture-card').getBoundingClientRect();return color.top>draw.top&&color.top-draw.top<=56&&Math.max(draw.bottom,color.bottom)<=saved.top&&!document.querySelector('.choice-tab,.portfolio-cover')})()`);
     if(!paperLayout)throw Error(`Paper choices must stay above the unlabeled saved-picture stack at ${width}x${height}`);
   }
   await cdp('Emulation.clearDeviceMetricsOverride');

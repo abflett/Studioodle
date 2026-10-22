@@ -23,9 +23,11 @@ no forced animation-frame delay. The visual spinner appears only after 120 ms of
 pending work; failures appear immediately. Warm-navigation browser tests verify
 that cached pictures are ready by the next painted frame without a spinner.
 
-The selection screen presents saved work as a ring-bound paper stack beneath the
+The selection screen presents saved work as a loose paper stack beneath the
 drawing easel and coloring book, with no visible choice captions. The saved-page
-stage stays fixed across picture ratios, with browsing arrows outside the open target and utility buttons taking click priority.
+stage stays fixed across picture ratios while the front sheet follows the saved
+picture aspect ratio. Browsing arrows remain outside the open target, and utility
+buttons take click priority.
 Forward/backward navigation adds a 240 ms page-turn transform without delaying
 loading or interactions. Reduced-motion preferences disable the turn animation.
 

@@ -1,5 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="360" viewBox="0 0 400 360">
-  <ellipse cx="205" cy="335" rx="124" ry="9" fill="#183343" opacity=".16"/>
   <!-- The rear leg recedes to the right, behind the two front rails. -->
   <g stroke="#796655" stroke-width="3.5" stroke-linejoin="round">
     <path d="m214 99 97 205-13 5-99-202Z" fill="#ad805d"/>
@@ -11,14 +10,12 @@
   </g>
   <path d="m179 86-66 237m109-212 49 211" stroke="#efd1a5" stroke-width="3" stroke-linecap="round"/>
   <circle cx="220" cy="103" r="5" fill="#e7c46e" stroke="#796655" stroke-width="2"/>
-  <!-- A used sheet bends over the top and hangs behind the pad. -->
-  <path d="M92 101C76 86 73 53 87 36q7-8 24-8l185 5q25 1 29 24 4 24-15 42Z" fill="#e8ddc3" stroke="#46584c" stroke-width="3"/>
-  <path d="M105 36q-18 0-20 18m226-4q7 19-2 36" fill="none" stroke="#d4c5a8" stroke-width="2" stroke-linecap="round"/>
-  <path d="M80 78h234v180H80Z" fill="#e8ddc3" stroke="#46584c" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M80 74h234v179H80Z" fill="#f3ead5" stroke="#46584c" stroke-width="2.5" stroke-linejoin="round"/>
-  <path d="M80 74C76 48 85 33 107 34l185 4q29 1 22 36Z" fill="#f3ead5" stroke="#46584c" stroke-width="3" stroke-linejoin="round"/>
-  <path d="M88 66q-1-23 22-23l179 4q19 1 19 20" fill="none" stroke="#d4c5a8" stroke-width="2" stroke-linecap="round"/>
-  <path d="M80 74q117-10 234 0v173q0 5-6 5H86q-6 0-6-5Z" fill="#fff8e9" stroke="#46584c" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- One turned sheet arches away and hangs visibly behind the right edge. -->
+  <path d="M81 65C78 40 93 24 116 30l174 29q35 5 40 38l9 126q-11-12-24-9l-17-116Z" fill="#eee3ca" stroke="#46584c" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M322 104q2 62 10 102" fill="none" stroke="#d4c5a8" stroke-width="2" stroke-linecap="round"/>
+  <path d="M80 67h234v191H80Z" fill="#e8ddc3" stroke="#46584c" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M80 63h234v190H80Z" fill="#f3ead5" stroke="#46584c" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M80 60h234v187q0 5-6 5H86q-6 0-6-5Z" fill="#fff8e9" stroke="#46584c" stroke-width="3.5" stroke-linejoin="round"/>
   <path d="M119 185c24-51 42-43 64-15s48 23 66-20" fill="none" stroke="#4caaa2" stroke-width="10" stroke-linecap="round"/>
   <!-- A shallow tray with a visible top and front face gives the stand depth. -->
   <path d="m73 253 13-8h227l15 8-15 7H85Z" fill="#eed0a3" stroke="#796655" stroke-width="3" stroke-linejoin="round"/>

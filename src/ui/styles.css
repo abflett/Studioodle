@@ -681,17 +681,17 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .art-studio .art-canvas:not(.focus-mode) { background: var(--canvas-tint); }
 /* The drawer overlaps the page, so reproduce the viewport-aligned artwork beneath it. */
 .art-studio .sticker-ribbon { background-image: var(--scene-tint), var(--scene-art); background-size: cover; background-position: center; background-attachment: fixed; }
-/* Two paper choices above the ring-bound collection of saved pictures. */
+/* Staggered paper choices above a loose collection of saved pictures. */
 .selection-screen { padding-top: max(84px, calc(env(safe-area-inset-top) + 72px)); padding-bottom: max(28px, env(safe-area-inset-bottom)); }
-.selection-screen .selection { --object-height: min(clamp(160px, 30vw, 300px), calc((100dvh - 280px) / 2)); --saved-picture-height: var(--object-height); width: min(820px, 100%); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 20px; }
-.selection .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(100%, calc(var(--object-height) * 3)); justify-self: center; padding-block: 10px; gap: clamp(16px, 3vw, 36px); }
+.selection-screen .selection { --object-height: min(clamp(160px, 30vw, 300px), calc((100dvh - 320px) / 2)); --saved-picture-height: var(--object-height); width: min(820px, 100%); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 20px; }
+.selection .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(100%, calc(var(--object-height) * 3)); justify-self: center; padding-block: 24px; gap: clamp(16px, 3vw, 36px); }
 .selection .choice-card { position: relative; padding: 12px; gap: 0; border-radius: 32px; }
 .selection .choice-art { position: relative; display: grid; place-items: center; width: 100%; height: var(--object-height); padding: 0; }
-.selection .choice-blank { translate: -6px -8px; }
-.selection .choice-coloring { translate: 8px 10px; }
+.selection .choice-blank { translate: -12px -22px; }
+.selection .choice-coloring { translate: 12px 24px; }
 .choice-coloring .choice-illustration { scale: .94; rotate: 1deg; }
 .choice-illustration { display: block; width: 100%; height: 100%; pointer-events: none; }
-.choice-illustration > svg { width: 100%; height: 100%; display: block; overflow: visible; filter: drop-shadow(0 9px 12px var(--shadow)); }
+.choice-illustration > svg { width: 100%; height: 100%; display: block; overflow: visible; filter: none; }
 .selection .previous-section { min-width: 0; gap: 0; translate: -10px 0; }
 .previous-section .picture-carousel { --browse-size: 44px; display: grid; grid-template-columns: var(--browse-size) minmax(0, 1fr) var(--browse-size); align-items: start; gap: 6px; width: min(520px, calc(var(--object-height) * 1.5 + 112px), 100%); }
 .saved-picture-card { position: relative; grid-column: 2; grid-row: 1; display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; gap: 10px; padding: 12px 4px; border-radius: 32px; transition: background-color 160ms ease; }
@@ -711,13 +711,13 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @media (hover: hover) { .saved-picture-card:has(.previous-picture:not(:disabled)):hover { background: color-mix(in srgb, var(--text) 8%, transparent); } }
 .saved-picture-card:has(.previous-picture:not(:disabled)):is(:focus-within, :has(.app-mouse-hover)) { background: color-mix(in srgb, var(--text) 8%, transparent); }
 .portfolio-stage { perspective: 900px; }
-.portfolio-sheet, .portfolio-page { position: absolute; inset: 7% 6% 10% 9%; border: 2px solid var(--preview-border); border-radius: 4px 12px 8px 4px; background: #f9f0d9; }
-.portfolio-sheet-back { rotate: 3deg; translate: 5px -3px; }
-.portfolio-sheet-middle { rotate: -2deg; translate: -3px 1px; background: #e7ddc5; }
-.portfolio-page { display: grid; place-items: center; padding: 10px; background: #fff8e9; box-shadow: 0 3px 7px #18334326; transform-origin: left center; overflow: hidden; }
-.portfolio-page .saved-preview { --preview-height: calc(var(--object-height) * .83 - 24px); max-width: 100%; max-height: 100%; border: 0; border-radius: 2px; box-shadow: none; }
-.portfolio-binding { position: absolute; top: 21%; bottom: 24%; left: 5%; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
-.portfolio-binding i { display: block; width: 19px; height: 9px; border: 2px solid var(--preview-border); border-radius: 8px; background: #cfddd7; box-shadow: 0 2px 2px #18334320; }
+.portfolio-pile { position: relative; display: block; }
+.portfolio-sheet, .portfolio-page { position: absolute; inset: 0; border: 2px solid var(--preview-border); border-radius: 3px; background: #f9f0d9; }
+.portfolio-sheet-back { rotate: -7deg; translate: -6px -3px; background: #eee4cc; }
+.portfolio-sheet-middle { rotate: 5deg; translate: 7px 3px; background: #fff8e9; }
+.portfolio-sheet-near { rotate: -2deg; translate: -2px 6px; background: #e7ddc5; }
+.portfolio-page { display: grid; place-items: center; padding: 0; border: 0; background: #fff8e9; box-shadow: 0 3px 7px #18334326; transform-origin: left center; overflow: hidden; }
+.portfolio-page .saved-preview { --preview-height: calc(var(--object-height) - 30px); max-width: 100%; max-height: 100%; border: 2px solid var(--preview-border); border-radius: 3px; box-shadow: none; }
 .portfolio-page > .preview-spinner { width: 30px; height: 30px; filter: none; }
 .portfolio-page .empty-pictures { min-height: 0; border: 0; font-size: 15px; color: #687b7a; padding: 12px; }
 .portfolio-page.turn-next { animation: portfolio-next 240ms ease-out both; }
@@ -726,9 +726,9 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @keyframes portfolio-previous { from { transform: rotateY(16deg) rotateZ(1deg); } to { transform: none; } }
 @media (max-width: 540px) {
   .selection-screen .selection { --object-height: min(clamp(140px, 43vw, 210px), calc((100dvh - 220px) / 2)); gap: 18px; }
-  .selection .choice-grid { padding-block: 6px; gap: 8px; }
-  .selection .choice-blank { translate: -2px -4px; }
-  .selection .choice-coloring { translate: 2px 6px; }
+  .selection .choice-grid { padding-block: 14px; gap: 8px; }
+  .selection .choice-blank { translate: -2px -8px; }
+  .selection .choice-coloring { translate: 2px 14px; }
   .selection .previous-section { translate: 0; }
   .selection .choice-card { padding: 2px; border-radius: 24px; }
   .saved-picture-card .library-actions { gap: 8px; }
