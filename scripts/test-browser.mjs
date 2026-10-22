@@ -305,6 +305,8 @@ try {
     await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
     const fits=await evaluate(`(()=>{const elements=document.querySelectorAll('.choice-grid .choice-card,.saved-picture-card,.selection .icon-button');return [...elements].every(e=>{const r=e.getBoundingClientRect();return r.x>=-1&&r.y>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1})&&document.documentElement.scrollWidth<=innerWidth})()`);
     if(!fits)throw Error(`Selection controls exceed viewport ${width}x${height}`);
+    const paperLayout=await evaluate(`(()=>{const draw=document.querySelector('.choice-blank').getBoundingClientRect(),color=document.querySelector('.choice-coloring').getBoundingClientRect(),saved=document.querySelector('.saved-picture-card').getBoundingClientRect();return Math.abs(draw.top-color.top)<1&&Math.max(draw.bottom,color.bottom)<=saved.top&&!document.querySelector('.choice-tab,.portfolio-cover')})()`);
+    if(!paperLayout)throw Error(`Paper choices must stay above the unlabeled saved-picture stack at ${width}x${height}`);
   }
   await cdp('Emulation.clearDeviceMetricsOverride');
   result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,deleteRestore:true,exportChoices:true,exportRetry:true};

@@ -681,18 +681,16 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .art-studio .art-canvas:not(.focus-mode) { background: var(--canvas-tint); }
 /* The drawer overlaps the page, so reproduce the viewport-aligned artwork beneath it. */
 .art-studio .sticker-ribbon { background-image: var(--scene-tint), var(--scene-art); background-size: cover; background-position: center; background-attachment: fixed; }
-/* Three objects on the art table, with labels attached to the artwork. */
+/* Two paper choices above the ring-bound collection of saved pictures. */
 .selection-screen { padding-top: max(84px, calc(env(safe-area-inset-top) + 72px)); padding-bottom: max(28px, env(safe-area-inset-bottom)); }
-.selection-screen .selection { --object-height: min(clamp(180px, 27vw, 290px), calc((100dvh - 240px) / 2)); --saved-picture-height: var(--object-height); width: min(780px, 100%); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 20px; }
-.selection .choice-grid { gap: clamp(16px, 3vw, 36px); }
+.selection-screen .selection { --object-height: min(clamp(160px, 30vw, 300px), calc((100dvh - 240px) / 2)); --saved-picture-height: var(--object-height); width: min(820px, 100%); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 20px; }
+.selection .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(100%, calc(var(--object-height) * 3)); justify-self: center; gap: clamp(16px, 3vw, 36px); }
 .selection .choice-card { position: relative; padding: 12px; gap: 0; border-radius: 32px; }
 .selection .choice-art { position: relative; display: grid; place-items: center; width: 100%; height: var(--object-height); padding: 0; }
 .choice-illustration { display: block; width: 100%; height: 100%; pointer-events: none; }
 .choice-illustration > svg { width: 100%; height: 100%; display: block; overflow: visible; filter: drop-shadow(0 9px 12px var(--shadow)); }
-.choice-tab { position: absolute; bottom: 4%; left: 50%; translate: -50% 0; rotate: -2deg; display: block; padding: 6px 24px; border: 1.5px solid #d9c9aa; border-radius: 5px 9px 6px 8px; background: #fff5dc; color: #35545c; font-size: clamp(19px, 2.1vw, 24px); font-weight: 850; letter-spacing: .01em; line-height: 1.2; box-shadow: 0 3px 6px #18334326; pointer-events: none; z-index: 3; }
-.choice-coloring .choice-tab { rotate: 2deg; }
 .selection .previous-section { min-width: 0; gap: 0; }
-.previous-section .picture-carousel { --browse-size: 44px; display: grid; grid-template-columns: var(--browse-size) minmax(0, 1fr) var(--browse-size); align-items: start; gap: 6px; width: min(440px, 100%); }
+.previous-section .picture-carousel { --browse-size: 44px; display: grid; grid-template-columns: var(--browse-size) minmax(0, 1fr) var(--browse-size); align-items: start; gap: 6px; width: min(520px, calc(var(--object-height) * 1.5 + 112px), 100%); }
 .saved-picture-card { position: relative; grid-column: 2; grid-row: 1; display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; gap: 10px; padding: 12px 4px; border-radius: 32px; transition: background-color 160ms ease; }
 .previous-section .saved-picture-card .previous-picture { position: static; width: 100%; min-width: 0; padding: 0; background: transparent; border-radius: 0; }
 .saved-picture-card .previous-picture::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 32px; }
@@ -710,62 +708,39 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @media (hover: hover) { .saved-picture-card:has(.previous-picture:not(:disabled)):hover { background: color-mix(in srgb, var(--text) 8%, transparent); } }
 .saved-picture-card:has(.previous-picture:not(:disabled)):is(:focus-within, :has(.app-mouse-hover)) { background: color-mix(in srgb, var(--text) 8%, transparent); }
 .portfolio-stage { perspective: 900px; }
-.portfolio-cover { position: absolute; inset: 14% 1% 9%; rotate: -5deg; border: 3px solid var(--preview-border); border-radius: 8px 18px 18px 8px; background: #55777a; box-shadow: 0 12px 18px var(--shadow); }
-:root[data-theme='dark'] .portfolio-cover { background: #354960; }
-.portfolio-cover::after { content: ''; position: absolute; inset: 6px; border: 1px dashed #e7d4b566; border-radius: 3px 12px 12px 3px; }
-.portfolio-sheet, .portfolio-page { position: absolute; inset: 12% 6% 15% 9%; border: 2px solid var(--preview-border); border-radius: 4px 12px 8px 4px; background: #f9f0d9; }
-.portfolio-sheet-back { rotate: 5deg; translate: 5px -3px; }
-.portfolio-sheet-middle { rotate: -3deg; translate: -3px 1px; background: #e7ddc5; }
+.portfolio-sheet, .portfolio-page { position: absolute; inset: 7% 6% 10% 9%; border: 2px solid var(--preview-border); border-radius: 4px 12px 8px 4px; background: #f9f0d9; }
+.portfolio-sheet-back { rotate: 3deg; translate: 5px -3px; }
+.portfolio-sheet-middle { rotate: -2deg; translate: -3px 1px; background: #e7ddc5; }
 .portfolio-page { display: grid; place-items: center; padding: 10px; background: #fff8e9; box-shadow: 0 3px 7px #18334326; transform-origin: left center; overflow: hidden; }
-.portfolio-page .saved-preview { --preview-height: calc(var(--object-height) * .73 - 24px); max-width: 100%; max-height: 100%; border: 0; border-radius: 2px; box-shadow: none; }
-.portfolio-binding { position: absolute; top: 25%; bottom: 29%; left: 5%; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
+.portfolio-page .saved-preview { --preview-height: calc(var(--object-height) * .83 - 24px); max-width: 100%; max-height: 100%; border: 0; border-radius: 2px; box-shadow: none; }
+.portfolio-binding { position: absolute; top: 21%; bottom: 24%; left: 5%; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
 .portfolio-binding i { display: block; width: 19px; height: 9px; border: 2px solid var(--preview-border); border-radius: 8px; background: #cfddd7; box-shadow: 0 2px 2px #18334320; }
-.portfolio-stage .choice-tab { bottom: 6%; }
 .portfolio-page > .preview-spinner { width: 30px; height: 30px; filter: none; }
 .portfolio-page .empty-pictures { min-height: 0; border: 0; font-size: 15px; color: #687b7a; padding: 12px; }
 .portfolio-page.turn-next { animation: portfolio-next 240ms ease-out both; }
 .portfolio-page.turn-previous { animation: portfolio-previous 240ms ease-out both; }
 @keyframes portfolio-next { from { transform: rotateY(-16deg) rotateZ(-1deg); } to { transform: none; } }
 @keyframes portfolio-previous { from { transform: rotateY(16deg) rotateZ(1deg); } to { transform: none; } }
-@media (min-width: 1100px) {
-  .selection-screen .selection { --object-height: clamp(270px, 28vw, 340px); width: min(1280px, 100%); grid-template-columns: 1fr 1fr 1.12fr; grid-template-rows: auto; gap: clamp(16px, 2vw, 32px); align-items: start; }
-  .selection .choice-grid { display: contents; }
-  .previous-section .picture-carousel { width: 100%; }
-  .previous-section .library-actions .icon-button { width: 42px; height: 42px; padding: 10px; }
-  .saved-picture-card .library-actions { gap: 8px; }
-}
 @media (max-width: 540px) {
-  .selection-screen .selection { --object-height: clamp(160px, 45vw, 210px); gap: 22px; }
-  .selection .choice-grid { gap: 6px; }
+  .selection-screen .selection { --object-height: min(clamp(140px, 43vw, 210px), calc((100dvh - 220px) / 2)); gap: 18px; }
+  .selection .choice-grid { gap: 8px; }
   .selection .choice-card { padding: 2px; border-radius: 24px; }
-  .choice-tab { padding: 5px 17px; font-size: 18px; bottom: 0; }
-  .previous-section .picture-carousel { --object-height: min(255px, 30dvh); }
   .saved-picture-card .library-actions { gap: 8px; }
 }
 @media (max-width: 360px) {
   .saved-picture-card .library-actions { gap: 4px; }
   .previous-section .library-actions .icon-button { width: 40px; height: 40px; padding: 10px; }
 }
-@media (max-height: 650px) and (min-width: 700px) {
-  .selection-screen .selection { --object-height: min(250px, 56dvh); width: min(1100px, 100%); grid-template-columns: 1fr 1fr 1.25fr; grid-template-rows: auto; gap: 12px; align-items: start; }
-  .selection .choice-grid { display: contents; }
-  .choice-tab { padding: 4px 16px; font-size: 18px; }
-  .previous-section .picture-carousel { --browse-size: 38px; gap: 2px; }
-  .previous-section .library-actions .icon-button { width: 36px; height: 36px; padding: 8px; }
-  .saved-picture-card .library-actions { gap: 4px; }
-}
-@media (min-width: 480px) and (max-width: 699px) and (max-height: 650px) {
-  .selection-screen .selection { --object-height: min(190px, 48dvh); width: min(960px, 100%); grid-template-columns: .9fr 1.1fr; grid-template-rows: auto; gap: 12px; align-items: center; }
-  .selection .choice-grid { gap: 4px; }
-  .choice-tab { padding: 4px 10px; font-size: 16px; }
-  .previous-section .picture-carousel { --browse-size: 36px; gap: 2px; }
+@media (max-height: 540px) {
+  .selection-screen { padding-top: max(72px, calc(env(safe-area-inset-top) + 64px)); padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+  .selection-screen .selection { --object-height: min(140px, calc((100dvh - 160px) / 2)); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 10px; }
+  .selection .choice-card { padding: 2px; }
+  .selection .choice-grid { display: grid; gap: 12px; }
+  .previous-section .picture-carousel { --browse-size: 36px; gap: 4px; }
   .saved-picture-card { gap: 6px; padding: 8px 2px; }
-  .saved-picture-card .library-actions { gap: 4px; }
+  .previous-section .picture-carousel > .icon-button { margin-top: calc(8px + (var(--object-height) - var(--browse-size)) / 2); }
   .previous-section .library-actions .icon-button { width: 32px; height: 32px; padding: 7px; }
-}
-@media (max-height: 700px) and (max-width: 479px) {
-  .selection-screen .selection { --object-height: min(180px, 29dvh); gap: 12px; }
-  .previous-section .picture-carousel { --object-height: min(210px, 30dvh); }
+  .saved-picture-card .library-actions { gap: 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .portfolio-page.turn-next, .portfolio-page.turn-previous { animation: none; }

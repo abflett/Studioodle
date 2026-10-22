@@ -181,7 +181,6 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
               onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
               <span className="choice-art">
                 <span className="choice-illustration" dangerouslySetInnerHTML={{ __html: themedArtwork[item.id] }} />
-                <span className="choice-tab">{item.id === 'blank' ? 'Draw' : 'Color'}</span>
               </span>
             </button>
           ))}
@@ -193,14 +192,12 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             <div className="saved-picture-card" role="group" aria-labelledby="your-pictures-label">
               <button className="choice-card previous-picture" aria-label={currentSummary ? `Continue saved picture: ${currentSummary.title}` : 'Continue a saved picture (no saved pictures yet)'} title={currentSummary ? `Continue ${currentSummary.title}` : 'Your pictures'} disabled={!current} onClick={() => { if (current) onOpen(current); }}>
                 <span className="choice-art portfolio-stage">
-                  <span className="portfolio-cover" aria-hidden="true" />
                   <span className="portfolio-sheet portfolio-sheet-back" aria-hidden="true" />
                   <span className="portfolio-sheet portfolio-sheet-middle" aria-hidden="true" />
                   <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'}>
                     {currentSummary ? <SavedPreview picture={current ?? currentSummary} pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}
                   </span>
                   <span className="portfolio-binding" aria-hidden="true"><i /><i /><i /></span>
-                  <span className="choice-tab">Continue</span>
                 </span>
               </button>
               <nav className="library-actions" aria-label="Selected saved picture actions">
