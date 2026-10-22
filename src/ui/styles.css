@@ -699,7 +699,14 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .saved-picture-card .previous-picture:disabled::after { pointer-events: none; }
 .saved-picture-card .previous-picture:disabled { opacity: .75; }
 .previous-section .saved-picture-card .previous-picture:is(:hover, .app-mouse-hover, :active, .app-mouse-pressed) { background: transparent; transform: none; filter: none; }
-.previous-section .picture-carousel > .icon-button { position: static; grid-row: 1; width: var(--browse-size); height: var(--browse-size); padding: 13px; margin: calc(12px + (var(--object-height) - var(--browse-size)) / 2) 0 0; z-index: 2; }
+.previous-section .picture-carousel > .icon-button { position: relative; grid-row: 1; width: var(--browse-size); height: var(--browse-size); padding: 13px; margin: calc(12px + (var(--object-height) - var(--browse-size)) / 2) 0 0; z-index: 2; }
+/* Generous browse targets; keep their hover wells visible while reviewing the hit areas. */
+.previous-section .picture-carousel > .icon-button::before {
+  content: ''; position: absolute; inset: -24px -10px; border-radius: 24px; z-index: -1;
+}
+.previous-section .picture-carousel > .icon-button:not(:disabled):is(:hover, .app-mouse-hover, :focus-visible)::before {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+}
 .previous-section .picture-carousel > .icon-button:first-child { grid-column: 1; }
 .previous-section .picture-carousel > .icon-button:last-child { grid-column: 3; }
 .saved-picture-card .library-actions { position: relative; z-index: 2; display: flex; justify-content: center; gap: 14px; pointer-events: none; }
@@ -732,6 +739,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .selection .previous-section { translate: 0; }
   .selection .choice-card { padding: 2px; border-radius: 24px; }
   .previous-section .picture-carousel { --browse-size: 48px; gap: 10px; width: min(calc(100% + 24px), calc(100vw - 16px)); }
+  .previous-section .picture-carousel > .icon-button::before { inset: -24px -6px; }
   .saved-picture-card .library-actions { gap: 12px; }
 }
 /* Let the wordless choices form a longer stagger when a narrow portrait screen has room. */

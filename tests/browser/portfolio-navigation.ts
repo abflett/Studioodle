@@ -65,7 +65,14 @@ export async function checkPortfolioNavigation() {
   const next = document.querySelector<HTMLButtonElement>('[aria-label="Next saved picture"]')!;
   const previous = document.querySelector<HTMLButtonElement>('[aria-label="Previous saved picture"]')!;
   assert(!next.disabled && !previous.disabled, 'Two saved pictures must enable browsing');
-  next.click(); await ready(original);
+  for (const button of [previous, next]) {
+    const bounds = button.getBoundingClientRect();
+    for (const [x, y] of [[bounds.x + bounds.width / 2, bounds.top - 18], [bounds.x + bounds.width / 2, bounds.bottom + 18]])
+      assert(document.elementFromPoint(x!, y!)?.closest('button') === button, 'The browse hitbox must extend above and below the visible arrow');
+  }
+  const nextBounds = next.getBoundingClientRect();
+  document.elementFromPoint(nextBounds.x + nextBounds.width / 2, nextBounds.top - 18)!.closest('button')!.click();
+  await ready(original);
   assert(open.getAttribute('aria-label') !== original, 'Next must change the saved picture');
   assert(getComputedStyle(document.querySelector('.portfolio-page')!).animationName === 'portfolio-next', 'Forward navigation must turn forward: ' + getComputedStyle(document.querySelector('.portfolio-page')!).animationName);
   const secondGeometry = await paperGeometry();
