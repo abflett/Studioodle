@@ -1,3 +1,4 @@
+import { paperRotation } from '../app/paperLayers';
 import { ExportPictureDialog } from './ExportPictureDialog';
 import { PaperSetup } from './PaperSetup';
 import { DialogHeader } from './DialogHeader';
@@ -190,7 +191,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
               <button className="choice-card previous-picture" aria-label={currentSummary ? `Continue saved picture: ${currentSummary.title}` : 'Continue a saved picture (no saved pictures yet)'} title={currentSummary ? `Continue ${currentSummary.title}` : 'Your pictures'} disabled={!current} onClick={() => { if (current) onOpen(current); }}>
                 <span className="choice-art portfolio-stage">
                   <img className="portfolio-stack-art" src={savedStackArtwork} alt="" aria-hidden="true" draggable={false} decoding="async" />
-                  <span className="portfolio-pile" data-paper-shape={frontPaper.shape} style={{ width: `min(90%, calc(var(--object-height) * var(--sheet-fill, .88) * ${sheetRatio}))`, aspectRatio: `${sheetRatio}` }}>
+                  <span className="portfolio-pile" data-paper-shape={frontPaper.shape} style={{ rotate: paperRotation(currentSummary?.id ?? 'empty'), width: `min(90%, calc(var(--object-height) * var(--sheet-fill, .88) * ${sheetRatio}))`, aspectRatio: `${sheetRatio}` }}>
                     <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'}>
                       <span className="portfolio-paper-backing" aria-hidden="true" style={{ maskImage: `url("${frontPaper.backingMask}")`, backgroundColor: '#302b23' }} />
                       <span className="portfolio-artwork" style={frontPaper.artworkStyle}>

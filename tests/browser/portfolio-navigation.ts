@@ -18,7 +18,8 @@ async function paperGeometry() {
   assert(pile.dataset.paperShape === expected, 'The front sheet must use the closest paper format');
   const faceRatio = ratio;
   assert(Math.abs(faceRatio - width! / height!) < .03, 'The interior paper face must match the drawing, excluding transparent asset margins');
-  assert(getComputedStyle(pile).rotate === '-3deg', 'The front sheet should keep its subtle fixed tilt');
+  const rotation = parseFloat(getComputedStyle(pile).rotate);
+  assert(Math.abs(rotation) >= 2 && Math.abs(rotation) <= 3.8, 'The sheet tilt must stay subtle in either direction');
   const page = document.querySelector<HTMLElement>('.portfolio-page')!;
   const imageLayer = page.querySelector<HTMLElement>('.portfolio-artwork')!;
   const overlay = page.querySelector<HTMLImageElement>('.portfolio-paper-overlay')!;
@@ -37,7 +38,7 @@ async function paperGeometry() {
   assert(Math.abs(arrow.y + arrow.height / 2 - stageBox.y - stageBox.height / 2) < 3, 'Browsing arrows must stay centered on the resized paper stage');
   const actions = document.querySelector('.library-actions')!.getBoundingClientRect();
   assert(page.getBoundingClientRect().bottom <= actions.top, 'The enlarged paper must stay clear of its action buttons');
-  return { width: stage.offsetWidth, height: stage.offsetHeight, arrowY: arrow.y, ratio };
+  return { width: stage.offsetWidth, height: stage.offsetHeight, arrowY: arrow.y, ratio, rotation };
 }
 
 /** Run against landscape and portrait saves after the library has opened. */
@@ -76,6 +77,7 @@ export async function checkPortfolioNavigation() {
   const second = open.getAttribute('aria-label');
   previous.click(); await ready(second);
   assert(open.getAttribute('aria-label') === original, 'Previous must return to the first saved picture');
+  assert(parseFloat(getComputedStyle(document.querySelector('.portfolio-pile')!).rotate) === firstGeometry.rotation, 'A saved picture must retain its tilt when revisited');
   assert(document.querySelector('.portfolio-page .saved-preview[aria-busy="false"]') && !document.querySelector('.portfolio-page .preview-loading'), 'Cached portfolio navigation must not reintroduce a loading flash');
   assert(getComputedStyle(document.querySelector('.portfolio-page')!).animationName === 'portfolio-previous', 'Backward navigation must turn backward');
   const remove = document.querySelector<HTMLButtonElement>('[aria-label="Delete selected saved picture"]')!;
