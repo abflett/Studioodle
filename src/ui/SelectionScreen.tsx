@@ -192,6 +192,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
                   <img className="portfolio-stack-art" src={savedStackArtwork} alt="" aria-hidden="true" draggable={false} decoding="async" />
                   <span className="portfolio-pile" data-paper-shape={frontPaper.shape} style={{ width: `min(90%, calc(var(--object-height) * .88 * ${sheetRatio}))`, aspectRatio: `${sheetRatio}` }}>
                     <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'}>
+                      {frontPaper.backingMask && <span className="portfolio-paper-backing" aria-hidden="true" style={{ maskImage: `url("${frontPaper.backingMask}")`, backgroundColor: currentSummary?.background ?? '#f5e6c9' }} />}
                       <span className="portfolio-artwork" style={frontPaper.artworkStyle}>
                         {currentSummary ? <SavedPreview picture={current ?? currentSummary} fillContainer pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}
                       </span>

@@ -4,6 +4,7 @@ import coloringArt from '../assets/selection/coloring-book.webp';
 import paperStackArt from '../assets/selection/paper-stack.webp';
 import landscapeSheet from '../assets/selection/sheet-landscape-overlay.svg';
 import landscapeMask from '../assets/selection/sheet-landscape-mask.svg';
+import landscapeSilhouette from '../assets/selection/sheet-landscape-silhouette.svg';
 import squareSheet from '../assets/selection/sheet-square.webp';
 import portraitSheet from '../assets/selection/sheet-portrait.webp';
 
@@ -19,12 +20,12 @@ export const portfolioPapers = [
     box: { left: .048, top: .07, right: .965, bottom: .95 },
     face: 'M65 55 C320 65 740 68 955 95 C975 430 990 860 835 950 C700 965 300 960 61 950 C25 880 25 120 65 55 Z',
   },
-].map(paper => ({ ...paper, ...paperLayers(paper.face, paper.box, paper.artwork) }));
+].map(paper => ({ ...paper, ...paperLayers(paper.face, paper.box, paper.artwork), backingMask: undefined as string | undefined }));
 // The landscape mask and textured overlay share the exact traced A4 contour.
 portfolioPapers.push({
   shape: 'landscape', ratio: 297 / 210, artwork: landscapeSheet,
   box: { left: 0, top: 0, right: 1, bottom: 1 }, face: '',
-  artworkMask: landscapeMask, overlayMask: landscapeSheet,
+  artworkMask: landscapeMask, overlayMask: landscapeSheet, backingMask: landscapeSilhouette,
   artworkStyle: { inset: '0', maskImage: `url("${landscapeMask}")`, maskSize: '100% 100%', maskPosition: '0 0', maskComposite: 'intersect' },
   overlayStyle: { maskImage: 'none' },
 });
@@ -32,7 +33,7 @@ portfolioPapers.push({
 export function portfolioPaper(ratio: number) {
   return portfolioPapers.reduce((best, paper) => Math.abs(Math.log(ratio / paper.ratio)) < Math.abs(Math.log(ratio / best.ratio)) ? paper : best);
 }
-const illustrationSources = [...pictureChoices.map(choice => choice.artwork), savedStackArtwork, ...portfolioPapers.flatMap(paper => [paper.artwork, paper.artworkMask, paper.overlayMask])];
+const illustrationSources = [...pictureChoices.map(choice => choice.artwork), savedStackArtwork, ...portfolioPapers.flatMap(paper => [paper.artwork, paper.artworkMask, paper.overlayMask, ...(paper.backingMask ? [paper.backingMask] : [])])];
 export const startupTaskCount = 1 + illustrationSources.length;
 export type EditorModule = typeof import('../ui/EditorPreview');
 
