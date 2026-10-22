@@ -13,8 +13,10 @@ function paperGeometry() {
   const preview = document.querySelector<HTMLElement>('.portfolio-page .saved-preview')!;
   const [width, height] = preview.style.aspectRatio.split('/').map(Number);
   const ratio = pile.offsetWidth / pile.offsetHeight;
-  const expected = width! / height! > 1.155 ? 'landscape' : width! / height! < .866 ? 'portrait' : 'square';
+  const expected = width! / height! > Math.sqrt(Math.SQRT2) ? 'landscape' : width! / height! < 1 / Math.sqrt(Math.SQRT2) ? 'portrait' : 'square';
   assert(pile.dataset.paperShape === expected, 'The front sheet must use the closest paper format');
+  assert(Math.abs(ratio - width! / height!) < .02, 'The front sheet must match the actual picture ratio to avoid format cropping');
+  assert(getComputedStyle(pile).rotate === '-3deg', 'The front sheet should keep its subtle fixed tilt');
   const page = document.querySelector<HTMLElement>('.portfolio-page')!;
   assert(getComputedStyle(page).maskImage.includes('sheet-'), 'The front sheet must use its artwork alpha mask');
   assert(preview.dataset.fit === 'cover', 'The live drawing must cover the paper without stretching');
@@ -24,6 +26,8 @@ function paperGeometry() {
   const transform = canvas.getContext('2d')!.getTransform();
   assert(Math.abs(transform.a - transform.d) < 1e-6, 'Cover rendering must scale both drawing axes equally');
   assert(transform.e <= 0 && transform.f <= 0 && width! * transform.a >= canvas.width - 1 && height! * transform.d >= canvas.height - 1, 'Cover rendering must not leave uncovered strips');
+  assert(Math.abs(transform.e) <= 1 && Math.abs(transform.f) <= 1, 'A matching front-sheet ratio must not crop the drawing');
+  assert(Math.abs(canvas.width - canvas.clientWidth * devicePixelRatio) <= 1 && Math.abs(canvas.height - canvas.clientHeight * devicePixelRatio) <= 1, 'Page rotation must not enlarge or distort the canvas backing');
   const arrow = document.querySelector('[aria-label="Next saved picture"]')!.getBoundingClientRect();
   return { width: stage.offsetWidth, height: stage.offsetHeight, arrowY: arrow.y, ratio };
 }
@@ -31,7 +35,7 @@ function paperGeometry() {
 /** Run against landscape and portrait saves after the library has opened. */
 export async function checkPortfolioNavigation() {
   const { portfolioPaper, portfolioPapers } = await import('../../src/app/startup');
-  for (const [ratio, shape] of [[.5, 'portrait'], [.75, 'portrait'], [1, 'square'], [4 / 3, 'landscape'], [2, 'landscape']] as const) {
+  for (const [ratio, shape] of [[.5, 'portrait'], [1 / Math.SQRT2, 'portrait'], [.75, 'portrait'], [.85, 'square'], [1, 'square'], [1.16, 'square'], [4 / 3, 'landscape'], [Math.SQRT2, 'landscape'], [2, 'landscape']] as const) {
     assert(portfolioPaper(ratio).shape === shape, 'Paper selection must handle square and extreme picture ratios');
   }
   for (const paper of portfolioPapers) {

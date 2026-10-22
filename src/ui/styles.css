@@ -710,7 +710,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @media (hover: hover) { .saved-picture-card:has(.previous-picture:not(:disabled)):hover { background: color-mix(in srgb, var(--text) 8%, transparent); } }
 .saved-picture-card:has(.previous-picture:not(:disabled)):is(:focus-within, :has(.app-mouse-hover)) { background: color-mix(in srgb, var(--text) 8%, transparent); }
 .portfolio-stage { perspective: 900px; }
-.portfolio-pile { position: relative; display: block; }
+.portfolio-pile { position: relative; display: block; rotate: -3deg; }
 .portfolio-stage .portfolio-stack-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; user-select: none; }
 .portfolio-page { position: absolute; inset: 0; background-size: 100% 100%; background-repeat: no-repeat; mask-size: 100% 100%; mask-repeat: no-repeat; isolation: isolate; transform-origin: left center; }
 .portfolio-artwork { position: absolute; inset: 0; display: grid; place-items: center; mix-blend-mode: multiply; }

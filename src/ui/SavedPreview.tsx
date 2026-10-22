@@ -18,11 +18,11 @@ export function SavedPreview({ picture, pending = false, unavailable = false, fi
     let artwork: Artwork | undefined;
     const draw = () => {
       if (!active || !artwork) return;
-      const box = element.getBoundingClientRect();
       // Render vectors directly at the displayed size, with device-pixel backing.
+      // Local dimensions exclude page-turn/tilt transforms, which must not alter the crop.
       const density = window.devicePixelRatio || 1;
-      const w = Math.max(1, Math.round((box.width - element.clientLeft * 2) * density));
-      const h = Math.max(1, Math.round((box.height - element.clientTop * 2) * density));
+      const w = Math.max(1, Math.round(element.clientWidth * density));
+      const h = Math.max(1, Math.round(element.clientHeight * density));
       if (element.width !== w) element.width = w;
       if (element.height !== h) element.height = h;
       const ctx = element.getContext('2d');

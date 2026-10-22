@@ -8,9 +8,9 @@ import portraitSheet from '../assets/selection/sheet-portrait.webp';
 export const pictureChoices = [{ id: 'blank', artwork: easelArt }, { id: 'coloring', artwork: coloringArt }] as const;
 export const savedStackArtwork = paperStackArt;
 export const portfolioPapers = [
-  { shape: 'portrait', ratio: .75, artwork: portraitSheet },
+  { shape: 'portrait', ratio: 1 / Math.SQRT2, artwork: portraitSheet },
   { shape: 'square', ratio: 1, artwork: squareSheet },
-  { shape: 'landscape', ratio: 4 / 3, artwork: landscapeSheet },
+  { shape: 'landscape', ratio: Math.SQRT2, artwork: landscapeSheet },
 ] as const;
 /** Compare proportions symmetrically, so a tall and a wide save get equal treatment. */
 export function portfolioPaper(ratio: number) {

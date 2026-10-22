@@ -26,9 +26,11 @@ that cached pictures are ready by the next painted frame without a spinner.
 The selection screen presents saved work over a permanent illustrated paper stack
 beneath the drawing easel and coloring book, with no visible choice captions.
 The base artwork and browsing stage stay fixed across picture ratios. The front
-sheet selects the closest square, landscape or portrait illustration, while the
-live drawing covers that sheet without stretching (center-cropping excess at
-different aspect ratios). Browsing arrows remain
+sheet selects the closest square, A4 landscape or A4 portrait illustration and
+adapts its outline to the saved picture's exact proportions. This removes format
+cropping while retaining full-bleed artwork and a slight fixed counterclockwise
+tilt. Preview backing dimensions use local sizes so rotation does not introduce
+extra cropping. Browsing arrows remain
 outside the open target, and utility buttons take click priority.
 Forward/backward navigation adds a 240 ms page-turn transform without delaying
 loading or interactions. Reduced-motion preferences disable the turn animation.
