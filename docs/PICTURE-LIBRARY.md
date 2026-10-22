@@ -27,20 +27,21 @@ The selection screen presents saved work over a permanent illustrated paper stac
 beneath the drawing easel and coloring book, with no visible choice captions.
 The base artwork and browsing stage stay fixed across picture ratios. The front
 sheet selects the closest square, A4 landscape or A4 portrait illustration.
-Each asset defines an opaque interior frame, excluding its transparent image
-margins and curved corners. The complete drawing fits inside this frame with
-uniform scaling. Its edge pixels extend to the cut outline so colored pictures
-still bleed to the paper edges without cropping their content or adding a frame.
+Each asset defines the curved boundary of its printed face, excluding the folded
+underside. The complete drawing maps onto that face using a small curved mesh;
+no source pixels are cropped or extended into repeated strips. A separate layer
+preserves the original paper grain, border and folds above the drawing.
 The visible outline, rather than the PNG box, follows the saved picture's exact
-proportions; the content frame sits safely inside its bowed edges and curls.
+proportions. The source image is rendered at display density before this decorative
+mapping; neither the editor document nor exports are warped.
 The sheet keeps a slight fixed counterclockwise tilt. Preview backing dimensions
 use local sizes so rotation does not introduce extra cropping. Browsing arrows remain
 outside the open target, and utility buttons take click priority.
 Forward/backward navigation adds a 240 ms page-turn transform without delaying
 loading or interactions. Reduced-motion preferences disable the turn animation.
 Each front sheet reuses its generated transparent silhouette as a CSS alpha mask.
-The preview extends to the whole silhouette and multiplies over its ivory texture.
-There is no inset frame or edge fade; full-color backgrounds reach the paper edges.
+The texture overlay multiplies over the preview. There is no faded inset frame;
+full-color pictures reach the face boundary while folds retain their paper color.
 This decorative preview treatment does not change saved artwork or exported colors.
 
 The drawing, coloring and saved-picture choices use transparent, hand-inked

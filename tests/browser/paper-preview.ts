@@ -1,7 +1,7 @@
 import { Artwork } from '../../src/editor/Artwork';
 import { rectangleGeometry } from '../../src/editor/vectorPaintStyles';
 import { portfolioPapers } from '../../src/app/startup';
-import { drawPaperPreview } from '../../src/ui/paperPreview';
+import { drawPaperPreview, paperFacePath } from '../../src/ui/paperPreview';
 
 function assert(value: unknown, message: string): asserts value { if (!value) throw Error(message); }
 
@@ -19,20 +19,26 @@ export async function checkPaperPreview() {
     }] });
     try {
       const canvas = document.createElement('canvas');
-      const frame = paper.frame;
       canvas.height = 300;
       canvas.width = Math.round(canvas.height * width / height * paper.outline.height / paper.outline.width);
       const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
-      drawPaperPreview(ctx, artwork, frame);
+      drawPaperPreview(ctx, artwork, paper.surface, document.createElement('canvas'));
       const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
       const image = new Image(); image.src = paper.artwork; await image.decode();
       const mask = document.createElement('canvas'); mask.width = canvas.width; mask.height = canvas.height;
       const maskCtx = mask.getContext('2d', { willReadFrequently: true })!;
       maskCtx.drawImage(image, 0, 0, mask.width, mask.height);
       const alpha = maskCtx.getImageData(0, 0, mask.width, mask.height).data;
+      maskCtx.clearRect(0, 0, mask.width, mask.height);
+      maskCtx.fill(paperFacePath(paper.surface, mask.width, mask.height));
+      const face = maskCtx.getImageData(0, 0, mask.width, mask.height).data;
       const counts = colors.map(() => 0);
       for (let i = 0; i < pixels.length; i += 4) {
-        assert(pixels[i + 3] === 255, 'Edge bleed must cover the page without blank strips');
+        const stride = canvas.width * 4;
+        if ([-4, 0, 4, -stride, stride].every(offset => (face[i + offset + 3] ?? 0) === 255)) assert(pixels[i + 3]! > 250, `${paper.shape} face has a seam at ${i / 4 % canvas.width},${Math.floor(i / 4 / canvas.width)}: alpha ${pixels[i + 3]}`);
+        if (face[i + 3] === 0 && pixels[i + 3]! > 0) {
+          assert([-4, 4, -stride, stride].some(offset => (face[i + offset + 3] ?? 0) > 0), 'Artwork must not extend beyond the face, except its one-pixel antialiased outline');
+        }
         const color = (pixels[i]! << 16) | (pixels[i + 1]! << 8) | pixels[i + 2]!;
         const feature = colors.indexOf(color);
         if (feature >= 0) {
@@ -41,8 +47,6 @@ export async function checkPaperPreview() {
         }
       }
       assert(counts.every(count => count > 0), `${paper.shape} preview must retain its corner and top-center features`);
-      const edge = (Math.floor(canvas.height / 2) * canvas.width) * 4;
-      assert(pixels[edge] === 0x24 && pixels[edge + 1] === 0x33 && pixels[edge + 2] === 0x5c, 'Full-color background must bleed to the paper edge without fading');
     } finally { artwork.dispose(); }
   }
 }

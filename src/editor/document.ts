@@ -1,5 +1,6 @@
 import type { VectorPaintData } from './vectorPaintTypes';
 import type { StickerKind } from './stickerKinds';
+import { presetSize } from './paperPresets';
 export type { StickerKind } from './stickerKinds';
 export type Point = {
     x: number;
@@ -31,5 +32,5 @@ export function paperSize(format: 'square' | 'landscape' | 'portrait', size?: {
 }) {
     if (size)
         return size;
-    return format === 'square' ? { width: 800, height: 800 } : format === 'portrait' ? { width: 700, height: 1000 } : { width: 1000, height: 700 };
+    return presetSize(format === 'square' ? 'square' : 'full', format === 'landscape' ? 'landscape' : 'portrait');
 }
