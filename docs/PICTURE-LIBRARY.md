@@ -23,6 +23,12 @@ no forced animation-frame delay. The visual spinner appears only after 120 ms of
 pending work; failures appear immediately. Warm-navigation browser tests verify
 that cached pictures are ready by the next painted frame without a spinner.
 
+The selection screen presents saved work as a bound portfolio beside the drawing
+easel and coloring book. Its page stage stays fixed across picture ratios, with
+browsing arrows outside the open target and utility buttons taking click priority.
+Forward/backward navigation adds a 240 ms page-turn transform without delaying
+loading or interactions. Reduced-motion preferences disable the turn animation.
+
 The fresh pre-release IndexedDB database is `studioodle-library-v1` (schema 1).
 `pictures` stores full format-5 drawings; `summaries` stores explicit metadata
 projections with a compound update-time/ID index. Both records save and delete in

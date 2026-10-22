@@ -292,6 +292,21 @@ try {
   await waitFor(`!document.querySelector('button[aria-label="Undo delete"]')`);
   const restored = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => await pictureRepository.get(${JSON.stringify(deletedId)}))`);
   if (!restored || JSON.stringify(restored.document) !== JSON.stringify(afterPinch)) throw Error('Undo delete did not restore the saved drawing');
+  await evaluate(`import('/src/app/pictures.ts').then(({pictureRepository:r})=>r.save({...${JSON.stringify(restored)},id:'portfolio-second',title:'Second drawing',updatedAt:${restored.updatedAt}-1}))`);
+  await evaluate("document.documentElement.dataset.beforeReload='yes'");
+  await cdp('Page.reload');
+  await waitFor('!document.documentElement?.dataset.beforeReload && !!document.querySelector(".choice-blank") && !!document.querySelector(".previous-picture:not(:disabled)")');
+  await cdp('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'no-preference'}]});
+  result.portfolio=await evaluate("import('/tests/browser/portfolio-navigation.ts').then(m=>m.checkPortfolioNavigation())");
+  await cdp('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+  if(await evaluate("getComputedStyle(document.querySelector('.portfolio-page')).animationName")!=='none')throw Error('Portfolio must respect reduced motion');
+  await cdp('Emulation.setEmulatedMedia',{features:[]});
+  for(const [width,height] of [[1280,900],[1000,700],[1024,768],[390,844],[320,568],[844,390],[600,360],[480,320]]){
+    await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+    const fits=await evaluate(`(()=>{const elements=document.querySelectorAll('.choice-grid .choice-card,.saved-picture-card,.selection .icon-button');return [...elements].every(e=>{const r=e.getBoundingClientRect();return r.x>=-1&&r.y>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1})&&document.documentElement.scrollWidth<=innerWidth})()`);
+    if(!fits)throw Error(`Selection controls exceed viewport ${width}x${height}`);
+  }
+  await cdp('Emulation.clearDeviceMetricsOverride');
   result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,deleteRestore:true,exportChoices:true,exportRetry:true};
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
   await fs.writeFile('work/tests/app-after-reopen.png',Buffer.from(screenshot.data,'base64'));

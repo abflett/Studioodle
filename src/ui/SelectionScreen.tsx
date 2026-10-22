@@ -73,6 +73,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     update(); query.addEventListener('change', update);
     return () => query.removeEventListener('change', update);
   }, [manualOrientation]);
+  const [pageTurn, setPageTurn] = useState<'next' | 'previous'>();
   const [background, setBackground] = useState('#f6f2e8');
   const { library, saved, sampleIndex, setSampleIndex, current, currentError, retry, removePicture, restorePicture } = usePictureLibrary();
   const [customPages, setCustomPages] = useState(() => {
@@ -136,6 +137,10 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   useEffect(() => { if (step) stepHeading.current?.focus({ preventScroll: true }); }, [step]);
 
   const currentSummary = saved[sampleIndex];
+  const browseSaved = (direction: 'next' | 'previous') => {
+    setPageTurn(direction);
+    setSampleIndex(index => (index + (direction === 'next' ? 1 : saved.length - 1)) % saved.length);
+  };
   const scene = scenes[Math.min(sceneIndex, scenes.length - 1)]!;
   const customScene = !coloringPages.some(page => page.id === scene.id) ? scene as SavedPicture : undefined;
   const addColoringPage = () => {
@@ -171,19 +176,33 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
         <div className="choice-grid">
           {pictureChoices.map((item) => (
             <button className={`choice-card choice-${item.id}`} key={item.id}
-              aria-label={item.id === 'blank' ? 'Start a blank picture' : 'Choose a coloring page'}
-              title={item.id === 'blank' ? 'Start a blank picture' : 'Choose a coloring page'}
+              aria-label={item.id === 'blank' ? 'Draw a new picture' : 'Color a picture'}
+              title={item.id === 'blank' ? 'Draw a new picture' : 'Color a picture'}
               onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
-              <span className="choice-art" dangerouslySetInnerHTML={{ __html: themedArtwork[item.id] }} />
+              <span className="choice-art">
+                <span className="choice-illustration" dangerouslySetInnerHTML={{ __html: themedArtwork[item.id] }} />
+                <span className="choice-tab">{item.id === 'blank' ? 'Draw' : 'Color'}</span>
+              </span>
             </button>
           ))}
         </div>
         <section className="previous-section" aria-label="Previous pictures">
 
           <div className="picture-carousel">
-            <button className="icon-button" aria-label="Previous saved picture" disabled={saved.length < 2} onClick={() => setSampleIndex((value) => (value + saved.length - 1) % saved.length)}><Arrow direction="left" /></button>
+            <button className="icon-button" aria-label="Previous saved picture" disabled={saved.length < 2} onClick={() => browseSaved('previous')}><Arrow direction="left" /></button>
             <div className="saved-picture-card" role="group" aria-labelledby="your-pictures-label">
-              <button className="choice-card previous-picture" aria-label={currentSummary ? `Open saved picture: ${currentSummary.title}` : 'No saved pictures yet'} disabled={!current} onClick={() => { if (current) onOpen(current); }}><span className="choice-art"><>{currentSummary ? <SavedPreview key={`${currentSummary.id}:${currentSummary.updatedAt}`} picture={current ?? currentSummary} pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}</></span></button>
+              <button className="choice-card previous-picture" aria-label={currentSummary ? `Continue saved picture: ${currentSummary.title}` : 'Continue a saved picture (no saved pictures yet)'} title={currentSummary ? `Continue ${currentSummary.title}` : 'Your pictures'} disabled={!current} onClick={() => { if (current) onOpen(current); }}>
+                <span className="choice-art portfolio-stage">
+                  <span className="portfolio-cover" aria-hidden="true" />
+                  <span className="portfolio-sheet portfolio-sheet-back" aria-hidden="true" />
+                  <span className="portfolio-sheet portfolio-sheet-middle" aria-hidden="true" />
+                  <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'}>
+                    {currentSummary ? <SavedPreview picture={current ?? currentSummary} pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}
+                  </span>
+                  <span className="portfolio-binding" aria-hidden="true"><i /><i /><i /></span>
+                  <span className="choice-tab">Continue</span>
+                </span>
+              </button>
               <nav className="library-actions" aria-label="Selected saved picture actions">
                 {(library.error || currentError) && <button className="icon-button" aria-label="Retry loading saved pictures" title="Retry loading" onClick={retry}><RotateCw aria-hidden="true" /></button>}
                 <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) { setDeletingPage(false); setPendingDelete(current); } }}><Trash2 /></button>
@@ -193,7 +212,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
               </nav>
               <h2 className="sr-only" id="your-pictures-label">Your pictures</h2>
             </div>
-            <button className="icon-button" aria-label="Next saved picture" disabled={saved.length < 2} onClick={() => setSampleIndex((value) => (value + 1) % saved.length)}><Arrow direction="right" /></button>
+            <button className="icon-button" aria-label="Next saved picture" disabled={saved.length < 2} onClick={() => browseSaved('next')}><Arrow direction="right" /></button>
           </div>
 
 
