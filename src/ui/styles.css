@@ -12,7 +12,8 @@
   --action: #3e747d;
   --action-text: #fffaf0;
   --shadow: #35545c30;
-  --selection-emphasis: drop-shadow(0 5px 7px #233d4b40) drop-shadow(0 1px 2px #233d4b30);
+  --selection-highlight: #3e747d;
+  --selection-emphasis: drop-shadow(1px 0 0 var(--selection-highlight)) drop-shadow(-1px 0 0 var(--selection-highlight)) drop-shadow(0 1px 0 var(--selection-highlight)) drop-shadow(0 -1px 0 var(--selection-highlight));
   --ribbon-shadow: #294a514d;
   --brand-tile: #c3dcdb;
   --brand-paper: #faf4e6;
@@ -49,7 +50,7 @@
     --action: #ddc799;
     --action-text: #243148;
     --shadow: #050c1c70;
-    --selection-emphasis: drop-shadow(0 0 6px #ffe7b04d) drop-shadow(0 0 16px #a6c9f52b);
+    --selection-highlight: #ddc799;
     --ribbon-shadow: #050c1c99;
     --brand-tile: #344761;
     --brand-paper: #22334c;
@@ -719,9 +720,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 }
 .selection .choice-art { transition: filter 160ms ease; }
 .selection .choice-card:not(:disabled):is(:hover, .app-mouse-hover, :active, .app-mouse-pressed, :focus-visible) > .choice-art {
-  filter: var(--selection-emphasis);
-}
-.previous-section .picture-carousel > .icon-button:not(:disabled):is(:hover, .app-mouse-hover, :focus-visible) {
   filter: var(--selection-emphasis);
 }
 .portfolio-stage { perspective: 900px; }
