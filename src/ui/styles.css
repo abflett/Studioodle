@@ -752,6 +752,14 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .previous-section .library-actions .icon-button { width: 32px; height: 32px; padding: 7px; }
   .saved-picture-card .library-actions { gap: 8px; }
 }
+/* Short landscape screens can use the top center; utility buttons occupy the right corner. */
+@media (max-height: 540px) and (min-aspect-ratio: 1/1) {
+  .selection-screen { padding-top: max(12px, env(safe-area-inset-top)); }
+  .selection-screen .selection { --object-height: min(170px, calc((100dvh - 120px) / 2)); }
+}
+@media (max-height: 540px) and (min-aspect-ratio: 1/1) and (max-width: 720px) {
+  .selection .choice-grid { width: min(100%, calc(var(--object-height) * 3), calc(100vw - 280px)); translate: -48px 0; }
+}
 @media (prefers-reduced-motion: reduce) {
   .portfolio-page.turn-next, .portfolio-page.turn-previous { animation: none; }
   .saved-picture-card { transition: none; }
