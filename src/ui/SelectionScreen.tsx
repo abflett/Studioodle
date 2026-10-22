@@ -21,7 +21,7 @@ import { printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, Save, Pencil, LoaderCircle, RotateCw } from 'lucide-react';
-import { pictureChoices } from '../app/startup';
+import { pictureChoices, savedStackArtwork } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
 
@@ -185,10 +185,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             <div className="saved-picture-card" role="group" aria-labelledby="your-pictures-label">
               <button className="choice-card previous-picture" aria-label={currentSummary ? `Continue saved picture: ${currentSummary.title}` : 'Continue a saved picture (no saved pictures yet)'} title={currentSummary ? `Continue ${currentSummary.title}` : 'Your pictures'} disabled={!current} onClick={() => { if (current) onOpen(current); }}>
                 <span className="choice-art portfolio-stage">
-                  <span className="portfolio-pile" style={{ width: `min(calc(100% - 28px), calc((var(--object-height) - 30px) * ${previewSize.width / previewSize.height}))`, aspectRatio: `${previewSize.width} / ${previewSize.height}` }}>
-                    <span className="portfolio-sheet portfolio-sheet-back" aria-hidden="true" />
-                    <span className="portfolio-sheet portfolio-sheet-middle" aria-hidden="true" />
-                    <span className="portfolio-sheet portfolio-sheet-near" aria-hidden="true" />
+                  <img className="portfolio-stack-art" src={savedStackArtwork} alt="" aria-hidden="true" draggable={false} decoding="async" />
+                  <span className="portfolio-pile" style={{ width: `min(76%, calc(var(--object-height) * .6 * ${previewSize.width / previewSize.height}))`, aspectRatio: `${previewSize.width} / ${previewSize.height}` }}>
                     <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'}>
                       {currentSummary ? <SavedPreview picture={current ?? currentSummary} pending={!current && !currentError} unavailable={currentError} /> : library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className="empty-pictures">{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}
                     </span>

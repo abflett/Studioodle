@@ -299,6 +299,7 @@ try {
   await cdp('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'no-preference'}]});
   const illustrationsReady=await evaluate("[...document.querySelectorAll('.choice-illustration')].length===2 && [...document.querySelectorAll('.choice-illustration')].every(image=>image.complete&&image.naturalWidth>0)");
   if(!illustrationsReady)throw Error('Selection illustrations must be decoded when the home screen opens');
+  if(!await evaluate("document.querySelector('.portfolio-stack-art')?.complete && document.querySelector('.portfolio-stack-art')?.naturalWidth>0"))throw Error('Paper-stack illustration must be decoded when the home screen opens');
   result.portfolio=await evaluate("import('/tests/browser/portfolio-navigation.ts').then(m=>m.checkPortfolioNavigation())");
   await cdp('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
   if(await evaluate("getComputedStyle(document.querySelector('.portfolio-page')).animationName")!=='none')throw Error('Portfolio must respect reduced motion');

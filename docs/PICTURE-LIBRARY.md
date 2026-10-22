@@ -23,20 +23,23 @@ no forced animation-frame delay. The visual spinner appears only after 120 ms of
 pending work; failures appear immediately. Warm-navigation browser tests verify
 that cached pictures are ready by the next painted frame without a spinner.
 
-The selection screen presents saved work as a loose paper stack beneath the
-drawing easel and coloring book, with no visible choice captions. The saved-page
-stage stays fixed across picture ratios while the front sheet follows the saved
-picture aspect ratio. Browsing arrows remain outside the open target, and utility
-buttons take click priority.
+The selection screen presents saved work over a permanent illustrated paper stack
+beneath the drawing easel and coloring book, with no visible choice captions.
+The base artwork and browsing stage stay fixed across picture ratios while the
+live front sheet follows the saved picture aspect ratio. Browsing arrows remain
+outside the open target, and utility buttons take click priority.
 Forward/backward navigation adds a 240 ms page-turn transform without delaying
 loading or interactions. Reduced-motion preferences disable the turn animation.
+The square/landscape/portrait curled front-sheet assets and matching masks are a
+separate visual follow-up; the current live preview keeps its straight edges.
 
-The drawing and coloring choices use transparent, hand-inked watercolor
-illustrations. Original generated PNGs and exact prompts live in
-`art/source/interface/selection-objects.json` and its sibling files; full-resolution,
-lossless WebP copies live under `src/assets/selection/`. Both images decode during
-the splash alongside the editor module, so the wordless home screen opens with its
-art ready. These are decorative interface assets; painting and output stay vector.
+The drawing, coloring and saved-picture choices use transparent, hand-inked
+watercolor illustrations. Original generated PNGs and exact prompts live in
+`art/source/interface/selection-objects.json` and its sibling files;
+full-resolution, lossless WebP copies live under `src/assets/selection/`.
+All three images decode during the splash alongside the editor module, so the
+wordless home screen opens with its art ready. These are decorative interface
+assets; painting and output stay vector.
 
 The fresh pre-release IndexedDB database is `studioodle-library-v1` (schema 1).
 `pictures` stores full format-5 drawings; `summaries` stores explicit metadata

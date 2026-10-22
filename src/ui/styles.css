@@ -711,12 +711,10 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .saved-picture-card:has(.previous-picture:not(:disabled)):is(:focus-within, :has(.app-mouse-hover)) { background: color-mix(in srgb, var(--text) 8%, transparent); }
 .portfolio-stage { perspective: 900px; }
 .portfolio-pile { position: relative; display: block; }
-.portfolio-sheet, .portfolio-page { position: absolute; inset: 0; border: 2px solid var(--preview-border); border-radius: 3px; background: #f9f0d9; }
-.portfolio-sheet-back { rotate: -7deg; translate: -6px -3px; background: #eee4cc; }
-.portfolio-sheet-middle { rotate: 5deg; translate: 7px 3px; background: #fff8e9; }
-.portfolio-sheet-near { rotate: -2deg; translate: -2px 6px; background: #e7ddc5; }
+.portfolio-stage .portfolio-stack-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; user-select: none; }
+.portfolio-page { position: absolute; inset: 0; border: 2px solid var(--preview-border); border-radius: 3px; background: #f9f0d9; }
 .portfolio-page { display: grid; place-items: center; padding: 0; border: 0; background: #fff8e9; box-shadow: 0 3px 7px #18334326; transform-origin: left center; overflow: hidden; }
-.portfolio-page .saved-preview { --preview-height: calc(var(--object-height) - 30px); max-width: 100%; max-height: 100%; border: 2px solid var(--preview-border); border-radius: 3px; box-shadow: none; }
+.portfolio-page .saved-preview { --preview-height: calc(var(--object-height) * .6); max-width: 100%; max-height: 100%; border: 2px solid var(--preview-border); border-radius: 3px; box-shadow: none; }
 .portfolio-page > .preview-spinner { width: 30px; height: 30px; filter: none; }
 .portfolio-page .empty-pictures { min-height: 0; border: 0; font-size: 15px; color: #687b7a; padding: 12px; }
 .portfolio-page.turn-next { animation: portfolio-next 240ms ease-out both; }
