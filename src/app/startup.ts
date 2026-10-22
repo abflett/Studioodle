@@ -5,35 +5,26 @@ import paperStackArt from '../assets/selection/paper-stack.webp';
 import landscapeSheet from '../assets/selection/sheet-landscape-overlay.svg';
 import landscapeMask from '../assets/selection/sheet-landscape-mask.svg';
 import landscapeSilhouette from '../assets/selection/sheet-landscape-silhouette.svg';
-import squareSheet from '../assets/selection/sheet-square.webp';
-import portraitSheet from '../assets/selection/sheet-portrait.webp';
+import squareSheet from '../assets/selection/sheet-square-overlay.svg';
+import squareMask from '../assets/selection/sheet-square-mask.svg';
+import squareSilhouette from '../assets/selection/sheet-square-silhouette.svg';
+import portraitSheet from '../assets/selection/sheet-portrait-overlay.svg';
+import portraitMask from '../assets/selection/sheet-portrait-mask.svg';
+import portraitSilhouette from '../assets/selection/sheet-portrait-silhouette.svg';
 
 export const pictureChoices = [{ id: 'blank', artwork: easelArt }, { id: 'coloring', artwork: coloringArt }] as const;
 export const savedStackArtwork = paperStackArt;
-// Masks and transparent-center overlays are derived from the same face path and image box.
+// Each silhouette, face mask and overlay comes from the same traced paper outline.
 export const portfolioPapers = [
-  { shape: 'portrait', ratio: 1 / Math.SQRT2, artwork: portraitSheet,
-    box: { left: .045, top: .066, right: .966, bottom: .95 },
-    face: 'M62 48 C320 60 740 65 960 74 C975 420 990 870 840 955 C700 965 300 963 60 950 C25 880 25 120 62 48 Z',
-  },
-  { shape: 'square', ratio: 1, artwork: squareSheet,
-    box: { left: .048, top: .07, right: .965, bottom: .95 },
-    face: 'M65 55 C320 65 740 68 955 95 C975 430 990 860 835 950 C700 965 300 960 61 950 C25 880 25 120 65 55 Z',
-  },
-].map(paper => ({ ...paper, ...paperLayers(paper.face, paper.box, paper.artwork), backingMask: undefined as string | undefined }));
-// The landscape mask and textured overlay share the exact traced A4 contour.
-portfolioPapers.push({
-  shape: 'landscape', ratio: 297 / 210, artwork: landscapeSheet,
-  box: { left: 0, top: 0, right: 1, bottom: 1 }, face: '',
-  artworkMask: landscapeMask, overlayMask: landscapeSheet, backingMask: landscapeSilhouette,
-  artworkStyle: { inset: '0', maskImage: `url("${landscapeMask}")`, maskSize: '100% 100%', maskPosition: '0 0', maskComposite: 'intersect' },
-  overlayStyle: { maskImage: 'none' },
-});
+  paperLayers({ shape: 'portrait', ratio: 210 / 297, artwork: portraitSheet, artworkMask: portraitMask, backingMask: portraitSilhouette }),
+  paperLayers({ shape: 'square', ratio: 1, artwork: squareSheet, artworkMask: squareMask, backingMask: squareSilhouette }),
+  paperLayers({ shape: 'landscape', ratio: 297 / 210, artwork: landscapeSheet, artworkMask: landscapeMask, backingMask: landscapeSilhouette }),
+];
 /** Compare proportions symmetrically, so a tall and a wide save get equal treatment. */
 export function portfolioPaper(ratio: number) {
   return portfolioPapers.reduce((best, paper) => Math.abs(Math.log(ratio / paper.ratio)) < Math.abs(Math.log(ratio / best.ratio)) ? paper : best);
 }
-const illustrationSources = [...pictureChoices.map(choice => choice.artwork), savedStackArtwork, ...portfolioPapers.flatMap(paper => [paper.artwork, paper.artworkMask, paper.overlayMask, ...(paper.backingMask ? [paper.backingMask] : [])])];
+const illustrationSources = [...pictureChoices.map(choice => choice.artwork), savedStackArtwork, ...portfolioPapers.flatMap(paper => [paper.artwork, paper.artworkMask, paper.backingMask])];
 export const startupTaskCount = 1 + illustrationSources.length;
 export type EditorModule = typeof import('../ui/EditorPreview');
 

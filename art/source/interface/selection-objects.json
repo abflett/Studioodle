@@ -1,7 +1,7 @@
 {
   "tool": "Built-in image_gen",
   "purpose": "Wordless selection-screen illustrations; transparent all-ages ink and watercolor artwork.",
-  "encoding": "Runtime copies are full-resolution lossless WebP with original RGBA pixels preserved.",
+  "encoding": "Easel, book and stack runtime copies are lossless WebP. Front sheets use cropped and normalized Potrace SVG layers; original RGBA source art is preserved here.",
   "assets": [
     {
       "name": "easel",
@@ -29,23 +29,29 @@
     {
       "name": "sheet-landscape",
       "source": "selection-sheet-landscape.png",
-      "runtime": "src/assets/selection/sheet-landscape.webp",
+      "runtime": "src/assets/selection/sheet-landscape-overlay.svg",
+      "artworkMask": "src/assets/selection/sheet-landscape-mask.svg",
+      "backingMask": "src/assets/selection/sheet-landscape-silhouette.svg",
       "prompt": "Use case: illustration-story. Create ONE single blank loose art-paper sheet as a transparent UI compositing asset for Studioodle. Match the supplied paper-stack reference: fine expressive charcoal-blue hand-inked perimeter, warm ivory watercolor paper grain, subtly worn and faded edges, soft internal shading. This is a SINGLE SHEET ONLY, no other sheets, no stack, no props, no text, no markings, no shadow outside silhouette. Near orthographic overhead view, virtually rectangular face, natural softly bowed edges, small gentle lower-right corner curl showing its underside confined to the outer 7% of sheet. The central 85% must be uninterrupted flat blank pale ivory for compositing a live drawing; no folds crossing center. Paper face opaque, outside fully transparent. Sheet upright and level without rotation, fully visible filling about 94% of canvas with narrow even transparent margins. Restrained beautiful storybook aesthetic, not photorealism. Reference image is STYLE ONLY, do not recreate the pile. FORMAT: LANDSCAPE sheet, width to height exactly 4:3. Landscape output canvas matching that ratio.",
-      "mask": "Three-layer composition: static stack, normal rectangular preview clipped by a face mask and the registered original paper alpha, then this illustration with a truly transparent center made by a complementary SVG mask. Both masks share one coordinate system. No warp, cover crop, edge extension or multiply blending."
+      "mask": "Static stack, opaque ink-colored silhouette backing, rectangular preview with 2.5% bleed clipped to the exact traced inner contour, then transparent SVG border/patina and cream shaded folds. All layers share cropped coordinates: A4 portrait/landscape or 1:1 square. Threshold 120 with alpha >= 240; retain the connected outline; close fold creases before Potrace. Neutral black transparent mottling and curl shadows; no light perimeter underpaint."
     },
     {
       "name": "sheet-square",
       "source": "selection-sheet-square.png",
-      "runtime": "src/assets/selection/sheet-square.webp",
+      "runtime": "src/assets/selection/sheet-square-overlay.svg",
+      "artworkMask": "src/assets/selection/sheet-square-mask.svg",
+      "backingMask": "src/assets/selection/sheet-square-silhouette.svg",
       "prompt": "Use case: illustration-story. Create ONE single blank loose art-paper sheet as a transparent UI compositing asset for Studioodle. Match the supplied paper-stack reference: fine expressive charcoal-blue hand-inked perimeter, warm ivory watercolor paper grain, subtly worn and faded edges, soft internal shading. This is a SINGLE SHEET ONLY, no other sheets, no stack, no props, no text, no markings, no shadow outside silhouette. Near orthographic overhead view, virtually rectangular face, natural softly bowed edges, small gentle lower-right corner curl showing its underside confined to the outer 7% of sheet. The central 85% must be uninterrupted flat blank pale ivory for compositing a live drawing; no folds crossing center. Paper face opaque, outside fully transparent. Sheet upright and level without rotation, fully visible filling about 94% of canvas with narrow even transparent margins. Restrained beautiful storybook aesthetic, not photorealism. Reference image is STYLE ONLY, do not recreate the pile. FORMAT: SQUARE sheet with width equal to height, square canvas. A generous broad square face, not landscape or portrait.",
-      "mask": "Three-layer composition: static stack, normal rectangular preview clipped by a face mask and the registered original paper alpha, then this illustration with a truly transparent center made by a complementary SVG mask. Both masks share one coordinate system. No warp, cover crop, edge extension or multiply blending."
+      "mask": "Static stack, opaque ink-colored silhouette backing, rectangular preview with 2.5% bleed clipped to the exact traced inner contour, then transparent SVG border/patina and cream shaded folds. All layers share cropped coordinates: A4 portrait/landscape or 1:1 square. Threshold 120 with alpha >= 240; retain the connected outline; close fold creases before Potrace. Neutral black transparent mottling and curl shadows; no light perimeter underpaint."
     },
     {
       "name": "sheet-portrait",
       "source": "selection-sheet-portrait.png",
-      "runtime": "src/assets/selection/sheet-portrait.webp",
+      "runtime": "src/assets/selection/sheet-portrait-overlay.svg",
+      "artworkMask": "src/assets/selection/sheet-portrait-mask.svg",
+      "backingMask": "src/assets/selection/sheet-portrait-silhouette.svg",
       "prompt": "Use case: illustration-story. Create ONE single blank loose art-paper sheet as a transparent UI compositing asset for Studioodle. Match the supplied paper-stack reference: fine expressive charcoal-blue hand-inked perimeter, warm ivory watercolor paper grain, subtly worn and faded edges, soft internal shading. This is a SINGLE SHEET ONLY, no other sheets, no stack, no props, no text, no markings, no shadow outside silhouette. Near orthographic overhead view, virtually rectangular face, natural softly bowed edges, small gentle lower-right corner curl showing its underside confined to the outer 7% of sheet. The central 85% must be uninterrupted flat blank pale ivory for compositing a live drawing; no folds crossing center. Paper face opaque, outside fully transparent. Sheet upright and level without rotation, fully visible filling about 94% of canvas with narrow even transparent margins. Restrained beautiful storybook aesthetic, not photorealism. Reference image is STYLE ONLY, do not recreate the pile. FORMAT: PORTRAIT sheet, width to height exactly 3:4, portrait output canvas. Tall upright sheet, not landscape.",
-      "mask": "Three-layer composition: static stack, normal rectangular preview clipped by a face mask and the registered original paper alpha, then this illustration with a truly transparent center made by a complementary SVG mask. Both masks share one coordinate system. No warp, cover crop, edge extension or multiply blending."
+      "mask": "Static stack, opaque ink-colored silhouette backing, rectangular preview with 2.5% bleed clipped to the exact traced inner contour, then transparent SVG border/patina and cream shaded folds. All layers share cropped coordinates: A4 portrait/landscape or 1:1 square. Threshold 120 with alpha >= 240; retain the connected outline; close fold creases before Potrace. Neutral black transparent mottling and curl shadows; no light perimeter underpaint."
     }
   ]
 }
