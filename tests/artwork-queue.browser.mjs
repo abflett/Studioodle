@@ -1,0 +1,54 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+export async function checkArtworkQueue({cdp,evaluate}){
+ const wait=async expression=>{for(let i=0;i<300;i++){if(await evaluate(expression))return;await new Promise(r=>setTimeout(r,25));}throw Error(`Line queue timed out: ${expression}\n${await evaluate('document.querySelector(".review-save-status")?.textContent')}`);};
+ const ready=()=>wait('!!document.querySelector(".review-sheet img")?.complete');
+ const record=id=>evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1')).assets.find(a=>a.assetId===${JSON.stringify(id)})`);
+ const screen=point=>evaluate(`(()=>{const r=document.querySelector('.review-sheet').getBoundingClientRect(),v=document.querySelector('.review-marker-layer').viewBox.baseVal;return{x:r.x+${point.x}/v.width*r.width,y:r.y+${point.y}/v.height*r.height}})()`);
+ const click=async(point,button='right')=>{const p=await screen(point);for(const type of ['mousePressed','mouseReleased'])await cdp('Input.dispatchMouseEvent',{type,...p,button,clickCount:1});};
+ // Use only this harness's isolated browser storage; seed the user's historical review.
+ await evaluate(`(async()=>{const original=await(await fetch('/docs/studioodle-artwork-review-2026-10-23.json')).json();globalThis.queueOriginal=original;localStorage.setItem('studioodle-artwork-review-v1',JSON.stringify(original));globalThis.queueReload=true;})()`);
+ await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=counting-03'});
+ await wait('!globalThis.queueReload&&document.querySelector(".review-sidebar code")?.textContent==="counting-03"');await ready();
+ await evaluate(`const filter=document.querySelector('.review-sidebar select');Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(filter,'line-repairs');filter.dispatchEvent(new Event('change',{bubbles:true}))`);
+ assert.equal(await evaluate(`document.querySelector('select[aria-label="Artwork"]').options.length-1`),33,'Line task set must include broader notes as well as markers');
+ await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Reopen line repairs').click()`);
+ await wait('document.querySelector(".review-save-status").textContent.startsWith("Reopened 33")');await ready();
+ assert.equal(await evaluate('document.querySelector(".review-sidebar select").value'),'line-unreviewed');
+ assert.equal((await record('circle')).reviewed,true,'Unrelated reviewed assets must stay reviewed');
+ assert.equal((await record('fantasy-moon-sorceress')).reviewed,false);
+ assert((await record('fantasy-moon-sorceress')).markers.some(m=>m.id==='3e2b6a5e-026f-4015-b59a-495313d22591'));
+ await evaluate(`const select=document.querySelector('select[aria-label="Artwork"]');select.value='fantasy-wandering-wizard';select.dispatchEvent(new Event('change',{bubbles:true}))`);
+ await wait('document.querySelector(".review-sidebar code").textContent==="fantasy-wandering-wizard"&&!document.querySelector(".review-tools").disabled');await ready();
+ let wizard=await record('fantasy-wandering-wizard');assert.equal(wizard.markers.length,1,'Completed removal markers must no longer obscure pending line work');
+ assert.equal(wizard.notes,'close line so we can fill hair');
+ const markers=wizard.markers.length;
+ // Right-click must work from the default Note tool, without creating a note marker.
+ await click({x:170,y:240});await click({x:190,y:240});
+ await wait('document.querySelectorAll(".review-proposed-line").length===1');
+ await click({x:200,y:280});await click({x:220,y:280});
+ await wait('document.querySelectorAll(".review-proposed-line").length===2');
+ wizard=await record('fantasy-wandering-wizard');assert.equal(wizard.markers.length,markers);assert.equal(wizard.closures[0].fillSeed,null,'Right click must start another line instead of setting the previous fill seed');
+ const first=await evaluate('(()=>{const r=document.querySelector(".review-sheet").getBoundingClientRect();return{x:r.x,y:r.y}})()');
+ const handle=await evaluate(`(()=>{const r=document.querySelector('[aria-label="Line Curve handle"] circle').getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()`);
+ await cdp('Input.dispatchMouseEvent',{type:'mousePressed',...handle,button:'middle',clickCount:1});
+ await cdp('Input.dispatchMouseEvent',{type:'mouseMoved',x:handle.x+45,y:handle.y-25,button:'middle',buttons:4});
+ await cdp('Input.dispatchMouseEvent',{type:'mouseReleased',x:handle.x+45,y:handle.y-25,button:'middle',clickCount:1});
+ await wait(`(()=>{const r=document.querySelector('.review-sheet').getBoundingClientRect();return Math.abs(r.x-${first.x}-45)<.1&&Math.abs(r.y-${first.y}+25)<.1})()`);
+ const panned=await evaluate('(()=>{const r=document.querySelector(".review-sheet").getBoundingClientRect();return{x:r.x,y:r.y}})()');
+ assert(Math.abs(panned.x-first.x-45)<.1&&Math.abs(panned.y-first.y+25)<.1,'Middle drag must pan even when starting over a curve handle');
+ assert.deepEqual((await record('fantasy-wandering-wizard')).closures,wizard.closures,'Panning must not edit line geometry');
+ await click({x:220,y:300},'left');assert((await record('fantasy-wandering-wizard')).closures[1].fillSeed);
+ await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:' ',code:'Space'});await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:' ',code:'Space'});
+ assert.equal((await record('fantasy-wandering-wizard')).reviewed,true);
+ assert(!await evaluate(`!![...document.querySelector('select[aria-label="Artwork"]').options].find(o=>o.value==='fantasy-wandering-wizard')`),'Reviewed line tasks must leave the remaining queue');
+ await evaluate(`globalThis.queueExport=undefined;document.addEventListener('click',event=>{const a=event.target.closest('a[download]');if(a){event.preventDefault();fetch(a.href).then(r=>r.text()).then(text=>globalThis.queueExport=text);}},{capture:true});document.querySelector('button.review-primary').click()`);
+ await wait('!!globalThis.queueExport');
+ const exported=JSON.parse(await evaluate('globalThis.queueExport'));assert.equal(exported.scope,'line-repairs');assert.equal(exported.assets.length,33);assert.equal(exported.assets.find(a=>a.assetId==='fantasy-wandering-wizard').closures.length,2,'Line export must include finished annotations hidden by the remaining filter');assert(!exported.assets.some(a=>a.assetId==='circle'));
+ await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'d',code:'KeyD'});await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'d',code:'KeyD'});
+ await wait('document.querySelector(".review-sidebar code").textContent!=="fantasy-wandering-wizard"');await ready();
+ await evaluate('globalThis.queueReload=true');await cdp('Page.reload');await wait('!globalThis.queueReload&&document.querySelector(".review-sheet img")?.complete');
+ assert.equal(await evaluate('document.querySelector(".review-sidebar select").value'),'line-unreviewed','Queue selection must survive reload');
+ const screenshot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile('work/tests/artwork-line-queue.png',Buffer.from(screenshot.data,'base64'));
+ console.log('Line queue: 33 tasks, scoped reopening, known revision refresh, preserved notes/progress, right-click lines, middle pan over handles, reviewed filtering and reload passed.');
+}

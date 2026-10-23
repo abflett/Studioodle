@@ -43,6 +43,7 @@ code { overflow-wrap: anywhere; color: #b3bfce; font-size: 12px; }
 .review-marker-list small { display: block; margin-top: 4px; }
 .review-marker-editor { display: flex; flex-direction: column; gap: 10px; padding-top: 12px; border-top: 1px solid #4d5b70; }
 .review-save-status { font-size: 12px; color: #dfcf9c; margin: 0; }
+.review-task-summary { display: grid; gap: 6px; padding: 10px; border: 1px solid #526781; border-radius: 8px; background: #202c3c; }
 .review-workspace { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
 .review-view-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 12px; }
 .review-view-tools input[type="color"] { width: 36px; height: 30px; padding: 2px; }

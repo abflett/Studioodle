@@ -33,7 +33,7 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
   const stage = useRef<HTMLDivElement>(null), sheet = useRef<HTMLDivElement>(null);
   const image = useRef<HTMLImageElement>(null);
   const inkProbe = useRef<ReturnType<typeof reviewInkProbe>>(null);
-  const drag = useRef<{ x: number; y: number; pan: typeof pan; moved: boolean }>(null);
+  const drag = useRef<{ x: number; y: number; pan: typeof pan; moved: boolean; button: number }>(null);
   const artworkCallback = useRef(onArtwork);
   useEffect(() => { artworkCallback.current = onArtwork; }, [onArtwork]);
   useEffect(() => {
@@ -79,17 +79,22 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
     if (image.current?.complete && artwork) inkProbe.current ??= reviewInkProbe(image.current, artwork.width, artwork.height);
     return inkProbe.current?.(p) ?? 1;
   }
+  function placeLinePoint(p: ReviewPoint) {
+    if (!artwork) return;
+    if (!draft) onDraft({ a: p, width: lineWidth(p) });
+    else if (Math.hypot(p.x - draft.a.x, p.y - draft.a.y) > .01) onLine(artwork, { id: crypto.randomUUID(), a: draft.a, b: p, control: null, width: +((draft.width + lineWidth(p)) / 2).toFixed(2), fillSeed: null, note: '', createdAt: new Date().toISOString() });
+  }
   function pointerUp(event: PointerEvent<HTMLDivElement>) {
     const gesture = drag.current; drag.current = null;
-    if (!gesture || !artwork || gesture.moved || event.button !== 0 || event.altKey || stale) return;
+    if (!gesture || !artwork || gesture.moved || (event.button !== 0 && event.button !== 2) || event.altKey || stale) return;
     const rect = sheet.current!.getBoundingClientRect();
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) return;
     const { x, y } = point(event);
+    if (event.button === 2) { placeLinePoint({ x, y }); return; }
     if (!event.ctrlKey && !event.metaKey && !event.shiftKey) {
       if (fillTarget) { onFill(fillTarget, { x, y }); return; }
       if (mode === 'close-line') {
-        if (!draft) onDraft({ a: { x, y }, width: lineWidth({ x, y }) });
-        else if (Math.hypot(x - draft.a.x, y - draft.a.y) > .01) onLine(artwork, { id: crypto.randomUUID(), a: draft.a, b: { x, y }, control: null, width: +((draft.width + lineWidth({ x, y })) / 2).toFixed(2), fillSeed: null, note: '', createdAt: new Date().toISOString() });
+        placeLinePoint({ x, y });
         return;
       }
     }
@@ -110,9 +115,9 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
     {stale && <div role="alert">This asset changed since it was annotated. Existing markers refer to the exported revision; adding markers is paused.</div>}
     <div ref={stage} tabIndex={-1} className="review-stage" style={{ background }} aria-label={`${asset.title} artwork`} onContextMenu={event => event.preventDefault()}
       onPointerDown={event => {
-        if (!artwork || (event.button !== 0 && event.button !== 1)) return;
+        if (!artwork || ![0, 1, 2].includes(event.button)) return;
         event.preventDefault(); event.currentTarget.focus({ preventScroll: true }); event.currentTarget.setPointerCapture(event.pointerId);
-        drag.current = { x: event.clientX, y: event.clientY, pan, moved: false };
+        drag.current = { x: event.clientX, y: event.clientY, pan, moved: false, button: event.button };
       }}
       onPointerMove={event => {
         if (!artwork) return;
@@ -120,7 +125,7 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
         if (gesture) {
           const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
           if (Math.hypot(dx, dy) > 4) gesture.moved = true;
-          if (gesture.moved && (zoom > 1 || event.altKey || event.buttons === 4)) setView(view => ({ ...view, pan: { x: gesture.pan.x + dx, y: gesture.pan.y + dy } }));
+          if (gesture.moved && (gesture.button === 1 || event.altKey)) setView(view => ({ ...view, pan: { x: gesture.pan.x + dx, y: gesture.pan.y + dy } }));
         } else if (sheet.current) { const p = point(event); setCursor(p); setHovered(regionAt(p.x, p.y)); }
       }} onPointerLeave={() => setHovered(undefined)} onPointerUp={pointerUp} onPointerCancel={() => { drag.current = null; }}>
       {!loaded && <p className="review-stage-message" role="status">{error || 'Loading vector artwork…'}</p>}
@@ -129,14 +134,14 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
         <svg viewBox={loaded.artwork.viewBox.join(' ')} className="review-marker-layer" aria-label="Artwork annotations">
           {showOutline && region && <path className="review-region-outline" d={region.d} transform={region.transform || undefined} fill="none" stroke="#74befe" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />}
           {showLines && <ReviewClosureOverlay lines={review?.closures ?? []} selected={selected} scale={scale} width={loaded.artwork.width} height={loaded.artwork.height} handles={showMarkers} editable={!stale} point={point} focusArtwork={() => stage.current?.focus({ preventScroll: true })} onSelect={onSelect} onDelete={onDelete} onChange={onChangeLine} />}
-          {draft && mode === 'close-line' && <g pointerEvents="none"><path d={`M${draft.a.x} ${draft.a.y}L${cursor?.x ?? draft.a.x} ${cursor?.y ?? draft.a.y}`} fill="none" stroke="#70d5ff" strokeWidth="2" vectorEffect="non-scaling-stroke" strokeDasharray="4 3" /><circle cx={draft.a.x} cy={draft.a.y} r={6 / scale} fill="#70d5ff" /></g>}
+          {draft && <g pointerEvents="none"><path d={`M${draft.a.x} ${draft.a.y}L${cursor?.x ?? draft.a.x} ${cursor?.y ?? draft.a.y}`} fill="none" stroke="#70d5ff" strokeWidth="2" vectorEffect="non-scaling-stroke" strokeDasharray="4 3" /><circle cx={draft.a.x} cy={draft.a.y} r={6 / scale} fill="#70d5ff" /></g>}
           {showMarkers && review?.markers.map((marker, index) => <g key={marker.id} role="button" tabIndex={0} aria-label={`${markerLabels[marker.kind]} marker ${index + 1}`} className={`review-marker ${marker.kind} ${selected === marker.id ? 'selected' : ''}`}
-            transform={`translate(${marker.x} ${marker.y}) scale(${1 / scale})`} onPointerDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); if (event.altKey) onDelete(marker.id); else onSelect(marker.id); }} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); onSelect(marker.id); } }}>
+            transform={`translate(${marker.x} ${marker.y}) scale(${1 / scale})`} onPointerDown={event => { if (event.button === 0) { event.stopPropagation(); stage.current?.focus({ preventScroll: true }); } }} onClick={event => { event.stopPropagation(); if (event.altKey) onDelete(marker.id); else onSelect(marker.id); }} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); onSelect(marker.id); } }}>
             <circle r="12" /><text textAnchor="middle" dominantBaseline="central">{index + 1}</text>
           </g>)}
         </svg>
       </div>}
     </div>
-    <div className="review-hint">{fillTarget ? 'Click inside the intended new fill region. Escape skips this step.' : draft ? 'Click endpoint B. Escape cancels the draft.' : 'Wheel: zoom at cursor · A / D: browse · 4: Close line · Ctrl/Cmd + click: transparent · Shift + click: add fill · Alt + click: delete annotation · Drag to pan when zoomed'}</div>
+    <div className="review-hint">{fillTarget ? 'Left-click inside the intended fill region, or right-click to start another line. Escape skips the fill point.' : draft ? 'Right-click endpoint B (or left-click with tool 4). Escape cancels the draft.' : 'Right-click A, then B: line · Left-drag handles: adjust · Middle-drag: pan · Wheel: zoom at cursor · A / D: browse · Space: reviewed'}</div>
   </section>;
 }

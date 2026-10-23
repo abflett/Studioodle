@@ -19,6 +19,7 @@ function ClosureLine({ saved, selected, scale, width, height, handles, editable,
   const [preview, setPreview] = useState<ReviewClosure>();
   const [drag, setDrag] = useState<{ original: ReviewClosure; handle: ClosureHandle }>();
   function start(event: PointerEvent<SVGGElement>, original: ReviewClosure, handle: ClosureHandle) {
+    if (event.button !== 0) return;
     event.stopPropagation(); event.preventDefault(); focusArtwork(); if (!editable) return;
     event.currentTarget.setPointerCapture(event.pointerId); setDrag({ original, handle });
   }
@@ -28,6 +29,7 @@ function ClosureLine({ saved, selected, scale, width, height, handles, editable,
   }
   function cancel() { setDrag(undefined); setPreview(undefined); }
   function finish(event: PointerEvent) {
+    if (event.button !== 0) return;
     event.stopPropagation();
     const gesture = drag; setDrag(undefined); setPreview(undefined);
     if (gesture) onChange(moveClosureHandle(gesture.original, gesture.handle, point(event), width, height));
@@ -39,7 +41,7 @@ function ClosureLine({ saved, selected, scale, width, height, handles, editable,
     {active && handles && <path d={closurePath(line)} fill="none" stroke="#70d5ff" strokeWidth={line.width + 3 / scale} strokeLinecap="round" pointerEvents="none" />}
     <path d={closurePath(line)} fill="none" stroke="black" strokeWidth={line.width} strokeLinecap="round" pointerEvents="none" />
     {handles && <path d={closurePath(line)} fill="none" stroke="transparent" strokeWidth={Math.max(line.width, 14 / scale)} pointerEvents="stroke" className="review-line-target"
-      onPointerDown={event => { event.stopPropagation(); event.preventDefault(); focusArtwork(); }}
+      onPointerDown={event => { if (event.button === 0) { event.stopPropagation(); event.preventDefault(); focusArtwork(); } }}
       onClick={event => { event.stopPropagation(); if (event.altKey) onDelete(line.id); else onSelect(line.id); }} />}
     {active && handles && controls.map(([handle, position, label]) => <g key={handle} className={`review-line-handle ${handle}`} role="button" tabIndex={editable ? 0 : -1} aria-label={`Line ${label} handle`} aria-disabled={!editable}
       transform={`translate(${position.x} ${position.y}) scale(${1 / scale})`}
