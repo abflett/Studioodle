@@ -53,12 +53,12 @@ export function ArtworkReviewApp() {
     if (performance.now() - wheelTime.current < 450) return;
     wheelTime.current = performance.now(); navigate(direction);
   }, [navigate]);
-  function updateEntry(change: (entry: AssetReview) => AssetReview, loaded = artwork?.id === assetId ? artwork.data : undefined) {
+  const updateEntry = useCallback((change: (entry: AssetReview) => AssetReview, loaded = artwork?.id === assetId ? artwork.data : undefined) => {
     if (!loaded || (current && current.sha256 !== loaded.sha256)) return;
     const base = current ?? { assetId, source: asset.source, vectorPath: `src/assets/vector/${assetId}.svg`, viewBox: loaded.viewBox, sha256: loaded.sha256, notes: '', reviewed: false, markers: [] };
     const next = change(base);
     persist({ ...review, assets: [...review.assets.filter(entry => entry.assetId !== assetId), next] });
-  }
+  }, [artwork, assetId, current, asset.source, review, persist]);
   function addMarker(data: ReviewArtwork, marker: ReviewMarker) {
     updateEntry(entry => ({ ...entry, markers: [...entry.markers, marker] }), data);
     setSelected(marker.id); requestAnimationFrame(() => markerNote.current?.focus());
@@ -71,14 +71,16 @@ export function ArtworkReviewApp() {
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if (event.ctrlKey || event.metaKey || event.altKey || (event.target instanceof HTMLElement && event.target.closest('input,textarea,select,[contenteditable="true"]'))) return;
-      if (['ArrowRight', 'PageDown', 'ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); navigate(event.key === 'ArrowRight' || event.key === 'PageDown' ? 1 : -1); }
+      const key = event.key.toLowerCase();
+      if (['ArrowRight', 'PageDown', 'ArrowLeft', 'PageUp'].includes(event.key) || key === 'a' || key === 'd') { event.preventDefault(); navigate(event.key === 'ArrowRight' || event.key === 'PageDown' || key === 'd' ? 1 : -1); }
+      if (event.key === ' ') { event.preventDefault(); if (!event.repeat) updateEntry(entry => ({ ...entry, reviewed: !entry.reviewed })); }
       if (event.key === 'Escape') setSelected(undefined);
       if (event.key === '1') setMode('note');
       if (event.key === '2') setMode('remove-region');
       if (event.key === '3') setMode('add-region');
     };
     window.addEventListener('keydown', keydown); return () => window.removeEventListener('keydown', keydown);
-  }, [navigate]);
+  }, [navigate, updateEntry]);
   function exportReview() {
     const data = { ...review, exportedAt: new Date().toISOString() };
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2) + '\n'], { type: 'application/json' }));
@@ -116,7 +118,7 @@ export function ArtworkReviewApp() {
       <div className="review-marker-list">{current?.markers.map((marker, index) => <button key={marker.id} className={marker.kind} aria-pressed={selected === marker.id} onClick={() => setSelected(marker.id)}>{index + 1}. {markerLabels[marker.kind]}<small>{marker.regionId ? `Region ${marker.regionId}` : 'No existing region'} · {marker.x.toFixed(1)}, {marker.y.toFixed(1)}</small>{marker.note && <small>{marker.note}</small>}</button>)}</div>
       {selectedMarker && <div className="review-marker-editor"><strong>{markerLabels[selectedMarker.kind]}</strong><label>Marker note<textarea ref={markerNote} aria-label="Marker note" disabled={!editable} rows={3} value={selectedMarker.note} placeholder="What should change here?" onChange={event => updateEntry(entry => ({ ...entry, markers: entry.markers.map(marker => marker.id === selected ? { ...marker, note: event.target.value } : marker) }))} /></label><button onClick={() => deleteMarker(selectedMarker.id)}>Delete marker</button></div>}
       <p role="status" className="review-save-status">{message}</p>
-      <small>Markers describe requested fixes; they do not modify artwork. Arrow keys / Page Up / Page Down browse. Keys 1–3 choose tools.</small>
+      <small>Markers describe requested fixes; they do not modify artwork. A / D, arrow keys or Page Up / Page Down browse. Space toggles Reviewed. Keys 1–3 choose tools.</small>
     </aside>
     <ArtworkReviewStage key={assetId} asset={asset} review={current} selected={selected} mode={mode} onMark={addMarker} onSelect={setSelected} onDelete={deleteMarker} onNavigate={wheelNavigate} onArtwork={data => setArtwork({ id: assetId, data })} />
   </main>;

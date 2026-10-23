@@ -8,12 +8,16 @@ in the production build.
 The inspector displays the shipped SVG's actual white paint regions and black
 ink over a dark background. It fits the whole asset without cropping or adding
 a background to the artwork. Change the inspection background with the color
-picker. A subtle hover tint identifies the region under the pointer.
+picker. The toolbar identifies the region under the pointer; enable Region outline
+to trace its boundary. Outlines are off by default so inspection shows the unaltered
+artwork, without a hover tint painting over the black ink.
 
 ## Reviewing the library
 
-- Wheel over the artwork, use Previous / Next, or press Left / Right or Page Up /
-  Page Down. Browsing wraps around and follows the search and review filter.
+- Wheel over the artwork, use Previous / Next, or press A / D, Left / Right or
+  Page Up / Page Down. Browsing wraps around and follows the search and review filter.
+- Space toggles Reviewed for the current asset. Holding it down does not repeatedly
+  toggle the status. Shortcuts are inactive while typing in notes or search fields.
 - Search by title, ID or category. Mark an asset Reviewed to track progress;
   use Not reviewed yet or With notes or markers to narrow the library.
 - Ctrl-click (Cmd-click on Mac): mark a region that should become transparent.

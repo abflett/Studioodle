@@ -19,6 +19,7 @@ export function ArtworkReviewStage({ asset, review, selected, mode, onMark, onSe
   const [size, setSize] = useState({ width: 1, height: 1 });
   const [hovered, setHovered] = useState<number>();
   const [showMarkers, setShowMarkers] = useState(true);
+  const [showOutline, setShowOutline] = useState(false);
   const [background, setBackground] = useState('#2d190f');
   const stage = useRef<HTMLDivElement>(null), sheet = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; y: number; pan: typeof pan; moved: boolean }>(null);
@@ -77,6 +78,7 @@ export function ArtworkReviewStage({ asset, review, selected, mode, onMark, onSe
       <button onClick={() => setZoom(value => Math.min(8, value * 1.3))} aria-label="Zoom in">+</button>
       <label>Background <input aria-label="Inspection background" type="color" value={background} onChange={event => setBackground(event.target.value)} /></label>
       <label><input type="checkbox" checked={showMarkers} onChange={event => setShowMarkers(event.target.checked)} /> Markers</label>
+      <label><input type="checkbox" checked={showOutline} onChange={event => setShowOutline(event.target.checked)} /> Region outline</label>
       <span>{hovered ? `Region ${hovered}` : 'Transparent / ink'}</span>
     </div>
     {stale && <div role="alert">This asset changed since it was annotated. Existing markers refer to the exported revision; adding markers is paused.</div>}
@@ -99,7 +101,7 @@ export function ArtworkReviewStage({ asset, review, selected, mode, onMark, onSe
       {loaded && <div ref={sheet} className="review-sheet" style={{ width: loaded.artwork.width * scale, height: loaded.artwork.height * scale, transform: `translate(calc(-50% + ${pan.x}px), calc(-50% + ${pan.y}px))` }}>
         <img src={loaded.url} alt={asset.title} draggable={false} />
         <svg viewBox={loaded.artwork.viewBox.join(' ')} className="review-marker-layer" aria-label="Artwork annotations">
-          {region && <path d={region.d} transform={region.transform || undefined} fill="#f0b75b" opacity=".2" />}
+          {showOutline && region && <path className="review-region-outline" d={region.d} transform={region.transform || undefined} fill="none" stroke="#74befe" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />}
           {showMarkers && review?.markers.map((marker, index) => <g key={marker.id} role="button" tabIndex={0} aria-label={`${markerLabels[marker.kind]} marker ${index + 1}`} className={`review-marker ${marker.kind} ${selected === marker.id ? 'selected' : ''}`}
             transform={`translate(${marker.x} ${marker.y}) scale(${1 / scale})`} onPointerDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); if (event.altKey) onDelete(marker.id); else onSelect(marker.id); }} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); onSelect(marker.id); } }}>
             <circle r="12" /><text textAnchor="middle" dominantBaseline="central">{index + 1}</text>

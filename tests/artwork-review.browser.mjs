@@ -69,18 +69,64 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowLeft',code:'ArrowLeft'});
   await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowLeft',code:'ArrowLeft'});
   await wait('document.querySelector(".review-sidebar code").textContent==="circle"');await ready();
+  const key = async (key,code,extra={}) => {
+    await cdp('Input.dispatchKeyEvent',{type:'keyDown',key,code,...extra});
+    await cdp('Input.dispatchKeyEvent',{type:'keyUp',key,code});
+  };
+  await key('d','KeyD');
+  await wait('document.querySelector(".review-sidebar code").textContent==="square"');await ready();
+  await key('A','KeyA');
+  await wait('document.querySelector(".review-sidebar code").textContent==="circle"');await ready();
+  await key(' ','Space');
+  assert.equal((await stored()).assets.find(entry=>entry.assetId==='circle').reviewed,false,'Space must toggle Reviewed');
+  await key(' ','Space',{autoRepeat:true});
+  assert.equal((await stored()).assets.find(entry=>entry.assetId==='circle').reviewed,false,'A held Space key must not toggle repeatedly');
+  await evaluate(`document.querySelector('button[aria-label="Next artwork"]').focus()`);
+  await key(' ','Space');
+  assert.equal(await evaluate('document.querySelector(".review-sidebar code").textContent'),'circle','Space must not also activate a focused navigation button');
+  assert.equal((await stored()).assets.find(entry=>entry.assetId==='circle').reviewed,true);
+  await evaluate(`document.querySelector('textarea[aria-label="Artwork notes"]').focus()`);
+  await key('a','KeyA');await key('d','KeyD');await key(' ','Space');
+  assert.equal(await evaluate('document.querySelector(".review-sidebar code").textContent'),'circle','Typing in notes must not trigger navigation');
+  assert.equal((await stored()).assets.find(entry=>entry.assetId==='circle').reviewed,true,'Typing spaces must not toggle Reviewed');
   // A regenerated asset's old notes remain visible, but new edits are blocked.
-  await evaluate('(()=>{const key="studioodle-artwork-review-v1",r=JSON.parse(localStorage.getItem(key));r.assets[0].sha256="0".repeat(64);localStorage.setItem(key,JSON.stringify(r));})()');
+  await evaluate('(()=>{const key="studioodle-artwork-review-v1",r=JSON.parse(localStorage.getItem(key));r.assets.find(entry=>entry.assetId==="circle").sha256="0".repeat(64);localStorage.setItem(key,JSON.stringify(r));})()');
   await reload();
   await wait('!!document.querySelector("[role=alert]")');
   await clickPoint(110,200,2);
-  assert.equal((await stored()).assets[0].markers.length,3);
+  assert.equal((await stored()).assets.find(entry=>entry.assetId==='circle').markers.length,3);
   // Old markers can still be removed after repairs change the SVG checksum.
   await clickPoint(110,140,1);
   await wait('document.querySelectorAll(".review-marker").length===2');
-  assert.equal((await stored()).assets[0].markers.length,2,'Alt-click must persistently delete only the clicked marker');
+  assert.equal((await stored()).assets.find(entry=>entry.assetId==='circle').markers.length,2,'Alt-click must persistently delete only the clicked marker');
   await reload();
   assert.equal(await evaluate('document.querySelectorAll(".review-marker").length'),2);
+  // Pointer hover must not repaint fill or ink in the default inspection view.
+  await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=triangle'});
+  await wait('document.querySelector(".review-sidebar code")?.textContent==="triangle"');await ready();
+  await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+  await cdp('Input.dispatchMouseEvent',{type:'mouseMoved',x:20,y:20});
+  const clip=await evaluate('(()=>{const r=document.querySelector(".review-sheet").getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,scale:1}})()');
+  const baseline=await cdp('Page.captureScreenshot',{format:'png',clip});
+  const center=await evaluate('(()=>{const r=document.querySelector(".review-sheet").getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()');
+  await cdp('Input.dispatchMouseEvent',{type:'mouseMoved',...center});
+  await wait('document.querySelector(".review-view-tools > span").textContent==="Region 1"');
+  const hovered=await cdp('Page.captureScreenshot',{format:'png',clip});
+  await fs.writeFile('work/tests/triangle-before-hover.png',Buffer.from(baseline.data,'base64'));
+  await fs.writeFile('work/tests/triangle-after-hover.png',Buffer.from(hovered.data,'base64'));
+  const hoverDelta=await evaluate(`(async()=>{const pixels=async data=>{const image=new Image();image.src='data:image/png;base64,'+data;await image.decode();const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=image.height;const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0);return ctx.getImageData(0,0,canvas.width,canvas.height).data;};const a=await pixels(${JSON.stringify(baseline.data)}),b=await pixels(${JSON.stringify(hovered.data)});let max=0;for(let i=0;i<a.length;i++)max=Math.max(max,Math.abs(a[i]-b[i]));return max;})()`);
+  // Allow a few channel values of browser edge rounding, never a visible tint.
+  assert(hoverDelta<=4,`Hover changed triangle fill or ink by ${hoverDelta} channel values`);
+  const gaps=await evaluate(`(async()=>{
+    const render=async url=>{const doc=new DOMParser().parseFromString(await (await fetch(url)).text(),'image/svg+xml');doc.documentElement.setAttribute('width','220');doc.documentElement.setAttribute('height','280');const blob=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(doc)],{type:'image/svg+xml'}));try{const image=new Image();image.src=blob;await image.decode();const canvas=document.createElement('canvas');canvas.width=880;canvas.height=1120;const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0,880,1120);return ctx.getImageData(0,0,880,1120).data;}finally{URL.revokeObjectURL(blob);}};
+    const source=await render('/art/source/stickers/shapes/triangle.svg'),current=await render('/src/assets/vector/triangle.svg');let gaps=0;
+    for(let i=0;i<source.length;i+=4)if(source[i]>250&&source[i+1]>250&&source[i+2]>250&&source[i+3]>250&&current[i+3]<250)gaps++;
+    return gaps;
+  })()`);
+  assert.equal(gaps,0,'The converted triangle must cover every solid white interior pixel in the original art');
+  await evaluate(`const label=[...document.querySelectorAll('.review-view-tools label')].find(e=>e.textContent.trim()==='Region outline');label.querySelector('input').click()`);
+  await wait('!!document.querySelector(".review-region-outline")');
+  assert.equal(await evaluate('document.querySelector(".review-region-outline").getAttribute("fill")'),'none');
   // Open the user's representative detailed asset for a final visual inspection.
   await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=counting-03'});
   await wait('document.querySelector(".review-sidebar code")?.textContent==="counting-03"');await ready();
