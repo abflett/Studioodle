@@ -71,7 +71,11 @@ try {
     if (await evaluate('location.origin === "http://127.0.0.1:1433" && document.readyState !== "loading"')) break;
     await new Promise(resolve => setTimeout(resolve, 100));
   }
-  if(libraryProfile){
+  if(process.argv.includes('--artwork-review')){
+    const { checkArtworkReview } = await import('../tests/artwork-review.browser.mjs');
+    await checkArtworkReview({ cdp, evaluate });
+    if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
+  }else if(libraryProfile){
     const setup=await evaluate("import('/tests/browser/picture-library-profile.ts').then(m=>m.prepareLibraryProfile())");
     const samples=[];
     const sample=async(label,metrics)=>{

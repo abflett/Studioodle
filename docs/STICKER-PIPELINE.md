@@ -1,5 +1,8 @@
 # Sticker pipeline
 
+Use the [artwork review inspector](ARTWORK-REVIEW.md) to browse shipped assets,
+mark missing or unwanted regions, and export repair notes with SVG coordinates.
+
 Each runtime sticker is one SVG containing closed paint-region paths and visible
 ink. Paper and sticker paint are vector geometry; categorical raster arrays are
 shared hit-test data, not paint buffers. Original art is never shipped to the editor.

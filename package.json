@@ -10,6 +10,7 @@
   },
   "scripts": {
     "dev": "vite --config vite/config.dev.ts",
+    "review": "vite --config vite/config.dev.ts --open /artwork-review.html",
     "build": "vite build --config vite/config.prod.ts",
     "preview": "vite preview --config vite/config.prod.ts",
     "typecheck": "tsc --noEmit",
@@ -28,6 +29,7 @@
     "assets:preview": "node scripts/preview-scenes.mjs",
     "books:install": "node scripts/install-coloring-book.mjs",
     "test:browser": "node scripts/test-browser.mjs",
+    "test:review": "node scripts/test-browser.mjs --artwork-review",
     "test:library": "node scripts/test-browser.mjs --library-profile",
     "test:memory": "node scripts/test-browser.mjs --memory-profile",
     "test:scene": "node scripts/test-browser.mjs --scene-profile --scene-cache-mib=64 --scene-repeat=2"
