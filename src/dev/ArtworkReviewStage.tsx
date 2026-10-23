@@ -8,11 +8,11 @@ import type { ReviewArtwork } from './artworkReviewAsset';
 interface Props {
   asset: ReviewAsset; review?: AssetReview; selected?: string; mode: MarkerKind;
   onMark: (artwork: ReviewArtwork, marker: ReviewMarker) => void;
-  onSelect: (id: string) => void; onNavigate: (direction: number) => void;
+  onSelect: (id: string) => void; onDelete: (id: string) => void; onNavigate: (direction: number) => void;
   onArtwork: (artwork: ReviewArtwork) => void;
 }
 
-export function ArtworkReviewStage({ asset, review, selected, mode, onMark, onSelect, onNavigate, onArtwork }: Props) {
+export function ArtworkReviewStage({ asset, review, selected, mode, onMark, onSelect, onDelete, onNavigate, onArtwork }: Props) {
   const [loaded, setLoaded] = useState<{ artwork: ReviewArtwork; url: string }>();
   const [error, setError] = useState('');
   const [zoom, setZoom] = useState(1), [pan, setPan] = useState({ x: 0, y: 0 });
@@ -101,12 +101,12 @@ export function ArtworkReviewStage({ asset, review, selected, mode, onMark, onSe
         <svg viewBox={loaded.artwork.viewBox.join(' ')} className="review-marker-layer" aria-label="Artwork annotations">
           {region && <path d={region.d} transform={region.transform || undefined} fill="#f0b75b" opacity=".2" />}
           {showMarkers && review?.markers.map((marker, index) => <g key={marker.id} role="button" tabIndex={0} aria-label={`${markerLabels[marker.kind]} marker ${index + 1}`} className={`review-marker ${marker.kind} ${selected === marker.id ? 'selected' : ''}`}
-            transform={`translate(${marker.x} ${marker.y}) scale(${1 / scale})`} onPointerDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); onSelect(marker.id); }} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); onSelect(marker.id); } }}>
+            transform={`translate(${marker.x} ${marker.y}) scale(${1 / scale})`} onPointerDown={event => event.stopPropagation()} onClick={event => { event.stopPropagation(); if (event.altKey) onDelete(marker.id); else onSelect(marker.id); }} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); onSelect(marker.id); } }}>
             <circle r="12" /><text textAnchor="middle" dominantBaseline="central">{index + 1}</text>
           </g>)}
         </svg>
       </div>}
     </div>
-    <div className="review-hint">Wheel: previous / next · Ctrl/Cmd + click: transparent · Shift + click: add fill · Click: selected tool · Ctrl/Cmd + wheel: zoom · Drag to pan when zoomed</div>
+    <div className="review-hint">Wheel: previous / next · Ctrl/Cmd + click: transparent · Shift + click: add fill · Alt + click marker: delete · Ctrl/Cmd + wheel: zoom · Drag to pan when zoomed</div>
   </section>;
 }

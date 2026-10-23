@@ -63,6 +63,11 @@ export function ArtworkReviewApp() {
     updateEntry(entry => ({ ...entry, markers: [...entry.markers, marker] }), data);
     setSelected(marker.id); requestAnimationFrame(() => markerNote.current?.focus());
   }
+  function deleteMarker(id: string) {
+    // Removing an old annotation is safe even when the artwork has changed.
+    persist({ ...review, assets: review.assets.map(entry => entry.assetId === assetId ? { ...entry, markers: entry.markers.filter(marker => marker.id !== id) } : entry) });
+    if (selected === id) setSelected(undefined);
+  }
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if (event.ctrlKey || event.metaKey || event.altKey || (event.target instanceof HTMLElement && event.target.closest('input,textarea,select,[contenteditable="true"]'))) return;
@@ -87,7 +92,7 @@ export function ArtworkReviewApp() {
     <header className="review-header">
       <strong>Artwork review <small>Developer tool</small></strong>
       <span>{review.assets.filter(entry => entry.reviewed).length} / {assets.length} reviewed · {review.assets.reduce((sum, entry) => sum + entry.markers.length, 0)} markers</span>
-      <button onClick={() => importInput.current?.click()}>Import JSON</button><button className="review-primary" onClick={exportReview}>Export JSON</button>
+      <button onClick={() => importInput.current?.click()}>Import JSON</button><button className="review-primary" onClick={exportReview}>Export all JSON</button>
       <a href="/">Back to app</a>
       <input ref={importInput} hidden type="file" accept="application/json,.json" onChange={async event => {
         const file = event.target.files?.[0]; event.target.value = ''; if (!file) return;
@@ -109,10 +114,10 @@ export function ArtworkReviewApp() {
       <label>Artwork notes<textarea aria-label="Artwork notes" rows={3} value={current?.notes ?? ''} disabled={!editable} placeholder="Overall issues or suggestions…" onChange={event => updateEntry(entry => ({ ...entry, notes: event.target.value }))} /></label>
       <h2>Markers ({current?.markers.length ?? 0})</h2>
       <div className="review-marker-list">{current?.markers.map((marker, index) => <button key={marker.id} className={marker.kind} aria-pressed={selected === marker.id} onClick={() => setSelected(marker.id)}>{index + 1}. {markerLabels[marker.kind]}<small>{marker.regionId ? `Region ${marker.regionId}` : 'No existing region'} · {marker.x.toFixed(1)}, {marker.y.toFixed(1)}</small>{marker.note && <small>{marker.note}</small>}</button>)}</div>
-      {selectedMarker && <div className="review-marker-editor"><strong>{markerLabels[selectedMarker.kind]}</strong><label>Marker note<textarea ref={markerNote} aria-label="Marker note" disabled={!editable} rows={3} value={selectedMarker.note} placeholder="What should change here?" onChange={event => updateEntry(entry => ({ ...entry, markers: entry.markers.map(marker => marker.id === selected ? { ...marker, note: event.target.value } : marker) }))} /></label><button disabled={!editable} onClick={() => { updateEntry(entry => ({ ...entry, markers: entry.markers.filter(marker => marker.id !== selected) })); setSelected(undefined); }}>Delete marker</button></div>}
+      {selectedMarker && <div className="review-marker-editor"><strong>{markerLabels[selectedMarker.kind]}</strong><label>Marker note<textarea ref={markerNote} aria-label="Marker note" disabled={!editable} rows={3} value={selectedMarker.note} placeholder="What should change here?" onChange={event => updateEntry(entry => ({ ...entry, markers: entry.markers.map(marker => marker.id === selected ? { ...marker, note: event.target.value } : marker) }))} /></label><button onClick={() => deleteMarker(selectedMarker.id)}>Delete marker</button></div>}
       <p role="status" className="review-save-status">{message}</p>
       <small>Markers describe requested fixes; they do not modify artwork. Arrow keys / Page Up / Page Down browse. Keys 1–3 choose tools.</small>
     </aside>
-    <ArtworkReviewStage key={assetId} asset={asset} review={current} selected={selected} mode={mode} onMark={addMarker} onSelect={setSelected} onNavigate={wheelNavigate} onArtwork={data => setArtwork({ id: assetId, data })} />
+    <ArtworkReviewStage key={assetId} asset={asset} review={current} selected={selected} mode={mode} onMark={addMarker} onSelect={setSelected} onDelete={deleteMarker} onNavigate={wheelNavigate} onArtwork={data => setArtwork({ id: assetId, data })} />
   </main>;
 }

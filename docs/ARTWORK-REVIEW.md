@@ -22,7 +22,9 @@ picker. A subtle hover tint identifies the region under the pointer.
 - Ordinary click: place the selected marker tool. Keys 1–3 choose tools. These
   buttons also provide the modifier actions on touch screens.
 - Select a numbered marker in the artwork or sidebar to edit its note or delete
-  it. Artwork notes describe broader issues. Escape deselects a marker.
+  it. Alt-click a marker to delete it directly, including markers on an older
+  artwork revision. Deletions save immediately. Artwork notes describe broader
+  issues. Escape deselects a marker.
 - Zoom with + / − or Ctrl/Cmd + wheel. Drag when zoomed to pan; Alt-drag or a
   middle-button drag also pans. Fit resets zoom and pan. Marker coordinates
   always refer to the SVG, regardless of display size, pan or zoom.
@@ -40,7 +42,12 @@ Storage is specific to the browser and server origin, including its port.
 Closing the tab is safe after the Saved locally message. If saving fails, keep
 the tab open and export immediately. Export regularly as a portable backup.
 
-Export JSON downloads all annotated/reviewed assets, including per-asset notes,
+Export all JSON downloads the entire review in one file; export whenever you
+want, without exporting individual images. Browser autosave happens on every
+edit, so navigation never requires an export. A downloaded file is a snapshot
+and is not automatically overwritten by later edits.
+
+The export includes all annotated/reviewed assets, including per-asset notes,
 review status, marker type and note, exact SVG x/y coordinates, the region ID
 under each marker (0 means no fill region), source/vector paths, viewBox, and
 the SHA-256 checksum of the SVG version reviewed. The original artwork is not

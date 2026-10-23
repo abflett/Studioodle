@@ -46,7 +46,7 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   assert.equal(await evaluate('document.querySelectorAll(".review-marker").length'),3);
   assert.equal(await evaluate('document.querySelector(".review-check input").checked'),true);
   // Capture an actual generated JSON download and round-trip it through the import UI.
-  await evaluate(`globalThis.reviewDownload=undefined;document.addEventListener('click',event=>{const a=event.target.closest('a[download]');if(a){event.preventDefault();fetch(a.href).then(r=>r.text()).then(text=>globalThis.reviewDownload=text);}},{capture:true});[...document.querySelectorAll('button')].find(e=>e.textContent==='Export JSON').click()`);
+  await evaluate(`globalThis.reviewDownload=undefined;document.addEventListener('click',event=>{const a=event.target.closest('a[download]');if(a){event.preventDefault();fetch(a.href).then(r=>r.text()).then(text=>globalThis.reviewDownload=text);}},{capture:true});[...document.querySelectorAll('button')].find(e=>e.textContent==='Export all JSON').click()`);
   await wait('!!globalThis.reviewDownload');
   const exported=JSON.parse(await evaluate('globalThis.reviewDownload'));
   assert.equal(exported.assets[0].markers.length,3);assert.equal(exported.coordinateSpace,'svg-viewBox');assert(exported.exportedAt);
@@ -60,6 +60,11 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   const p=await evaluate('(()=>{const r=document.querySelector(".review-stage").getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()');
   for(let i=0;i<4;i++)await cdp('Input.dispatchMouseEvent',{type:'mouseWheel',...p,deltaX:0,deltaY:120});
   await wait('document.querySelector(".review-sidebar code").textContent==="square"');await ready();
+  await clickPoint(5,5,8);
+  await wait('document.querySelectorAll(".review-marker").length===1');
+  await evaluate(`globalThis.reviewDownload=undefined;[...document.querySelectorAll('button')].find(e=>e.textContent==='Export all JSON').click()`);
+  await wait('!!globalThis.reviewDownload');
+  assert.deepEqual(JSON.parse(await evaluate('globalThis.reviewDownload')).assets.map(entry=>entry.assetId).sort(),['circle','square'],'One export must include annotations from every artwork');
   await evaluate('document.activeElement.blur()');
   await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowLeft',code:'ArrowLeft'});
   await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowLeft',code:'ArrowLeft'});
@@ -70,6 +75,12 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   await wait('!!document.querySelector("[role=alert]")');
   await clickPoint(110,200,2);
   assert.equal((await stored()).assets[0].markers.length,3);
+  // Old markers can still be removed after repairs change the SVG checksum.
+  await clickPoint(110,140,1);
+  await wait('document.querySelectorAll(".review-marker").length===2');
+  assert.equal((await stored()).assets[0].markers.length,2,'Alt-click must persistently delete only the clicked marker');
+  await reload();
+  assert.equal(await evaluate('document.querySelectorAll(".review-marker").length'),2);
   // Open the user's representative detailed asset for a final visual inspection.
   await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=counting-03'});
   await wait('document.querySelector(".review-sidebar code")?.textContent==="counting-03"');await ready();
