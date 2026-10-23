@@ -33,6 +33,6 @@ export function planAssetRepairs(asset,svg,review){
    }
    operations.push(operation);
   }
-  return{assetId:asset.id,source:asset.source,notes:review.notes,cutouts,operations};
+  return{assetId:asset.id,source:asset.source,notes:review.notes,cutouts,operations,proposedLines:review.closures??[]};
  }finally{scope.remove();}
 }

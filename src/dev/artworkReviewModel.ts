@@ -1,11 +1,18 @@
 export type MarkerKind = 'remove-region' | 'add-region' | 'note';
+export type ReviewTool = MarkerKind | 'close-line';
+export interface ReviewPoint { x: number; y: number }
+export interface ReviewClosure {
+  id: string; a: ReviewPoint; b: ReviewPoint; control: ReviewPoint | null;
+  width: number; fillSeed: ReviewPoint | null; note: string; createdAt: string;
+}
+export interface LineDraft { a: ReviewPoint; width: number }
 export interface ReviewAsset { id: string; title: string; category: string; source: string; width: number; height: number }
 export interface ReviewMarker {
   id: string; kind: MarkerKind; x: number; y: number; regionId: number; note: string; createdAt: string;
 }
 export interface AssetReview {
   assetId: string; source: string; vectorPath: string; viewBox: number[]; sha256: string;
-  notes: string; reviewed: boolean; markers: ReviewMarker[];
+  notes: string; reviewed: boolean; markers: ReviewMarker[]; closures?: ReviewClosure[];
 }
 export interface ArtworkReview {
   kind: 'studioodle-artwork-review'; version: 1; coordinateSpace: 'svg-viewBox';
@@ -31,9 +38,15 @@ export function parseReview(text: string, assets: ReviewAsset[]): ArtworkReview 
       if (!marker || typeof marker.id !== 'string' || !marker.id || ids.has(marker.id) || !Object.hasOwn(markerLabels, marker.kind) || !Number.isFinite(marker.x) || !Number.isFinite(marker.y) || marker.x < 0 || marker.y < 0 || marker.x > entry.viewBox[2]! || marker.y > entry.viewBox[3]! || !Number.isInteger(marker.regionId) || marker.regionId < 0 || marker.regionId > 65535 || typeof marker.note !== 'string' || typeof marker.createdAt !== 'string' || !Number.isFinite(Date.parse(marker.createdAt))) throw Error(`Invalid marker: ${asset.id}`);
       ids.add(marker.id);
     }
+    if (entry.closures !== undefined && !Array.isArray(entry.closures)) throw Error(`Invalid proposed lines: ${asset.id}`);
+    const validPoint = (point: ReviewPoint) => point && Number.isFinite(point.x) && Number.isFinite(point.y) && point.x >= 0 && point.y >= 0 && point.x <= entry.viewBox[2]! && point.y <= entry.viewBox[3]!;
+    for (const line of entry.closures ?? []) {
+      if (!line || typeof line.id !== 'string' || !line.id || ids.has(line.id) || !validPoint(line.a) || !validPoint(line.b) || (line.control !== null && !validPoint(line.control)) || (line.fillSeed !== null && !validPoint(line.fillSeed)) || !Number.isFinite(line.width) || line.width < .1 || line.width > 32 || typeof line.note !== 'string' || typeof line.createdAt !== 'string' || !Number.isFinite(Date.parse(line.createdAt))) throw Error(`Invalid proposed line: ${asset.id}`);
+      ids.add(line.id);
+    }
   }
   // Pick known fields; imported JSON is data, never markup or application settings.
-  return { ...emptyReview(), assets: input.assets.map(entry => ({ assetId: entry.assetId, source: entry.source, vectorPath: entry.vectorPath, viewBox: [...entry.viewBox], sha256: entry.sha256, notes: entry.notes, reviewed: entry.reviewed, markers: entry.markers.map(marker => ({ id: marker.id, kind: marker.kind, x: marker.x, y: marker.y, regionId: marker.regionId, note: marker.note, createdAt: marker.createdAt })) })) };
+  return { ...emptyReview(), assets: input.assets.map(entry => ({ assetId: entry.assetId, source: entry.source, vectorPath: entry.vectorPath, viewBox: [...entry.viewBox], sha256: entry.sha256, notes: entry.notes, reviewed: entry.reviewed, markers: entry.markers.map(marker => ({ id: marker.id, kind: marker.kind, x: marker.x, y: marker.y, regionId: marker.regionId, note: marker.note, createdAt: marker.createdAt })), ...(entry.closures ? { closures: entry.closures.map(line => ({ id: line.id, a: { ...line.a }, b: { ...line.b }, control: line.control ? { ...line.control } : null, width: line.width, fillSeed: line.fillSeed ? { ...line.fillSeed } : null, note: line.note, createdAt: line.createdAt })) } : {}) })) };
 }
 
 export function mergeReviews(current: ArtworkReview, imported: ArtworkReview): ArtworkReview {
@@ -45,6 +58,7 @@ export function mergeReviews(current: ArtworkReview, imported: ArtworkReview): A
       notes: [...new Set([previous.notes, incoming.notes].filter(Boolean))].join('\n\n'),
       reviewed: previous.reviewed || incoming.reviewed,
       markers: [...new Map([...previous.markers, ...incoming.markers].map(marker => [marker.id, marker])).values()],
+      closures: [...new Map([...(previous.closures ?? []), ...(incoming.closures ?? [])].map(line => [line.id, line])).values()],
     } : incoming);
   }
   return { ...emptyReview(), assets: [...entries.values()] };

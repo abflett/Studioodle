@@ -14,8 +14,8 @@ artwork, without a hover tint painting over the black ink.
 
 ## Reviewing the library
 
-- Wheel over the artwork, use Previous / Next, or press A / D, Left / Right or
-  Page Up / Page Down. Browsing wraps around and follows the search and review filter.
+- Use Previous / Next, or press A / D, Left / Right or Page Up / Page Down.
+  Browsing wraps around and follows the search and review filter.
 - Space toggles Reviewed for the current asset. Holding it down does not repeatedly
   toggle the status. Shortcuts are inactive while typing in notes or search fields.
 - Search by title, ID or category. Mark an asset Reviewed to track progress;
@@ -23,14 +23,17 @@ artwork, without a hover tint painting over the black ink.
 - Ctrl-click (Cmd-click on Mac): mark a region that should become transparent.
 - Shift-click: mark a location that needs a fill region, including an open gap
   that should be closed in the line art.
-- Ordinary click: place the selected marker tool. Keys 1–3 choose tools. These
+- Ordinary click: place the selected marker tool. Keys 1–3 choose marker tools;
+  key 4 selects Close line. These
   buttons also provide the modifier actions on touch screens.
 - Select a numbered marker in the artwork or sidebar to edit its note or delete
   it. Alt-click a marker to delete it directly, including markers on an older
   artwork revision. Deletions save immediately. Artwork notes describe broader
   issues. Placing markers keeps keyboard focus on the artwork; note fields only
   receive focus when you choose to edit them. Escape deselects a marker.
-- Zoom with + / − or Ctrl/Cmd + wheel. Drag when zoomed to pan; Alt-drag or a
+- Wheel over the artwork to zoom around the cursor; it never changes images.
+  The point under the cursor stays anchored. The + / − buttons zoom around the
+  current view center. Drag when zoomed to pan; Alt-drag or a
   middle-button drag also pans. Fit resets zoom and pan. Marker coordinates
   always refer to the SVG, regardless of display size, pan or zoom.
 - Hide Markers for an unobstructed inspection. Zoom resets when changing assets.
@@ -38,6 +41,39 @@ artwork, without a hover tint painting over the black ink.
 Annotations describe requested repairs; they do not change artwork or regions.
 Make transparent can flag an existing white region. Add fill region can flag
 transparent space, line art, or an existing region that needs splitting.
+
+## Proposing line closures
+
+1. Choose **4 · Close line** and click endpoint **A**, then endpoint **B**.
+2. The initial preview is straight. Width is estimated from nearby visible ink;
+   adjust **Line width (SVG units)** in the sidebar if necessary.
+3. Drag **A** or **B** to join the original ink precisely. Drag **Curve** in the
+   middle to bend the line; the curve passes through this visible handle. Use
+   **Straighten line** to remove the bend. Focus a handle with Tab and use arrow
+   keys for adjustment; Shift reduces the movement to 0.1 SVG units.
+4. After B, click inside the intended new fill region. This saves a fill seed
+   associated with the closure. Escape skips it; **Set fill point** adds or moves
+   it later. An existing fill point is also draggable. Several closures can be
+   proposed for one region; not every line needs its own seed.
+
+The selected proposal has a blue halo and labeled handles. Its actual stroke is
+black, with round ends, so you can compare it with the existing art. Uncheck
+**Proposed lines** to view the untouched asset. Hide **Markers** to hide handles
+while leaving the proposed black strokes visible. Select a line in the sidebar
+or click its stroke to edit it. Alt-click its stroke, or use **Delete line**, to
+remove it. Notes remain optional and never take focus automatically.
+
+Only completed A/B lines are saved. Escape cancels an incomplete draft. Handle
+drags preview locally and save once on release; cancellation restores the saved
+line. Changing assets cancels incomplete drafts and resets zoom. Existing markers,
+notes and review status stay in the same storage key.
+
+This is a repair proposal, not live region generation. The export stores exact
+SVG endpoints, quadratic Bezier control point (or null for a straight line),
+stroke width, optional fill seed, notes, IDs and artwork checksum in each asset's
+`closures` array. A later offline repair pass can apply the curves to vector ink,
+rediscover regions and verify the seeds. The review planner retains these curves
+as `proposedLines`; its cutout-only `--apply` does not silently apply line changes.
 
 ## Saving and handing off repairs
 
@@ -60,8 +96,8 @@ embedded or changed. Save reviewed files under `art/reviews/` and share their
 path when requesting repairs. The review file can be committed as authoring input.
 
 Import JSON validates the file and merges it into the current review. Reimporting
-the same file does not duplicate markers. Matching marker IDs use the imported
-note; differing asset notes are retained together. Imports with conflicting
+the same file does not duplicate markers or lines. Matching annotation IDs use
+the imported values; differing asset notes are retained together. Imports with conflicting
 asset checksums are rejected to avoid combining coordinates from different
 versions. Invalid imports leave local annotations untouched.
 

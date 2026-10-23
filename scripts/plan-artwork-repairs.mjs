@@ -14,14 +14,14 @@ for(const entry of review.assets){
  const asset=assets.find(asset=>asset.id===entry.assetId);if(!asset)throw Error(`Unknown asset ${entry.assetId}`);
  const svg=fs.readFileSync(`src/assets/vector/${asset.id}.svg`);
  if(digest(svg)!==entry.sha256)throw Error(`Artwork changed since review: ${asset.id}`);
- if(entry.markers.length||entry.notes.trim())results.push({...planAssetRepairs(asset,svg.toString(),entry),beforeSha256:entry.sha256,sourceSha256:digest(fs.readFileSync(asset.source))});
+ if(entry.markers.length||entry.notes.trim()||entry.closures?.length)results.push({...planAssetRepairs(asset,svg.toString(),entry),beforeSha256:entry.sha256,sourceSha256:digest(fs.readFileSync(asset.source))});
 }
 fs.mkdirSync(directory,{recursive:true});
 const plan={reviewFile:file,reviewSha256:digest(bytes),createdAt:new Date().toISOString(),assets:results};
 fs.writeFileSync(`${directory}/plan.json`,JSON.stringify(plan,null,2)+'\n');
 const operations=results.flatMap(asset=>asset.operations),targets=results.filter(asset=>asset.cutouts.length).map(asset=>asset.assetId);
 fs.writeFileSync(`${directory}/targets.json`,JSON.stringify(targets,null,2)+'\n');
-console.log(JSON.stringify({assets:results.length,targets:targets.length,regions:results.reduce((sum,asset)=>sum+asset.cutouts.length,0),planned:operations.filter(o=>o.status==='planned').length,alreadyTransparent:operations.filter(o=>o.status==='already-transparent').length,deferred:operations.filter(o=>o.status==='deferred').length}));
+console.log(JSON.stringify({assets:results.length,targets:targets.length,regions:results.reduce((sum,asset)=>sum+asset.cutouts.length,0),planned:operations.filter(o=>o.status==='planned').length,alreadyTransparent:operations.filter(o=>o.status==='already-transparent').length,deferred:operations.filter(o=>o.status==='deferred').length,proposedLines:results.reduce((sum,asset)=>sum+asset.proposedLines.length,0)}));
 for(const asset of results)for(const operation of asset.operations.filter(o=>o.kind==='remove-region'&&o.status==='deferred'))console.log(`${asset.assetId}: ${operation.reason}`);
 if(process.argv.includes('--apply')){
  for(const result of results){

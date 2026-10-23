@@ -40,6 +40,20 @@ The reusable planner, targeted rebuild and validators cost setup attention once.
 
 ## Next pass — discuss before implementation
 
+### Tooling follow-up: explicit closure proposals
+
+The inspector now exports user-defined A/B endpoints, a quadratic curve, line
+width and an optional fill seed. Wheel zoom is anchored at the cursor. See
+[the closure instructions](ARTWORK-REVIEW.md#proposing-line-closures). This was
+another one-time tooling investment, graded Medium; it should reduce endpoint
+interpretation in future repair passes, but no per-repair token saving has been
+measured yet. No additional artwork repairs were applied by this tooling change;
+the completed/deferred counts in this log and progress ledger are unchanged.
+
+For the next small trial, prefer a user-authored closure export over guessing
+endpoints from a point marker. Apply the supplied geometry offline, regenerate
+regions and verify its fill seed before expanding to a batch.
+
 Start with one isolated closure, such as an engine pocket on space-spaceship or a single hair gap. Inspect a crop and establish explicit endpoints; compare correction effort and resulting region quality before expanding. Avoid blanket morphology, which can close intentional negative spaces.
 
 Preserve the transparent constraint near Moon Sorceress hair. Do not turn the 22 birch-woodland markers into 22 independent speculative edits: discuss a small representative repair or replacement first. Decide the wheat-sheaf add/remove conflict before changing that region.

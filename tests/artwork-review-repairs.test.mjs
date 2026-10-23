@@ -19,3 +19,8 @@ test('partial batches reject unknown or duplicate targets rather than widening t
  const manifest=[{id:'a'},{id:'b'}];assert.deepEqual(selectBatchAssets(manifest,['b']),[{id:'b'}]);
  assert.throws(()=>selectBatchAssets(manifest,['a','a']));assert.throws(()=>selectBatchAssets(manifest,['c']));assert.throws(()=>selectBatchAssets(manifest,[]));
 });
+test('cutout planning retains explicit proposed curves without silently applying them',()=>{
+ const line={id:'closure',a:{x:1,y:2},b:{x:3,y:4},control:null,width:1,fillSeed:{x:2,y:3}};
+ const result=planAssetRepairs(asset,svg,{notes:'',markers:[],closures:[line]});
+ assert.deepEqual(result.proposedLines,[line]);assert.equal(result.cutouts.length,0);
+});

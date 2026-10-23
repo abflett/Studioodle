@@ -31,6 +31,13 @@ code { overflow-wrap: anywhere; color: #b3bfce; font-size: 12px; }
 .remove-region { color: #ff9b93; }
 .add-region { color: #8ce2b5; }
 .note { color: #9ecbff; }
+.close-line { color: #70d5ff; }
+.review-line-target { cursor: pointer; }
+.review-line-handle { pointer-events: auto; cursor: grab; }
+.review-line-handle:active { cursor: grabbing; }
+.review-line-handle circle { fill: #172233; stroke: #70d5ff; stroke-width: 2; }
+.review-line-handle.fillSeed circle { fill: #8ce2b5; stroke: #172233; }
+.review-line-handle text { fill: #bceaff; stroke: #172233; stroke-width: 3; paint-order: stroke; font-size: 12px; font-weight: bold; }
 .review-marker-list { display: flex; flex-direction: column; gap: 8px; }
 .review-marker-list button { text-align: left; overflow-wrap: anywhere; }
 .review-marker-list small { display: block; margin-top: 4px; }

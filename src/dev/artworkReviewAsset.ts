@@ -17,6 +17,8 @@ export async function loadReviewArtwork(asset: ReviewAsset, signal: AbortSignal)
   });
   const hash = await crypto.subtle.digest('SHA-256', bytes);
   const sha256 = [...new Uint8Array(hash)].map(byte => byte.toString(16).padStart(2, '0')).join('');
-  return { text, viewBox, regions, sha256, width: viewBox[2]!, height: viewBox[3]! };
+  document.documentElement.setAttribute('width', String(viewBox[2]));
+  document.documentElement.setAttribute('height', String(viewBox[3]));
+  return { text, previewText: new XMLSerializer().serializeToString(document), viewBox, regions, sha256, width: viewBox[2]!, height: viewBox[3]! };
 }
 export type ReviewArtwork = Awaited<ReturnType<typeof loadReviewArtwork>>;

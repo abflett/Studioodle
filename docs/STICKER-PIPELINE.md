@@ -153,6 +153,11 @@ replanned in place, preserving its before snapshots and audit trail.
 review and source art remain unchanged. It does not draw inferred closures.
 Conflicting add/remove requests and regions exceeding 35% of paintable area are
 left for visual review. Duplicate markers on one region produce one seed.
+Review exports can also contain explicit `closures` with endpoint/curve geometry,
+width and a fill seed. The planner retains them as `proposedLines`, including
+assets whose only annotation is a line. Cutout `--apply` does not apply these
+curves; verify and apply them in a separate line-repair pass before rediscovering
+regions and checking the supplied fill seeds.
 
 Rebuild that target set into the same staging directory, audit it, then run
 `node scripts/validate-artwork-repairs.mjs work/artwork-repair-pass`. The additional

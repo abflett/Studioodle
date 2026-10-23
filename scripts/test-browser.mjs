@@ -74,6 +74,9 @@ try {
   if(process.argv.includes('--artwork-review')){
     const { checkArtworkReview } = await import('../tests/artwork-review.browser.mjs');
     await checkArtworkReview({ cdp, evaluate });
+    const { checkArtworkClosures } = await import('../tests/artwork-closures.browser.mjs');
+    try { await checkArtworkClosures({ cdp, evaluate }); }
+    catch (error) { if(runtimeErrors.length)console.log('Artwork review runtime errors:',JSON.stringify(runtimeErrors)); throw error; }
     if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   }else if(libraryProfile){
     const setup=await evaluate("import('/tests/browser/picture-library-profile.ts').then(m=>m.prepareLibraryProfile())");

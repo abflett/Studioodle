@@ -64,9 +64,16 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   // Validation and revision conflicts protect coordinates from silently changing meaning.
   const validation=await evaluate(`import('/src/dev/artworkReviewModel.ts').then(async m=>{const assets=(await import('/art/stickers.json')).default;const original=JSON.parse(globalThis.reviewDownload);let rejected=0;for(const change of [r=>r.assets[0].markers[0].x=-1,r=>r.assets[0].assetId='unknown',r=>r.assets[0].markers.push(r.assets[0].markers[0]),r=>r.assets[0].markers[0].kind='bad']){const r=structuredClone(original);change(r);try{m.parseReview(JSON.stringify(r),assets);}catch{rejected++;}}const other=structuredClone(original);other.assets[0].sha256='0'.repeat(64);try{m.mergeReviews(original,other);}catch{rejected++;}return rejected;})`);
   assert.equal(validation,5);
-  // Wheel navigation must advance one asset despite a burst of wheel events.
-  const p=await evaluate('(()=>{const r=document.querySelector(".review-stage").getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()');
-  for(let i=0;i<4;i++)await cdp('Input.dispatchMouseEvent',{type:'mouseWheel',...p,deltaX:0,deltaY:120});
+  // Ordinary wheel input zooms at the cursor without navigating or drifting its SVG point.
+  const p=await evaluate('(()=>{const r=document.querySelector(".review-stage").getBoundingClientRect();return{x:r.x+r.width/2+70,y:r.y+r.height/2-55}})()');
+  const underCursor=()=>evaluate(`(()=>{const r=document.querySelector('.review-sheet').getBoundingClientRect();return{x:(${p.x}-r.x)/r.width*220,y:(${p.y}-r.y)/r.height*280,width:r.width}})()`);
+  const beforeZoom=await underCursor();
+  await cdp('Input.dispatchMouseEvent',{type:'mouseWheel',...p,deltaX:0,deltaY:-120});
+  await wait(`document.querySelector('.review-sheet').getBoundingClientRect().width>${beforeZoom.width}`);
+  const afterZoom=await underCursor();
+  assert(Math.abs(beforeZoom.x-afterZoom.x)<.05&&Math.abs(beforeZoom.y-afterZoom.y)<.05,'Wheel zoom must preserve the SVG point under the cursor');
+  assert.equal(await evaluate('document.querySelector(".review-sidebar code").textContent'),'circle','Wheel must not browse artwork');
+  await evaluate(`document.querySelector('button[aria-label="Next artwork"]').click()`);
   await wait('document.querySelector(".review-sidebar code").textContent==="square"');await ready();
   await clickPoint(5,5,8);
   await wait('document.querySelectorAll(".review-marker").length===1');
@@ -148,5 +155,5 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
   await fs.writeFile('work/tests/artwork-review.png',Buffer.from(screenshot.data,'base64'));
   await fs.writeFile('work/tests/artwork-review-export.json',JSON.stringify(exported,null,2));
-  console.log('Artwork review: modifier markers, accurate zoom coordinates, region IDs, notes, persistence, export/import, validation, revision guards, wheel/keyboard navigation and responsive layout passed.');
+  console.log('Artwork review: modifier markers, cursor anchored wheel zoom, keyboard navigation, region IDs, notes, persistence, export/import, validation, revision guards and responsive layout passed.');
 }
