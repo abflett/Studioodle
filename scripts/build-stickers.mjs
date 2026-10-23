@@ -1,7 +1,9 @@
 // Unified offline vector/region authoring pipeline. No app tests or builds.
 import fs from 'node:fs';
+import path from 'node:path';
+import paper from 'paper';
 import { discoverRegions } from './discover-regions.mjs';
-import { cleanInkComponents } from './clean-ink-components.mjs';
+import { cleanInkComponents, a4FitScale, defaultMinimumRegionAreaPixels } from './clean-ink-components.mjs';
 import { regionSvg } from './svg-regions.mjs';
 import { stickerInspection } from './sticker-inspection.mjs';
 import { execFileSync } from 'node:child_process';
@@ -10,7 +12,10 @@ const inspectionThreshold=Number(process.argv.find(arg=>arg.startsWith('--inspec
 if(!Number.isFinite(inspectionThreshold)||inspectionThreshold<=0||inspectionThreshold>=100)throw new Error('Inspection threshold must be between 0 and 100');
 if(!inspectionDirectory && inspectionThreshold!==50)throw new Error('Threshold comparisons require --inspect');
 const assets = JSON.parse(fs.readFileSync('art/stickers.json','utf8'));
-const out='src/assets/vector', work='work/assets';
+const out=process.argv.find(arg=>arg.startsWith('--out='))?.slice(6)??'src/assets/vector', work='work/assets';
+const reportFile=process.argv.find(arg=>arg.startsWith('--report='))?.slice(9);
+const noCatalog=process.argv.includes('--no-catalog');
+if(reportFile&&!process.argv.slice(2).some(arg=>!arg.startsWith('--')))throw Error('--report requires one asset ID');
 fs.mkdirSync(out,{recursive:true}); fs.mkdirSync(work,{recursive:true});
 const run=(...args)=>execFileSync('magick',args,{maxBuffer:128e6});
 const trace=(input, output, alpha=1.2, tolerance=.5, speckle=2)=>execFileSync(process.env.POTRACE_PATH??'work/tools/potrace/potrace-1.16.win64/potrace.exe',[input,'-s','-a',`${alpha}`,'-O',`${tolerance}`,'-t',`${speckle}`,'-o',output]);
@@ -31,7 +36,7 @@ const pending=process.argv.includes('--pending');
 const target=process.argv.slice(2).find(arg=>!arg.startsWith('--'));
 if(inspectionDirectory && (!target || pending))throw new Error('Inspection requires one asset ID and cannot use --pending');
 if(target&&!assets.some(asset=>asset.id===target))throw Error(`Unknown sticker: ${target}`);
-for(const arg of process.argv.slice(2).filter(arg=>arg.startsWith('--')))if(arg!=='--pending'&&!arg.startsWith('--inspect=')&&!arg.startsWith('--inspect-threshold='))throw Error(`Unknown option: ${arg}`);
+for(const arg of process.argv.slice(2).filter(arg=>arg.startsWith('--')))if(arg!=='--pending'&&!arg.startsWith('--inspect=')&&!arg.startsWith('--inspect-threshold=')&&!arg.startsWith('--out=')&&!arg.startsWith('--report=')&&arg!=='--no-catalog')throw Error(`Unknown option: ${arg}`);
 for(const asset of assets) {
   const {id,width,height}=asset;
   if (!/^[a-z0-9-]+$/.test(id)) throw new Error('Invalid asset ID');
@@ -89,21 +94,56 @@ for(const asset of assets) {
   inspection?.analysis(`${base}-render.svg`,gray,w,h,scale,lookupScale);
   if(gray.length!==count)throw new Error(`${id}: raster dimensions`);
   let {labels,queue,areas,regionCount}=discoverRegions(gray,w,h,asset,scale);
-  if(asset.minimumRegionAreaPixels){
-    const cleaned=cleanInkComponents({commands,matrix,width,height,scale,w,h,labels,areas,cutoff:asset.minimumRegionAreaPixels??10.2});
-    cleanupReport=cleaned.report;
-    fs.writeFileSync(`${base}-component-cleanup.json`,JSON.stringify(cleanupReport,null,2));
-    if(cleaned.d){
-      commands=[{d:cleaned.d,fill:'ink',stroke:false,width:0}];
-      inkSvg=`<g fill="black" transform="matrix(${matrix.join(' ')})"><path d="${cleaned.d}"/></g>`;
-      fs.writeFileSync(`${base}-render.svg`,preview.replace(originalInkSvg,inkSvg));
-      gray=run('-background','white',`${base}-render.svg`,'-alpha','remove','-colorspace','Gray','-depth','8','gray:-');
-      ({labels,queue,areas,regionCount}=discoverRegions(gray,w,h,asset,scale));
-      cleanupReport.finalRegions=regionCount;
-      cleanupReport.remainingSmallComponents=areas.filter(area=>area*cleanupReport.analysisPixelArea<(asset.minimumRegionAreaPixels??10.2)).length;
+  const minimumArea=asset.minimumRegionAreaPixels??defaultMinimumRegionAreaPixels;
+  if(minimumArea>0){
+    const rounds=[];
+    for(let pass=0;pass<4;pass++){
+      const authored=commands.some(command=>command.fill!=='ink'||command.stroke);
+      let cleanupCommands=commands,cleanupMatrix=matrix;
+      if(authored&&areas.some(area=>area*(a4FitScale(width,height)/scale)**2<minimumArea)){
+        // Derive pocket contours at analysis resolution, but keep the authored ink intact.
+        fs.writeFileSync(`${base}-cleanup.gray`,gray);
+        run('-size',`${w}x${h}`,'-depth','8',`gray:${base}-cleanup.gray`,'-threshold','50%',`${base}-cleanup.pbm`);
+        trace(`${base}-cleanup.pbm`,`${base}-cleanup.svg`,1.2,.015*scale,0);
+        cleanupCommands=paths(fs.readFileSync(`${base}-cleanup.svg`,'utf8')).map(d=>({d,fill:'ink',stroke:false,width:0}));
+        cleanupMatrix=[.1/scale,0,0,-.1/scale,0,height];
+      }
+      const cleaned=cleanInkComponents({commands:cleanupCommands,matrix:cleanupMatrix,width,height,scale,w,h,labels,areas,cutoff:minimumArea});
+      cleanupReport=cleaned.report;
       fs.writeFileSync(`${base}-component-cleanup.json`,JSON.stringify(cleanupReport,null,2));
-      inspection?.analysis(`${base}-render.svg`,gray,w,h,scale,lookupScale);
+      if(cleaned.d){
+        if(authored){
+          const scope=new paper.PaperScope();scope.setup(new scope.Size(100,100));
+          try{
+            const patches=new scope.CompoundPath({pathData:cleaned.addedD,insert:false});
+            patches.transform(new scope.Matrix(...matrix).inverted().append(new scope.Matrix(...cleanupMatrix)));
+            const d=patches.pathData;
+            commands=[...commands,{d,fill:'ink',stroke:false,width:0}];
+            inkSvg+=`<g fill="black" transform="matrix(${matrix.join(' ')})"><path d="${d}"/></g>`;
+            cleanupReport.method='curve-filled pockets with original authored ink preserved';
+          }finally{scope.remove();}
+        }else{
+          commands=[{d:cleaned.d,fill:'ink',stroke:false,width:0}];
+          inkSvg=`<g fill="black" transform="matrix(${matrix.join(' ')})"><path d="${cleaned.d}"/></g>`;
+        }
+        fs.writeFileSync(`${base}-render.svg`,preview.replace(originalInkSvg,inkSvg));
+        gray=run('-background','white',`${base}-render.svg`,'-alpha','remove','-colorspace','Gray','-depth','8','gray:-');
+        ({labels,queue,areas,regionCount}=discoverRegions(gray,w,h,asset,scale));
+        cleanupReport.finalRegions=regionCount;
+        cleanupReport.remainingSmallComponents=areas.filter(area=>area*cleanupReport.analysisPixelArea<minimumArea).length;
+        fs.writeFileSync(`${base}-component-cleanup.json`,JSON.stringify(cleanupReport,null,2));
+        inspection?.analysis(`${base}-render.svg`,gray,w,h,scale,lookupScale);
+      }
+      cleanupReport.finalRegions=regionCount;
+      cleanupReport.remainingSmallComponents=areas.filter(area=>area*cleanupReport.analysisPixelArea<minimumArea).length;
+      rounds.push(cleanupReport);
+      if(!cleanupReport.remainingSmallComponents||!cleaned.d)break;
     }
+    cleanupReport={...rounds.at(-1),beforeRegions:rounds[0].beforeRegions,
+      removed:rounds.reduce((sum,round)=>sum+round.removed,0),
+      exactHoles:rounds.reduce((sum,round)=>sum+round.exactHoles,0),
+      curveCaps:rounds.reduce((sum,round)=>sum+round.curveCaps,0),rounds};
+    fs.writeFileSync(`${base}-component-cleanup.json`,JSON.stringify(cleanupReport,null,2));
   }
   inspection?.discovered(labels,w,h,regionCount);
   // No regions is a real conversion failure, never silently emit an empty sticker.
@@ -118,7 +158,8 @@ for(const asset of assets) {
   let svg=regionSvg({width,height,bounds,regionCount,scale,lookupScale,labels,commands,matrix});
   if(inspection){inspection.finish(svg);console.log(`${id}: captured current pipeline in ${inspectionDirectory}`);continue;}
   fs.writeFileSync(`${out}/${id}.svg`,svg);
+  if(reportFile){fs.mkdirSync(path.dirname(reportFile),{recursive:true});fs.writeFileSync(reportFile,JSON.stringify({id,source:asset.source,sourceMode:asset.mode??'raster',minimumAreaPixels:minimumArea,analysisScale:scale,regionCount,bytes:Buffer.byteLength(svg),cleanup:cleanupReport},null,2)+'\n');}
   console.log(`${id}: ${regionCount} regions`);
 }
 // Refresh the searchable authoring library and the UI display metadata.
-if(!inspectionDirectory)await import('./build-asset-catalog.mjs');
+if(!inspectionDirectory&&!noCatalog)await import('./build-asset-catalog.mjs');

@@ -1,13 +1,18 @@
 import paper from 'paper';
 
-/** Close small white pockets in the actual Bezier ink, never by overlaying a pixel patch. */
-export function cleanInkComponents({commands,matrix,width,height,scale,w,h,labels,areas,cutoff=10.2}){
-  if(!(cutoff>0)||!Number.isFinite(cutoff))throw Error('Invalid minimum component area');
+export const defaultMinimumRegionAreaPixels=10.2;
+export function a4FitScale(width,height){
   const aw=210/25.4*150,ah=297/25.4*150;
-  const fit=Math.max(Math.min(aw/width,ah/height),Math.min(ah/width,aw/height));
+  return Math.max(Math.min(aw/width,ah/height),Math.min(ah/width,aw/height));
+}
+
+/** Close small white pockets in the actual Bezier ink, never by overlaying a pixel patch. */
+export function cleanInkComponents({commands,matrix,width,height,scale,w,h,labels,areas,cutoff=defaultMinimumRegionAreaPixels}){
+  if(!(cutoff>0)||!Number.isFinite(cutoff))throw Error('Invalid minimum component area');
+  const fit=a4FitScale(width,height);
   const pixelArea=(fit/scale)**2;
   const ids=new Set(areas.flatMap((area,index)=>area*pixelArea<cutoff?[index+1]:[]));
-  if(!ids.size)return{report:{method:'curve-unioned components',removed:0,pockets:[]}};
+  if(!ids.size)return{report:{method:'curve-unioned components',analysisPixelArea:pixelArea,maximumAreaPixels:cutoff,beforeRegions:areas.length,removed:0,exactHoles:0,curveCaps:0,unresolved:[],pockets:[]}};
   if(commands.some(c=>c.fill!=='ink'||c.stroke))throw Error('Curve component cleanup currently requires traced filled ink');
   const pockets=new Map([...ids].map(id=>[id,{id,left:w,top:h,right:0,bottom:0,points:[]} ]));
   for(let i=0;i<labels.length;i++){
@@ -25,13 +30,21 @@ export function cleanInkComponents({commands,matrix,width,height,scale,w,h,label
     const inverse=(x,y)=>new scope.Point((d*(x-e)-c*(y-f))/det,(-b*(x-e)+a*(y-f))/det);
     const areaScale=Math.abs(det)*fit**2;
     const children=ink.children??[ink],originalBlackComponents=children.filter(path=>path.area>0).length,holes=children.filter(path=>path.area<0).sort((a,b)=>Math.abs(a.area)-Math.abs(b.area));
-    const originalHoles=holes.map(path=>({path:path.clone({insert:false}),area:Math.abs(path.area)*areaScale,removed:Math.abs(path.area)*areaScale<cutoff}));
-    const exact=holes.filter(path=>Math.abs(path.area)*areaScale<cutoff);
-    for(const hole of exact)hole.remove();
+    const originalBlackIslands=children.filter(path=>path.area>0).map(path=>({area:Math.abs(path.area)*areaScale,bounds:path.bounds.clone()}));
+    const originalHoles=holes.map(path=>({path:path.clone({insert:false}),area:Math.abs(path.area)*areaScale,removed:false}));
+    const parents=new Map();
+    for(const pocket of pockets.values()){
+      for(const point of pocket.points){const p=inverse(point[0]/scale,point[1]/scale);const parent=originalHoles.find(hole=>hole.path.bounds.contains(p)&&hole.path.contains(p));if(parent){parents.set(pocket.id,parent);break;}}
+    }
+    const selected=new Set([...parents.values()].filter(hole=>hole.area<cutoff));
+    const filled=path=>{const copy=new scope.CompoundPath({pathData:path.pathData,insert:false}).reorient(true,true);const d=copy.pathData;copy.remove();return d;};
+    const additions=[];
+    const exact=holes.filter((path,index)=>selected.has(originalHoles[index]));
+    for(const hole of originalHoles)hole.removed=selected.has(hole);
+    for(const hole of exact){additions.push(filled(hole));hole.remove();}
     const report={method:'curve-unioned components',analysisPixelArea:pixelArea,maximumAreaPixels:cutoff,beforeRegions:areas.length,removed:0,exactHoles:exact.length,curveCaps:0,unresolved:[],pockets:[]};
     for(const pocket of pockets.values()){
-      let parent;
-      for(const point of pocket.points){const p=inverse(point[0]/scale,point[1]/scale);parent=originalHoles.find(hole=>hole.path.contains(p));if(parent)break;}
+      const parent=parents.get(pocket.id);
       if(parent?.removed){report.removed++;report.pockets.push({id:pocket.id,method:'exact contour removal',areaPixels:areas[pocket.id-1]*pixelArea});continue;}
       // Include the edge's antialiased coverage. Intersect with the original
       // white contour so its curved sides survive; only a narrow connection is capped.
@@ -42,16 +55,24 @@ export function cleanInkComponents({commands,matrix,width,height,scale,w,h,label
       const patch=parent?box.intersect(parent.path,{insert:false}):new scope.Path.Ellipse({rectangle:box.bounds,insert:false});
       const patchArea=Math.abs(patch.area)*areaScale;
       if(!patchArea||patchArea>cutoff*4){report.unresolved.push({id:pocket.id,patchArea});continue;}
+      additions.push(filled(patch));
       const next=ink.unite(patch,{insert:false});ink.remove();patch.remove();box.remove();ink=next;
       report.removed++;report.curveCaps++;report.pockets.push({id:pocket.id,method:parent?'curve intersection and union':'curved exterior union',areaPixels:areas[pocket.id-1]*pixelArea,patchAreaPixels:patchArea});
     }
     ink=ink.resolveCrossings().reorient(true,true);
-    const slivers=(ink.children??[ink]).filter(path=>path.area<0&&Math.abs(path.area)*areaScale<cutoff);
-    for(const sliver of slivers)sliver.remove();
+    const slivers=(ink.children??[ink]).filter(path=>path.area<0&&Math.abs(path.area)*areaScale<cutoff&&!originalHoles.some(hole=>!hole.removed&&hole.path.contains(path.interiorPoint)));
+    for(const sliver of slivers){additions.push(filled(sliver));sliver.remove();}
     report.additionalExactHoles=slivers.length;
     report.afterContours=(ink.children??[ink]).length;
     report.blackComponents=(ink.children??[ink]).filter(path=>path.area>0).length;
+    // Boolean intersections can leave subpixel numerical crumbs; never discard an authored island.
+    if(report.blackComponents>originalBlackComponents){
+      const crumbs=(ink.children??[ink]).filter(path=>path.area>0&&Math.abs(path.area)*areaScale<.001&&!originalBlackIslands.some(original=>original.area<.001&&original.bounds.intersects(path.bounds)));
+      for(const crumb of crumbs)crumb.remove();
+      report.removedBooleanArtifacts=crumbs.length;
+      report.blackComponents=(ink.children??[ink]).filter(path=>path.area>0).length;
+    }
     if(report.blackComponents>originalBlackComponents)throw Error('Ink cleanup introduced a detached black component');
-    return{d:ink.pathData,report};
+    return{d:ink.pathData,addedD:additions.join(' '),report};
   }finally{scope.remove();}
 }

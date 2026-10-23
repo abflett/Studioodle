@@ -51,11 +51,18 @@ are excluded. Labels extend under ink toward its centerline. Each region is trac
 into a closed vector path with tight fitting tolerance. There is no extra boundary
 expansion toward neighboring line edges.
 
-Optional `minimumRegionAreaPixels` measures white components at their largest
-proportional A4 fit at 150 DPI. Authoring-only Paper.js removes true tiny hole
-contours and unions curved local caps for raster-split pockets. The updated ink is
-rendered again and regions are rediscovered. This rule remains opt-in while assets
-are reviewed; the curated Moon Sorceress uses a 10.2-square-pixel cutoff.
+Cleanup defaults to **10.2 square pixels**, measured at the largest proportional A4
+fit at 150 DPI (either orientation), matching the accepted Moon Sorceress settings.
+`minimumRegionAreaPixels` can override that default per source. Connected components
+are classified separately before filtering; disconnected specks cannot hide inside
+a larger region. Authoring-only Paper.js removes true tiny hole contours and unions
+curved local caps for raster-split pockets. Explicit negative-space cutouts are
+preserved. The ink is rendered again and regions rediscovered, with up to four
+passes to close newly exposed tiny pockets. Remaining small regions are reported.
+
+Authored SVG strokes remain intact: when cleanup is necessary, only the additional
+pocket-closing curves are appended to the original geometry. The runtime SVG still
+contains only vector ink and region paths.
 
 Authored SVG sources retain curved line art. Later white shapes occlude earlier ink
 through generated inverse clips. The same clips apply to SVG previews and Canvas2D
@@ -89,9 +96,42 @@ paintable space. Temporary masks and propagation scratch are released.
 
 IDs use one byte where possible, otherwise two (four at the maximum ID limit), plus
 compact ink flags. Instances share the immutable lookup and lazy boolean geometry.
-Original SVG curves clip rendering. Source text is retained up to the shipped catalog (about 24 MB of SVG files); decoded
+Original SVG curves clip rendering. Source text is cached while the editor is open; decoded
 interaction definitions are released when leaving the editor.
 
 [Vector painting](VECTOR-PAINT.md) explains brush geometry, worker merging,
 connected-component fills, seam rendering and output. Documents store only vector
 paint, transforms and asset IDs; they never store lookup arrays or color rasters.
+
+## Batch regeneration
+
+```sh
+npm run assets:rebuild
+npm run assets:rebuild -- --resume
+npm run assets:audit
+# After reviewing the staged before/after comparison:
+npm run assets:promote
+```
+
+The rebuild runner processes the complete manifest in isolated Node processes (two
+at a time by default), limits ImageMagick threading, and stages all results under
+`work/sticker-upgrade/`. It does not overwrite production SVGs or source artwork.
+`--jobs=1` reduces load; `--timeout=180000` controls each asset's deadline.
+`--out=work/another-review` selects a different staging directory. Resume validates
+both input and converter hashes; changed sources or algorithms are rebuilt.
+
+The staging directory contains untouched `before/` copies, rebuilt `vector/` files,
+per-asset `reports/`, failure logs, `summary.json`, and the audit's `review.html` and
+`audit.json`. The audit verifies checksums, original-source preservation, dimensions,
+contiguous region IDs, no raster payloads, no unresolved tiny regions, and exactly
+one connected outer contour per paint region. Promotion rechecks input/output checksums and the converter revision before replacing runtime SVGs; it refreshes the catalog afterward. Review before promoting results.
+
+For one staged asset, use:
+
+```sh
+node scripts/build-stickers.mjs fantasy-moon-sorceress --out=work/sticker-upgrade/vector --report=work/sticker-upgrade/reports/moon.json --no-catalog
+```
+
+Regenerated region IDs are a development breaking change. Use a fresh drawing-library
+namespace when promoting an incompatible library, rather than interpreting old paint
+against different region IDs. Original art and saved page layouts are preserved.

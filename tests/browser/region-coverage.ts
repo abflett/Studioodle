@@ -62,7 +62,7 @@ export async function checkRegionCoverage() {
   }
   assert(edgeMismatches === 0, `Enlarged solid fill differs from SVG reference at ${edgeMismatches} edge pixels`);
   const rows = [];
-  for(const id of ['fantasy-moon-sorceress','winter-reindeer','garden-house','garden-fence','dinosaur-striped-tyrannosaurus','horizons-forest-clearing']){
+  for(const id of ['fantasy-moon-sorceress','winter-reindeer','garden-house','garden-fence','dinosaur-striped-tyrannosaurus','horizons-forest-clearing','horizons-birch-woodland','interiors-cottage-kitchen','space-crater','space-spaceship','fantasy-potion-alchemist']){
     const response=await fetch(`/src/assets/vector/${id}.svg`);assert(response.ok,`Missing ${id}`);
     const vector=decodeSvgDefinition(await response.text(),{scale:id==='fantasy-moon-sorceress'?16:undefined});
     const scale=vector.mapSize!.scale,canvas=document.createElement('canvas');
