@@ -28,16 +28,17 @@ test('dragging the curve midpoint controls the visible curve, and closure geomet
   const invalid=structuredClone(review);mutate(invalid.assets[0].closures[0]);assert.throws(()=>model.parseReview(JSON.stringify(invalid),catalog));
  }
 });
-test('reopening the recorded line queue preserves other progress and proposed geometry',()=>{
+test('recorded repairs refresh region references without losing new lines, notes or review status',()=>{
  const input=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-23.json','utf8'));
- const source=structuredClone(input),ids=tasks.lineRepairIds(input),revisions=new Map();assert.equal(ids.size,33);
- const wizard=input.assets.find(a=>a.assetId==='fantasy-wandering-wizard');wizard.closures=[{id:'existing-line',a:{x:1,y:1},b:{x:2,y:2},control:null,width:1,fillSeed:null,note:'preserve',createdAt:'2026-10-23T00:00:00Z'}];
- for(const id of ids){const task=tasks.lineRepairTasks.find(a=>a.assetId===id),base=input.assets.find(a=>a.assetId===id);revisions.set(id,{sha256:task.afterSha256??task.beforeSha256,viewBox:base.viewBox,regionAt:()=>999});}
- const reopened=tasks.reopenLineRepairs(input,ids,revisions);
- for(const old of source.assets)if(!ids.has(old.assetId))assert.deepEqual(reopened.assets.find(a=>a.assetId===old.assetId),old);
- const changed=reopened.assets.find(a=>a.assetId===wizard.assetId);assert.deepEqual(changed.closures,wizard.closures);assert.equal(changed.notes,wizard.notes);assert.equal(changed.reviewed,false);assert.equal(changed.markers.length,1);assert.equal(changed.markers[0].regionId,999);
- assert(reopened.assets.find(a=>a.assetId==='fantasy-moon-sorceress').markers.some(m=>m.id==='3e2b6a5e-026f-4015-b59a-495313d22591'),'Keep the already-transparent hair constraint');
- assert.deepEqual(tasks.reopenLineRepairs(reopened,ids,revisions),reopened,'Repeating the action must not duplicate or remove pending work');
- revisions.set(wizard.assetId,{...revisions.get(wizard.assetId),sha256:'0'.repeat(64)});assert.throws(()=>tasks.reopenLineRepairs(input,ids,revisions),/not a recorded cutout-only/);
- assert.equal(input.assets.find(a=>a.assetId===wizard.assetId).reviewed,true,'Failed preparation must not mutate the input');
+ assert.equal(tasks.lineRepairIds(input).size,33);
+ const wizard=input.assets.find(a=>a.assetId==='fantasy-wandering-wizard');
+ wizard.closures=[{id:'existing-line',a:{x:1,y:1},b:{x:2,y:2},control:null,width:1,fillSeed:null,note:'preserve',createdAt:'2026-10-23T00:00:00Z'}];
+ const original=structuredClone(wizard),task=tasks.lineRepairTasks.find(a=>a.assetId===wizard.assetId);
+ const revision={sha256:task.afterSha256,viewBox:wizard.viewBox,regionAt:()=>999};
+ const refreshed=tasks.refreshKnownRepair(wizard,revision);
+ assert.equal(refreshed.reviewed,true);assert.equal(refreshed.notes,wizard.notes);assert.deepEqual(refreshed.closures,wizard.closures);
+ assert.equal(refreshed.markers.length,1);assert.equal(refreshed.markers[0].regionId,999);
+ assert.deepEqual(wizard,original,'Never mutate existing annotations');
+ assert.equal(tasks.refreshKnownRepair(refreshed,revision),refreshed,'Refresh is idempotent');
+ assert.equal(tasks.refreshKnownRepair(wizard,{...revision,sha256:'0'.repeat(64)}),wizard,'Unknown revisions retain their guard');
 });

@@ -62,3 +62,5 @@ code { overflow-wrap: anywhere; color: #b3bfce; font-size: 12px; }
 .review-hint { font-size: 12px; line-height: 1.5; color: #b3bfce; padding: 7px 12px; }
 @media (max-width: 850px) { .artwork-review { grid-template-columns: 240px minmax(0, 1fr); } .review-header { flex-wrap: wrap; } .review-header > span { display: none; } }
 @media (max-width: 540px) { .artwork-review { height: auto; min-height: 100dvh; grid-template-columns: 1fr; } .review-workspace { grid-row: 2; height: 65dvh; } .review-sidebar { grid-row: 3; overflow: visible; } .review-header strong small { display: none; } }
+
+.review-width-control{display:flex;align-items:center;gap:.75rem}.review-width-control input{flex:1;min-width:0}.review-width-control output{min-width:2.5em;text-align:right}

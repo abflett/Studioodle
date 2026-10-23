@@ -1,24 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent } from 'react';
-import { artworkPoint, markerLabels } from './artworkReviewModel';
+import { artworkPoint } from './artworkReviewModel';
 import type { AssetReview, LineDraft, ReviewClosure, ReviewPoint, ReviewTool, ReviewAsset, ReviewMarker } from './artworkReviewModel';
 import { loadReviewArtwork } from './artworkReviewAsset';
 import type { ReviewArtwork } from './artworkReviewAsset';
 import { zoomReviewAt } from './artworkReviewGeometry';
 import { ReviewClosureOverlay } from './ReviewClosureOverlay';
+import { ReviewMarkerHandle } from './ReviewMarkerHandle';
 import { reviewInkProbe } from './reviewLineWidth';
 
 interface Props {
   asset: ReviewAsset; review?: AssetReview; selected?: string; mode: ReviewTool;
   draft?: LineDraft; fillTarget?: string;
   onMark: (artwork: ReviewArtwork, marker: ReviewMarker) => void;
-  onSelect: (id: string) => void; onDelete: (id: string) => void;
+  onSelect: (id?: string) => void; onDelete: (id: string) => void;
   onDraft: (draft: LineDraft) => void; onLine: (artwork: ReviewArtwork, line: ReviewClosure) => void;
   onChangeLine: (line: ReviewClosure) => void; onFill: (id: string, point: ReviewPoint) => void;
   onArtwork: (artwork: ReviewArtwork) => void;
+  onMoveMarker: (marker: ReviewMarker) => void;
 }
 
-export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillTarget, onMark, onSelect, onDelete, onDraft, onLine, onChangeLine, onFill, onArtwork }: Props) {
+export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillTarget, onMark, onSelect, onDelete, onDraft, onLine, onChangeLine, onFill, onArtwork, onMoveMarker }: Props) {
   const [loaded, setLoaded] = useState<{ artwork: ReviewArtwork; url: string }>();
   const [error, setError] = useState('');
   const [view, setView] = useState({ zoom: 1, pan: { x: 0, y: 0 } });
@@ -82,11 +84,13 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
   function placeLinePoint(p: ReviewPoint) {
     if (!artwork) return;
     if (!draft) onDraft({ a: p, width: lineWidth(p) });
-    else if (Math.hypot(p.x - draft.a.x, p.y - draft.a.y) > .01) onLine(artwork, { id: crypto.randomUUID(), a: draft.a, b: p, control: null, width: +((draft.width + lineWidth(p)) / 2).toFixed(2), fillSeed: null, note: '', createdAt: new Date().toISOString() });
+    else if (Math.hypot(p.x - draft.a.x, p.y - draft.a.y) > .01) onLine(artwork, { id: crypto.randomUUID(), a: draft.a, b: p, control: null, width: Math.max(.1, Math.min(2, +((draft.width + lineWidth(p)) / 2).toFixed(2))), fillSeed: null, note: '', createdAt: new Date().toISOString() });
   }
   function pointerUp(event: PointerEvent<HTMLDivElement>) {
     const gesture = drag.current; drag.current = null;
-    if (!gesture || !artwork || gesture.moved || (event.button !== 0 && event.button !== 2) || event.altKey || stale) return;
+    if (!gesture || !artwork || gesture.moved || (event.button !== 0 && event.button !== 2) || event.altKey) return;
+    if (event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !fillTarget && mode === 'select') { onSelect(undefined); return; }
+    if (stale) return;
     const rect = sheet.current!.getBoundingClientRect();
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) return;
     const { x, y } = point(event);
@@ -98,7 +102,7 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
         return;
       }
     }
-    const kind = event.ctrlKey || event.metaKey ? 'remove-region' : event.shiftKey ? 'add-region' : mode === 'close-line' ? 'note' : mode;
+    const kind = event.ctrlKey || event.metaKey ? 'remove-region' : event.shiftKey ? 'add-region' : mode === 'close-line' || mode === 'select' ? 'note' : mode;
     onMark(artwork, { id: crypto.randomUUID(), kind, x: +x.toFixed(4), y: +y.toFixed(4), regionId: regionAt(x, y), note: '', createdAt: new Date().toISOString() });
   }
   return <section className="review-workspace">
@@ -135,13 +139,10 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
           {showOutline && region && <path className="review-region-outline" d={region.d} transform={region.transform || undefined} fill="none" stroke="#74befe" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />}
           {showLines && <ReviewClosureOverlay lines={review?.closures ?? []} selected={selected} scale={scale} width={loaded.artwork.width} height={loaded.artwork.height} handles={showMarkers} editable={!stale} point={point} focusArtwork={() => stage.current?.focus({ preventScroll: true })} onSelect={onSelect} onDelete={onDelete} onChange={onChangeLine} />}
           {draft && <g pointerEvents="none"><path d={`M${draft.a.x} ${draft.a.y}L${cursor?.x ?? draft.a.x} ${cursor?.y ?? draft.a.y}`} fill="none" stroke="#70d5ff" strokeWidth="2" vectorEffect="non-scaling-stroke" strokeDasharray="4 3" /><circle cx={draft.a.x} cy={draft.a.y} r={6 / scale} fill="#70d5ff" /></g>}
-          {showMarkers && review?.markers.map((marker, index) => <g key={marker.id} role="button" tabIndex={0} aria-label={`${markerLabels[marker.kind]} marker ${index + 1}`} className={`review-marker ${marker.kind} ${selected === marker.id ? 'selected' : ''}`}
-            transform={`translate(${marker.x} ${marker.y}) scale(${1 / scale})`} onPointerDown={event => { if (event.button === 0) { event.stopPropagation(); stage.current?.focus({ preventScroll: true }); } }} onClick={event => { event.stopPropagation(); if (event.altKey) onDelete(marker.id); else onSelect(marker.id); }} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); event.stopPropagation(); onSelect(marker.id); } }}>
-            <circle r="12" /><text textAnchor="middle" dominantBaseline="central">{index + 1}</text>
-          </g>)}
+          {showMarkers && review?.markers.map((marker, index) => <ReviewMarkerHandle key={marker.id} marker={marker} index={index} selected={selected === marker.id} scale={scale} editable={!stale} point={point} regionAt={regionAt} focusArtwork={() => stage.current?.focus({ preventScroll: true })} onSelect={onSelect} onDelete={onDelete} onChange={onMoveMarker} />)}
         </svg>
       </div>}
     </div>
-    <div className="review-hint">{fillTarget ? 'Left-click inside the intended fill region, or right-click to start another line. Escape skips the fill point.' : draft ? 'Right-click endpoint B (or left-click with tool 4). Escape cancels the draft.' : 'Right-click A, then B: line · Left-drag handles: adjust · Middle-drag: pan · Wheel: zoom at cursor · A / D: browse · Space: reviewed'}</div>
+    <div className="review-hint">{fillTarget ? 'Left-click inside the intended fill region, or right-click to start another line. Escape skips the fill point.' : draft ? 'Right-click endpoint B (or left-click with tool 4). Escape cancels the draft.' : 'Shift-click: add fill · Ctrl-click: transparent · Right-click A / B: line · Left-click / drag: select / move · Delete: remove · Middle-drag: pan · Wheel: zoom · A / D: browse · Space: reviewed'}</div>
   </section>;
 }

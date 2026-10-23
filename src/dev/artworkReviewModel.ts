@@ -1,5 +1,5 @@
 export type MarkerKind = 'remove-region' | 'add-region' | 'note';
-export type ReviewTool = MarkerKind | 'close-line';
+export type ReviewTool = MarkerKind | 'close-line' | 'select';
 export interface ReviewPoint { x: number; y: number }
 export interface ReviewClosure {
   id: string; a: ReviewPoint; b: ReviewPoint; control: ReviewPoint | null;

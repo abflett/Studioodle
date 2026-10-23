@@ -12,12 +12,7 @@ export async function checkArtworkQueue({cdp,evaluate}){
  await wait('!globalThis.queueReload&&document.querySelector(".review-sidebar code")?.textContent==="counting-03"');await ready();
  await evaluate(`const filter=document.querySelector('.review-sidebar select');Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(filter,'line-repairs');filter.dispatchEvent(new Event('change',{bubbles:true}))`);
  assert.equal(await evaluate(`document.querySelector('select[aria-label="Artwork"]').options.length-1`),33,'Line task set must include broader notes as well as markers');
- await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Reopen line repairs').click()`);
- await wait('document.querySelector(".review-save-status").textContent.startsWith("Reopened 33")');await ready();
- assert.equal(await evaluate('document.querySelector(".review-sidebar select").value'),'line-unreviewed');
- assert.equal((await record('circle')).reviewed,true,'Unrelated reviewed assets must stay reviewed');
- assert.equal((await record('fantasy-moon-sorceress')).reviewed,false);
- assert((await record('fantasy-moon-sorceress')).markers.some(m=>m.id==='3e2b6a5e-026f-4015-b59a-495313d22591'));
+ assert.equal((await record('circle')).reviewed,true,'Viewing line tasks must not reset prior inspection status');
  await evaluate(`const select=document.querySelector('select[aria-label="Artwork"]');select.value='fantasy-wandering-wizard';select.dispatchEvent(new Event('change',{bubbles:true}))`);
  await wait('document.querySelector(".review-sidebar code").textContent==="fantasy-wandering-wizard"&&!document.querySelector(".review-tools").disabled');await ready();
  let wizard=await record('fantasy-wandering-wizard');assert.equal(wizard.markers.length,1,'Completed removal markers must no longer obscure pending line work');
@@ -38,17 +33,39 @@ export async function checkArtworkQueue({cdp,evaluate}){
  const panned=await evaluate('(()=>{const r=document.querySelector(".review-sheet").getBoundingClientRect();return{x:r.x,y:r.y}})()');
  assert(Math.abs(panned.x-first.x-45)<.1&&Math.abs(panned.y-first.y+25)<.1,'Middle drag must pan even when starting over a curve handle');
  assert.deepEqual((await record('fantasy-wandering-wizard')).closures,wizard.closures,'Panning must not edit line geometry');
+ await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Set fill point').click()`);
  await click({x:220,y:300},'left');assert((await record('fantasy-wandering-wizard')).closures[1].fillSeed);
+ // Plain left-click deselects; modifiers still add markers after line creation.
+ await click({x:240,y:310},'left');
+ assert.equal(await evaluate('document.querySelectorAll(".review-line-handle").length'),0);
+ const modified=async(p,modifiers)=>{const at=await screen(p);for(const type of ['mousePressed','mouseReleased'])await cdp('Input.dispatchMouseEvent',{type,...at,button:'left',clickCount:1,modifiers});};
+ await modified({x:210,y:280},8);await modified({x:210,y:280},2);
+ wizard=await record('fantasy-wandering-wizard');assert.equal(wizard.markers.at(-2).kind,'add-region');assert.equal(wizard.markers.at(-1).kind,'remove-region');
+ const moveMarker=wizard.markers.at(-1),start=await screen(moveMarker),end=await screen({x:280,y:330});
+ await cdp('Input.dispatchMouseEvent',{type:'mousePressed',...start,button:'left',clickCount:1});
+ await cdp('Input.dispatchMouseEvent',{type:'mouseMoved',...end,button:'left',buttons:1});
+ await cdp('Input.dispatchMouseEvent',{type:'mouseReleased',...end,button:'left',clickCount:1});
+ assert(Math.abs((await record('fantasy-wandering-wizard')).markers.at(-1).x-280)<.1,'Marker must drag with left button');
+ await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'Delete',code:'Delete'});await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'Delete',code:'Delete'});
+ assert.equal((await record('fantasy-wandering-wizard')).markers.length,markers+1,'Delete removes selected marker only');
  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:' ',code:'Space'});await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:' ',code:'Space'});
- assert.equal((await record('fantasy-wandering-wizard')).reviewed,true);
- assert(!await evaluate(`!![...document.querySelector('select[aria-label="Artwork"]').options].find(o=>o.value==='fantasy-wandering-wizard')`),'Reviewed line tasks must leave the remaining queue');
+ assert.equal((await record('fantasy-wandering-wizard')).reviewed,false);
+ assert(await evaluate(`!![...document.querySelector('select[aria-label="Artwork"]').options].find(o=>o.value==='fantasy-wandering-wizard')`),'Reviewed line tasks must remain visible until actual repair');
  await evaluate(`globalThis.queueExport=undefined;document.addEventListener('click',event=>{const a=event.target.closest('a[download]');if(a){event.preventDefault();fetch(a.href).then(r=>r.text()).then(text=>globalThis.queueExport=text);}},{capture:true});document.querySelector('button.review-primary').click()`);
  await wait('!!globalThis.queueExport');
  const exported=JSON.parse(await evaluate('globalThis.queueExport'));assert.equal(exported.scope,'line-repairs');assert.equal(exported.assets.length,33);assert.equal(exported.assets.find(a=>a.assetId==='fantasy-wandering-wizard').closures.length,2,'Line export must include finished annotations hidden by the remaining filter');assert(!exported.assets.some(a=>a.assetId==='circle'));
+ // Reimporting our own normalized export must also refresh old local checksums.
+ await evaluate(`(()=>{const transfer=new DataTransfer();transfer.items.add(new File([globalThis.queueExport],'line-repairs.json',{type:'application/json'}));const input=document.querySelector('input[type=file]');input.files=transfer.files;input.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+ await wait('document.querySelector(".review-save-status").textContent.startsWith("Saved locally")');
+ assert.equal((await record('fantasy-wandering-wizard')).closures.length,2,'Reimport must not duplicate new lines');
  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'d',code:'KeyD'});await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'d',code:'KeyD'});
  await wait('document.querySelector(".review-sidebar code").textContent!=="fantasy-wandering-wizard"');await ready();
  await evaluate('globalThis.queueReload=true');await cdp('Page.reload');await wait('!globalThis.queueReload&&document.querySelector(".review-sheet img")?.complete');
- assert.equal(await evaluate('document.querySelector(".review-sidebar select").value'),'line-unreviewed','Queue selection must survive reload');
+ assert.equal(await evaluate('document.querySelector(".review-sidebar select").value'),'line-repairs','Queue selection must survive reload');
+ const beforeReset=await record('fantasy-wandering-wizard');
+ await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Reset all Reviewed checkboxes').click()`);
+ const afterReset=await record('fantasy-wandering-wizard');assert.deepEqual(afterReset,{...beforeReset,reviewed:false});
+ assert(await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1')).assets.every(a=>!a.reviewed)`),'Reset unchecks all artwork while preserving annotations');
  const screenshot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile('work/tests/artwork-line-queue.png',Buffer.from(screenshot.data,'base64'));
- console.log('Line queue: 33 tasks, scoped reopening, known revision refresh, preserved notes/progress, right-click lines, middle pan over handles, reviewed filtering and reload passed.');
+ console.log('Line queue: stable task list, known revision refresh, preserved annotations, modifier markers, marker drag, deselection, Delete, right-click lines, middle pan, reset and export passed.');
 }

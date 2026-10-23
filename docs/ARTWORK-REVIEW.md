@@ -18,32 +18,33 @@ artwork, without a hover tint painting over the black ink.
   Browsing wraps around and follows the search and review filter.
 - Space toggles Reviewed for the current asset. Holding it down does not repeatedly
   toggle the status. Shortcuts are inactive while typing in notes or search fields.
-- Search by title, ID or category. Mark an asset Reviewed to track progress;
-  use Not reviewed yet or With notes or markers to narrow the library.
-- **Line repairs — all** shows the outstanding artwork from the repair ledger,
-  including broad linework notes without point markers, plus any new add/fill or
-  line annotations. The initial recorded queue has 33 assets.
-- Click **Reopen line repairs** once to start the line pass. It unchecks Reviewed
-  only for those assets, preserves notes and proposed lines, and switches to
-  **Remaining line repairs**. Completed cutout markers are removed from this
-  working queue; the original export and progress ledger retain them. Recorded
-  cutout-only revisions are refreshed, including pending marker region IDs, so
-  repaired assets can be edited. Unknown revision changes stop preparation without
-  overwriting the review. Controls pause briefly during this explicit action.
-- Space marks each line task reviewed and removes it from the remaining list.
-  A/D and the buttons browse the filtered queue. The chosen filter survives reload
-  in the page URL. Other artwork's review progress is unchanged.
+- Search by title, ID or category. **Line repairs** is the default: the 33 assets
+  recorded for line work, including broader notes without point markers, plus new
+  add/fill or line annotations. This is one stable list: Reviewed does not hide
+  these tasks, because inspecting an asset does not mean its repair was applied.
+- **All artwork** shows the library. **Fresh review - unchecked artwork** hides
+  assets already inspected. The selected filter survives reload in the page URL.
+- After the repairs are applied, click **Reset all Reviewed checkboxes** to begin
+  another inspection pass. It unchecks every asset and selects the fresh-review
+  filter. Notes, markers and proposed lines remain intact. It never runs on reload.
+- Known first-pass cutout repairs refresh automatically when artwork opens:
+  completed cutout markers leave the working copy, pending marker region IDs are
+  refreshed, and notes, new lines and Reviewed status are retained. Original
+  exports and the repair ledger are unchanged. Export also refreshes known repairs
+  on assets not yet opened, without modifying local annotations.
 - Ctrl-click (Cmd-click on Mac): mark a region that should become transparent.
 - Shift-click: mark a location that needs a fill region, including an open gap
   that should be closed in the line art.
-- Ordinary click: place the selected marker tool. Keys 1–3 choose marker tools;
-  key 4 selects Close line. These
-  buttons also provide the modifier actions on touch screens.
-- Select a numbered marker in the artwork or sidebar to edit its note or delete
-  it. Alt-click a marker to delete it directly, including markers on an older
-  artwork revision. Deletions save immediately. Artwork notes describe broader
-  issues. Placing markers keeps keyboard focus on the artwork; note fields only
-  receive focus when you choose to edit them. Escape deselects a marker.
+- Normal left-click selects a marker or line; left-drag moves a marker or line
+  handle. Moving a marker updates its region ID. Click empty artwork to deselect.
+  **Delete** removes the selected marker or line, except while editing a text field.
+- Select / move is the default tool. Keys 1-3 explicitly select marker tools;
+  key 4 selects Close line (left-click A/B is available for touch screens).
+  Right-click A/B works from any tool and returns to Select / move when complete.
+  Ctrl/Shift click always takes priority, including over existing handles.
+- Select a numbered marker in the artwork or sidebar to edit its note. Alt-click
+  deletes it directly. Artwork notes describe broader issues. Notes never take
+  focus automatically. Escape deselects and cancels incomplete line placement.
 - Wheel over the artwork to zoom around the cursor; it never changes images.
   The point under the cursor stays anchored. The + / − buttons zoom around the
   current view center. **Middle-button drag** pans, including over existing
@@ -61,16 +62,17 @@ transparent space, line art, or an existing region that needs splitting.
 1. **Right-click A, then right-click B** from any tool to create a line. You can
    also choose **4 · Close line** and left-click A and B.
 2. The initial preview is straight. Width is estimated from nearby visible ink;
-   adjust **Line width (SVG units)** in the sidebar if necessary.
+   adjust the **Line width** slider from 0.1 to 2 SVG units in the sidebar.
+   Existing wider proposals retain their width until you adjust them.
 3. Left-drag **A** or **B** to join the original ink precisely. Left-drag **Curve** in the
    middle to bend the line; the curve passes through this visible handle. Use
    **Straighten line** to remove the bend. Focus a handle with Tab and use arrow
    keys for adjustment; Shift reduces the movement to 0.1 SVG units.
-4. After B, left-click inside the intended new fill region. This saves a fill seed
-   associated with the closure. Escape skips it; **Set fill point** adds or moves
-   it later. An existing fill point is also draggable. Several closures can be
-   proposed for one region; not every line needs its own seed.
-   Right-clicking again starts another A/B line instead of placing a fill seed.
+4. Optionally choose **Set fill point**, then left-click inside the intended new
+   fill region. This saves a seed associated with the closure. It is never requested
+   automatically, so normal clicks remain available for selection and deselection.
+   An existing fill point is draggable. Several closures can share one fill seed.
+
 
 The selected proposal has a blue halo and labeled handles. Its actual stroke is
 black, with round ends, so you can compare it with the existing art. Uncheck
@@ -104,13 +106,13 @@ want, without exporting individual images. Browser autosave happens on every
 edit, so navigation never requires an export. A downloaded file is a snapshot
 and is not automatically overwritten by later edits.
 
-While either line-repair filter is selected, the button becomes **Export line
+While the Line repairs filter is selected, the button becomes **Export line
 repairs** and exports the entire line-task set, including tasks already marked
-Reviewed and hidden from the remaining list. This keeps finished curve instructions
+Reviewed. This keeps finished curve instructions
 in the handoff without mixing in old completed cutout-only reviews. Switch to All
 artwork for a complete export of all locally stored annotations.
 
-The export includes all annotated/reviewed assets, including per-asset notes,
+The export includes the selected set of annotated/reviewed assets, including per-asset notes,
 review status, marker type and note, exact SVG x/y coordinates, the region ID
 under each marker (0 means no fill region), source/vector paths, viewBox, and
 the SHA-256 checksum of the SVG version reviewed. The original artwork is not

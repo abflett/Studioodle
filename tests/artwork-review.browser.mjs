@@ -20,7 +20,7 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   };
   const type = (label,value) => evaluate(`(()=>{const e=document.querySelector('textarea[aria-label="${label}"]');Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(e,${JSON.stringify(value)});e.dispatchEvent(new Event('input',{bubbles:true}));})()`);
   await cdp('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
-  await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=circle'});
+  await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=circle&filter=all'});
   await ready();
   await clickPoint(110,140,2); // Ctrl: transparent, with a real region ID.
   await wait('document.querySelectorAll(".review-marker").length===1');
@@ -36,6 +36,7 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   assert.match(entry.sha256,/^[a-f0-9]{64}$/);assert.equal(entry.source,'art/source/stickers/shapes/circle.svg');
   // The same SVG coordinates must be exported after fitting and zooming the display.
   await evaluate(`document.querySelector('button[aria-label="Zoom in"]').click()`);
+  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'1',code:'Digit1'});
   await clickPoint(110,170);
   await wait('document.querySelectorAll(".review-marker").length===3');
   review=await stored();entry=review.assets[0];
@@ -117,7 +118,7 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   await reload();
   assert.equal(await evaluate('document.querySelectorAll(".review-marker").length'),2);
   // Pointer hover must not repaint fill or ink in the default inspection view.
-  await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=triangle'});
+  await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=triangle&filter=all'});
   await wait('document.querySelector(".review-sidebar code")?.textContent==="triangle"');await ready();
   await evaluate('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
   await cdp('Input.dispatchMouseEvent',{type:'mouseMoved',x:20,y:20});
