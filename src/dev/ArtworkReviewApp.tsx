@@ -24,7 +24,7 @@ export function ArtworkReviewApp() {
   const [mode, setMode] = useState<MarkerKind>('note');
   const [selected, setSelected] = useState<string>();
   const [artwork, setArtwork] = useState<{ id: string; data: ReviewArtwork }>();
-  const importInput = useRef<HTMLInputElement>(null), markerNote = useRef<HTMLTextAreaElement>(null);
+  const importInput = useRef<HTMLInputElement>(null);
   const asset = assets.find(asset => asset.id === assetId)!;
   const current = review.assets.find(entry => entry.assetId === assetId);
   const selectedMarker = current?.markers.find(marker => marker.id === selected);
@@ -61,7 +61,7 @@ export function ArtworkReviewApp() {
   }, [artwork, assetId, current, asset.source, review, persist]);
   function addMarker(data: ReviewArtwork, marker: ReviewMarker) {
     updateEntry(entry => ({ ...entry, markers: [...entry.markers, marker] }), data);
-    setSelected(marker.id); requestAnimationFrame(() => markerNote.current?.focus());
+    setSelected(marker.id);
   }
   function deleteMarker(id: string) {
     // Removing an old annotation is safe even when the artwork has changed.
@@ -116,7 +116,7 @@ export function ArtworkReviewApp() {
       <label>Artwork notes<textarea aria-label="Artwork notes" rows={3} value={current?.notes ?? ''} disabled={!editable} placeholder="Overall issues or suggestions…" onChange={event => updateEntry(entry => ({ ...entry, notes: event.target.value }))} /></label>
       <h2>Markers ({current?.markers.length ?? 0})</h2>
       <div className="review-marker-list">{current?.markers.map((marker, index) => <button key={marker.id} className={marker.kind} aria-pressed={selected === marker.id} onClick={() => setSelected(marker.id)}>{index + 1}. {markerLabels[marker.kind]}<small>{marker.regionId ? `Region ${marker.regionId}` : 'No existing region'} · {marker.x.toFixed(1)}, {marker.y.toFixed(1)}</small>{marker.note && <small>{marker.note}</small>}</button>)}</div>
-      {selectedMarker && <div className="review-marker-editor"><strong>{markerLabels[selectedMarker.kind]}</strong><label>Marker note<textarea ref={markerNote} aria-label="Marker note" disabled={!editable} rows={3} value={selectedMarker.note} placeholder="What should change here?" onChange={event => updateEntry(entry => ({ ...entry, markers: entry.markers.map(marker => marker.id === selected ? { ...marker, note: event.target.value } : marker) }))} /></label><button onClick={() => deleteMarker(selectedMarker.id)}>Delete marker</button></div>}
+      {selectedMarker && <div className="review-marker-editor"><strong>{markerLabels[selectedMarker.kind]}</strong><label>Marker note<textarea aria-label="Marker note" disabled={!editable} rows={3} value={selectedMarker.note} placeholder="What should change here?" onChange={event => updateEntry(entry => ({ ...entry, markers: entry.markers.map(marker => marker.id === selected ? { ...marker, note: event.target.value } : marker) }))} /></label><button onClick={() => deleteMarker(selectedMarker.id)}>Delete marker</button></div>}
       <p role="status" className="review-save-status">{message}</p>
       <small>Markers describe requested fixes; they do not modify artwork. A / D, arrow keys or Page Up / Page Down browse. Space toggles Reviewed. Keys 1–3 choose tools.</small>
     </aside>

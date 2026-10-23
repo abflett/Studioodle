@@ -82,10 +82,10 @@ export function ArtworkReviewStage({ asset, review, selected, mode, onMark, onSe
       <span>{hovered ? `Region ${hovered}` : 'Transparent / ink'}</span>
     </div>
     {stale && <div role="alert">This asset changed since it was annotated. Existing markers refer to the exported revision; adding markers is paused.</div>}
-    <div ref={stage} className="review-stage" style={{ background }} aria-label={`${asset.title} artwork`} onContextMenu={event => event.preventDefault()}
+    <div ref={stage} tabIndex={-1} className="review-stage" style={{ background }} aria-label={`${asset.title} artwork`} onContextMenu={event => event.preventDefault()}
       onPointerDown={event => {
         if (!artwork || (event.button !== 0 && event.button !== 1)) return;
-        event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId);
+        event.preventDefault(); event.currentTarget.focus({ preventScroll: true }); event.currentTarget.setPointerCapture(event.pointerId);
         drag.current = { x: event.clientX, y: event.clientY, pan, moved: false };
       }}
       onPointerMove={event => {

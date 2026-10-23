@@ -24,6 +24,7 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   await ready();
   await clickPoint(110,140,2); // Ctrl: transparent, with a real region ID.
   await wait('document.querySelectorAll(".review-marker").length===1');
+  assert(await evaluate('document.activeElement===document.querySelector(".review-stage")'),'Placing a marker must keep focus on the artwork');
   await type('Marker note','This pocket should be transparent.');
   await clickPoint(5,5,8); // Shift: missing region, with no existing region ID.
   await wait('document.querySelectorAll(".review-marker").length===2');
@@ -39,6 +40,13 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   await wait('document.querySelectorAll(".review-marker").length===3');
   review=await stored();entry=review.assets[0];
   assert.equal(entry.markers[2].kind,'note');assert.equal(entry.markers[2].x,110);assert.equal(entry.markers[2].y,170);
+  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'d',code:'KeyD'});
+  await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'d',code:'KeyD'});
+  await wait('document.querySelector(".review-sidebar code").textContent==="square"');await ready();
+  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'a',code:'KeyA'});
+  await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'a',code:'KeyA'});
+  await wait('document.querySelector(".review-sidebar code").textContent==="circle"');await ready();
+  assert.equal((await stored()).assets[0].markers.length,3,'Immediate shortcut browsing after marking must preserve all markers');
   await type('Artwork notes','Overall artwork review.');
   await evaluate('document.querySelector(".review-check input").click()');
   await reload();

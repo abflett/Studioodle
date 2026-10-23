@@ -28,7 +28,8 @@ artwork, without a hover tint painting over the black ink.
 - Select a numbered marker in the artwork or sidebar to edit its note or delete
   it. Alt-click a marker to delete it directly, including markers on an older
   artwork revision. Deletions save immediately. Artwork notes describe broader
-  issues. Escape deselects a marker.
+  issues. Placing markers keeps keyboard focus on the artwork; note fields only
+  receive focus when you choose to edit them. Escape deselects a marker.
 - Zoom with + / − or Ctrl/Cmd + wheel. Drag when zoomed to pan; Alt-drag or a
   middle-button drag also pans. Fit resets zoom and pan. Marker coordinates
   always refer to the SVG, regardless of display size, pan or zoom.
