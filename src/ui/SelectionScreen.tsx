@@ -206,12 +206,14 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
                   </span> : <span className="portfolio-stack-status">{library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className={library.error ? 'portfolio-stack-error' : 'sr-only'}>{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}</span>}
                 </span>
               </button>
-              <nav className="library-actions" aria-label="Selected saved picture actions">
+              <nav className="library-actions" aria-label="Selected saved picture actions" data-empty={saved.length === 0 || undefined}>
                 {(library.error || currentError) && <button className="icon-button" aria-label="Retry loading saved pictures" title="Retry loading" onClick={retry}><RotateCw aria-hidden="true" /></button>}
-                <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) { setDeletingPage(false); setPendingDelete(current); } }}><Trash2 /></button>
-                <button className="icon-button" disabled={!current || current.document.surfaces.length < 2} aria-label="Save selected picture as a coloring page" title={current && current.document.surfaces.length > 1 ? "Save as coloring page" : "Arrange stickers in a picture to make a coloring page"} onClick={addColoringPage}><Save aria-hidden="true" /></button>
-                <button className="icon-button" disabled={!current} aria-label="Print selected saved picture" title="Print picture" onClick={() => { if (current) printPicture(current, () => setActionError('Could not open printing. Allow the print window and try again.')); }}><Printer /></button>
-                <button className="icon-button" disabled={!current} aria-label="Export selected saved picture" title="Export picture" aria-haspopup="dialog" onClick={() => setExportingPicture(current)}><Download /></button>
+                {saved.length > 0 && <>
+                  <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) { setDeletingPage(false); setPendingDelete(current); } }}><Trash2 /></button>
+                  <button className="icon-button" disabled={!current || current.document.surfaces.length < 2} aria-label="Save selected picture as a coloring page" title={current && current.document.surfaces.length > 1 ? "Save as coloring page" : "Arrange stickers in a picture to make a coloring page"} onClick={addColoringPage}><Save aria-hidden="true" /></button>
+                  <button className="icon-button" disabled={!current} aria-label="Print selected saved picture" title="Print picture" onClick={() => { if (current) printPicture(current, () => setActionError('Could not open printing. Allow the print window and try again.')); }}><Printer /></button>
+                  <button className="icon-button" disabled={!current} aria-label="Export selected saved picture" title="Export picture" aria-haspopup="dialog" onClick={() => setExportingPicture(current)}><Download /></button>
+                </>}
               </nav>
               <h2 className="sr-only" id="your-pictures-label">Your pictures</h2>
             </div>

@@ -692,7 +692,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .selection .previous-section { min-width: 0; gap: 0; translate: -10px 0; }
 .previous-section .picture-carousel { --browse-size: 52px; display: grid; grid-template-columns: var(--browse-size) minmax(0, 1fr) var(--browse-size); align-items: start; gap: 14px; width: min(552px, calc(var(--object-height) * 1.5 + 144px), 100%); }
 .saved-picture-card { position: relative; grid-column: 2; grid-row: 1; display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; gap: 22px; padding: 12px 4px; border-radius: 32px; transition: background-color 160ms ease; }
-.previous-section .saved-picture-card .previous-picture { position: static; width: 100%; min-width: 0; padding: 0; background: transparent; border-radius: 0; }
+.previous-section .saved-picture-card .previous-picture { position: relative; width: 100%; min-width: 0; padding: 0; background: transparent; border-radius: 0; }
 .saved-picture-card .previous-picture::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 32px; }
 .saved-picture-card .previous-picture:disabled::after { pointer-events: none; }
 .saved-picture-card .previous-picture:disabled { opacity: .75; }
@@ -704,11 +704,15 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 }
 .previous-section .picture-carousel > .icon-button:first-child { grid-column: 1; }
 .previous-section .picture-carousel > .icon-button:last-child { grid-column: 3; }
-.saved-picture-card .library-actions { position: relative; z-index: 2; display: flex; justify-content: center; gap: 14px; pointer-events: none; }
+.saved-picture-card .library-actions { min-height: 44px; position: relative; z-index: 2; display: flex; justify-content: center; gap: 14px; pointer-events: none; }
 .saved-picture-card .library-actions button { pointer-events: auto; }
 .previous-section .library-actions .icon-button { width: 44px; height: 44px; padding: 11px; }
-.saved-picture-card:has(.previous-picture:focus-visible) { outline: 3px solid var(--action); outline-offset: 4px; }
-.previous-section .previous-picture:focus-visible { outline: none; }
+.previous-section .previous-picture:focus-visible { outline: 3px solid var(--action); outline-offset: 4px; border-radius: 32px; }
+.previous-section .picture-carousel > .icon-button:disabled { visibility: hidden; }
+.previous-section .icon-button:disabled { pointer-events: none; }
+.saved-picture-card .library-actions[data-empty]:not(:has(button)) { visibility: hidden; }
+.saved-picture-card .library-actions .icon-button { position: relative; }
+.saved-picture-card .library-actions .icon-button::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; }
 /* Enlarge only the artwork on hover; transparent hit areas and layout stay fixed. */
 .selection .choice-card:is(:hover, .app-mouse-hover, :active, .app-mouse-pressed, :focus-visible) {
   background: transparent; transform: none; filter: none;
@@ -761,7 +765,8 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .selection .choice-coloring { translate: 2px calc(18px + var(--portrait-stagger) * 1.4); }
 }
 @media (max-width: 360px) {
-  .saved-picture-card .library-actions { gap: 6px; }
+  .saved-picture-card .library-actions { gap: 6px; min-height: 40px; }
+  .saved-picture-card .library-actions .icon-button::before { inset-inline: -3px; }
   .previous-section .library-actions .icon-button { width: 40px; height: 40px; padding: 10px; }
 }
 @media (max-height: 540px) {
@@ -776,7 +781,8 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .saved-picture-card { gap: 14px; padding: 8px 2px; }
   .previous-section .picture-carousel > .icon-button { margin-top: calc(8px + (var(--object-height) - var(--browse-size)) / 2); }
   .previous-section .library-actions .icon-button { width: 32px; height: 32px; padding: 7px; }
-  .saved-picture-card .library-actions { gap: 8px; }
+  .saved-picture-card .library-actions { gap: 8px; min-height: 32px; }
+  .saved-picture-card .library-actions .icon-button::before { inset: -8px -4px; }
 }
 /* Short landscape screens can use the top center; utility buttons occupy the right corner. */
 @media (max-height: 540px) and (min-aspect-ratio: 1/1) {

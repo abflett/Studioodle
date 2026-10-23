@@ -90,5 +90,9 @@ export async function checkPortfolioNavigation() {
   const remove = document.querySelector<HTMLButtonElement>('[aria-label="Delete selected saved picture"]')!;
   const box = remove.getBoundingClientRect();
   assert(document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)?.closest('button') === remove, 'Utility buttons must take priority over the portfolio open target');
+  assert(document.elementFromPoint(box.x + box.width / 2, box.top - 5)?.closest('button') === remove, 'Action hitboxes must extend beyond their visible circles');
+  const actions = document.querySelector('.library-actions')!.getBoundingClientRect();
+  assert(open.getBoundingClientRect().bottom < actions.top, 'Action controls must lie outside the stack open hitbox');
+  assert(document.elementFromPoint(actions.left, actions.top + actions.height / 2)?.closest('button') !== open, 'Toolbar space must never open the drawing');
   return { next: true, previous: true, cachedPreview: true, utilityPriority: true, proportionalSheets: true, centeredArrows: true, permanentStack: true };
 }
