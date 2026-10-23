@@ -3,13 +3,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFile } from 'node:child_process';
+import { selectBatchAssets } from './sticker-batch-selection.mjs';
 const option=(name,fallback)=>process.argv.find(arg=>arg.startsWith(`--${name}=`))?.slice(name.length+3)??fallback;
 const directory=option('out','work/sticker-upgrade'),jobs=Number(option('jobs','2'));
 const timeout=Number(option('timeout','180000'));
 const resume=process.argv.includes('--resume');
-for(const arg of process.argv.slice(2))if(arg!=='--resume'&&!/^--(out|jobs|timeout)=/.test(arg))throw Error(`Unknown option: ${arg}`);
+for(const arg of process.argv.slice(2))if(arg!=='--resume'&&!/^--(out|jobs|timeout|ids-file)=/.test(arg))throw Error(`Unknown option: ${arg}`);
 if(!Number.isInteger(jobs)||jobs<1||jobs>4||!Number.isFinite(timeout)||timeout<1000)throw Error('Use 1-4 jobs and a positive timeout in milliseconds');
-const assets=JSON.parse(fs.readFileSync('art/stickers.json','utf8'));
+const manifest=JSON.parse(fs.readFileSync('art/stickers.json','utf8')),idsFile=option('ids-file');
+const assets=selectBatchAssets(manifest,idsFile?JSON.parse(fs.readFileSync(idsFile,'utf8')):manifest.map(asset=>asset.id));
 for(const folder of ['vector','before','reports','errors'])fs.mkdirSync(path.join(directory,folder),{recursive:true});
 const digest=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const scripts=['build-stickers.mjs','clean-ink-components.mjs','discover-regions.mjs','svg-regions.mjs'];
@@ -18,7 +20,7 @@ const results=[];let next=0,completed=0;
 const startedAt=new Date().toISOString();
 function summary(){
  const success=results.filter(r=>r.status==='ok');
- return {startedAt,total:assets.length,completed,pipelineHash,successful:success.length,failed:results.filter(r=>r.status==='failed').length,
+ return {startedAt,total:assets.length,assetIds:assets.map(asset=>asset.id),completed,pipelineHash,successful:success.length,failed:results.filter(r=>r.status==='failed').length,
   changed:success.filter(r=>r.changed).length,removedRegions:success.reduce((sum,r)=>sum+(r.cleanup?.removed??0),0),
   unresolved:success.filter(r=>r.cleanup?.unresolved?.length||r.cleanup?.remainingSmallComponents),results:[...results].sort((a,b)=>a.id.localeCompare(b.id))};
 }

@@ -133,6 +133,14 @@ relying on incidental HTTP cache behavior.
   adjusted mouse/pointer lock and installed-platform lifecycle checks still need
   hands-on coverage beyond automated mouse/touch tests.
 
+## Artwork repair follow-up
+
+The first review-driven repair pass and effort grades are tracked in
+[ARTWORK-REPAIR-LOG.md](ARTWORK-REPAIR-LOG.md), with exact marker IDs and coordinates
+in the linked progress JSON. Read those records before starting another art pass;
+the original export is retained unchanged. Open line closures and the conflicting
+add/remove request require discussion before further work.
+
 ## Optional future feature
 
 The export overlay works for browser and desktop. A native format-filter chooser

@@ -122,6 +122,10 @@ at a time by default), limits ImageMagick threading, and stages all results unde
 `--jobs=1` reduces load; `--timeout=180000` controls each asset's deadline.
 `--out=work/another-review` selects a different staging directory. Resume validates
 both input and converter hashes; changed sources or algorithms are rebuilt.
+For a targeted pass, `--ids-file=work/targets.json` reads a JSON array of asset IDs.
+The summary records that exact target set, and audit/promotion validate only that
+set. Unknown or duplicate IDs are rejected. Promotion also validates manifest
+metadata, including cutout seeds, against the conversion report.
 
 The staging directory contains untouched `before/` copies, rebuilt `vector/` files,
 per-asset `reports/`, failure logs, `summary.json`, and the audit's `review.html` and
@@ -138,3 +142,26 @@ node scripts/build-stickers.mjs fantasy-moon-sorceress --out=work/sticker-upgrad
 Regenerated region IDs are a development breaking change. Use a fresh drawing-library
 namespace when promoting an incompatible library, rather than interpreting old paint
 against different region IDs. Original art and saved page layouts are preserved.
+
+## Repairs from an artwork review
+
+`node scripts/plan-artwork-repairs.mjs docs/review.json` checks review checksums and
+writes a conservative plan plus target IDs under `work/artwork-repair-pass/`.
+Use `--out=work/another-repair-pass` for a later pass; a promoted stage cannot be
+replanned in place, preserving its before snapshots and audit trail.
+`--apply` appends safe negative-space seeds to `art/stickers.json`; the original
+review and source art remain unchanged. It does not draw inferred closures.
+Conflicting add/remove requests and regions exceeding 35% of paintable area are
+left for visual review. Duplicate markers on one region produce one seed.
+
+Rebuild that target set into the same staging directory, audit it, then run
+`node scripts/validate-artwork-repairs.mjs work/artwork-repair-pass`. The additional
+validator requires unchanged ink, the exact expected reduction in region count,
+transparent seed points, preserved interiors of unmarked regions, and unchanged
+source/review checksums. Review the before/after gallery before promoting.
+
+A marker can sit on ink covering its region path. Such a seed fails discovery;
+choose a verified white interior point of the same reviewed region and record
+the adjustment separately from the original marker coordinates. Resume rebuilds
+only changed inputs. Do not rerun the original planning command after promotion:
+the review checksums intentionally stop matching modified assets.

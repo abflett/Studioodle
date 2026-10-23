@@ -609,7 +609,13 @@
     ],
     "detail": "detailed",
     "facing": "front",
-    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.",
+    "cutouts": [
+      [
+        183.9327,
+        185.4127
+      ]
+    ]
   },
   {
     "id": "counting-04",
@@ -620,6 +626,14 @@
       [
         111.75,
         156.25
+      ],
+      [
+        196.1918,
+        221.7591
+      ],
+      [
+        222.4168,
+        214.3978
       ]
     ],
     "title": "4 - Gardener",
@@ -712,7 +726,13 @@
     ],
     "detail": "detailed",
     "facing": "front",
-    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space."
+    "placementNotes": "Use flipX to change facing where useful. Preserve aspect ratio and leave comfortable coloring space.",
+    "cutouts": [
+      [
+        182.4443,
+        165.2882
+      ]
+    ]
   },
   {
     "id": "counting-08",
@@ -757,6 +777,10 @@
       [
         135.25,
         131.25
+      ],
+      [
+        206.1117,
+        214.3978
       ]
     ],
     "title": "9 - Firefighter",
@@ -1600,7 +1624,13 @@
     ],
     "detail": "detailed",
     "facing": "right",
-    "placementNotes": "Keep relatively large on the page so stripe or spot regions remain comfortable to color."
+    "placementNotes": "Keep relatively large on the page so stripe or spot regions remain comfortable to color.",
+    "cutouts": [
+      [
+        207.457,
+        159.115
+      ]
+    ]
   },
   {
     "id": "animal-rhino",
@@ -1914,7 +1944,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1045x1182+105+27"
+    "crop": "1045x1182+105+27",
+    "cutouts": [
+      [
+        147.2794,
+        124.2219
+      ],
+      [
+        139.4578,
+        213.0176
+      ]
+    ]
   },
   {
     "id": "alphabet-c-cat",
@@ -1960,7 +2000,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1129x1161+42+49"
+    "crop": "1129x1161+42+49",
+    "cutouts": [
+      [
+        179.7625,
+        178.9716
+      ]
+    ]
   },
   {
     "id": "alphabet-e-elephant",
@@ -2006,7 +2052,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "886x1207+175+17"
+    "crop": "886x1207+175+17",
+    "cutouts": [
+      [
+        46.3251,
+        233.2612
+      ]
+    ]
   },
   {
     "id": "alphabet-g-giraffe",
@@ -2144,7 +2196,21 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "869x1188+191+24"
+    "crop": "869x1188+191+24",
+    "cutouts": [
+      [
+        59.6279,
+        159.1881
+      ],
+      [
+        48.5858,
+        142.6252
+      ],
+      [
+        126.8004,
+        161.0284
+      ]
+    ]
   },
   {
     "id": "alphabet-m-monkey",
@@ -2167,7 +2233,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1198x1029+27+126"
+    "crop": "1198x1029+27+126",
+    "cutouts": [
+      [
+        58.9675,
+        175.4371
+      ]
+    ]
   },
   {
     "id": "alphabet-n-nurse",
@@ -2213,7 +2285,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1101x1047+77+110"
+    "crop": "1101x1047+77+110",
+    "cutouts": [
+      [
+        165.6292,
+        146.8579
+      ]
+    ]
   },
   {
     "id": "alphabet-p-pirate",
@@ -2236,7 +2314,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1027x1206+115+24"
+    "crop": "1027x1206+115+24",
+    "cutouts": [
+      [
+        160.643,
+        132.9635
+      ]
+    ]
   },
   {
     "id": "alphabet-q-queen",
@@ -2259,7 +2343,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1136x1181+62+35"
+    "crop": "1136x1181+62+35",
+    "cutouts": [
+      [
+        145.5566,
+        168.3897
+      ]
+    ]
   },
   {
     "id": "alphabet-r-robot",
@@ -2282,7 +2372,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1143x1192+56+20"
+    "crop": "1143x1192+56+20",
+    "cutouts": [
+      [
+        157.479,
+        140.3248
+      ]
+    ]
   },
   {
     "id": "alphabet-s-snake",
@@ -2538,7 +2634,41 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1175x1156+42+47"
+    "crop": "1175x1156+42+47",
+    "cutouts": [
+      [
+        57.1224,
+        223.4844
+      ],
+      [
+        254.3182,
+        285.1353
+      ],
+      [
+        177.2532,
+        82.9567
+      ],
+      [
+        194.4795,
+        92.9296
+      ],
+      [
+        214.4257,
+        107.889
+      ],
+      [
+        232.1054,
+        115.1421
+      ],
+      [
+        250.2383,
+        128.7415
+      ],
+      [
+        272.4512,
+        133.2747
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-fiddle-cat",
@@ -2562,7 +2692,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1069x1215+134+17"
+    "crop": "1069x1215+134+17",
+    "cutouts": [
+      [
+        222.194,
+        134.8038
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-jumping-cow",
@@ -2778,7 +2914,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "785x1225+219+11"
+    "crop": "785x1225+219+11",
+    "cutouts": [
+      [
+        33.5465,
+        195.5345
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-jill",
@@ -2802,7 +2944,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "756x1237+256+2"
+    "crop": "756x1237+256+2",
+    "cutouts": [
+      [
+        60.7523,
+        179.4317
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-stone-well",
@@ -2826,7 +2974,25 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1039x1223+131+14"
+    "crop": "1039x1223+131+14",
+    "cutouts": [
+      [
+        164.3783,
+        150.6901
+      ],
+      [
+        133.2006,
+        220.1894
+      ],
+      [
+        192.3084,
+        238.3762
+      ],
+      [
+        242.9722,
+        226.0352
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-rowboat",
@@ -2850,7 +3016,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1194x695+30+280"
+    "crop": "1194x695+30+280",
+    "cutouts": [
+      [
+        194.3817,
+        42.6008
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-friendly-bus",
@@ -2874,7 +3046,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1225x915+15+162"
+    "crop": "1225x915+15+162",
+    "cutouts": [
+      [
+        23.2354,
+        67.3667
+      ],
+      [
+        18.7672,
+        114.4547
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-mother-duck",
@@ -2946,7 +3128,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "800x1238+203+3"
+    "crop": "800x1238+203+3",
+    "cutouts": [
+      [
+        170.2712,
+        154.5873
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-barn",
@@ -2970,7 +3158,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1176x1171+40+18"
+    "crop": "1176x1171+40+18",
+    "cutouts": [
+      [
+        207.0116,
+        53.0392
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-dish-spoon",
@@ -3018,7 +3212,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1092x1217+107+10"
+    "crop": "1092x1217+107+10",
+    "cutouts": [
+      [
+        47.6008,
+        99.8376
+      ],
+      [
+        230.7143,
+        142.6252
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-royal-guard",
@@ -3138,7 +3342,21 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1098x1199+96+22"
+    "crop": "1098x1199+96+22",
+    "cutouts": [
+      [
+        165.622,
+        64.4114
+      ],
+      [
+        43.2378,
+        74.0731
+      ],
+      [
+        28.975,
+        80.0541
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-wool-sacks",
@@ -3210,7 +3428,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1093x1167+72+26"
+    "crop": "1093x1167+72+26",
+    "cutouts": [
+      [
+        230.8457,
+        96.1299
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-miss-muffet",
@@ -3234,7 +3458,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "768x1234+244+4"
+    "crop": "768x1234+244+4",
+    "cutouts": [
+      [
+        51.5521,
+        134.2949
+      ],
+      [
+        49.2485,
+        150.8386
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-little-teapot",
@@ -3258,7 +3492,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1187x1082+34+85"
+    "crop": "1187x1082+34+85",
+    "cutouts": [
+      [
+        223.3264,
+        101.0217
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-baker",
@@ -3282,7 +3522,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "750x1219+244+10"
+    "crop": "750x1219+244+10",
+    "cutouts": [
+      [
+        160.1701,
+        176.6712
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-muffin-tray",
@@ -3330,7 +3576,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1100x1170+80+43"
+    "crop": "1100x1170+80+43",
+    "cutouts": [
+      [
+        213.4759,
+        187.5237
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-little-boy-blue",
@@ -3378,7 +3630,25 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "821x1228+215+12"
+    "crop": "821x1228+215+12",
+    "cutouts": [
+      [
+        28.3849,
+        258.5656
+      ],
+      [
+        45.2305,
+        261.828
+      ],
+      [
+        45.2305,
+        275.44
+      ],
+      [
+        136.9642,
+        302.7334
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-goose",
@@ -3594,7 +3864,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "841x1221+255+11"
+    "crop": "841x1221+255+11",
+    "cutouts": [
+      [
+        147.8262,
+        112.7199
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-storybook-kettle",
@@ -3618,7 +3894,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1122x1194+100+28"
+    "crop": "1122x1194+100+28",
+    "cutouts": [
+      [
+        70.6327,
+        52.774
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-storybook-pie",
@@ -3666,7 +3948,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1075x1049+90+105"
+    "crop": "1075x1049+90+105",
+    "cutouts": [
+      [
+        205.0424,
+        260.5683
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-porridge-pot",
@@ -3690,7 +3978,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1196x1060+29+97"
+    "crop": "1196x1060+29+97",
+    "cutouts": [
+      [
+        26.6711,
+        107.3748
+      ],
+      [
+        235.8188,
+        109.2422
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-hot-cross-buns",
@@ -3738,7 +4036,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1197x1194+31+28"
+    "crop": "1197x1194+31+28",
+    "cutouts": [
+      [
+        118.7847,
+        65.1881
+      ],
+      [
+        128.2476,
+        137.7361
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-cockle-shell",
@@ -3786,7 +4094,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "852x1207+190+18"
+    "crop": "852x1207+190+18",
+    "cutouts": [
+      [
+        46.8462,
+        207.4966
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-rowing-child",
@@ -3858,7 +4172,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1144x1113+56+71"
+    "crop": "1144x1113+56+71",
+    "cutouts": [
+      [
+        168.0018,
+        57.5156
+      ]
+    ]
   },
   {
     "id": "fall-maple-leaf",
@@ -3930,7 +4250,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1017x1195+79+33"
+    "crop": "1017x1195+79+33",
+    "cutouts": [
+      [
+        158.3026,
+        164.249
+      ]
+    ]
   },
   {
     "id": "fall-autumn-tree",
@@ -4026,7 +4352,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1118x1098+68+76"
+    "crop": "1118x1098+68+76",
+    "cutouts": [
+      [
+        96.8739,
+        49.3437
+      ]
+    ]
   },
   {
     "id": "fall-fox",
@@ -4146,7 +4478,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1189x900+46+212"
+    "crop": "1189x900+46+212",
+    "cutouts": [
+      [
+        76.418,
+        137.2869
+      ],
+      [
+        169.1868,
+        141.8187
+      ]
+    ]
   },
   {
     "id": "fall-corn",
@@ -4218,7 +4560,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1171x1094+65+89"
+    "crop": "1171x1094+65+89",
+    "cutouts": [
+      [
+        79.3605,
+        64.4493
+      ]
+    ]
   },
   {
     "id": "fall-rake",
@@ -4242,7 +4590,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1168x1207+39+16"
+    "crop": "1168x1207+39+16",
+    "cutouts": [
+      [
+        220.2911,
+        18.295
+      ]
+    ]
   },
   {
     "id": "fall-hay-bale",
@@ -4314,7 +4668,29 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1053x1199+100+31"
+    "crop": "1053x1199+100+31",
+    "cutouts": [
+      [
+        77.4092,
+        134.7497
+      ],
+      [
+        81.983,
+        116.4547
+      ],
+      [
+        124.9069,
+        117.5101
+      ],
+      [
+        144.6096,
+        116.8065
+      ],
+      [
+        153.7573,
+        135.4533
+      ]
+    ]
   },
   {
     "id": "fall-pumpkin-cluster",
@@ -4410,7 +4786,25 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1227x994+20+136"
+    "crop": "1227x994+20+136",
+    "cutouts": [
+      [
+        65.34134,
+        187.15002
+      ],
+      [
+        139.4858,
+        41.3058
+      ],
+      [
+        247.402,
+        208.0176
+      ],
+      [
+        309.9189,
+        21.5832
+      ]
+    ]
   },
   {
     "id": "fall-cornstalk",
@@ -4482,7 +4876,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1104x1142+75+63"
+    "crop": "1104x1142+75+63",
+    "cutouts": [
+      [
+        84.6873,
+        201.5968
+      ],
+      [
+        179.3305,
+        216.0217
+      ]
+    ]
   },
   {
     "id": "fall-chestnuts",
@@ -4602,7 +5006,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1166x1167+46+44"
+    "crop": "1166x1167+46+44",
+    "cutouts": [
+      [
+        142.3139,
+        58.7551
+      ]
+    ]
   },
   {
     "id": "fall-mittens",
@@ -4626,7 +5036,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1175x1021+40+123"
+    "crop": "1175x1021+40+123",
+    "cutouts": [
+      [
+        130,
+        194.5007
+      ]
+    ]
   },
   {
     "id": "fall-chrysanthemum-pot",
@@ -4842,7 +5258,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "701x1224+276+10"
+    "crop": "701x1224+276+10",
+    "cutouts": [
+      [
+        79.7774,
+        22.8687
+      ]
+    ]
   },
   {
     "id": "fall-apple-picking-child",
@@ -4866,7 +5288,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "511x1210+370+21"
+    "crop": "511x1210+370+21",
+    "cutouts": [
+      [
+        110.1872,
+        191.3938
+      ]
+    ]
   },
   {
     "id": "horizons-alpine-peaks",
@@ -5298,7 +5726,17 @@
     "placementNotes": "Keep full square canvas. Oversized background with open foreground; move vertically to adjust horizon. No visible frame.",
     "horizon": true,
     "horizonStart": -0.1,
-    "horizonOverscan": 1.2
+    "horizonOverscan": 1.2,
+    "cutouts": [
+      [
+        307.7131,
+        337.7537
+      ],
+      [
+        897.1583,
+        256.5629
+      ]
+    ]
   },
   {
     "id": "horizons-snowy-forest",
@@ -5323,7 +5761,13 @@
     "placementNotes": "Keep full square canvas. Oversized background with open foreground; move vertically to adjust horizon. No visible frame.",
     "horizon": true,
     "horizonStart": -0.1,
-    "horizonOverscan": 1.2
+    "horizonOverscan": 1.2,
+    "cutouts": [
+      [
+        1073.6945,
+        370.8395
+      ]
+    ]
   },
   {
     "id": "horizons-coastal-cliffs",
@@ -5519,7 +5963,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1215x943+12+126"
+    "crop": "1215x943+12+126",
+    "cutouts": [
+      [
+        160.3545,
+        64.3031
+      ],
+      [
+        175.0014,
+        58.9445
+      ]
+    ]
   },
   {
     "id": "category-expansion-fire-engine",
@@ -5542,7 +5996,45 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1250x892+4+174"
+    "crop": "1250x892+4+174",
+    "cutouts": [
+      [
+        21.0422,
+        64.4493
+      ],
+      [
+        190.716,
+        17.7564
+      ],
+      [
+        206.4996,
+        23.6752
+      ],
+      [
+        225.5714,
+        29.2652
+      ],
+      [
+        243.328,
+        33.8687
+      ],
+      [
+        262.071,
+        38.4723
+      ],
+      [
+        276.2105,
+        41.7605
+      ],
+      [
+        289.3635,
+        46.0352
+      ],
+      [
+        301.2012,
+        48.3369
+      ]
+    ]
   },
   {
     "id": "category-expansion-propeller-airplane",
@@ -5565,7 +6057,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1219x885+17+186"
+    "crop": "1219x885+17+186",
+    "cutouts": [
+      [
+        241.8615,
+        181.1556
+      ]
+    ]
   },
   {
     "id": "category-expansion-sea-turtle",
@@ -5795,7 +6293,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1136x1146+59+41"
+    "crop": "1136x1146+59+41",
+    "cutouts": [
+      [
+        262.6825,
+        96.7794
+      ]
+    ]
   },
   {
     "id": "category-expansion-lighthouse",
@@ -5818,7 +6322,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "514x1194+370+15"
+    "crop": "514x1194+370+15",
+    "cutouts": [
+      [
+        52.1864,
+        112.3681
+      ],
+      [
+        156.1127,
+        111.7185
+      ]
+    ]
   },
   {
     "id": "category-expansion-windmill",
@@ -5957,7 +6471,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "889x1202+128+27"
+    "crop": "889x1202+128+27",
+    "cutouts": [
+      [
+        117.6785,
+        124.2219
+      ]
+    ]
   },
   {
     "id": "collection-expansion-pet-cat",
@@ -6005,7 +6525,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1069x1156+86+56"
+    "crop": "1069x1156+86+56",
+    "cutouts": [
+      [
+        295.0251,
+        128.8227
+      ]
+    ]
   },
   {
     "id": "collection-expansion-farm-goat",
@@ -6149,7 +6675,29 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "950x1233+168+12"
+    "crop": "950x1233+168+12",
+    "cutouts": [
+      [
+        110.2959,
+        235.5616
+      ],
+      [
+        117.6574,
+        255.8051
+      ],
+      [
+        142.0422,
+        293.0717
+      ],
+      [
+        125.4789,
+        282.4899
+      ],
+      [
+        54.1649,
+        111.7997
+      ]
+    ]
   },
   {
     "id": "collection-expansion-grandparent",
@@ -6197,7 +6745,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "592x1233+326+6"
+    "crop": "592x1233+326+6",
+    "cutouts": [
+      [
+        38.712,
+        161.0284
+      ]
+    ]
   },
   {
     "id": "collection-expansion-gardener",
@@ -6221,7 +6775,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "672x1222+262+12"
+    "crop": "672x1222+262+12",
+    "cutouts": [
+      [
+        113.7442,
+        79.134
+      ],
+      [
+        141.81,
+        144.9256
+      ]
+    ]
   },
   {
     "id": "collection-expansion-seaweed-fronds",
@@ -6269,7 +6833,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1179x1147+39+54"
+    "crop": "1179x1147+39+54",
+    "cutouts": [
+      [
+        122.0734,
+        236.4926
+      ],
+      [
+        232.2597,
+        227.9824
+      ]
+    ]
   },
   {
     "id": "collection-expansion-tube-sponge",
@@ -6390,7 +6964,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1224x1058+19+94"
+    "crop": "1224x1058+19+94",
+    "cutouts": [
+      [
+        175.9675,
+        254.2165
+      ]
+    ]
   },
   {
     "id": "collection-expansion-stegosaurus",
@@ -6414,7 +6994,33 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1229x853+19+183"
+    "crop": "1229x853+19+183",
+    "cutouts": [
+      [
+        73.2364,
+        117.2016
+      ],
+      [
+        94.9523,
+        98.9986
+      ],
+      [
+        121.4585,
+        77.2828
+      ],
+      [
+        225.5672,
+        89.0988
+      ],
+      [
+        249.1993,
+        121.0338
+      ],
+      [
+        269.3184,
+        143.3884
+      ]
+    ]
   },
   {
     "id": "collection-expansion-brachiosaurus",
@@ -6558,7 +7164,13 @@
     "detail": "detailed",
     "facing": "left",
     "placementNotes": "Decorative dinosaur variant. Preserve aspect ratio; flip to face right. Includes its original ground patch.",
-    "crop": "850x768+279+0"
+    "crop": "850x768+279+0",
+    "cutouts": [
+      [
+        168.7537,
+        240.5318
+      ]
+    ]
   },
   {
     "id": "dinosaur-spotted-triceratops",
@@ -6605,7 +7217,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "934x1235+182+9"
+    "crop": "934x1235+182+9",
+    "cutouts": [
+      [
+        75.0048,
+        302.6387
+      ]
+    ]
   },
   {
     "id": "fantasy-moon-sorceress",
@@ -6652,7 +7270,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "605x1237+348+8"
+    "crop": "605x1237+348+8",
+    "cutouts": [
+      [
+        77.8325,
+        255.8051
+      ],
+      [
+        62.7847,
+        314.1137
+      ]
+    ]
   },
   {
     "id": "fantasy-woodland-ranger",
@@ -6675,7 +7303,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "633x1250+342+2"
+    "crop": "633x1250+342+2",
+    "cutouts": [
+      [
+        80.1089,
+        90.7984
+      ]
+    ]
   },
   {
     "id": "fantasy-dwarf-guardian",
@@ -6698,7 +7332,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "903x1240+162+1"
+    "crop": "903x1240+162+1",
+    "cutouts": [
+      [
+        85.3184,
+        326.7104
+      ],
+      [
+        276.7999,
+        211.0663
+      ]
+    ]
   },
   {
     "id": "fantasy-halfling-traveler",
@@ -6744,7 +7388,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "673x1235+324+8"
+    "crop": "673x1235+324+8",
+    "cutouts": [
+      [
+        222.3523,
+        154.5223
+      ],
+      [
+        251.0617,
+        182.387
+      ]
+    ]
   },
   {
     "id": "fantasy-hooded-scout",
@@ -6767,7 +7421,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "998x1223+144+11"
+    "crop": "998x1223+144+11",
+    "cutouts": [
+      [
+        316.7144,
+        245.4601
+      ]
+    ]
   },
   {
     "id": "fantasy-nature-druid",
@@ -6859,7 +7519,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "579x1247+331+4"
+    "crop": "579x1247+331+4",
+    "cutouts": [
+      [
+        254.1952,
+        257.5372
+      ],
+      [
+        111.042,
+        71.3836
+      ]
+    ]
   },
   {
     "id": "fantasy-goblin-tinkerer",
@@ -6882,7 +7552,21 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1135x1219+57+19"
+    "crop": "1135x1219+57+19",
+    "cutouts": [
+      [
+        219.3917,
+        225.7172
+      ],
+      [
+        233.7153,
+        251.8945
+      ],
+      [
+        109.2482,
+        191.1434
+      ]
+    ]
   },
   {
     "id": "fantasy-goblin-traveler",
@@ -7020,7 +7704,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "912x1237+191+0"
+    "crop": "912x1237+191+0",
+    "cutouts": [
+      [
+        181.2287,
+        187.1448
+      ],
+      [
+        163.7618,
+        207.7307
+      ]
+    ]
   },
   {
     "id": "fantasy-centaur-guide",
@@ -7043,7 +7737,21 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "965x1237+145+8"
+    "crop": "965x1237+145+8",
+    "cutouts": [
+      [
+        145.2204,
+        172.276
+      ],
+      [
+        322.2173,
+        263.134
+      ],
+      [
+        269.7083,
+        218.295
+      ]
+    ]
   },
   {
     "id": "fantasy-faun-musician",
@@ -7089,7 +7797,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "952x1235+154+8"
+    "crop": "952x1235+154+8",
+    "cutouts": [
+      [
+        66.7617,
+        239.2977
+      ]
+    ]
   },
   {
     "id": "fantasy-woodland-gnome",
@@ -7112,7 +7826,21 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "810x1207+251+19"
+    "crop": "810x1207+251+19",
+    "cutouts": [
+      [
+        244.7813,
+        343.0311
+      ],
+      [
+        290.0618,
+        358.8106
+      ],
+      [
+        226.9436,
+        407.521
+      ]
+    ]
   },
   {
     "id": "fantasy-kindly-orc",
@@ -7135,7 +7863,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "813x1244+230+5"
+    "crop": "813x1244+230+5",
+    "cutouts": [
+      [
+        82.0424,
+        244.1678
+      ]
+    ]
   },
   {
     "id": "fantasy-dragon-hatchling",
@@ -7273,7 +8007,25 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1144x1219+89+9"
+    "crop": "1144x1219+89+9",
+    "cutouts": [
+      [
+        245.9281,
+        231.6996
+      ],
+      [
+        261.1137,
+        256.682
+      ],
+      [
+        250.8266,
+        267.4587
+      ],
+      [
+        53.4137,
+        244.9256
+      ]
+    ]
   },
   {
     "id": "fantasy-phoenix",
@@ -7296,7 +8048,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1194x1226+41+13"
+    "crop": "1194x1226+41+13",
+    "cutouts": [
+      [
+        104.3554,
+        124.2043
+      ]
+    ]
   },
   {
     "id": "fantasy-pegasus",
@@ -7319,7 +8077,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1083x1212+95+15"
+    "crop": "1083x1212+95+15",
+    "cutouts": [
+      [
+        244.0468,
+        168.6604
+      ]
+    ]
   },
   {
     "id": "fantasy-unicorn",
@@ -7342,7 +8106,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1069x1222+105+12"
+    "crop": "1069x1222+105+12",
+    "cutouts": [
+      [
+        56.2993,
+        250.0338
+      ]
+    ]
   },
   {
     "id": "fantasy-stone-golem",
@@ -7434,7 +8204,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1222x941+18+138"
+    "crop": "1222x941+18+138",
+    "cutouts": [
+      [
+        218.926,
+        82.2517
+      ],
+      [
+        123.9103,
+        205.9838
+      ]
+    ]
   },
   {
     "id": "fantasy-smiling-slime",
@@ -7913,7 +8693,25 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "943x1119+159+68"
+    "crop": "943x1119+159+68",
+    "cutouts": [
+      [
+        120.3744,
+        178.3234
+      ],
+      [
+        123.6464,
+        255.2152
+      ],
+      [
+        203.2655,
+        265.5765
+      ],
+      [
+        234.3497,
+        204.4993
+      ]
+    ]
   },
   {
     "id": "interiors-wooden-barrel",
@@ -8145,7 +8943,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Full paintable interior canvas; covers the page with slight overscan. Reposition to adjust the crop.",
-    "interior": true
+    "interior": true,
+    "cutouts": [
+      [
+        614.6143,
+        569.9594
+      ]
+    ]
   },
   {
     "id": "interiors-hall-bench",
@@ -8168,7 +8972,25 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1179x935+48+163"
+    "crop": "1179x935+48+163",
+    "cutouts": [
+      [
+        133.4636,
+        172.0839
+      ],
+      [
+        298.9736,
+        139.9323
+      ],
+      [
+        187.9028,
+        70.1488
+      ],
+      [
+        44.6801,
+        176.1028
+      ]
+    ]
   },
   {
     "id": "interiors-wall-banner",
@@ -8191,7 +9013,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1087x1135+83+51"
+    "crop": "1087x1135+83+51",
+    "cutouts": [
+      [
+        121.4811,
+        42.7537
+      ],
+      [
+        209.872,
+        40.8322
+      ]
+    ]
   },
   {
     "id": "interiors-wall-torch",
@@ -8214,7 +9046,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "549x1230+337+7"
+    "crop": "549x1230+337+7",
+    "cutouts": [
+      [
+        128.7547,
+        372.2355
+      ],
+      [
+        294.7671,
+        367.0798
+      ]
+    ]
   },
   {
     "id": "interiors-arched-window",
@@ -8237,7 +9079,25 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1073x1198+91+24"
+    "crop": "1073x1198+91+24",
+    "cutouts": [
+      [
+        120.1212,
+        277.6725
+      ],
+      [
+        123.2065,
+        153.7483
+      ],
+      [
+        217.8219,
+        254.0189
+      ],
+      [
+        208.0518,
+        135.2368
+      ]
+    ]
   },
   {
     "id": "interiors-cottage-kitchen",
@@ -8259,7 +9119,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Full paintable interior canvas; covers the page with slight overscan. Reposition to adjust the crop.",
-    "interior": true
+    "interior": true,
+    "cutouts": [
+      [
+        902.0298,
+        407.5778
+      ]
+    ]
   },
   {
     "id": "interiors-cottage-attic",
@@ -8327,7 +9193,17 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1233x903+11+175"
+    "crop": "1233x903+11+175",
+    "cutouts": [
+      [
+        37.2431,
+        102.0934
+      ],
+      [
+        305.7894,
+        101.0825
+      ]
+    ]
   },
   {
     "id": "interiors-cottage-cupboard",
@@ -8376,7 +9252,7 @@
     "crop": "1098x1221+78+16",
     "cutouts": [
       [
-        170.0,
+        170,
         87.92
       ]
     ]
@@ -8614,6 +9490,18 @@
       [
         314.71,
         194.58
+      ],
+      [
+        273.2678,
+        189.2152
+      ],
+      [
+        96.2373,
+        366.885
+      ],
+      [
+        227.0859,
+        368.8092
       ]
     ]
   },
@@ -8751,7 +9639,21 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1116x1143+69+53"
+    "crop": "1116x1143+69+53",
+    "cutouts": [
+      [
+        71.5789,
+        202.4899
+      ],
+      [
+        158.6981,
+        189.3045
+      ],
+      [
+        266.0665,
+        188.3627
+      ]
+    ]
   },
   {
     "id": "interiors-bedroom-wardrobe",

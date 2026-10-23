@@ -2,6 +2,7 @@ import { Artwork } from '../../src/editor/Artwork';
 import { decodeSvgDefinition } from '../../src/editor/svgDefinition';
 import { drawVectorInk } from '../../src/editor/vectorDefinition';
 import type { ArtworkDocument } from '../../src/editor/document';
+import stickerManifest from '../../art/stickers.json';
 
 function assert(value: unknown, message: string): asserts value { if (!value) throw new Error(message); }
 const rectangle = 'M10 10H30V30H10Z';
@@ -116,5 +117,12 @@ export async function checkRegionCoverage() {
     rows.push({id,visibleInk,missingHits,lookupScale:scale,sharedBytes:vector.typedArrayBytes,minimumBeltInkMargin,exposedBoundaries,boundaryExamples});
     canvas.width=canvas.height=1;
   }
-  return{enlargedFillEdges:true,lineFill:true,isolatedInkBlocksPage:true,rows};
+  const reviewedCutouts = [];
+  for (const id of ['counting-03', 'alphabet-b-bee', 'fall-pumpkin-wagon', 'collection-expansion-child-wheelchair', 'interiors-arched-window']) {
+    const asset = (stickerManifest as { id: string; cutouts?: number[][] }[]).find(asset => asset.id === id)!;
+    const definition = decodeSvgDefinition(await (await fetch(`/src/assets/vector/${id}.svg`)).text());
+    for (const [x, y] of asset.cutouts ?? []) assert(definition.regionAt(x!, y!) === 0, `${id}: reviewed cutout ${x}, ${y} is still paintable`);
+    reviewedCutouts.push({ id, points: asset.cutouts!.length });
+  }
+  return{enlargedFillEdges:true,lineFill:true,isolatedInkBlocksPage:true,reviewedCutouts,rows};
 }

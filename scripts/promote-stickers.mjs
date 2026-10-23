@@ -2,9 +2,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { selectBatchAssets } from './sticker-batch-selection.mjs';
 const directory=process.argv[2]??'work/sticker-upgrade';
-const assets=JSON.parse(fs.readFileSync('art/stickers.json','utf8'));
 const summary=JSON.parse(fs.readFileSync(path.join(directory,'summary.json'),'utf8'));
+const assets=selectBatchAssets(JSON.parse(fs.readFileSync('art/stickers.json','utf8')),summary.assetIds);
 const audit=JSON.parse(fs.readFileSync(path.join(directory,'audit.json'),'utf8'));
 const digest=data=>crypto.createHash('sha256').update(data).digest('hex');
 const pipelineHash=digest(['build-stickers.mjs','clean-ink-components.mjs','discover-regions.mjs','svg-regions.mjs'].map(file=>fs.readFileSync(`scripts/${file}`,'utf8')).join('\n'));
@@ -14,7 +15,8 @@ const changes=[];
 for(const asset of assets){
  const report=JSON.parse(fs.readFileSync(path.join(directory,'reports',asset.id+'.json'),'utf8'));
  const data=fs.readFileSync(path.join(directory,'vector',asset.id+'.svg'));
- if(report.pipelineHash!==pipelineHash||digest(fs.readFileSync(asset.source))!==report.sourceHash||digest(data)!==report.outputHash)
+ const sourceHash=digest(fs.readFileSync(asset.source));
+ if(report.pipelineHash!==pipelineHash||sourceHash!==report.sourceHash||digest(JSON.stringify(asset)+sourceHash)!==report.inputHash||digest(data)!==report.outputHash)
   throw Error(`Stale or modified conversion: ${asset.id}`);
  const destination=`src/assets/vector/${asset.id}.svg`,previous=fs.readFileSync(destination);
  if(!previous.equals(data))changes.push({id:asset.id,destination,previous,data});
