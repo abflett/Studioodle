@@ -49,7 +49,7 @@ objects. `useLatest` exposes committed callbacks to long-lived DOM listeners;
 do not mutate callback refs during render. Modal and pointer listener cleanup must
 remain symmetric, including React development effect replay.
 
-Drawings and their small summaries use the `pictures` and `summaries` stores in IndexedDB database `studioodle-library-v1`; custom templates use `studioodle.v5.coloring.<id>`. Documents use vector-only format 5. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
+Drawings and their small summaries use the `pictures` and `summaries` stores in IndexedDB database `studioodle-library-v8`; custom templates use `studioodle.v5.coloring.<id>`. Documents use vector-only format 5. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
 
 `VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no raster paint arrays. Complex surfaces have disposable viewport display canvases under a shared 64 MiB pixel budget; export and print render vectors directly. Shared lookup arrays support only hit testing. A bounds-grid index selects candidate regions for brush clipping, shared by instances of the same definition. See [Vector Painting](VECTOR-PAINT.md).
 
@@ -108,7 +108,7 @@ The limit covers cached lookups, not live documents, Path2D objects, geometry or
 
 State subscriptions replay the latest published state, so mounting React listeners
 after the browser adapter cannot miss the initial selection/tool/focus state.
-See [the architecture review](ARCHITECTURE-REVIEW.md) for completed review results and [refinement tasks](REFINEMENT-TASKS.md) for remaining validation.
+See [refinement tasks](REFINEMENT-TASKS.md) for remaining work and validation.
 
 ## Undo history
 
@@ -135,17 +135,26 @@ Display cache planning considers every visible complex surface before drawing.
 It clips large cache windows to the viewport with pan margins, fits their combined
 resolution to the budget, and protects this working set from same-frame eviction.
 Fills repaint fitting buffers without reallocating them. Inactive caches retain
-LRU reuse only within the remaining capacity. See [the repeated scene measurements](DISPLAY-CACHE-PERFORMANCE.md).
+LRU reuse only within the remaining capacity. See [the repeated scene measurements](PERFORMANCE.md).
 
 
 Live-document memory was checked through eight editor lifecycles and a lookup-cache
 pressure probe. Definitions are weakly shared across active users, lazy region
 geometry does not retain parser documents, and restoration clones paint only once.
-See [the measured lifecycle results](LIVE-DOCUMENT-MEMORY.md). Cache budgets remain
+See [the measured lifecycle results](PERFORMANCE.md). Cache budgets remain
 separate from total application or graphics memory.
 
 Print uses inline SVG; SVG and PDF export retain vectors, while PNG offers 150/300/600 DPI.
 See [picture output](PICTURE-OUTPUT.md) for format, platform and validation details.
 
-The [source review](SOURCE-REVIEW.md) records later transaction/lifecycle hardening
-and scoped findings; [refinement tasks](REFINEMENT-TASKS.md) tracks the open work.
+Transaction/lifecycle regressions cover pending fills, rollback, disposed sessions,
+worker failures and resource cleanup. Open findings live in [refinement tasks](REFINEMENT-TASKS.md).
+
+## Standalone authoring tools
+
+The artwork reviewer lives in `tools/artwork-review/`, with its own Vite root,
+dependency cache, TypeScript project and optional web build. App dependency scanning
+starts only at `index.html`; the normal server rejects reviewer routes and the app
+build rejects reviewer modules. No reviewer UI or repair ledgers ship with the app.
+See [review workflow](ARTWORK-REVIEW.md). Offline conversion scripts read authoring
+inputs under `art/` and stage disposable output under `work/`.

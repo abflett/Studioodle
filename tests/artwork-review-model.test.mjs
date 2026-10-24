@@ -3,10 +3,12 @@ import fs from 'node:fs';
 import { before, after, test } from 'node:test';
 import { createServer } from 'vite';
 let server,model,geometry,tasks,cleanup;
+const reviewFixture = key => JSON.parse(fs.readFileSync('tests/fixtures/artwork-review/reviews.json','utf8'))[key];
+const repairLedger = key => JSON.parse(fs.readFileSync('tools/artwork-review/data/repair-history.json','utf8'))[key];
 before(async()=>{server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});model=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewModel.ts');geometry=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewGeometry.ts');tasks=await server.ssrLoadModule('/tools/artwork-review/src/artworkLineTasks.ts');cleanup=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewCleanup.ts');});
 after(async()=>{await server?.close();});
 test('extending review annotations preserves the complete existing exported review',()=>{
- const original=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-23.json','utf8'));
+ const original=reviewFixture('initial');
  const catalog=JSON.parse(fs.readFileSync('art/stickers.json','utf8'));
  assert.deepEqual(model.parseReview(JSON.stringify(original),catalog).assets,original.assets);
 });
@@ -29,7 +31,7 @@ test('dragging the curve midpoint controls the visible curve, and closure geomet
  }
 });
 test('recorded repairs refresh region references without losing new lines, notes or review status',()=>{
- const input=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-23.json','utf8'));
+ const input=reviewFixture('initial');
 
  const wizard=input.assets.find(a=>a.assetId==='fantasy-wandering-wizard');
  wizard.closures=[{id:'existing-line',a:{x:1,y:1},b:{x:2,y:2},control:null,width:1,fillSeed:null,note:'preserve',createdAt:'2026-10-23T00:00:00Z'}];
@@ -44,7 +46,7 @@ test('recorded repairs refresh region references without losing new lines, notes
 });
 
 test('rebuilt artwork starts inspection on the new revision without replaying applied lines',()=>{
- const exported=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24-line-repair.json','utf8'));
+ const exported=reviewFixture('lineV1');
  const old=exported.assets.find(a=>a.assetId==='fantasy-wandering-wizard'),task=tasks.rebuiltLineTasks.find(a=>a.assetId===old.assetId);
  const extra={...old.closures[0],id:'unexported-new-line'};
  const base={...old,closures:[...old.closures,extra]},before=structuredClone(base);
@@ -54,12 +56,12 @@ test('rebuilt artwork starts inspection on the new revision without replaying ap
  assert.deepEqual(next.closures,[extra],'Only actually applied line IDs leave the proposal overlay');
  assert.equal(next.notes,base.notes);assert.equal(next.markers[0].x,base.markers[0].x);assert.equal(next.markers[0].regionId,123);
  assert.deepEqual(base,before);assert.equal(tasks.refreshKnownRepair(next,revision),next,'Reloading must not reset completed inspection');
- const historical=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-23.json','utf8')).assets.find(a=>a.assetId===old.assetId);
+ const historical=reviewFixture('initial').assets.find(a=>a.assetId===old.assetId);
  assert.equal(tasks.refreshKnownRepair(historical,revision).sha256,task.afterSha256,'The earlier cutout repair can be reconciled through the line repair');
 });
 
 test('review cleanup clears one category or all annotations and restores only removed fields',()=>{
- const fixture=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24-line-repair.json','utf8'));
+ const fixture=reviewFixture('lineV1');
  const focused=fixture.assets.find(a=>a.closures?.length&&a.markers.length);fixture.assets=[focused,...fixture.assets.filter(a=>a!==focused)];
  fixture.assets[0].notes='artwork note';fixture.assets[0].reviewed=true;fixture.assets[0].markers[0].note='marker note';fixture.assets[0].closures[0].note='line note';
  const before=structuredClone(fixture);
@@ -78,9 +80,9 @@ test('review cleanup clears one category or all annotations and restores only re
 });
 
 test('successive line passes preserve the full inspection set and reconcile both submitted revisions',()=>{
- const first=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24-line-repair.json','utf8'));
- const second=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v2.json','utf8'));
- const nextLedger=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v2.progress.json','utf8'));
+ const first=reviewFixture('lineV1');
+ const second=reviewFixture('lineV2');
+ const nextLedger=repairLedger('lineV2');
 
  for(const task of nextLedger.assets){
   const recent=second.assets.find(a=>a.assetId===task.assetId),earlier=first.assets.find(a=>a.assetId===task.assetId);
@@ -99,8 +101,8 @@ test('successive line passes preserve the full inspection set and reconcile both
 });
 
 test('line-then-marker pass retires only the applied instructions and keeps future annotations',()=>{
- const submitted=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v3.json','utf8'));
- const ledger=JSON.parse(fs.readFileSync('docs/studioodle-marker-repairs-2026-10-24v3.progress.json','utf8'));
+ const submitted=reviewFixture('lineV3');
+ const ledger=repairLedger('markerV3');
  assert.equal(ledger.assets.reduce((n,a)=>n+a.appliedMarkerIds.length,0),60);
 
  for(const task of ledger.assets){
@@ -120,25 +122,25 @@ test('line-then-marker pass retires only the applied instructions and keeps futu
 });
 
 test('histories contain the latest and preceding changed sets, without accumulating old artwork',()=>{
- const read=name=>JSON.parse(fs.readFileSync(`docs/studioodle-${name}-2026-10-24v5.progress.json`,'utf8'));
+ const read=name=>repairLedger(name==='line-repairs'?'lineV5':'markerV5');
  const line=read('line-repairs'),markers=read('marker-repairs');
  const changed=entries=>[...new Set(entries.filter(a=>a.beforeSha256!==a.afterSha256).map(a=>a.assetId))].sort();
  assert.equal(tasks.repairHistory.length,2);
  assert.deepEqual([...tasks.repairHistory[0].assetIds].sort(),changed([...line.assets,...markers.assets]));
  assert.equal(tasks.repairHistory[0].assetIds.length,17);assert.equal(tasks.repairHistory[0].label,'History 1');
- const oldLines=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v4.progress.json','utf8'));
- const oldMarkers=JSON.parse(fs.readFileSync('docs/studioodle-marker-repairs-2026-10-24v4.progress.json','utf8'));
+ const oldLines=repairLedger('lineV4');
+ const oldMarkers=repairLedger('markerV4');
  assert.deepEqual([...tasks.repairHistory[1].assetIds].sort(),changed([...oldLines.assets,...oldMarkers.assets]));
  assert.equal(tasks.repairHistory[1].assetIds.length,7);assert.equal(tasks.repairHistory[1].label,'History 2');
  assert(!tasks.repairHistory.some(h=>h.assetIds.includes('fantasy-wandering-wizard')),'Older unaffected assets do not stay in either dropdown history');
- const input=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-24v5.json','utf8'));
+ const input=reviewFixture('reviewV5');
  const latest=new Map([...line.assets,...markers.assets].map(a=>[a.assetId,a]));
  for(const id of tasks.repairHistory[0].assetIds){
   const base=input.assets.find(a=>a.assetId===id),task=latest.get(id),revision={sha256:task.afterSha256,viewBox:base.viewBox,regionAt:()=>100};
   const next=tasks.refreshKnownRepair(base,revision);
   assert.equal(next.sha256,task.afterSha256);assert.equal(next.markers.length,0);assert.equal(next.closures?.length??0,0);
  }
- const early=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v4.json','utf8')).assets.find(a=>a.assetId==='nursery-rhymes-shepherd-child');
+ const early=reviewFixture('lineV4').assets.find(a=>a.assetId==='nursery-rhymes-shepherd-child');
  const last=latest.get(early.assetId);
  assert.equal(tasks.refreshKnownRepair(early,{sha256:last.afterSha256,viewBox:early.viewBox,regionAt:()=>100}).sha256,last.afterSha256,'Revision reconciliation follows lines and markers in chronological pass order');
 });

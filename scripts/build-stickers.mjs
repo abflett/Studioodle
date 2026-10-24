@@ -19,7 +19,7 @@ const noCatalog=process.argv.includes('--no-catalog');
 if(reportFile&&!process.argv.slice(2).some(arg=>!arg.startsWith('--')))throw Error('--report requires one asset ID');
 fs.mkdirSync(out,{recursive:true}); fs.mkdirSync(work,{recursive:true});
 const run=(...args)=>execFileSync('magick',args,{maxBuffer:128e6});
-const trace=(input, output, alpha=1.2, tolerance=.5, speckle=2)=>execFileSync(process.env.POTRACE_PATH??'work/tools/potrace/potrace-1.16.win64/potrace.exe',[input,'-s','-a',`${alpha}`,'-O',`${tolerance}`,'-t',`${speckle}`,'-o',output]);
+const trace=(input, output, alpha=1.2, tolerance=.5, speckle=2)=>execFileSync(process.env.POTRACE_PATH??'tools/bin/potrace/potrace-1.16.win64/potrace.exe',[input,'-s','-a',`${alpha}`,'-O',`${tolerance}`,'-t',`${speckle}`,'-o',output]);
 const attrs=tag=>Object.fromEntries([...tag.matchAll(/([\w-]+)="([^"]*)"/g)].map(m=>[m[1],m[2]]));
 const paths=svg=>[...svg.matchAll(/<path\s+d="([^"]+)"/g)].map(m=>m[1]);
 function svgCommands(svg) {

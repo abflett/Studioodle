@@ -22,6 +22,9 @@ see [desktop setup](docs/DESKTOP.md).
 
 | Command | Purpose |
 | --- | --- |
+| `npm run review` | Run the standalone artwork reviewer (same origin preserves annotations) |
+| `npm run review:typecheck` / `npm run test:review` | Check the isolated reviewer |
+| `npm run review:build` | Build only the reviewer into `work/artwork-review-dist/` |
 | `npm run check` | Unit tests, TypeScript, ESLint and production web build |
 | `npm run test:browser` | Real browser/worker painting, storage and vector-output regressions |
 | `npm run test:memory` | Eight editor lifecycles and a definition-cache pressure probe |
@@ -52,7 +55,10 @@ remain available as `desktop:dev` and `desktop:build`; they are not part of chec
 | `art/stickers.json` | Authoring manifest: source paths, crops, dimensions and picker metadata |
 | `scripts/` | Current authoring and verification tools |
 | `tests/` | Unit tests, fixtures and browser regressions |
-| `docs/` | Current architecture and workflows |
+| `docs/` | Current architecture, workflows, context and one refinement backlog |
+| `tools/artwork-review/` | Standalone reviewer source and compact revision data |
+| `tools/bin/` | Ignored local conversion executables |
+| `art/reviews/` | Active user exports; completed inputs retire to Git history |
 | `src-tauri/` | Native desktop host and platform configuration |
 | `work/` | Ignored conversion intermediates, catalogs, previews and test output |
 
@@ -62,16 +68,26 @@ retired experiments; the current tree contains the supported implementation.
 
 ## Documentation
 
-- [Architecture](docs/ARCHITECTURE.md) and [vector painting](docs/VECTOR-PAINT.md)
-- [Artwork sources](art/README.md), [sticker pipeline](docs/STICKER-PIPELINE.md),
-  [scene authoring](docs/SCENE-AUTHORING.md) and [review notes](art/REVIEW.md)
-- [Picture output](docs/PICTURE-OUTPUT.md) and [remaining validation](docs/REFINEMENT-TASKS.md)
-- [Coloring books and workshop](docs/COLORING-BOOKS.md)
-- [Startup](docs/STARTUP.md), [paper setup](docs/PAPER-SETUP.md) and [sticker categories](docs/STICKER-CATEGORIES.md)
-- [Input](docs/INPUT.md), [cursors](docs/CURSORS.md), [ribbons](docs/RIBBONS.md) and [desktop](docs/DESKTOP.md)
+Start a new coding thread with [the working agreement](AGENTS.md) and
+[current context](docs/CONTEXT.md). [Refinement tasks](docs/REFINEMENT-TASKS.md)
+is the single implementation backlog; completed reviews are in Git history.
+
+| Topic | Guide |
+| --- | --- |
+| System boundaries, storage, lifecycle | [Architecture](docs/ARCHITECTURE.md) |
+| Painting, geometry, workers | [Vector paint](docs/VECTOR-PAINT.md), [undo](docs/UNDO-HISTORY.md) |
+| Measurements and profile commands | [Performance](docs/PERFORMANCE.md), [picture library](docs/PICTURE-LIBRARY.md) |
+| Navigation, paper, gestures, ribbons, categories | [Interface](docs/INTERFACE.md), [cursors](docs/CURSORS.md) |
+| Export/print and desktop host | [Picture output](docs/PICTURE-OUTPUT.md), [desktop](docs/DESKTOP.md) |
+| Coloring books and composition | [Coloring books](docs/COLORING-BOOKS.md), [scene authoring](docs/SCENE-AUTHORING.md) |
+| Original sources and conversion | [Artwork](art/README.md), [sticker pipeline](docs/STICKER-PIPELINE.md) |
+| Inspector, accepted repairs, effort | [Artwork reviewer](docs/ARTWORK-REVIEW.md), [repair summary](docs/ARTWORK-REPAIR-LOG.md) |
+
+`work/`, `dist/` and local `release/` packages are generated, ignored and disposable.
+Keep required portable executables in `tools/bin/` or configure `POTRACE_PATH`.
+Keep only current documentation and actionable inputs; recover completed diagnostics
+and verbose reports from Git instead of adding an archive directory.
 
 ## License
 
 [Apache License 2.0](LICENSE).
-
-See [the architecture review](docs/ARCHITECTURE-REVIEW.md) for completed dependency and optimization decisions; remaining device/platform checks are tracked separately.

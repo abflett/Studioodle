@@ -7,7 +7,7 @@ export async function checkArtworkQueue({cdp,evaluate}){
  const screen=point=>evaluate(`(()=>{const r=document.querySelector('.review-sheet').getBoundingClientRect(),v=document.querySelector('.review-marker-layer').viewBox.baseVal;return{x:r.x+${point.x}/v.width*r.width,y:r.y+${point.y}/v.height*r.height}})()`);
  const click=async(point,button='right')=>{const p=await screen(point);for(const type of ['mousePressed','mouseReleased'])await cdp('Input.dispatchMouseEvent',{type,...p,button,clickCount:1});};
  // Use only this harness's isolated browser storage; seed the user's historical review.
- await evaluate(`(async()=>{const original=await(await fetch(globalThis.reviewRepo+'docs/studioodle-artwork-review-2026-10-23.json')).json();const lines=await(await fetch(globalThis.reviewRepo+'docs/studioodle-line-repairs-2026-10-24-line-repair.json')).json();original.assets=original.assets.map(old=>lines.assets.find(a=>a.assetId===old.assetId)??old);globalThis.queueOriginal=original;localStorage.setItem('studioodle-artwork-review-v1',JSON.stringify(original));globalThis.queueReload=true;})()`);
+ await evaluate(`(async()=>{const fixtures=await(await fetch(globalThis.reviewRepo+'tests/fixtures/artwork-review/reviews.json')).json();const original=fixtures.initial,lines=fixtures.lineV1;original.assets=original.assets.map(old=>lines.assets.find(a=>a.assetId===old.assetId)??old);globalThis.queueOriginal=original;localStorage.setItem('studioodle-artwork-review-v1',JSON.stringify(original));globalThis.queueReload=true;})()`);
  await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=counting-03&filter=all'});
  await wait('!globalThis.queueReload&&document.querySelector(".review-sidebar code")?.textContent==="counting-03"');await ready();
  await evaluate(`(()=>{const filter=document.querySelector('.review-sidebar select');Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(filter,'history-1');filter.dispatchEvent(new Event('change',{bubbles:true}));})()`);
@@ -30,7 +30,7 @@ export async function checkArtworkQueue({cdp,evaluate}){
  await wait('document.querySelector(".review-sidebar code").textContent==="fall-badger"&&!document.querySelector(".review-tools").disabled');await ready();
  assert.equal(await evaluate('document.querySelectorAll(".review-proposed-line").length'),0,'Applied proposals must not overlay merged ink');
  let wizard=await record('fall-badger');assert(wizard.markers.length>0,'Unapplied historical markers must remain available');
- assert.equal(wizard.notes,JSON.parse(await fs.readFile('docs/studioodle-line-repairs-2026-10-24-line-repair.json','utf8')).assets.find(a=>a.assetId==='fall-badger').notes);
+ assert.equal(wizard.notes,JSON.parse(await fs.readFile('tests/fixtures/artwork-review/reviews.json','utf8')).lineV1.assets.find(a=>a.assetId==='fall-badger').notes);
  const markers=wizard.markers.length;
  // Right-click must work from the default Note tool, without creating a note marker.
  await click({x:170,y:120});await click({x:190,y:120});

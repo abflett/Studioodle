@@ -16,3 +16,6 @@ work/
 src-tauri/target/
 src-tauri/gen/
 release/
+
+# Local third-party authoring executables (not generated scratch output)
+tools/bin/

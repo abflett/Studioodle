@@ -23,7 +23,7 @@ export function regionSvg({ width, height, bounds, regionCount, scale, lookupSca
       if (inside) bitmap[y * stride + (x >> 3)] |= 1 << (7 - (x & 7));
     }
     const pbm = Buffer.concat([Buffer.from(`P4\n${sw} ${sh}\n`), bitmap]);
-    const svg = execFileSync(process.env.POTRACE_PATH ?? 'work/tools/potrace/potrace-1.16.win64/potrace.exe',
+    const svg = execFileSync(process.env.POTRACE_PATH ?? 'tools/bin/potrace/potrace-1.16.win64/potrace.exe',
       ['-', '-s', '-a', '1', '-O', String(.015 * scale), '-t', '0', '-o', '-'], { input: pbm, maxBuffer: 32e6 }).toString();
     const paths = [...svg.matchAll(/<path\s+d="([^"]+)"/g)].map(match => match[1]);
     if (!paths.length) throw new Error(`Empty traced region ${id}`);

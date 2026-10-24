@@ -1,0 +1,3475 @@
+{
+  "initial": {
+    "assets": [
+      {
+        "assetId": "counting-03",
+        "beforeSha256": "0613f5d813b82844affbd05f61f973af5a58acf142e0f484201c718420c7c08d",
+        "afterSha256": "84a2190559504a331f1928b41fbf693010c028ccbc59fa144ebd4a969a686397",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "fb665ca5-e63d-42b5-aaa0-11f5e18a585a",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "counting-04",
+        "beforeSha256": "3cf9f82a07a200810a67e95c232b8aee65f81788d09eb9265f1905fd2cb02d29",
+        "afterSha256": "39ff50f3a5334e32f3fc6c78f73dbf2fb5a9d711e733baefc109db2bc65a53d5",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "81cec765-fb9e-4fdc-bfd6-c4645a2e9583",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "40f53b6b-d624-4654-9e88-113ffaf6e1f5",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "counting-07",
+        "beforeSha256": "ebfcc2a35844005ecbd73ad38558a6803f6e368f73d1abfe86ee01e9bfffeec2",
+        "afterSha256": "71751b4aa9e61675b766303c2f125b3bd557bb61a5d0499f1b2821935926706f",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "79c66028-155a-4b67-96ed-3d428c6b1e8b",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "counting-09",
+        "beforeSha256": "dc3b83188dd7381d7db50ae99dd24cef07faaeb6fe2c82d3f469feb77cdc798a",
+        "afterSha256": "66f9a6c9f853b230ddc0d618ff819556bc7a80bb3426c9c7f2771578c2540006",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "7b81cc43-df05-45dd-bf61-b5a778f71d80",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "animal-zebra",
+        "beforeSha256": "1867c922e68451f21e86358b0fea89b371b96179be19aafdfadb31b785cc27c7",
+        "afterSha256": "4c073dee9a1f8ad1ae4ea0c8b5fb8e71dd0db88987b47847f27403893c578b5f",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "f3a0edc2-68c7-43bc-a88f-73b44f46650d",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "space-spaceship",
+        "beforeSha256": "3d178318081cb9d942714cc3facaeec150eeef52bc50ebc798c2bc2fc1a9c51a",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "e9a0131c-f3e9-4561-bc6d-670f620858e8",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "af762ca2-3dad-436a-9459-50a3a9da6c4f",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-b-bee",
+        "beforeSha256": "aa8638b8ec33f77f9c1f51d5d785ed23247c374f10e86bcc6c6fd8cf86ff77bf",
+        "afterSha256": "c08d455750359db15cfa8952375d9c443edacb79e94d008143aafcaf9b0828c4",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "962c5449-d7d5-4592-ab12-3dc09947c69e",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "92362270-7da3-4945-8dd7-59ed530cb2b5",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-c-cat",
+        "beforeSha256": "80d0fbec8e0534dd40df1ebe7465a62002960f8506811bfda56aa2d499d9fd39",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "4cd0e398-ec41-4af9-9040-918a1e45d104",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "24a9c1ba-eeac-4279-b131-2cda71b55624",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-d-dragon",
+        "beforeSha256": "d4c1c751b0081e70f98822d75745149c62a2a6ce2a4d6d046201377e2a64ce60",
+        "afterSha256": "1850b0945649144e775e05620eb05493ac83c99e053809997f4aba00024ff423",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "8c1138de-bd1f-4e8e-80b9-739ca1e35010",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-f-firefighter",
+        "beforeSha256": "ab27645cf6da4d8dc62dfb706045af5b9bc044681c3c3ad36fc381c8b5084c83",
+        "afterSha256": "7a0bea68115333211da72bf4e6f22a5361512b8534253ba89e639c0e07f0b356",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "dbd45e74-090b-421e-bb7b-6a606bfbb541",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-l-lion",
+        "beforeSha256": "daf22e7df1270dba2fdb02da9b747d76a112e19b3f3ba0da1feeb3f485d1d73c",
+        "afterSha256": "bf3dc62249cb89f0ecc2a678916d4607ac8d5922f432cafc686ceed5fdf36ca4",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "c4ae24f0-81bb-45ce-9e0f-4552e42f6935",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "7fbb73bc-ff29-47a7-9d59-559abfe4b6b1",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "29a9cc79-f276-4331-be0a-3600488f92c1",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-m-monkey",
+        "beforeSha256": "ecb927a45963a8180c3e24cc48cd5abc896f07208d255860d4a8ae721c1d1d80",
+        "afterSha256": "877e3de14236be910345943e88ceab7c3ad89836700cfa362a41eccf8fb449d3",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "ebf01fc2-44b9-41a6-bb16-aa73e748b3eb",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-o-octopus",
+        "beforeSha256": "e19761b778da06f36373f3f3c6a267c1b9b49a55c7a1f9a7f017dbe785f9b75d",
+        "afterSha256": "61ab50572eed29e1cd711cf38742cdc34b0cce3cad738053dab135e6cfc31d8f",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "54332cbd-316f-4bdb-a6f5-eeed03bb1c9f",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-p-pirate",
+        "beforeSha256": "60d5bd7df39be16222cf66bfd5b4a60e64053694ef409da7c5ee6ca0024e8f7a",
+        "afterSha256": "70fac89b2f7ea366385daa8cddb66cc51000e2b0bece032acbea57fddfcf4501",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "db0a40d1-63e2-4325-b173-cbccc61bb9b5",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-q-queen",
+        "beforeSha256": "014edc911dcd1e58f77a1ef1487f286da91742dab1381be0dcb7b979431fed2f",
+        "afterSha256": "59f2fa02242c0cda0344f66c8aa07691b95419f4ed8e371674355b7e15c09531",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "12b7fc2a-f23b-4e09-b249-cffd8f21ab2a",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-r-robot",
+        "beforeSha256": "37012518e4d7bf7a911b5674a28bf4f67b4e9cc4cefde94e4842c29d9e80c70c",
+        "afterSha256": "973dcfea32e408a42165d40a580a7311ea48c9af61937cca29c769cd46ad52f6",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "44aada7f-9554-4fd2-9b2f-e99d322fc972",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "alphabet-u-unicorn",
+        "beforeSha256": "34fbb437a512e755713b0a5421571e7b4c92ba48c848a2fced9378f0342d72c8",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "2a5f83d7-f39f-4b7f-95c7-ca973abf07e4",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-baby-cradle",
+        "beforeSha256": "32e113ea53d404d413415f853ae34ee4173eb93c857712a64e1f3e6f8c2600ba",
+        "afterSha256": "7ca556b3754a02752b9ed9b74df6d8b5a7a22b7c61fd366b8ac86957e7e26174",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "001e3a68-ff9d-4c10-8dde-b752f7e2d685",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "3d866d2c-343c-4a3a-9b18-cc675067eead",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "9012696a-620c-4f2b-b92c-78a51cb9f793",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "a5777da3-69cf-4979-914b-6c315310783e",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "83656ff4-1965-45d1-b7a1-c7f094ae0c42",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "24e7a347-0461-4a23-8c65-8efbf30462bc",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "b480bbb9-26c5-4e4b-bb14-94058b38c899",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "1ac8280c-47b6-45d6-bbe3-574e7ed35e8c",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-fiddle-cat",
+        "beforeSha256": "27d50e8d608ae7f88a156f1133922b518bfabc8d3021ccc2eefebe8205130439",
+        "afterSha256": "b77d9bdb270b4f63091e9fd594c60c9f932634512d42e8dcdac7eccca5faaf4d",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "61b1b817-3cd1-48b2-a42a-67d8112e8484",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-friendly-spider",
+        "beforeSha256": "7c39898e408e8dbaca18ec362fb39043edb0d3c5dc1da4d49a41671e1ac3a96f",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "5bf48929-8638-4ce8-b057-9ada528e7534",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-shepherd-child",
+        "beforeSha256": "c597da0b7d2e591688a31b7b4d7cdb675062c12efb9be3232404b5540566a863",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "4fb9afb0-28d2-4da8-8fa0-a1e597e47600",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "eff95d3a-fa5e-464d-b520-d5015fca66ba",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-jack-pail",
+        "beforeSha256": "1f6247f412e59ba719aa26d68418fd1b2a0538999e4273c49bfdda82622d70b4",
+        "afterSha256": "1bee97ffe9e709a7780c5f58ecc49ef2b509cb2f4a2afed5af605a69f20b8bb7",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "995c04e0-32ba-4e76-9c89-13de7dff360f",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-jill",
+        "beforeSha256": "b7ce9140dfa6faed12ddc829fa1c41726d45db37281903f3e4cbb74bc7b290ad",
+        "afterSha256": "133d66274ca371f47259425993ab7e2e28e1f5f3f001531fa1cbfcb0601ab6cc",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "cba88ea0-3f05-448a-bcfa-c29325a94cb5",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-stone-well",
+        "beforeSha256": "707248f557dc8c887df16e5c0e99fc435ee0a72622df9a7293c21d652d6f1c6a",
+        "afterSha256": "38c053116a0b329738b75a9d253e193aaaaf7649a25bc1759a03327d1de8755c",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "5cf83249-2ebd-4006-a00c-1e8194115629",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "7b77dce1-94ac-4ee6-9e00-8b6627f0cfb4",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "b13d0e5a-b825-4dbe-8017-6bf454088251",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "e663c029-8aa2-4224-a68a-595dc941a9d2",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-rowboat",
+        "beforeSha256": "69cdbfeac2c8bb89c2ec42eecd9247a5022638e7bc0cac42664910f2077d8baa",
+        "afterSha256": "d78b4ec414589e390b277b04d1853553813a0e74d9112f7649f54970169b0925",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "1e9c6f59-0a70-40bc-abce-3cf8071171a2",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-friendly-bus",
+        "beforeSha256": "feaa18d13f99308bad966f3648d9cac0926fe7b5992faa167401c532db8bad76",
+        "afterSha256": "48af95b47f5541e7d0062d7107ab93e7fb18581114501a4acd48477f9c4d699c",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "5f2b2aac-4b31-4684-a162-885a455ab9db",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "33306a82-d651-43a8-81f1-895035a97b4e",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-farmer",
+        "beforeSha256": "d10c696e2cd77e45be631311762dd786e80eb74ee7a501cf20e75ba89e4809ac",
+        "afterSha256": "6799f021ff1670d7887393d5c059bbdc3f10df86353a066cedb1849889e9ac8d",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "89743d02-f25e-40bd-80bc-2723190cd073",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-barn",
+        "beforeSha256": "250dd2cce1ed51e03d3586d0f87839b68a3dbbd3436cc73376c87e2e9d7ed4b3",
+        "afterSha256": "d056b368f03f6cb9740a13d5f4ada124bd548f1c12a321c5b9bba5e101056fb1",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "9e13580c-88d1-45ff-9dc5-db104c99a580",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-royal-horse",
+        "beforeSha256": "940d23ae785e403be246d63a71ddbb02221499dd1e796edf955c5e0a3462dd88",
+        "afterSha256": "251834e5f4154496c52dd2b3e954e224e7bea66ec1f0f3c26bcb48f5142feece",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "030bd6e5-6b5e-401d-9012-f547f27a76af",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "dee78e93-9c35-4bdb-b31e-7d87e92a7591",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-cradle-tree",
+        "beforeSha256": "049a8145dbff77632119338d85c39cfd130e582a0d778a129b733eba65ebb5e9",
+        "notes": "Many broken lines or at least one thats preventing proper regions. point this out after the fix for re-inspection.",
+        "operations": []
+      },
+      {
+        "assetId": "nursery-rhymes-baa-baa-sheep",
+        "beforeSha256": "aa82b60021eec05e79bc5c9fa2def5f9c0907fe317be1fc3a1fd8683f28afb1c",
+        "afterSha256": "f5b15f7903f207830ecaeac823d962c19bbbaa206274154edce455ed5ddd5eaa",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "916e11ed-49b8-4ad4-bd8d-951a16c9218f",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "f5d70ca1-0d7e-46a2-81b4-5ec0c9c2e397",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "d82b6557-8b14-4dfc-8117-c8636d6ffe2b",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-schoolhouse",
+        "beforeSha256": "111d897ecec68ffc5125a3babaf65bb4215a8b4b9bbae4e65c711c1dd77dc26c",
+        "afterSha256": "9b153f2ef06ea15f0be2f6d3bc1f8b93d39717f200a1df8b652604070de84d18",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "b57cea03-c7fe-4d56-baf7-ce615247dad3",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-miss-muffet",
+        "beforeSha256": "7a57b8bc256fbc3f2b46b36de709ee39347b114f3cdda91c58e256e20e04afb1",
+        "afterSha256": "32964ea81f354074910907f27cf9633b61ae673edc6a649652e12f16a5009bf0",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "3d7d7a3e-89f5-442f-9b4b-35b7ef96c4de",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "0a73f42a-54f3-4924-8944-98abd5ce5865",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-little-teapot",
+        "beforeSha256": "be882587e4514647db16d31c7922fdc57b0ae3b65312930847662a245e81cbc6",
+        "afterSha256": "5338f62e55314aa4ab610edff53018991189a51a4aa7e233f67094247254ed4a",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "8b0b4cc1-f79c-44bc-809e-20c7a41357a3",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-baker",
+        "beforeSha256": "a95d27df85934fafb1c405e6f164a163ea373ce2feba77d560f0c275d9fd39ea",
+        "afterSha256": "e33b022e9d8821c3277b4d8d191c86b6f51a8519df1c4aed00cb4c5206611312",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "22482470-cac7-4fa1-8bd5-d7b02965fd22",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-candlestick",
+        "beforeSha256": "ddd178cd57251d848828a741be6297a57e97b8fe711998191cb2bd83b3960e1d",
+        "afterSha256": "ad98bc7c813877e9aa86e05001319e5ae0b24434ec273acd7995004ffc036d58",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "6c85940e-7917-4b33-ae4a-830666d6b798",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-mother-goose",
+        "beforeSha256": "1896bc2821511a736fc04d02bb10fd30ea1469019d5a36302524578c0bc59ac3",
+        "afterSha256": "a9ce9fb3bd6922ca1b2cd6445e92ee855f2d1c57735d773576b9bd597ac137cb",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "1e831723-453e-4d2b-b382-9b791a9fd178",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "50bbf33d-c54d-455f-bc51-6b0d911e071d",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "f675452f-5c4b-4e9c-b885-97de2a27281f",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "e79344bf-d8d5-4c61-b714-04461f7bb7cf",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-storybook-kettle",
+        "beforeSha256": "eba9e2860d8c14d30cd6764803d7c9a6c715d28c71c74a55956bbcc003d49255",
+        "afterSha256": "10be4c4a379b480f6444029b89f6ef32fcbad32462b500e0155e1f0ba4d4421f",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "5ae06281-410f-440c-8f76-8a69927ca22d",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-jack-be-nimble",
+        "beforeSha256": "cad4f690e2239c8f0393b2c9ba7694fbe63e3b24918fe9cf998d86d2061f90c4",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "54a1270b-bb89-4e6e-b3fa-09360db3821a",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "a1a4a430-0d84-4cbe-9b8c-33bd6bb9257b",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-storybook-fiddler",
+        "beforeSha256": "cf836c080faa8cd3965943fb8f044b73b76706bf1aea714edf1271d7b0932e4d",
+        "afterSha256": "ab1fa3a069911307e6b5b9f6ef2aa3e5a722af86b2fc465eab55fb1348b19a03",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "eb402971-019d-405f-8c68-d129a2989db2",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "5510e775-7aed-40ff-aefc-d9c2a292e210",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-singing-blackbird",
+        "beforeSha256": "19db9c5621661715bc7f3228bae22f95adaaef6e4a949f2dd2b7f54d636a7dd2",
+        "afterSha256": "4f527e5967b4538a5ff909f81fa275ab5000c409e68f9969f403b0231ba16a23",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "8e599ce1-bd70-4c29-affd-f4a90b6a5802",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-porridge-pot",
+        "beforeSha256": "91f11b6176f4806462de52a6e23350244c416f286c0af6dcf6c807079c1eaa3e",
+        "afterSha256": "da9c8f70f8d593ffd718eff77633794ce35d00afa6846ed884142ec8eb2c2166",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "69694d9f-7857-4c9c-8646-a8bcdc431e0f",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "e992d39b-e5cc-4fff-b3e0-d628a4918139",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-garden-bells",
+        "beforeSha256": "9dbd6df4538cd7c345c1227b4d38e4c439048e50029088c2cba32de697de133f",
+        "afterSha256": "bdacc95f95d813a760ce94ea8a689fb555c06c152e9bb204486cb096ea84eb46",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "500bce4c-8eb9-4eac-b93b-4b98245055e3",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "eb67baee-c4e2-4b48-a87b-8d379a9f6c51",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-garden-child",
+        "beforeSha256": "27fe93852c05fcffaf44f87325b6cc097e938cc8a9a01df29e0e6e4d47bbdb4f",
+        "afterSha256": "b13b94c204081148920e696477b9cb9a9cf19a6a0994d0512d6e585ff2eea624",
+        "notes": "needs line so we can fill the shoelace",
+        "operations": [
+          {
+            "markerId": "2fe13861-8ee0-41cd-b878-61de1bd773dd",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "ff292034-68e4-4b05-a020-41342a95f3a1",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-pumpkin",
+        "beforeSha256": "3328e5e10156744089af0ac8f89fe22b20716a7e9444e12a7361a9da02d00820",
+        "afterSha256": "5ac903554a07eb3fc9199c4ec4ce4b3411cee32e6f36c1425bcbac1cfd49200a",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "345ca23d-57d6-4568-a474-5fd7ba51999b",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "165d82c8-508f-4257-8216-18fd0f835c66",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-scarecrow",
+        "beforeSha256": "9394775acb1bbb09796e93e6d10ea54bdefb44853af5204722d1699844aa6b63",
+        "notes": "close line so we can fill the straw strand",
+        "operations": [
+          {
+            "markerId": "7c77b79f-24a5-49e2-b7a2-d2bb193a55dd",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-autumn-tree",
+        "beforeSha256": "e3c072a7cd3d982dcb95df411fd8c495e371b301bf550a3cb5049d9a723954c0",
+        "notes": "Needs overall line fixing so leaves and tree are closed and have proper regions.",
+        "operations": [
+          {
+            "markerId": "d61b43a7-4d2b-44f6-9ed8-b93bbcced2d2",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-squirrel-acorn",
+        "beforeSha256": "7b5464577f6266980042ed0c8a594752498f5210b5a895cbfb89d4ce844f32c4",
+        "afterSha256": "e37ebeb9a5f208f9edb7a1f32933352dca959c6eae4031f81f50d9483f5db386",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "24a80833-af99-4a32-9e98-bd7bb0ae381c",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-apple-basket",
+        "beforeSha256": "e7d24fe0f446d786c71a9b613a92e732ecb291ca6979586dcc852367174d1829",
+        "afterSha256": "a7e3c220e54972f95510c535cdf848248d80346aa0f31ee28cab9dbafc43b6ca",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "97c08786-9487-421e-a94f-440447aeb1fd",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-wheelbarrow-leaves",
+        "beforeSha256": "a1ab580499b85e30742bdf327f391d51d2a1317e9f1184a60987b7598da1fc0a",
+        "afterSha256": "ada2511cb17c3c334196de85af01dbecc89a84620154e48005071abd2ddefcac",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "42d0d826-ccf4-4537-b7ed-0d984141ed70",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "3d9019b5-2c75-49e7-b737-0d651580d8e1",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-harvest-basket",
+        "beforeSha256": "63b536b2f6fe1125fef027c5be41e12ad2adb00901ed935ca2d317583898c7a1",
+        "afterSha256": "258890bed3645d2ea94c074d0031ac928896970b0564eff7408653f3e5503694",
+        "notes": "close line and fill leaf",
+        "operations": [
+          {
+            "markerId": "02334c0f-3833-4574-bd30-c8e4cca61941",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "0b8e24ee-f2e0-47f3-8a66-6ebc02bbfeca",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-rake",
+        "beforeSha256": "3a6d2dfff6f36af699c7175b6f5c68e9b289a0df875e086fa0f656fc01f716a4",
+        "afterSha256": "a2834ffed410875c17b0258cf945d22ab6bcc6a7dc3bc9016a624a6f115fd860",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "a87b4e51-8cc4-4691-842e-1d5453091942",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-hay-bale",
+        "beforeSha256": "9fad4d6fab7796334831f7ce370d4157869b84b32f623ad14d39d3b325782a65",
+        "notes": "fix open lines and fill side of hay cube.",
+        "operations": [
+          {
+            "markerId": "afd7348d-537c-4068-ac2b-3da76d8e9654",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-wheat-sheaf",
+        "beforeSha256": "34e31c305b2d1e17b4d3e8baf429be08313543fd926ca709790b162ee43b19b6",
+        "afterSha256": "2de5770e0875e545882d1193fdf28db35210dfae1864a6ceb1afb31af0db0d36",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "e4a20aa2-34a6-43ef-b2a5-105f5a6b51da",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "735705f9-7855-4042-86fe-002ff7618180",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "6dc85a45-ac50-4ef2-af97-4a16d158a3a5",
+            "kind": "remove-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "f80f6ec0-fa38-46cc-814a-8fec6059e6bd",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "dd7104a7-eeec-414e-9cae-597649a65cfa",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "a4dc9771-946c-42e7-834a-6e592b7864de",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "71fae2f0-1159-4daf-b512-fe5404f14913",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "3890826b-c11e-4c15-aca5-27bdccb22cf9",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "5d9e90cd-d7bf-4905-a5cb-2a944b3329f9",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-pumpkin-wagon",
+        "beforeSha256": "a6b83a6b0531011a0400e57feba8596f0fa527d913b7a718deafe26b16d9818c",
+        "afterSha256": "8d0e15e7f521c1d3ee22a24d14cd70e5381a26d6aa8891c2b903640547c60d5f",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "3cd05c2d-dce3-45c2-8f61-448f1fbb9159",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "44fe20bf-4193-4911-a60d-d0044bd1eb4e",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "b37ee1ca-5f83-4829-82d1-641d1c035de9",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "287ff81a-9191-452a-bced-187875b4e70a",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-mushroom-cluster",
+        "beforeSha256": "53162ec7faf92659234487d5f9527e4e81d3c3f1709f7706ca4f95bdafca8909",
+        "afterSha256": "433dcfb43971a6a95329c2534885e5f71b899c93be74f3203d1e9682aa676ade",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "7c080aaa-05ae-46b3-b45e-b5c50b2a460c",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "f098e08c-27d9-4132-8ea6-0ac2730343b1",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-autumn-scarf",
+        "beforeSha256": "f63d4499030db8d37b40333e7a3c217d78aa13c1991bb62c8abe07bfcf639e74",
+        "afterSha256": "88476eaa4a22b348aabb21e227abff79417e69c10f5e5e85169f268bb4222afb",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "a359426f-ba84-4c7d-9318-0269c4c7bc6d",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-mittens",
+        "beforeSha256": "ce91dea64b6e464598b71a66ad3d977c0ce05352974d72f25b4a2edf38ac8f67",
+        "afterSha256": "f175552d75ae5eee206bb3983f0024fb4ad9e334af0c004f3513dc1f62733a4f",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "440d50a9-1387-4bc6-ae48-f19ac7034841",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-raccoon",
+        "beforeSha256": "7a9a3e1fa111dbd4c74156d6b751ed870495d7c1218b3e3992c95e6d5112e804",
+        "notes": "close lines so we can fill areas like the snout/cheaks, head, chest and leg",
+        "operations": [
+          {
+            "markerId": "76d1f789-6c9a-4638-a9cc-66474ff5028d",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "f965eae3-5acd-458a-94b6-44d4312be7f2",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "d440f2c0-4cba-46f4-aba2-d64224868a76",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "e824b1c0-1a05-4fb4-99e9-94c5f603b15f",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "b3279ef5-e733-417e-acbc-5ab3229c14e4",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-badger",
+        "beforeSha256": "3667640400d52c0f4fb7948c773d00344e622c89fb157939ca4b95a270e748cb",
+        "notes": "close line so we can color the tail, body and face/eye patch.",
+        "operations": [
+          {
+            "markerId": "314e21d3-d22d-40c8-89eb-8935f066c151",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "807f43c3-b3f2-4c85-a0f3-39a7944cae12",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "5c8973f7-b051-4ccb-814e-31d4c31c27cb",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-harvest-lantern",
+        "beforeSha256": "1f49fc5be0272e1dc9d9b3e8ef22d664fb6ca804885753e5d96b6c785d6b4979",
+        "afterSha256": "baaeb69dcd1bd1533829d0a0e25e1bec9d1b6ec32923ed27f4368461021e9788",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "fd8ba51e-747a-409c-a011-d4a36968946a",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fall-apple-picking-child",
+        "beforeSha256": "e776795590ea0e9680b895361654592ce5ad4fb6e17f0cfc18cb55bef34dbd3c",
+        "afterSha256": "765acd4db41b0063f3001eb731899a360de1b62b069720dc5f4684e4057311e5",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "6c72b845-56e8-482a-b859-d01b4662dda6",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "horizons-forest-clearing",
+        "beforeSha256": "ec064e94b09055970e100e15caa687885b7fdaddcf805b6ece4fce4dab54f4c4",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "9fe23854-ffbf-4773-89b8-8aee7af67c8b",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "horizons-jungle-opening",
+        "beforeSha256": "52490506a89633cb2dddf4534eed990e1327cc719ef38b24f278ef013a05aab8",
+        "notes": "fill line so we can fill tree leaf  ",
+        "operations": [
+          {
+            "markerId": "0702462d-8232-4e86-9394-f8a760bb038d",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "horizons-birch-woodland",
+        "beforeSha256": "ed8e303dc22f53b9b88ff1a4f79c4c7fa189322845973bc09309fda5b7e42a01",
+        "notes": "Many broken lines, as I'm sure it's just the type of line art, but if difficult to fix we should remove or create a new image like this but make sure there are regions to color. I assume we can close lines but might token use might make more sense to image gen this with a better version.",
+        "operations": [
+          {
+            "markerId": "0dfccb04-cdb4-4dc3-a4be-94cc32765856",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "b690b455-f1e1-4d27-9331-3e5cac487acc",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "89ef3af5-2048-47ec-b001-0cf547249436",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "ee5c64f3-56ba-4d49-87b7-88ee5386e036",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "d41bf32a-5b38-43b1-b270-537e5853f002",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "bf3dfdc2-9259-4b4a-bcdd-2546a6ff62ac",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "cf9c8df8-81d8-4464-b5f0-eed4defba76b",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "33d22f03-4c00-4329-842d-d475e9dc1714",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "63c7a6a4-e97c-411d-98d9-031657946b3d",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "7561f4d3-4f83-4457-bbec-7583e2f25459",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "cc8e3d88-7db7-4bc9-b9d5-cdfdd724bb55",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "f557a407-c0bf-47bc-9570-b962eb1372ee",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "fbffbc45-defa-4331-adf2-13a7c35735a3",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "85ae6028-4e36-4096-956f-680fee2ac2c1",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "1b30c129-06b6-4010-8fae-d99b75fc7966",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "99574e4d-8f65-473d-b4e0-b29d830a3fac",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "9ac5b79b-60d1-4c37-96ca-60f3c89ae8ae",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "1c260ee5-e613-40db-bca5-b626dc7aa8c1",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "ffad522b-3f48-42e4-aa9d-11aded6aaef0",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "0c7ea963-e9e7-4faf-a72b-1444f0591024",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "5ad9174f-286f-4718-86f7-d2373f211a5f",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "6665955f-4b74-4ac3-be57-c86851bbd992",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "horizons-snowy-forest",
+        "beforeSha256": "6878cd327815bde1dc3e4cf4548b60c3dc639c81186d61e10fc7e4092756b2c4",
+        "afterSha256": "a9bd0ea0c04ca400a87d061fa1fbf00156b9e54e83ee9de1b991e2ff00681399",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "72bf4d8f-6e27-4b8b-b4d5-4f4d15a8d273",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "horizons-autumn-woodland",
+        "beforeSha256": "3c6077e85c16dd38282db961e773c17c62a96dab507d6b3c8beec11e5ba4202e",
+        "afterSha256": "00c085f36f052d7410fc3f61bb9c612724bf0c2e38ccdb36158dfab1501ac814",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "c5c7628e-8568-46a0-aa7f-d2dca9bf877f",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "309cc613-f321-4a90-8cb0-34cc61b8cfce",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "horizons-beach-dunes",
+        "beforeSha256": "2cd42c4dca6822e94c8a5c4f6958bad211a56619840161ffb0f3abf82e1157a3",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "e802d929-d1cd-4a96-9fe9-2826ac3b3b13",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "category-expansion-farm-tractor",
+        "beforeSha256": "cc0d3a94b3f831db6daada8e424bffdae5642d5b86dbe83a0d51a3b1dc8a11b1",
+        "afterSha256": "69d19a2feb8cc069d36c65144c851a954e299afaf571cff377212fd09d210453",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "2fc44a62-2a29-4abe-bbe1-00651a3d577d",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "15a79170-7f85-47f0-b974-6a78efabc247",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "category-expansion-fire-engine",
+        "beforeSha256": "0a332f5069f7db834878e6172e20d56eb50dddde31d26cd84b15983805c12783",
+        "afterSha256": "d43f9bcf8ab6ae64f917f5273493715e99fa952053cfcae39c8e4ab6a4a01c89",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "4441ac36-00d3-40ce-bbdd-15e77e81a948",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "50691de6-1f73-4d6a-9995-e5b34d3d034d",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "17e9c31e-7423-4a5b-af72-dd2cab55db98",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "b6cd3a9c-51e5-4f9c-8f9b-ab1330c2cd7a",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "df3f6d71-e2f2-49d5-9abe-3d229538ceda",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "ad96fb3c-8cb1-4cde-b496-c6cb1a0484d7",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "62f74f04-0d5f-46f9-b79b-7966b60484dd",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "906371fe-1349-4d88-ba6a-c248358729de",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "377d0f16-48c0-44f4-ab17-5d69fb1fa6b4",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "category-expansion-propeller-airplane",
+        "beforeSha256": "3429f6c224ef74553ba825b21f5e82d2a3400cb29bedb4c871841dfa71000395",
+        "afterSha256": "2570b4535175b8bff2fca22732bae2d83244744d2bb6ae74c1f1ba04e4b3744f",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "6b5f6056-724e-4875-80ba-286f9a0bd9a2",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "category-expansion-octopus",
+        "beforeSha256": "60c9eb93a14dd6119b6835a01f7f082e487ae127d12e9fcdafccc7331b419272",
+        "notes": "complete the lines so we can fill the arms correctly",
+        "operations": [
+          {
+            "markerId": "d296c442-74e3-4a3b-b0c4-3fb209c4686a",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "1a08c3b3-2730-4ad6-b02c-8e157bcd697c",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "36a132ad-bb04-469c-a443-03d6872d7528",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "a2df9928-58ab-4f01-9183-1ba4cf52210d",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "ab65e7d2-2c30-4c8f-a755-0a443958d5b5",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "category-expansion-fire-station",
+        "beforeSha256": "9557a9454a463190346cd0ca6b72ce4216b847279d32b404c5036dd0dbb28a11",
+        "afterSha256": "d8b8f7c07a33abd3241c1d407cce2e961a10c5ac1dc4a3ffe214d17a3d5f5a40",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "f68b9e2c-d2cf-4f8d-87a2-c841b921d1d4",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "d5367cff-f16f-45e9-95bc-b7a64754808f",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "category-expansion-lighthouse",
+        "beforeSha256": "63556ee9a1f6d532bbf4f9c7f97dd7d374402d8c5cf249ea95d96242a367f188",
+        "afterSha256": "f5a3729cc8d74427169d241b698c61a52f0630f4c8c0f0863ac9239f6889840d",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "b35208d0-c3df-49fd-ae2a-407f0677a3e0",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "ef269a83-49b7-44ed-819c-26cfb8dfeb81",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "collection-expansion-pet-dog",
+        "beforeSha256": "1bc615bab4ff8d439f9b4171b155b2e5320d89005214c255a6da2a6c273dcdf0",
+        "afterSha256": "8940e09d95f2df49f91c185058723c75dfcc3320eca3c2ebec873ba933a82c47",
+        "notes": "fill the add regions by closing the lines and adding the regions etc.",
+        "operations": [
+          {
+            "markerId": "67d07b66-008e-4828-84fb-999bb93be564",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "5b20888f-7eb5-466c-9b76-48d63d9d9033",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "1abdc1bc-9b92-4deb-af4f-8718b97e7abc",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "a9f2dad2-d1ce-424b-86bd-21a8ab303659",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "collection-expansion-farm-pig",
+        "beforeSha256": "56e6f35ad693d6ebe3db336d7a1f8d3d42e53385c1628ce3eaaf6d769f6bfd7d",
+        "afterSha256": "dc244c6f7a3df1eccf5327ac2ca3c84715277d473bddfdf2608fe65776c19065",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "0acf520f-33d3-47da-a372-c6abb4dc2d17",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "collection-expansion-child-wheelchair",
+        "beforeSha256": "340c87ae6974f03653cc29b8c3b0b2f31d31f28cfdb694a2ff4949319030b8d3",
+        "afterSha256": "3e30b1185c12b703321b62ad9b23e1ed78106a766bae579f83f327b2d81db06a",
+        "notes": "close the line for the hair so we can fill",
+        "operations": [
+          {
+            "markerId": "f7dd7707-c293-443a-a803-50ca2c3648da",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "393272ea-8048-4e18-8e5d-128d28ebcb0b",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "82a11148-3288-4824-8668-3ef1a4ac7673",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "306b104e-df12-4fb2-8a1e-71ecbfc686e3",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "f85091ff-1f77-481e-959c-fecbbe51e28d",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "b357e5a6-baed-4bc8-b3c5-df7b2720ad3c",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "dc758c5b-429c-4c7e-bc13-46fde9bb6236",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "collection-expansion-firefighter",
+        "beforeSha256": "6177a9ec5a4923608516644633cdd0ec082a77959ebf3888c8d2d2d53e93ca2c",
+        "afterSha256": "88e4869a37045479c4128f9efcad768b1ca8e19c92d9cbdbe35f001594749e49",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "1c756d55-7c5f-440b-928d-a1b58fff8461",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "collection-expansion-gardener",
+        "beforeSha256": "1d34ccd708e25789d6aacd91f4a54958f1f3454c0dd990ecd6dcfd31f87a10d6",
+        "afterSha256": "c96f6fad8ce7b32bcce8bf28b94b828f44454bca08ecb4365f428f1d3ea4fdcd",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "e0511333-4d40-4a9b-9b9d-6c2976f49ca1",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "66b5fd92-1ed2-462d-ba59-c228220f45e3",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "collection-expansion-branching-coral",
+        "beforeSha256": "68bbdc4c33d4a1beef8a6558c5e5b337a159a9ab0240a1addf97329cc2514dd6",
+        "afterSha256": "5f20aaf16bae5d5d07c54d69ee57d49ae456f91f611e18f436ed1a1ce8d203e4",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "213b5b7b-35fd-481f-b797-6a47aaabf206",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "d2023e15-6d69-4047-be60-1a5596a7e651",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "collection-expansion-triceratops",
+        "beforeSha256": "f85085ecac8770c6cb231e84218a4bfe348ffebf4b366eea5733fc3bb17b1e2b",
+        "afterSha256": "7c2e4e2ef42571217a2a638bc44957c0ac0ecb407c05bd4e699297c5c7382fa4",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "f2373847-90a3-4086-b280-d8719f3e67f2",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "collection-expansion-stegosaurus",
+        "beforeSha256": "830d0d7a0f060b1829b0ea38699df5a7a9fa5879e46c8cecfcac2bb20402eb6b",
+        "afterSha256": "b7740e297953ea10b6cca838c633d9258fbd457851f0b5771ebe8b4d2400d29d",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "5cdf5667-cd00-4b04-8be2-26d6d9b3160a",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "e94eee18-8df1-46b1-a351-0bb6aabe0081",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "3f7d2825-6ad0-4b49-848c-71ce21f61323",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "e4326ced-2ad0-4584-b035-039cec85c842",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "0e18b824-18de-4d5e-8771-21e0ba3b4da8",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "c011d348-c191-431d-86fe-8bba84911f48",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "dinosaur-striped-tyrannosaurus",
+        "beforeSha256": "297d1a6322424a29af067fc6977c192b058ce120e1ea93aeebe187d5941d40db",
+        "afterSha256": "509bcce28e2264d788ada9e99de5053e46929342e396471cc8365ba1cbf38638",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "b79cf4e3-7658-4e5f-9d2e-9036ef89d3cd",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-moon-sorceress",
+        "beforeSha256": "37ac946356b0484e7c8d7e9f0256eb88ff7ef2f79282654b82d04d8647ee9698",
+        "notes": "close lines so we can fill hair, the make transparent is a clue for this to keep that way in that enclosed area.",
+        "operations": [
+          {
+            "markerId": "7396c566-492b-4540-a946-2db7e394be28",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "034a52c0-b4a4-499c-88d6-d798f48ec60a",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "d9ce7627-6de0-45f1-9fa1-934f4d9a3b1c",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "3e2b6a5e-026f-4015-b59a-495313d22591",
+            "kind": "remove-region",
+            "status": "already-transparent"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-wandering-wizard",
+        "beforeSha256": "d97563616b1020d7ac0707ffdd804231d204e4f3dad4bf9040c026bcc2d6bb90",
+        "afterSha256": "1361f3b1e87b0674095377de40bd52c4556de66cd48d7484c92504bec6f66859",
+        "notes": "close line so we can fill hair",
+        "operations": [
+          {
+            "markerId": "b2f25519-0ff8-4e9c-aefc-2d141a36a0f0",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "b988cd43-4bb9-48ca-94a1-d525476aff25",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-armored-warrior",
+        "beforeSha256": "227f4821944b8fc0aad8609dddca1551e6b28559a6a311d53f1e321add37f7e6",
+        "afterSha256": "7952bfaee6f81b762f5eadb1a42984f732349ed1efe3b965304533a57a40091d",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "c98387cd-813f-4612-8b65-341c2fbe7c8b",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "098c440d-7fe4-4d62-91da-150636837945",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-woodland-ranger",
+        "beforeSha256": "166865c28d9805727db4a8bf160e559bcd733687339118c0a4f319d66647ab14",
+        "afterSha256": "e3ad7ffe6bb67a71f37cf0b20b6170008f3c62b6e869e24cd4f0d3fd559fc386",
+        "notes": "needs a straight line for the bow string, just behind the artwork so it doesn't stand out and doesn't need to be thick, just a black line art will work.",
+        "operations": [
+          {
+            "markerId": "4e11b08e-fd2b-452e-bd15-de85e4e80c53",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-dwarf-guardian",
+        "beforeSha256": "86679c64391e73753ce332fdf221f5518adaaca6774614cd5e42081a77b2be1a",
+        "afterSha256": "9d44aa0391e608a24c713d8449222f234bd49c4bed51075ed61a9a81aa43c4d8",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "5aecf34c-0a89-4e41-b936-c468d4f2446c",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "3153dff5-f3df-4631-8ca7-4477e87e6a1d",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-human-bard",
+        "beforeSha256": "d727f21f53ed7b937f2e8cfb9fbf393d275e4a6174e61eba9930addd67e803a4",
+        "afterSha256": "65391a4df5c9e032d4c91ec822ed4ead94735041dadbaa078a09e67ed292d74c",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "3ede34af-1bef-4416-bb6d-272810778bbd",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "3dc36c5d-7615-4b37-abf4-d8254d6b1138",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-hooded-scout",
+        "beforeSha256": "89b59c3d8de403426937f219c712cf9167035c151154c882c463b92dd098c598",
+        "afterSha256": "6ade07331d313fb9a3ae7c647c99fe26b9e735bbb6f252242bee0f23116a8a96",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "689a528c-ee9f-44af-8a4a-61c192f0cc1f",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-potion-alchemist",
+        "beforeSha256": "f383108abc6e55599f9fc77db50a4c09f79a4bf0d4b38143cfe1b91f01a5ce15",
+        "afterSha256": "2b676df31ede434173f1b10cbe752ea3b9ca9febad98f944fd2a6dd179a60604",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "2930718e-1bce-4c9f-bb5b-c72c3f90743e",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "74d115b6-3d66-4dad-8182-a6a345031e6a",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "42dca4bc-8818-4790-a7e7-96f526073113",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "fde9fb54-119d-4d38-abfc-bad4b381c119",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "be7dc2dd-94b4-4041-8b93-7f31672130b0",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-goblin-tinkerer",
+        "beforeSha256": "c51733e71df4bded11693f0a879a60eee7cd1449640315531941476b1134a313",
+        "afterSha256": "148b820b9421c73df02d772c9cb77ff5419bae9a37ac3101ba76292f3bf01002",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "55e00ac9-4a2d-4860-b732-480ba3d871d3",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "5b8fbbb2-a277-433c-b4a6-c83ac5c7341a",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "765f4d44-0f99-4ced-aa63-24817455857b",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-forest-elf",
+        "beforeSha256": "9267fa3693fc29c4695972ac5af78e8eba1de33b45c3004447f53f29a34a91b3",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "2294f82f-2277-4539-8a5a-ca57c38f84af",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "ca04d9c7-0598-43c5-994e-9105e1cdbad7",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-merfolk-explorer",
+        "beforeSha256": "e68b9654c54255bc1d4ee835d4e14024a3563c7836e1231b39e04e43991f55ee",
+        "afterSha256": "b13519de2e26c5cd3e634ff6c178c492fe32f893e4c98d67837544dbe4050081",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "86ef7a51-ee49-48de-a50a-d4660ff7d1bc",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "388fcfe4-2fe1-4225-b2e4-4139b5145917",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-centaur-guide",
+        "beforeSha256": "eb88e949e32a134f94df405a659237d41dc5284610ef8a6b0fee2aed89ed309a",
+        "afterSha256": "791b2377aa948604a4c381a299ace851f66e9202488c8ac7d793dc1dfb3eb846",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "0a458af8-4e3e-4656-8bc6-cd273b39dc70",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "079fe6d8-c506-46ca-8c11-16b94b90cf6d",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "d4010bba-09a4-401c-9805-889d24016e74",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-stone-giant",
+        "beforeSha256": "edabf8d0f6f2e6bbe89e43f4f0d0406760fb68a2b2a9bdabf8895ed1700c63c3",
+        "afterSha256": "5cd7c689c9b7fe68d7e071297871f7a632b761aacde342ddd8d77cfe1f2929e4",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "f8c1df50-6c33-41ac-8b75-b2a2cc24b1e3",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-kindly-orc",
+        "beforeSha256": "0f5902c10cd863eeb9494c0cf9e9406c9aa75b62ac624e1b6846a2cda4267d1f",
+        "afterSha256": "1d78b350d64283243b12cc51cfbf6eddcb3667f5a0e3e5d897f18e6441859914",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "eff55b73-3b44-4eef-a577-bd14cd2bd504",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-woodland-gnome",
+        "beforeSha256": "fb248ac91c3044532060b7ca1af6de1641ffd4a29ca00ae4bd8e4ffb8395ff58",
+        "afterSha256": "5524b5ad4937da92cb8e2f51581ecbe022a3639c29bbfebc15e594dff766dbf0",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "72abf49e-e6b3-4e5c-b716-c1cb08dd418c",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "8af91b14-6719-49f5-8b33-e74eb64695da",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "23f69312-178d-47fe-af8c-ccc71a5b77ad",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-three-headed-hydra",
+        "beforeSha256": "fd5312662f347817c4a9c77f7db2428a71d50babbe454e382dc9c56f983f1063",
+        "notes": "close line so we can fill the head and horn area's",
+        "operations": [
+          {
+            "markerId": "b6710a24-c127-408c-bd34-83036eb82bc5",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "7b49659d-6a4c-4a51-bc1b-f654fbfe7b81",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-cloud-serpent",
+        "beforeSha256": "47cd356f5640d099a2d33f640dc46172debd98ee2d46963dfad0b02b1290339a",
+        "notes": "many lines left open. close them and should reveal fills/regions",
+        "operations": [
+          {
+            "markerId": "b6fd3a83-ca6d-46b9-9567-06fb3a99ae13",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "0b881c38-cf2b-435f-b218-a0ddbb777d7b",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "539a0cc8-3f88-4c4f-bd27-02bc31f9a66d",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "e7da491e-f209-4407-82da-a1abe14645e4",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "2a06652c-ed48-41a9-9cae-ee0ffffe47c0",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "dfa32f84-1b60-4399-b8d1-03f5ee367f54",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "91c29224-d092-450e-a798-54da5e09a2cd",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "29c7ba04-9c6c-402e-a7c8-2079a751246e",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "3553160e-6eba-4001-b37b-714e391bcae1",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "49636fc8-10ca-4b22-a1d1-d9f0ed62706f",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "0e8e52a2-4a99-413e-83f5-e9687ed159ad",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-griffin",
+        "beforeSha256": "759f276f94e499240c11c9edd9b3af2b07caa4eb16e69f8e5a59a3051360d333",
+        "afterSha256": "05ced0c99385ad1f046e0a0204ce38c1597a4b765c4737cb205fb9192d1f668e",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "bea00790-d7e2-4d09-8ad7-cbfb24790102",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "6d790862-a509-4169-9622-791b175dffba",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "461c688e-1992-4ae5-88af-a3148f3c38ac",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "af4d6943-9f14-4601-8272-9612a7016a40",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-phoenix",
+        "beforeSha256": "46569c31f2cc0d36e68046a014b500c1b23e4154ed562ae6096417d8bdab3839",
+        "afterSha256": "b6ae25bad84b66bc0ff67afad3474b85e8bce7d475d68cf3bcdd638c62bbc04a",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "58aea919-a860-4b66-8960-fc72c0590309",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-pegasus",
+        "beforeSha256": "a7a0127a996702c24cab8c371845e3c13e9682efe2fb07bf3e2d74fc42cc6896",
+        "afterSha256": "04a416734de8c4dc4741e0b6d52583aa7d59e23b634917c1711fd72969cdce23",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "172c0146-c126-4ef1-b9bf-2264bc000160",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-unicorn",
+        "beforeSha256": "09691d4e0934c480cf90333a43dfa5bab3dc3562e3ec6ebd2c71cafc4a74fe57",
+        "afterSha256": "1043caba88631c909381c385b8aa10ceeae23718ca2302abfdf60f15900c0dd7",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "8f890125-8fef-43c0-94f7-eb42122ea0b2",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-forest-treant",
+        "beforeSha256": "06a0d224334876c24de8f016d7009fdbe10e9cdc3747ad9ebac43e3c18fe3241",
+        "notes": "fill broken lines to create fills and regions of the leaves.",
+        "operations": [
+          {
+            "markerId": "18b0c523-59cb-43fd-ae00-ee81decd8f91",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "4a38b788-a62c-4fef-8dd0-d735d311a2f4",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "31ef72f2-5f58-4dd3-8566-a76c2ad11c04",
+            "kind": "add-region",
+            "status": "deferred"
+          }
+        ]
+      },
+      {
+        "assetId": "fantasy-cave-bat",
+        "beforeSha256": "80dfc659a348b07dee16c6535850d282e2492324c16b30efaa3b374006df5e0e",
+        "afterSha256": "0a89d78be60b7b1f70167902b00bcf71d46ed3b561b801eea73269315c4d78e2",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "39f71cac-e97c-4834-a985-05166f620d99",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "8fd14557-c2bf-4809-af2a-7a399b2a5829",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "interiors-tavern-stool",
+        "beforeSha256": "0a8ac7e0d40a6ceced47036888352f7bc6168b67972e1487e1367949ad2aca61",
+        "afterSha256": "0c53488e97a80e9e021f389761cdcb4071cf2423060d38931338eb3b198c73c1",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "a5701991-a4c2-4e60-b456-3f778b1be253",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "44b0299a-1319-4971-abb1-b28067ea0b67",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "d4ca581c-112c-4857-bde2-b521efb55ad9",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "7e56c376-2af2-462e-a766-9059b54ab77e",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "interiors-arched-hallway",
+        "beforeSha256": "0038519a42e3f1f47d801e93871a5598539fffe24905298ec36567e508360d32",
+        "afterSha256": "68e8633373e63baf893268a26f378a7a3d24f0d685d29923db93b25a6b0de3d8",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "276a7d46-4308-4d60-9eb2-8ce4acc26aa1",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "interiors-hall-bench",
+        "beforeSha256": "07255fa9be0c2da8cbc0151b8298d631b7a1dac76d784c540f77fc69c089fef0",
+        "afterSha256": "0dae2d4662d30b4246899679e021d7d6880675e4999b0ecaa8639412b8ca9700",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "6a2932ec-f18b-42d4-8894-e6adf31471a7",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "d9cfdbe6-8978-497c-a256-dd0761043197",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "5846a264-b86e-48e2-a068-2eb489f71019",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "74cfcd6a-10eb-45fa-8451-0899d507a865",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "interiors-wall-banner",
+        "beforeSha256": "3a19c4a0c39d1959ec71ffd8299f8cc9be4ef97c67e2816d3aa99f22af0b7fe2",
+        "afterSha256": "8198e0d861f280906bce64de9d9050bff44ac5ddbd349feb52d4c3ab0ff79e80",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "a53ce2f5-c657-4740-a887-f29986208159",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "81b824c9-8c5a-4052-a2a1-5ae62e92a7cb",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "interiors-wall-torch",
+        "beforeSha256": "3c16c2437791394f5ef5b671b2d71343f19fa9b55424d1871795c39e3708952e",
+        "afterSha256": "e82e3c44bb89d642c6021e074d8c077c34cd95ecadb3955c0c3acc1f49a3d5a5",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "64f966ad-0133-4df2-9a97-c7aa54e0c1af",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "1a1e7c9a-c21a-4ba0-b286-203d6973d03e",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "interiors-arched-window",
+        "beforeSha256": "9ae7137352c5229cdf3e9929adea3d1ba08b8bdf58b77c67c6a84b5b2b12fdbf",
+        "afterSha256": "055cbaf268b65ae084bd51f21ed093d5a76778c24f0d85fc6a8eaa11e7af2c41",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "8781ae89-720f-4264-b4c2-fecdc6996579",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "0219bf39-81b5-4528-9800-107499fe7990",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "ab3b258c-1e10-45ef-823c-b5da791c37cd",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "44c46b6a-9cc4-46db-bcd5-9ef917167dfd",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "interiors-cottage-kitchen",
+        "beforeSha256": "df88a6f3b15b3a409eb0bb51fae0f027da0e8d37b63e19012a439a5abd3aa1e1",
+        "afterSha256": "d6882d431526ae59f3a9394c7caffe19dd6e982a249f75a4bc48e2e41c81a3bb",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "0205bbd2-ccae-41ee-afc6-7209b72e586e",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "interiors-cooking-pot",
+        "beforeSha256": "6adf56079ac72b01314fe7e5e864414b51c9f440821714873e8cc066acdb9d89",
+        "afterSha256": "7ea289ba5c2fff71d88fa8a5f62febcdb6a7365896f02a1cc4312a4f998a436f",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "cb28a9ec-462f-428b-89dd-9d29e020a4fb",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "b5c77848-9b09-40f4-a6c4-9c1c14e7344e",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "interiors-office-chair",
+        "beforeSha256": "cfdd3d870b60fce4fdf70d98c048a79b5e8d578cd00d56a9d4628fbcd3ac58f7",
+        "afterSha256": "0c50225a11851a6d8f9c5c133b91f7a5325b41c0a55663a6543554209ed93ab0",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "75085c6d-37ae-4366-b90e-488f223448da",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "86f75b96-c5a1-4d49-be6a-a92512e85dca",
+            "kind": "add-region",
+            "status": "deferred"
+          },
+          {
+            "markerId": "d2bd80b2-b0fc-4620-a481-c25eb3dd7724",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "7357c9a2-f9fc-4bb1-b169-7985b70889cb",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      },
+      {
+        "assetId": "interiors-bedside-table",
+        "beforeSha256": "5c6ebd5797936e78c966da8277b6352ff0895da5d6947dd9978a2e71219f9a65",
+        "afterSha256": "0974461acb1d3adb89e0380e5c90213cbb5898e743180dae541054d72b2d15c3",
+        "notes": "",
+        "operations": [
+          {
+            "markerId": "8500f77d-8f42-4c2e-a638-62a6f6206b2c",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "42b177b1-82cb-4854-b943-096db1a67f99",
+            "kind": "remove-region",
+            "status": "fixed"
+          },
+          {
+            "markerId": "99bed7f6-3ac9-468c-b563-029fe63e58b7",
+            "kind": "remove-region",
+            "status": "fixed"
+          }
+        ]
+      }
+    ]
+  },
+  "lineV1": {
+    "assets": [
+      {
+        "assetId": "alphabet-u-unicorn",
+        "beforeSha256": "34fbb437a512e755713b0a5421571e7b4c92ba48c848a2fced9378f0342d72c8",
+        "afterSha256": "5a0591340d594ff332039b6ae80e5237a8c08ba727c1e8a39c12660bad34f053",
+        "beforeRegions": 38,
+        "afterRegions": 39,
+        "lines": 1,
+        "appliedClosureIds": [
+          "2ca3b0c6-f24f-488b-99ff-a71756e1ef52"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "nursery-rhymes-friendly-spider",
+        "beforeSha256": "7c39898e408e8dbaca18ec362fb39043edb0d3c5dc1da4d49a41671e1ac3a96f",
+        "afterSha256": "ef27dc2fe12894a4ac489a1b768a5c86fbf87031aaaaea775b3cea7b8d9d8d3a",
+        "beforeRegions": 24,
+        "afterRegions": 25,
+        "lines": 1,
+        "appliedClosureIds": [
+          "9333d75a-b754-4fbf-bc5c-611e3c90baf3"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "nursery-rhymes-shepherd-child",
+        "beforeSha256": "c597da0b7d2e591688a31b7b4d7cdb675062c12efb9be3232404b5540566a863",
+        "afterSha256": "78f938d3393ba311592ffeb5d3d24c500249c2f449cc5bbfb0c953df53b4f158",
+        "beforeRegions": 62,
+        "afterRegions": 64,
+        "lines": 2,
+        "appliedClosureIds": [
+          "5973f3c3-894d-463d-b209-6d9b5cbf4d02",
+          "cfdd01cb-deab-4bed-a741-74c092bdb4fc"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "alphabet-c-cat",
+        "beforeSha256": "80d0fbec8e0534dd40df1ebe7465a62002960f8506811bfda56aa2d499d9fd39",
+        "afterSha256": "872e971896b45e57cd47ea63543de7a79cfd5ddfda296f1f0fd273e447eaedb5",
+        "beforeRegions": 12,
+        "afterRegions": 14,
+        "lines": 5,
+        "appliedClosureIds": [
+          "530c20de-236d-478d-96eb-3bbd749b1902",
+          "f5df0920-6dcb-4dd5-8783-71adafe82666",
+          "aa96416f-dbb1-433e-99b0-1e06ebcdadd5",
+          "c4458236-7977-4021-8105-dfb7a92a06f9",
+          "d6ed5a93-f715-4ae3-9cf6-31557683bc98"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "nursery-rhymes-cradle-tree",
+        "beforeSha256": "049a8145dbff77632119338d85c39cfd130e582a0d778a129b733eba65ebb5e9",
+        "afterSha256": "328f96c48f75eaf2e63e0aeac1087f8533491fc54c4e0070e5c4e1a3db3ba7e6",
+        "beforeRegions": 31,
+        "afterRegions": 42,
+        "lines": 23,
+        "appliedClosureIds": [
+          "79fdaf25-8f8f-459e-9adc-f60eb1c4f705",
+          "cbe7b71e-7073-4a15-9f8b-8c00bbb366b6",
+          "fc10da39-6149-4672-8664-140f81bfbde6",
+          "ce046fe7-afad-4486-a9d6-c5ac2a11c70f",
+          "e6708c24-813a-4bbe-9721-c3881495518d",
+          "d898b0ca-bfd3-4bd5-b517-6dae1da08550",
+          "7965c6f4-6fa4-4704-a764-c509128d841a",
+          "d9f6ff77-103d-4289-a6e4-eec49a2380e6",
+          "fe2c6602-54a0-488a-9235-54dc984d414d",
+          "4b6bd2ef-731e-402a-bb7f-e684b8e4e337",
+          "fe1914d0-74ff-4cb4-b131-a2bc34e545c8",
+          "c42e87e4-30c0-4abe-9c56-98f04b5661f5",
+          "e78bffd7-ce9d-490c-bb91-dde44721577c",
+          "705b18ad-f2d0-4097-94f2-3b05f0304fb1",
+          "fffae45d-4835-4b0e-90e5-51f50923da80",
+          "60091600-fcec-4246-a7dd-9dfa3f7719d5",
+          "45a3d9fa-ad57-4b99-85e6-2f07dae24fa5",
+          "8353438d-c450-4eb9-86ee-4d1bda42f8c1",
+          "6161f030-fb5d-4f68-9ef8-4defe55e56c9",
+          "6b8e2222-0653-4029-b331-e0bfecd0fbcd",
+          "11d4243e-dec8-4386-8427-18f5ce75eb6f",
+          "205197a2-dd24-4dad-9b1a-0567534bfd6d",
+          "c78f8865-0aa3-43dd-993e-2262aef823bb"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "nursery-rhymes-jack-be-nimble",
+        "beforeSha256": "cad4f690e2239c8f0393b2c9ba7694fbe63e3b24918fe9cf998d86d2061f90c4",
+        "afterSha256": "7954cf82f7f71a95fe81e9237a0ce700ef703595ae6563aeb6be514ac01b90ba",
+        "beforeRegions": 50,
+        "afterRegions": 53,
+        "lines": 2,
+        "appliedClosureIds": [
+          "c8235f40-07c3-42b7-aa24-e77853333172",
+          "0045c5d0-5c06-46a4-809b-0abd08be9398"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "nursery-rhymes-storybook-fiddler",
+        "beforeSha256": "ab1fa3a069911307e6b5b9f6ef2aa3e5a722af86b2fc465eab55fb1348b19a03",
+        "afterSha256": "9148c12ea1d033a302e76174b1e7f19f1ecc350a7e5910f6426f56b3cf73d0da",
+        "beforeRegions": 114,
+        "afterRegions": 115,
+        "lines": 1,
+        "appliedClosureIds": [
+          "1a200ecd-6968-4080-8a43-f6708aaf72cb"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "nursery-rhymes-garden-child",
+        "beforeSha256": "b13b94c204081148920e696477b9cb9a9cf19a6a0994d0512d6e585ff2eea624",
+        "afterSha256": "139a6a80c35229e19749edc1df862f583bcc2d2a6317eca75aaad146007726d1",
+        "beforeRegions": 99,
+        "afterRegions": 100,
+        "lines": 1,
+        "appliedClosureIds": [
+          "53af5633-1c09-4783-a1e6-e23d1d2f7925"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fall-pumpkin",
+        "beforeSha256": "5ac903554a07eb3fc9199c4ec4ce4b3411cee32e6f36c1425bcbac1cfd49200a",
+        "afterSha256": "3716912f2ad2d429367767115aaca372d648d4db7a1aa9fd09abf04e995e6016",
+        "beforeRegions": 15,
+        "afterRegions": 16,
+        "lines": 1,
+        "appliedClosureIds": [
+          "0c5cf78a-5161-45b7-b4a9-79f1f3737bdc"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fall-scarecrow",
+        "beforeSha256": "9394775acb1bbb09796e93e6d10ea54bdefb44853af5204722d1699844aa6b63",
+        "afterSha256": "42df62c2509b40e97a777f70a6b223063f42e9b387c272fd4904aea879339528",
+        "beforeRegions": 184,
+        "afterRegions": 185,
+        "lines": 1,
+        "appliedClosureIds": [
+          "d78c7cf5-d5bb-4558-9c54-419b60363045"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fall-autumn-tree",
+        "beforeSha256": "e3c072a7cd3d982dcb95df411fd8c495e371b301bf550a3cb5049d9a723954c0",
+        "afterSha256": "9730fc2347cf38e72e52cfa599ca55e8fc134a28944598dc35a71d385e8948f7",
+        "beforeRegions": 11,
+        "afterRegions": 23,
+        "lines": 25,
+        "appliedClosureIds": [
+          "ef3ef333-83a8-43bf-bf03-c08f0f377a27",
+          "3f4e7b01-0712-49d6-afc8-390f63d8a270",
+          "1de1eee2-6d9e-492a-b29d-f6ea29507a0f",
+          "91a0abca-fd92-44fc-9a42-06a508c326bf",
+          "461ca3b5-7cfc-41e2-83e4-7b10f1ec7249",
+          "6e10ac0a-48c2-4e1b-91f5-ae73506a0502",
+          "063cce0c-e4d0-46f1-90ab-c5d6e328fd9c",
+          "93385476-3a32-40d4-8c8b-f5527fb9e46c",
+          "b1169821-a06f-4ef6-8724-fdfbf187aeb5",
+          "c980a96b-c460-48cc-a2ed-e03409975f60",
+          "184f947c-bbbc-4dba-928d-95f053cb19eb",
+          "61cf5cf8-8f0b-4c9c-96d9-52b2f2d43c57",
+          "06eee804-ab6d-45ec-aedc-19bb6ed4885a",
+          "3516b939-46f9-4d53-bc1e-3dcc4e5d62ea",
+          "c3a3356c-b14b-4b1e-b308-db78a60740d1",
+          "61cbd860-3e8f-4c0d-9b25-6c82f56169dd",
+          "00c622ff-a54a-438f-8be3-b6fe7270c5e6",
+          "eda49292-bd21-4bda-80de-388554047355",
+          "a4657667-e3cc-4011-a061-78ecd5296d76",
+          "a9564b6d-55ee-48ae-87e0-df21023f9cf8",
+          "aed7940c-460d-4eb6-b88e-87d68cff80ce",
+          "a18d7ff1-850e-41e9-9e0c-04d8ab42dfc9",
+          "61ffe03d-e931-44dc-9c9d-5e5da188b65d",
+          "88fdaf54-c074-4422-8bb3-557fec2e26db",
+          "a3cd07bd-338c-4b0e-a234-28d3761db9bc"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fall-harvest-basket",
+        "beforeSha256": "258890bed3645d2ea94c074d0031ac928896970b0564eff7408653f3e5503694",
+        "afterSha256": "896efe93d53da9bfc59d93b14f3f263780dddc83e5ff18f5b1cbc06a54e5dc36",
+        "beforeRegions": 135,
+        "afterRegions": 136,
+        "lines": 1,
+        "appliedClosureIds": [
+          "06d9751a-ef36-4b42-97fa-0e94f675c51b"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fall-hay-bale",
+        "beforeSha256": "9fad4d6fab7796334831f7ce370d4157869b84b32f623ad14d39d3b325782a65",
+        "afterSha256": "9f1fe53d68f823a3d2b2bcbee9b4e4df25ab6753861378bd386d285679c7ce5e",
+        "beforeRegions": 43,
+        "afterRegions": 44,
+        "lines": 1,
+        "appliedClosureIds": [
+          "e81d4ea5-7d1f-4c20-b7a1-ed299b24c714"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fall-wheat-sheaf",
+        "beforeSha256": "2de5770e0875e545882d1193fdf28db35210dfae1864a6ceb1afb31af0db0d36",
+        "afterSha256": "7206485921a9a7f65829ae25c9c4d8981e9f79c3dd21371fe605ad9d3a818d1e",
+        "beforeRegions": 92,
+        "afterRegions": 96,
+        "lines": 4,
+        "appliedClosureIds": [
+          "66db7feb-6713-45d9-bb12-2967f25aaacd",
+          "e7cc82a1-61fc-4026-bb7a-73e5c400f085",
+          "122feba8-daa2-4d39-974d-92d3b919035f",
+          "fd7d986f-9492-41ab-b1fd-653a528be247"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fall-raccoon",
+        "beforeSha256": "7a9a3e1fa111dbd4c74156d6b751ed870495d7c1218b3e3992c95e6d5112e804",
+        "afterSha256": "59a8d20d938985d959a9977e3bdc3f106b5d6c0da9e1439cda5b3f7c40a174b1",
+        "beforeRegions": 23,
+        "afterRegions": 25,
+        "lines": 6,
+        "appliedClosureIds": [
+          "d6b57897-ca98-41c6-b022-a67e5bfdabce",
+          "67ab54f5-93fa-459b-90fc-f3272507de5b",
+          "8af6592f-bc10-4dd5-9a28-e998aeda21f9",
+          "e9e90eba-5074-4f10-b454-8a0a429e1587",
+          "bf56393d-9a4a-4efa-8771-ff432e294c03",
+          "ad033bd4-e402-41fb-9879-5e20dd5108c7"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fall-badger",
+        "beforeSha256": "3667640400d52c0f4fb7948c773d00344e622c89fb157939ca4b95a270e748cb",
+        "afterSha256": "f0442de9405aa222333c4e30e2601a24af10c0d386c5e2d56ad9e47c03432ecf",
+        "beforeRegions": 26,
+        "afterRegions": 27,
+        "lines": 4,
+        "appliedClosureIds": [
+          "e197c0be-feb3-4493-a280-fdfc97efbd41",
+          "4df532f0-9877-44a0-8d6a-85e4102ffbac",
+          "61cba0cb-b404-4e43-8ee1-c70b88b9c35e",
+          "b2760bde-7772-4999-86f9-db6b6983c3bd"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "horizons-forest-clearing",
+        "beforeSha256": "ec064e94b09055970e100e15caa687885b7fdaddcf805b6ece4fce4dab54f4c4",
+        "afterSha256": "04774ab8662fc8d39c2e07d8aed385b3b1cc4db6d0a5a01aba908bcf956bb7d6",
+        "beforeRegions": 99,
+        "afterRegions": 101,
+        "lines": 2,
+        "appliedClosureIds": [
+          "eaf11d40-5407-49bc-af3b-b81d72beaa09",
+          "547bdfc5-b008-46d2-95f7-c07277583191"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "horizons-jungle-opening",
+        "beforeSha256": "52490506a89633cb2dddf4534eed990e1327cc719ef38b24f278ef013a05aab8",
+        "afterSha256": "1dec37470f15b6d4765f26bc31355a00851ba819dffa86cd53eca1b5d84d9948",
+        "beforeRegions": 141,
+        "afterRegions": 142,
+        "lines": 1,
+        "appliedClosureIds": [
+          "64ca1eaf-9a00-4a94-8154-69e3c02357ec"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "horizons-birch-woodland",
+        "beforeSha256": "ed8e303dc22f53b9b88ff1a4f79c4c7fa189322845973bc09309fda5b7e42a01",
+        "afterSha256": "dd5b30591d7f091fb683ddb3ef141f614ea463d36087764ab769aa32ebf3ba65",
+        "beforeRegions": 98,
+        "afterRegions": 143,
+        "lines": 64,
+        "appliedClosureIds": [
+          "7b056f4d-0591-4806-8b41-8b56db446a66",
+          "d8bc8b18-84a6-453b-9c3d-794887e1783f",
+          "59e629c6-62f6-4ef1-a489-446aa7058a21",
+          "76bbe0d5-b290-4cad-8ac6-239df81dcc14",
+          "e01f5ed3-901f-49d5-a773-267f60c0a11d",
+          "f1c66c23-2039-4070-9e7c-c77335ee1212",
+          "df4f2c89-61aa-4dd1-bea6-9a58b25082cf",
+          "6723ea60-0974-4933-9247-06ec5c026db1",
+          "2e1f4f98-ea22-4e9a-86da-dc8c83d7d861",
+          "5f7b115c-383a-452b-b6e8-07cb85dbd585",
+          "a12c8650-96a9-440e-8004-d15e8af5c2d3",
+          "03c037af-0b7b-45f7-96d4-e75d67d320b2",
+          "c7a9064b-146e-4f2f-b012-5d9be93fa62d",
+          "b0b87bfd-c4f2-4ed0-97d6-0053b250f932",
+          "a8210b32-ab10-440e-a859-9cb3f2b77540",
+          "73d9682d-12a7-43da-b431-0784df4c8ed3",
+          "97393ccf-7409-4006-861f-11b1ea4760a1",
+          "d3d6d3f2-3772-4e50-9510-b91172f18661",
+          "915572e4-88da-4d8e-b8ee-6cd59d6a0858",
+          "97d248d1-fe6d-4dff-ace2-18303b96f261",
+          "d303a206-1448-4009-acc0-4fbe7284907e",
+          "bc383046-b4f9-4747-96f1-fa590004e18e",
+          "175dfb61-096a-4cd9-97cc-9062457d7d93",
+          "8722de2a-88d0-4985-9414-e5be982151c4",
+          "c0133915-ed00-4703-ba08-fdf126781e3d",
+          "2939fe77-dbf7-4547-841b-702413d102d7",
+          "81f7f52b-6f64-4b09-a5e0-ec9e4b9bc186",
+          "9ccb667f-ed90-44e3-ba5f-019c978697fc",
+          "aac0127b-e019-4182-966b-1ca623833893",
+          "e7d41a55-6843-4278-b8fe-763bc7b122cc",
+          "a7c3a60c-33a7-4900-94b2-756e6dab0c56",
+          "96d78c0c-24c0-4c1e-8e96-02f6f9ca5819",
+          "e356fbd7-1c78-4bfb-91da-28ad9e303e1c",
+          "7d41b1f9-08a8-4e6d-a609-bf8f42de7333",
+          "159a9c10-d358-4052-9fbe-18af9600b8c3",
+          "3c89712e-0601-4ce9-88c0-292148277bed",
+          "28d673cf-79fd-4fbd-bd7c-39d114813a07",
+          "ab306d3c-f438-47c1-8d2f-fbda397decf1",
+          "3692e620-c6af-4eb1-a765-5f2a6bcbe0ba",
+          "6cd855b0-30c4-4d6b-838d-67a8202f8f65",
+          "0fbce24f-d9cf-4c11-a676-89e1bb13de98",
+          "940e7221-68c4-4141-96e6-6c732cf52b3f",
+          "3830d4ea-9d28-436f-9edb-290fbed58a94",
+          "f1f3d333-ac60-4e0e-a1b8-bee3049c483b",
+          "e7d594f4-214f-493a-938f-6b7a73083fac",
+          "6c15ec54-48b1-48ca-8ada-8748909ea1fc",
+          "1160b017-6d16-4052-ad6a-b8034ee3367f",
+          "ea61ef9b-4a09-458a-8dec-528f2829ff19",
+          "265feab5-27e9-4139-ba0b-45988df6097b",
+          "29bec5b1-d1a2-4cd6-9da3-442c52cd1414",
+          "f327b41a-f6e3-49d8-8490-68b5d529c9b1",
+          "7efe176e-4210-4d01-a539-3eedcd5e0509",
+          "59b44d14-9e59-4882-a44d-37a327e72779",
+          "e9d9c735-5865-4cbb-af2f-d2939a4bdaa5",
+          "d311e1ad-23e2-4fa5-a15d-5e63b07195e2",
+          "9b3956f2-915e-4ff7-900d-37c8eeb2079c",
+          "0a6ecc50-b337-4ee1-bb7d-793443a41404",
+          "928e006e-be48-46bb-bde6-e9bcb6342d24",
+          "540e74ca-9448-4a21-9ffb-acb686809d74",
+          "e27eb66f-743f-4532-9a6b-37226d43b43f",
+          "cf669b93-04ee-4610-8de8-be87df96099a",
+          "8b74f662-57eb-4b35-b2d7-d195c4b5e2c4",
+          "2b69e77b-fc9c-4571-946f-aa91d850306b",
+          "8f8af7f1-e7a0-4db4-9817-ec406461bb10"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "horizons-beach-dunes",
+        "beforeSha256": "2cd42c4dca6822e94c8a5c4f6958bad211a56619840161ffb0f3abf82e1157a3",
+        "afterSha256": "17d84da6c63474f693409edb9cb3a89e37add30da71e60a29a7deae01e07b150",
+        "beforeRegions": 63,
+        "afterRegions": 66,
+        "lines": 3,
+        "appliedClosureIds": [
+          "a2a42096-6680-48eb-a7e1-ba2f50a72469",
+          "1d3bf537-7453-4f7b-95ae-f4e9fa0f559d",
+          "7d55c32b-fb28-48c6-81dc-f5a9fe3d7c51"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "category-expansion-octopus",
+        "beforeSha256": "60c9eb93a14dd6119b6835a01f7f082e487ae127d12e9fcdafccc7331b419272",
+        "afterSha256": "26ab859df869a232db3a2c00a911bc41954014f2bb692daeb30a8cf55738f154",
+        "beforeRegions": 76,
+        "afterRegions": 81,
+        "lines": 5,
+        "appliedClosureIds": [
+          "3989284e-84b1-4c21-af1b-95001f5c373c",
+          "f2f1ae95-16fd-4405-8d46-89828c08a444",
+          "83f987a3-07a4-4ef6-b448-9a2e5ab442cb",
+          "c234ddb7-e17a-48dd-962e-ba7414bc7a29",
+          "579c5b46-f18b-4e1a-a42d-732c2deca656"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "collection-expansion-pet-dog",
+        "beforeSha256": "8940e09d95f2df49f91c185058723c75dfcc3320eca3c2ebec873ba933a82c47",
+        "afterSha256": "f981b3180a930a325eb11f057a43e035ce0b09cfebe1bc770958b284325f22f3",
+        "beforeRegions": 11,
+        "afterRegions": 12,
+        "lines": 1,
+        "appliedClosureIds": [
+          "e863e968-6a9a-41ec-a78c-594045651d1a"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "collection-expansion-child-wheelchair",
+        "beforeSha256": "3e30b1185c12b703321b62ad9b23e1ed78106a766bae579f83f327b2d81db06a",
+        "afterSha256": "674185d75d1da8b5f7eff2f4e1ebdd5e68b8bd55c1a7fab38dca6511cf237ea2",
+        "beforeRegions": 273,
+        "afterRegions": 274,
+        "lines": 1,
+        "appliedClosureIds": [
+          "21d02102-6231-4d47-98e0-22b9fda2fd98"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-wandering-wizard",
+        "beforeSha256": "1361f3b1e87b0674095377de40bd52c4556de66cd48d7484c92504bec6f66859",
+        "afterSha256": "a7b287d87b951cd16bfe505aeb8ef662544d81f0e0531a6d13827d48a9dd1de2",
+        "beforeRegions": 105,
+        "afterRegions": 106,
+        "lines": 1,
+        "appliedClosureIds": [
+          "e6a7c8b7-bb32-4b9b-a757-b00dba53daf7"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-moon-sorceress",
+        "beforeSha256": "37ac946356b0484e7c8d7e9f0256eb88ff7ef2f79282654b82d04d8647ee9698",
+        "afterSha256": "fe28f3497f4733311eee49a4dcd2fd6b352f6ff6e01cb381ecb002f394d297b4",
+        "beforeRegions": 195,
+        "afterRegions": 198,
+        "lines": 3,
+        "appliedClosureIds": [
+          "e624f49b-9329-4590-b61d-c7c5ff5e43bb",
+          "4ab3e7c3-b5d9-4162-b837-0272de54808b",
+          "3bffd2ea-cf5c-4bf4-96fa-2ed24702db27"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-woodland-ranger",
+        "beforeSha256": "e3ad7ffe6bb67a71f37cf0b20b6170008f3c62b6e869e24cd4f0d3fd559fc386",
+        "afterSha256": "9e34e30440bb609b5a0cd5c3bddcc1da8531e0d88a6cd82bcd6db6d2a976b10e",
+        "beforeRegions": 186,
+        "afterRegions": 190,
+        "lines": 1,
+        "appliedClosureIds": [
+          "2a04dfba-958c-4dfe-9bc5-94af220f8c8a"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-potion-alchemist",
+        "beforeSha256": "2b676df31ede434173f1b10cbe752ea3b9ca9febad98f944fd2a6dd179a60604",
+        "afterSha256": "ce4ffbce2aa117bb85a4ed6a83c54ebf029ff3e142cab9671d154b0c8e6d00e6",
+        "beforeRegions": 254,
+        "afterRegions": 259,
+        "lines": 4,
+        "appliedClosureIds": [
+          "d9fce85c-e7ae-4e57-9fef-a2c305bcbccf",
+          "41e779f8-bd42-4385-9083-076eb597ddb1",
+          "52b79ccd-30a5-4726-944a-31d814f6879c",
+          "be545487-4b34-4aaf-a1de-8c89a3c844b4"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-forest-elf",
+        "beforeSha256": "9267fa3693fc29c4695972ac5af78e8eba1de33b45c3004447f53f29a34a91b3",
+        "afterSha256": "47b54209a189fdb929a7523948d8e57224030417842c12e5f7abc2f3cf5afb34",
+        "beforeRegions": 196,
+        "afterRegions": 198,
+        "lines": 2,
+        "appliedClosureIds": [
+          "05dd2ebe-2e3d-4e0b-97f8-65fa08dd75b1",
+          "21da2767-7ee6-4f29-80de-0f754b3d5254"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-cloud-serpent",
+        "beforeSha256": "47cd356f5640d099a2d33f640dc46172debd98ee2d46963dfad0b02b1290339a",
+        "afterSha256": "6e33224d3005aba01ec25f9471f7eeaa8a1e1a96a3127e485f526eea48f7d533",
+        "beforeRegions": 78,
+        "afterRegions": 90,
+        "lines": 18,
+        "appliedClosureIds": [
+          "97de6959-e6c5-4dd0-afdc-ad67852ef08b",
+          "73bed326-0a26-40d7-967b-bb87d9f7a04a",
+          "83d3361f-56f4-4273-b2b8-50237a744ae8",
+          "e05193e6-c778-4629-a1e8-555940b91b38",
+          "6070191d-a650-4fc0-a766-f2c8a1c9bc9c",
+          "ceb4c25d-3c83-4417-b748-3e18dc9ca6d9",
+          "8f04ad52-cd9c-4196-9105-4c1c30f9c5ce",
+          "24448c85-0e4d-4e72-bc98-8128e78e5068",
+          "fef0f248-2330-4954-89b8-5b0bb64f2382",
+          "6ac028db-ad55-40ac-9bdf-05fd811878d8",
+          "5a86fe18-33f2-4570-aa6a-d1c535557e74",
+          "2a92b6e7-843a-4cca-a409-21107b04d4e8",
+          "57b9998b-4354-49de-95cc-c72a0f7c098e",
+          "09748e80-90fc-4b9f-8710-845ac5f83714",
+          "fd3c56ff-48df-4d30-a28f-8adff5f02dab",
+          "d4e219d6-2fd5-4496-8f59-7532c9bd5505",
+          "015b16e3-a224-4933-bd59-4bb01add0608",
+          "c7b13c6a-e7d2-4e98-a7c1-5b59cfd197fa"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-three-headed-hydra",
+        "beforeSha256": "fd5312662f347817c4a9c77f7db2428a71d50babbe454e382dc9c56f983f1063",
+        "afterSha256": "129c8cff3538b16317c5cd5696b926ad262fb772917a4f3af055005a0c9d6454",
+        "beforeRegions": 158,
+        "afterRegions": 162,
+        "lines": 4,
+        "appliedClosureIds": [
+          "118cd1d5-d2c0-4001-a0df-16a3551e688f",
+          "207ff3b6-2937-463c-90a4-27412413d3f5",
+          "30b8a72a-53bc-49f7-a9ea-2f8159d25640",
+          "8cd77921-79ef-4de8-9a24-6eebff16a597"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-forest-treant",
+        "beforeSha256": "06a0d224334876c24de8f016d7009fdbe10e9cdc3747ad9ebac43e3c18fe3241",
+        "afterSha256": "1430ce6b976ae7adf4172e334d10441c86cf3418450d012ae38fd9f1c0744984",
+        "beforeRegions": 83,
+        "afterRegions": 85,
+        "lines": 2,
+        "appliedClosureIds": [
+          "1f9db119-6f29-489d-b851-a9198431a436",
+          "1378d65b-19ff-44d0-a8c4-92d97f380479"
+        ],
+        "appliedMarkerIds": []
+      }
+    ]
+  },
+  "lineV2": {
+    "assets": [
+      {
+        "assetId": "fall-badger",
+        "beforeSha256": "f0442de9405aa222333c4e30e2601a24af10c0d386c5e2d56ad9e47c03432ecf",
+        "afterSha256": "de6828752ce6737ad23bb64b55e00ee6ca69d1aa3097d77ae1ad02166a73719e",
+        "beforeRegions": 27,
+        "afterRegions": 28,
+        "lines": 1,
+        "appliedClosureIds": [
+          "65a0b2c3-9bce-49ac-9ac0-500af58fb74f"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "horizons-birch-woodland",
+        "beforeSha256": "dd5b30591d7f091fb683ddb3ef141f614ea463d36087764ab769aa32ebf3ba65",
+        "afterSha256": "c8c7a6f9bd5f76e661a583780f38345ff917f446002c38498cb40bfec61f1e2a",
+        "beforeRegions": 143,
+        "afterRegions": 145,
+        "lines": 3,
+        "appliedClosureIds": [
+          "6c3ebbb6-2417-4368-a70c-91cdaedfd3f7",
+          "24cfa092-4299-4c97-8363-68ab466f307c",
+          "29c2b3eb-78f1-49ee-a8de-5d401aa8f571"
+        ],
+        "appliedMarkerIds": []
+      }
+    ]
+  },
+  "lineV3": {
+    "assets": [
+      {
+        "assetId": "horizons-birch-woodland",
+        "beforeSha256": "c8c7a6f9bd5f76e661a583780f38345ff917f446002c38498cb40bfec61f1e2a",
+        "afterSha256": "b551c99447e514c522039966ce02b259b24c7e1b90120c17dd8822e7fa59ffa3",
+        "beforeRegions": 145,
+        "afterRegions": 150,
+        "lines": 6,
+        "appliedClosureIds": [
+          "ecd5b1f3-9146-462f-a48e-3426220a76f2",
+          "c4f66900-9d3d-4a35-b21a-a79693bbb937",
+          "2a520643-5a81-4af1-b19e-6ea3f77da8aa",
+          "437d8eb0-7b6d-404c-bc70-1ffa945642b8",
+          "71564dc7-d26a-4a39-9778-924d1623401d",
+          "65d0b98c-85c7-4a1b-a9c7-c7130f815258"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-moon-sorceress",
+        "beforeSha256": "fe28f3497f4733311eee49a4dcd2fd6b352f6ff6e01cb381ecb002f394d297b4",
+        "afterSha256": "2b754147a16d08ad163a44afed15641d585aba42a909266ad2118dd17582e6f3",
+        "beforeRegions": 198,
+        "afterRegions": 200,
+        "lines": 2,
+        "appliedClosureIds": [
+          "fd8be8ad-36e0-4b2c-8cb6-8dc6c6b6611c",
+          "eb044813-9c20-4e01-839d-3ac4c62638e4"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-forest-elf",
+        "beforeSha256": "47b54209a189fdb929a7523948d8e57224030417842c12e5f7abc2f3cf5afb34",
+        "afterSha256": "4b1a07c983952bc938a1054ad0002b82c973b3208584e6d174339ae8aaf7d38a",
+        "beforeRegions": 198,
+        "afterRegions": 202,
+        "lines": 5,
+        "appliedClosureIds": [
+          "79a38827-3978-4722-991d-ca5a67709e2e",
+          "84e72029-4f0a-4995-b2e1-7736919303f5",
+          "45c8bc57-9d7e-4f34-a806-271b13cc3e9a",
+          "5aadc731-77bb-4496-9194-ed9f3446798b",
+          "72e0e991-340c-416e-a2f1-2a520c1ce4e3"
+        ],
+        "appliedMarkerIds": []
+      }
+    ]
+  },
+  "markerV3": {
+    "assets": [
+      {
+        "assetId": "nursery-rhymes-shepherd-child",
+        "beforeSha256": "78f938d3393ba311592ffeb5d3d24c500249c2f449cc5bbfb0c953df53b4f158",
+        "afterSha256": "ac2fc67896c514dd9fa8a2b88ffffc3b0957652a37cc8064365064331df18c4e",
+        "beforeRegions": 64,
+        "afterRegions": 63,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "6d9916ad-be47-428c-b7d8-303c736259c5"
+        ]
+      },
+      {
+        "assetId": "fall-autumn-tree",
+        "beforeSha256": "9730fc2347cf38e72e52cfa599ca55e8fc134a28944598dc35a71d385e8948f7",
+        "afterSha256": "f3d9cac987a4f02b26774b6a7b4079b03f53722616ee0a33d8911c58808f3ab6",
+        "beforeRegions": 23,
+        "afterRegions": 17,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "1971459e-e3c3-4ed7-856a-bb143a85b1f9",
+          "e47d0f43-8063-4107-8bb9-4189dcfb5b9d",
+          "fee26270-2c00-467b-834e-e1c6cbb4f0fd",
+          "74dcb088-f4bb-4557-8c3f-d5653ee5e278",
+          "ce4b5173-2c8c-47ee-a5e8-7f70c5abeb84",
+          "28b070d9-d036-4d56-a5fe-549f508155a3"
+        ]
+      },
+      {
+        "assetId": "fall-harvest-basket",
+        "beforeSha256": "896efe93d53da9bfc59d93b14f3f263780dddc83e5ff18f5b1cbc06a54e5dc36",
+        "afterSha256": "b42e0dbfa34aace2683b743434bb56107eb4fc5f9fe8bf143cd24363beb0a3b1",
+        "beforeRegions": 136,
+        "afterRegions": 133,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "c37dc444-fe66-4b3a-9df0-a526908182e0",
+          "87af6542-ff1f-43da-a5df-69921a1b38d0",
+          "8bfa6302-4107-4d24-9430-0c4d378c50a2"
+        ]
+      },
+      {
+        "assetId": "fall-wheat-sheaf",
+        "beforeSha256": "7206485921a9a7f65829ae25c9c4d8981e9f79c3dd21371fe605ad9d3a818d1e",
+        "afterSha256": "09ef74c97f9796cb10551d44786989e766c59be508a056919fd732652ca9163b",
+        "beforeRegions": 96,
+        "afterRegions": 93,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "f4cea8b8-b2c9-4f35-883b-4e25b884ab3b",
+          "dfbcb5f2-457d-4a64-8c06-d3de45b034ec",
+          "f5081472-6257-4d8d-99a3-7e10c091f877"
+        ]
+      },
+      {
+        "assetId": "horizons-forest-clearing",
+        "beforeSha256": "04774ab8662fc8d39c2e07d8aed385b3b1cc4db6d0a5a01aba908bcf956bb7d6",
+        "afterSha256": "0fcd53d24161e9419f6d5166296d9a2196b3f490657a3d4c0e35a34b73c12683",
+        "beforeRegions": 101,
+        "afterRegions": 91,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "98580fa6-180a-4c83-9f6e-02eda4b8feb0",
+          "0aa596a3-864f-495a-88c0-8816995c6d89",
+          "16107663-697e-4488-b455-de9adc90b374",
+          "0c2d6e7a-38b1-4b8a-9050-1153208e9f36",
+          "62ed3196-6a47-4215-8f12-ac514595a2f1",
+          "a7500ba7-aacf-420d-8d44-13f82ab834e3",
+          "b6fab30e-2368-4bdd-94b5-4de5125c605e",
+          "5d52d522-e11c-4ad3-a1cf-9ad7e6b3f48b",
+          "2e35beeb-d89f-4449-9e93-8163da057b37",
+          "29bf0532-b96e-4263-9e42-cf6dfcc77594"
+        ]
+      },
+      {
+        "assetId": "horizons-jungle-opening",
+        "beforeSha256": "1dec37470f15b6d4765f26bc31355a00851ba819dffa86cd53eca1b5d84d9948",
+        "afterSha256": "04ae070813df2c79376a9b35b00c1a999e4354538ac5e67bf2e6bb1455d4656a",
+        "beforeRegions": 142,
+        "afterRegions": 136,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "6bbc044b-97e5-4958-a7c0-0cfef6e5a048",
+          "feb971b0-b3df-4763-801f-ab39cbf3ca48",
+          "d211ff8d-9f85-48a6-b637-f1ea5e0db7c4",
+          "d9697a86-2d13-4581-83a0-1ad8b40c2214",
+          "82d83120-80cc-478b-b72d-df63224ecbb2",
+          "502fb20d-23d2-4b48-a520-5e6cd4dbe47f"
+        ]
+      },
+      {
+        "assetId": "horizons-birch-woodland",
+        "beforeSha256": "b551c99447e514c522039966ce02b259b24c7e1b90120c17dd8822e7fa59ffa3",
+        "afterSha256": "33b744e6f4dd0343b36457639f46cd9305fe5661edd99710b927645494c3d8a5",
+        "beforeRegions": 150,
+        "afterRegions": 126,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "4e0c9682-ad58-41cf-8801-b5ff8b5bcf51",
+          "1c27f125-2d2d-40e6-8720-c286fb1c00dc",
+          "0f459bb0-9d58-46a6-8db4-251fe61e711b",
+          "8ee73900-f0eb-4e87-8be7-c9b26c6da35f",
+          "237679bd-030a-452b-8cf1-696b0679332e",
+          "ac2e2280-0072-47f2-88e9-63dcbca81458",
+          "5a5ed566-f7b5-4a1c-ab60-b2a1a5734c2a",
+          "800edb2d-4036-4e94-bbba-b39cdb6fbe64",
+          "af99656d-b38c-402c-ab2c-f2f60b912c0d",
+          "d58afa92-2df4-4dc3-a19e-0d5ea26a6a32",
+          "0166b139-ba38-4f05-b7d1-a33bcb7c546f",
+          "b0c4589e-a106-4c6a-b226-bdfac27c857d",
+          "da7ca8ea-cb31-4012-a907-0a90558f936c",
+          "8bb1f2ac-6375-4238-92fc-de233992018c",
+          "9cc9eb52-9b75-4762-a379-9009bdc3b2a2",
+          "acd8d3e4-19bb-4a2a-905f-e1a2350e2ca3",
+          "c62959a0-4229-4047-9e51-562a2c8319a4",
+          "3d241d37-d1c4-4b44-9c14-4be8990ec916",
+          "58d63839-9f42-4e9a-bc44-13a2c1720852",
+          "590e47d9-7f42-4368-8afa-c1724e736ce2",
+          "5ff57820-862b-4c67-9bbd-69f74ec6e451",
+          "5b04f5c5-c7ae-487d-b035-f287695b72a8",
+          "c0dfbc88-4fb8-4981-96ae-92410ee378e6",
+          "9b517a5b-dd30-41e6-a2d7-d5d9bba1c677"
+        ]
+      },
+      {
+        "assetId": "fantasy-moon-sorceress",
+        "beforeSha256": "2b754147a16d08ad163a44afed15641d585aba42a909266ad2118dd17582e6f3",
+        "afterSha256": "46456466a47e4833e4b94f89191c51909c5e18a594b11fb6df646efe5d528d59",
+        "beforeRegions": 200,
+        "afterRegions": 199,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "0b8252b4-5715-4481-ad43-374dc56388e9"
+        ]
+      },
+      {
+        "assetId": "fantasy-woodland-ranger",
+        "beforeSha256": "9e34e30440bb609b5a0cd5c3bddcc1da8531e0d88a6cd82bcd6db6d2a976b10e",
+        "afterSha256": "16175fc14e3b8c6488d0c21f7d6946392f515b81c5f1097118bb0463fe3ca646",
+        "beforeRegions": 190,
+        "afterRegions": 188,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "29489ebd-99c6-473b-b702-9a57e713794a",
+          "d7e4bf5d-40fb-4957-bb29-4537dbdb3bdc"
+        ]
+      },
+      {
+        "assetId": "fantasy-forest-elf",
+        "beforeSha256": "4b1a07c983952bc938a1054ad0002b82c973b3208584e6d174339ae8aaf7d38a",
+        "afterSha256": "4b1a07c983952bc938a1054ad0002b82c973b3208584e6d174339ae8aaf7d38a",
+        "beforeRegions": 202,
+        "afterRegions": 202,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "36f8678b-8778-4eb8-8714-61cfd178bf97",
+          "d8822386-bd23-484d-8cd5-f974e4fce93b",
+          "b0082c63-aab9-4757-8b68-37ea3b5221ea",
+          "437a6d41-c080-4895-a59e-8c5a01dce100"
+        ]
+      }
+    ]
+  },
+  "lineV4": {
+    "assets": [
+      {
+        "assetId": "nursery-rhymes-cradle-tree",
+        "beforeSha256": "328f96c48f75eaf2e63e0aeac1087f8533491fc54c4e0070e5c4e1a3db3ba7e6",
+        "afterSha256": "32b443472f028d23dd9c7909a8935dd40c46dca5262f17e70faac2c203d1ba54",
+        "beforeRegions": 42,
+        "afterRegions": 43,
+        "lines": 1,
+        "appliedClosureIds": [
+          "3b5cc866-314d-4a23-883c-ab16bc0e823a"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fall-badger",
+        "beforeSha256": "de6828752ce6737ad23bb64b55e00ee6ca69d1aa3097d77ae1ad02166a73719e",
+        "afterSha256": "132caf9340e56e47654b4322e6e692ef207cb016d116e8e1cbd728495fecad1d",
+        "beforeRegions": 28,
+        "afterRegions": 28,
+        "lines": 1,
+        "appliedClosureIds": [
+          "42a2e952-61c0-4292-bde7-7b7ae9dab996"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "horizons-birch-woodland",
+        "beforeSha256": "33b744e6f4dd0343b36457639f46cd9305fe5661edd99710b927645494c3d8a5",
+        "afterSha256": "78b177e4a503700e68fe3ec8784a2bb03e888132e6cacab5ab0999ff86202001",
+        "beforeRegions": 126,
+        "afterRegions": 130,
+        "lines": 6,
+        "appliedClosureIds": [
+          "2b8b8005-c95b-447c-ad39-9f9696b3a9ea",
+          "e30146ad-069e-43be-979c-b6334ef230ed",
+          "b3be9b9b-370c-4bc9-b1d9-197e7d1c8de0",
+          "590fc1a3-1ea3-4597-b500-7d0f7aa18a26",
+          "9d106549-57c7-4196-a04b-bfcf3bf4d152",
+          "6a56788f-9937-4432-9d66-048a33f2499c"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "horizons-forest-clearing",
+        "beforeSha256": "0fcd53d24161e9419f6d5166296d9a2196b3f490657a3d4c0e35a34b73c12683",
+        "afterSha256": "9373538d7e2e83f852b0022755fe8482d9b47c91088d638de37fb9824f502405",
+        "beforeRegions": 91,
+        "afterRegions": 94,
+        "lines": 3,
+        "appliedClosureIds": [
+          "4a5a4261-249f-46ad-942e-4df06e7365d9",
+          "faa04dfb-f63d-4ba2-a23a-66000b43014a",
+          "ed5f8954-7dc8-4fa8-92dc-ad5f2160fc3f"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fantasy-forest-elf",
+        "beforeSha256": "4b1a07c983952bc938a1054ad0002b82c973b3208584e6d174339ae8aaf7d38a",
+        "afterSha256": "6155503a14719f99e78807aa0e5885f2736b71193261665244596192e2c36086",
+        "beforeRegions": 202,
+        "afterRegions": 204,
+        "lines": 2,
+        "appliedClosureIds": [
+          "0dd1420a-3a14-406e-a753-e8cea4b84165",
+          "75f23523-d143-4b38-b60a-3adf4a37a95f"
+        ],
+        "appliedMarkerIds": []
+      }
+    ]
+  },
+  "markerV4": {
+    "assets": [
+      {
+        "assetId": "nursery-rhymes-shepherd-child",
+        "beforeSha256": "ac2fc67896c514dd9fa8a2b88ffffc3b0957652a37cc8064365064331df18c4e",
+        "afterSha256": "24b247336bc767e8ff96959b4806cbad00cac2a82a44f7abc18cd7f17a9e0095",
+        "beforeRegions": 63,
+        "afterRegions": 62,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "4ca99bab-f1d5-4218-8f6d-2ee7a421992c"
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-jack-be-nimble",
+        "beforeSha256": "7954cf82f7f71a95fe81e9237a0ce700ef703595ae6563aeb6be514ac01b90ba",
+        "afterSha256": "5495b4a22d701f6ef2e000d7de18c805c82ae29a2f0769a450515affc0fc5b9c",
+        "beforeRegions": 53,
+        "afterRegions": 52,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "f6dfacc4-a006-48bf-9f12-254fbc73ff74"
+        ]
+      },
+      {
+        "assetId": "horizons-birch-woodland",
+        "beforeSha256": "78b177e4a503700e68fe3ec8784a2bb03e888132e6cacab5ab0999ff86202001",
+        "afterSha256": "78b177e4a503700e68fe3ec8784a2bb03e888132e6cacab5ab0999ff86202001",
+        "beforeRegions": 130,
+        "afterRegions": 130,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "3dfd2fa1-819f-46cb-ba28-00401b1807a4",
+          "ce97837a-4c7f-4890-b0a8-0b66ef6ebea8",
+          "13f82edc-b9ba-49c6-81be-b3be499a39bb"
+        ]
+      },
+      {
+        "assetId": "horizons-forest-clearing",
+        "beforeSha256": "9373538d7e2e83f852b0022755fe8482d9b47c91088d638de37fb9824f502405",
+        "afterSha256": "9373538d7e2e83f852b0022755fe8482d9b47c91088d638de37fb9824f502405",
+        "beforeRegions": 94,
+        "afterRegions": 94,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "d4643aed-10fd-4d90-95bd-0779d5d29f32"
+        ]
+      },
+      {
+        "assetId": "fantasy-forest-elf",
+        "beforeSha256": "6155503a14719f99e78807aa0e5885f2736b71193261665244596192e2c36086",
+        "afterSha256": "58f25c571d092fee06f6bb0c6d0d1458907a75f25c12f4071a08626aaa3a9fd6",
+        "beforeRegions": 204,
+        "afterRegions": 202,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "565f8711-cfbc-4ce3-874e-016b85f0658b",
+          "128b4cc4-cfad-4331-83cf-f560eb0fb099",
+          "dc4e9c87-3534-4a9f-a130-cc7f035cf681"
+        ]
+      }
+    ]
+  },
+  "lineV5": {
+    "assets": [
+      {
+        "assetId": "nursery-rhymes-shepherd-child",
+        "beforeSha256": "24b247336bc767e8ff96959b4806cbad00cac2a82a44f7abc18cd7f17a9e0095",
+        "afterSha256": "0f6e986f0fe5c8a74824a493797afbdf8d763a1a80a2da8024dcd93e6760a26f",
+        "beforeRegions": 62,
+        "afterRegions": 65,
+        "lines": 2,
+        "appliedClosureIds": [
+          "db63a63c-9a20-445f-846e-3fc8e51f59de",
+          "5f9a238f-616a-4f0c-9c1b-188d3c8ab72c"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "nursery-rhymes-baby-cradle",
+        "beforeSha256": "7ca556b3754a02752b9ed9b74df6d8b5a7a22b7c61fd366b8ac86957e7e26174",
+        "afterSha256": "4955cce31809a359e1470529e63eac1d345c54e3ba571339e23e967d63b2c1f2",
+        "beforeRegions": 102,
+        "afterRegions": 103,
+        "lines": 1,
+        "appliedClosureIds": [
+          "4cd51beb-5716-4819-a3f3-1298916d3a7b"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "nursery-rhymes-schoolhouse",
+        "beforeSha256": "9b153f2ef06ea15f0be2f6d3bc1f8b93d39717f200a1df8b652604070de84d18",
+        "afterSha256": "de2573c6131c3c6767215aaba3693536a081b0438769be0bb099d527e63d3a42",
+        "beforeRegions": 160,
+        "afterRegions": 166,
+        "lines": 6,
+        "appliedClosureIds": [
+          "d5974d8f-d7e7-4d65-b407-e6e09af5e6b4",
+          "3ffd82a6-b3cf-486d-9d8b-d5dcd157541b",
+          "48f0c0b6-4213-4b00-ba0f-b8de574968aa",
+          "3a06f789-8338-4afb-976d-905f7c2b801b",
+          "fd7b0c20-cacb-469c-a38a-474958c8c72b",
+          "f5d3eb48-4073-4692-ae68-62f8b0d094d3"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "fall-apple-basket",
+        "beforeSha256": "a7e3c220e54972f95510c535cdf848248d80346aa0f31ee28cab9dbafc43b6ca",
+        "afterSha256": "5fcabbb20b9e637abd9203440240ae801b1092500634c148a7a2daa4af19981b",
+        "beforeRegions": 109,
+        "afterRegions": 110,
+        "lines": 1,
+        "appliedClosureIds": [
+          "c824103f-0051-43bf-9a08-d11c9e28d3a2"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "horizons-autumn-woodland",
+        "beforeSha256": "00c085f36f052d7410fc3f61bb9c612724bf0c2e38ccdb36158dfab1501ac814",
+        "afterSha256": "a464be89f03ec4aeea2698fe1bff6323c1733842d4238a061722c533887b6ede",
+        "beforeRegions": 77,
+        "afterRegions": 78,
+        "lines": 1,
+        "appliedClosureIds": [
+          "699368ab-1205-4205-aa9a-2822202b1526"
+        ],
+        "appliedMarkerIds": []
+      },
+      {
+        "assetId": "category-expansion-fire-engine",
+        "beforeSha256": "d43f9bcf8ab6ae64f917f5273493715e99fa952053cfcae39c8e4ab6a4a01c89",
+        "afterSha256": "28060f2f7da3f0c4c44ff1d83798c0fd49a40b5690328349c637b356da771129",
+        "beforeRegions": 217,
+        "afterRegions": 219,
+        "lines": 2,
+        "appliedClosureIds": [
+          "b8a138c3-1421-4765-9a18-b0fbac0e4c7a",
+          "3ef616ae-03a5-46d3-b1fc-d8cab599d7dd"
+        ],
+        "appliedMarkerIds": []
+      }
+    ]
+  },
+  "markerV5": {
+    "assets": [
+      {
+        "assetId": "tree",
+        "beforeSha256": "04f74130ac350399cb44bf7f3212b228eb878201f78e093b8b1e67304938e230",
+        "afterSha256": "8690753f2bd285a25b36eb5c7ac0d882d70d122f6cccc09b4b2335c6e4f3dbe0",
+        "beforeRegions": 2,
+        "afterRegions": 2,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "0de3290b-064d-41ef-a749-49b2e001d718"
+        ]
+      },
+      {
+        "assetId": "space-spaceship",
+        "beforeSha256": "3d178318081cb9d942714cc3facaeec150eeef52bc50ebc798c2bc2fc1a9c51a",
+        "afterSha256": "6d98c891a53b38b8507888f357d2c1be68b1b8b42029c19b1fcd5825878abfaf",
+        "beforeRegions": 536,
+        "afterRegions": 538,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "edc0e90c-417c-4634-9d7a-4bbf0aa30872",
+          "1cf274bb-5250-4761-b41b-7c7c34cb8128"
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-baby-cradle",
+        "beforeSha256": "4955cce31809a359e1470529e63eac1d345c54e3ba571339e23e967d63b2c1f2",
+        "afterSha256": "4955cce31809a359e1470529e63eac1d345c54e3ba571339e23e967d63b2c1f2",
+        "beforeRegions": 103,
+        "afterRegions": 103,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "d55419ea-2883-4881-b65d-ddc90f9b34cb"
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-jill",
+        "beforeSha256": "133d66274ca371f47259425993ab7e2e28e1f5f3f001531fa1cbfcb0601ab6cc",
+        "afterSha256": "dc180b18f3daa5a3854b4a9a00c9b76d2592c5e522cd05cdf450abe5011e522d",
+        "beforeRegions": 67,
+        "afterRegions": 66,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "0ae15ac6-45da-4ce2-94fc-e68c957ad2e4"
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-stone-well",
+        "beforeSha256": "38c053116a0b329738b75a9d253e193aaaaf7649a25bc1759a03327d1de8755c",
+        "afterSha256": "5c143ae479511c5052eb68c5cdca561393553b3215eed7e710199ab90dd49091",
+        "beforeRegions": 165,
+        "afterRegions": 164,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "f7a4670e-7055-443d-8a87-0d3485152bce"
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-schoolhouse",
+        "beforeSha256": "de2573c6131c3c6767215aaba3693536a081b0438769be0bb099d527e63d3a42",
+        "afterSha256": "1d82a8134df1149cbeed56a3a6c098cb623da1411487a50baff42d936d8fd5af",
+        "beforeRegions": 166,
+        "afterRegions": 164,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "123c98d3-5c63-4df1-9559-c9fcccbab71c",
+          "e6e3e67f-f43a-4948-a7c1-4f1777f23b2f"
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-miss-muffet",
+        "beforeSha256": "32964ea81f354074910907f27cf9633b61ae673edc6a649652e12f16a5009bf0",
+        "afterSha256": "19f566438a1e21614364d7b9db1ec65b8c9f7829d8775e4e50d4578400bd0534",
+        "beforeRegions": 145,
+        "afterRegions": 144,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "926ce5c6-f268-40ee-9feb-90281484c852"
+        ]
+      },
+      {
+        "assetId": "nursery-rhymes-baker",
+        "beforeSha256": "e33b022e9d8821c3277b4d8d191c86b6f51a8519df1c4aed00cb4c5206611312",
+        "afterSha256": "05058233153e6b8c8aaa61da4f92899c6bb9ec91104c2c8190833f8d74ab6b50",
+        "beforeRegions": 54,
+        "afterRegions": 52,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "8278d054-98a9-4377-bdc2-be3c1c38c14b",
+          "f1f6abba-e1d4-43de-b29b-84636719a6ab"
+        ]
+      },
+      {
+        "assetId": "fall-apple-basket",
+        "beforeSha256": "5fcabbb20b9e637abd9203440240ae801b1092500634c148a7a2daa4af19981b",
+        "afterSha256": "5fcabbb20b9e637abd9203440240ae801b1092500634c148a7a2daa4af19981b",
+        "beforeRegions": 110,
+        "afterRegions": 110,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "e18a0a58-1461-4254-9427-2378e42921a9"
+        ]
+      },
+      {
+        "assetId": "fall-harvest-lantern",
+        "beforeSha256": "baaeb69dcd1bd1533829d0a0e25e1bec9d1b6ec32923ed27f4368461021e9788",
+        "afterSha256": "7b9a01b0f05d3b9dd05656025ddff9a56f53391fabe32336c6f5fabb0444d05c",
+        "beforeRegions": 42,
+        "afterRegions": 39,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "12352e0d-9a52-46d6-b4ce-31b2759bc7b9",
+          "1153d424-7053-4b33-aa36-449fab821b9a",
+          "6a705944-49ee-4e83-954c-31e09b8fc7b1"
+        ]
+      },
+      {
+        "assetId": "horizons-autumn-woodland",
+        "beforeSha256": "a464be89f03ec4aeea2698fe1bff6323c1733842d4238a061722c533887b6ede",
+        "afterSha256": "15a9357e3e196d75c93647232e75a129277f9b30164878b92fb292f42756d12b",
+        "beforeRegions": 78,
+        "afterRegions": 77,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "4da8a8a6-4aca-4d97-abe5-8f3583a5015e",
+          "4e39fc81-e759-42fb-9a20-324f460a1755"
+        ]
+      },
+      {
+        "assetId": "fantasy-woodland-gnome",
+        "beforeSha256": "5524b5ad4937da92cb8e2f51581ecbe022a3639c29bbfebc15e594dff766dbf0",
+        "afterSha256": "8a136ebc05c9b41b7aa75fc83cab9b05afd535e2ed37acaf755445d073e880a5",
+        "beforeRegions": 56,
+        "afterRegions": 55,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "008e3431-faa2-4a57-aa8a-c0de75c2b6ee"
+        ]
+      },
+      {
+        "assetId": "fantasy-cave-troll",
+        "beforeSha256": "bc73b5f65cd0388cae05a0fb413ee4d4ef54e0fdd2444d131bffa4c9c807f47d",
+        "afterSha256": "4cc62cf884fa6e4a15ecd2fa121e29702539ec51ba809ab1fba09eaa30b917f3",
+        "beforeRegions": 80,
+        "afterRegions": 79,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "7d207b92-d741-468c-a629-256b8d4b9318"
+        ]
+      },
+      {
+        "assetId": "fantasy-cave-bat",
+        "beforeSha256": "0a89d78be60b7b1f70167902b00bcf71d46ed3b561b801eea73269315c4d78e2",
+        "afterSha256": "d0bf5eaffdabddf0b5860532d03a0728da7f09efdfe615a749b3fe4b5b4d8466",
+        "beforeRegions": 36,
+        "afterRegions": 37,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "355a8d9c-d175-465a-b985-22e8c7836c47"
+        ]
+      },
+      {
+        "assetId": "interiors-office-chair",
+        "beforeSha256": "0c50225a11851a6d8f9c5c133b91f7a5325b41c0a55663a6543554209ed93ab0",
+        "afterSha256": "65b490e6aceee1eee2b4270ee3d22684ca084a2ba91b03bbab4dba73055989be",
+        "beforeRegions": 63,
+        "afterRegions": 65,
+        "lines": 0,
+        "appliedClosureIds": [],
+        "appliedMarkerIds": [
+          "bf4b2e16-bc70-4553-bc7e-d3db347eb9d0",
+          "0364a9c9-cb93-48bf-bb4a-fc692228e7ff"
+        ]
+      }
+    ]
+  }
+}

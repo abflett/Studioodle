@@ -101,7 +101,7 @@ The budget counts `width * height * 4`, excluding main-canvas pixels, geometry,
 undo, worker copies, browser/GPU overhead and storage. It is not a total app memory
 limit. The advanced 26-sticker fixture used roughly 9?60 MiB across its measured
 views. A repeated 128 MiB comparison did not establish a response-time advantage,
-so the default remains 64 MiB. See [the follow-up measurements](DISPLAY-CACHE-PERFORMANCE.md).
+so the default remains 64 MiB. See [the follow-up measurements](PERFORMANCE.md).
 
 Worker jobs carry the length of the already-compacted, disjoint color prefix.
 Only new coverage must be compared against those partitions. Accepted results

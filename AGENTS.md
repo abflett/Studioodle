@@ -1,5 +1,10 @@
 # Repository Working Agreement
 
+Read [current context](docs/CONTEXT.md) at the start of a new thread. Use the
+checked-out repository root, not an unrelated initial client working directory.
+[README.md](README.md) indexes supported commands and current docs.
+[REFINEMENT-TASKS.md](docs/REFINEMENT-TASKS.md) is the single implementation backlog.
+
 ## Development and platform builds
 
 Use the Vite dev server for routine development and testing. Build Windows/Tauri or any other native platform only when the user explicitly requests that platform build. Do not automatically build native apps or installers after features, fixes, asset changes, or commits. Native builds will be requested occasionally as needed; routine web checks do not require them.
@@ -18,6 +23,26 @@ This app is evolving before version 1 and has no public release. Breaking change
 
 Keep original sticker art and generation metadata under `art/source/stickers/<pack>/` and original interface paintings under `art/source/interface/`. Accepted editable SVG sources may sit beside their untouched originals. Do not commit generated catalogs, conversion intermediates, diagnostic images or trial output; write those under ignored `work/` folders. Promote useful regressions into `tests/` instead of retaining an experiments tree. The sole source of bundled page layouts is `src/assets/coloringBook.json`; tools must read it rather than maintain duplicate scene builders.
 
+
+## Reviewer and cleanup boundaries
+
+The reviewer is standalone under `tools/artwork-review/`; do not import it or its
+history data into `src/` or the normal app Vite/TypeScript project. Reviewer edits
+need `review:typecheck` and `test:review`; entry/build changes also need
+`review:build`. Preserve `studioodle-artwork-review-v1`, the user's annotations and
+origin, and the compact revision graph that retires applied instructions without
+losing later notes/markers/lines. New immutable review inputs go in `art/reviews/`;
+apply lines before regenerating regions, then evaluate markers by coordinates.
+
+`work/`, `dist/` and local `release/` packages are disposable generated output;
+never place required tools or sole authoring inputs there. Portable executables
+belong in ignored `tools/bin/`, or use `POTRACE_PATH`. Keep originals/accepted ink
+under `art/source/`. Completed reports/exports belong in Git history; retain only
+consumed reviewer transitions and focused test fixtures. Update current docs and
+`docs/CONTEXT.md` when workflow/state changes. Do not add another historical backlog.
+Before recursive removal/moving, verify absolute targets remain in the repository;
+use literal PowerShell paths. Keep installed dependencies/build caches unless they
+are explicitly part of cleanup or obsolete output.
 
 ## Undo policy
 

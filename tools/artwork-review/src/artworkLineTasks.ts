@@ -1,18 +1,13 @@
-import progress from '../../../docs/studioodle-artwork-review-2026-10-23.progress.json';
-import lineProgress from '../../../docs/studioodle-line-repairs-2026-10-24.progress.json';
-import lineProgressV2 from '../../../docs/studioodle-line-repairs-2026-10-24v2.progress.json';
-import lineProgressV3 from '../../../docs/studioodle-line-repairs-2026-10-24v3.progress.json';
-import markerProgressV3 from '../../../docs/studioodle-marker-repairs-2026-10-24v3.progress.json';
-import lineProgressV4 from '../../../docs/studioodle-line-repairs-2026-10-24v4.progress.json';
-import markerProgressV4 from '../../../docs/studioodle-marker-repairs-2026-10-24v4.progress.json';
-import lineProgressV5 from '../../../docs/studioodle-line-repairs-2026-10-24v5.progress.json';
-import markerProgressV5 from '../../../docs/studioodle-marker-repairs-2026-10-24v5.progress.json';
+import history from '../data/repair-history.json';
 import type { AssetReview } from './artworkReviewModel';
 
+const { initial: progress, lineV1: lineProgress, lineV2: lineProgressV2, lineV3: lineProgressV3, markerV3: markerProgressV3, lineV4: lineProgressV4, markerV4: markerProgressV4, lineV5: lineProgressV5, markerV5: markerProgressV5 } = history;
+
 export const lineRepairTasks = progress.assets.filter(asset => asset.notes.trim() || asset.operations.some(operation => operation.status === 'deferred' && operation.kind === 'add-region'));
-const markerPasses = [...markerProgressV3.assets, ...markerProgressV4.assets, ...markerProgressV5.assets];
-const revisionPasses = [...lineProgress.assets, ...lineProgressV2.assets, ...lineProgressV3.assets, ...markerProgressV3.assets, ...lineProgressV4.assets, ...markerProgressV4.assets, ...lineProgressV5.assets, ...markerProgressV5.assets];
+const markerPasses: RecordedRepair[] = [...markerProgressV3.assets, ...markerProgressV4.assets, ...markerProgressV5.assets];
+const revisionPasses: RecordedRepair[] = [...lineProgress.assets, ...lineProgressV2.assets, ...lineProgressV3.assets, ...markerProgressV3.assets, ...lineProgressV4.assets, ...markerProgressV4.assets, ...lineProgressV5.assets, ...markerProgressV5.assets];
 interface RepairMetadata { assetId: string; beforeSha256: string; afterSha256: string; beforeRegions: number; afterRegions: number; lines: number }
+interface RecordedRepair extends RepairMetadata { appliedClosureIds: string[]; appliedMarkerIds: string[] }
 // Metadata includes marker-only repairs; browse histories remain bounded to one pass.
 const latestMetadata = new Map<string, RepairMetadata>();
 for (const pass of revisionPasses) {

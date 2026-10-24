@@ -1,27 +1,13 @@
 # Remaining refinement and validation
 
-The implementation items from the [architecture review](ARCHITECTURE-REVIEW.md)
-are complete. There is no planned engine migration or compatibility work.
-Keep additions driven by observed problems and requested features.
+Current open work, in practical priority order. Completed architecture/source reviews
+and one-time measurements live in Git history; current behavior is documented in
+[architecture](ARCHITECTURE.md), [performance](PERFORMANCE.md) and the feature guides.
+There is no planned engine migration or old-save compatibility work.
 
-## Source-review follow-ups
+## Open implementation work
 
-These are open findings from the [source review](SOURCE-REVIEW.md), in practical
-priority order. Confirmed code paths are distinguished from device-dependent risks.
-No compatibility layer or engine replacement is proposed.
-
-### 1. Load saved drawings on demand (completed)
-
-The library now lists small ordered summaries and loads at most five full drawings
-in priority order: current, next, previous, two ahead, two behind. Navigation
-cancels obsolete reads, evicts unrelated drawings and ignores late results.
-Summaries and artwork save/delete atomically in the same IndexedDB database.
-Existing preview loading feedback remains, with retry for unavailable drawings.
-A 120-complex-drawing browser profile verified ordering, the five-record bound and
-collection of evicted records; storage and UI regressions cover rollback,
-selection, delete/undo, reopening and export. See [measurements and limits](PICTURE-LIBRARY.md).
-
-### 2. Define background save/recovery behavior (high priority, policy needed)
+### 1. Define background save/recovery behavior (high priority, policy needed)
 
 `ui/useEditorSaving.ts` saves every 60 seconds or on explicit/native guarded exit.
 A browser tab/OS process killed between saves can lose that interval; no page-hide
@@ -32,7 +18,7 @@ default. Verify restoration after backgrounding/discard and no burst of duplicat
 writes while input/fill is pending. IndexedDB remains device-local storage, not a
 backup; browser storage eviction is still possible.
 
-### 3. Recover from brush/render faults (high priority, fault-path gap)
+### 2. Recover from brush/render faults (high priority, fault-path gap)
 
 Bucket rollback and save failures are now covered. However,
 `EditorSession.begin/move/end/update` still call synchronous brush geometry without
@@ -44,7 +30,7 @@ rollback the affected gesture and provide a useful
 retry/save route while preserving the last valid artwork. Do not hide real errors
 or repeatedly redraw the same invalid state in a loop.
 
-### 4. Bound and cancel expensive exports (medium priority, confirmed work location)
+### 3. Bound and cancel expensive exports (medium priority, confirmed work location)
 
 `editor/pictureSvg.ts` builds DOM/path strings and explicit pattern geometry on the
 main thread; `app/picturePdf.ts` also converts on the main thread. PNG has a
@@ -56,7 +42,7 @@ between safe batches, add operation cancellation/progress and budget temporary
 allocations/output bytes. Keep exact curves and vector printing; a PDF converter
 requiring DOM cannot simply be moved unchanged to a worker.
 
-### 5. Make custom-page edits atomic (medium priority, confirmed partial-write path)
+### 4. Make custom-page edits atomic (medium priority, confirmed partial-write path)
 
 `ui/SelectionScreen.tsx` deletes a custom page from `workshopRepository` and then
 `coloringPageRepository`. A failure on the second write can leave only the first
@@ -66,7 +52,7 @@ paths. Consider one authoritative page repository/record so revisions and quick
 steps; require either a complete delete or the previous page to remain available.
 This concerns templates/revisions, not the IndexedDB painted-picture store.
 
-### 6. Align background placement with permitted document sizes (medium priority)
+### 5. Align background placement with permitted document sizes (medium priority)
 
 `Artwork.add` scales interior/horizon stickers to page width without the manual
 transform's scale cap; `pictureValidation.ts` rejects scales above 4. A permitted
@@ -76,7 +62,7 @@ Choose one consistent policy for automatic background sizing versus validation,
 then round-trip a maximum-size scene with added scenery. Saves now reject invalid
 snapshots explicitly instead of silently losing them on reload.
 
-### 7. Measure remaining interaction and decode hot paths (medium priority)
+### 6. Measure remaining interaction and decode hot paths (medium priority)
 
 `Artwork.move` may scan an entire local silhouette to find a visible point;
 `Artwork.overlaps` scans overlapping page bounds, and moving a sticker clears
@@ -89,7 +75,7 @@ peak allocations and definition rebuilds, then bound total transient bytes witho
 weakening hit accuracy. These costs were identified by inspection, not newly
 benchmarked in this pass.
 
-### 8. Finish async UI/input behavior checks (medium priority, behavior choice)
+### 7. Finish async UI/input behavior checks (medium priority, behavior choice)
 
 - `EditorPreview` can still complete a pending sticker load after its picker is
   closed; its placement uses the initiating view's captured coordinates. Decide
@@ -105,7 +91,7 @@ benchmarked in this pass.
   SVG/print, pointer capture, touch routing, canvas budgets and CSS still need
   Firefox and Safari/iPad coverage before multiplatform claims.
 
-### 9. Clarify browser offline/install expectations (lower priority, product choice)
+### 8. Clarify browser offline/install expectations (lower priority, product choice)
 
 There is no service worker or web-install manifest, and sticker sources load
 lazily. A running tab can work with already loaded resources, but an offline
@@ -135,11 +121,12 @@ relying on incidental HTTP cache behavior.
 
 ## Artwork repair follow-up
 
-The first review-driven repair pass and effort grades are tracked in
-[ARTWORK-REPAIR-LOG.md](ARTWORK-REPAIR-LOG.md), with exact marker IDs and coordinates
-in the linked progress JSON. Read those records before starting another art pass;
-the original export is retained unchanged. Open line closures and the conflicting
-add/remove request require discussion before further work.
+All submitted instructions through the full-library v5 pass have been applied.
+No instruction from that pass remains deferred. Continue inspecting the repaired
+assets with History 1 (v5, 17 assets) and History 2 (v4, seven assets). General
+[visual review candidates](../art/README.md#visual-review-candidates) are not confirmed
+new defects. Use the [reviewer](ARTWORK-REVIEW.md) for new observations and the
+[repair workflow and effort guide](ARTWORK-REPAIR-LOG.md) for the next pass.
 
 ## Optional future feature
 

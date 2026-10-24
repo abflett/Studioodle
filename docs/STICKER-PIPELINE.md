@@ -29,7 +29,7 @@ node scripts/build-stickers.mjs <raster-source-id> --inspect=work/inspection/<as
 ```
 
 Requires ImageMagick and Potrace. Set `POTRACE_PATH`, or install the portable binary at
-`work/tools/potrace/potrace-1.16.win64/potrace.exe`. Conversion intermediates live in
+`tools/bin/potrace/potrace-1.16.win64/potrace.exe`. Conversion intermediates live in
 `work/assets/`; inspection captures are also generated output. The inspection option
 captures the current numbered stages without replacing runtime art or catalogs.
 `--inspect-threshold=<percent>` supports diagnostic threshold comparisons for raster
@@ -145,7 +145,7 @@ against different region IDs. Original art and saved page layouts are preserved.
 
 ## Repairs from an artwork review
 
-`node scripts/plan-artwork-repairs.mjs docs/review.json` checks review checksums and
+`node scripts/plan-artwork-repairs.mjs art/reviews/review.json` checks review checksums and
 writes a conservative plan plus target IDs under `work/artwork-repair-pass/`.
 Use `--out=work/another-repair-pass` for a later pass; a promoted stage cannot be
 replanned in place, preserving its before snapshots and audit trail.
@@ -176,7 +176,7 @@ the review checksums intentionally stop matching modified assets.
 For exported A/B or curved closure geometry, run:
 
 ```sh
-node scripts/prepare-line-repairs.mjs docs/line-review.json --out=work/line-pass --apply
+node scripts/prepare-line-repairs.mjs art/reviews/line-review.json --out=work/line-pass --apply
 node scripts/rebuild-stickers.mjs --ids-file=work/line-pass/targets.json --out=work/line-pass
 node scripts/audit-stickers.mjs work/line-pass
 # Inspect work/line-pass/review.html before promoting.
@@ -196,12 +196,13 @@ art stay unchanged. Staging, resume, audit and promotion hash both source inputs
 so the edits cannot be silently lost or reused after an ink source changes.
 Normal small-region cleanup still runs after region rediscovery.
 
-Record the promoted before/after hashes and applied closure IDs in a repair ledger
-like `studioodle-line-repairs-2026-10-24.progress.json`. The inspector uses that ledger
-to select the exact rebuilt assets, retire applied proposals, refresh region IDs,
-and reopen those assets for inspection without replaying lines or deleting notes.
-The original exported JSON stays untouched. Regenerated IDs use a fresh development
-drawing namespace; no old-save compatibility is added.
+Record promoted before/after hashes, region counts and applied instruction IDs in
+`tools/artwork-review/data/repair-history.json`; see its [schema/workflow notes](../tools/artwork-review/data/README.md).
+The inspector uses those transitions to retire applied proposals, refresh region
+references and reopen changed assets without losing later notes. Rotate the two
+recent history sets. Keep the export unchanged during the pass; after verification
+and commit, remove the completed input from `art/reviews/` (Git retains it).
+Regenerated IDs use a fresh development drawing namespace, without old-save fallbacks.
 
 ### Markers after an explicit line pass
 
@@ -210,7 +211,7 @@ that line stage, derive a working review with the same point coordinates and ref
 region IDs:
 
 ```sh
-node scripts/prepare-marker-repairs.mjs docs/review.json --line-stage=work/line-pass --out=work/marker-pass
+node scripts/prepare-marker-repairs.mjs art/reviews/review.json --line-stage=work/line-pass --out=work/marker-pass
 node scripts/plan-artwork-repairs.mjs work/marker-pass/review.json --out=work/marker-pass --apply
 node scripts/rebuild-stickers.mjs --ids-file=work/marker-pass/targets.json --out=work/marker-pass
 node scripts/audit-stickers.mjs work/marker-pass
