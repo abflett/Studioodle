@@ -24,33 +24,36 @@ export const draggingCursorGraphics = {
   pan: graphic(grabbing, 20, 24, 'grabbing'),
   select: graphic(move, 20, 20, 'move'),
 };
-function darkTheme() { return document.documentElement.dataset.theme === 'dark'; }
-export function cursorImage(graphic: CursorGraphic, color: number, dark = darkTheme()) {
+export function cursorImage(graphic: CursorGraphic, color: number) {
   const paint = `#${color.toString(16).padStart(6, '0')}`;
-  return `data:image/svg+xml,${encodeURIComponent(graphic.svg.replaceAll('#233b48', dark ? '#f6f0e2' : '#35545c')
-    .replaceAll('#27465a', dark ? '#b7d5ce' : '#3e747d')
-    .replaceAll('#fff8e9', dark ? '#293b56' : '#faf4e6')
-    .replaceAll('#e3e9e4', dark ? '#344761' : '#e0e7ec')
-    .replaceAll('#c5d5d0', dark ? '#8390a8' : '#adc5c5')
-    .replaceAll('#e4e9e4', dark ? '#8390a8' : '#adc5c5')
-    .replaceAll('#e9a07e', dark ? '#ddc799' : '#d6aa83')
-    .replaceAll('#4caaa2', paint))}`;
+  const artwork = graphic.svg.replaceAll('#233b48', '#26333b')
+    .replaceAll('#27465a', '#d6c49e')
+    .replaceAll('#fff8e9', '#d7d8cf')
+    .replaceAll('#e3e9e4', '#aebdc0')
+    .replaceAll('#c5d5d0', '#9dadae')
+    .replaceAll('#e4e9e4', '#b4b9b7')
+    .replaceAll('#e9a07e', '#c89b78')
+    .replaceAll('#4caaa2', paint);
+  // A fine neutral edge separates the dark contour from dark artwork. Keep it
+  // outside the silhouette so internal details and selected paint stay crisp.
+  const svg = artwork.replace('shape-rendering="geometricPrecision">', `shape-rendering="geometricPrecision"><defs><filter id="cursor-edge" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feMorphology in="SourceAlpha" operator="dilate" radius="0.65" result="edge"/><feFlood flood-color="#dddcd2"/><feComposite in2="edge" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g filter="url(#cursor-edge)">`).replace('</svg>', '</g></svg>');
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
-function nativeCursor(graphic: CursorGraphic, color: number, dark = darkTheme()) {
-  return `url("${cursorImage(graphic, color, dark)}") ${graphic.hotspot.x} ${graphic.hotspot.y}, ${graphic.fallback}`;
+function nativeCursor(graphic: CursorGraphic, color: number) {
+  return `url("${cursorImage(graphic, color)}") ${graphic.hotspot.x} ${graphic.hotspot.y}, ${graphic.fallback}`;
 }
 // Render above native resolution, then reduce once for clean edge coverage.
 // Supply display densities explicitly so the OS never has to enlarge a 1x cursor.
 const rendered = new WeakMap<CursorGraphic, Map<string, Promise<string>>>();
-function smoothCursor(asset: CursorGraphic, color: number, dark = darkTheme()): Promise<string> {
+function smoothCursor(asset: CursorGraphic, color: number): Promise<string> {
   let colors = rendered.get(asset);
   if (!colors) { colors = new Map(); rendered.set(asset, colors); }
-  const key = `${dark}:${asset.svg.includes('#4caaa2') ? color : 0}`;
+  const key = `${asset.svg.includes('#4caaa2') ? color : 0}`;
   const existing = colors.get(key);
   if (existing) return existing;
   const result = new Promise<string>((resolve) => {
     const source = new Image();
-    source.onerror = () => resolve(nativeCursor(asset, color, dark));
+    source.onerror = () => resolve(nativeCursor(asset, color));
     source.onload = () => {
       try {
         const canvas = document.createElement('canvas');
@@ -67,10 +70,10 @@ function smoothCursor(asset: CursorGraphic, color: number, dark = darkTheme()): 
         const hotspot = `${asset.hotspot.x} ${asset.hotspot.y}, ${asset.fallback}`;
         const densityCursor = `image-set(${urls.map((url, i) => `url("${url}") ${i + 1}x`).join(', ')}) ${hotspot}`;
         resolve(CSS.supports('cursor', densityCursor) ? densityCursor : `url("${urls[0]}") ${hotspot}`);
-      } catch { resolve(nativeCursor(asset, color, dark)); }
+      } catch { resolve(nativeCursor(asset, color)); }
     };
     const svg = asset.svg.replace(/width="40" height="40"/, 'width="480" height="480"');
-    source.src = cursorImage({ ...asset, svg }, color, dark);
+    source.src = cursorImage({ ...asset, svg }, color);
   });
   colors.set(key, result);
   if (colors.size > 32) colors.delete(colors.keys().next().value!);
@@ -82,27 +85,21 @@ function cursorPair(tool: EditorTool) {
   const idle = toolCursorGraphics[tool];
   return [idle, tool === 'pan' || tool === 'select' ? draggingCursorGraphics[tool] : idle] as const;
 }
-export function toolCursorStyle(tool: EditorTool, color: number, dark = darkTheme()): ToolCursorStyle {
+export function toolCursorStyle(tool: EditorTool, color: number): ToolCursorStyle {
   const [idle, active] = cursorPair(tool);
-  return { '--tool-cursor': nativeCursor(idle, color, dark), '--tool-active-cursor': nativeCursor(active, color, dark) };
+  return { '--tool-cursor': nativeCursor(idle, color), '--tool-active-cursor': nativeCursor(active, color) };
 }
 export function useToolCursorStyle(tool: EditorTool, color: number): ToolCursorStyle {
-  const [dark, setDark] = useState(darkTheme);
-  useEffect(() => {
-    const observer = new MutationObserver(() => setDark(darkTheme()));
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => observer.disconnect();
-  }, []);
-  const [ready, setReady] = useState<{ tool: EditorTool; color: number; dark: boolean; style: ToolCursorStyle }>();
+  const [ready, setReady] = useState<{ tool: EditorTool; color: number; style: ToolCursorStyle }>();
   useEffect(() => {
     let current = true;
     const [idle, active] = cursorPair(tool);
-    void Promise.all([smoothCursor(idle, color, dark), smoothCursor(active, color, dark)]).then(([idleCursor, activeCursor]) => {
-      if (current) setReady({ tool, color, dark, style: { '--tool-cursor': idleCursor, '--tool-active-cursor': activeCursor } });
+    void Promise.all([smoothCursor(idle, color), smoothCursor(active, color)]).then(([idleCursor, activeCursor]) => {
+      if (current) setReady({ tool, color, style: { '--tool-cursor': idleCursor, '--tool-active-cursor': activeCursor } });
     });
     return () => { current = false; };
-  }, [tool, color, dark]);
-  return ready?.tool === tool && ready.color === color && ready.dark === dark ? ready.style : toolCursorStyle(tool, color, dark);
+  }, [tool, color]);
+  return ready?.tool === tool && ready.color === color ? ready.style : toolCursorStyle(tool, color);
 }
 
 export const appCursorGraphics = {
@@ -110,22 +107,12 @@ export const appCursorGraphics = {
   pointer: graphic(point, 17, 3, 'pointer'),
   text: graphic(text, 20, 20, 'text'),
 };
-let appThemeObserver: MutationObserver | undefined;
 export function applyAppCursors() {
-  appThemeObserver?.disconnect();
-  let generation = 0;
-  const update = () => {
-    const current = ++generation;
-    const dark = darkTheme();
-    for (const [name, asset] of Object.entries(appCursorGraphics)) {
-      const property = `--app-cursor-${name}`;
-      document.documentElement.style.setProperty(property, nativeCursor(asset, 0x4caaa2, dark));
-      void smoothCursor(asset, 0x4caaa2, dark).then((cursor) => {
-        if (current === generation) document.documentElement.style.setProperty(property, cursor);
-      });
-    }
-  };
-  update();
-  appThemeObserver = new MutationObserver(update);
-  appThemeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  for (const [name, asset] of Object.entries(appCursorGraphics)) {
+    const property = `--app-cursor-${name}`;
+    document.documentElement.style.setProperty(property, nativeCursor(asset, 0x4caaa2));
+    void smoothCursor(asset, 0x4caaa2).then((cursor) => {
+      document.documentElement.style.setProperty(property, cursor);
+    });
+  }
 }

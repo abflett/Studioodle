@@ -1,6 +1,6 @@
 # Tool cursors
 
-The canvas uses custom 40 by 40 cursors sourced from SVG. Menus and dialogs use the same cursor family: a custom arrow on general surfaces, a pointing hand on buttons/actions, and a custom text cursor in editable fields. Cursors have a single fine outline without an outer white halo; brush paint and the bucket drip follow the selected color.
+The canvas uses custom 40 by 40 cursors sourced from SVG. Menus and dialogs use the same cursor family: a custom arrow on general surfaces, a pointing hand on buttons/actions, and a custom text cursor in editable fields. Cursors use dark contours with a fine neutral light edge for visibility across artwork; brush paint and the bucket drip follow the selected color.
 
 | Tool | Hotspot | Meaning |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ Application cursors are registered at startup by `applyAppCursors()`. The bucket
 
 Native cursors are rendered from the SVG at 12x resolution, then antialiased down to 1x, 2x and 3x PNG images. CSS image-set selects the display density while preserving the 40 CSS pixel size and hotspot coordinates. Rendering is cached; SVG is the immediate fallback while images prepare. Brush bristles and the bucket pour use filled contours that taper to their exact hotspots, avoiding rounded stroke caps at the precision tip. The pour begins wide at the can rim and narrows continuously toward the click point.
 
-Theme variants update automatically for tools, menus and dialogs. Light mode uses dark blue line art and light tool bodies; dark mode uses muted mint line art and slate tool bodies. Selected paint colors remain unchanged. Theme changes are included in the rendering cache and stale asynchronous results cannot overwrite the latest theme.
+Tools, menus and dialogs use the same theme-independent palette: dark charcoal contours, muted neutral bodies and warm accents. A 0.65-unit light outer edge separates the silhouette from dark artwork without whitening internal lines. Selection uses a warm light interior inside its dark contour. Brush paint and bucket paint/drip retain the selected color. Rendering caches depend on artwork and paint color, and stale asynchronous results cannot overwrite the latest tool/color.
 
 ## Adjusted mouse speed
 

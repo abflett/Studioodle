@@ -179,6 +179,10 @@ try {
 
   console.log('Picture output:', JSON.stringify(output));
   if (output.meanError >= 2 || output.differentFraction >= .03) throw Error('SVG differs from editor: '+JSON.stringify(output));
+  const cursors = await evaluate("import('/tests/browser/cursors.ts').then(m => m.checkCursors())");
+  await fs.writeFile('work/tests/cursor-surfaces.png', Buffer.from(cursors.preview.split(',')[1], 'base64'));
+  delete cursors.preview;
+  console.log('Cursors:', JSON.stringify(cursors));
   const firstFill = await evaluate("import('/tests/browser/first-fill.ts').then(m => m.checkFirstFill())");
   console.log('First fill:',JSON.stringify(firstFill));
   const result = await evaluate("import('/tests/browser/region-coverage.ts').then(m => m.checkRegionCoverage())");

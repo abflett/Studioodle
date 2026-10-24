@@ -70,6 +70,9 @@ user-facing Edit Page path in favor of ordinary open/save-as-page authoring.
 Brush/eraser gestures can now start in the surrounding drawing workspace and
 continue onto the page, with page clipping, single-action undo and cancellation.
 
+Tool/menu cursors use one theme-independent palette with dark contours and a fine
+light edge for mixed canvas backgrounds; brush/bucket accents keep selected paint.
+
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.
