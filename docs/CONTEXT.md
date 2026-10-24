@@ -76,10 +76,8 @@ light edge for mixed canvas backgrounds; brush/bucket accents keep selected pain
 Bucket results now publish fully compacted geometry before display, preventing
 temporary old-color fringes that previously vanished after cleanup and redraw.
 
-Temporary hold-to-fill zoom brings edge targets inward for aiming room (up to
-120 CSS pixels, limited to 30% per viewport dimension). The crosshair and fill use
-the same relative mouse/touch offset; stationary release preserves the original
-target. Central targets stay anchored. Release/cancellation restores the view.
+Temporary hold-to-fill zoom preserves the exact pointer anchor without pan
+clamping, including through layout updates; release/cancellation restores the view.
 
 ## Next work and verification
 

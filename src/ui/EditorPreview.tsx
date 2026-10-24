@@ -80,15 +80,8 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     fill: client => { const point = pointAt(client); if (point) bridge.send({ type: 'fill-at', point }); },
     magnify: client => {
       const previous = { view: captureView(), zoom: requestedZoom };
-      const box = viewport.current!.getBoundingClientRect();
-      const insetX = Math.min(120, box.width * .3), insetY = Math.min(120, box.height * .3);
-      const target = {
-        x: Math.max(box.left + insetX, Math.min(box.right - insetX, client.x)),
-        y: Math.max(box.top + insetY, Math.min(box.bottom - insetY, client.y)),
-      };
-      setZoom(zoomAt(client, (focused ? focusZoom : 1) * 8, target));
-      return { offset: { x: target.x - client.x, y: target.y - client.y },
-        restore: () => { restoreView(previous.view); setZoom(previous.zoom); } };
+      setZoom(zoomAt(client, (focused ? focusZoom : 1) * 8));
+      return () => { restoreView(previous.view); setZoom(previous.zoom); };
     },
   });
   const cycleZoom = () => {

@@ -179,7 +179,6 @@ try {
 
   console.log('Picture output:', JSON.stringify(output));
   if (output.meanError >= 2 || output.differentFraction >= .03) throw Error('SVG differs from editor: '+JSON.stringify(output));
-  console.log('Precision fill:', await evaluate("import('/tests/browser/precision-fill.ts').then(m => m.checkPrecisionFill())"));
   console.log('Paper view:', await evaluate("import('/tests/browser/paper-view.ts').then(m => m.checkPaperView())"));
   const cursors = await evaluate("import('/tests/browser/cursors.ts').then(m => m.checkCursors())");
   await fs.writeFile('work/tests/cursor-surfaces.png', Buffer.from(cursors.preview.split(',')[1], 'base64'));

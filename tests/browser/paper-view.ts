@@ -27,18 +27,9 @@ export async function checkPaperView(){
    const paper=view.viewport.current!.firstElementChild!.getBoundingClientRect();
    if(Math.abs((point.x-paper.left)/view.zoom-before.x)>.00001||Math.abs((point.y-paper.top)/view.zoom-before.y)>.00001)throw Error('Rendered paper moved away from precision anchor');
   }
-  // An edge target can be brought inward while preserving its document point.
-  for(const point of [{x:51,y:299},{x:349,y:299},{x:51,y:1},{x:349,y:1}]){
-   view.restoreView(initial);setRequested(null);await frame();await frame();
-   const before=view.pointAt(point)!;
-   const target={x:Math.max(120,Math.min(280,point.x)),y:Math.max(90,Math.min(210,point.y))};
-   setRequested(view.zoomAt(point,8,target));await frame();await frame();
-   const after=view.pointAt(target)!;
-   if(Math.abs(before.x-after.x)>.00001||Math.abs(before.y-after.y)>.00001)throw Error('Inset precision target changed document position');
-  }
   view.restoreView(initial);setRequested(null);await frame();await frame();
   const restored=view.captureView()!;
   if(!initial||Math.abs(restored.x-initial.x)>.00001||Math.abs(restored.y-initial.y)>.00001||Math.abs(restored.zoom-initial.zoom)>.00001)throw Error('Precision zoom failed to restore original view');
-  return {edgeAnchors:true,renderedAnchors:true,restoration:true,insetTargets:true};
+  return {edgeAnchors:true,renderedAnchors:true,restoration:true};
  }finally{root.unmount();container.remove();}
 }
