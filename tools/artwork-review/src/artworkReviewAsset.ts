@@ -1,7 +1,9 @@
 import type { ReviewAsset } from './artworkReviewModel';
 
+const artworkUrls = import.meta.glob('../../../src/assets/vector/*.svg', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+
 export async function loadReviewArtwork(asset: ReviewAsset, signal: AbortSignal) {
-  const response = await fetch(`/src/assets/vector/${asset.id}.svg`, { signal });
+  const response = await fetch(artworkUrls[`../../../src/assets/vector/${asset.id}.svg`]!, { signal });
   if (!response.ok) throw Error(`Unable to load artwork (${response.status}).`);
   const bytes = await response.arrayBuffer();
   const text = new TextDecoder().decode(bytes);

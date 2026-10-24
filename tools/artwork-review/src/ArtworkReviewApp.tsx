@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import manifest from '../../art/stickers.json';
+import manifest from '../../../art/stickers.json';
 import { ArtworkReviewStage } from './ArtworkReviewStage';
 import { emptyReview, markerLabels, mergeReviews, parseReview, reviewStorageKey } from './artworkReviewModel';
 import type { ArtworkReview, AssetReview, LineDraft, ReviewClosure, ReviewTool, ReviewAsset, ReviewMarker } from './artworkReviewModel';
@@ -168,7 +168,7 @@ export function ArtworkReviewApp() {
       <strong>Artwork review <small>Developer tool</small></strong>
       <span>{review.assets.filter(entry => entry.reviewed).length} / {assets.length} reviewed · {review.assets.reduce((sum, entry) => sum + entry.markers.length, 0)} markers · {review.assets.reduce((sum, entry) => sum + (entry.closures?.length ?? 0), 0)} lines</span>
       <button onClick={() => importInput.current?.click()}>Import JSON</button><button className="review-primary" onClick={exportReview}>{historySet ? `Export ${historySet.label}` : 'Export all JSON'}</button>
-      <a href="/">Back to app</a>
+      <span>Standalone artwork reviewer</span>
       <input ref={importInput} hidden type="file" accept="application/json,.json" onChange={async event => {
         const file = event.target.files?.[0]; event.target.value = ''; if (!file) return;
         try { if (file.size > 5 * 1024 * 1024) throw Error('Review JSON must be smaller than 5 MiB.'); const imported = parseReview(await file.text(), assets); persist(mergeReviews({ ...review, assets: await refreshRecordedReviews(review.assets) }, { ...imported, assets: await refreshRecordedReviews(imported.assets) })); }

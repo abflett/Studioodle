@@ -63,7 +63,7 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   await wait('document.querySelector(".review-save-status").textContent.startsWith("Saved locally")');
   assert.equal((await stored()).assets[0].markers.length,3,'Importing the same review must not duplicate markers');
   // Validation and revision conflicts protect coordinates from silently changing meaning.
-  const validation=await evaluate(`import('/src/dev/artworkReviewModel.ts').then(async m=>{const assets=(await import('/art/stickers.json')).default;const original=JSON.parse(globalThis.reviewDownload);let rejected=0;for(const change of [r=>r.assets[0].markers[0].x=-1,r=>r.assets[0].assetId='unknown',r=>r.assets[0].markers.push(r.assets[0].markers[0]),r=>r.assets[0].markers[0].kind='bad']){const r=structuredClone(original);change(r);try{m.parseReview(JSON.stringify(r),assets);}catch{rejected++;}}const other=structuredClone(original);other.assets[0].sha256='0'.repeat(64);try{m.mergeReviews(original,other);}catch{rejected++;}return rejected;})`);
+  const validation=await evaluate(`import('/src/artworkReviewModel.ts').then(async m=>{const assets=(await import(globalThis.reviewRepo+'art/stickers.json')).default;const original=JSON.parse(globalThis.reviewDownload);let rejected=0;for(const change of [r=>r.assets[0].markers[0].x=-1,r=>r.assets[0].assetId='unknown',r=>r.assets[0].markers.push(r.assets[0].markers[0]),r=>r.assets[0].markers[0].kind='bad']){const r=structuredClone(original);change(r);try{m.parseReview(JSON.stringify(r),assets);}catch{rejected++;}}const other=structuredClone(original);other.assets[0].sha256='0'.repeat(64);try{m.mergeReviews(original,other);}catch{rejected++;}return rejected;})`);
   assert.equal(validation,5);
   // Ordinary wheel input zooms at the cursor without navigating or drifting its SVG point.
   const p=await evaluate('(()=>{const r=document.querySelector(".review-stage").getBoundingClientRect();return{x:r.x+r.width/2+70,y:r.y+r.height/2-55}})()');
@@ -135,9 +135,9 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   assert(hoverDelta<=4,`Hover changed triangle fill or ink by ${hoverDelta} channel values`);
   const gaps=await evaluate(`(async()=>{
     const render=async url=>{const doc=new DOMParser().parseFromString(await (await fetch(url)).text(),'image/svg+xml');doc.documentElement.setAttribute('width','220');doc.documentElement.setAttribute('height','280');const blob=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(doc)],{type:'image/svg+xml'}));try{const image=new Image();image.src=blob;await image.decode();const canvas=document.createElement('canvas');canvas.width=880;canvas.height=1120;const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0,880,1120);return ctx.getImageData(0,0,880,1120).data;}finally{URL.revokeObjectURL(blob);}};
-    const source=await render('/art/source/stickers/shapes/triangle.svg'),current=await render('/src/assets/vector/triangle.svg');let gaps=0;
+    const source=await render(globalThis.reviewRepo+'art/source/stickers/shapes/triangle.svg'),current=await render(globalThis.reviewRepo+'src/assets/vector/triangle.svg');let gaps=0;
     for(let i=0;i<source.length;i+=4)if(source[i]>250&&source[i+1]>250&&source[i+2]>250&&source[i+3]>250&&current[i+3]<250)gaps++;
-    const treeSource=await render('/art/source/stickers/shapes/tree.svg'),treeCurrent=await render('/src/assets/vector/tree.svg');let treeMismatch=0;
+    const treeSource=await render(globalThis.reviewRepo+'art/source/stickers/shapes/tree.svg'),treeCurrent=await render(globalThis.reviewRepo+'src/assets/vector/tree.svg');let treeMismatch=0;
     for(let i=3;i<treeSource.length;i+=4)if(Math.abs(treeSource[i]-treeCurrent[i])>64)treeMismatch++;
     return {gaps,treeMismatch};
   })()`);

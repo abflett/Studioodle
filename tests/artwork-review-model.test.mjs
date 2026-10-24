@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { before, after, test } from 'node:test';
 import { createServer } from 'vite';
 let server,model,geometry,tasks,cleanup;
-before(async()=>{server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});model=await server.ssrLoadModule('/src/dev/artworkReviewModel.ts');geometry=await server.ssrLoadModule('/src/dev/artworkReviewGeometry.ts');tasks=await server.ssrLoadModule('/src/dev/artworkLineTasks.ts');cleanup=await server.ssrLoadModule('/src/dev/artworkReviewCleanup.ts');});
+before(async()=>{server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});model=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewModel.ts');geometry=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewGeometry.ts');tasks=await server.ssrLoadModule('/tools/artwork-review/src/artworkLineTasks.ts');cleanup=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewCleanup.ts');});
 after(async()=>{await server?.close();});
 test('extending review annotations preserves the complete existing exported review',()=>{
  const original=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-23.json','utf8'));

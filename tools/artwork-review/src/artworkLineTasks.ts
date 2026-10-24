@@ -1,12 +1,12 @@
-import progress from '../../docs/studioodle-artwork-review-2026-10-23.progress.json';
-import lineProgress from '../../docs/studioodle-line-repairs-2026-10-24.progress.json';
-import lineProgressV2 from '../../docs/studioodle-line-repairs-2026-10-24v2.progress.json';
-import lineProgressV3 from '../../docs/studioodle-line-repairs-2026-10-24v3.progress.json';
-import markerProgressV3 from '../../docs/studioodle-marker-repairs-2026-10-24v3.progress.json';
-import lineProgressV4 from '../../docs/studioodle-line-repairs-2026-10-24v4.progress.json';
-import markerProgressV4 from '../../docs/studioodle-marker-repairs-2026-10-24v4.progress.json';
-import lineProgressV5 from '../../docs/studioodle-line-repairs-2026-10-24v5.progress.json';
-import markerProgressV5 from '../../docs/studioodle-marker-repairs-2026-10-24v5.progress.json';
+import progress from '../../../docs/studioodle-artwork-review-2026-10-23.progress.json';
+import lineProgress from '../../../docs/studioodle-line-repairs-2026-10-24.progress.json';
+import lineProgressV2 from '../../../docs/studioodle-line-repairs-2026-10-24v2.progress.json';
+import lineProgressV3 from '../../../docs/studioodle-line-repairs-2026-10-24v3.progress.json';
+import markerProgressV3 from '../../../docs/studioodle-marker-repairs-2026-10-24v3.progress.json';
+import lineProgressV4 from '../../../docs/studioodle-line-repairs-2026-10-24v4.progress.json';
+import markerProgressV4 from '../../../docs/studioodle-marker-repairs-2026-10-24v4.progress.json';
+import lineProgressV5 from '../../../docs/studioodle-line-repairs-2026-10-24v5.progress.json';
+import markerProgressV5 from '../../../docs/studioodle-marker-repairs-2026-10-24v5.progress.json';
 import type { AssetReview } from './artworkReviewModel';
 
 export const lineRepairTasks = progress.assets.filter(asset => asset.notes.trim() || asset.operations.some(operation => operation.status === 'deferred' && operation.kind === 'add-region'));

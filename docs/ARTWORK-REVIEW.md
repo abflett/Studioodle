@@ -1,9 +1,26 @@
 # Artwork review
 
-Run `npm run review` to open the standalone inspector on the Vite development
-server. If the server is already running, open `/artwork-review.html` on that
-server instead. This page is separate from the normal app and is not included
-in the production build.
+Run `npm run review` to open the standalone inspector at `/artwork-review.html`.
+Its source, HTML entry, Vite config and TypeScript project live under
+`tools/artwork-review/`. It shares dependencies and reads the current artwork and
+repair ledgers, but runs its own server with a separate dependency cache.
+The normal app server does not serve the reviewer, watches neither its source nor
+its entry, and scans only the app entry. The app build rejects reviewer modules.
+`npm run typecheck` checks the app; `npm run review:typecheck` checks the tool.
+
+Stop the normal dev server before starting the reviewer to reuse its address
+(normally `http://localhost:5173`). The reviewer uses a strict port so it cannot
+silently switch to another origin. Its localStorage key and export format are
+unchanged: use the same hostname and port as before to retain browser progress.
+If you previously used a custom port, run `npm run review -- --port <port>`.
+To run both servers at once, give one another port; review data is specific to
+the reviewer's origin. Export/import JSON when deliberately changing origins.
+
+`npm run review:build` builds a separately deployable reviewer, including its
+artwork, into ignored `work/artwork-review-dist/`. `npm run review:preview` serves
+that build. `npm run build` still produces only the Studioodle app in `dist/`.
+`npm run test:review` exercises the dedicated reviewer server with a disposable
+browser profile and does not touch your saved annotations.
 
 The inspector displays the shipped SVG's actual white paint regions and black
 ink over a dark background. It fits the whole asset without cropping or adding

@@ -9,7 +9,7 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['src/**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}', 'tools/artwork-review/src/**/*.{ts,tsx}'],
     languageOptions: { globals: globals.browser },
     plugins: { 'react-hooks': reactHooks, 'react-refresh': reactRefresh },
     rules: {
@@ -33,7 +33,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['*.mjs', 'scripts/**/*.mjs', 'tests/**/*.mjs', 'vite/**/*.ts'],
+    files: ['*.mjs', 'scripts/**/*.mjs', 'tests/**/*.mjs', 'vite/**/*.ts', 'tools/artwork-review/vite.config.ts'],
     languageOptions: { globals: globals.node },
   },
 );

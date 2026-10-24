@@ -25,7 +25,7 @@ const plugins=sceneProfile?[{
       return code.replace(/export const paintDisplayBudget = \d+ \* 1024 \* 1024;/,`export const paintDisplayBudget = ${sceneBudget} * 1024 * 1024;`);
   },
 }]:[];
-const server = await createServer({ plugins, configFile: 'vite/config.dev.ts', server: { host: '127.0.0.1', port: 1433, strictPort: true, open: false } });
+const server = await createServer({ plugins, configFile: process.argv.includes('--artwork-review') ? 'tools/artwork-review/vite.config.ts' : 'vite/config.dev.ts', server: { host: '127.0.0.1', port: 1433, strictPort: true, open: false } });
 if (path.dirname(profile) !== os.tmpdir() || !path.basename(profile).startsWith('studioodle-region-coverage-')) throw Error('Unexpected test profile path');
 let child, ws, cdp;
 try {
@@ -61,6 +61,7 @@ try {
   cdp = (method, params = {}, sessionId) => new Promise((resolve, reject) => { const key = ++id; pending.set(key, { resolve, reject }); ws.send(JSON.stringify({ id: key, method, params, sessionId })); });
   const evaluate = async expression => { const result = await cdp('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (result.exceptionDetails) throw new Error(JSON.stringify(result.exceptionDetails)); return result.result.value; };
   await cdp('Page.enable');
+  if (process.argv.includes('--artwork-review')) await cdp('Page.addScriptToEvaluateOnNewDocument', { source: `globalThis.reviewRepo = ${JSON.stringify('/@fs/' + process.cwd().split(path.sep).join('/') + '/')};` });
   await cdp('Runtime.enable');
   if(process.argv.includes('--debugger')){
     await cdp('Debugger.enable');await cdp('Debugger.setAsyncCallStackDepth',{maxDepth:32});
