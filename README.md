@@ -77,6 +77,7 @@ is the single implementation backlog; completed reviews are in Git history.
 | System boundaries, storage, lifecycle | [Architecture](docs/ARCHITECTURE.md) |
 | Painting, geometry, workers | [Vector paint](docs/VECTOR-PAINT.md), [undo](docs/UNDO-HISTORY.md) |
 | Measurements and profile commands | [Performance](docs/PERFORMANCE.md), [picture library](docs/PICTURE-LIBRARY.md) |
+| Overlay redesign direction (proposed) | [Overlay design brief](docs/OVERLAY-DESIGN.md) |
 | Navigation, paper, gestures, ribbons, categories | [Interface](docs/INTERFACE.md), [cursors](docs/CURSORS.md) |
 | Export/print and desktop host | [Picture output](docs/PICTURE-OUTPUT.md), [desktop](docs/DESKTOP.md) |
 | Coloring books and composition | [Coloring books](docs/COLORING-BOOKS.md), [scene authoring](docs/SCENE-AUTHORING.md) |

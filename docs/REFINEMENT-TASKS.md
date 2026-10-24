@@ -5,6 +5,41 @@ and one-time measurements live in Git history; current behavior is documented in
 [architecture](ARCHITECTURE.md), [performance](PERFORMANCE.md) and the feature guides.
 There is no planned engine migration or old-save compatibility work.
 
+## Active product design: overlays and coloring-page discovery
+
+Start with [the overlay design brief](OVERLAY-DESIGN.md). The user has requested
+planning/discussion first; proposed taxonomy, layouts and sharing flows are not
+approved implementation decisions. This is the sole task list for that work.
+
+- [ ] Agree on the Coloring Pages journey: responsive gallery, tap behavior,
+  preview/start action, navigation and selected-item retention.
+- [ ] Agree on composition/detail filters, subject/theme needs, personal/imported
+  collection treatment and whether single-sticker pages are curated or generated.
+- [ ] Inspect representative sticker/scene region statistics and propose detail
+  bands with visual review and manual overrides; avoid bulk asset regeneration.
+- [ ] Prototype portrait, landscape and short-window layouts; settle shared close,
+  back, filter, utility and primary-action positions with accessible icon labels.
+- [ ] Consolidate authoritative custom-page storage and atomic operations (see
+  implementation item 4) before expanding template import/save paths.
+- [ ] Implement the agreed Coloring Pages gallery and filters with lightweight
+  browsing metadata, loading/error/empty states and responsive navigation.
+- [ ] Remove the dedicated user-facing Edit Page path; verify open, arrange, save
+  drawing and save-as-new-coloring-page as the ordinary authoring journey. Decide
+  the future of debug/revision controls without losing useful authoring capabilities.
+- [ ] Agree on manual sharing: one/many pages, file/code format, import preview,
+  duplicate IDs, validation, limits and clipboard fallback.
+- [ ] Implement template import/share separately from PNG/SVG/PDF picture output;
+  verify round trips, missing assets, malformed input, collisions and storage failure.
+- [ ] Apply the reviewed overlay pattern to paper/orientation, paper color,
+  stickers/categories, brush/fill, picture export, delete and settings. Reduce
+  redundant visible headings while retaining meaningful guidance and dialog names.
+- [ ] Validate keyboard/focus, pointer/touch, responsive density, no clipped controls
+  and browsing performance as the page/sticker libraries grow. Run appropriate web
+  checks; native builds only when requested.
+
+Simple mode, toddler mode, parent locking and an online sharing hub are later work.
+Keep all existing features enabled by default during this design phase.
+
 ## Open implementation work
 
 ### 1. Define background save/recovery behavior (high priority, policy needed)

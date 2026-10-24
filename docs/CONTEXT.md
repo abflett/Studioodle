@@ -60,6 +60,13 @@ features available. Fresh settings enable painting controls and the coloring pag
 workshop. Custom-page delete remains available alongside Edit Page. Simple mode,
 toddler mode and parent locking are later work.
 
+The next phase is an overlay UX overhaul, starting with Coloring Pages. Planning
+and discussion come first. See [design brief](OVERLAY-DESIGN.md) for requested
+direction versus proposals, and the single refinement backlog for tasks. Focus:
+less redundant text, consistent icon/navigation placement, responsive galleries,
+composition/detail discovery, manual template sharing, and removal of the
+user-facing Edit Page path in favor of ordinary open/save-as-page authoring.
+
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.
