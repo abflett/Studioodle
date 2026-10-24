@@ -202,3 +202,26 @@ to select the exact rebuilt assets, retire applied proposals, refresh region IDs
 and reopen those assets for inspection without replaying lines or deleting notes.
 The original exported JSON stays untouched. Regenerated IDs use a fresh development
 drawing namespace; no old-save compatibility is added.
+
+### Markers after an explicit line pass
+
+Do not use exported region IDs after line regeneration. After auditing and promoting
+that line stage, derive a working review with the same point coordinates and refreshed
+region IDs:
+
+```sh
+node scripts/prepare-marker-repairs.mjs docs/review.json --line-stage=work/line-pass --out=work/marker-pass
+node scripts/plan-artwork-repairs.mjs work/marker-pass/review.json --out=work/marker-pass --apply
+node scripts/rebuild-stickers.mjs --ids-file=work/marker-pass/targets.json --out=work/marker-pass
+node scripts/audit-stickers.mjs work/marker-pass
+node scripts/validate-artwork-repairs.mjs work/marker-pass
+node scripts/promote-stickers.mjs work/marker-pass
+```
+
+The remapper requires the same review checksum and a recorded promoted line stage;
+other artwork revision changes are rejected. The original export is never rewritten.
+Check add/fill points against the rebuilt SVG: closures may already satisfy them,
+while genuinely missing regions need a further authored fix. Record satisfied fill
+IDs along with completed cutout IDs, so the inspector retires exactly the instructions
+that were applied. A satisfied fill can share the line-stage checksum without requiring
+an artificial artwork change. The v3 marker ledger demonstrates this case for Forest Elf.

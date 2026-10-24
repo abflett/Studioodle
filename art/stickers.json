@@ -2870,7 +2870,13 @@
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
     "crop": "813x1222+220+14",
-    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-shepherd-child.svg"
+    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-shepherd-child.svg",
+    "cutouts": [
+      [
+        88.6698,
+        157.4627
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-woolly-lamb",
@@ -4291,7 +4297,33 @@
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
     "crop": "1204x1211+25+20",
-    "inkSource": "art/source/stickers/line-repairs/fall-autumn-tree.svg"
+    "inkSource": "art/source/stickers/line-repairs/fall-autumn-tree.svg",
+    "cutouts": [
+      [
+        108.9458,
+        63.3288
+      ],
+      [
+        95.9282,
+        71.7727
+      ],
+      [
+        84.468,
+        55.5798
+      ],
+      [
+        68.3517,
+        141.4727
+      ],
+      [
+        189.5741,
+        144.5758
+      ],
+      [
+        167.921,
+        101.5705
+      ]
+    ]
   },
   {
     "id": "fall-leaf-pile",
@@ -4576,6 +4608,18 @@
       [
         79.3605,
         64.4493
+      ],
+      [
+        233.6735,
+        68.8995
+      ],
+      [
+        215.0903,
+        60.2898
+      ],
+      [
+        206.3765,
+        58.8227
       ]
     ],
     "inkSource": "art/source/stickers/line-repairs/fall-harvest-basket.svg"
@@ -4702,6 +4746,18 @@
       [
         153.7573,
         135.4533
+      ],
+      [
+        95.4642,
+        88.3025
+      ],
+      [
+        98.8293,
+        116.7934
+      ],
+      [
+        179.1108,
+        104.9541
       ]
     ],
     "inkSource": "art/source/stickers/line-repairs/fall-wheat-sheaf.svg"
@@ -5636,7 +5692,49 @@
     "horizon": true,
     "horizonStart": -0.1,
     "horizonOverscan": 1.2,
-    "inkSource": "art/source/stickers/line-repairs/horizons-forest-clearing.svg"
+    "inkSource": "art/source/stickers/line-repairs/horizons-forest-clearing.svg",
+    "cutouts": [
+      [
+        1007.6841,
+        475.9506
+      ],
+      [
+        1127.1021,
+        401.0916
+      ],
+      [
+        1195.7228,
+        416.2417
+      ],
+      [
+        1174.3346,
+        377.921
+      ],
+      [
+        23.8228,
+        421.5887
+      ],
+      [
+        102.2466,
+        449.2153
+      ],
+      [
+        172.6497,
+        461.6918
+      ],
+      [
+        191.7516,
+        451.2495
+      ],
+      [
+        132.9953,
+        426.3311
+      ],
+      [
+        1089.4668,
+        367.1917
+      ]
+    ]
   },
   {
     "id": "horizons-woodland-trail",
@@ -5687,7 +5785,33 @@
     "horizon": true,
     "horizonStart": -0.1,
     "horizonOverscan": 1.2,
-    "inkSource": "art/source/stickers/line-repairs/horizons-jungle-opening.svg"
+    "inkSource": "art/source/stickers/line-repairs/horizons-jungle-opening.svg",
+    "cutouts": [
+      [
+        213.8583,
+        351.5306
+      ],
+      [
+        994.0723,
+        353.4184
+      ],
+      [
+        1068.5823,
+        333.2123
+      ],
+      [
+        1111.0993,
+        349.6298
+      ],
+      [
+        1176.3481,
+        319.3206
+      ],
+      [
+        1121.9466,
+        309.6101
+      ]
+    ]
   },
   {
     "id": "horizons-birch-woodland",
@@ -5719,7 +5843,105 @@
         1
       ]
     ],
-    "inkSource": "art/source/stickers/line-repairs/horizons-birch-woodland.svg"
+    "inkSource": "art/source/stickers/line-repairs/horizons-birch-woodland.svg",
+    "cutouts": [
+      [
+        316.3762,
+        320.0456
+      ],
+      [
+        181.918,
+        337.9261
+      ],
+      [
+        119.412,
+        282.8072
+      ],
+      [
+        46.1095,
+        278.8295
+      ],
+      [
+        13.1518,
+        315.7649
+      ],
+      [
+        942.8661,
+        382.9371
+      ],
+      [
+        917.9228,
+        343.8104
+      ],
+      [
+        934.0626,
+        332.0723
+      ],
+      [
+        981.0147,
+        338.9195
+      ],
+      [
+        1000.089,
+        362.3956
+      ],
+      [
+        1032.3686,
+        276.8058
+      ],
+      [
+        1055.8447,
+        377.0681
+      ],
+      [
+        1097.4169,
+        306.1508
+      ],
+      [
+        1165.8887,
+        311.0417
+      ],
+      [
+        1194.2556,
+        209.8011
+      ],
+      [
+        1199.1465,
+        257.2424
+      ],
+      [
+        995.9154,
+        89.133
+      ],
+      [
+        225.9673,
+        290.8309
+      ],
+      [
+        254.498,
+        337.9627
+      ],
+      [
+        965.6886,
+        330.7494
+      ],
+      [
+        1015.6034,
+        256.081
+      ],
+      [
+        1022.4475,
+        248.6002
+      ],
+      [
+        1080.3538,
+        240.4535
+      ],
+      [
+        981.7826,
+        93.4522
+      ]
+    ]
   },
   {
     "id": "horizons-autumn-woodland",
@@ -7271,7 +7493,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "inkSource": "art/source/stickers/line-repairs/fantasy-moon-sorceress.svg"
+    "inkSource": "art/source/stickers/line-repairs/fantasy-moon-sorceress.svg",
+    "cutouts": [
+      [
+        21.7994,
+        174.1404
+      ]
+    ]
   },
   {
     "id": "fantasy-armored-warrior",
@@ -7332,6 +7560,14 @@
       [
         80.1089,
         90.7984
+      ],
+      [
+        291.6694,
+        250.1672
+      ],
+      [
+        258.3049,
+        341.783
       ]
     ],
     "inkSource": "art/source/stickers/line-repairs/fantasy-woodland-ranger.svg"

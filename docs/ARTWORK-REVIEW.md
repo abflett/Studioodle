@@ -20,7 +20,8 @@ artwork, without a hover tint painting over the black ink.
   toggle the status. Shortcuts are inactive while typing in notes or search fields.
 - Search by title, ID or category. **Rebuilt linework - inspect** is the default:
   the full 31-asset set from the October 24 line pass, including the v2
-  follow-up on Badger and Birch Woodland. Earlier repaired assets stay in the set.
+  follow-up on Badger and Birch Woodland and the v3 line/marker pass. Earlier
+  repaired assets stay in the set.
   It stays visible regardless of Reviewed so you can inspect regenerated regions,
   add/remove-region issues and remaining line gaps without losing the target set.
 - **All artwork** shows the library. **Fresh review - unchecked artwork** hides
@@ -42,8 +43,9 @@ artwork, without a hover tint painting over the black ink.
 - Recorded cutout and line repairs refresh automatically when artwork opens:
   completed cutout markers leave the working copy, pending marker region IDs are
   refreshed. Applied line IDs leave the proposal overlay; unsubmitted lines and
-  notes remain. Repeated repairs follow the recorded checksum chain through both
-  line ledgers, keeping earlier history. A rebuilt asset starts unchecked once, then its
+  notes remain. Repeated repairs follow the recorded checksum chain through the
+  line and marker ledgers, keeping earlier history. Only applied marker IDs and
+  line IDs are retired; later annotations remain. A rebuilt asset starts unchecked once, then its
   new Reviewed status survives reload. Original
   exports and the repair ledger are unchanged. Export also refreshes known repairs
   on assets not yet opened, without modifying local annotations.

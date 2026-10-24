@@ -245,3 +245,34 @@ all 29 untargeted runtime SVGs are unchanged. Diagnostics are under ignored
 Effort remains low per explicit closure; all four were processed by the existing
 script. The fixed work was audit, spotting the old analysis-only closure setting,
 and extending ledger reconciliation to handle repeated repairs of the same asset.
+
+## October 24 - v3 lines followed by marker repairs
+
+Input: `studioodle-line-repairs-2026-10-24v3.json`, retained unchanged.
+Applied **13 new line closures** first: Birch Woodland 6, Moon Sorceress 2,
+Forest Elf 5. Their regions increased **541 -> 552**, with no new tiny pockets.
+All four add/fill markers on the elf now lie inside newly enclosed regions;
+white-pixel checks confirmed fill coverage at all four points.
+
+Then remapped marker coordinates against the promoted line geometry, rather than
+reusing old region IDs. Applied **56 distinct transparency requests across nine
+assets** as reproducible cutout seeds: Shepherd Child 1, Autumn Tree 6, Harvest
+Basket 3, Wheat Sheaf 3, Forest Clearing 10, Jungle Opening 6, Birch Woodland 24,
+Moon Sorceress 1, Woodland Ranger 2. The marker stage reduced **1,102 -> 1,046**
+regions. No requests remain deferred. Its validation confirms byte-identical ink,
+exactly 56 removed regions, transparent seed points, preserved interiors for every
+unmarked region, and unchanged original sources/review. Existing deterministic
+small-pocket cleanup reran without changing the shipped ink.
+
+The separate [line ledger](studioodle-line-repairs-2026-10-24v3.progress.json) and
+[marker ledger](studioodle-marker-repairs-2026-10-24v3.progress.json) record both
+revision steps, original/refreshed marker region IDs, cutout seeds and all applied
+instruction IDs. Diagnostics are in ignored `work/line-repair-2026-10-24v3/` and
+`work/marker-repair-2026-10-24v3/`. Previous exports, ledgers, repairs and the full
+31-asset inspection set remain available. Applied markers/proposals retire on
+revision refresh; later annotations and notes remain intact.
+
+Effort: **low per submitted instruction**. One line batch, one geometric marker
+remap and one cutout batch handled all 73 instructions. No manual line inference,
+seed movement or semantic redraw was needed. Exact token telemetry is unavailable;
+the fixed effort was validation, proof inspection and recording the revision chain.

@@ -1,0 +1,1296 @@
+{
+  "kind": "studioodle-artwork-review",
+  "version": 1,
+  "coordinateSpace": "svg-viewBox",
+  "assets": [
+    {
+      "assetId": "alphabet-u-unicorn",
+      "source": "art/source/stickers/alphabet/u-unicorn.png",
+      "vectorPath": "src/assets/vector/alphabet-u-unicorn.svg",
+      "viewBox": [
+        0,
+        0,
+        315,
+        340
+      ],
+      "sha256": "5a0591340d594ff332039b6ae80e5237a8c08ba727c1e8a39c12660bad34f053",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-friendly-spider",
+      "source": "art/source/stickers/nursery-rhymes/friendly-spider.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-friendly-spider.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        333
+      ],
+      "sha256": "ef27dc2fe12894a4ac489a1b768a5c86fbf87031aaaaea775b3cea7b8d9d8d3a",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "alphabet-c-cat",
+      "source": "art/source/stickers/alphabet/c-cat.png",
+      "vectorPath": "src/assets/vector/alphabet-c-cat.svg",
+      "viewBox": [
+        0,
+        0,
+        302,
+        340
+      ],
+      "sha256": "872e971896b45e57cd47ea63543de7a79cfd5ddfda296f1f0fd273e447eaedb5",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-cradle-tree",
+      "source": "art/source/stickers/nursery-rhymes/cradle-tree.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-cradle-tree.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        257
+      ],
+      "sha256": "328f96c48f75eaf2e63e0aeac1087f8533491fc54c4e0070e5c4e1a3db3ba7e6",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-jack-be-nimble",
+      "source": "art/source/stickers/nursery-rhymes/jack-be-nimble.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-jack-be-nimble.svg",
+      "viewBox": [
+        0,
+        0,
+        316,
+        340
+      ],
+      "sha256": "7954cf82f7f71a95fe81e9237a0ce700ef703595ae6563aeb6be514ac01b90ba",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-storybook-fiddler",
+      "source": "art/source/stickers/nursery-rhymes/storybook-fiddler.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-storybook-fiddler.svg",
+      "viewBox": [
+        0,
+        0,
+        234,
+        340
+      ],
+      "sha256": "9148c12ea1d033a302e76174b1e7f19f1ecc350a7e5910f6426f56b3cf73d0da",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-garden-child",
+      "source": "art/source/stickers/nursery-rhymes/garden-child.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-garden-child.svg",
+      "viewBox": [
+        0,
+        0,
+        240,
+        340
+      ],
+      "sha256": "139a6a80c35229e19749edc1df862f583bcc2d2a6317eca75aaad146007726d1",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-pumpkin",
+      "source": "art/source/stickers/fall/pumpkin.png",
+      "vectorPath": "src/assets/vector/fall-pumpkin.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        253
+      ],
+      "sha256": "3716912f2ad2d429367767115aaca372d648d4db7a1aa9fd09abf04e995e6016",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-scarecrow",
+      "source": "art/source/stickers/fall/scarecrow.png",
+      "vectorPath": "src/assets/vector/fall-scarecrow.svg",
+      "viewBox": [
+        0,
+        0,
+        311,
+        340
+      ],
+      "sha256": "42df62c2509b40e97a777f70a6b223063f42e9b387c272fd4904aea879339528",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-hay-bale",
+      "source": "art/source/stickers/fall/hay-bale.png",
+      "vectorPath": "src/assets/vector/fall-hay-bale.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        185
+      ],
+      "sha256": "9f1fe53d68f823a3d2b2bcbee9b4e4df25ab6753861378bd386d285679c7ce5e",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-raccoon",
+      "source": "art/source/stickers/fall/raccoon.png",
+      "vectorPath": "src/assets/vector/fall-raccoon.svg",
+      "viewBox": [
+        0,
+        0,
+        296,
+        340
+      ],
+      "sha256": "59a8d20d938985d959a9977e3bdc3f106b5d6c0da9e1439cda5b3f7c40a174b1",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "horizons-beach-dunes",
+      "source": "art/source/stickers/horizons/beach-dunes.png",
+      "vectorPath": "src/assets/vector/horizons-beach-dunes.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "17d84da6c63474f693409edb9cb3a89e37add30da71e60a29a7deae01e07b150",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "category-expansion-octopus",
+      "source": "art/source/stickers/category-expansion/octopus.png",
+      "vectorPath": "src/assets/vector/category-expansion-octopus.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        316
+      ],
+      "sha256": "26ab859df869a232db3a2c00a911bc41954014f2bb692daeb30a8cf55738f154",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "collection-expansion-pet-dog",
+      "source": "art/source/stickers/collection-expansion/pet-dog.png",
+      "vectorPath": "src/assets/vector/collection-expansion-pet-dog.svg",
+      "viewBox": [
+        0,
+        0,
+        251,
+        340
+      ],
+      "sha256": "f981b3180a930a325eb11f057a43e035ce0b09cfebe1bc770958b284325f22f3",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "collection-expansion-child-wheelchair",
+      "source": "art/source/stickers/collection-expansion/child-wheelchair.png",
+      "vectorPath": "src/assets/vector/collection-expansion-child-wheelchair.svg",
+      "viewBox": [
+        0,
+        0,
+        262,
+        340
+      ],
+      "sha256": "674185d75d1da8b5f7eff2f4e1ebdd5e68b8bd55c1a7fab38dca6511cf237ea2",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-wandering-wizard",
+      "source": "art/source/stickers/fantasy/wandering-wizard.png",
+      "vectorPath": "src/assets/vector/fantasy-wandering-wizard.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        450
+      ],
+      "sha256": "a7b287d87b951cd16bfe505aeb8ef662544d81f0e0531a6d13827d48a9dd1de2",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-potion-alchemist",
+      "source": "art/source/stickers/fantasy/potion-alchemist.png",
+      "vectorPath": "src/assets/vector/fantasy-potion-alchemist.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        732
+      ],
+      "sha256": "ce4ffbce2aa117bb85a4ed6a83c54ebf029ff3e142cab9671d154b0c8e6d00e6",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-cloud-serpent",
+      "source": "art/source/stickers/fantasy/cloud-serpent.png",
+      "vectorPath": "src/assets/vector/fantasy-cloud-serpent.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        347
+      ],
+      "sha256": "6e33224d3005aba01ec25f9471f7eeaa8a1e1a96a3127e485f526eea48f7d533",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-three-headed-hydra",
+      "source": "art/source/stickers/fantasy/three-headed-hydra.png",
+      "vectorPath": "src/assets/vector/fantasy-three-headed-hydra.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        365
+      ],
+      "sha256": "129c8cff3538b16317c5cd5696b926ad262fb772917a4f3af055005a0c9d6454",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-forest-treant",
+      "source": "art/source/stickers/fantasy/forest-treant.png",
+      "vectorPath": "src/assets/vector/fantasy-forest-treant.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        419
+      ],
+      "sha256": "1430ce6b976ae7adf4172e334d10441c86cf3418450d012ae38fd9f1c0744984",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-badger",
+      "source": "art/source/stickers/fall/badger.png",
+      "vectorPath": "src/assets/vector/fall-badger.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        255
+      ],
+      "sha256": "de6828752ce6737ad23bb64b55e00ee6ca69d1aa3097d77ae1ad02166a73719e",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-shepherd-child",
+      "source": "art/source/stickers/nursery-rhymes/shepherd-child.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-shepherd-child.svg",
+      "viewBox": [
+        0,
+        0,
+        226,
+        340
+      ],
+      "sha256": "78f938d3393ba311592ffeb5d3d24c500249c2f449cc5bbfb0c953df53b4f158",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "6d9916ad-be47-428c-b7d8-303c736259c5",
+          "kind": "remove-region",
+          "x": 88.6698,
+          "y": 157.4627,
+          "regionId": 42,
+          "note": "",
+          "createdAt": "2026-10-24T04:32:07.042Z"
+        }
+      ],
+      "closures": []
+    },
+    {
+      "assetId": "fall-autumn-tree",
+      "source": "art/source/stickers/fall/autumn-tree.png",
+      "vectorPath": "src/assets/vector/fall-autumn-tree.svg",
+      "viewBox": [
+        0,
+        0,
+        258,
+        260
+      ],
+      "sha256": "9730fc2347cf38e72e52cfa599ca55e8fc134a28944598dc35a71d385e8948f7",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "1971459e-e3c3-4ed7-856a-bb143a85b1f9",
+          "kind": "remove-region",
+          "x": 108.9458,
+          "y": 63.3288,
+          "regionId": 4,
+          "note": "",
+          "createdAt": "2026-10-24T04:34:08.837Z"
+        },
+        {
+          "id": "e47d0f43-8063-4107-8bb9-4189dcfb5b9d",
+          "kind": "remove-region",
+          "x": 95.9282,
+          "y": 71.7727,
+          "regionId": 7,
+          "note": "",
+          "createdAt": "2026-10-24T04:34:09.516Z"
+        },
+        {
+          "id": "fee26270-2c00-467b-834e-e1c6cbb4f0fd",
+          "kind": "remove-region",
+          "x": 84.468,
+          "y": 55.5798,
+          "regionId": 6,
+          "note": "",
+          "createdAt": "2026-10-24T04:34:12.667Z"
+        },
+        {
+          "id": "74dcb088-f4bb-4557-8c3f-d5653ee5e278",
+          "kind": "remove-region",
+          "x": 68.3517,
+          "y": 141.4727,
+          "regionId": 16,
+          "note": "",
+          "createdAt": "2026-10-24T04:34:16.207Z"
+        },
+        {
+          "id": "ce4b5173-2c8c-47ee-a5e8-7f70c5abeb84",
+          "kind": "remove-region",
+          "x": 189.5741,
+          "y": 144.5758,
+          "regionId": 17,
+          "note": "",
+          "createdAt": "2026-10-24T04:34:19.214Z"
+        },
+        {
+          "id": "28b070d9-d036-4d56-a5fe-549f508155a3",
+          "kind": "remove-region",
+          "x": 167.921,
+          "y": 101.5705,
+          "regionId": 10,
+          "note": "",
+          "createdAt": "2026-10-24T04:34:21.078Z"
+        }
+      ],
+      "closures": []
+    },
+    {
+      "assetId": "fall-harvest-basket",
+      "source": "art/source/stickers/fall/harvest-basket.png",
+      "vectorPath": "src/assets/vector/fall-harvest-basket.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        243
+      ],
+      "sha256": "896efe93d53da9bfc59d93b14f3f263780dddc83e5ff18f5b1cbc06a54e5dc36",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "c37dc444-fe66-4b3a-9df0-a526908182e0",
+          "kind": "remove-region",
+          "x": 233.6735,
+          "y": 68.8995,
+          "regionId": 29,
+          "note": "",
+          "createdAt": "2026-10-24T04:34:42.491Z"
+        },
+        {
+          "id": "87af6542-ff1f-43da-a5df-69921a1b38d0",
+          "kind": "remove-region",
+          "x": 215.0903,
+          "y": 60.2898,
+          "regionId": 27,
+          "note": "",
+          "createdAt": "2026-10-24T04:34:43.991Z"
+        },
+        {
+          "id": "8bfa6302-4107-4d24-9430-0c4d378c50a2",
+          "kind": "remove-region",
+          "x": 206.3765,
+          "y": 58.8227,
+          "regionId": 26,
+          "note": "",
+          "createdAt": "2026-10-24T04:34:50.798Z"
+        }
+      ],
+      "closures": []
+    },
+    {
+      "assetId": "fall-wheat-sheaf",
+      "source": "art/source/stickers/fall/wheat-sheaf.png",
+      "vectorPath": "src/assets/vector/fall-wheat-sheaf.svg",
+      "viewBox": [
+        0,
+        0,
+        228,
+        260
+      ],
+      "sha256": "7206485921a9a7f65829ae25c9c4d8981e9f79c3dd21371fe605ad9d3a818d1e",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "f4cea8b8-b2c9-4f35-883b-4e25b884ab3b",
+          "kind": "remove-region",
+          "x": 95.4642,
+          "y": 88.3025,
+          "regionId": 36,
+          "note": "",
+          "createdAt": "2026-10-24T04:35:16.668Z"
+        },
+        {
+          "id": "dfbcb5f2-457d-4a64-8c06-d3de45b034ec",
+          "kind": "remove-region",
+          "x": 98.8293,
+          "y": 116.7934,
+          "regionId": 51,
+          "note": "",
+          "createdAt": "2026-10-24T04:35:17.969Z"
+        },
+        {
+          "id": "f5081472-6257-4d8d-99a3-7e10c091f877",
+          "kind": "remove-region",
+          "x": 179.1108,
+          "y": 104.9541,
+          "regionId": 62,
+          "note": "",
+          "createdAt": "2026-10-24T04:35:29.304Z"
+        }
+      ],
+      "closures": []
+    },
+    {
+      "assetId": "horizons-forest-clearing",
+      "source": "art/source/stickers/horizons/forest-clearing.png",
+      "vectorPath": "src/assets/vector/horizons-forest-clearing.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "04774ab8662fc8d39c2e07d8aed385b3b1cc4db6d0a5a01aba908bcf956bb7d6",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "98580fa6-180a-4c83-9f6e-02eda4b8feb0",
+          "kind": "remove-region",
+          "x": 1007.6841,
+          "y": 475.9506,
+          "regionId": 37,
+          "note": "",
+          "createdAt": "2026-10-24T04:36:06.097Z"
+        },
+        {
+          "id": "0aa596a3-864f-495a-88c0-8816995c6d89",
+          "kind": "remove-region",
+          "x": 1127.1021,
+          "y": 401.0916,
+          "regionId": 26,
+          "note": "",
+          "createdAt": "2026-10-24T04:36:10.428Z"
+        },
+        {
+          "id": "16107663-697e-4488-b455-de9adc90b374",
+          "kind": "remove-region",
+          "x": 1195.7228,
+          "y": 416.2417,
+          "regionId": 35,
+          "note": "",
+          "createdAt": "2026-10-24T04:36:13.001Z"
+        },
+        {
+          "id": "0c2d6e7a-38b1-4b8a-9050-1153208e9f36",
+          "kind": "remove-region",
+          "x": 1174.3346,
+          "y": 377.921,
+          "regionId": 28,
+          "note": "",
+          "createdAt": "2026-10-24T04:36:15.793Z"
+        },
+        {
+          "id": "62ed3196-6a47-4215-8f12-ac514595a2f1",
+          "kind": "remove-region",
+          "x": 23.8228,
+          "y": 421.5887,
+          "regionId": 38,
+          "note": "",
+          "createdAt": "2026-10-24T04:36:21.404Z"
+        },
+        {
+          "id": "a7500ba7-aacf-420d-8d44-13f82ab834e3",
+          "kind": "remove-region",
+          "x": 102.2466,
+          "y": 449.2153,
+          "regionId": 48,
+          "note": "",
+          "createdAt": "2026-10-24T04:36:21.976Z"
+        },
+        {
+          "id": "b6fab30e-2368-4bdd-94b5-4de5125c605e",
+          "kind": "remove-region",
+          "x": 172.6497,
+          "y": 461.6918,
+          "regionId": 58,
+          "note": "",
+          "createdAt": "2026-10-24T04:36:22.745Z"
+        },
+        {
+          "id": "5d52d522-e11c-4ad3-a1cf-9ad7e6b3f48b",
+          "kind": "remove-region",
+          "x": 191.7516,
+          "y": 451.2495,
+          "regionId": 59,
+          "note": "",
+          "createdAt": "2026-10-24T04:36:25.176Z"
+        },
+        {
+          "id": "2e35beeb-d89f-4449-9e93-8163da057b37",
+          "kind": "remove-region",
+          "x": 132.9953,
+          "y": 426.3311,
+          "regionId": 49,
+          "note": "",
+          "createdAt": "2026-10-24T04:36:29.442Z"
+        },
+        {
+          "id": "29bf0532-b96e-4263-9e42-cf6dfcc77594",
+          "kind": "remove-region",
+          "x": 1089.4668,
+          "y": 367.1917,
+          "regionId": 24,
+          "note": "",
+          "createdAt": "2026-10-24T04:37:12.222Z"
+        }
+      ],
+      "closures": []
+    },
+    {
+      "assetId": "horizons-jungle-opening",
+      "source": "art/source/stickers/horizons/jungle-opening.png",
+      "vectorPath": "src/assets/vector/horizons-jungle-opening.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "1dec37470f15b6d4765f26bc31355a00851ba819dffa86cd53eca1b5d84d9948",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "6bbc044b-97e5-4958-a7c0-0cfef6e5a048",
+          "kind": "remove-region",
+          "x": 213.8583,
+          "y": 351.5306,
+          "regionId": 48,
+          "note": "",
+          "createdAt": "2026-10-24T04:37:28.490Z"
+        },
+        {
+          "id": "feb971b0-b3df-4763-801f-ab39cbf3ca48",
+          "kind": "remove-region",
+          "x": 994.0723,
+          "y": 353.4184,
+          "regionId": 57,
+          "note": "",
+          "createdAt": "2026-10-24T04:37:31.856Z"
+        },
+        {
+          "id": "d211ff8d-9f85-48a6-b637-f1ea5e0db7c4",
+          "kind": "remove-region",
+          "x": 1068.5823,
+          "y": 333.2123,
+          "regionId": 46,
+          "note": "",
+          "createdAt": "2026-10-24T04:37:32.417Z"
+        },
+        {
+          "id": "d9697a86-2d13-4581-83a0-1ad8b40c2214",
+          "kind": "remove-region",
+          "x": 1111.0993,
+          "y": 349.6298,
+          "regionId": 52,
+          "note": "",
+          "createdAt": "2026-10-24T04:37:35.995Z"
+        },
+        {
+          "id": "82d83120-80cc-478b-b72d-df63224ecbb2",
+          "kind": "remove-region",
+          "x": 1176.3481,
+          "y": 319.3206,
+          "regionId": 44,
+          "note": "",
+          "createdAt": "2026-10-24T04:37:36.694Z"
+        },
+        {
+          "id": "502fb20d-23d2-4b48-a520-5e6cd4dbe47f",
+          "kind": "remove-region",
+          "x": 1121.9466,
+          "y": 309.6101,
+          "regionId": 37,
+          "note": "",
+          "createdAt": "2026-10-24T04:37:45.641Z"
+        }
+      ],
+      "closures": []
+    },
+    {
+      "assetId": "horizons-birch-woodland",
+      "source": "art/source/stickers/horizons/birch-woodland.png",
+      "vectorPath": "src/assets/vector/horizons-birch-woodland.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "c8c7a6f9bd5f76e661a583780f38345ff917f446002c38498cb40bfec61f1e2a",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "4e0c9682-ad58-41cf-8801-b5ff8b5bcf51",
+          "kind": "remove-region",
+          "x": 316.3762,
+          "y": 320.0456,
+          "regionId": 72,
+          "note": "",
+          "createdAt": "2026-10-24T04:37:53.283Z"
+        },
+        {
+          "id": "1c27f125-2d2d-40e6-8720-c286fb1c00dc",
+          "kind": "remove-region",
+          "x": 181.918,
+          "y": 337.9261,
+          "regionId": 65,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:09.296Z"
+        },
+        {
+          "id": "0f459bb0-9d58-46a6-8db4-251fe61e711b",
+          "kind": "remove-region",
+          "x": 119.412,
+          "y": 282.8072,
+          "regionId": 41,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:11.092Z"
+        },
+        {
+          "id": "8ee73900-f0eb-4e87-8be7-c9b26c6da35f",
+          "kind": "remove-region",
+          "x": 46.1095,
+          "y": 278.8295,
+          "regionId": 37,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:14.030Z"
+        },
+        {
+          "id": "237679bd-030a-452b-8cf1-696b0679332e",
+          "kind": "remove-region",
+          "x": 13.1518,
+          "y": 315.7649,
+          "regionId": 48,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:14.786Z"
+        },
+        {
+          "id": "ac2e2280-0072-47f2-88e9-63dcbca81458",
+          "kind": "remove-region",
+          "x": 942.8661,
+          "y": 382.9371,
+          "regionId": 87,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:23.237Z"
+        },
+        {
+          "id": "5a5ed566-f7b5-4a1c-ab60-b2a1a5734c2a",
+          "kind": "remove-region",
+          "x": 917.9228,
+          "y": 343.8104,
+          "regionId": 76,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:28.802Z"
+        },
+        {
+          "id": "800edb2d-4036-4e94-bbba-b39cdb6fbe64",
+          "kind": "remove-region",
+          "x": 934.0626,
+          "y": 332.0723,
+          "regionId": 84,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:32.192Z"
+        },
+        {
+          "id": "af99656d-b38c-402c-ab2c-f2f60b912c0d",
+          "kind": "remove-region",
+          "x": 981.0147,
+          "y": 338.9195,
+          "regionId": 85,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:36.503Z"
+        },
+        {
+          "id": "d58afa92-2df4-4dc3-a19e-0d5ea26a6a32",
+          "kind": "remove-region",
+          "x": 1000.089,
+          "y": 362.3956,
+          "regionId": 62,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:39.039Z"
+        },
+        {
+          "id": "0166b139-ba38-4f05-b7d1-a33bcb7c546f",
+          "kind": "remove-region",
+          "x": 1032.3686,
+          "y": 276.8058,
+          "regionId": 57,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:40.132Z"
+        },
+        {
+          "id": "b0c4589e-a106-4c6a-b226-bdfac27c857d",
+          "kind": "remove-region",
+          "x": 1055.8447,
+          "y": 377.0681,
+          "regionId": 86,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:41.269Z"
+        },
+        {
+          "id": "da7ca8ea-cb31-4012-a907-0a90558f936c",
+          "kind": "remove-region",
+          "x": 1097.4169,
+          "y": 306.1508,
+          "regionId": 51,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:42.478Z"
+        },
+        {
+          "id": "8bb1f2ac-6375-4238-92fc-de233992018c",
+          "kind": "remove-region",
+          "x": 1165.8887,
+          "y": 311.0417,
+          "regionId": 47,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:43.391Z"
+        },
+        {
+          "id": "9cc9eb52-9b75-4762-a379-9009bdc3b2a2",
+          "kind": "remove-region",
+          "x": 1194.2556,
+          "y": 209.8011,
+          "regionId": 30,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:44.922Z"
+        },
+        {
+          "id": "acd8d3e4-19bb-4a2a-905f-e1a2350e2ca3",
+          "kind": "remove-region",
+          "x": 1199.1465,
+          "y": 257.2424,
+          "regionId": 53,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:45.873Z"
+        },
+        {
+          "id": "c62959a0-4229-4047-9e51-562a2c8319a4",
+          "kind": "remove-region",
+          "x": 995.9154,
+          "y": 89.133,
+          "regionId": 15,
+          "note": "",
+          "createdAt": "2026-10-24T04:38:54.024Z"
+        },
+        {
+          "id": "3d241d37-d1c4-4b44-9c14-4be8990ec916",
+          "kind": "remove-region",
+          "x": 225.9673,
+          "y": 290.8309,
+          "regionId": 29,
+          "note": "",
+          "createdAt": "2026-10-24T04:39:50.211Z"
+        },
+        {
+          "id": "58d63839-9f42-4e9a-bc44-13a2c1720852",
+          "kind": "remove-region",
+          "x": 254.498,
+          "y": 337.9627,
+          "regionId": 29,
+          "note": "",
+          "createdAt": "2026-10-24T04:39:51.789Z"
+        },
+        {
+          "id": "590e47d9-7f42-4368-8afa-c1724e736ce2",
+          "kind": "remove-region",
+          "x": 965.6886,
+          "y": 330.7494,
+          "regionId": 81,
+          "note": "",
+          "createdAt": "2026-10-24T04:40:30.693Z"
+        },
+        {
+          "id": "5ff57820-862b-4c67-9bbd-69f74ec6e451",
+          "kind": "remove-region",
+          "x": 1015.6034,
+          "y": 256.081,
+          "regionId": 59,
+          "note": "",
+          "createdAt": "2026-10-24T04:40:37.090Z"
+        },
+        {
+          "id": "5b04f5c5-c7ae-487d-b035-f287695b72a8",
+          "kind": "remove-region",
+          "x": 1022.4475,
+          "y": 248.6002,
+          "regionId": 56,
+          "note": "",
+          "createdAt": "2026-10-24T04:40:38.238Z"
+        },
+        {
+          "id": "c0dfbc88-4fb8-4981-96ae-92410ee378e6",
+          "kind": "remove-region",
+          "x": 1080.3538,
+          "y": 240.4535,
+          "regionId": 54,
+          "note": "",
+          "createdAt": "2026-10-24T04:40:41.736Z"
+        },
+        {
+          "id": "9b517a5b-dd30-41e6-a2d7-d5d9bba1c677",
+          "kind": "remove-region",
+          "x": 981.7826,
+          "y": 93.4522,
+          "regionId": 4,
+          "note": "",
+          "createdAt": "2026-10-24T04:41:18.886Z"
+        }
+      ],
+      "closures": [
+        {
+          "id": "ecd5b1f3-9146-462f-a48e-3426220a76f2",
+          "a": {
+            "x": 245.39430693134724,
+            "y": 291.5276678392465
+          },
+          "b": {
+            "x": 249.35235835218623,
+            "y": 289.49789787984184
+          },
+          "control": {
+            "x": 247.77928663364764,
+            "y": 293.963391790532
+          },
+          "width": 2,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:39:22.126Z"
+        },
+        {
+          "id": "c4f66900-9d3d-4a35-b21a-a79693bbb937",
+          "a": {
+            "x": 251.48361680956106,
+            "y": 285.3368694630624
+          },
+          "b": {
+            "x": 250.87468582173966,
+            "y": 281.7847720341044
+          },
+          "control": {
+            "x": 255.64464522634051,
+            "y": 285.2861252140773
+          },
+          "width": 1.45,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:39:27.514Z"
+        },
+        {
+          "id": "2a520643-5a81-4af1-b19e-6ea3f77da8aa",
+          "a": {
+            "x": 229.94012697042294,
+            "y": 269.4596042118933
+          },
+          "b": {
+            "x": 228.29618286024157,
+            "y": 265.07575325140965
+          },
+          "control": {
+            "x": 225.55627600993927,
+            "y": 270.55556695201415
+          },
+          "width": 1.45,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:39:40.062Z"
+        },
+        {
+          "id": "437d8eb0-7b6d-404c-bc70-1ffa945642b8",
+          "a": {
+            "x": 967.7891629313261,
+            "y": 329.82951617208647
+          },
+          "b": {
+            "x": 967.0787434455345,
+            "y": 321.40597084055736
+          },
+          "control": {
+            "x": 967.5354416864005,
+            "y": 326.9370939799349
+          },
+          "width": 1,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:40:16.548Z"
+        },
+        {
+          "id": "71564dc7-d26a-4a39-9778-924d1623401d",
+          "a": {
+            "x": 1197.4770593707713,
+            "y": 181.1196044591509
+          },
+          "b": {
+            "x": 1199.6083178281463,
+            "y": 182.2359779368234
+          },
+          "control": null,
+          "width": 2,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:40:52.321Z"
+        },
+        {
+          "id": "65d0b98c-85c7-4a1b-a9c7-c7130f815258",
+          "a": {
+            "x": 976.3027935990353,
+            "y": 89.75332142353858
+          },
+          "b": {
+            "x": 980.9606352445493,
+            "y": 82.76655895526781
+          },
+          "control": {
+            "x": 981.919602642155,
+            "y": 91.05477717743214
+          },
+          "width": 1.45,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:41:04.931Z"
+        }
+      ]
+    },
+    {
+      "assetId": "fantasy-moon-sorceress",
+      "source": "art/source/stickers/fantasy/moon-sorceress.svg",
+      "vectorPath": "src/assets/vector/fantasy-moon-sorceress.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        480
+      ],
+      "sha256": "fe28f3497f4733311eee49a4dcd2fd6b352f6ff6e01cb381ecb002f394d297b4",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "0b8252b4-5715-4481-ad43-374dc56388e9",
+          "kind": "remove-region",
+          "x": 21.7994,
+          "y": 174.1404,
+          "regionId": 128,
+          "note": "",
+          "createdAt": "2026-10-24T04:42:51.784Z"
+        }
+      ],
+      "closures": [
+        {
+          "id": "fd8be8ad-36e0-4b2c-8cb6-8dc6c6b6611c",
+          "a": {
+            "x": 180.59195675169445,
+            "y": 26.742496722767253
+          },
+          "b": {
+            "x": 185.04419253163587,
+            "y": 28.974074181748986
+          },
+          "control": {
+            "x": 183.06972464698208,
+            "y": 27.521956137939778
+          },
+          "width": 0.5,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:43:05.258Z"
+        },
+        {
+          "id": "eb044813-9c20-4e01-839d-3ac4c62638e4",
+          "a": {
+            "x": 134.83849148438406,
+            "y": 93.81475839408637
+          },
+          "b": {
+            "x": 138.0167817632601,
+            "y": 91.78722732486268
+          },
+          "control": {
+            "x": 136.646829056848,
+            "y": 95.26690902474658
+          },
+          "width": 1.05,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:43:46.918Z"
+        }
+      ]
+    },
+    {
+      "assetId": "fantasy-woodland-ranger",
+      "source": "art/source/stickers/fantasy/woodland-ranger.png",
+      "vectorPath": "src/assets/vector/fantasy-woodland-ranger.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        671
+      ],
+      "sha256": "9e34e30440bb609b5a0cd5c3bddcc1da8531e0d88a6cd82bcd6db6d2a976b10e",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "29489ebd-99c6-473b-b702-9a57e713794a",
+          "kind": "remove-region",
+          "x": 291.6694,
+          "y": 250.1672,
+          "regionId": 68,
+          "note": "",
+          "createdAt": "2026-10-24T04:44:11.104Z"
+        },
+        {
+          "id": "d7e4bf5d-40fb-4957-bb29-4537dbdb3bdc",
+          "kind": "remove-region",
+          "x": 258.3049,
+          "y": 341.783,
+          "regionId": 150,
+          "note": "",
+          "createdAt": "2026-10-24T04:44:11.911Z"
+        }
+      ],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-forest-elf",
+      "source": "art/source/stickers/fantasy/forest-elf.png",
+      "vectorPath": "src/assets/vector/fantasy-forest-elf.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        867
+      ],
+      "sha256": "47b54209a189fdb929a7523948d8e57224030417842c12e5f7abc2f3cf5afb34",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "36f8678b-8778-4eb8-8714-61cfd178bf97",
+          "kind": "add-region",
+          "x": 59.0112,
+          "y": 764.7455,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T04:44:56.354Z"
+        },
+        {
+          "id": "d8822386-bd23-484d-8cd5-f974e4fce93b",
+          "kind": "add-region",
+          "x": 133.9634,
+          "y": 757.7581,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T04:46:03.432Z"
+        },
+        {
+          "id": "b0082c63-aab9-4757-8b68-37ea3b5221ea",
+          "kind": "add-region",
+          "x": 152.3681,
+          "y": 763.6242,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T04:46:04.605Z"
+        },
+        {
+          "id": "437a6d41-c080-4895-a59e-8c5a01dce100",
+          "kind": "add-region",
+          "x": 154.0546,
+          "y": 775.5762,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T04:46:05.146Z"
+        }
+      ],
+      "closures": [
+        {
+          "id": "79a38827-3978-4722-991d-ca5a67709e2e",
+          "a": {
+            "x": 77.25694031796964,
+            "y": 755.1198245300044
+          },
+          "b": {
+            "x": 80.13028725216392,
+            "y": 747.0744833187478
+          },
+          "control": null,
+          "width": 2,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:44:50.542Z"
+        },
+        {
+          "id": "84e72029-4f0a-4995-b2e1-7736919303f5",
+          "a": {
+            "x": 143.63125449785755,
+            "y": 748.942151814218
+          },
+          "b": {
+            "x": 142.1945810307604,
+            "y": 764.8891674293874
+          },
+          "control": null,
+          "width": 1.47,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:45:02.253Z"
+        },
+        {
+          "id": "45c8bc57-9d7e-4f34-a806-271b13cc3e9a",
+          "a": {
+            "x": 135.01121369527468,
+            "y": 767.7625035762647
+          },
+          "b": {
+            "x": 142.0795372886753,
+            "y": 764.9972957874345
+          },
+          "control": {
+            "x": 140.0395708301147,
+            "y": 767.618836768921
+          },
+          "width": 1.7,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:45:07.188Z"
+        },
+        {
+          "id": "5aadc731-77bb-4496-9194-ed9f3446798b",
+          "a": {
+            "x": 148.82913427767954,
+            "y": 772.3910427276339
+          },
+          "b": {
+            "x": 152.8373865617939,
+            "y": 766.3786903600968
+          },
+          "control": {
+            "x": 144.75407778882993,
+            "y": 763.506122006718
+          },
+          "width": 1.5,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:45:26.443Z"
+        },
+        {
+          "id": "72e0e991-340c-416e-a2f1-2a520c1ce4e3",
+          "a": {
+            "x": 152.55297278925548,
+            "y": 760.1234325293862
+          },
+          "b": {
+            "x": 151.7976445112027,
+            "y": 765.4878028797361
+          },
+          "control": {
+            "x": 149.74163630037233,
+            "y": 763.7440967722868
+          },
+          "width": 1.47,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T04:45:41.320Z"
+        }
+      ]
+    }
+  ],
+  "scope": "line-repairs",
+  "exportedAt": "2026-10-24T04:46:37.461Z"
+}

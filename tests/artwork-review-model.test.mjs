@@ -97,3 +97,24 @@ test('successive line passes preserve the full inspection set and reconcile both
   assert(tasks.hasRecordedRepair(recent));
  }
 });
+
+test('line-then-marker pass retires only the applied instructions and keeps future annotations',()=>{
+ const submitted=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v3.json','utf8'));
+ const ledger=JSON.parse(fs.readFileSync('docs/studioodle-marker-repairs-2026-10-24v3.progress.json','utf8'));
+ assert.equal(ledger.assets.reduce((n,a)=>n+a.appliedMarkerIds.length,0),60);
+ assert.equal(tasks.lineRepairIds().size,31);
+ for(const task of ledger.assets){
+  const old=submitted.assets.find(a=>a.assetId===task.assetId),marker={...old.markers[0],id:'future-marker',note:'keep this new instruction'};
+  const extra=old.closures?.[0]?{...old.closures[0],id:'future-line'}:undefined;
+  const base={...old,notes:'keep notes for the next review',markers:[...old.markers,marker],closures:[...(old.closures??[]),...(extra?[extra]:[])]};
+  const revision={sha256:task.afterSha256,viewBox:old.viewBox,regionAt:()=>123};
+  const next=tasks.refreshKnownRepair(base,revision);
+  assert.equal(next.sha256,task.afterSha256);assert.equal(next.notes,base.notes);
+  assert.deepEqual(next.markers,[{...marker,regionId:123}]);assert.deepEqual(next.closures,extra?[extra]:[]);
+  assert.equal(tasks.refreshKnownRepair(next,revision),next,'Later reviews must not be reset on reload');
+  if(task.beforeSha256===task.afterSha256){
+   const settled={...base,sha256:task.afterSha256,closures:extra?[extra]:[]};
+   assert.deepEqual(tasks.refreshKnownRepair(settled,revision).markers,[marker],'Retire fill markers already satisfied on this same geometry revision');
+  }
+ }
+});
