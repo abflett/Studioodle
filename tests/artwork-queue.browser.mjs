@@ -67,6 +67,19 @@ export async function checkArtworkQueue({cdp,evaluate}){
  await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Reset all Reviewed checkboxes').click()`);
  const afterReset=await record('fantasy-wandering-wizard');assert.deepEqual(afterReset,{...beforeReset,reviewed:false});
  assert(await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1')).assets.every(a=>!a.reviewed)`),'Reset unchecks all artwork while preserving annotations');
+ const markerSnapshot=await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`);
+ const removeMarkers=()=>evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Remove all markers').click()`);
+ await removeMarkers();
+ let cleared=await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`);
+ assert.deepEqual(cleared,{...markerSnapshot,assets:markerSnapshot.assets.map(a=>({...a,markers:[]}))},'Global removal must preserve notes, lines and review status for every asset');
+ assert(await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Remove all markers').disabled`));
+ await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Undo marker removal').click()`);
+ assert.deepEqual(await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`),markerSnapshot,'Undo restores all removed markers exactly');
+ await removeMarkers();await evaluate('globalThis.markerClearReload=true');await cdp('Page.reload');
+ await wait('!globalThis.markerClearReload&&document.querySelector(".review-sheet img")?.complete');
+ cleared=await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`);
+ assert(cleared.assets.every(a=>!a.markers.length),'Removal must survive reload');
+ assert.deepEqual(cleared.assets.find(a=>a.assetId==='fantasy-wandering-wizard').closures,beforeReset.closures);
  const screenshot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile('work/tests/artwork-line-queue.png',Buffer.from(screenshot.data,'base64'));
  console.log('Line queue: stable task list, known revision refresh, preserved annotations, modifier markers, marker drag, deselection, Delete, right-click lines, middle pan, reset and export passed.');
 }

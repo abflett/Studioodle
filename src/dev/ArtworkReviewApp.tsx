@@ -34,6 +34,7 @@ export function ArtworkReviewApp() {
   const [initial] = useState(readReview);
   const [review, setReview] = useState<ArtworkReview>(initial.review);
   const [message, setMessage] = useState(initial.message);
+  const [removedMarkers, setRemovedMarkers] = useState<Pick<AssetReview, 'assetId' | 'markers'>[]>();
   const [assetId, setAssetId] = useState(() => {
     const id = new URLSearchParams(location.search).get('asset');
     return assets.some(asset => asset.id === id) ? id! : rebuiltLineTasks[0]?.assetId ?? assets[0]!.id;
@@ -63,6 +64,7 @@ export function ArtworkReviewApp() {
   const index = visible.findIndex(asset => asset.id === assetId);
   const visibleIds = visible.map(asset => asset.id);
   const persist = useCallback((next: ArtworkReview) => {
+    setRemovedMarkers(undefined);
     setReview(next);
     try { localStorage.setItem(reviewStorageKey, JSON.stringify(next)); setMessage('Saved locally. Export JSON to share or back up this review.'); return true; }
     catch { setMessage('Local saving failed. Keep this page open and export JSON now to preserve your notes.'); return false; }
@@ -79,6 +81,17 @@ export function ArtworkReviewApp() {
   function resetReviewed() {
     persist({ ...review, assets: review.assets.map(entry => ({ ...entry, reviewed: false })) });
     chooseFilter('unreviewed'); setQuery('');
+  }
+  function removeAllMarkers() {
+    const removed = review.assets.filter(entry => entry.markers.length).map(({ assetId, markers }) => ({ assetId, markers }));
+    if (!removed.length) return;
+    persist({ ...review, assets: review.assets.map(entry => ({ ...entry, markers: [] })) });
+    setRemovedMarkers(removed);
+    if (selectedMarker) setSelected(undefined);
+  }
+  function undoMarkerRemoval() {
+    const saved = new Map(removedMarkers?.map(entry => [entry.assetId, entry.markers]));
+    persist({ ...review, assets: review.assets.map(entry => saved.has(entry.assetId) ? { ...entry, markers: saved.get(entry.assetId)! } : entry) });
   }
   function receiveArtwork(data: ReviewArtwork) {
     setArtwork({ id: assetId, data });
@@ -165,6 +178,9 @@ export function ArtworkReviewApp() {
       <small>Inspect the regenerated regions and mark any remaining gaps. This list contains only assets with applied line work.</small>
       <button onClick={resetReviewed}>Reset all Reviewed checkboxes</button>
       <small>Begin a fresh inspection pass after repairs. Keeps every note, marker and proposed line.</small>
+      <button disabled={!review.assets.some(entry => entry.markers.length)} onClick={removeAllMarkers}>Remove all markers</button>
+      <small>Across all artwork, including outside this filter. Keeps notes, proposed lines and Reviewed status.</small>
+      {removedMarkers && <button onClick={undoMarkerRemoval}>Undo marker removal</button>}
       <select aria-label="Artwork" value={index >= 0 ? assetId : ''} onChange={event => choose(event.target.value)}>
         {index < 0 && <option value="" disabled>{asset.title} (outside filter)</option>}
         {visible.map(asset => <option key={asset.id} value={asset.id}>{review.assets.find(entry => entry.assetId === asset.id)?.reviewed ? '✓ ' : ''}{asset.title} · {asset.id}</option>)}

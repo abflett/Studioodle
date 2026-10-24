@@ -27,6 +27,10 @@ artwork, without a hover tint painting over the black ink.
 - After the repairs are applied, click **Reset all Reviewed checkboxes** to begin
   another inspection pass. It unchecks every asset and selects the fresh-review
   filter. Notes, markers and proposed lines remain intact. It never runs on reload.
+- **Remove all markers** clears point markers across the entire review, including
+  artwork outside the filter. Notes, proposed lines and Reviewed status stay intact.
+  Removal saves immediately. **Undo marker removal** restores them until the next
+  saved edit or reload; it does not restore or replace any artwork geometry.
 - Recorded cutout and line repairs refresh automatically when artwork opens:
   completed cutout markers leave the working copy, pending marker region IDs are
   refreshed. Applied line IDs leave the proposal overlay; unsubmitted lines and
