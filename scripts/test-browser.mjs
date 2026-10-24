@@ -219,6 +219,8 @@ try {
   await evaluate('document.querySelector("dialog[open] .wizard-footer .go-button").click()');
   await waitFor('!!document.querySelector(".canvas-host canvas")');
   await evaluate('document.querySelector("button[aria-label=Brush]").click()');
+  await waitFor('!!document.querySelector("button[aria-label=" + JSON.stringify("Close picker") + "]")');
+  await evaluate('document.querySelector("button[aria-label=" + JSON.stringify("Close picker") + "]").click()');
   const at = await evaluate('(()=>{const b=document.querySelector(".canvas-host").getBoundingClientRect();return {x:b.left+b.width*.4,y:b.top+b.height*.4};})()');
   await cdp('Input.dispatchMouseEvent', {type:'mousePressed',...at,button:'left',buttons:1,clickCount:1});
   await cdp('Input.dispatchMouseEvent', {type:'mouseMoved',x:at.x+40,y:at.y+20,buttons:1});
@@ -231,6 +233,8 @@ try {
   await evaluate('document.querySelector(".previous-picture").click()');
   await waitFor('!!document.querySelector(".canvas-host canvas")');
   await evaluate('document.querySelector("button[aria-label=Brush]").click()');
+  await waitFor('!!document.querySelector("button[aria-label=" + JSON.stringify("Close picker") + "]")');
+  await evaluate('document.querySelector("button[aria-label=" + JSON.stringify("Close picker") + "]").click()');
   const touchAt = await evaluate('(()=>{const b=document.querySelector(".canvas-host").getBoundingClientRect();return {x:b.left+b.width*.6,y:b.top+b.height*.6};})()');
   await cdp('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...touchAt,id:1}]});
   await cdp('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:touchAt.x+15,y:touchAt.y,id:1}]});

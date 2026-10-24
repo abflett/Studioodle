@@ -53,6 +53,13 @@ define line endpoints; left click selects/drags or deselects on empty space;
 Delete removes selection; Ctrl-wheel adjusts selected line width by 0.1 (.1–2).
 Adding a marker must not focus notes. Cleanup categories are explicit and undoable.
 
+## Current interface design focus
+
+Refine coloring-page selection, browsing, editing and sharing with all existing
+features available. Fresh settings enable painting controls and the coloring page
+workshop. Custom-page delete remains available alongside Edit Page. Simple mode,
+toddler mode and parent locking are later work.
+
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.

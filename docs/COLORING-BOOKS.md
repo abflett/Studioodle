@@ -4,7 +4,7 @@ Books are offline JSON files. No account, server, image upload, or custom sticke
 
 ## Editing and exchanging pages
 
-1. On Home, open Settings > Advanced Settings and enable **Coloring page workshop** (off by default).
+1. On Home, open Settings > Advanced Settings and check **Coloring page workshop** is enabled (on by default).
 2. Open **Coloring Pages**, browse to a page, and choose **Edit Page**. The editor starts with Select for arranging stickers.
 3. Use the book button on the ribbon to open **Save Coloring Page**. Change the title if needed.
 4. **Save Revision** replaces the local template with the same stable page ID. **Save New Page** adds a separate page with a new ID; subsequent revisions target that new page. **Export Page** downloads a one-page book without requiring a local template save.
