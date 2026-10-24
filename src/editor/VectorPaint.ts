@@ -67,7 +67,7 @@ export class VectorPaint {
             return (this.pendingMerge?this.pendingMerge.then(prepare,prepare):prepare()).then(([result])=>{
                 // A different edit supersedes an in-flight fill; never paint stale topology.
                 if(!result||revision!==this.revision)return false;
-                this.changing?.(id);this.display?.invalidate();this.stableCounts.delete(id);for(const blob of result.blobs)this.trackDisplay(blob.geometry);this.regions.set(id,result);this.revision++;this.schedule(id);return true;
+                this.changing?.(id);this.display?.invalidate();this.stableCounts.set(id,result.blobs.length);this.compacted.add(result.blobs);this.dirty.delete(id);for(const blob of result.blobs)this.trackDisplay(blob.geometry);this.regions.set(id,result);this.revision++;return true;
             });
         }
         if(paintStyleKey(r.base,r.pattern)===key)return false;

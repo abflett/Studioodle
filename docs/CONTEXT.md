@@ -73,6 +73,9 @@ continue onto the page, with page clipping, single-action undo and cancellation.
 Tool/menu cursors use one theme-independent palette with dark contours and a fine
 light edge for mixed canvas backgrounds; brush/bucket accents keep selected paint.
 
+Bucket results now publish fully compacted geometry before display, preventing
+temporary old-color fringes that previously vanished after cleanup and redraw.
+
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.

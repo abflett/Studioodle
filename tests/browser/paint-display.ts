@@ -13,7 +13,34 @@ function denseDocument():ArtworkDocument{
   blobs:Array.from({length:8},(_,i)=>({color:[0x773399,0xee7733,0x228899][i%3]!,geometry:[[ring(140-i*14),ring(129-i*14,true)]]}))}]}}]};
 }
 const pixel=(ctx:CanvasRenderingContext2D,x:number,y:number)=>[...ctx.getImageData(x,y,1,1).data];
+async function checkFilledEdgeStability(){
+ const triangle=(vertices:[number,number][])=>[Array.from({length:600},(_,i)=>{
+  const edge=Math.floor(i/200),t=(i%200)/200,a=vertices[edge]!,b=vertices[(edge+1)%3]!;
+  return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t] as [number,number];
+ }).concat([vertices[0]!])];
+ const art=Artwork.restore({version:5,width:300,height:300,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:0xffffff,vectorPaint:{version:1,regions:[{id:1,base:0xffffff,blobs:[
+  {color:0x773399,geometry:[triangle([[20,20],[280,280],[20,280]])]},
+  {color:0x223355,geometry:[triangle([[20,20],[280,20],[280,280]])]},
+ ]}]}}]});
+ const canvas=document.createElement('canvas');canvas.width=canvas.height=600;
+ const ctx=canvas.getContext('2d')!;ctx.setTransform(1.37,0,0,1.37,.27,.33);
+ try{
+  assert(await art.fill({x:60,y:150},0x223355),'Fill regression must recolor painted coverage');
+  const before=JSON.stringify(art.serialize());
+  art.render(ctx);
+  const immediate=ctx.getImageData(0,0,600,600).data;
+  await art.compactPaint();
+  assert(JSON.stringify(art.serialize())===before,'Published fill must already have its final boundaries');
+  const fresh=Artwork.restore(art.serialize());
+  try {ctx.save();ctx.resetTransform();ctx.clearRect(0,0,600,600);ctx.restore();fresh.render(ctx);} finally {fresh.dispose();}
+  const settled=ctx.getImageData(0,0,600,600).data;
+  let differences=0;
+  for(let i=0;i<immediate.length;i++)if(immediate[i]!==settled[i])differences++;
+  assert(differences===0,`Fill edges changed after maintenance/fresh rendering: ${differences} channels`);
+ }finally{art.dispose();}
+}
 export async function checkPaintDisplay(){
+ await checkFilledEdgeStability();
  const doc=denseDocument(),art=Artwork.restore(doc),canvas=document.createElement('canvas'),reference=document.createElement('canvas');
  canvas.width=canvas.height=reference.width=reference.height=600;
  const ctx=canvas.getContext('2d')!,ref=reference.getContext('2d')!;ctx.scale(2,2);ref.scale(2,2);
@@ -87,6 +114,6 @@ export async function checkPaintDisplay(){
    assert(pixel(largeCtx,900,900)[3]===255,'Cropped cache left a transparent viewport hole');
   }finally{layered.dispose();}
   assert(buffers.every(c=>c.width===1&&c.height===1),'Disposed display retained its backing pixels');
-  return {rotatedFlip:true,inPlaceFill:true,sharedWorkingSet:true,croppedZoom:true,smoothNavigation:true,boundedMemory:true,numericPaths:true,incrementalDisplay:true,noRebuildAfterMerge:true,fillUndoZoomInvalidation:true};
+  return {rotatedFlip:true,inPlaceFill:true,sharedWorkingSet:true,croppedZoom:true,smoothNavigation:true,boundedMemory:true,numericPaths:true,incrementalDisplay:true,noRebuildAfterMerge:true,fillUndoZoomInvalidation:true,filledEdgeStability:true};
  }finally{Object.defineProperty(CanvasRenderingContext2D.prototype,'fill',descriptor);art.dispose();}
 }

@@ -73,20 +73,23 @@ export function compactRegionPrefix(region: VectorPaintRegion, compacted=0): Vec
 /** Bucket topology is calculated in the worker, never during pointer dispatch. */
 export function filledRegion(region:VectorPaintRegion,color:number,point:Pair,pattern?:FillOptions,boundary?:MultiPolygon,compacted=0):VectorPaintRegion|undefined {
     const r=compactRegionPrefix(region,compacted),key=paintStyleKey(color,pattern);
+    // Return a fully compacted fill so the first frame has the same boundaries
+    // as later maintenance. Overlaid replacement blobs can leave an old-color
+    // antialias fringe until their shared edges are removed.
     // Compaction makes visible color components disjoint. Test topmost first.
     for(const blob of [...r.blobs].reverse())for(const polygon of blob.geometry)if(containsGeometry([polygon],point)){
         if(paintStyleKey(blob.color,blob.pattern)===key)return;
-        return {...r,blobs:[...r.blobs,{color,pattern,geometry:[polygon]}]};
+        return compactRegionPrefix({...r,blobs:[...r.blobs,{color,pattern,geometry:[polygon]}]},r.blobs.length);
     }
     if(paintStyleKey(r.base,r.pattern)===key)return;
     if(boundary){
         const background=polygonClipping.difference(boundary,...r.blobs.map(blob=>blob.geometry));
         if(background.length>1){
             const component=background.find(polygon=>containsGeometry([polygon],point));
-            if(component)return {...r,blobs:[...r.blobs,{color,pattern,geometry:[component]}]};
+            if(component)return compactRegionPrefix({...r,blobs:[...r.blobs,{color,pattern,geometry:[component]}]},r.blobs.length);
         }
     }
-    return {...r,base:color,pattern};
+    return compactRegionPrefix({...r,base:color,pattern},r.blobs.length);
 }
 export function containsGeometry(geometry: MultiPolygon, point: Pair) {
     return geometry.some(polygon=>{
