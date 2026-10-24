@@ -134,4 +134,3 @@ Each sticker has one primary category in `art/stickers.json`, projected into the
 Display names use a capital letter at the beginning of every word, including short words such as And and With. Asset IDs and source filenames stay stable so existing pictures keep their sticker references. Coloring-page titles follow the same convention.
 
 See [artwork sources](../art/README.md) and [scene authoring guide](SCENE-AUTHORING.md) when assembling new pages. Category guides include thumbnails and placement notes for every asset.
-
