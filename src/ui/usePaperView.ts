@@ -35,7 +35,9 @@ export function usePaperView(paper: { width: number; height: number }, requested
       const old = current.current;
       const preserve = preserveNextView.current || (old !== null && old.width === w && old.height === h && Math.abs(old.zoom - activeZoom) < .00001);
       preserveNextView.current = false;
-      const next = constrain({ width: w, height: h, zoom: activeZoom,
+      // An explicitly positioned view (including temporary precision zoom) must
+      // survive the requestedZoom render without being clamped or recentered.
+      const next = preserve && old && old.width === w && old.height === h && Math.abs(old.zoom - activeZoom) < .00001 ? old : constrain({ width: w, height: h, zoom: activeZoom,
         x: old && (requestedZoom !== null || preserve) ? w / 2 - (old.width / 2 - old.x) / old.zoom * activeZoom : (w - width * activeZoom) / 2,
         y: old && (requestedZoom !== null || preserve) ? h / 2 - (old.height / 2 - old.y) / old.zoom * activeZoom : (h - height * activeZoom) / 2,
       }, { width, height });
@@ -80,10 +82,11 @@ export function usePaperView(paper: { width: number; height: number }, requested
     const box = element.getBoundingClientRect();
     const fitted = Math.min(view.width / paper.width, view.height / paper.height);
     const nextZoom = Math.max(view.zoom, fitted * multiplier);
-    const next = constrain({ ...view, zoom: nextZoom,
+    // Precision magnification is anchored exactly, even beside the page edge.
+    const next = { ...view, zoom: nextZoom,
       x: client.x - box.left - point.x * nextZoom,
       y: client.y - box.top - point.y * nextZoom,
-    }, paper);
+    };
     current.current = next; drag.current = null; setPosition({ x: next.x, y: next.y });
     return nextZoom / fitted;
   };

@@ -76,6 +76,9 @@ light edge for mixed canvas backgrounds; brush/bucket accents keep selected pain
 Bucket results now publish fully compacted geometry before display, preventing
 temporary old-color fringes that previously vanished after cleanup and redraw.
 
+Temporary hold-to-fill zoom preserves the exact pointer anchor without pan
+clamping, including through layout updates; release/cancellation restores the view.
+
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.
