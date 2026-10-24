@@ -44,6 +44,26 @@ function nativeCursor(graphic: CursorGraphic, color: number) {
 }
 // Render above native resolution, then reduce once for clean edge coverage.
 // Supply display densities explicitly so the OS never has to enlarge a 1x cursor.
+export const cursorDensities = [1, 1.25, 1.5, 1.75, 2, 2.5, 3] as const;
+
+/** Rasterize filters at a fixed high resolution before reducing to device pixels. */
+export function rasterizeCursor(source: HTMLImageElement, asset: CursorGraphic, density: number) {
+  const supersampled = document.createElement('canvas');
+  supersampled.width = asset.width * 12;
+  supersampled.height = asset.height * 12;
+  const high = supersampled.getContext('2d');
+  if (!high) throw new Error('Canvas unavailable');
+  high.drawImage(source, 0, 0, supersampled.width, supersampled.height);
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(asset.width * density);
+  canvas.height = Math.round(asset.height * density);
+  const context = canvas.getContext('2d');
+  if (!context) throw new Error('Canvas unavailable');
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = 'high';
+  context.drawImage(supersampled, 0, 0, canvas.width, canvas.height);
+  return canvas;
+}
 const rendered = new WeakMap<CursorGraphic, Map<string, Promise<string>>>();
 function smoothCursor(asset: CursorGraphic, color: number): Promise<string> {
   let colors = rendered.get(asset);
@@ -56,19 +76,9 @@ function smoothCursor(asset: CursorGraphic, color: number): Promise<string> {
     source.onerror = () => resolve(nativeCursor(asset, color));
     source.onload = () => {
       try {
-        const canvas = document.createElement('canvas');
-        const urls = [1, 2, 3].map((density) => {
-          canvas.width = asset.width * density;
-          canvas.height = asset.height * density;
-          const context = canvas.getContext('2d');
-          if (!context) throw new Error('Canvas unavailable');
-          context.imageSmoothingEnabled = true;
-          context.imageSmoothingQuality = 'high';
-          context.drawImage(source, 0, 0, canvas.width, canvas.height);
-          return canvas.toDataURL('image/png');
-        });
+        const urls = cursorDensities.map(density => rasterizeCursor(source, asset, density).toDataURL('image/png'));
         const hotspot = `${asset.hotspot.x} ${asset.hotspot.y}, ${asset.fallback}`;
-        const densityCursor = `image-set(${urls.map((url, i) => `url("${url}") ${i + 1}x`).join(', ')}) ${hotspot}`;
+        const densityCursor = `image-set(${urls.map((url, i) => `url("${url}") ${cursorDensities[i]}x`).join(', ')}) ${hotspot}`;
         resolve(CSS.supports('cursor', densityCursor) ? densityCursor : `url("${urls[0]}") ${hotspot}`);
       } catch { resolve(nativeCursor(asset, color)); }
     };
