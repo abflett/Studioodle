@@ -5,7 +5,7 @@ import { pictureSummary } from '../editor/pictureSummary';
 import type { PictureSummary } from '../editor/pictureSummary';
 
 /** Fresh region-library revision; metadata and artwork commit in one transaction. */
-export function createIndexedPictureRepository(name = 'studioodle-library-v6') {
+export function createIndexedPictureRepository(name = 'studioodle-library-v7') {
   const transact = <T>(mode: IDBTransactionMode, operation: (tx: IDBTransaction) => IDBRequest<T>, signal?: AbortSignal) => new Promise<T>((resolve, reject) => {
     let db: IDBDatabase | undefined, tx: IDBTransaction | undefined, done = false;
     const finish = (error?: unknown, result?: T) => {

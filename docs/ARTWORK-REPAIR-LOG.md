@@ -276,3 +276,33 @@ Effort: **low per submitted instruction**. One line batch, one geometric marker
 remap and one cutout batch handled all 73 instructions. No manual line inference,
 seed movement or semantic redraw was needed. Exact token telemetry is unavailable;
 the fixed effort was validation, proof inspection and recording the revision chain.
+
+## October 24 - v4 repairs and two recent histories
+
+Input: `studioodle-line-repairs-2026-10-24v4.json`, preserved unchanged. Applied
+**13 lines across five assets** first (Cradle Tree 1, Badger 1, Birch Woodland 6,
+Forest Clearing 3, Forest Elf 2), then remapped markers to those rebuilt regions.
+The line-stage region total increased **489 -> 499**. Existing cleanup removed one
+tiny new pocket on Badger, retaining the established minimum clickable-region size.
+All **five fill requests** landed in newly enclosed white regions (verified at their
+coordinates). Applied the **four transparency requests** on Shepherd Child, Jack Be
+Nimble and Forest Elf; the marker-stage total decreased **320 -> 316**. Validation
+confirmed byte-identical ink in the marker stage, transparent cutout seeds, unchanged
+original sources and retained interiors for all unmarked regions. Nothing deferred.
+
+The [line ledger](studioodle-line-repairs-2026-10-24v4.progress.json) and
+[marker ledger](studioodle-marker-repairs-2026-10-24v4.progress.json) keep separate
+revision steps and exact applied IDs. Diagnostics are in ignored
+`work/line-repair-2026-10-24v4/` and `work/marker-repair-2026-10-24v4/`.
+
+The inspector now exposes **History 1: seven assets changed in v4** and
+**History 2: ten assets changed in v3**, replacing the cumulative 31-asset rebuilt
+linework filter. Each future pass should rotate these two recent sets. Older exports
+and ledgers remain unchanged for provenance; the chronological revision graph still
+reconciles older annotations without replaying applied lines or markers. Exports,
+keyboard navigation and automatic selection follow the chosen history.
+
+Effort: low per explicit instruction; the existing scripts handled all 22 line and
+marker instructions. Fixed effort in this pass was splitting recent browse histories
+from the complete revision ledger and verifying filter/export isolation. Exact token
+telemetry is unavailable.

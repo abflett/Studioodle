@@ -5,7 +5,7 @@ import { emptyReview, markerLabels, mergeReviews, parseReview, reviewStorageKey 
 import type { ArtworkReview, AssetReview, LineDraft, ReviewClosure, ReviewTool, ReviewAsset, ReviewMarker } from './artworkReviewModel';
 import type { ReviewArtwork } from './artworkReviewAsset';
 import { loadReviewArtwork } from './artworkReviewAsset';
-import { lineRepairIds, lineRepairTasks, refreshKnownRepair, hasRecordedRepair, rebuiltLineTasks } from './artworkLineTasks';
+import { repairHistory, lineRepairTasks, refreshKnownRepair, hasRecordedRepair, rebuiltLineTasks } from './artworkLineTasks';
 import { clearReview, restoreReviewCleanup, matchesReviewFilter, cleanupOptions } from './artworkReviewCleanup';
 import type { CleanupTarget, CleanupPatch } from './artworkReviewCleanup';
 import './artworkReview.css';
@@ -14,6 +14,10 @@ const assets: ReviewAsset[] = manifest;
 function adjacentAsset(ids: string[], index: number, direction: number) {
   if (!ids.length) return undefined;
   return ids[index < 0 ? (direction > 0 ? 0 : ids.length - 1) : (index + direction + ids.length) % ids.length];
+}
+function initialFilter() {
+  const value = new URLSearchParams(location.search).get('filter');
+  return value && ['all', 'unreviewed', 'reviewed', 'markers', 'notes', 'lines', 'refinements', 'history-1', 'history-2'].includes(value) ? value : 'history-1';
 }
 function LineWidthInput({ width, disabled, onChange }: { width: number; disabled: boolean; onChange: (width: number) => void }) {
   return <span className="review-width-control"><input aria-label="Line width" type="range" min="0.1" max="2" step="0.1" value={Math.min(2, width)} disabled={disabled} onChange={event => onChange(Number(event.target.value))} /><output>{width.toFixed(1)}</output></span>;
@@ -40,12 +44,10 @@ export function ArtworkReviewApp() {
   const [cleanup, setCleanup] = useState<CleanupTarget | ''>('');
   const [assetId, setAssetId] = useState(() => {
     const id = new URLSearchParams(location.search).get('asset');
-    return assets.some(asset => asset.id === id) ? id! : rebuiltLineTasks[0]?.assetId ?? assets[0]!.id;
+    const history = repairHistory.find(history => history.id === initialFilter());
+    return assets.some(asset => asset.id === id) && (!history || history.assetIds.includes(id!)) ? id! : history?.assetIds[0] ?? assets[0]!.id;
   });
-  const [query, setQuery] = useState(''), [filter, setFilter] = useState(() => {
-    const value = new URLSearchParams(location.search).get('filter');
-    return value && ['all', 'unreviewed', 'reviewed', 'markers', 'notes', 'lines', 'refinements'].includes(value) ? value : 'line-repairs';
-  });
+  const [query, setQuery] = useState(''), [filter, setFilter] = useState(initialFilter);
   const [mode, setMode] = useState<ReviewTool>('select');
   const [draft, setDraft] = useState<LineDraft>();
   const [fillTarget, setFillTarget] = useState<string>();
@@ -56,13 +58,14 @@ export function ArtworkReviewApp() {
   const current = review.assets.find(entry => entry.assetId === assetId);
   const selectedMarker = current?.markers.find(marker => marker.id === selected);
   const selectedLine = current?.closures?.find(line => line.id === selected);
-  const lineIds = lineRepairIds();
+  const historySet = repairHistory.find(history => history.id === filter);
+  const historyIds = new Set(historySet?.assetIds);
   const currentTask = lineRepairTasks.find(task => task.assetId === assetId);
   const rebuiltTask = rebuiltLineTasks.find(task => task.assetId === assetId);
   const visible = assets.filter(asset => {
     const entry = review.assets.find(entry => entry.assetId === asset.id);
     return `${asset.title} ${asset.id} ${asset.category}`.toLowerCase().includes(query.toLowerCase()) &&
-      (filter === 'line-repairs' ? lineIds.has(asset.id) : matchesReviewFilter(entry, filter));
+      (historySet ? historyIds.has(asset.id) : matchesReviewFilter(entry, filter));
   });
   const index = visible.findIndex(asset => asset.id === assetId);
   const visibleIds = visible.map(asset => asset.id);
@@ -75,6 +78,9 @@ export function ArtworkReviewApp() {
   function chooseFilter(value: string) {
     setFilter(value);
     const url = new URL(location.href); url.searchParams.set('filter', value); history.replaceState(null, '', url);
+    const historySet = repairHistory.find(history => history.id === value);
+    const matches = assets.filter(candidate => `${candidate.title} ${candidate.id} ${candidate.category}`.toLowerCase().includes(query.toLowerCase()) && (historySet ? historySet.assetIds.includes(candidate.id) : matchesReviewFilter(review.assets.find(entry => entry.assetId === candidate.id), value)));
+    if (matches.length && !matches.some(candidate => candidate.id === assetId)) choose(matches[0]!.id);
   }
   const choose = useCallback((id: string) => {
     setAssetId(id); setSelected(undefined); setDraft(undefined); setFillTarget(undefined);
@@ -142,16 +148,16 @@ export function ArtworkReviewApp() {
     };
     window.addEventListener('keydown', keydown); return () => window.removeEventListener('keydown', keydown);
   }, [visibleIds, index, choose, updateEntry, chooseTool, selected, deleteAnnotation]);
-  const exportingLines = filter === 'line-repairs';
+  const exportingHistory = !!historySet;
   async function exportReview() {
-    // Include every line task regardless of inspection status.
-    const selectedAssets = exportingLines ? review.assets.filter(asset => lineIds.has(asset.assetId)) : review.assets;
+    // History exports include every member, regardless of inspection status.
+    const selectedAssets = exportingHistory ? review.assets.filter(asset => historyIds.has(asset.assetId)) : review.assets;
     let normalized: AssetReview[];
     try { normalized = await refreshRecordedReviews(selectedAssets);
     } catch (error) { setMessage(`Export failed: ${String(error)}. Your local annotations are unchanged.`); return; }
-    const data = { ...review, assets: normalized, ...(exportingLines ? { scope: 'line-repairs' } : {}), exportedAt: new Date().toISOString() };
+    const data = { ...review, assets: normalized, ...(historySet ? { scope: historySet.id } : {}), exportedAt: new Date().toISOString() };
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2) + '\n'], { type: 'application/json' }));
-    const link = document.createElement('a'); link.href = url; link.download = `studioodle-${exportingLines ? 'line-repairs' : 'artwork-review'}-${new Date().toISOString().slice(0, 10)}.json`;
+    const link = document.createElement('a'); link.href = url; link.download = `studioodle-${historySet?.id ?? 'artwork-review'}-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.append(link); link.click(); link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     setMessage(`Exported ${normalized.length} artwork records, ${normalized.reduce((sum, entry) => sum + entry.markers.length, 0)} markers and ${normalized.reduce((sum, entry) => sum + (entry.closures?.length ?? 0), 0)} proposed lines.`);
@@ -161,7 +167,7 @@ export function ArtworkReviewApp() {
     <header className="review-header">
       <strong>Artwork review <small>Developer tool</small></strong>
       <span>{review.assets.filter(entry => entry.reviewed).length} / {assets.length} reviewed · {review.assets.reduce((sum, entry) => sum + entry.markers.length, 0)} markers · {review.assets.reduce((sum, entry) => sum + (entry.closures?.length ?? 0), 0)} lines</span>
-      <button onClick={() => importInput.current?.click()}>Import JSON</button><button className="review-primary" onClick={exportReview}>{exportingLines ? 'Export line repairs' : 'Export all JSON'}</button>
+      <button onClick={() => importInput.current?.click()}>Import JSON</button><button className="review-primary" onClick={exportReview}>{historySet ? `Export ${historySet.label}` : 'Export all JSON'}</button>
       <a href="/">Back to app</a>
       <input ref={importInput} hidden type="file" accept="application/json,.json" onChange={async event => {
         const file = event.target.files?.[0]; event.target.value = ''; if (!file) return;
@@ -171,7 +177,7 @@ export function ArtworkReviewApp() {
     </header>
     <aside className="review-sidebar">
       <label>Find artwork<input type="search" value={query} placeholder="Name, ID or category" onChange={event => setQuery(event.target.value)} /></label>
-      <label>Browse<select value={filter} onChange={event => chooseFilter(event.target.value)}><option value="line-repairs">Rebuilt linework - inspect ({lineIds.size})</option><option value="all">All artwork</option><option value="unreviewed">Not reviewed</option><option value="reviewed">Reviewed only</option><option value="lines">Proposed lines only</option><option value="markers">Markers only</option><option value="notes">Notes only</option><option value="refinements">All refinements</option></select></label>
+      <label>Browse<select value={filter} onChange={event => chooseFilter(event.target.value)}>{repairHistory.map(history => <option key={history.id} value={history.id}>{history.label} ({history.assetIds.length})</option>)}<option value="all">All artwork</option><option value="unreviewed">Not reviewed</option><option value="reviewed">Reviewed only</option><option value="lines">Proposed lines only</option><option value="markers">Markers only</option><option value="notes">Notes only</option><option value="refinements">All refinements</option></select></label>
       <label>Clear from entire review<select aria-label="Cleanup category" value={cleanup} onChange={event => { const value = event.target.value as CleanupTarget; setCleanup(value); chooseFilter(value); }}>
         <option value="" disabled>Choose what to clear</option>
         {cleanupOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
@@ -186,7 +192,7 @@ export function ArtworkReviewApp() {
       </select>
       <nav className="review-browse"><button onClick={() => navigate(-1)} disabled={!visible.length} aria-label="Previous artwork">← Previous</button><span>{index < 0 ? '—' : index + 1} / {visible.length}</span><button onClick={() => navigate(1)} disabled={!visible.length} aria-label="Next artwork">Next →</button></nav>
       <div><h1>{asset.title}</h1><code>{asset.id}</code></div>
-      {rebuiltTask ? <div className="review-task-summary"><strong>Linework applied</strong><small>{rebuiltTask.lines} lines merged; {rebuiltTask.beforeRegions} to {rebuiltTask.afterRegions} regions. Inspect fills and remaining gaps.</small></div> : currentTask && <div className="review-task-summary"><strong>Line repair task</strong><small>{currentTask.operations.filter(operation => operation.status === 'deferred').length} pending markers{currentTask.notes.trim() ? ` · ${currentTask.notes}` : ''}</small></div>}
+      {rebuiltTask ? <div className="review-task-summary"><strong>Repairs applied</strong><small>{rebuiltTask.lines} lines merged; {rebuiltTask.beforeRegions} to {rebuiltTask.afterRegions} regions after line and marker repairs. Inspect fills and remaining gaps.</small></div> : currentTask && <div className="review-task-summary"><strong>Line repair task</strong><small>{currentTask.operations.filter(operation => operation.status === 'deferred').length} pending markers{currentTask.notes.trim() ? ` · ${currentTask.notes}` : ''}</small></div>}
       <label className="review-check"><input type="checkbox" checked={current?.reviewed ?? false} disabled={!editable} onChange={event => updateEntry(entry => ({ ...entry, reviewed: event.target.checked }))} /> Reviewed</label>
       <fieldset disabled={!editable} className="review-tools"><legend>Review tool</legend>{(['select', 'note', 'remove-region', 'add-region', 'close-line'] as ReviewTool[]).map((kind, index) => <button key={kind} className={kind} aria-pressed={mode === kind} onClick={() => chooseTool(kind)}>{kind === 'select' ? 'Select / move' : `${index} · ${kind === 'close-line' ? 'Close line' : markerLabels[kind]}`}</button>)}</fieldset>
       <label>Artwork notes<textarea aria-label="Artwork notes" rows={3} value={current?.notes ?? ''} disabled={!editable} placeholder="Overall issues or suggestions…" onChange={event => updateEntry(entry => ({ ...entry, notes: event.target.value }))} /></label>

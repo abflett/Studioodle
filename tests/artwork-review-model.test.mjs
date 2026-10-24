@@ -30,7 +30,7 @@ test('dragging the curve midpoint controls the visible curve, and closure geomet
 });
 test('recorded repairs refresh region references without losing new lines, notes or review status',()=>{
  const input=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-23.json','utf8'));
- assert.equal(tasks.lineRepairIds(input).size,31);
+ assert.equal(tasks.rebuiltLineTasks.length,31);
  const wizard=input.assets.find(a=>a.assetId==='fantasy-wandering-wizard');
  wizard.closures=[{id:'existing-line',a:{x:1,y:1},b:{x:2,y:2},control:null,width:1,fillSeed:null,note:'preserve',createdAt:'2026-10-23T00:00:00Z'}];
  const original=structuredClone(wizard),task=tasks.lineRepairTasks.find(a=>a.assetId===wizard.assetId);
@@ -81,7 +81,7 @@ test('successive line passes preserve the full inspection set and reconcile both
  const first=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24-line-repair.json','utf8'));
  const second=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v2.json','utf8'));
  const nextLedger=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v2.progress.json','utf8'));
- assert.equal(tasks.lineRepairIds().size,31);
+ assert.equal(tasks.rebuiltLineTasks.length,31);
  for(const task of nextLedger.assets){
   const recent=second.assets.find(a=>a.assetId===task.assetId),earlier=first.assets.find(a=>a.assetId===task.assetId);
   const extra={...recent.closures[0],id:'future-proposal'};
@@ -102,7 +102,7 @@ test('line-then-marker pass retires only the applied instructions and keeps futu
  const submitted=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v3.json','utf8'));
  const ledger=JSON.parse(fs.readFileSync('docs/studioodle-marker-repairs-2026-10-24v3.progress.json','utf8'));
  assert.equal(ledger.assets.reduce((n,a)=>n+a.appliedMarkerIds.length,0),60);
- assert.equal(tasks.lineRepairIds().size,31);
+ assert.equal(tasks.rebuiltLineTasks.length,31);
  for(const task of ledger.assets){
   const old=submitted.assets.find(a=>a.assetId===task.assetId),marker={...old.markers[0],id:'future-marker',note:'keep this new instruction'};
   const extra=old.closures?.[0]?{...old.closures[0],id:'future-line'}:undefined;
@@ -117,4 +117,28 @@ test('line-then-marker pass retires only the applied instructions and keeps futu
    assert.deepEqual(tasks.refreshKnownRepair(settled,revision).markers,[marker],'Retire fill markers already satisfied on this same geometry revision');
   }
  }
+});
+
+test('histories contain the latest and preceding changed sets, without accumulating old artwork',()=>{
+ const read=name=>JSON.parse(fs.readFileSync(`docs/studioodle-${name}-2026-10-24v4.progress.json`,'utf8'));
+ const line=read('line-repairs'),markers=read('marker-repairs');
+ const changed=entries=>[...new Set(entries.filter(a=>a.beforeSha256!==a.afterSha256).map(a=>a.assetId))].sort();
+ assert.equal(tasks.repairHistory.length,2);
+ assert.deepEqual([...tasks.repairHistory[0].assetIds].sort(),changed([...line.assets,...markers.assets]));
+ assert.equal(tasks.repairHistory[0].assetIds.length,7);assert.equal(tasks.repairHistory[0].label,'History 1');
+ const oldLines=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v3.progress.json','utf8'));
+ const oldMarkers=JSON.parse(fs.readFileSync('docs/studioodle-marker-repairs-2026-10-24v3.progress.json','utf8'));
+ assert.deepEqual([...tasks.repairHistory[1].assetIds].sort(),changed([...oldLines.assets,...oldMarkers.assets]));
+ assert.equal(tasks.repairHistory[1].assetIds.length,10);assert.equal(tasks.repairHistory[1].label,'History 2');
+ assert(!tasks.repairHistory.some(h=>h.assetIds.includes('fantasy-wandering-wizard')),'Older unaffected assets do not stay in either dropdown history');
+ const input=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v4.json','utf8'));
+ const latest=new Map([...line.assets,...markers.assets].map(a=>[a.assetId,a]));
+ for(const id of tasks.repairHistory[0].assetIds){
+  const base=input.assets.find(a=>a.assetId===id),task=latest.get(id),revision={sha256:task.afterSha256,viewBox:base.viewBox,regionAt:()=>100};
+  const next=tasks.refreshKnownRepair(base,revision);
+  assert.equal(next.sha256,task.afterSha256);assert.equal(next.markers.length,0);assert.equal(next.closures?.length??0,0);
+ }
+ const early=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v3.json','utf8')).assets.find(a=>a.assetId==='horizons-birch-woodland');
+ const last=latest.get(early.assetId);
+ assert.equal(tasks.refreshKnownRepair(early,{sha256:last.afterSha256,viewBox:early.viewBox,regionAt:()=>100}).sha256,last.afterSha256,'Revision reconciliation follows lines and markers in chronological pass order');
 });

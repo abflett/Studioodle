@@ -144,7 +144,7 @@ export async function checkArtworkReview({ cdp, evaluate }) {
   await wait('!!document.querySelector(".review-region-outline")');
   assert.equal(await evaluate('document.querySelector(".review-region-outline").getAttribute("fill")'),'none');
   // Open the user's representative detailed asset for a final visual inspection.
-  await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=counting-03'});
+  await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=counting-03&filter=all'});
   await wait('document.querySelector(".review-sidebar code")?.textContent==="counting-03"');await ready();
   for(const [width,height] of [[1440,1000],[1024,768],[390,844]]){
     await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});

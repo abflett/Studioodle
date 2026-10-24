@@ -2875,6 +2875,10 @@
       [
         88.6698,
         157.4627
+      ],
+      [
+        91.6026,
+        104.425
       ]
     ]
   },
@@ -3828,7 +3832,13 @@
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
     "crop": "1049x1128+117+44",
-    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-jack-be-nimble.svg"
+    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-jack-be-nimble.svg",
+    "cutouts": [
+      [
+        127.2132,
+        62.7456
+      ]
+    ]
   },
   {
     "id": "nursery-rhymes-old-king-cole",
@@ -7875,7 +7885,17 @@
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
     "crop": "488x1245+385+4",
-    "inkSource": "art/source/stickers/line-repairs/fantasy-forest-elf.svg"
+    "inkSource": "art/source/stickers/line-repairs/fantasy-forest-elf.svg",
+    "cutouts": [
+      [
+        113.6805,
+        357.6565
+      ],
+      [
+        89.5746,
+        119.8933
+      ]
+    ]
   },
   {
     "id": "fantasy-flower-fairy",

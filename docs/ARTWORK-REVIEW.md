@@ -18,13 +18,16 @@ artwork, without a hover tint painting over the black ink.
   Browsing wraps around and follows the search and review filter.
 - Space toggles Reviewed for the current asset. Holding it down does not repeatedly
   toggle the status. Shortcuts are inactive while typing in notes or search fields.
-- Search by title, ID or category. **Rebuilt linework - inspect** is the default:
-  the full 31-asset set from the October 24 line pass, including the v2
-  follow-up on Badger and Birch Woodland and the v3 line/marker pass. Earlier
-  repaired assets stay in the set.
-  It stays visible regardless of Reviewed so you can inspect regenerated regions,
-  add/remove-region issues and remaining line gaps without losing the target set.
-- **All artwork** shows the library. **Fresh review - unchecked artwork** hides
+- Search by title, ID or category. **History 1** is the default and contains only
+  artwork changed by the latest repair pass (v4: seven assets). **History 2** contains
+  only the immediately preceding pass (v3: ten assets). These are pass-specific sets,
+  not a cumulative list. When another pass is accepted, rotate the sets: the new
+  pass becomes History 1 and the previous History 1 becomes History 2. Older ledgers
+  remain on disk for provenance and annotation reconciliation.
+- History membership does not depend on Reviewed status. Selecting a filter updates
+  the list immediately and selects its first match if the current artwork is outside
+  the set. A/D and Previous/Next browse only the selected history or filter.
+- **All artwork** shows the library. **Not reviewed** hides
   assets already inspected. The selected filter survives reload in the page URL.
 - Browse filters apply immediately: **Reviewed only**, **Proposed lines only**,
   **Markers only**, **Notes only**, or **All refinements**. All refinements includes
@@ -125,11 +128,12 @@ want, without exporting individual images. Browser autosave happens on every
 edit, so navigation never requires an export. A downloaded file is a snapshot
 and is not automatically overwritten by later edits.
 
-While the rebuilt-linework filter is selected, the button becomes **Export line
-repairs** and exports the entire rebuilt-asset set, including tasks already marked
-Reviewed. This keeps finished curve instructions
-in the handoff without mixing in old completed cutout-only reviews. Switch to All
-artwork for a complete export of all locally stored annotations.
+While a history is selected, **Export History 1** or **Export History 2** downloads
+all locally stored review entries belonging to that pass, including assets already
+marked Reviewed. Search does not reduce this export set. Other browse filters retain
+**Export all JSON** for a full backup. Exports retain the same review schema, closure
+geometry and marker coordinates; `scope` identifies the selected history.
+
 
 The export includes the selected set of annotated/reviewed assets, including per-asset notes,
 review status, marker type and note, exact SVG x/y coordinates, the region ID

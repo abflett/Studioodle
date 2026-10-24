@@ -1,0 +1,90 @@
+{
+  "reviewFile": "docs/studioodle-line-repairs-2026-10-24v4.json",
+  "reviewSha256": "9609b501110609cda4aab94dc56699497fad006030b6f3afac6fa395ef706496",
+  "notes": "Lines applied first; marker requests resolved separately against the rebuilt regions.",
+  "assets": [
+    {
+      "assetId": "nursery-rhymes-cradle-tree",
+      "beforeSha256": "328f96c48f75eaf2e63e0aeac1087f8533491fc54c4e0070e5c4e1a3db3ba7e6",
+      "sourceHash": "8fcfe904a7e834d68601a8be733929a92602b9c5ab4a756dab691713be0763ff",
+      "inkHash": "ae4b2ab845e7cba5d1bd2ab7957cf1d935ca21ce7e9a0a5e40e4dadefebea2b7",
+      "lines": 1,
+      "addedArea": 3.8958781440123857,
+      "appliedClosureIds": [
+        "3b5cc866-314d-4a23-883c-ab16bc0e823a"
+      ],
+      "afterSha256": "32b443472f028d23dd9c7909a8935dd40c46dca5262f17e70faac2c203d1ba54",
+      "beforeRegions": 42,
+      "afterRegions": 43,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fall-badger",
+      "beforeSha256": "de6828752ce6737ad23bb64b55e00ee6ca69d1aa3097d77ae1ad02166a73719e",
+      "sourceHash": "ad0914dc922dbcf9bcdb56196137e24ad5901cb49396872ee11eaeef10a75113",
+      "inkHash": "038381636ea2896da1e31555bffa7fc011e4ae7797af0907ab3d580fc7cbe3d7",
+      "lines": 1,
+      "addedArea": 4.877931935894594,
+      "appliedClosureIds": [
+        "42a2e952-61c0-4292-bde7-7b7ae9dab996"
+      ],
+      "afterSha256": "132caf9340e56e47654b4322e6e692ef207cb016d116e8e1cbd728495fecad1d",
+      "beforeRegions": 28,
+      "afterRegions": 28,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "horizons-birch-woodland",
+      "beforeSha256": "33b744e6f4dd0343b36457639f46cd9305fe5661edd99710b927645494c3d8a5",
+      "sourceHash": "7af9e1c822e02c4209b6387c6b54c64daa625dc1919c50a19c85baa635aaf67f",
+      "inkHash": "69a4f3eae3e2c6944e3293a7a04316ce086b7dbaa0519c75b553e7aaa3cde2c6",
+      "lines": 6,
+      "addedArea": 48.96306101816299,
+      "appliedClosureIds": [
+        "2b8b8005-c95b-447c-ad39-9f9696b3a9ea",
+        "e30146ad-069e-43be-979c-b6334ef230ed",
+        "b3be9b9b-370c-4bc9-b1d9-197e7d1c8de0",
+        "590fc1a3-1ea3-4597-b500-7d0f7aa18a26",
+        "9d106549-57c7-4196-a04b-bfcf3bf4d152",
+        "6a56788f-9937-4432-9d66-048a33f2499c"
+      ],
+      "afterSha256": "78b177e4a503700e68fe3ec8784a2bb03e888132e6cacab5ab0999ff86202001",
+      "beforeRegions": 126,
+      "afterRegions": 130,
+      "smallPocketsClosed": 1
+    },
+    {
+      "assetId": "horizons-forest-clearing",
+      "beforeSha256": "0fcd53d24161e9419f6d5166296d9a2196b3f490657a3d4c0e35a34b73c12683",
+      "sourceHash": "ff40f6af1accb9b150cb58a0aba843362202dd57a3794ff321dff6e610f3c9a3",
+      "inkHash": "856ce494b501a5e673137da5ee0215d74b356deffb7f9335d93aa39f4969da22",
+      "lines": 3,
+      "addedArea": 64.66392773302505,
+      "appliedClosureIds": [
+        "4a5a4261-249f-46ad-942e-4df06e7365d9",
+        "faa04dfb-f63d-4ba2-a23a-66000b43014a",
+        "ed5f8954-7dc8-4fa8-92dc-ad5f2160fc3f"
+      ],
+      "afterSha256": "9373538d7e2e83f852b0022755fe8482d9b47c91088d638de37fb9824f502405",
+      "beforeRegions": 91,
+      "afterRegions": 94,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fantasy-forest-elf",
+      "beforeSha256": "4b1a07c983952bc938a1054ad0002b82c973b3208584e6d174339ae8aaf7d38a",
+      "sourceHash": "68d6a4853fe69d75c9a8ea15afd3642444100ad1dccab3ef24ea2f48ae3d83ad",
+      "inkHash": "3e42a799a8616fa27c2b9d812b89483d14cac730c1ea313f1a8b8e6647ad3a7c",
+      "lines": 2,
+      "addedArea": 39.54065552906832,
+      "appliedClosureIds": [
+        "0dd1420a-3a14-406e-a753-e8cea4b84165",
+        "75f23523-d143-4b38-b60a-3adf4a37a95f"
+      ],
+      "afterSha256": "6155503a14719f99e78807aa0e5885f2736b71193261665244596192e2c36086",
+      "beforeRegions": 202,
+      "afterRegions": 204,
+      "smallPocketsClosed": 0
+    }
+  ]
+}
