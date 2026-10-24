@@ -63,23 +63,35 @@ export async function checkArtworkQueue({cdp,evaluate}){
  await wait('document.querySelector(".review-sidebar code").textContent!=="fantasy-wandering-wizard"');await ready();
  await evaluate('globalThis.queueReload=true');await cdp('Page.reload');await wait('!globalThis.queueReload&&document.querySelector(".review-sheet img")?.complete');
  assert.equal(await evaluate('document.querySelector(".review-sidebar select").value'),'line-repairs','Queue selection must survive reload');
- const beforeReset=await record('fantasy-wandering-wizard');
- await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Reset all Reviewed checkboxes').click()`);
- const afterReset=await record('fantasy-wandering-wizard');assert.deepEqual(afterReset,{...beforeReset,reviewed:false});
- assert(await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1')).assets.every(a=>!a.reviewed)`),'Reset unchecks all artwork while preserving annotations');
- const markerSnapshot=await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`);
- const removeMarkers=()=>evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Remove all markers').click()`);
- await removeMarkers();
- let cleared=await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`);
- assert.deepEqual(cleared,{...markerSnapshot,assets:markerSnapshot.assets.map(a=>({...a,markers:[]}))},'Global removal must preserve notes, lines and review status for every asset');
- assert(await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Remove all markers').disabled`));
- await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Undo marker removal').click()`);
- assert.deepEqual(await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`),markerSnapshot,'Undo restores all removed markers exactly');
- await removeMarkers();await evaluate('globalThis.markerClearReload=true');await cdp('Page.reload');
- await wait('!globalThis.markerClearReload&&document.querySelector(".review-sheet img")?.complete');
- cleared=await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`);
- assert(cleared.assets.every(a=>!a.markers.length),'Removal must survive reload');
- assert.deepEqual(cleared.assets.find(a=>a.assetId==='fantasy-wandering-wizard').closures,beforeReset.closures);
+ const snapshot=await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`);
+ const has=(a,target)=>target==='reviewed'?a.reviewed:target==='markers'?a.markers.length>0:target==='lines'?!!a.closures?.length:target==='notes'?!!(a.notes||a.markers.some(m=>m.note)||a.closures?.some(l=>l.note)):has(a,'reviewed')||has(a,'markers')||has(a,'lines')||has(a,'notes');
+ const clearExpected=(a,target)=>{
+  const next={...a};if(target==='reviewed'||target==='refinements')next.reviewed=false;
+  if(target==='markers'||target==='refinements')next.markers=[];
+  if((target==='lines'||target==='refinements')&&a.closures?.length)next.closures=[];
+  if(target==='notes'||target==='refinements')next.notes='';
+  if(target==='notes'){next.markers=a.markers.map(m=>({...m,note:''}));if(a.closures)next.closures=a.closures.map(l=>({...l,note:''}));}
+  return next;
+ };
+ const selectCleanup=target=>evaluate(`(()=>{const select=document.querySelector('[aria-label="Cleanup category"]');Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(select,'${target}');select.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+ for(const target of ['reviewed','lines','markers','notes','refinements']){
+  await selectCleanup(target);
+  assert.equal(await evaluate('document.querySelector(".review-sidebar select").value'),target,'Cleanup selection immediately changes the artwork filter');
+  const ids=await evaluate(`[...document.querySelector('select[aria-label="Artwork"]').options].map(o=>o.value).filter(Boolean)`);
+  assert.deepEqual([...ids].sort(),snapshot.assets.filter(a=>has(a,target)).map(a=>a.assetId).sort(),'Browse must show exactly the selected refinement category');
+  await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Apply delete').click()`);
+  const cleared=await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`);
+  assert.deepEqual(cleared,{...snapshot,assets:snapshot.assets.map(a=>clearExpected(a,target))},'Cleanup must touch only the chosen category across the whole review');
+  assert(await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Apply delete').disabled`));
+  await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Undo cleanup').click()`);
+  assert.deepEqual(await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`),snapshot,'Undo restores the exact previous review');
+ }
+ await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='Apply delete').click()`);
+ await evaluate('globalThis.cleanupReload=true');await cdp('Page.reload');
+ await wait('!globalThis.cleanupReload&&document.querySelector(".review-sheet img")?.complete');
+ assert.equal(await evaluate('document.querySelector(".review-sidebar select").value'),'refinements');
+ const fresh=await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`);
+ assert(fresh.assets.every(a=>!has(a,'refinements')),'Fresh state must survive reload without resurrecting old annotations');
  const screenshot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile('work/tests/artwork-line-queue.png',Buffer.from(screenshot.data,'base64'));
  console.log('Line queue: stable task list, known revision refresh, preserved annotations, modifier markers, marker drag, deselection, Delete, right-click lines, middle pan, reset and export passed.');
 }

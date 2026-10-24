@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { before, after, test } from 'node:test';
 import { createServer } from 'vite';
-let server,model,geometry,tasks;
-before(async()=>{server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});model=await server.ssrLoadModule('/src/dev/artworkReviewModel.ts');geometry=await server.ssrLoadModule('/src/dev/artworkReviewGeometry.ts');tasks=await server.ssrLoadModule('/src/dev/artworkLineTasks.ts');});
+let server,model,geometry,tasks,cleanup;
+before(async()=>{server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});model=await server.ssrLoadModule('/src/dev/artworkReviewModel.ts');geometry=await server.ssrLoadModule('/src/dev/artworkReviewGeometry.ts');tasks=await server.ssrLoadModule('/src/dev/artworkLineTasks.ts');cleanup=await server.ssrLoadModule('/src/dev/artworkReviewCleanup.ts');});
 after(async()=>{await server?.close();});
 test('extending review annotations preserves the complete existing exported review',()=>{
  const original=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-23.json','utf8'));
@@ -56,4 +56,23 @@ test('rebuilt artwork starts inspection on the new revision without replaying ap
  assert.deepEqual(base,before);assert.equal(tasks.refreshKnownRepair(next,revision),next,'Reloading must not reset completed inspection');
  const historical=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-23.json','utf8')).assets.find(a=>a.assetId===old.assetId);
  assert.equal(tasks.refreshKnownRepair(historical,revision).sha256,task.afterSha256,'The earlier cutout repair can be reconciled through the line repair');
+});
+
+test('review cleanup clears one category or all annotations and restores only removed fields',()=>{
+ const fixture=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24-line-repair.json','utf8'));
+ const focused=fixture.assets.find(a=>a.closures?.length&&a.markers.length);fixture.assets=[focused,...fixture.assets.filter(a=>a!==focused)];
+ fixture.assets[0].notes='artwork note';fixture.assets[0].reviewed=true;fixture.assets[0].markers[0].note='marker note';fixture.assets[0].closures[0].note='line note';
+ const before=structuredClone(fixture);
+ for(const {value} of cleanup.cleanupOptions){
+  const result=cleanup.clearReview(fixture,value);
+  assert(result.removed.length);assert.deepEqual(fixture,before,'Cleanup must not mutate existing state');
+  assert(result.review.assets.every(a=>!cleanup.matchesReviewFilter(a,value)),`Category ${value} must be empty`);
+  assert.deepEqual(cleanup.restoreReviewCleanup(result.review,result.removed),fixture,'Undo restores the exact previous data');
+  for(const entry of result.review.assets){const old=fixture.assets.find(a=>a.assetId===entry.assetId);assert.equal(entry.sha256,old.sha256);assert.deepEqual(entry.viewBox,old.viewBox);}
+  if(value==='notes'){
+   const changed=result.review.assets[0];assert.equal(changed.markers.length,fixture.assets[0].markers.length);assert.equal(changed.closures.length,fixture.assets[0].closures.length);
+   assert.deepEqual(changed.closures[0].a,fixture.assets[0].closures[0].a);assert.equal(changed.reviewed,true);
+  }
+ }
+ assert(!cleanup.matchesReviewFilter(undefined,'refinements'));assert(cleanup.matchesReviewFilter(undefined,'unreviewed'));
 });

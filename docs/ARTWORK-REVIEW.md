@@ -24,13 +24,20 @@ artwork, without a hover tint painting over the black ink.
   add/remove-region issues and remaining line gaps without losing the target set.
 - **All artwork** shows the library. **Fresh review - unchecked artwork** hides
   assets already inspected. The selected filter survives reload in the page URL.
-- After the repairs are applied, click **Reset all Reviewed checkboxes** to begin
-  another inspection pass. It unchecks every asset and selects the fresh-review
-  filter. Notes, markers and proposed lines remain intact. It never runs on reload.
-- **Remove all markers** clears point markers across the entire review, including
-  artwork outside the filter. Notes, proposed lines and Reviewed status stay intact.
-  Removal saves immediately. **Undo marker removal** restores them until the next
-  saved edit or reload; it does not restore or replace any artwork geometry.
+- Browse filters apply immediately: **Reviewed only**, **Proposed lines only**,
+  **Markers only**, **Notes only**, or **All refinements**. All refinements includes
+  any Reviewed flag, marker, proposed line or note. Notes includes artwork, marker
+  and line notes. Empty filters show an explicit no-matches message. A/D follows
+  the chosen list, and the filter survives reload in the URL.
+- **Clear from entire review** selects Reviewed status, Markers, Notes, Proposed
+  lines, or **Everything - fresh review**. Choosing a category immediately switches
+  the Browse filter so you can inspect that category. Nothing is removed until
+  you click **Apply delete**. Clearing applies across all artwork, including outside
+  the current search or filter.
+- Each category removes only that data. Clearing Notes preserves marker positions
+  and line geometry. Everything resets Reviewed and removes every marker, note and
+  proposed line. Actual artwork geometry and revision metadata stay intact.
+  **Undo cleanup** restores the removed fields until the next saved edit or reload.
 - Recorded cutout and line repairs refresh automatically when artwork opens:
   completed cutout markers leave the working copy, pending marker region IDs are
   refreshed. Applied line IDs leave the proposal overlay; unsubmitted lines and

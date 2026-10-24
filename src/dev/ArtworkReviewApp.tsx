@@ -6,6 +6,8 @@ import type { ArtworkReview, AssetReview, LineDraft, ReviewClosure, ReviewTool, 
 import type { ReviewArtwork } from './artworkReviewAsset';
 import { loadReviewArtwork } from './artworkReviewAsset';
 import { lineRepairIds, lineRepairTasks, refreshKnownRepair, hasRecordedRepair, rebuiltLineTasks } from './artworkLineTasks';
+import { clearReview, restoreReviewCleanup, matchesReviewFilter, cleanupOptions } from './artworkReviewCleanup';
+import type { CleanupTarget, CleanupPatch } from './artworkReviewCleanup';
 import './artworkReview.css';
 
 const assets: ReviewAsset[] = manifest;
@@ -34,14 +36,15 @@ export function ArtworkReviewApp() {
   const [initial] = useState(readReview);
   const [review, setReview] = useState<ArtworkReview>(initial.review);
   const [message, setMessage] = useState(initial.message);
-  const [removedMarkers, setRemovedMarkers] = useState<Pick<AssetReview, 'assetId' | 'markers'>[]>();
+  const [removed, setRemoved] = useState<CleanupPatch[]>();
+  const [cleanup, setCleanup] = useState<CleanupTarget | ''>('');
   const [assetId, setAssetId] = useState(() => {
     const id = new URLSearchParams(location.search).get('asset');
     return assets.some(asset => asset.id === id) ? id! : rebuiltLineTasks[0]?.assetId ?? assets[0]!.id;
   });
   const [query, setQuery] = useState(''), [filter, setFilter] = useState(() => {
     const value = new URLSearchParams(location.search).get('filter');
-    return value === 'all' || value === 'unreviewed' ? value : 'line-repairs';
+    return value && ['all', 'unreviewed', 'reviewed', 'markers', 'notes', 'lines', 'refinements'].includes(value) ? value : 'line-repairs';
   });
   const [mode, setMode] = useState<ReviewTool>('select');
   const [draft, setDraft] = useState<LineDraft>();
@@ -59,12 +62,12 @@ export function ArtworkReviewApp() {
   const visible = assets.filter(asset => {
     const entry = review.assets.find(entry => entry.assetId === asset.id);
     return `${asset.title} ${asset.id} ${asset.category}`.toLowerCase().includes(query.toLowerCase()) &&
-      (filter === 'all' || (filter === 'line-repairs' ? lineIds.has(asset.id) : !entry?.reviewed));
+      (filter === 'line-repairs' ? lineIds.has(asset.id) : matchesReviewFilter(entry, filter));
   });
   const index = visible.findIndex(asset => asset.id === assetId);
   const visibleIds = visible.map(asset => asset.id);
   const persist = useCallback((next: ArtworkReview) => {
-    setRemovedMarkers(undefined);
+    setRemoved(undefined);
     setReview(next);
     try { localStorage.setItem(reviewStorageKey, JSON.stringify(next)); setMessage('Saved locally. Export JSON to share or back up this review.'); return true; }
     catch { setMessage('Local saving failed. Keep this page open and export JSON now to preserve your notes.'); return false; }
@@ -78,21 +81,15 @@ export function ArtworkReviewApp() {
     const url = new URL(location.href); url.searchParams.set('asset', id); history.replaceState(null, '', url);
   }, []);
   function navigate(direction: number) { const id = adjacentAsset(visibleIds, index, direction); if (id) choose(id); }
-  function resetReviewed() {
-    persist({ ...review, assets: review.assets.map(entry => ({ ...entry, reviewed: false })) });
-    chooseFilter('unreviewed'); setQuery('');
+  function applyCleanup() {
+    if (!cleanup) return;
+    const result = clearReview(review, cleanup);
+    if (!result.removed.length) return;
+    const saved = persist(result.review); setRemoved(result.removed);
+    if (saved) setMessage(`Cleared ${cleanupOptions.find(option => option.value === cleanup)!.label.toLowerCase()} across ${result.removed.length} artworks. Undo is available until the next saved edit or reload.`);
+    setSelected(undefined); setDraft(undefined); setFillTarget(undefined);
   }
-  function removeAllMarkers() {
-    const removed = review.assets.filter(entry => entry.markers.length).map(({ assetId, markers }) => ({ assetId, markers }));
-    if (!removed.length) return;
-    persist({ ...review, assets: review.assets.map(entry => ({ ...entry, markers: [] })) });
-    setRemovedMarkers(removed);
-    if (selectedMarker) setSelected(undefined);
-  }
-  function undoMarkerRemoval() {
-    const saved = new Map(removedMarkers?.map(entry => [entry.assetId, entry.markers]));
-    persist({ ...review, assets: review.assets.map(entry => saved.has(entry.assetId) ? { ...entry, markers: saved.get(entry.assetId)! } : entry) });
-  }
+  function undoCleanup() { if (removed) persist(restoreReviewCleanup(review, removed)); }
   function receiveArtwork(data: ReviewArtwork) {
     setArtwork({ id: assetId, data });
     if (!current) return;
@@ -174,13 +171,15 @@ export function ArtworkReviewApp() {
     </header>
     <aside className="review-sidebar">
       <label>Find artwork<input type="search" value={query} placeholder="Name, ID or category" onChange={event => setQuery(event.target.value)} /></label>
-      <label>Browse<select value={filter} onChange={event => chooseFilter(event.target.value)}><option value="line-repairs">Rebuilt linework - inspect ({lineIds.size})</option><option value="all">All artwork</option><option value="unreviewed">Fresh review - unchecked artwork</option></select></label>
-      <small>Inspect the regenerated regions and mark any remaining gaps. This list contains only assets with applied line work.</small>
-      <button onClick={resetReviewed}>Reset all Reviewed checkboxes</button>
-      <small>Begin a fresh inspection pass after repairs. Keeps every note, marker and proposed line.</small>
-      <button disabled={!review.assets.some(entry => entry.markers.length)} onClick={removeAllMarkers}>Remove all markers</button>
-      <small>Across all artwork, including outside this filter. Keeps notes, proposed lines and Reviewed status.</small>
-      {removedMarkers && <button onClick={undoMarkerRemoval}>Undo marker removal</button>}
+      <label>Browse<select value={filter} onChange={event => chooseFilter(event.target.value)}><option value="line-repairs">Rebuilt linework - inspect ({lineIds.size})</option><option value="all">All artwork</option><option value="unreviewed">Not reviewed</option><option value="reviewed">Reviewed only</option><option value="lines">Proposed lines only</option><option value="markers">Markers only</option><option value="notes">Notes only</option><option value="refinements">All refinements</option></select></label>
+      <label>Clear from entire review<select aria-label="Cleanup category" value={cleanup} onChange={event => { const value = event.target.value as CleanupTarget; setCleanup(value); chooseFilter(value); }}>
+        <option value="" disabled>Choose what to clear</option>
+        {cleanupOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+      </select></label>
+      <button disabled={!review.assets.some(entry => matchesReviewFilter(entry, cleanup))} onClick={applyCleanup}>Apply delete</button>
+      <small>Clears the selected category across all artwork, including outside the filter. Notes includes artwork, marker and line notes. Everything clears Reviewed status and all annotations; artwork stays intact.</small>
+      {removed && <button onClick={undoCleanup}>Undo cleanup</button>}
+      {!visible.length && <p role="status">No artwork matches this filter.</p>}
       <select aria-label="Artwork" value={index >= 0 ? assetId : ''} onChange={event => choose(event.target.value)}>
         {index < 0 && <option value="" disabled>{asset.title} (outside filter)</option>}
         {visible.map(asset => <option key={asset.id} value={asset.id}>{review.assets.find(entry => entry.assetId === asset.id)?.reviewed ? '✓ ' : ''}{asset.title} · {asset.id}</option>)}
