@@ -223,3 +223,25 @@ validation and inspector integration were the main fixed effort. Exact token
 counts are not available, so this is an effort grade rather than token telemetry.
 Remaining decisions about incorrectly enclosed white/transparent areas are deferred
 to the next inspection; no semantic add/remove inference was made in this pass.
+
+## October 24 - follow-up line pass (v2 export)
+
+Applied `studioodle-line-repairs-2026-10-24v2.json`: **four additional curves**,
+one on Badger and three on Birch Woodland, unioned into their already-repaired
+compound ink. Badger: **27 -> 28 regions**; Birch Woodland: **143 -> 145**.
+No point markers or fill seeds were applied, and no new tiny pockets needed cleanup.
+Birch Woodland's old analysis-only `analysisGapClosure` setting was removed so
+region discovery follows the now explicitly repaired ink rather than hidden raster
+closures. Existing cutouts and all earlier line repairs were retained.
+
+The previous exports and progress ledger remain unchanged. The additional ledger
+is [studioodle-line-repairs-2026-10-24v2.progress.json](studioodle-line-repairs-2026-10-24v2.progress.json).
+The inspector still offers the full 31-asset inspection set, reconciles both line
+passes, retires only applied line IDs, and preserves markers, notes and later
+unsubmitted lines for the upcoming fill/transparency pass. Original source art and
+all 29 untargeted runtime SVGs are unchanged. Diagnostics are under ignored
+`work/line-repair-2026-10-24v2/`.
+
+Effort remains low per explicit closure; all four were processed by the existing
+script. The fixed work was audit, spotting the old analysis-only closure setting,
+and extending ledger reconciliation to handle repeated repairs of the same asset.

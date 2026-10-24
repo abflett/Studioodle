@@ -76,3 +76,24 @@ test('review cleanup clears one category or all annotations and restores only re
  }
  assert(!cleanup.matchesReviewFilter(undefined,'refinements'));assert(cleanup.matchesReviewFilter(undefined,'unreviewed'));
 });
+
+test('successive line passes preserve the full inspection set and reconcile both submitted revisions',()=>{
+ const first=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24-line-repair.json','utf8'));
+ const second=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v2.json','utf8'));
+ const nextLedger=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24v2.progress.json','utf8'));
+ assert.equal(tasks.lineRepairIds().size,31);
+ for(const task of nextLedger.assets){
+  const recent=second.assets.find(a=>a.assetId===task.assetId),earlier=first.assets.find(a=>a.assetId===task.assetId);
+  const extra={...recent.closures[0],id:'future-proposal'};
+  const marker={id:'keep-fill-marker',kind:'add-region',x:10,y:20,regionId:1,note:'for the next region pass',createdAt:extra.createdAt};
+  const revision={sha256:task.afterSha256,viewBox:recent.viewBox,regionAt:()=>456};
+  for(const entry of [recent,{...earlier,closures:[...earlier.closures,...recent.closures]}]){
+   const base={...entry,notes:'keep region inspection notes',markers:[marker],closures:[...entry.closures,extra]};
+   const refreshed=tasks.refreshKnownRepair(base,revision);
+   assert.equal(refreshed.sha256,task.afterSha256);assert.equal(refreshed.reviewed,false);
+   assert.deepEqual(refreshed.closures,[extra]);assert.equal(refreshed.notes,base.notes);
+   assert.deepEqual(refreshed.markers,[{...marker,regionId:456}]);
+  }
+  assert(tasks.hasRecordedRepair(recent));
+ }
+});
