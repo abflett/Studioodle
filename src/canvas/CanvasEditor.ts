@@ -15,13 +15,15 @@ export class CanvasEditor {
   private frame = 0;
   private disposed = false;
   private pointer?: number;
+  private readonly inputSurface: HTMLElement;
 
   constructor(private readonly host: HTMLElement, private readonly bridge: EditorBridge, setup: EditorSetup, save: EditorSessionPorts['save']) {
     const size = paperSize(setup.format, setup.size);
     this.viewport = new CanvasViewport(host, size.width, size.height, this.invalidate);
     this.session = new EditorSession(setup, { save, changed: this.changed });
     this.unsubscribe = bridge.subscribe(command => this.session.execute(command));
-    host.addEventListener('pointerdown', this.begin);
+    this.inputSurface = host.closest<HTMLElement>('.art-canvas') ?? host;
+    this.inputSurface.addEventListener('pointerdown', this.begin);
     window.addEventListener('pointermove', this.move);
     window.addEventListener('pointerup', this.release);
     window.addEventListener('pointercancel', this.cancel);
@@ -70,6 +72,8 @@ export class CanvasEditor {
     if (this.pointer !== undefined || (event.button !== 0 && event.button !== 2)) return;
     const tool = this.session.state.tool;
     if (tool === 'bucket' || tool === 'pan') return;
+    // Painting can start in the letterbox; selection still starts on the page.
+    if (tool === 'select' && (!(event.target instanceof Node) || !this.host.contains(event.target))) return;
     event.preventDefault();
     this.pointer = event.pointerId;
     // Virtual mouse/touch events are routed by the UI; only real pointers can be captured.
@@ -115,7 +119,7 @@ export class CanvasEditor {
     this.unsubscribe();
     this.observer.disconnect();
     this.session.dispose();
-    this.host.removeEventListener('pointerdown', this.begin);
+    this.inputSurface.removeEventListener('pointerdown', this.begin);
     this.host.removeEventListener('lostpointercapture', this.cancel);
     window.removeEventListener('pointermove', this.move);
     window.removeEventListener('pointerup', this.release);

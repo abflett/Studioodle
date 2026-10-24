@@ -138,3 +138,8 @@ See [artwork sources](../art/README.md) and [scene authoring guide](SCENE-AUTHOR
 The selected-sticker drawer sits directly below the full main ribbon, including
 when the ribbon wraps. It appears immediately without an entrance animation and
 does not overlap the main toolbar.
+
+Brush and eraser gestures may begin in the surrounding drawing workspace and
+continue onto the page. Paint remains clipped to the page; the entire gesture
+is one undo action and cancellation restores the previous artwork. Toolbar and
+overlay presses do not start painting.

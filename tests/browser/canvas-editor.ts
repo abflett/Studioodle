@@ -56,6 +56,19 @@ export async function checkCanvasEditor() {
     bridge.send({ type: 'undo' });
     const undone = await snapshot();
     assert(!undone.document.surfaces[0]!.vectorPaint?.regions.length, 'Undo must restore blank paper');
+    // Start on the surrounding workspace, then cross the paper edge.
+    host.style.width = '280px'; host.style.left = '40px';
+    const outside = host.getBoundingClientRect();
+    const startOutside = () => workspace.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 7, button: 0, buttons: 1, clientX: outside.left - 25, clientY: outside.top + 120 }));
+    startOutside(); pointer('pointerup', -25, 120, 0);
+    assert(!(await snapshot()).document.surfaces[0]!.vectorPaint?.regions.length, 'Outside press must not paint the page');
+    startOutside(); pointer('pointermove', 30, 120); pointer('pointerup', 60, 120, 0);
+    assert((await snapshot()).document.surfaces[0]!.vectorPaint!.regions.length > 0, 'Workspace-started stroke must paint after entering the page');
+    bridge.send({ type: 'undo' });
+    assert(!(await snapshot()).document.surfaces[0]!.vectorPaint?.regions.length, 'Workspace-started stroke must undo as one action');
+    startOutside(); pointer('pointermove', 50, 120); pointer('pointercancel', 50, 120, 0);
+    assert(!(await snapshot()).document.surfaces[0]!.vectorPaint?.regions.length, 'Workspace-started cancellation must restore blank paper');
+    host.style.width = '360px'; host.style.left = '0';
     pointer('pointerdown', 80, 80); pointer('pointermove', 100, 90); pointer('pointercancel', 100, 90, 0);
     assert(!(await snapshot()).document.surfaces[0]!.vectorPaint?.regions.length, 'Cancelled input must roll back');
     pointer('pointerdown', 40, 80);pointer('pointermove', 100, 80);
@@ -95,7 +108,7 @@ export async function checkCanvasEditor() {
     const beforeDestroyed = renders;
     bridge.send({ type: 'undo' }); pointer('pointerdown', 20, 20); await frame();
     assert(renders === beforeDestroyed, 'Destroyed editor must unsubscribe from input and commands');
-    return { idleRendering: false, coalescedInput: true, zoomCoordinates: true, cancelledStroke: true, stationarySpray: true, savedSticker: true, viewportBounded: true, cleanup: true, renderRecovery: true };
+    return { idleRendering: false, coalescedInput: true, zoomCoordinates: true, cancelledStroke: true, stationarySpray: true, savedSticker: true, viewportBounded: true, cleanup: true, renderRecovery: true, workspaceStroke: true };
   } finally {
     editor?.destroy(); CanvasViewport.prototype.render = original; workspace.remove();
   }

@@ -67,6 +67,9 @@ less redundant text, consistent icon/navigation placement, responsive galleries,
 composition/detail discovery, manual template sharing, and removal of the
 user-facing Edit Page path in favor of ordinary open/save-as-page authoring.
 
+Brush/eraser gestures can now start in the surrounding drawing workspace and
+continue onto the page, with page clipping, single-action undo and cancellation.
+
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.
