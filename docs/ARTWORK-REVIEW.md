@@ -63,7 +63,9 @@ transparent space, line art, or an existing region that needs splitting.
    also choose **4 · Close line** and left-click A and B.
 2. The initial preview is straight. Width is estimated from nearby visible ink;
    adjust the **Line width** slider from 0.1 to 2 SVG units in the sidebar.
-   Existing wider proposals retain their width until you adjust them.
+   With a line selected, **Ctrl + wheel up/down** increases/decreases width by
+   0.1 within that range, without zooming or changing selection. Ordinary wheel
+   still zooms. Existing wider proposals retain their width until you adjust them.
 3. Left-drag **A** or **B** to join the original ink precisely. Left-drag **Curve** in the
    middle to bend the line; the curve passes through this visible handle. Use
    **Straighten line** to remove the bend. Focus a handle with Tab and use arrow

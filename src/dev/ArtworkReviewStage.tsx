@@ -57,6 +57,13 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
     const wheel = (event: WheelEvent) => {
       event.preventDefault();
       if (!sheet.current || !event.deltaY) return;
+      const line = review?.closures?.find(line => line.id === selected);
+      if (event.ctrlKey && line) {
+        if (loaded?.artwork.sha256 !== review?.sha256) return;
+        const width = Math.max(1, Math.min(20, Math.round(line.width * 10) - Math.sign(event.deltaY))) / 10;
+        if (width !== line.width) onChangeLine({ ...line, width });
+        return;
+      }
       const rect = element.getBoundingClientRect();
       const cursor = { x: event.clientX - rect.left - rect.width / 2, y: event.clientY - rect.top - rect.height / 2 };
       const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? rect.height : 1);
@@ -65,7 +72,7 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
     };
     element.addEventListener('wheel', wheel, { passive: false });
     return () => element.removeEventListener('wheel', wheel);
-  }, []);
+  }, [review, selected, loaded, onChangeLine]);
   const artwork = loaded?.artwork;
   const fit = artwork ? Math.max(.01, Math.min((size.width - 32) / artwork.width, (size.height - 32) / artwork.height)) : 1;
   const scale = fit * zoom;
@@ -143,6 +150,6 @@ export function ArtworkReviewStage({ asset, review, selected, mode, draft, fillT
         </svg>
       </div>}
     </div>
-    <div className="review-hint">{fillTarget ? 'Left-click inside the intended fill region, or right-click to start another line. Escape skips the fill point.' : draft ? 'Right-click endpoint B (or left-click with tool 4). Escape cancels the draft.' : 'Shift-click: add fill · Ctrl-click: transparent · Right-click A / B: line · Left-click / drag: select / move · Delete: remove · Middle-drag: pan · Wheel: zoom · A / D: browse · Space: reviewed'}</div>
+    <div className="review-hint">{fillTarget ? 'Left-click inside the intended fill region, or right-click to start another line. Escape skips the fill point.' : draft ? 'Right-click endpoint B (or left-click with tool 4). Escape cancels the draft.' : 'Shift-click: add fill · Ctrl-click: transparent · Right-click A / B: line · Left-click / drag: select / move · Delete: remove · Middle-drag: pan · Ctrl-wheel: line width · Wheel: zoom · A / D: browse · Space: reviewed'}</div>
   </section>;
 }

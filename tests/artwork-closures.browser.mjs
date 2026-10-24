@@ -30,6 +30,18 @@ export async function checkArtworkClosures({cdp,evaluate}){
  line=(await stored()).closures[0];assert(Math.abs(line.a.x-80)<.05&&Math.abs(line.a.y-102)<.05,'Endpoint drag must save SVG coordinates');
  await evaluate(`(()=>{const input=document.querySelector('input[aria-label="Line width"]');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,'1.5');input.dispatchEvent(new Event('input',{bubbles:true}));})()`);
  assert.equal((await stored()).closures[0].width,1.5);
+ const wheelAt=await screen({x:110,y:140});
+ const zoomBefore=await evaluate('document.querySelector(".review-sheet").style.width');
+ const widthWheel=async deltaY=>{await cdp('Input.dispatchMouseEvent',{type:'mouseWheel',...wheelAt,deltaX:0,deltaY,modifiers:2});};
+ await widthWheel(-120);await wait('document.querySelector(".review-width-control output").textContent==="1.6"');
+ assert.equal((await stored()).closures[0].width,1.6,'Ctrl wheel up must increase width by 0.1');
+ await widthWheel(120);await wait('document.querySelector(".review-width-control output").textContent==="1.5"');
+ assert.equal(await evaluate('document.querySelector(".review-sheet").style.width'),zoomBefore,'Width adjustment must not zoom');
+ for(const [width,delta] of [[2,-120],[.1,120]]){
+  await evaluate(`(()=>{const input=document.querySelector('input[aria-label="Line width"]');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,'${width}');input.dispatchEvent(new Event('input',{bubbles:true}));})()`);
+  await widthWheel(delta);assert.equal((await stored()).closures[0].width,width,'Ctrl wheel respects width limits');
+ }
+ await evaluate(`(()=>{const input=document.querySelector('input[aria-label="Line width"]');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,'1.5');input.dispatchEvent(new Event('input',{bubbles:true}));})()`);
  await evaluate(`globalThis.lineExport=undefined;document.addEventListener('click',event=>{const link=event.target.closest('a[download]');if(link){event.preventDefault();fetch(link.href).then(r=>r.text()).then(text=>globalThis.lineExport=text);}},{capture:true});[...document.querySelectorAll('button')].find(b=>b.textContent==='Export all JSON').click()`);
  await wait('!!globalThis.lineExport');
  const exported=JSON.parse(await evaluate('globalThis.lineExport'));assert(exported.assets.find(a=>a.assetId==='triangle').closures[0].control);
