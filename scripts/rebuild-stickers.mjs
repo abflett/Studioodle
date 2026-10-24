@@ -14,7 +14,7 @@ const manifest=JSON.parse(fs.readFileSync('art/stickers.json','utf8')),idsFile=o
 const assets=selectBatchAssets(manifest,idsFile?JSON.parse(fs.readFileSync(idsFile,'utf8')):manifest.map(asset=>asset.id));
 for(const folder of ['vector','before','reports','errors'])fs.mkdirSync(path.join(directory,folder),{recursive:true});
 const digest=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
-const scripts=['build-stickers.mjs','clean-ink-components.mjs','discover-regions.mjs','svg-regions.mjs'];
+const scripts=['build-stickers.mjs','clean-ink-components.mjs','discover-regions.mjs','svg-regions.mjs','svg-rect-path.mjs'];
 const pipelineHash=digest(scripts.map(file=>fs.readFileSync(`scripts/${file}`,'utf8')).join('\n'));
 const results=[];let next=0,completed=0;
 const startedAt=new Date().toISOString();

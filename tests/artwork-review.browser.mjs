@@ -137,9 +137,12 @@ export async function checkArtworkReview({ cdp, evaluate }) {
     const render=async url=>{const doc=new DOMParser().parseFromString(await (await fetch(url)).text(),'image/svg+xml');doc.documentElement.setAttribute('width','220');doc.documentElement.setAttribute('height','280');const blob=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(doc)],{type:'image/svg+xml'}));try{const image=new Image();image.src=blob;await image.decode();const canvas=document.createElement('canvas');canvas.width=880;canvas.height=1120;const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0,880,1120);return ctx.getImageData(0,0,880,1120).data;}finally{URL.revokeObjectURL(blob);}};
     const source=await render('/art/source/stickers/shapes/triangle.svg'),current=await render('/src/assets/vector/triangle.svg');let gaps=0;
     for(let i=0;i<source.length;i+=4)if(source[i]>250&&source[i+1]>250&&source[i+2]>250&&source[i+3]>250&&current[i+3]<250)gaps++;
-    return gaps;
+    const treeSource=await render('/art/source/stickers/shapes/tree.svg'),treeCurrent=await render('/src/assets/vector/tree.svg');let treeMismatch=0;
+    for(let i=3;i<treeSource.length;i+=4)if(Math.abs(treeSource[i]-treeCurrent[i])>64)treeMismatch++;
+    return {gaps,treeMismatch};
   })()`);
-  assert.equal(gaps,0,'The converted triangle must cover every solid white interior pixel in the original art');
+  assert(gaps.treeMismatch<=16,'The rounded tree outline must align with its authored SVG at all four corners');
+  assert.equal(gaps.gaps,0,'The converted triangle must cover every solid white interior pixel in the original art');
   await evaluate(`const label=[...document.querySelectorAll('.review-view-tools label')].find(e=>e.textContent.trim()==='Region outline');label.querySelector('input').click()`);
   await wait('!!document.querySelector(".review-region-outline")');
   assert.equal(await evaluate('document.querySelector(".review-region-outline").getAttribute("fill")'),'none');

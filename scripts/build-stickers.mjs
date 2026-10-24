@@ -5,6 +5,7 @@ import paper from 'paper';
 import { discoverRegions } from './discover-regions.mjs';
 import { cleanInkComponents, a4FitScale, defaultMinimumRegionAreaPixels } from './clean-ink-components.mjs';
 import { regionSvg } from './svg-regions.mjs';
+import { svgRectPath } from './svg-rect-path.mjs';
 import { stickerInspection } from './sticker-inspection.mjs';
 import { execFileSync } from 'node:child_process';
 const inspectionDirectory=process.argv.find(arg=>arg.startsWith('--inspect='))?.slice('--inspect='.length);
@@ -27,7 +28,7 @@ function svgCommands(svg) {
   for(const match of svg.matchAll(/<(path|circle|rect)\b[^>]*>/g)) {
     const a={...group,...attrs(match[0])};let d=a.d;
     if(match[1]==='circle'){const x=+a.cx,y=+a.cy,r=+a.r;d=`M${x-r} ${y}a${r} ${r} 0 1 0 ${2*r} 0a${r} ${r} 0 1 0 ${-2*r} 0Z`;}
-    if(match[1]==='rect'){const x=+(a.x??0),y=+(a.y??0),w=+a.width,h=+a.height,r=Math.min(+(a.rx??0),w/2,h/2);d=`M${x+r} ${y}H${x+w-r}Q${x+w} ${y} ${x+w} ${y+r}V${y+h-r}Q${x+w} ${y+h} ${x+w-r} ${y+h}H${x+r}Q${x} ${y+h} ${x} ${y+h-r}V${y+r}Q${x} ${y} ${x+r} ${y}Z`;}
+    if(match[1]==='rect')d=svgRectPath(a);
     commands.push({d,fill:a.fill==='black'?'ink':a.fill==='none'?'none':'base',stroke:a.stroke!=='none',width:+(a['stroke-width']??5)});
   }
   return {commands,sourceWidth:+root.width,sourceHeight:+root.height};

@@ -1,0 +1,5953 @@
+{
+  "kind": "studioodle-artwork-review",
+  "version": 1,
+  "coordinateSpace": "svg-viewBox",
+  "assets": [
+    {
+      "assetId": "circle",
+      "source": "art/source/stickers/shapes/circle.svg",
+      "vectorPath": "src/assets/vector/circle.svg",
+      "viewBox": [
+        0,
+        0,
+        220,
+        280
+      ],
+      "sha256": "4012634de075af48dd48e797eae9a3a7d7a84fe2e526c2a9ff99543d3f0505c5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "square",
+      "source": "art/source/stickers/shapes/square.svg",
+      "vectorPath": "src/assets/vector/square.svg",
+      "viewBox": [
+        0,
+        0,
+        220,
+        280
+      ],
+      "sha256": "4f7787f98e38327c421e13f0c841e556f006ccd7edd09f25b7391321b7ced179",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "triangle",
+      "source": "art/source/stickers/shapes/triangle.svg",
+      "vectorPath": "src/assets/vector/triangle.svg",
+      "viewBox": [
+        0,
+        0,
+        220,
+        280
+      ],
+      "sha256": "ad0236d6a5d6f6336b8d3ec916ba016fa27c764e76f7b0e41564759b538868b0",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "flower",
+      "source": "art/source/stickers/shapes/flower.svg",
+      "vectorPath": "src/assets/vector/flower.svg",
+      "viewBox": [
+        0,
+        0,
+        220,
+        280
+      ],
+      "sha256": "427c33240f617af50b01e2b638358006c51bcdc6674eb0699543db7620662c3a",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-house",
+      "source": "art/source/stickers/starter/house.png",
+      "vectorPath": "src/assets/vector/garden-house.svg",
+      "viewBox": [
+        0,
+        0,
+        623,
+        560
+      ],
+      "sha256": "03349e0276922e848b073a060783a05f90affb54a37ea61800b489643e1e3cf9",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-tree",
+      "source": "art/source/stickers/starter/tree.png",
+      "vectorPath": "src/assets/vector/garden-tree.svg",
+      "viewBox": [
+        0,
+        0,
+        450,
+        486
+      ],
+      "sha256": "1b61206e516021a705448aecaf3f209e70afc2d8b7aa7584c48d7075287e14b6",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-bush",
+      "source": "art/source/stickers/starter/bush.png",
+      "vectorPath": "src/assets/vector/garden-bush.svg",
+      "viewBox": [
+        0,
+        0,
+        242,
+        150
+      ],
+      "sha256": "97ccdd6f12fcb1ea9161b8eac5565648b939d2c62fad8f50318291d336f45313",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-flower",
+      "source": "art/source/stickers/starter/flower.png",
+      "vectorPath": "src/assets/vector/garden-flower.svg",
+      "viewBox": [
+        0,
+        0,
+        200,
+        294
+      ],
+      "sha256": "5d7f3434d7c8b18c83c9c8fffc22dc8e53da06f4babb409c3f631aae02bbbc1c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-mushroom",
+      "source": "art/source/stickers/starter/mushroom.png",
+      "vectorPath": "src/assets/vector/garden-mushroom.svg",
+      "viewBox": [
+        0,
+        0,
+        150,
+        138
+      ],
+      "sha256": "7c5bea3737f781d14408dfbb294435af32db7bfda214f675611d26064421c76c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-blossom",
+      "source": "art/source/stickers/starter/blossom.svg",
+      "vectorPath": "src/assets/vector/garden-blossom.svg",
+      "viewBox": [
+        0,
+        0,
+        64,
+        57
+      ],
+      "sha256": "b04ba566f104d45f1d235453c0f726cf1daa8103b0eea9231e1859ff5a9542b4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-rainbow",
+      "source": "art/source/stickers/starter/rainbow.svg",
+      "vectorPath": "src/assets/vector/garden-rainbow.svg",
+      "viewBox": [
+        0,
+        0,
+        800,
+        398
+      ],
+      "sha256": "4cd9a722ebd30da947101cc9a04faed21e5ed047ae389ee7c88b52d493bcb53d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-fence",
+      "source": "art/source/stickers/starter/fence.svg",
+      "vectorPath": "src/assets/vector/garden-fence.svg",
+      "viewBox": [
+        0,
+        0,
+        360,
+        148
+      ],
+      "sha256": "cd5d3a415d0b6f00de7f37c15fd5f417f8b82722a89cfdf122e74305c0445128",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-path",
+      "source": "art/source/stickers/starter/path.svg",
+      "vectorPath": "src/assets/vector/garden-path.svg",
+      "viewBox": [
+        0,
+        0,
+        426,
+        320
+      ],
+      "sha256": "01e37d517d641b5ea86fbe48d27c6cc0058980da17e621fbe0b607494ce2579c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-stone",
+      "source": "art/source/stickers/starter/stone.svg",
+      "vectorPath": "src/assets/vector/garden-stone.svg",
+      "viewBox": [
+        0,
+        0,
+        120,
+        41
+      ],
+      "sha256": "303df3a1e8310b02a818dbab9ebae2875dae9831a7bfe9f41b920812e103af60",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-grass",
+      "source": "art/source/stickers/starter/grass.svg",
+      "vectorPath": "src/assets/vector/garden-grass.svg",
+      "viewBox": [
+        0,
+        0,
+        88,
+        47
+      ],
+      "sha256": "2664d0ba5b8e254c845c9f28fbbe5624e85e9ad66c8d80ee484dc0e3920b1365",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-sun",
+      "source": "art/source/stickers/garden/cottage-garden-PAINT-READY.bmp",
+      "vectorPath": "src/assets/vector/garden-sun.svg",
+      "viewBox": [
+        0,
+        0,
+        353,
+        313
+      ],
+      "sha256": "e57b4ac93ab875c81b431548b8dabcc45fba9f751ac87e944e576a058b6cf412",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-cloud",
+      "source": "art/source/stickers/garden/cottage-garden-PAINT-READY.bmp",
+      "vectorPath": "src/assets/vector/garden-cloud.svg",
+      "viewBox": [
+        0,
+        0,
+        306,
+        169
+      ],
+      "sha256": "f61e9afc8fdcd1a409c9828ce7fee123c023f5b070a08acf35c0ea023506f970",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-butterfly",
+      "source": "art/source/stickers/garden/cottage-garden-PAINT-READY.bmp",
+      "vectorPath": "src/assets/vector/garden-butterfly.svg",
+      "viewBox": [
+        0,
+        0,
+        215,
+        193
+      ],
+      "sha256": "56ee5bbc42932773c68631443d2ceec04659120cccd286737000daeaef9a7b15",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-apple",
+      "source": "art/source/stickers/starter/apple.svg",
+      "vectorPath": "src/assets/vector/garden-apple.svg",
+      "viewBox": [
+        0,
+        0,
+        77,
+        92
+      ],
+      "sha256": "8405e7057a5ddfb373d6c2343ce398e3c4a2f75bb8011947e89eea76c45e8245",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "garden-window",
+      "source": "art/source/stickers/garden/cottage-garden-PAINT-READY.bmp",
+      "vectorPath": "src/assets/vector/garden-window.svg",
+      "viewBox": [
+        0,
+        0,
+        106,
+        113
+      ],
+      "sha256": "1deb5463ae3a5b197ab4506bb00f03e4a0602ac0c6a5a79aa9753fb3bb8ccab5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-01",
+      "source": "art/source/stickers/counting/01.png",
+      "vectorPath": "src/assets/vector/counting-01.svg",
+      "viewBox": [
+        0,
+        0,
+        229,
+        340
+      ],
+      "sha256": "661bfac488f744750a08eb713db57724de901418e27b952ba8be3b994e27339d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-02",
+      "source": "art/source/stickers/counting/02.png",
+      "vectorPath": "src/assets/vector/counting-02.svg",
+      "viewBox": [
+        0,
+        0,
+        300,
+        331
+      ],
+      "sha256": "3a0946619344a2c97ff810c830d85630260801099f50e312c4ef00263bae25e3",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-03",
+      "source": "art/source/stickers/counting/03.png",
+      "vectorPath": "src/assets/vector/counting-03.svg",
+      "viewBox": [
+        0,
+        0,
+        228,
+        340
+      ],
+      "sha256": "84a2190559504a331f1928b41fbf693010c028ccbc59fa144ebd4a969a686397",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-05",
+      "source": "art/source/stickers/counting/05.png",
+      "vectorPath": "src/assets/vector/counting-05.svg",
+      "viewBox": [
+        0,
+        0,
+        229,
+        340
+      ],
+      "sha256": "88a87e025a33f89029f08a979718c5f014af19d765aa3c9d31bfa257c8927b92",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-04",
+      "source": "art/source/stickers/counting/04.png",
+      "vectorPath": "src/assets/vector/counting-04.svg",
+      "viewBox": [
+        0,
+        0,
+        270,
+        340
+      ],
+      "sha256": "39ff50f3a5334e32f3fc6c78f73dbf2fb5a9d711e733baefc109db2bc65a53d5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-06",
+      "source": "art/source/stickers/counting/06.png",
+      "vectorPath": "src/assets/vector/counting-06.svg",
+      "viewBox": [
+        0,
+        0,
+        233,
+        340
+      ],
+      "sha256": "2df6edf8d69075ae7a131d5382d158992cf913eeb33aa984a1b9a06c6c479741",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-07",
+      "source": "art/source/stickers/counting/07.png",
+      "vectorPath": "src/assets/vector/counting-07.svg",
+      "viewBox": [
+        0,
+        0,
+        300,
+        324
+      ],
+      "sha256": "71751b4aa9e61675b766303c2f125b3bd557bb61a5d0499f1b2821935926706f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-08",
+      "source": "art/source/stickers/counting/08.png",
+      "vectorPath": "src/assets/vector/counting-08.svg",
+      "viewBox": [
+        0,
+        0,
+        232,
+        340
+      ],
+      "sha256": "f8c3a611e2684952e5b7b03476d8e345aa5ab5072d881439cea9243f0cded735",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-09",
+      "source": "art/source/stickers/counting/09.png",
+      "vectorPath": "src/assets/vector/counting-09.svg",
+      "viewBox": [
+        0,
+        0,
+        288,
+        340
+      ],
+      "sha256": "66f9a6c9f853b230ddc0d618ff819556bc7a80bb3426c9c7f2771578c2540006",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-10",
+      "source": "art/source/stickers/counting/10.png",
+      "vectorPath": "src/assets/vector/counting-10.svg",
+      "viewBox": [
+        0,
+        0,
+        300,
+        300
+      ],
+      "sha256": "1e369b88e9d2905cd77e97a8fdcb9c2ea2ed88086ce9c6912fae57ed23220d14",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-bunting",
+      "source": "art/source/stickers/counting/bunting.svg",
+      "vectorPath": "src/assets/vector/counting-bunting.svg",
+      "viewBox": [
+        0,
+        0,
+        1800,
+        76
+      ],
+      "sha256": "988857b118f7cd91864b7b39d347ad1e1a5bde638c7042d2ca7c4d984ae50338",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "counting-star",
+      "source": "art/source/stickers/counting/star.svg",
+      "vectorPath": "src/assets/vector/counting-star.svg",
+      "viewBox": [
+        0,
+        0,
+        70,
+        69
+      ],
+      "sha256": "fd31b9193a4ee63540f6717e67d0310313b4b9f0d1487679078af91beb00ca3d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "spring-bunny",
+      "source": "art/source/stickers/spring/bunny.png",
+      "vectorPath": "src/assets/vector/spring-bunny.svg",
+      "viewBox": [
+        0,
+        0,
+        307,
+        460
+      ],
+      "sha256": "46df7e1e73bd3e0281716ed95df9dd1c112c6201e638934b4313265b6f41e4c0",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "spring-butterfly",
+      "source": "art/source/stickers/spring/butterfly.png",
+      "vectorPath": "src/assets/vector/spring-butterfly.svg",
+      "viewBox": [
+        0,
+        0,
+        289,
+        260
+      ],
+      "sha256": "21a28d049df689d231cbac4e9420600bf417c111340b1c5a5541beeaca3280b4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "spring-tulip",
+      "source": "art/source/stickers/spring/tulip.png",
+      "vectorPath": "src/assets/vector/spring-tulip.svg",
+      "viewBox": [
+        0,
+        0,
+        294,
+        420
+      ],
+      "sha256": "d225e63973a44d1359d1eff95ec83aa4faaabaf382564361e9d432a32d95b352",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "spring-bird",
+      "source": "art/source/stickers/spring/bird.png",
+      "vectorPath": "src/assets/vector/spring-bird.svg",
+      "viewBox": [
+        0,
+        0,
+        319,
+        300
+      ],
+      "sha256": "b541811f1f47994b5062f51c88300e97cc2a1b6262bb7db6ecf9a5c3c6420556",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "spring-watering-can",
+      "source": "art/source/stickers/spring/watering-can.png",
+      "vectorPath": "src/assets/vector/spring-watering-can.svg",
+      "viewBox": [
+        0,
+        0,
+        380,
+        288
+      ],
+      "sha256": "d37ed1f0e0b2115f2752be46c9ed290bab23e93849fbdf79f048cdd4d561b5d7",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "spring-sun",
+      "source": "art/source/stickers/spring/sun.svg",
+      "vectorPath": "src/assets/vector/spring-sun.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        260
+      ],
+      "sha256": "ee0c96641969566e0a5d6d83669ba5b9a8e6e09ba13e261d06fe6cba3bb0c9df",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "spring-cloud",
+      "source": "art/source/stickers/spring/cloud.svg",
+      "vectorPath": "src/assets/vector/spring-cloud.svg",
+      "viewBox": [
+        0,
+        0,
+        380,
+        174
+      ],
+      "sha256": "f3d673043fca827d479cdf5826a8cb569b9515e267b80ff6168f3ec786542919",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "spring-meadow",
+      "source": "art/source/stickers/spring/meadow.svg",
+      "vectorPath": "src/assets/vector/spring-meadow.svg",
+      "viewBox": [
+        0,
+        0,
+        1920,
+        1440
+      ],
+      "sha256": "1fa7210a890d27e5ee9c03f7b43e86bbd2628ce6b8abaefe22aefe0db73178ee",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "beach-palm",
+      "source": "art/source/stickers/beach/palm.png",
+      "vectorPath": "src/assets/vector/beach-palm.svg",
+      "viewBox": [
+        0,
+        0,
+        566,
+        690
+      ],
+      "sha256": "834a96ccd5a6a9babb75f0472a86ace466df483c009091979b17f46e7cc49528",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "beach-umbrella",
+      "source": "art/source/stickers/beach/umbrella.png",
+      "vectorPath": "src/assets/vector/beach-umbrella.svg",
+      "viewBox": [
+        0,
+        0,
+        627,
+        580
+      ],
+      "sha256": "80c5e4cc45f585f2e1476877258d4ea553f3917a277736bf9cc45b5a88afcc76",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "beach-ball",
+      "source": "art/source/stickers/beach/ball.png",
+      "vectorPath": "src/assets/vector/beach-ball.svg",
+      "viewBox": [
+        0,
+        0,
+        277,
+        280
+      ],
+      "sha256": "4ad12e732a018af52fa393594bda1f728460252f2a755586962ea4b90a64ff03",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "beach-shore",
+      "source": "art/source/stickers/beach/shore.svg",
+      "vectorPath": "src/assets/vector/beach-shore.svg",
+      "viewBox": [
+        0,
+        0,
+        1920,
+        1440
+      ],
+      "sha256": "c6e741092982ea9ed6fa58e6c082057328c8c2c9b9e630787e03edc201cd8e45",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "beach-towel",
+      "source": "art/source/stickers/beach/towel.svg",
+      "vectorPath": "src/assets/vector/beach-towel.svg",
+      "viewBox": [
+        0,
+        0,
+        460,
+        180
+      ],
+      "sha256": "907ce2d916168277b4802a1e7fcb81e7a10ee057fa6586d7f90e976b4858da5b",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "beach-shell",
+      "source": "art/source/stickers/beach/shell.svg",
+      "vectorPath": "src/assets/vector/beach-shell.svg",
+      "viewBox": [
+        0,
+        0,
+        160,
+        128
+      ],
+      "sha256": "8e6552195416b5fdb3ba8bc61fa29fa47ee6637c40a0f0dbf3c13cf968560e86",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "winter-santa-sleigh",
+      "source": "art/source/stickers/winter/santa-sleigh.png",
+      "vectorPath": "src/assets/vector/winter-santa-sleigh.svg",
+      "viewBox": [
+        0,
+        0,
+        480,
+        340
+      ],
+      "sha256": "9d3259901fd4f00c10c3de756c23d582bec1eecc33e05f69e7eb06a3f4112801",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "winter-reindeer",
+      "source": "art/source/stickers/winter/reindeer.png",
+      "vectorPath": "src/assets/vector/winter-reindeer.svg",
+      "viewBox": [
+        0,
+        0,
+        284,
+        280
+      ],
+      "sha256": "f20a9dcbe03294dfac15db3edfd5130f40e66719f9628c3ae384cb7763809e47",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "winter-cabin",
+      "source": "art/source/stickers/winter/cabin.png",
+      "vectorPath": "src/assets/vector/winter-cabin.svg",
+      "viewBox": [
+        0,
+        0,
+        520,
+        393
+      ],
+      "sha256": "1c4646b968ac36fb7e0b3232f7a6c61700d82a7cf09aac5fcf14548726fd348a",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "winter-pine",
+      "source": "art/source/stickers/winter/pine.png",
+      "vectorPath": "src/assets/vector/winter-pine.svg",
+      "viewBox": [
+        0,
+        0,
+        290,
+        344
+      ],
+      "sha256": "0aafd9e4fbf18730d52e71b9d04238532eb6a4262825d92fdea383128a338e62",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "winter-skater",
+      "source": "art/source/stickers/winter/skater.png",
+      "vectorPath": "src/assets/vector/winter-skater.svg",
+      "viewBox": [
+        0,
+        0,
+        230,
+        247
+      ],
+      "sha256": "958d8ac3f30141883c74faa5746df9357cfedd61daf9755fe74fb3ba949c76fb",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "winter-skater-friend",
+      "source": "art/source/stickers/winter/skater-friend.png",
+      "vectorPath": "src/assets/vector/winter-skater-friend.svg",
+      "viewBox": [
+        0,
+        0,
+        230,
+        247
+      ],
+      "sha256": "c59881745a45a9b106e9f04194b0fe62c30f9c632fbe64463609e01262835b11",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "winter-snow",
+      "source": "art/source/stickers/winter/snow.svg",
+      "vectorPath": "src/assets/vector/winter-snow.svg",
+      "viewBox": [
+        0,
+        0,
+        1920,
+        1440
+      ],
+      "sha256": "66bc1e6ce335455684fb8ef88fe709d5d38b903a6a6d60df31efa6f44a9d926d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "winter-pond",
+      "source": "art/source/stickers/winter/pond.svg",
+      "vectorPath": "src/assets/vector/winter-pond.svg",
+      "viewBox": [
+        0,
+        0,
+        820,
+        319
+      ],
+      "sha256": "95e1b80fed2252389ed784f38c01786372da59f80226124a4c2d2055e7046062",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "winter-present",
+      "source": "art/source/stickers/winter/present.svg",
+      "vectorPath": "src/assets/vector/winter-present.svg",
+      "viewBox": [
+        0,
+        0,
+        150,
+        151
+      ],
+      "sha256": "a11009b88e696d4f49ecfe5cead72927408b3a8710f9b7db91ab62c2fb9d8669",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-giraffe",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-giraffe.svg",
+      "viewBox": [
+        0,
+        0,
+        170,
+        270
+      ],
+      "sha256": "1974788a58d9a553b8d2e9fd8f0ca749ba5a06d80a4dc7e92c3103521e64ba77",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-elephant",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-elephant.svg",
+      "viewBox": [
+        0,
+        0,
+        310,
+        227
+      ],
+      "sha256": "452a146aa66cab76b0d6cf9ae729b65443105097eb1975fa72b7ebb61fc3ce26",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-lion",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-lion.svg",
+      "viewBox": [
+        0,
+        0,
+        199,
+        234
+      ],
+      "sha256": "8d473adcb66e7dce46f015e99fffcf8d0c8dc8d6ed06589b64e3057272038cda",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-hippo",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-hippo.svg",
+      "viewBox": [
+        0,
+        0,
+        290,
+        203
+      ],
+      "sha256": "609d615a9ab1e95532d4e1372bcce06910b45352fd29a3fcc7502a95e04fe4d1",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-zebra",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-zebra.svg",
+      "viewBox": [
+        0,
+        0,
+        273,
+        227
+      ],
+      "sha256": "4c073dee9a1f8ad1ae4ea0c8b5fb8e71dd0db88987b47847f27403893c578b5f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-rhino",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-rhino.svg",
+      "viewBox": [
+        0,
+        0,
+        302,
+        194
+      ],
+      "sha256": "fda58196773d1726a14a18e7423f687d008dc71d80fa4fa19db310da165671e3",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-leopard",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-leopard.svg",
+      "viewBox": [
+        0,
+        0,
+        318,
+        193
+      ],
+      "sha256": "04e792a812192416de79e82eef5e3883449829606260f47d8a6173b6fba786d8",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-ostrich",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-ostrich.svg",
+      "viewBox": [
+        0,
+        0,
+        192,
+        262
+      ],
+      "sha256": "41262dced19485805ecf01b30832b4d14e0fb77335c17431e0d411a52595fa24",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-buffalo",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-buffalo.svg",
+      "viewBox": [
+        0,
+        0,
+        301,
+        207
+      ],
+      "sha256": "5a4c5636c9ff9b198470986ca99dc96cfb6f3e3d4c6f9ec791a765477ba777d2",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-meerkat",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-meerkat.svg",
+      "viewBox": [
+        0,
+        0,
+        138,
+        214
+      ],
+      "sha256": "174c344018a7fef9c2eafc2fcdd515aaac7114aeb8e8900cde5bfa0e32c31577",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-warthog",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-warthog.svg",
+      "viewBox": [
+        0,
+        0,
+        258,
+        194
+      ],
+      "sha256": "72e4242f88546c0f70888e245e6c5e97f550c01279fbe99453873435ea92bddd",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "animal-crocodile",
+      "source": "art/source/stickers/animals/safari-sheet.jpg",
+      "vectorPath": "src/assets/vector/animal-crocodile.svg",
+      "viewBox": [
+        0,
+        0,
+        312,
+        151
+      ],
+      "sha256": "b6526b01e8d0428cc4ab536acef78a400a06646eb5d6b63496568c45bf4ff9bf",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "space-alien",
+      "source": "art/source/stickers/space/alien.jpg",
+      "vectorPath": "src/assets/vector/space-alien.svg",
+      "viewBox": [
+        0,
+        0,
+        331,
+        400
+      ],
+      "sha256": "b30b3386ade11f2b07537370f4f8ca32f45b3045e9efc93fdf53fef6800ab3f1",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "space-crater",
+      "source": "art/source/stickers/space/crater-horizon.svg",
+      "vectorPath": "src/assets/vector/space-crater.svg",
+      "viewBox": [
+        0,
+        0,
+        1920,
+        1440
+      ],
+      "sha256": "79a7f752669f222d5a88a9d5e14dcabb708204888c5f3bd0a1b7b1352db6d6d7",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-a-astronaut",
+      "source": "art/source/stickers/alphabet/a-astronaut.png",
+      "vectorPath": "src/assets/vector/alphabet-a-astronaut.svg",
+      "viewBox": [
+        0,
+        0,
+        292,
+        340
+      ],
+      "sha256": "38706a01dc76c322370d7ad64e82dc9fc635dbdb45836387c2efe16e2fff1bbc",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-b-bee",
+      "source": "art/source/stickers/alphabet/b-bee.png",
+      "vectorPath": "src/assets/vector/alphabet-b-bee.svg",
+      "viewBox": [
+        0,
+        0,
+        301,
+        340
+      ],
+      "sha256": "c08d455750359db15cfa8952375d9c443edacb79e94d008143aafcaf9b0828c4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-d-dragon",
+      "source": "art/source/stickers/alphabet/d-dragon.png",
+      "vectorPath": "src/assets/vector/alphabet-d-dragon.svg",
+      "viewBox": [
+        0,
+        0,
+        331,
+        340
+      ],
+      "sha256": "1850b0945649144e775e05620eb05493ac83c99e053809997f4aba00024ff423",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-e-elephant",
+      "source": "art/source/stickers/alphabet/e-elephant.png",
+      "vectorPath": "src/assets/vector/alphabet-e-elephant.svg",
+      "viewBox": [
+        0,
+        0,
+        310,
+        340
+      ],
+      "sha256": "7d684c6c4252f57c73096cab72f8ff73df30c2f439f1e79a7a8bf0c2bfa0b0ae",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-f-firefighter",
+      "source": "art/source/stickers/alphabet/f-firefighter.png",
+      "vectorPath": "src/assets/vector/alphabet-f-firefighter.svg",
+      "viewBox": [
+        0,
+        0,
+        250,
+        340
+      ],
+      "sha256": "7a0bea68115333211da72bf4e6f22a5361512b8534253ba89e639c0e07f0b356",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-g-giraffe",
+      "source": "art/source/stickers/alphabet/g-giraffe.png",
+      "vectorPath": "src/assets/vector/alphabet-g-giraffe.svg",
+      "viewBox": [
+        0,
+        0,
+        303,
+        340
+      ],
+      "sha256": "f73cc74c7b59bbb836ff45dd4b2c9ce15e6f41bf67f26d320448bece97a67a04",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-h-horse",
+      "source": "art/source/stickers/alphabet/h-horse.png",
+      "vectorPath": "src/assets/vector/alphabet-h-horse.svg",
+      "viewBox": [
+        0,
+        0,
+        329,
+        340
+      ],
+      "sha256": "9fc0c539ff6ab5b0b7f1d3c406ae98c75a18393aa09c9f0f1358caaf6b275c54",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-i-ice-cream",
+      "source": "art/source/stickers/alphabet/i-ice-cream.png",
+      "vectorPath": "src/assets/vector/alphabet-i-ice-cream.svg",
+      "viewBox": [
+        0,
+        0,
+        194,
+        340
+      ],
+      "sha256": "cb4fedb2ff0fb6e40c434376869980d48a0c4efba6d70e1cb7661402bb6522f6",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-j-jellyfish",
+      "source": "art/source/stickers/alphabet/j-jellyfish.png",
+      "vectorPath": "src/assets/vector/alphabet-j-jellyfish.svg",
+      "viewBox": [
+        0,
+        0,
+        248,
+        340
+      ],
+      "sha256": "a74564ec0dec37ef174e6082fead5b0efd769b0928d7db3fbe1f253b2d44cd32",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-k-kangaroo",
+      "source": "art/source/stickers/alphabet/k-kangaroo.png",
+      "vectorPath": "src/assets/vector/alphabet-k-kangaroo.svg",
+      "viewBox": [
+        0,
+        0,
+        294,
+        340
+      ],
+      "sha256": "aede953145879a1dad06d2de3a435b28fe9a015b382dbb2bcfce7ade39633dce",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-l-lion",
+      "source": "art/source/stickers/alphabet/l-lion.png",
+      "vectorPath": "src/assets/vector/alphabet-l-lion.svg",
+      "viewBox": [
+        0,
+        0,
+        249,
+        340
+      ],
+      "sha256": "bf3dc62249cb89f0ecc2a678916d4607ac8d5922f432cafc686ceed5fdf36ca4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-m-monkey",
+      "source": "art/source/stickers/alphabet/m-monkey.png",
+      "vectorPath": "src/assets/vector/alphabet-m-monkey.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        292
+      ],
+      "sha256": "877e3de14236be910345943e88ceab7c3ad89836700cfa362a41eccf8fb449d3",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-n-nurse",
+      "source": "art/source/stickers/alphabet/n-nurse.png",
+      "vectorPath": "src/assets/vector/alphabet-n-nurse.svg",
+      "viewBox": [
+        0,
+        0,
+        335,
+        340
+      ],
+      "sha256": "df26cb71f50da4c726a2850a23ebf03533f012466b604188065c6a2b660fbc1b",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-o-octopus",
+      "source": "art/source/stickers/alphabet/o-octopus.png",
+      "vectorPath": "src/assets/vector/alphabet-o-octopus.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        323
+      ],
+      "sha256": "61ab50572eed29e1cd711cf38742cdc34b0cce3cad738053dab135e6cfc31d8f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-p-pirate",
+      "source": "art/source/stickers/alphabet/p-pirate.png",
+      "vectorPath": "src/assets/vector/alphabet-p-pirate.svg",
+      "viewBox": [
+        0,
+        0,
+        290,
+        340
+      ],
+      "sha256": "70fac89b2f7ea366385daa8cddb66cc51000e2b0bece032acbea57fddfcf4501",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-q-queen",
+      "source": "art/source/stickers/alphabet/q-queen.png",
+      "vectorPath": "src/assets/vector/alphabet-q-queen.svg",
+      "viewBox": [
+        0,
+        0,
+        327,
+        340
+      ],
+      "sha256": "59f2fa02242c0cda0344f66c8aa07691b95419f4ed8e371674355b7e15c09531",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-r-robot",
+      "source": "art/source/stickers/alphabet/r-robot.png",
+      "vectorPath": "src/assets/vector/alphabet-r-robot.svg",
+      "viewBox": [
+        0,
+        0,
+        326,
+        340
+      ],
+      "sha256": "973dcfea32e408a42165d40a580a7311ea48c9af61937cca29c769cd46ad52f6",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-s-snake",
+      "source": "art/source/stickers/alphabet/s-snake.png",
+      "vectorPath": "src/assets/vector/alphabet-s-snake.svg",
+      "viewBox": [
+        0,
+        0,
+        258,
+        340
+      ],
+      "sha256": "7033425c343ba70d8942019cefdc1d019e69432f860ce20d92aca5e866104642",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-t-tiger",
+      "source": "art/source/stickers/alphabet/t-tiger.png",
+      "vectorPath": "src/assets/vector/alphabet-t-tiger.svg",
+      "viewBox": [
+        0,
+        0,
+        266,
+        340
+      ],
+      "sha256": "f0119a0b679c7cbff26c4708272913b0fe34f1afc1e6f7d7470620f260b6db4a",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-v-viking",
+      "source": "art/source/stickers/alphabet/v-viking.png",
+      "vectorPath": "src/assets/vector/alphabet-v-viking.svg",
+      "viewBox": [
+        0,
+        0,
+        331,
+        340
+      ],
+      "sha256": "5b8bbdd32746cb662782699a5a0a239cf4865398b8742e84f03a16f368cf254f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-w-wizard",
+      "source": "art/source/stickers/alphabet/w-wizard.png",
+      "vectorPath": "src/assets/vector/alphabet-w-wizard.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        318
+      ],
+      "sha256": "fbcacfa350c41af201e69005f580f5a5a99d1b9481cde9b606ffecb473f675b9",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-x-x-ray",
+      "source": "art/source/stickers/alphabet/x-x-ray.png",
+      "vectorPath": "src/assets/vector/alphabet-x-x-ray.svg",
+      "viewBox": [
+        0,
+        0,
+        296,
+        340
+      ],
+      "sha256": "c70d316258037e70322dab3815b32a3300e36a6a2e8aeafbf2b05677fe1c3590",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-y-yak",
+      "source": "art/source/stickers/alphabet/y-yak.png",
+      "vectorPath": "src/assets/vector/alphabet-y-yak.svg",
+      "viewBox": [
+        0,
+        0,
+        268,
+        340
+      ],
+      "sha256": "be0e6550a89580c8939681a3aa52cac11899a4f5f50de7210996dc9860e05fe4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-z-zebra",
+      "source": "art/source/stickers/alphabet/z-zebra.png",
+      "vectorPath": "src/assets/vector/alphabet-z-zebra.svg",
+      "viewBox": [
+        0,
+        0,
+        277,
+        340
+      ],
+      "sha256": "dd88e6b8e43a046b174873f6b4a252b0a66212df712a0086ba2b268372781520",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-twinkling-star",
+      "source": "art/source/stickers/nursery-rhymes/twinkling-star.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-twinkling-star.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        319
+      ],
+      "sha256": "4fc3483a8ba83dacea8c13a99994576ec05e5dc3185e98da3ae361a34e257e1b",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-humpty-dumpty",
+      "source": "art/source/stickers/nursery-rhymes/humpty-dumpty.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-humpty-dumpty.svg",
+      "viewBox": [
+        0,
+        0,
+        294,
+        340
+      ],
+      "sha256": "871b0e3a69994e5b694b4e3ff2284145eac486641f2df70f87e6ab1da57ba242",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-fiddle-cat",
+      "source": "art/source/stickers/nursery-rhymes/fiddle-cat.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-fiddle-cat.svg",
+      "viewBox": [
+        0,
+        0,
+        299,
+        340
+      ],
+      "sha256": "b77d9bdb270b4f63091e9fd594c60c9f932634512d42e8dcdac7eccca5faaf4d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-jumping-cow",
+      "source": "art/source/stickers/nursery-rhymes/jumping-cow.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-jumping-cow.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        300
+      ],
+      "sha256": "24f59b533d79da8b2e7898f8840c66f85d07db99382dce73d1cbeb02fd9a584d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-sleepy-moon",
+      "source": "art/source/stickers/nursery-rhymes/sleepy-moon.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-sleepy-moon.svg",
+      "viewBox": [
+        0,
+        0,
+        291,
+        340
+      ],
+      "sha256": "d7fe5cc4f77f2fbdafcde6600d259ff0a9729240f32046b726c1efcea4bcc7a5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-grandfather-clock",
+      "source": "art/source/stickers/nursery-rhymes/grandfather-clock.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-grandfather-clock.svg",
+      "viewBox": [
+        0,
+        0,
+        121,
+        260
+      ],
+      "sha256": "7f49e9f3c12b17bcc432adab549ae7fad9d0c1ce1ef66a6fa53070a4f9d967e7",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-climbing-mouse",
+      "source": "art/source/stickers/nursery-rhymes/climbing-mouse.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-climbing-mouse.svg",
+      "viewBox": [
+        0,
+        0,
+        279,
+        340
+      ],
+      "sha256": "5b3a24a0d6270b4b9a39eab08dcd3dc8acca1c5fcfb45a85901413c1afc0679f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-drainpipe",
+      "source": "art/source/stickers/nursery-rhymes/drainpipe.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-drainpipe.svg",
+      "viewBox": [
+        0,
+        0,
+        211,
+        480
+      ],
+      "sha256": "b50b4e1f49b05e8c277079a55814e06203bd0b38e3a57cf4bd0dffe1e9066c03",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-woolly-lamb",
+      "source": "art/source/stickers/nursery-rhymes/woolly-lamb.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-woolly-lamb.svg",
+      "viewBox": [
+        0,
+        0,
+        309,
+        340
+      ],
+      "sha256": "a380353668ad6449b96f1528df7ccedf41f5bee3fddf059cc9327c155ba45e98",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-jack-pail",
+      "source": "art/source/stickers/nursery-rhymes/jack-pail.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-jack-pail.svg",
+      "viewBox": [
+        0,
+        0,
+        218,
+        340
+      ],
+      "sha256": "1bee97ffe9e709a7780c5f58ecc49ef2b509cb2f4a2afed5af605a69f20b8bb7",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-mother-duck",
+      "source": "art/source/stickers/nursery-rhymes/mother-duck.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-mother-duck.svg",
+      "viewBox": [
+        0,
+        0,
+        266,
+        340
+      ],
+      "sha256": "e441a35c9cfb63bf0631c845d05059601d0c53f0ade9b1c65d2f7c132df5a0a5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-rowboat",
+      "source": "art/source/stickers/nursery-rhymes/rowboat.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-rowboat.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        198
+      ],
+      "sha256": "d78b4ec414589e390b277b04d1853553813a0e74d9112f7649f54970169b0925",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-friendly-bus",
+      "source": "art/source/stickers/nursery-rhymes/friendly-bus.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-friendly-bus.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        254
+      ],
+      "sha256": "48af95b47f5541e7d0062d7107ab93e7fb18581114501a4acd48477f9c4d699c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-duckling",
+      "source": "art/source/stickers/nursery-rhymes/duckling.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-duckling.svg",
+      "viewBox": [
+        0,
+        0,
+        218,
+        340
+      ],
+      "sha256": "6fc54edce6aec7773b7d2a9ef6780113fd3e3b446e7ed98ca8e4acf0b330a46c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-farmer",
+      "source": "art/source/stickers/nursery-rhymes/farmer.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-farmer.svg",
+      "viewBox": [
+        0,
+        0,
+        220,
+        340
+      ],
+      "sha256": "6799f021ff1670d7887393d5c059bbdc3f10df86353a066cedb1849889e9ac8d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-barn",
+      "source": "art/source/stickers/nursery-rhymes/barn.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-barn.svg",
+      "viewBox": [
+        0,
+        0,
+        480,
+        478
+      ],
+      "sha256": "d056b368f03f6cb9740a13d5f4ada124bd548f1c12a321c5b9bba5e101056fb1",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-dish-spoon",
+      "source": "art/source/stickers/nursery-rhymes/dish-spoon.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-dish-spoon.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        272
+      ],
+      "sha256": "196a3e910c9c5ccd94b3ace7d81d703b2b44aa7319af115b9b683bf4f38d67d3",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-royal-horse",
+      "source": "art/source/stickers/nursery-rhymes/royal-horse.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-royal-horse.svg",
+      "viewBox": [
+        0,
+        0,
+        305,
+        340
+      ],
+      "sha256": "251834e5f4154496c52dd2b3e954e224e7bea66ec1f0f3c26bcb48f5142feece",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-royal-guard",
+      "source": "art/source/stickers/nursery-rhymes/royal-guard.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-royal-guard.svg",
+      "viewBox": [
+        0,
+        0,
+        191,
+        340
+      ],
+      "sha256": "634c6c6a887fde0fd2f1d1a5d4df2705b1151e544e04a68978b14924546e2003",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-brick-wall",
+      "source": "art/source/stickers/nursery-rhymes/brick-wall.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-brick-wall.svg",
+      "viewBox": [
+        0,
+        0,
+        480,
+        284
+      ],
+      "sha256": "76caf1da89a5dad36da6e3ed6390b6d40a70def289360167b721d91340dc14d8",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-cloud-pillow",
+      "source": "art/source/stickers/nursery-rhymes/cloud-pillow.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-cloud-pillow.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        245
+      ],
+      "sha256": "c8c5fb86100fd3d565cc80699061a12f779978e93db440159fa577a79eccac80",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-baa-baa-sheep",
+      "source": "art/source/stickers/nursery-rhymes/baa-baa-sheep.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-baa-baa-sheep.svg",
+      "viewBox": [
+        0,
+        0,
+        311,
+        340
+      ],
+      "sha256": "f5b15f7903f207830ecaeac823d962c19bbbaa206274154edce455ed5ddd5eaa",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-wool-sacks",
+      "source": "art/source/stickers/nursery-rhymes/wool-sacks.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-wool-sacks.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        193
+      ],
+      "sha256": "17c5875adbde3182f222459001909f66909959de54028f2edb8e9e2fa0b3fed9",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-mary",
+      "source": "art/source/stickers/nursery-rhymes/mary.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-mary.svg",
+      "viewBox": [
+        0,
+        0,
+        174,
+        340
+      ],
+      "sha256": "718dafe85fb9821cdacb67ce282e14a991154683af810f226d47d0b6b79a32f7",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-little-boy-blue",
+      "source": "art/source/stickers/nursery-rhymes/little-boy-blue.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-little-boy-blue.svg",
+      "viewBox": [
+        0,
+        0,
+        156,
+        340
+      ],
+      "sha256": "3a183a843d49067a3e2e2c8a9f5b59d90333d8bdac9a94dff919a5601a906163",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-little-teapot",
+      "source": "art/source/stickers/nursery-rhymes/little-teapot.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-little-teapot.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        237
+      ],
+      "sha256": "5338f62e55314aa4ab610edff53018991189a51a4aa7e233f67094247254ed4a",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-muffin-tray",
+      "source": "art/source/stickers/nursery-rhymes/muffin-tray.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-muffin-tray.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        171
+      ],
+      "sha256": "a12d20408f06ed3c3ab9a1ca18198508c2f00fc4c58bac9679406533656fcfb7",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-candlestick",
+      "source": "art/source/stickers/nursery-rhymes/candlestick.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-candlestick.svg",
+      "viewBox": [
+        0,
+        0,
+        244,
+        260
+      ],
+      "sha256": "ad98bc7c813877e9aa86e05001319e5ae0b24434ec273acd7995004ffc036d58",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-mother-goose",
+      "source": "art/source/stickers/nursery-rhymes/mother-goose.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-mother-goose.svg",
+      "viewBox": [
+        0,
+        0,
+        227,
+        340
+      ],
+      "sha256": "a9ce9fb3bd6922ca1b2cd6445e92ee855f2d1c57735d773576b9bd597ac137cb",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-goose",
+      "source": "art/source/stickers/nursery-rhymes/goose.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-goose.svg",
+      "viewBox": [
+        0,
+        0,
+        215,
+        340
+      ],
+      "sha256": "4b891aa0aaf4de100f51f47da473bd88ebab99b0534cae889c2c5abe611e7c9c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-stone-bridge",
+      "source": "art/source/stickers/nursery-rhymes/stone-bridge.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-stone-bridge.svg",
+      "viewBox": [
+        0,
+        0,
+        480,
+        266
+      ],
+      "sha256": "93e99f75cb69cb263b1ede756e4de8952b5234dd1ab14c1b6841156afde65243",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-grassy-hill",
+      "source": "art/source/stickers/nursery-rhymes/grassy-hill.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-grassy-hill.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        155
+      ],
+      "sha256": "c9879b94d0937de7e8e49655047def3e4de9cd0248b5787fdb8b67c6a2df6c86",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-duck-pond",
+      "source": "art/source/stickers/nursery-rhymes/duck-pond.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-duck-pond.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        190
+      ],
+      "sha256": "beccbb979abb1a83f46fc2bdf0cb1a8a0dfd49afc33a84843eebc602c875497e",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-storybook-castle",
+      "source": "art/source/stickers/nursery-rhymes/storybook-castle.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-storybook-castle.svg",
+      "viewBox": [
+        0,
+        0,
+        460,
+        480
+      ],
+      "sha256": "946852644ea7d3f1393c1c282d0b9a877695bdda0e9928e9f917edec421fbfba",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-shoe-house",
+      "source": "art/source/stickers/nursery-rhymes/shoe-house.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-shoe-house.svg",
+      "viewBox": [
+        0,
+        0,
+        441,
+        480
+      ],
+      "sha256": "cf5805b7ea7bfaa71da484adcd60d20e1261576e66c233947532d6921123c17f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-storybook-kettle",
+      "source": "art/source/stickers/nursery-rhymes/storybook-kettle.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-storybook-kettle.svg",
+      "viewBox": [
+        0,
+        0,
+        244,
+        260
+      ],
+      "sha256": "10be4c4a379b480f6444029b89f6ef32fcbad32462b500e0155e1f0ba4d4421f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-old-king-cole",
+      "source": "art/source/stickers/nursery-rhymes/old-king-cole.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-old-king-cole.svg",
+      "viewBox": [
+        0,
+        0,
+        278,
+        340
+      ],
+      "sha256": "9fb790ec8c1ab607aecd69bf3fc800ca371ea29cef15191736e9070e1fbf9062",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-storybook-pie",
+      "source": "art/source/stickers/nursery-rhymes/storybook-pie.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-storybook-pie.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        194
+      ],
+      "sha256": "8b979e6c3f29b37d0ec85543881551cf887af98d0a6fda27e903ab994b3e57d5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-singing-blackbird",
+      "source": "art/source/stickers/nursery-rhymes/singing-blackbird.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-singing-blackbird.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        332
+      ],
+      "sha256": "4f527e5967b4538a5ff909f81fa275ab5000c409e68f9969f403b0231ba16a23",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-porridge-pot",
+      "source": "art/source/stickers/nursery-rhymes/porridge-pot.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-porridge-pot.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        230
+      ],
+      "sha256": "da9c8f70f8d593ffd718eff77633794ce35d00afa6846ed884142ec8eb2c2166",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-rowing-child",
+      "source": "art/source/stickers/nursery-rhymes/rowing-child.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-rowing-child.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        300
+      ],
+      "sha256": "f17253a18c86232f8445e88285201ee72dec7a92b7a196c064d0c0df4fba23e0",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-hot-cross-buns",
+      "source": "art/source/stickers/nursery-rhymes/hot-cross-buns.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-hot-cross-buns.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        161
+      ],
+      "sha256": "4f9239b91d5dbc74e3a370e6306b9a0e1bbde95c07c469c083cf61db166bf674",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-garden-bells",
+      "source": "art/source/stickers/nursery-rhymes/garden-bells.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-garden-bells.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        259
+      ],
+      "sha256": "bdacc95f95d813a760ce94ea8a689fb555c06c152e9bb204486cb096ea84eb46",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-cockle-shell",
+      "source": "art/source/stickers/nursery-rhymes/cockle-shell.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-cockle-shell.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        306
+      ],
+      "sha256": "39e1e6def8a2e572a196a7846bfb8b4ab052efc0ae13af9549f06cf6e8446ed3",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "nursery-rhymes-bus-driver",
+      "source": "art/source/stickers/nursery-rhymes/bus-driver.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-bus-driver.svg",
+      "viewBox": [
+        0,
+        0,
+        224,
+        340
+      ],
+      "sha256": "13749c4fa3b75f833fb63ddfa931ee3184835c12664192d0a780074c0a2fbdc8",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-maple-leaf",
+      "source": "art/source/stickers/fall/maple-leaf.png",
+      "vectorPath": "src/assets/vector/fall-maple-leaf.svg",
+      "viewBox": [
+        0,
+        0,
+        257,
+        260
+      ],
+      "sha256": "1f78a1619a56d258f35125bff9c85586cba23eadea45151f45812b47fab19b2f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-squirrel-acorn",
+      "source": "art/source/stickers/fall/squirrel-acorn.png",
+      "vectorPath": "src/assets/vector/fall-squirrel-acorn.svg",
+      "viewBox": [
+        0,
+        0,
+        289,
+        340
+      ],
+      "sha256": "e37ebeb9a5f208f9edb7a1f32933352dca959c6eae4031f81f50d9483f5db386",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-leaf-pile",
+      "source": "art/source/stickers/fall/leaf-pile.png",
+      "vectorPath": "src/assets/vector/fall-leaf-pile.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        138
+      ],
+      "sha256": "d7356b9c9c2a0792459d4b630bfccbf384f3ebd2f237e333c2cdf11dcc296148",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-hedgehog",
+      "source": "art/source/stickers/fall/hedgehog.png",
+      "vectorPath": "src/assets/vector/fall-hedgehog.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        309
+      ],
+      "sha256": "1a003c683fd478cabce0fb627aa3c097bfd8bf7827dc2e9952f1cc514ccef23f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-fox",
+      "source": "art/source/stickers/fall/fox.png",
+      "vectorPath": "src/assets/vector/fall-fox.svg",
+      "viewBox": [
+        0,
+        0,
+        279,
+        340
+      ],
+      "sha256": "4c9f4fd11d0eb96b6d68966458809ad491704be6232ecf7cf04cca2944ab0672",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-acorn",
+      "source": "art/source/stickers/fall/acorn.png",
+      "vectorPath": "src/assets/vector/fall-acorn.svg",
+      "viewBox": [
+        0,
+        0,
+        192,
+        260
+      ],
+      "sha256": "a7ae478a212c3d45b98bac4314634fb520810ebe22eb9a5abaf639f6e58333ef",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-owl",
+      "source": "art/source/stickers/fall/owl.png",
+      "vectorPath": "src/assets/vector/fall-owl.svg",
+      "viewBox": [
+        0,
+        0,
+        286,
+        340
+      ],
+      "sha256": "0f0cbfbe450bd53849ef3a64d0eb740fb8dcfe415e35d1170fe7ee5ca66d3506",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-rain-boots",
+      "source": "art/source/stickers/fall/rain-boots.png",
+      "vectorPath": "src/assets/vector/fall-rain-boots.svg",
+      "viewBox": [
+        0,
+        0,
+        249,
+        260
+      ],
+      "sha256": "2b5127da8940082c4384c516fe4d18be1d0ea3ddd537d9ad7ea585129bd2e19c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-corn",
+      "source": "art/source/stickers/fall/corn.png",
+      "vectorPath": "src/assets/vector/fall-corn.svg",
+      "viewBox": [
+        0,
+        0,
+        214,
+        260
+      ],
+      "sha256": "9dd378e82e5f41a16702ed17226d2cf6816590b715a5f6bda0c4b1105d989de1",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-turkey",
+      "source": "art/source/stickers/fall/turkey.png",
+      "vectorPath": "src/assets/vector/fall-turkey.svg",
+      "viewBox": [
+        0,
+        0,
+        314,
+        340
+      ],
+      "sha256": "7e69706bdbf5e6331f99e71e1318027d78f5ff59a9bd27787102f1fec416b2cf",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-rake",
+      "source": "art/source/stickers/fall/rake.png",
+      "vectorPath": "src/assets/vector/fall-rake.svg",
+      "viewBox": [
+        0,
+        0,
+        252,
+        260
+      ],
+      "sha256": "a2834ffed410875c17b0258cf945d22ab6bcc6a7dc3bc9016a624a6f115fd860",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-oak-leaf",
+      "source": "art/source/stickers/fall/oak-leaf.png",
+      "vectorPath": "src/assets/vector/fall-oak-leaf.svg",
+      "viewBox": [
+        0,
+        0,
+        164,
+        260
+      ],
+      "sha256": "0da9579d524ebe7896b7a98e2032f704ba690bcbbafb6b83094bc3a20a4dea9c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-pumpkin-cluster",
+      "source": "art/source/stickers/fall/pumpkin-cluster.png",
+      "vectorPath": "src/assets/vector/fall-pumpkin-cluster.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        224
+      ],
+      "sha256": "d24b72439e1476ab36eef5d7407d734813c4e24c2d605a40ac5978f3109af286",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-child-raking",
+      "source": "art/source/stickers/fall/child-raking.png",
+      "vectorPath": "src/assets/vector/fall-child-raking.svg",
+      "viewBox": [
+        0,
+        0,
+        220,
+        340
+      ],
+      "sha256": "ce6135eb78ce5b90b30fc96cd409a0cfbd8b59f296ecb5cdd8aabe873aafd284",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-child-leaf-jump",
+      "source": "art/source/stickers/fall/child-leaf-jump.png",
+      "vectorPath": "src/assets/vector/fall-child-leaf-jump.svg",
+      "viewBox": [
+        0,
+        0,
+        271,
+        340
+      ],
+      "sha256": "8213957b79be19460b083639d2bf01cfa1bf26e7385c63ceeb7b78522dd467e2",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-pumpkin-wagon",
+      "source": "art/source/stickers/fall/pumpkin-wagon.png",
+      "vectorPath": "src/assets/vector/fall-pumpkin-wagon.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        275
+      ],
+      "sha256": "8d0e15e7f521c1d3ee22a24d14cd70e5381a26d6aa8891c2b903640547c60d5f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-cornstalk",
+      "source": "art/source/stickers/fall/cornstalk.png",
+      "vectorPath": "src/assets/vector/fall-cornstalk.svg",
+      "viewBox": [
+        0,
+        0,
+        148,
+        260
+      ],
+      "sha256": "b1c702ba5e8ef2863b5477e924089a3b77407c9c818ec4f2ece61777cbeed196",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-apple-tree",
+      "source": "art/source/stickers/fall/apple-tree.png",
+      "vectorPath": "src/assets/vector/fall-apple-tree.svg",
+      "viewBox": [
+        0,
+        0,
+        244,
+        260
+      ],
+      "sha256": "4a23ad6b579fffdd12fdf6fdf485e38f17d02f1fa8848cdc82622ec08c2c0bc4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-mushroom-cluster",
+      "source": "art/source/stickers/fall/mushroom-cluster.png",
+      "vectorPath": "src/assets/vector/fall-mushroom-cluster.svg",
+      "viewBox": [
+        0,
+        0,
+        251,
+        260
+      ],
+      "sha256": "433dcfb43971a6a95329c2534885e5f71b899c93be74f3203d1e9682aa676ade",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-chestnuts",
+      "source": "art/source/stickers/fall/chestnuts.png",
+      "vectorPath": "src/assets/vector/fall-chestnuts.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        205
+      ],
+      "sha256": "fd68b0aac57d0c6913a3bd49c148c0865f4f3927c2f14cb940562e992f88b642",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-hollow-log",
+      "source": "art/source/stickers/fall/hollow-log.png",
+      "vectorPath": "src/assets/vector/fall-hollow-log.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        164
+      ],
+      "sha256": "0b3bd63750550aad71479bc88a5dab6a11d114e97e526d70e347a9ec676d618b",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-snail",
+      "source": "art/source/stickers/fall/snail.png",
+      "vectorPath": "src/assets/vector/fall-snail.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        284
+      ],
+      "sha256": "5c09609a3eef026b4f0edbbf855d85d911a14bd8d0e26e107e78982ff04af3df",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-flying-kite",
+      "source": "art/source/stickers/fall/flying-kite.png",
+      "vectorPath": "src/assets/vector/fall-flying-kite.svg",
+      "viewBox": [
+        0,
+        0,
+        178,
+        260
+      ],
+      "sha256": "80ab378543b5c7d7792cdf10ca9bbb52a041720a5d66013f747001af0a554f3e",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-autumn-scarf",
+      "source": "art/source/stickers/fall/autumn-scarf.png",
+      "vectorPath": "src/assets/vector/fall-autumn-scarf.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        260
+      ],
+      "sha256": "88476eaa4a22b348aabb21e227abff79417e69c10f5e5e85169f268bb4222afb",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-mittens",
+      "source": "art/source/stickers/fall/mittens.png",
+      "vectorPath": "src/assets/vector/fall-mittens.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        226
+      ],
+      "sha256": "f175552d75ae5eee206bb3983f0024fb4ad9e334af0c004f3513dc1f62733a4f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-chrysanthemum-pot",
+      "source": "art/source/stickers/fall/chrysanthemum-pot.png",
+      "vectorPath": "src/assets/vector/fall-chrysanthemum-pot.svg",
+      "viewBox": [
+        0,
+        0,
+        247,
+        260
+      ],
+      "sha256": "e8c98cd4d2b16dc5ec7622bdbe5a2e6d9df6f6108e2cfa6b7970c76f08a4002a",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-beaver",
+      "source": "art/source/stickers/fall/beaver.png",
+      "vectorPath": "src/assets/vector/fall-beaver.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        336
+      ],
+      "sha256": "24bdf6cfd834c86c92455afcf6d06f453f3bf01fd0ff248c486ef4ede956f4dc",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-gourds",
+      "source": "art/source/stickers/fall/gourds.png",
+      "vectorPath": "src/assets/vector/fall-gourds.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        250
+      ],
+      "sha256": "c0b83bb320b6102aaab548793b2d76fc02fca16a76472d700af07244b8b5917c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-pear",
+      "source": "art/source/stickers/fall/pear.png",
+      "vectorPath": "src/assets/vector/fall-pear.svg",
+      "viewBox": [
+        0,
+        0,
+        193,
+        260
+      ],
+      "sha256": "cd44bf45d2092bdfd69d922ef80ab3f2fbb14115548b14d0478a629b33b1f3ba",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-plum",
+      "source": "art/source/stickers/fall/plum.png",
+      "vectorPath": "src/assets/vector/fall-plum.svg",
+      "viewBox": [
+        0,
+        0,
+        219,
+        260
+      ],
+      "sha256": "7d77b2c0fe1605d0877681a3983d948327d2e29658ea25ff46e92ca377a452ec",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-cornucopia",
+      "source": "art/source/stickers/fall/cornucopia.png",
+      "vectorPath": "src/assets/vector/fall-cornucopia.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        206
+      ],
+      "sha256": "fc4a6e1cdb7fed1cfd5d63e75791703a898b30c41ce987a16eb7477408257e54",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fall-apple-picking-child",
+      "source": "art/source/stickers/fall/apple-picking-child.png",
+      "vectorPath": "src/assets/vector/fall-apple-picking-child.svg",
+      "viewBox": [
+        0,
+        0,
+        144,
+        340
+      ],
+      "sha256": "765acd4db41b0063f3001eb731899a360de1b62b069720dc5f4684e4057311e5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-alpine-peaks",
+      "source": "art/source/stickers/horizons/alpine-peaks.png",
+      "vectorPath": "src/assets/vector/horizons-alpine-peaks.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "399c2114469613ee72cac20bd1a4ce7e822649791fc593555665303198599ea9",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-rounded-mountains",
+      "source": "art/source/stickers/horizons/rounded-mountains.png",
+      "vectorPath": "src/assets/vector/horizons-rounded-mountains.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "980f097c045dffdbb732fddc3c25008ad5d2670e2d6da1fd8bd00d55e7aba9e0",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-layered-foothills",
+      "source": "art/source/stickers/horizons/layered-foothills.png",
+      "vectorPath": "src/assets/vector/horizons-layered-foothills.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "ad2b515cdf0da0ec72b9b126a2db1fdc6c828eadee9dee803252903c41926a4b",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-flat-prairie",
+      "source": "art/source/stickers/horizons/flat-prairie.png",
+      "vectorPath": "src/assets/vector/horizons-flat-prairie.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "91569a01e3a54696a8f316cc1583ff96b3414480d60570bc665d564c98b70b54",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-rolling-farmland",
+      "source": "art/source/stickers/horizons/rolling-farmland.png",
+      "vectorPath": "src/assets/vector/horizons-rolling-farmland.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "5104799f4f55146ce486d4301d46a173e0810ed92ba6fe1451de3d6ae9090327",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-desert-dunes",
+      "source": "art/source/stickers/horizons/desert-dunes.png",
+      "vectorPath": "src/assets/vector/horizons-desert-dunes.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "3c16d5546b241854d87b5754ee0a17541d902faecaa8cef07719f72c96132935",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-red-rock-mesas",
+      "source": "art/source/stickers/horizons/red-rock-mesas.png",
+      "vectorPath": "src/assets/vector/horizons-red-rock-mesas.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "368e49e69d9d196edcb72d4e9c09e193ca78b271ce13b3d0a480866eeefe36e4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-canyon-valley",
+      "source": "art/source/stickers/horizons/canyon-valley.png",
+      "vectorPath": "src/assets/vector/horizons-canyon-valley.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "48c63bf3a8a7de3d8d8825bdf49e9556bd72e3aef4f21f9ed5cf6049af7dd428",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-river-valley",
+      "source": "art/source/stickers/horizons/river-valley.png",
+      "vectorPath": "src/assets/vector/horizons-river-valley.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "2e8a108f163dcb66ff1d6b024526dabba561573176f74fc792b2822b5a13b7ac",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-lake-basin",
+      "source": "art/source/stickers/horizons/lake-basin.png",
+      "vectorPath": "src/assets/vector/horizons-lake-basin.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "bd69d870f42c026d60897a856a8fa968ca28dc247872cfc8c648b8f3d1c28b33",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-pine-forest",
+      "source": "art/source/stickers/horizons/pine-forest.png",
+      "vectorPath": "src/assets/vector/horizons-pine-forest.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "232f0ec7b391276f42e14bb0b5a9eb2615aeb1563c8201cfbb508cf628d382bc",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-deciduous-forest",
+      "source": "art/source/stickers/horizons/deciduous-forest.png",
+      "vectorPath": "src/assets/vector/horizons-deciduous-forest.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "e89007d0b1cc5f19096050c9249525cc2ad4b783b95259452440698384870097",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-woodland-trail",
+      "source": "art/source/stickers/horizons/woodland-trail.png",
+      "vectorPath": "src/assets/vector/horizons-woodland-trail.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "e486ffb1d2278b1ccfcd552360421dbcc712bc940881efb6b3072030fd287ae5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-snowy-forest",
+      "source": "art/source/stickers/horizons/snowy-forest.png",
+      "vectorPath": "src/assets/vector/horizons-snowy-forest.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "a9bd0ea0c04ca400a87d061fa1fbf00156b9e54e83ee9de1b991e2ff00681399",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-coastal-cliffs",
+      "source": "art/source/stickers/horizons/coastal-cliffs.png",
+      "vectorPath": "src/assets/vector/horizons-coastal-cliffs.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "760b06df5e7d2f7b4c7af618739a80adabdee062ad3967c6cd2e17bcdbe851be",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-village-rooftops",
+      "source": "art/source/stickers/horizons/village-rooftops.png",
+      "vectorPath": "src/assets/vector/horizons-village-rooftops.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "cc55a4ed86f93627628e0042c25b1cc26d5a7cb19beaf96b22747e855a2da058",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-suburban-neighborhood",
+      "source": "art/source/stickers/horizons/suburban-neighborhood.png",
+      "vectorPath": "src/assets/vector/horizons-suburban-neighborhood.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "a78abe0cf8f02857b96644c8c8d11d717edec40b8ce0582667d75720f24ca853",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-city-skyline",
+      "source": "art/source/stickers/horizons/city-skyline.png",
+      "vectorPath": "src/assets/vector/horizons-city-skyline.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "5e3e4c3d3390449cfd8a25729441f5e84b50dd734636a942bec0eb24aa924565",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "horizons-harbor-skyline",
+      "source": "art/source/stickers/horizons/harbor-skyline.png",
+      "vectorPath": "src/assets/vector/horizons-harbor-skyline.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "a2631386e6417400a6425461b7aa80e992990614597cd3962eb24200abcd2ba7",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-compact-car",
+      "source": "art/source/stickers/category-expansion/compact-car.png",
+      "vectorPath": "src/assets/vector/category-expansion-compact-car.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        209
+      ],
+      "sha256": "6a89386f22121d1ba8f491183b1197bd69e032953e83cc25a319f367dad845e2",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-farm-tractor",
+      "source": "art/source/stickers/category-expansion/farm-tractor.png",
+      "vectorPath": "src/assets/vector/category-expansion-farm-tractor.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        264
+      ],
+      "sha256": "69d19a2feb8cc069d36c65144c851a954e299afaf571cff377212fd09d210453",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-propeller-airplane",
+      "source": "art/source/stickers/category-expansion/propeller-airplane.png",
+      "vectorPath": "src/assets/vector/category-expansion-propeller-airplane.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        247
+      ],
+      "sha256": "2570b4535175b8bff2fca22732bae2d83244744d2bb6ae74c1f1ba04e4b3744f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-sea-turtle",
+      "source": "art/source/stickers/category-expansion/sea-turtle.png",
+      "vectorPath": "src/assets/vector/category-expansion-sea-turtle.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        260
+      ],
+      "sha256": "2eef1360e9a93b879e8deb342e1a8e25813ba3fce9cabceeeeaf4c957b594927",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-dolphin",
+      "source": "art/source/stickers/category-expansion/dolphin.png",
+      "vectorPath": "src/assets/vector/category-expansion-dolphin.svg",
+      "viewBox": [
+        0,
+        0,
+        315,
+        340
+      ],
+      "sha256": "7b2ae2782309505a1302d667df939e89e89b5e7753737270e28de01305e09e5d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-tropical-fish",
+      "source": "art/source/stickers/category-expansion/tropical-fish.png",
+      "vectorPath": "src/assets/vector/category-expansion-tropical-fish.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        304
+      ],
+      "sha256": "2aee1fae33f4efa1d18aaac09ca2cb4a38ab342f45e65416fc88586f31b07045",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-banana-bunch",
+      "source": "art/source/stickers/category-expansion/banana-bunch.png",
+      "vectorPath": "src/assets/vector/category-expansion-banana-bunch.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        241
+      ],
+      "sha256": "8829aa4842c55200d7f4ce98774a2dceb8f0bb202d754583dcf488c23f11a282",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-strawberry",
+      "source": "art/source/stickers/category-expansion/strawberry.png",
+      "vectorPath": "src/assets/vector/category-expansion-strawberry.svg",
+      "viewBox": [
+        0,
+        0,
+        207,
+        260
+      ],
+      "sha256": "0315c72ccdb109bff890131e44ef4426672398674b41f30948c8454100b70638",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-sandwich",
+      "source": "art/source/stickers/category-expansion/sandwich.png",
+      "vectorPath": "src/assets/vector/category-expansion-sandwich.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        211
+      ],
+      "sha256": "92f2df9f801d2081b525802d1367c81f1fb56ecf36460a8aa52be1041473f4b9",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-birthday-cake",
+      "source": "art/source/stickers/category-expansion/birthday-cake.png",
+      "vectorPath": "src/assets/vector/category-expansion-birthday-cake.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        250
+      ],
+      "sha256": "7e16d43fe294d3dfaec9b3a5d0d8d43887e7aace3e1a0d133dd7327746b6c46c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-town-house",
+      "source": "art/source/stickers/category-expansion/town-house.png",
+      "vectorPath": "src/assets/vector/category-expansion-town-house.svg",
+      "viewBox": [
+        0,
+        0,
+        466,
+        480
+      ],
+      "sha256": "88b3c25f499f177ed6618131bafc5cfb18ced79a550bfd7ac11b0071ebdb9713",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-fire-station",
+      "source": "art/source/stickers/category-expansion/fire-station.png",
+      "vectorPath": "src/assets/vector/category-expansion-fire-station.svg",
+      "viewBox": [
+        0,
+        0,
+        476,
+        480
+      ],
+      "sha256": "d8b8f7c07a33abd3241c1d407cce2e961a10c5ac1dc4a3ffe214d17a3d5f5a40",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-lighthouse",
+      "source": "art/source/stickers/category-expansion/lighthouse.png",
+      "vectorPath": "src/assets/vector/category-expansion-lighthouse.svg",
+      "viewBox": [
+        0,
+        0,
+        207,
+        480
+      ],
+      "sha256": "f5a3729cc8d74427169d241b698c61a52f0630f4c8c0f0863ac9239f6889840d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-windmill",
+      "source": "art/source/stickers/category-expansion/windmill.png",
+      "vectorPath": "src/assets/vector/category-expansion-windmill.svg",
+      "viewBox": [
+        0,
+        0,
+        420,
+        480
+      ],
+      "sha256": "7b89f94ab3849c9672d17f527f9b0a8994c2fbfe21b4c58b9a270bb50ea53c9c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-teddy-bear",
+      "source": "art/source/stickers/category-expansion/teddy-bear.png",
+      "vectorPath": "src/assets/vector/category-expansion-teddy-bear.svg",
+      "viewBox": [
+        0,
+        0,
+        237,
+        260
+      ],
+      "sha256": "1b90a2e2d93bdf987d150336666e26d0fb9c3781eedb98a8db8c7ebc8c6e7453",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-toy-blocks",
+      "source": "art/source/stickers/category-expansion/toy-blocks.png",
+      "vectorPath": "src/assets/vector/category-expansion-toy-blocks.svg",
+      "viewBox": [
+        0,
+        0,
+        164,
+        260
+      ],
+      "sha256": "8805fb833c3f9cd1712a70a073d9c51e9f6ecda5472bd843b2fe748562d77ac4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-toy-drum",
+      "source": "art/source/stickers/category-expansion/toy-drum.png",
+      "vectorPath": "src/assets/vector/category-expansion-toy-drum.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        251
+      ],
+      "sha256": "e06d1cc0d9a3cd3e8de85743d0a0f5b767dd4a31a43a45ff5443aae6e4e76872",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "category-expansion-soccer-ball",
+      "source": "art/source/stickers/category-expansion/soccer-ball.png",
+      "vectorPath": "src/assets/vector/category-expansion-soccer-ball.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        259
+      ],
+      "sha256": "7a48ae6fa01574d280e5f696ee57ebbf55c5876b40a0f2f91dcd3f157414e2b5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-pet-cat",
+      "source": "art/source/stickers/collection-expansion/pet-cat.png",
+      "vectorPath": "src/assets/vector/collection-expansion-pet-cat.svg",
+      "viewBox": [
+        0,
+        0,
+        236,
+        340
+      ],
+      "sha256": "64a8bf6bea08dd30de6e2945328baeb56b0ddb121a891ac4e18dd6f7e4d2b1a8",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-farm-pig",
+      "source": "art/source/stickers/collection-expansion/farm-pig.png",
+      "vectorPath": "src/assets/vector/collection-expansion-farm-pig.svg",
+      "viewBox": [
+        0,
+        0,
+        314,
+        340
+      ],
+      "sha256": "dc244c6f7a3df1eccf5327ac2ca3c84715277d473bddfdf2608fe65776c19065",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-farm-goat",
+      "source": "art/source/stickers/collection-expansion/farm-goat.png",
+      "vectorPath": "src/assets/vector/collection-expansion-farm-goat.svg",
+      "viewBox": [
+        0,
+        0,
+        293,
+        340
+      ],
+      "sha256": "a393867c5c4351c63e357ac3be8e98561068190cd24ecfc971c5b775d4137407",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-farm-hen",
+      "source": "art/source/stickers/collection-expansion/farm-hen.png",
+      "vectorPath": "src/assets/vector/collection-expansion-farm-hen.svg",
+      "viewBox": [
+        0,
+        0,
+        298,
+        340
+      ],
+      "sha256": "8ae56273ee79d3a64e480385615116d48221538648d1f11e0c8ee5c02601e5f3",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-farm-donkey",
+      "source": "art/source/stickers/collection-expansion/farm-donkey.png",
+      "vectorPath": "src/assets/vector/collection-expansion-farm-donkey.svg",
+      "viewBox": [
+        0,
+        0,
+        286,
+        340
+      ],
+      "sha256": "a72fb87018745fb944c0227b0b40dc8c0051e819869663adf55d905c19f53cf2",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-child-waving",
+      "source": "art/source/stickers/collection-expansion/child-waving.png",
+      "vectorPath": "src/assets/vector/collection-expansion-child-waving.svg",
+      "viewBox": [
+        0,
+        0,
+        175,
+        340
+      ],
+      "sha256": "f16f3cc077a2754e4c149e4882b6205d06f843849cff0128773b5b936943357d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-child-with-backpack",
+      "source": "art/source/stickers/collection-expansion/child-with-backpack.png",
+      "vectorPath": "src/assets/vector/collection-expansion-child-with-backpack.svg",
+      "viewBox": [
+        0,
+        0,
+        178,
+        340
+      ],
+      "sha256": "636ed9a1fe43f0eb7725eac0235352f11c209c850bcc47c580aa02eac3de384b",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-grandparent",
+      "source": "art/source/stickers/collection-expansion/grandparent.png",
+      "vectorPath": "src/assets/vector/collection-expansion-grandparent.svg",
+      "viewBox": [
+        0,
+        0,
+        168,
+        340
+      ],
+      "sha256": "73f166c43a5e375a20f1d29fe6352106b2266056dbb3cbf54e6c3258ad56b05a",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-firefighter",
+      "source": "art/source/stickers/collection-expansion/firefighter.png",
+      "vectorPath": "src/assets/vector/collection-expansion-firefighter.svg",
+      "viewBox": [
+        0,
+        0,
+        163,
+        340
+      ],
+      "sha256": "88e4869a37045479c4128f9efcad768b1ca8e19c92d9cbdbe35f001594749e49",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-gardener",
+      "source": "art/source/stickers/collection-expansion/gardener.png",
+      "vectorPath": "src/assets/vector/collection-expansion-gardener.svg",
+      "viewBox": [
+        0,
+        0,
+        187,
+        340
+      ],
+      "sha256": "c96f6fad8ce7b32bcce8bf28b94b828f44454bca08ecb4365f428f1d3ea4fdcd",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-seaweed-fronds",
+      "source": "art/source/stickers/collection-expansion/seaweed-fronds.png",
+      "vectorPath": "src/assets/vector/collection-expansion-seaweed-fronds.svg",
+      "viewBox": [
+        0,
+        0,
+        228,
+        260
+      ],
+      "sha256": "3f52a53cc3796bd2745a67425ff708e60705f25943fdc973c1f2d23c8c8961d9",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-branching-coral",
+      "source": "art/source/stickers/collection-expansion/branching-coral.png",
+      "vectorPath": "src/assets/vector/collection-expansion-branching-coral.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        331
+      ],
+      "sha256": "5f20aaf16bae5d5d07c54d69ee57d49ae456f91f611e18f436ed1a1ce8d203e4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-tube-sponge",
+      "source": "art/source/stickers/collection-expansion/tube-sponge.png",
+      "vectorPath": "src/assets/vector/collection-expansion-tube-sponge.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        340
+      ],
+      "sha256": "a7ad7059fefbfe71ea4e3ada71b6b6b13d854e887eee4876d1a0f9d9ad6603c9",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-underwater-rocks",
+      "source": "art/source/stickers/collection-expansion/underwater-rocks.png",
+      "vectorPath": "src/assets/vector/collection-expansion-underwater-rocks.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        278
+      ],
+      "sha256": "79115b2a0303820b77b5971f85d000ea5c2d7299b2ada4e0db28e57120965200",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-clam-with-pearl",
+      "source": "art/source/stickers/collection-expansion/clam-with-pearl.png",
+      "vectorPath": "src/assets/vector/collection-expansion-clam-with-pearl.svg",
+      "viewBox": [
+        0,
+        0,
+        339,
+        340
+      ],
+      "sha256": "c5b9b15900c24ce485872b9cb6e6e1fc3c3d3d42f960b9e6b7c6cc12de8ead04",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-seabed-horizon",
+      "source": "art/source/stickers/collection-expansion/seabed-horizon.png",
+      "vectorPath": "src/assets/vector/collection-expansion-seabed-horizon.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "d5b42dc08bfe302456682275bef54a6556bc968773ff8ca8880cbe1904925ced",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-triceratops",
+      "source": "art/source/stickers/collection-expansion/triceratops.png",
+      "vectorPath": "src/assets/vector/collection-expansion-triceratops.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        294
+      ],
+      "sha256": "7c2e4e2ef42571217a2a638bc44957c0ac0ecb407c05bd4e699297c5c7382fa4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-stegosaurus",
+      "source": "art/source/stickers/collection-expansion/stegosaurus.png",
+      "vectorPath": "src/assets/vector/collection-expansion-stegosaurus.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        236
+      ],
+      "sha256": "b7740e297953ea10b6cca838c633d9258fbd457851f0b5771ebe8b4d2400d29d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-brachiosaurus",
+      "source": "art/source/stickers/collection-expansion/brachiosaurus.png",
+      "vectorPath": "src/assets/vector/collection-expansion-brachiosaurus.svg",
+      "viewBox": [
+        0,
+        0,
+        314,
+        340
+      ],
+      "sha256": "e346a1276e1015b9eb51f33a1268ae0cb02db1a3eed0b3d90471146bca806e6a",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-tyrannosaurus",
+      "source": "art/source/stickers/collection-expansion/tyrannosaurus.png",
+      "vectorPath": "src/assets/vector/collection-expansion-tyrannosaurus.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        324
+      ],
+      "sha256": "13aa83b305d983f932adfb8597f55b23f77a449991a1b273f6b3db7317e57acd",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-parasaurolophus",
+      "source": "art/source/stickers/collection-expansion/parasaurolophus.png",
+      "vectorPath": "src/assets/vector/collection-expansion-parasaurolophus.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        317
+      ],
+      "sha256": "9527314487eb660f4d1f6ae7a0888990c6897c90a6de93a8edd009a1e0ca3af0",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "collection-expansion-pteranodon",
+      "source": "art/source/stickers/collection-expansion/pteranodon.png",
+      "vectorPath": "src/assets/vector/collection-expansion-pteranodon.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        275
+      ],
+      "sha256": "23d3f4e81d3e9001512776c9e58a97b98e2c16ef63afcd817bb72d0fdd978b79",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "dinosaur-spotted-long-neck",
+      "source": "art/source/stickers/dinosaurs/spotted-long-neck.jpg",
+      "vectorPath": "src/assets/vector/dinosaur-spotted-long-neck.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        330
+      ],
+      "sha256": "2c8dfa511e49876b8691809bf3b8c46eea6c08a03f83fb3ab167288ca3a5e10e",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "dinosaur-striped-tyrannosaurus",
+      "source": "art/source/stickers/dinosaurs/striped-tyrannosaurus.jpg",
+      "vectorPath": "src/assets/vector/dinosaur-striped-tyrannosaurus.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        307
+      ],
+      "sha256": "509bcce28e2264d788ada9e99de5053e46929342e396471cc8365ba1cbf38638",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "dinosaur-spotted-triceratops",
+      "source": "art/source/stickers/dinosaurs/spotted-triceratops.jpg",
+      "vectorPath": "src/assets/vector/dinosaur-spotted-triceratops.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        284
+      ],
+      "sha256": "d7038dc740b57fb34f775dad3dc3cd187132443afa7e5aa6450260f6598f8a9a",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-armored-warrior",
+      "source": "art/source/stickers/fantasy/armored-warrior.png",
+      "vectorPath": "src/assets/vector/fantasy-armored-warrior.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        695
+      ],
+      "sha256": "7952bfaee6f81b762f5eadb1a42984f732349ed1efe3b965304533a57a40091d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-dwarf-guardian",
+      "source": "art/source/stickers/fantasy/dwarf-guardian.png",
+      "vectorPath": "src/assets/vector/fantasy-dwarf-guardian.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        467
+      ],
+      "sha256": "9d44aa0391e608a24c713d8449222f234bd49c4bed51075ed61a9a81aa43c4d8",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-halfling-traveler",
+      "source": "art/source/stickers/fantasy/halfling-traveler.png",
+      "vectorPath": "src/assets/vector/fantasy-halfling-traveler.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        487
+      ],
+      "sha256": "e8d40b78612a41ac48636dfcdf4784678f17139de3406737d3dcd12f4afde528",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-human-bard",
+      "source": "art/source/stickers/fantasy/human-bard.png",
+      "vectorPath": "src/assets/vector/fantasy-human-bard.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        624
+      ],
+      "sha256": "65391a4df5c9e032d4c91ec822ed4ead94735041dadbaa078a09e67ed292d74c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-nature-druid",
+      "source": "art/source/stickers/fantasy/nature-druid.png",
+      "vectorPath": "src/assets/vector/fantasy-nature-druid.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        541
+      ],
+      "sha256": "4c57ce299f44fa3d19943e9758956867a05d5b34894f4fe0d95a0fcef1b667dd",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-hooded-scout",
+      "source": "art/source/stickers/fantasy/hooded-scout.png",
+      "vectorPath": "src/assets/vector/fantasy-hooded-scout.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        417
+      ],
+      "sha256": "6ade07331d313fb9a3ae7c647c99fe26b9e735bbb6f252242bee0f23116a8a96",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-healing-cleric",
+      "source": "art/source/stickers/fantasy/healing-cleric.png",
+      "vectorPath": "src/assets/vector/fantasy-healing-cleric.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        590
+      ],
+      "sha256": "7a19cd3561fc2f7d84a7af5b1a9f9e9e5f8106ac5d6e22dcabfdf5d3bebe89c3",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-young-apprentice",
+      "source": "art/source/stickers/fantasy/young-apprentice.png",
+      "vectorPath": "src/assets/vector/fantasy-young-apprentice.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        705
+      ],
+      "sha256": "840889dd3a20b0b5e43ce4c5d79fea1d08fd9bd057e29a5bd3c3372579fe2f5f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-goblin-tinkerer",
+      "source": "art/source/stickers/fantasy/goblin-tinkerer.png",
+      "vectorPath": "src/assets/vector/fantasy-goblin-tinkerer.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        365
+      ],
+      "sha256": "148b820b9421c73df02d772c9cb77ff5419bae9a37ac3101ba76292f3bf01002",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-goblin-traveler",
+      "source": "art/source/stickers/fantasy/goblin-traveler.png",
+      "vectorPath": "src/assets/vector/fantasy-goblin-traveler.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        471
+      ],
+      "sha256": "b34345b58de83882689691cf4ef12870979801e7b3728ef33c35399125128da4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-flower-fairy",
+      "source": "art/source/stickers/fantasy/flower-fairy.png",
+      "vectorPath": "src/assets/vector/fantasy-flower-fairy.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        400
+      ],
+      "sha256": "edff56f27414f908e1963cfcb02713ee0e08a09771df43740a2264e75fd6c160",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-mushroom-fairy",
+      "source": "art/source/stickers/fantasy/mushroom-fairy.png",
+      "vectorPath": "src/assets/vector/fantasy-mushroom-fairy.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        420
+      ],
+      "sha256": "570810715883a1331f1b64984d19ff91d5d48444b362917e7475a4900f073df6",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-shell-mermaid",
+      "source": "art/source/stickers/fantasy/shell-mermaid.png",
+      "vectorPath": "src/assets/vector/fantasy-shell-mermaid.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        396
+      ],
+      "sha256": "8e53cc3b05f9e5f7fce98f4f7163634610e4e779d503d23a61b9f36525f019ba",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-merfolk-explorer",
+      "source": "art/source/stickers/fantasy/merfolk-explorer.png",
+      "vectorPath": "src/assets/vector/fantasy-merfolk-explorer.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        461
+      ],
+      "sha256": "b13519de2e26c5cd3e634ff6c178c492fe32f893e4c98d67837544dbe4050081",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-faun-musician",
+      "source": "art/source/stickers/fantasy/faun-musician.png",
+      "vectorPath": "src/assets/vector/fantasy-faun-musician.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        867
+      ],
+      "sha256": "375e8ca8d7bbd5a6e8c734d1734c23111596f3ee13cb9e40efb17541c1c57ba3",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-centaur-guide",
+      "source": "art/source/stickers/fantasy/centaur-guide.png",
+      "vectorPath": "src/assets/vector/fantasy-centaur-guide.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        436
+      ],
+      "sha256": "791b2377aa948604a4c381a299ace851f66e9202488c8ac7d793dc1dfb3eb846",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-stone-giant",
+      "source": "art/source/stickers/fantasy/stone-giant.png",
+      "vectorPath": "src/assets/vector/fantasy-stone-giant.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        441
+      ],
+      "sha256": "5cd7c689c9b7fe68d7e071297871f7a632b761aacde342ddd8d77cfe1f2929e4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-kindly-orc",
+      "source": "art/source/stickers/fantasy/kindly-orc.png",
+      "vectorPath": "src/assets/vector/fantasy-kindly-orc.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        520
+      ],
+      "sha256": "1d78b350d64283243b12cc51cfbf6eddcb3667f5a0e3e5d897f18e6441859914",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-dragon-hatchling",
+      "source": "art/source/stickers/fantasy/dragon-hatchling.png",
+      "vectorPath": "src/assets/vector/fantasy-dragon-hatchling.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        347
+      ],
+      "sha256": "db2f72b5e203a908231693fdf1a40a29ccb5f80dccbdfb1edea14ccece67539c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-mountain-dragon",
+      "source": "art/source/stickers/fantasy/mountain-dragon.png",
+      "vectorPath": "src/assets/vector/fantasy-mountain-dragon.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        334
+      ],
+      "sha256": "4721e7f4e671dccde30f603592d86f12296d6503b154e72ed79dcd1cb29f8d56",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-flying-wyvern",
+      "source": "art/source/stickers/fantasy/flying-wyvern.png",
+      "vectorPath": "src/assets/vector/fantasy-flying-wyvern.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        311
+      ],
+      "sha256": "82e553da7c71a0483a832962bd2ff80bf776934592592103971f2b273ef54133",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-griffin",
+      "source": "art/source/stickers/fantasy/griffin.png",
+      "vectorPath": "src/assets/vector/fantasy-griffin.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        362
+      ],
+      "sha256": "05ced0c99385ad1f046e0a0204ce38c1597a4b765c4737cb205fb9192d1f668e",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-phoenix",
+      "source": "art/source/stickers/fantasy/phoenix.png",
+      "vectorPath": "src/assets/vector/fantasy-phoenix.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        349
+      ],
+      "sha256": "b6ae25bad84b66bc0ff67afad3474b85e8bce7d475d68cf3bcdd638c62bbc04a",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-pegasus",
+      "source": "art/source/stickers/fantasy/pegasus.png",
+      "vectorPath": "src/assets/vector/fantasy-pegasus.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        380
+      ],
+      "sha256": "04a416734de8c4dc4741e0b6d52583aa7d59e23b634917c1711fd72969cdce23",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-unicorn",
+      "source": "art/source/stickers/fantasy/unicorn.png",
+      "vectorPath": "src/assets/vector/fantasy-unicorn.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        389
+      ],
+      "sha256": "1043caba88631c909381c385b8aa10ceeae23718ca2302abfdf60f15900c0dd7",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-stone-golem",
+      "source": "art/source/stickers/fantasy/stone-golem.png",
+      "vectorPath": "src/assets/vector/fantasy-stone-golem.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        352
+      ],
+      "sha256": "c7442343ce973dc757e23d4f885b6f52165dedd200663a849589c51e9c8ee73b",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-smiling-slime",
+      "source": "art/source/stickers/fantasy/smiling-slime.png",
+      "vectorPath": "src/assets/vector/fantasy-smiling-slime.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        242
+      ],
+      "sha256": "6ba12365aadcc4bae67e8a00c8de8a0e43a7334b7085251723fd7702a2e9509f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-skeleton-guardian",
+      "source": "art/source/stickers/fantasy/skeleton-guardian.png",
+      "vectorPath": "src/assets/vector/fantasy-skeleton-guardian.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        616
+      ],
+      "sha256": "2372ee2126dc5fec0cf5daa7f3f6ade32afee1720e6009bc2ce874254f724153",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-enchanted-armour",
+      "source": "art/source/stickers/fantasy/enchanted-armour.png",
+      "vectorPath": "src/assets/vector/fantasy-enchanted-armour.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        626
+      ],
+      "sha256": "9ac8c4e11ac78d511a6aa7e12144a4cb32ddf70d1f373e43d86dafb5c4dca6a1",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-treasure-chest",
+      "source": "art/source/stickers/fantasy/treasure-chest.png",
+      "vectorPath": "src/assets/vector/fantasy-treasure-chest.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        356
+      ],
+      "sha256": "2d4a0ecba83098d26a26b383b4931e436ec1973170ba91ba040cdca224a2cf0d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-spellbook",
+      "source": "art/source/stickers/fantasy/spellbook.png",
+      "vectorPath": "src/assets/vector/fantasy-spellbook.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        347
+      ],
+      "sha256": "89641cd047f3b7375772617db8c1900d142e29c64c0f8ff64df09ca22bf6e873",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-potion-bottle",
+      "source": "art/source/stickers/fantasy/potion-bottle.png",
+      "vectorPath": "src/assets/vector/fantasy-potion-bottle.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        456
+      ],
+      "sha256": "fecf89fe786e692c4509e08e1c8ba04b0fdf3f5b20752f2744d98c3d4e476fd3",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-wizard-tower",
+      "source": "art/source/stickers/fantasy/wizard-tower.png",
+      "vectorPath": "src/assets/vector/fantasy-wizard-tower.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        708
+      ],
+      "sha256": "3475f6bab4a461ae59fcb9ea8b4f6bdbe5ff7d87343c0a98c04e3e5384f73bc4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-castle-gate",
+      "source": "art/source/stickers/fantasy/castle-gate.png",
+      "vectorPath": "src/assets/vector/fantasy-castle-gate.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        286
+      ],
+      "sha256": "0c10e2514e06cad7d507d04f89401476ca375a8c9186539fb570deb4ba198682",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-dragon-egg",
+      "source": "art/source/stickers/fantasy/dragon-egg.png",
+      "vectorPath": "src/assets/vector/fantasy-dragon-egg.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        448
+      ],
+      "sha256": "db338037112bd24841ed6cd26cda0528b2fdb2fce1d9ef502e46fc701431d821",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-crystal-cluster",
+      "source": "art/source/stickers/fantasy/crystal-cluster.png",
+      "vectorPath": "src/assets/vector/fantasy-crystal-cluster.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        393
+      ],
+      "sha256": "285744cd949ffe43e0a8b137d05e16b9e12592c91468f7aa2efe7c9e5eb1842e",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "fantasy-enchanted-door",
+      "source": "art/source/stickers/fantasy/enchanted-door.png",
+      "vectorPath": "src/assets/vector/fantasy-enchanted-door.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        407
+      ],
+      "sha256": "addf29c0e3d087233c2b510e955dc93901d4a985ed84b62ca1fd723df95eb247",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-cave-chamber",
+      "source": "art/source/stickers/interiors/cave-chamber.png",
+      "vectorPath": "src/assets/vector/interiors-cave-chamber.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "57bff3e5e3120f037499dd8c3621818785e978f20735c968c6125a58387ddfd6",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-cave-side-passage",
+      "source": "art/source/stickers/interiors/cave-side-passage.png",
+      "vectorPath": "src/assets/vector/interiors-cave-side-passage.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "ccc3106bcc1aca4cf6d7a62414c43981a799ae1c0f32d2e0286c06f294090c09",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-cave-stalagmites",
+      "source": "art/source/stickers/interiors/cave-stalagmites.png",
+      "vectorPath": "src/assets/vector/interiors-cave-stalagmites.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        436
+      ],
+      "sha256": "1c5ff3256c0837260da4f651a3fabf1ba5060cbd45a49ae89db432846601c496",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-hanging-stalactites",
+      "source": "art/source/stickers/interiors/hanging-stalactites.png",
+      "vectorPath": "src/assets/vector/interiors-hanging-stalactites.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        269
+      ],
+      "sha256": "4d471a0af1cdc67b22d94bc716522907762333780b72e5bdaf5a9e9267d8000d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-cave-stone-arch",
+      "source": "art/source/stickers/interiors/cave-stone-arch.png",
+      "vectorPath": "src/assets/vector/interiors-cave-stone-arch.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        311
+      ],
+      "sha256": "9941e0674d1a7818d4957eaaf762792134c145a4918c0c18fea4b5ce53a8b5a8",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-small-campfire",
+      "source": "art/source/stickers/interiors/small-campfire.png",
+      "vectorPath": "src/assets/vector/interiors-small-campfire.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        374
+      ],
+      "sha256": "a28e493476874af03faacb7824680f53c1ddb017e3eeaab3be5f2cc39de525c5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-tavern-room",
+      "source": "art/source/stickers/interiors/tavern-room.png",
+      "vectorPath": "src/assets/vector/interiors-tavern-room.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "912db1cb54fcf7264996cd281eacadbddecb21c57280da201a1aefac44d34151",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-tavern-corner",
+      "source": "art/source/stickers/interiors/tavern-corner.png",
+      "vectorPath": "src/assets/vector/interiors-tavern-corner.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "81e87fea3dfdc8f42b47258d16fa105fa73bfa56a059b09270b85e9fc30c146b",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-tavern-table",
+      "source": "art/source/stickers/interiors/tavern-table.png",
+      "vectorPath": "src/assets/vector/interiors-tavern-table.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        267
+      ],
+      "sha256": "4c5c3a95cfef1ff1542b27ef8c57e6beddd7af560dbf8c5cd2af3e9ee974b2cd",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-tavern-stool",
+      "source": "art/source/stickers/interiors/tavern-stool.png",
+      "vectorPath": "src/assets/vector/interiors-tavern-stool.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        403
+      ],
+      "sha256": "0c53488e97a80e9e021f389761cdcb4071cf2423060d38931338eb3b198c73c1",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-wooden-barrel",
+      "source": "art/source/stickers/interiors/wooden-barrel.png",
+      "vectorPath": "src/assets/vector/interiors-wooden-barrel.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        433
+      ],
+      "sha256": "bc55379b20ebff897c854817ff867f75fbeb21c7085a19eca4f8da56e9c04066",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-tavern-tankard",
+      "source": "art/source/stickers/interiors/tavern-tankard.png",
+      "vectorPath": "src/assets/vector/interiors-tavern-tankard.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        341
+      ],
+      "sha256": "ed47151aabea252d951d154feecde3392807cb5d3f7acb51e79e7c44e0bb593e",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-palace-chamber",
+      "source": "art/source/stickers/interiors/palace-chamber.png",
+      "vectorPath": "src/assets/vector/interiors-palace-chamber.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "84bfbbbd9b7b81d2a1ec4cb20d2174670b914d48d661bd34260d4c4192218377",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-palace-gallery",
+      "source": "art/source/stickers/interiors/palace-gallery.png",
+      "vectorPath": "src/assets/vector/interiors-palace-gallery.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "5954ac6cc1606ac4963ce172c1f0ef8828597ea2a0c25e53a46817e8f1e00ae9",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-royal-throne",
+      "source": "art/source/stickers/interiors/royal-throne.png",
+      "vectorPath": "src/assets/vector/interiors-royal-throne.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        490
+      ],
+      "sha256": "04d6725bad84be1be2b7d30a48c51393ecdeb391f8b9be73f7cfa9de87a3fcc1",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-palace-column",
+      "source": "art/source/stickers/interiors/palace-column.png",
+      "vectorPath": "src/assets/vector/interiors-palace-column.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        703
+      ],
+      "sha256": "9d8a536471288e1fa4d0ad19d228a5fdb0b98738a2b27521b4a143bb72d51180",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-palace-vase",
+      "source": "art/source/stickers/interiors/palace-vase.png",
+      "vectorPath": "src/assets/vector/interiors-palace-vase.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        422
+      ],
+      "sha256": "f9fabcf3bcc72739e07d46fb0f241a9d204acf5b0233ab0fab736cf4e24a213d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-royal-cabinet",
+      "source": "art/source/stickers/interiors/royal-cabinet.png",
+      "vectorPath": "src/assets/vector/interiors-royal-cabinet.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        383
+      ],
+      "sha256": "37f5873581a469f3ae22510aeedb19dc700b631d668689862d4d0498be971969",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-great-hall",
+      "source": "art/source/stickers/interiors/great-hall.png",
+      "vectorPath": "src/assets/vector/interiors-great-hall.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "40b11b938350edfd6a4527b09efaffb5ac865ae9f2211a727e0ef812dffea144",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-arched-hallway",
+      "source": "art/source/stickers/interiors/arched-hallway.png",
+      "vectorPath": "src/assets/vector/interiors-arched-hallway.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "68e8633373e63baf893268a26f378a7a3d24f0d685d29923db93b25a6b0de3d8",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-hall-bench",
+      "source": "art/source/stickers/interiors/hall-bench.png",
+      "vectorPath": "src/assets/vector/interiors-hall-bench.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        270
+      ],
+      "sha256": "0dae2d4662d30b4246899679e021d7d6880675e4999b0ecaa8639412b8ca9700",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-wall-banner",
+      "source": "art/source/stickers/interiors/wall-banner.png",
+      "vectorPath": "src/assets/vector/interiors-wall-banner.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        355
+      ],
+      "sha256": "8198e0d861f280906bce64de9d9050bff44ac5ddbd349feb52d4c3ab0ff79e80",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-wall-torch",
+      "source": "art/source/stickers/interiors/wall-torch.png",
+      "vectorPath": "src/assets/vector/interiors-wall-torch.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        762
+      ],
+      "sha256": "e82e3c44bb89d642c6021e074d8c077c34cd95ecadb3955c0c3acc1f49a3d5a5",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-arched-window",
+      "source": "art/source/stickers/interiors/arched-window.png",
+      "vectorPath": "src/assets/vector/interiors-arched-window.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        380
+      ],
+      "sha256": "055cbaf268b65ae084bd51f21ed093d5a76778c24f0d85fc6a8eaa11e7af2c41",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-cottage-kitchen",
+      "source": "art/source/stickers/interiors/cottage-kitchen.png",
+      "vectorPath": "src/assets/vector/interiors-cottage-kitchen.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "d6882d431526ae59f3a9394c7caffe19dd6e982a249f75a4bc48e2e41c81a3bb",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-cottage-attic",
+      "source": "art/source/stickers/interiors/cottage-attic.png",
+      "vectorPath": "src/assets/vector/interiors-cottage-attic.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "9e8195615a6a664a6c649ea705b25af4471b67cb0c0b7a5c51889c498952ba76",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-stone-fireplace",
+      "source": "art/source/stickers/interiors/stone-fireplace.png",
+      "vectorPath": "src/assets/vector/interiors-stone-fireplace.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        309
+      ],
+      "sha256": "04194f5111d008f84d3620d9b0d3bf3460e97e80e3cc5d8bf8e9ce8b654aebf7",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-cooking-pot",
+      "source": "art/source/stickers/interiors/cooking-pot.png",
+      "vectorPath": "src/assets/vector/interiors-cooking-pot.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        249
+      ],
+      "sha256": "7ea289ba5c2fff71d88fa8a5f62febcdb6a7365896f02a1cc4312a4f998a436f",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-cottage-cupboard",
+      "source": "art/source/stickers/interiors/cottage-cupboard.png",
+      "vectorPath": "src/assets/vector/interiors-cottage-cupboard.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        446
+      ],
+      "sha256": "1adef8f53297971466ea185ecafcc7c5e758322e74e2525376a7d0abd5adc1a4",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-empty-woven-basket",
+      "source": "art/source/stickers/interiors/empty-woven-basket.png",
+      "vectorPath": "src/assets/vector/interiors-empty-woven-basket.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        378
+      ],
+      "sha256": "6a5bf6a3b391f7417b4a9f4360344a1327818f85bda8f316799a80564053be33",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-home-living-room",
+      "source": "art/source/stickers/interiors/home-living-room.png",
+      "vectorPath": "src/assets/vector/interiors-home-living-room.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "c11d2fadd76fcbfed9868ae34c702cdedc892538d966cedf38b18965bd2071bc",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-home-room-corner",
+      "source": "art/source/stickers/interiors/home-room-corner.png",
+      "vectorPath": "src/assets/vector/interiors-home-room-corner.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "d72ffa17845a0cc790837a383dc17787b360715e971ea7567d5dbf7d6ece1132",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-home-sofa",
+      "source": "art/source/stickers/interiors/home-sofa.png",
+      "vectorPath": "src/assets/vector/interiors-home-sofa.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        240
+      ],
+      "sha256": "ca9ee4d51b989783f44ce8d580825258152e2e98f0e7c2c2b7d450ee3622ec49",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-home-armchair",
+      "source": "art/source/stickers/interiors/home-armchair.png",
+      "vectorPath": "src/assets/vector/interiors-home-armchair.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        320
+      ],
+      "sha256": "ec111eed843e680992ac0d0230344b52f02899960d00f586e4897e81afacf152",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-coffee-table",
+      "source": "art/source/stickers/interiors/coffee-table.png",
+      "vectorPath": "src/assets/vector/interiors-coffee-table.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        187
+      ],
+      "sha256": "2109aa69f0dbe9eb46039b2d5d6cb65badae215eccb6062f6b90ae2c9c95474a",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-floor-lamp",
+      "source": "art/source/stickers/interiors/floor-lamp.png",
+      "vectorPath": "src/assets/vector/interiors-floor-lamp.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        760
+      ],
+      "sha256": "d2855288a45b493690ef556f385c6c86cede07d6d63296a533a5a82bea8c22fc",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-office-room",
+      "source": "art/source/stickers/interiors/office-room.png",
+      "vectorPath": "src/assets/vector/interiors-office-room.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "5f47b1d387d4d22b0fff51aca4a748ed59f5756f6725d34c708ab8cdc862ce2d",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-office-corner",
+      "source": "art/source/stickers/interiors/office-corner.png",
+      "vectorPath": "src/assets/vector/interiors-office-corner.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "e57fe2260645a502ef45d97f7d05202ae2713a1c74a5acfb6d9ce9bae2fe9032",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-office-desk",
+      "source": "art/source/stickers/interiors/office-desk.png",
+      "vectorPath": "src/assets/vector/interiors-office-desk.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        250
+      ],
+      "sha256": "f80645d6cae0009923d55db0b878eb2340754b6a9db026f077f33a9dd11fb67c",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-filing-cabinet",
+      "source": "art/source/stickers/interiors/filing-cabinet.png",
+      "vectorPath": "src/assets/vector/interiors-filing-cabinet.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        420
+      ],
+      "sha256": "2aee0c6d4b8e188e69a3ed28a474ce09dc69b56c718c19a95553b2608ae9afad",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-desktop-computer",
+      "source": "art/source/stickers/interiors/desktop-computer.png",
+      "vectorPath": "src/assets/vector/interiors-desktop-computer.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        326
+      ],
+      "sha256": "c0c5aeafab68cf6df24f7a31b08b72e30e2110cf5bb15384fb2922df4435fe4b",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-bedroom-room",
+      "source": "art/source/stickers/interiors/bedroom-room.png",
+      "vectorPath": "src/assets/vector/interiors-bedroom-room.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "9f19f6fc78abcacacb1545f237f2f5330ca695941b0e5d013ac22e154d98871b",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-bedroom-corner",
+      "source": "art/source/stickers/interiors/bedroom-corner.png",
+      "vectorPath": "src/assets/vector/interiors-bedroom-corner.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "bcda36d1df7106543c065e07876891d33e75af5f915e65e9ad9aae05ef3a2751",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-single-bed",
+      "source": "art/source/stickers/interiors/single-bed.png",
+      "vectorPath": "src/assets/vector/interiors-single-bed.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        308
+      ],
+      "sha256": "1e2c11729f18c188cd62e0c1c67041fddb583c088e68af2bc2418db45ab182f2",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-bedside-table",
+      "source": "art/source/stickers/interiors/bedside-table.png",
+      "vectorPath": "src/assets/vector/interiors-bedside-table.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        348
+      ],
+      "sha256": "0974461acb1d3adb89e0380e5c90213cbb5898e743180dae541054d72b2d15c3",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-bedroom-wardrobe",
+      "source": "art/source/stickers/interiors/bedroom-wardrobe.png",
+      "vectorPath": "src/assets/vector/interiors-bedroom-wardrobe.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        435
+      ],
+      "sha256": "5ed2e7eac4b67b3a6f148f2793589c526efcfe053e6b109085f3e3aac4c46e92",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "interiors-bedroom-dresser",
+      "source": "art/source/stickers/interiors/bedroom-dresser.png",
+      "vectorPath": "src/assets/vector/interiors-bedroom-dresser.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        298
+      ],
+      "sha256": "d4c4ba6d37c960c94c4bb82d426dbe9bb6631797a75d7a273a96141d0be5e8a1",
+      "notes": "",
+      "reviewed": false,
+      "markers": []
+    },
+    {
+      "assetId": "alphabet-u-unicorn",
+      "source": "art/source/stickers/alphabet/u-unicorn.png",
+      "vectorPath": "src/assets/vector/alphabet-u-unicorn.svg",
+      "viewBox": [
+        0,
+        0,
+        315,
+        340
+      ],
+      "sha256": "5a0591340d594ff332039b6ae80e5237a8c08ba727c1e8a39c12660bad34f053",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-friendly-spider",
+      "source": "art/source/stickers/nursery-rhymes/friendly-spider.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-friendly-spider.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        333
+      ],
+      "sha256": "ef27dc2fe12894a4ac489a1b768a5c86fbf87031aaaaea775b3cea7b8d9d8d3a",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "alphabet-c-cat",
+      "source": "art/source/stickers/alphabet/c-cat.png",
+      "vectorPath": "src/assets/vector/alphabet-c-cat.svg",
+      "viewBox": [
+        0,
+        0,
+        302,
+        340
+      ],
+      "sha256": "872e971896b45e57cd47ea63543de7a79cfd5ddfda296f1f0fd273e447eaedb5",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-storybook-fiddler",
+      "source": "art/source/stickers/nursery-rhymes/storybook-fiddler.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-storybook-fiddler.svg",
+      "viewBox": [
+        0,
+        0,
+        234,
+        340
+      ],
+      "sha256": "9148c12ea1d033a302e76174b1e7f19f1ecc350a7e5910f6426f56b3cf73d0da",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-garden-child",
+      "source": "art/source/stickers/nursery-rhymes/garden-child.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-garden-child.svg",
+      "viewBox": [
+        0,
+        0,
+        240,
+        340
+      ],
+      "sha256": "139a6a80c35229e19749edc1df862f583bcc2d2a6317eca75aaad146007726d1",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-pumpkin",
+      "source": "art/source/stickers/fall/pumpkin.png",
+      "vectorPath": "src/assets/vector/fall-pumpkin.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        253
+      ],
+      "sha256": "3716912f2ad2d429367767115aaca372d648d4db7a1aa9fd09abf04e995e6016",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-scarecrow",
+      "source": "art/source/stickers/fall/scarecrow.png",
+      "vectorPath": "src/assets/vector/fall-scarecrow.svg",
+      "viewBox": [
+        0,
+        0,
+        311,
+        340
+      ],
+      "sha256": "42df62c2509b40e97a777f70a6b223063f42e9b387c272fd4904aea879339528",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-hay-bale",
+      "source": "art/source/stickers/fall/hay-bale.png",
+      "vectorPath": "src/assets/vector/fall-hay-bale.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        185
+      ],
+      "sha256": "9f1fe53d68f823a3d2b2bcbee9b4e4df25ab6753861378bd386d285679c7ce5e",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-raccoon",
+      "source": "art/source/stickers/fall/raccoon.png",
+      "vectorPath": "src/assets/vector/fall-raccoon.svg",
+      "viewBox": [
+        0,
+        0,
+        296,
+        340
+      ],
+      "sha256": "59a8d20d938985d959a9977e3bdc3f106b5d6c0da9e1439cda5b3f7c40a174b1",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "horizons-beach-dunes",
+      "source": "art/source/stickers/horizons/beach-dunes.png",
+      "vectorPath": "src/assets/vector/horizons-beach-dunes.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "17d84da6c63474f693409edb9cb3a89e37add30da71e60a29a7deae01e07b150",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "category-expansion-octopus",
+      "source": "art/source/stickers/category-expansion/octopus.png",
+      "vectorPath": "src/assets/vector/category-expansion-octopus.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        316
+      ],
+      "sha256": "26ab859df869a232db3a2c00a911bc41954014f2bb692daeb30a8cf55738f154",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "collection-expansion-pet-dog",
+      "source": "art/source/stickers/collection-expansion/pet-dog.png",
+      "vectorPath": "src/assets/vector/collection-expansion-pet-dog.svg",
+      "viewBox": [
+        0,
+        0,
+        251,
+        340
+      ],
+      "sha256": "f981b3180a930a325eb11f057a43e035ce0b09cfebe1bc770958b284325f22f3",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "collection-expansion-child-wheelchair",
+      "source": "art/source/stickers/collection-expansion/child-wheelchair.png",
+      "vectorPath": "src/assets/vector/collection-expansion-child-wheelchair.svg",
+      "viewBox": [
+        0,
+        0,
+        262,
+        340
+      ],
+      "sha256": "674185d75d1da8b5f7eff2f4e1ebdd5e68b8bd55c1a7fab38dca6511cf237ea2",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-wandering-wizard",
+      "source": "art/source/stickers/fantasy/wandering-wizard.png",
+      "vectorPath": "src/assets/vector/fantasy-wandering-wizard.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        450
+      ],
+      "sha256": "a7b287d87b951cd16bfe505aeb8ef662544d81f0e0531a6d13827d48a9dd1de2",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-potion-alchemist",
+      "source": "art/source/stickers/fantasy/potion-alchemist.png",
+      "vectorPath": "src/assets/vector/fantasy-potion-alchemist.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        732
+      ],
+      "sha256": "ce4ffbce2aa117bb85a4ed6a83c54ebf029ff3e142cab9671d154b0c8e6d00e6",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-cloud-serpent",
+      "source": "art/source/stickers/fantasy/cloud-serpent.png",
+      "vectorPath": "src/assets/vector/fantasy-cloud-serpent.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        347
+      ],
+      "sha256": "6e33224d3005aba01ec25f9471f7eeaa8a1e1a96a3127e485f526eea48f7d533",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-three-headed-hydra",
+      "source": "art/source/stickers/fantasy/three-headed-hydra.png",
+      "vectorPath": "src/assets/vector/fantasy-three-headed-hydra.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        365
+      ],
+      "sha256": "129c8cff3538b16317c5cd5696b926ad262fb772917a4f3af055005a0c9d6454",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-forest-treant",
+      "source": "art/source/stickers/fantasy/forest-treant.png",
+      "vectorPath": "src/assets/vector/fantasy-forest-treant.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        419
+      ],
+      "sha256": "1430ce6b976ae7adf4172e334d10441c86cf3418450d012ae38fd9f1c0744984",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-autumn-tree",
+      "source": "art/source/stickers/fall/autumn-tree.png",
+      "vectorPath": "src/assets/vector/fall-autumn-tree.svg",
+      "viewBox": [
+        0,
+        0,
+        258,
+        260
+      ],
+      "sha256": "f3d9cac987a4f02b26774b6a7b4079b03f53722616ee0a33d8911c58808f3ab6",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-harvest-basket",
+      "source": "art/source/stickers/fall/harvest-basket.png",
+      "vectorPath": "src/assets/vector/fall-harvest-basket.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        243
+      ],
+      "sha256": "b42e0dbfa34aace2683b743434bb56107eb4fc5f9fe8bf143cd24363beb0a3b1",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-wheat-sheaf",
+      "source": "art/source/stickers/fall/wheat-sheaf.png",
+      "vectorPath": "src/assets/vector/fall-wheat-sheaf.svg",
+      "viewBox": [
+        0,
+        0,
+        228,
+        260
+      ],
+      "sha256": "09ef74c97f9796cb10551d44786989e766c59be508a056919fd732652ca9163b",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "horizons-jungle-opening",
+      "source": "art/source/stickers/horizons/jungle-opening.png",
+      "vectorPath": "src/assets/vector/horizons-jungle-opening.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "04ae070813df2c79376a9b35b00c1a999e4354538ac5e67bf2e6bb1455d4656a",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-moon-sorceress",
+      "source": "art/source/stickers/fantasy/moon-sorceress.svg",
+      "vectorPath": "src/assets/vector/fantasy-moon-sorceress.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        480
+      ],
+      "sha256": "46456466a47e4833e4b94f89191c51909c5e18a594b11fb6df646efe5d528d59",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-woodland-ranger",
+      "source": "art/source/stickers/fantasy/woodland-ranger.png",
+      "vectorPath": "src/assets/vector/fantasy-woodland-ranger.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        671
+      ],
+      "sha256": "16175fc14e3b8c6488d0c21f7d6946392f515b81c5f1097118bb0463fe3ca646",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-cradle-tree",
+      "source": "art/source/stickers/nursery-rhymes/cradle-tree.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-cradle-tree.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        257
+      ],
+      "sha256": "32b443472f028d23dd9c7909a8935dd40c46dca5262f17e70faac2c203d1ba54",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-jack-be-nimble",
+      "source": "art/source/stickers/nursery-rhymes/jack-be-nimble.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-jack-be-nimble.svg",
+      "viewBox": [
+        0,
+        0,
+        316,
+        340
+      ],
+      "sha256": "5495b4a22d701f6ef2e000d7de18c805c82ae29a2f0769a450515affc0fc5b9c",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-badger",
+      "source": "art/source/stickers/fall/badger.png",
+      "vectorPath": "src/assets/vector/fall-badger.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        255
+      ],
+      "sha256": "132caf9340e56e47654b4322e6e692ef207cb016d116e8e1cbd728495fecad1d",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "horizons-birch-woodland",
+      "source": "art/source/stickers/horizons/birch-woodland.png",
+      "vectorPath": "src/assets/vector/horizons-birch-woodland.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "78b177e4a503700e68fe3ec8784a2bb03e888132e6cacab5ab0999ff86202001",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "horizons-forest-clearing",
+      "source": "art/source/stickers/horizons/forest-clearing.png",
+      "vectorPath": "src/assets/vector/horizons-forest-clearing.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "9373538d7e2e83f852b0022755fe8482d9b47c91088d638de37fb9824f502405",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fantasy-forest-elf",
+      "source": "art/source/stickers/fantasy/forest-elf.png",
+      "vectorPath": "src/assets/vector/fantasy-forest-elf.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        867
+      ],
+      "sha256": "58f25c571d092fee06f6bb0c6d0d1458907a75f25c12f4071a08626aaa3a9fd6",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "nursery-rhymes-shepherd-child",
+      "source": "art/source/stickers/nursery-rhymes/shepherd-child.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-shepherd-child.svg",
+      "viewBox": [
+        0,
+        0,
+        226,
+        340
+      ],
+      "sha256": "24b247336bc767e8ff96959b4806cbad00cac2a82a44f7abc18cd7f17a9e0095",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": [
+        {
+          "id": "db63a63c-9a20-445f-846e-3fc8e51f59de",
+          "a": {
+            "x": 90.43867219383229,
+            "y": 72.77291025346166
+          },
+          "b": {
+            "x": 77.40110521132759,
+            "y": 83.34673140317977
+          },
+          "control": {
+            "x": 85.66507483409632,
+            "y": 78.52178388825986
+          },
+          "width": 1,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:30:12.093Z"
+        },
+        {
+          "id": "5f9a238f-616a-4f0c-9c1b-188d3c8ab72c",
+          "a": {
+            "x": 90.52290375274247,
+            "y": 67.76173626280027
+          },
+          "b": {
+            "x": 76.24972096343063,
+            "y": 82.86630360110935
+          },
+          "control": {
+            "x": 74.65611317627449,
+            "y": 74.8982978951206
+          },
+          "width": 1.48,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:30:44.649Z"
+        }
+      ]
+    },
+    {
+      "assetId": "tree",
+      "source": "art/source/stickers/shapes/tree.svg",
+      "vectorPath": "src/assets/vector/tree.svg",
+      "viewBox": [
+        0,
+        0,
+        220,
+        280
+      ],
+      "sha256": "04f74130ac350399cb44bf7f3212b228eb878201f78e093b8b1e67304938e230",
+      "notes": "Fill/region does't align with the line art on 4 corners.",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "0de3290b-064d-41ef-a749-49b2e001d718",
+          "kind": "note",
+          "x": 33.3705,
+          "y": 48.8931,
+          "regionId": 0,
+          "note": "Fill/region doesn't align with the line art on 4 corners.",
+          "createdAt": "2026-10-24T05:31:58.618Z"
+        }
+      ]
+    },
+    {
+      "assetId": "space-spaceship",
+      "source": "art/source/stickers/space/spaceship.jpg",
+      "vectorPath": "src/assets/vector/space-spaceship.svg",
+      "viewBox": [
+        0,
+        0,
+        960,
+        479
+      ],
+      "sha256": "3d178318081cb9d942714cc3facaeec150eeef52bc50ebc798c2bc2fc1a9c51a",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "edc0e90c-417c-4634-9d7a-4bbf0aa30872",
+          "kind": "add-region",
+          "x": 826.7744,
+          "y": 206.1191,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T05:36:16.414Z"
+        },
+        {
+          "id": "1cf274bb-5250-4761-b41b-7c7c34cb8128",
+          "kind": "add-region",
+          "x": 816.2461,
+          "y": 294.1711,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T05:36:21.076Z"
+        }
+      ]
+    },
+    {
+      "assetId": "nursery-rhymes-baby-cradle",
+      "source": "art/source/stickers/nursery-rhymes/baby-cradle.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-baby-cradle.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        335
+      ],
+      "sha256": "7ca556b3754a02752b9ed9b74df6d8b5a7a22b7c61fd366b8ac86957e7e26174",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "d55419ea-2883-4881-b65d-ddc90f9b34cb",
+          "kind": "add-region",
+          "x": 197.907,
+          "y": 112.3376,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T05:38:45.762Z"
+        }
+      ],
+      "closures": [
+        {
+          "id": "4cd51beb-5716-4819-a3f3-1298916d3a7b",
+          "a": {
+            "x": 199.6134202999496,
+            "y": 109.14872026799787
+          },
+          "b": {
+            "x": 192.38996969382615,
+            "y": 104.37607777097598
+          },
+          "control": {
+            "x": 196.48540820711938,
+            "y": 105.98845699294282
+          },
+          "width": 0.8,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:38:22.533Z"
+        }
+      ]
+    },
+    {
+      "assetId": "nursery-rhymes-jill",
+      "source": "art/source/stickers/nursery-rhymes/jill.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-jill.svg",
+      "viewBox": [
+        0,
+        0,
+        208,
+        340
+      ],
+      "sha256": "133d66274ca371f47259425993ab7e2e28e1f5f3f001531fa1cbfcb0601ab6cc",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "0ae15ac6-45da-4ce2-94fc-e68c957ad2e4",
+          "kind": "remove-region",
+          "x": 89.1705,
+          "y": 147.0702,
+          "regionId": 36,
+          "note": "",
+          "createdAt": "2026-10-24T05:39:42.707Z"
+        }
+      ]
+    },
+    {
+      "assetId": "nursery-rhymes-stone-well",
+      "source": "art/source/stickers/nursery-rhymes/stone-well.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-stone-well.svg",
+      "viewBox": [
+        0,
+        0,
+        408,
+        480
+      ],
+      "sha256": "38c053116a0b329738b75a9d253e193aaaaf7649a25bc1759a03327d1de8755c",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "f7a4670e-7055-443d-8a87-0d3485152bce",
+          "kind": "remove-region",
+          "x": 111.1036,
+          "y": 130.4401,
+          "regionId": 45,
+          "note": "",
+          "createdAt": "2026-10-24T05:39:57.750Z"
+        }
+      ]
+    },
+    {
+      "assetId": "nursery-rhymes-schoolhouse",
+      "source": "art/source/stickers/nursery-rhymes/schoolhouse.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-schoolhouse.svg",
+      "viewBox": [
+        0,
+        0,
+        450,
+        480
+      ],
+      "sha256": "9b153f2ef06ea15f0be2f6d3bc1f8b93d39717f200a1df8b652604070de84d18",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "123c98d3-5c63-4df1-9559-c9fcccbab71c",
+          "kind": "remove-region",
+          "x": 254.3352,
+          "y": 86.2627,
+          "regionId": 18,
+          "note": "",
+          "createdAt": "2026-10-24T05:43:41.147Z"
+        },
+        {
+          "id": "e6e3e67f-f43a-4948-a7c1-4f1777f23b2f",
+          "kind": "remove-region",
+          "x": 286.3911,
+          "y": 86.0049,
+          "regionId": 18,
+          "note": "",
+          "createdAt": "2026-10-24T05:43:41.671Z"
+        }
+      ],
+      "closures": [
+        {
+          "id": "d5974d8f-d7e7-4d65-b407-e6e09af5e6b4",
+          "a": {
+            "x": 262.62998857817945,
+            "y": 76.45267989062489
+          },
+          "b": {
+            "x": 257.2901389040757,
+            "y": 70.49668398216303
+          },
+          "control": {
+            "x": 261.32925596525683,
+            "y": 72.17394719776435
+          },
+          "width": 1.8,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:41:24.182Z"
+        },
+        {
+          "id": "3ffd82a6-b3cf-486d-9d8b-d5dcd157541b",
+          "a": {
+            "x": 265.9020335978623,
+            "y": 108.04233599886774
+          },
+          "b": {
+            "x": 265.9403180637889,
+            "y": 103.72977850116766
+          },
+          "control": null,
+          "width": 2,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:41:39.031Z"
+        },
+        {
+          "id": "48f0c0b6-4213-4b00-ba0f-b8de574968aa",
+          "a": {
+            "x": 277.67001036381464,
+            "y": 109.16487694146593
+          },
+          "b": {
+            "x": 277.56264422664697,
+            "y": 104.33340527184018
+          },
+          "control": null,
+          "width": 1.86,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:42:46.978Z"
+        },
+        {
+          "id": "3a06f789-8338-4afb-976d-905f7c2b801b",
+          "a": {
+            "x": 279.86238265392427,
+            "y": 75.72368038523342
+          },
+          "b": {
+            "x": 283.4753731816644,
+            "y": 72.3542622526218
+          },
+          "control": {
+            "x": 280.57280213971586,
+            "y": 72.65872774653246
+          },
+          "width": 1.8,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:43:02.623Z"
+        },
+        {
+          "id": "fd7b0c20-cacb-469c-a38a-474958c8c72b",
+          "a": {
+            "x": 273.4279713960384,
+            "y": 56.1992168594136
+          },
+          "b": {
+            "x": 273.0367016032891,
+            "y": 63.43767114782077
+          },
+          "control": null,
+          "width": 2,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:43:59.207Z"
+        },
+        {
+          "id": "f5d3eb48-4073-4692-ae68-62f8b0d094d3",
+          "a": {
+            "x": 271.27598753591735,
+            "y": 106.67276297857707
+          },
+          "b": {
+            "x": 271.0803526395427,
+            "y": 108.2378341760705
+          },
+          "control": null,
+          "width": 1.63,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:44:05.239Z"
+        }
+      ]
+    },
+    {
+      "assetId": "nursery-rhymes-miss-muffet",
+      "source": "art/source/stickers/nursery-rhymes/miss-muffet.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-miss-muffet.svg",
+      "viewBox": [
+        0,
+        0,
+        212,
+        340
+      ],
+      "sha256": "32964ea81f354074910907f27cf9633b61ae673edc6a649652e12f16a5009bf0",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "926ce5c6-f268-40ee-9feb-90281484c852",
+          "kind": "remove-region",
+          "x": 56.8567,
+          "y": 108.9652,
+          "regionId": 47,
+          "note": "",
+          "createdAt": "2026-10-24T05:44:56.912Z"
+        }
+      ]
+    },
+    {
+      "assetId": "nursery-rhymes-baker",
+      "source": "art/source/stickers/nursery-rhymes/baker.png",
+      "vectorPath": "src/assets/vector/nursery-rhymes-baker.svg",
+      "viewBox": [
+        0,
+        0,
+        209,
+        340
+      ],
+      "sha256": "e33b022e9d8821c3277b4d8d191c86b6f51a8519df1c4aed00cb4c5206611312",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "8278d054-98a9-4377-bdc2-be3c1c38c14b",
+          "kind": "remove-region",
+          "x": 44.7007,
+          "y": 174.395,
+          "regionId": 35,
+          "note": "",
+          "createdAt": "2026-10-24T05:45:16.491Z"
+        },
+        {
+          "id": "f1f6abba-e1d4-43de-b29b-84636719a6ab",
+          "kind": "remove-region",
+          "x": 50.2436,
+          "y": 168.5749,
+          "regionId": 33,
+          "note": "",
+          "createdAt": "2026-10-24T05:45:17.755Z"
+        }
+      ]
+    },
+    {
+      "assetId": "fall-apple-basket",
+      "source": "art/source/stickers/fall/apple-basket.png",
+      "vectorPath": "src/assets/vector/fall-apple-basket.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        255
+      ],
+      "sha256": "a7e3c220e54972f95510c535cdf848248d80346aa0f31ee28cab9dbafc43b6ca",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "e18a0a58-1461-4254-9427-2378e42921a9",
+          "kind": "add-region",
+          "x": 153.2283,
+          "y": 63.6862,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T05:47:27.876Z"
+        }
+      ],
+      "closures": [
+        {
+          "id": "c824103f-0051-43bf-9a08-d11c9e28d3a2",
+          "a": {
+            "x": 151.61809609822706,
+            "y": 61.98659083979665
+          },
+          "b": {
+            "x": 155.64351299336624,
+            "y": 61.09205016889114
+          },
+          "control": {
+            "x": 153.72025825457746,
+            "y": 61.00259610180059
+          },
+          "width": 1.29,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:47:22.102Z"
+        }
+      ]
+    },
+    {
+      "assetId": "fall-wheelbarrow-leaves",
+      "source": "art/source/stickers/fall/wheelbarrow-leaves.png",
+      "vectorPath": "src/assets/vector/fall-wheelbarrow-leaves.svg",
+      "viewBox": [
+        0,
+        0,
+        260,
+        197
+      ],
+      "sha256": "ada2511cb17c3c334196de85af01dbecc89a84620154e48005071abd2ddefcac",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": []
+    },
+    {
+      "assetId": "fall-harvest-lantern",
+      "source": "art/source/stickers/fall/harvest-lantern.png",
+      "vectorPath": "src/assets/vector/fall-harvest-lantern.svg",
+      "viewBox": [
+        0,
+        0,
+        149,
+        260
+      ],
+      "sha256": "baaeb69dcd1bd1533829d0a0e25e1bec9d1b6ec32923ed27f4368461021e9788",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "12352e0d-9a52-46d6-b4ce-31b2759bc7b9",
+          "kind": "remove-region",
+          "x": 23.8365,
+          "y": 191.3938,
+          "regionId": 19,
+          "note": "",
+          "createdAt": "2026-10-24T05:50:43.452Z"
+        },
+        {
+          "id": "1153d424-7053-4b33-aa36-449fab821b9a",
+          "kind": "remove-region",
+          "x": 57.964,
+          "y": 135.1015,
+          "regionId": 23,
+          "note": "",
+          "createdAt": "2026-10-24T05:50:43.977Z"
+        },
+        {
+          "id": "6a705944-49ee-4e83-954c-31e09b8fc7b1",
+          "kind": "remove-region",
+          "x": 121.997,
+          "y": 197.7267,
+          "regionId": 20,
+          "note": "",
+          "createdAt": "2026-10-24T05:50:44.929Z"
+        }
+      ]
+    },
+    {
+      "assetId": "horizons-autumn-woodland",
+      "source": "art/source/stickers/horizons/autumn-woodland.png",
+      "vectorPath": "src/assets/vector/horizons-autumn-woodland.svg",
+      "viewBox": [
+        0,
+        0,
+        1200,
+        1200
+      ],
+      "sha256": "00c085f36f052d7410fc3f61bb9c612724bf0c2e38ccdb36158dfab1501ac814",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "4da8a8a6-4aca-4d97-abe5-8f3583a5015e",
+          "kind": "remove-region",
+          "x": 299.1651,
+          "y": 236.5186,
+          "regionId": 4,
+          "note": "",
+          "createdAt": "2026-10-24T05:52:02.470Z"
+        },
+        {
+          "id": "4e39fc81-e759-42fb-9a20-324f460a1755",
+          "kind": "add-region",
+          "x": 15.2237,
+          "y": 224.4963,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T05:52:21.203Z"
+        }
+      ],
+      "closures": [
+        {
+          "id": "699368ab-1205-4205-aa9a-2822202b1526",
+          "a": {
+            "x": 30.311763278324783,
+            "y": 212.07081319214691
+          },
+          "b": {
+            "x": 34.24226627969174,
+            "y": 212.83155570854052
+          },
+          "control": null,
+          "width": 2,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:52:16.597Z"
+        }
+      ]
+    },
+    {
+      "assetId": "category-expansion-fire-engine",
+      "source": "art/source/stickers/category-expansion/fire-engine.png",
+      "vectorPath": "src/assets/vector/category-expansion-fire-engine.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        243
+      ],
+      "sha256": "d43f9bcf8ab6ae64f917f5273493715e99fa952053cfcae39c8e4ab6a4a01c89",
+      "notes": "",
+      "reviewed": false,
+      "markers": [],
+      "closures": [
+        {
+          "id": "b8a138c3-1421-4765-9a18-b0fbac0e4c7a",
+          "a": {
+            "x": 238.78714673600808,
+            "y": 47.91116982387881
+          },
+          "b": {
+            "x": 241.23307992246552,
+            "y": 50.03097801892711
+          },
+          "control": {
+            "x": 238.2164289925014,
+            "y": 50.3299253284852
+          },
+          "width": 0.83,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:53:27.380Z"
+        },
+        {
+          "id": "3ef616ae-03a5-46d3-b1fc-d8cab599d7dd",
+          "a": {
+            "x": 231.50370124744592,
+            "y": 50.194040187776984
+          },
+          "b": {
+            "x": 243.13547240082133,
+            "y": 52.966097058224754
+          },
+          "control": null,
+          "width": 1.43,
+          "fillSeed": null,
+          "note": "",
+          "createdAt": "2026-10-24T05:53:32.051Z"
+        }
+      ]
+    },
+    {
+      "assetId": "fantasy-woodland-gnome",
+      "source": "art/source/stickers/fantasy/woodland-gnome.png",
+      "vectorPath": "src/assets/vector/fantasy-woodland-gnome.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        507
+      ],
+      "sha256": "5524b5ad4937da92cb8e2f51581ecbe022a3639c29bbfebc15e594dff766dbf0",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "008e3431-faa2-4a57-aa8a-c0de75c2b6ee",
+          "kind": "remove-region",
+          "x": 77.8797,
+          "y": 317.6529,
+          "regionId": 24,
+          "note": "",
+          "createdAt": "2026-10-24T05:58:00.481Z"
+        }
+      ]
+    },
+    {
+      "assetId": "fantasy-cave-troll",
+      "source": "art/source/stickers/fantasy/cave-troll.png",
+      "vectorPath": "src/assets/vector/fantasy-cave-troll.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        407
+      ],
+      "sha256": "bc73b5f65cd0388cae05a0fb413ee4d4ef54e0fdd2444d131bffa4c9c807f47d",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "7d207b92-d741-468c-a629-256b8d4b9318",
+          "kind": "remove-region",
+          "x": 75.8223,
+          "y": 243.429,
+          "regionId": 46,
+          "note": "",
+          "createdAt": "2026-10-24T05:59:05.341Z"
+        }
+      ]
+    },
+    {
+      "assetId": "fantasy-cave-bat",
+      "source": "art/source/stickers/fantasy/cave-bat.png",
+      "vectorPath": "src/assets/vector/fantasy-cave-bat.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        262
+      ],
+      "sha256": "0a89d78be60b7b1f70167902b00bcf71d46ed3b561b801eea73269315c4d78e2",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "355a8d9c-d175-465a-b985-22e8c7836c47",
+          "kind": "add-region",
+          "x": 124.481,
+          "y": 205.5478,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T05:59:23.071Z"
+        }
+      ]
+    },
+    {
+      "assetId": "interiors-office-chair",
+      "source": "art/source/stickers/interiors/office-chair.png",
+      "vectorPath": "src/assets/vector/interiors-office-chair.svg",
+      "viewBox": [
+        0,
+        0,
+        340,
+        474
+      ],
+      "sha256": "0c50225a11851a6d8f9c5c133b91f7a5325b41c0a55663a6543554209ed93ab0",
+      "notes": "",
+      "reviewed": false,
+      "markers": [
+        {
+          "id": "bf4b2e16-bc70-4553-bc7e-d3db347eb9d0",
+          "kind": "add-region",
+          "x": 34.6615,
+          "y": 208.4574,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T06:01:55.184Z"
+        },
+        {
+          "id": "0364a9c9-cb93-48bf-bb4a-fc692228e7ff",
+          "kind": "add-region",
+          "x": 313.0355,
+          "y": 208.4574,
+          "regionId": 0,
+          "note": "",
+          "createdAt": "2026-10-24T06:01:56.803Z"
+        }
+      ]
+    }
+  ],
+  "exportedAt": "2026-10-24T06:02:10.322Z"
+}

@@ -1844,16 +1844,7 @@
     "source": "art/source/stickers/space/spaceship.jpg",
     "crop": "1350x673+29+49",
     "extracted": true,
-    "cutouts": [
-      [
-        826.25,
-        202.75
-      ],
-      [
-        816.75,
-        286.25
-      ]
-    ],
+    "cutouts": [],
     "title": "Explorer Spaceship",
     "category": "vehicles",
     "sortOrder": 4,
@@ -2670,7 +2661,8 @@
         272.4512,
         133.2747
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-baby-cradle.svg"
   },
   {
     "id": "nursery-rhymes-fiddle-cat",
@@ -2963,6 +2955,10 @@
       [
         60.7523,
         179.4317
+      ],
+      [
+        89.1705,
+        147.0702
       ]
     ]
   },
@@ -3005,6 +3001,10 @@
       [
         242.9722,
         226.0352
+      ],
+      [
+        111.1036,
+        130.4401
       ]
     ]
   },
@@ -3448,8 +3448,17 @@
       [
         230.8457,
         96.1299
+      ],
+      [
+        254.3352,
+        86.2627
+      ],
+      [
+        286.3911,
+        86.0049
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-schoolhouse.svg"
   },
   {
     "id": "nursery-rhymes-miss-muffet",
@@ -3482,6 +3491,10 @@
       [
         49.2485,
         150.8386
+      ],
+      [
+        56.8567,
+        108.9652
       ]
     ]
   },
@@ -3542,6 +3555,14 @@
       [
         160.1701,
         176.6712
+      ],
+      [
+        44.6875,
+        174.6875
+      ],
+      [
+        50.1875,
+        168.6875
       ]
     ]
   },
@@ -4411,7 +4432,8 @@
         96.8739,
         49.3437
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/fall-apple-basket.svg"
   },
   {
     "id": "fall-fox",
@@ -5345,6 +5367,18 @@
       [
         79.7774,
         22.8687
+      ],
+      [
+        23.8365,
+        191.3938
+      ],
+      [
+        57.964,
+        135.1015
+      ],
+      [
+        121.997,
+        197.7267
       ]
     ]
   },
@@ -5985,8 +6019,13 @@
       [
         897.1583,
         256.5629
+      ],
+      [
+        299.1651,
+        236.5186
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/horizons-autumn-woodland.svg"
   },
   {
     "id": "horizons-snowy-forest",
@@ -6285,7 +6324,8 @@
         301.2012,
         48.3369
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/category-expansion-fire-engine.svg"
   },
   {
     "id": "category-expansion-propeller-airplane",
@@ -8122,6 +8162,10 @@
       [
         226.9436,
         407.521
+      ],
+      [
+        77.8797,
+        317.6529
       ]
     ]
   },
@@ -8467,7 +8511,13 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1033x1237+105+7"
+    "crop": "1033x1237+105+7",
+    "cutouts": [
+      [
+        75.8223,
+        243.429
+      ]
+    ]
   },
   {
     "id": "fantasy-cave-bat",
@@ -8495,10 +8545,6 @@
       [
         218.926,
         82.2517
-      ],
-      [
-        123.9103,
-        205.9838
       ]
     ]
   },
@@ -9769,14 +9815,6 @@
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
     "crop": "874x1218+211+10",
     "cutouts": [
-      [
-        34.62,
-        214.04
-      ],
-      [
-        314.71,
-        194.58
-      ],
       [
         273.2678,
         189.2152

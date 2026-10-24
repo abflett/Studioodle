@@ -1,0 +1,104 @@
+{
+  "reviewFile": "docs/studioodle-artwork-review-2026-10-24v5.json",
+  "reviewSha256": "e9fbe4d8a4a31d5b229960b32983b6c99d0601fba5ad2906cfc299ee3ea7a72f",
+  "notes": "Submitted lines applied first; markers then resolved against regenerated regions.",
+  "assets": [
+    {
+      "assetId": "nursery-rhymes-shepherd-child",
+      "beforeSha256": "24b247336bc767e8ff96959b4806cbad00cac2a82a44f7abc18cd7f17a9e0095",
+      "sourceHash": "c9cde90dcb4b605afcf339c3c561816942b754d13cd6de5940ffc7726dd35b76",
+      "inkHash": "883ebd6278dde66cb5156fcd0e3cb43d32a39a9a890827d2b05e38c9a3efcb00",
+      "lines": 2,
+      "addedArea": 33.77067365831317,
+      "appliedClosureIds": [
+        "db63a63c-9a20-445f-846e-3fc8e51f59de",
+        "5f9a238f-616a-4f0c-9c1b-188d3c8ab72c"
+      ],
+      "afterSha256": "0f6e986f0fe5c8a74824a493797afbdf8d763a1a80a2da8024dcd93e6760a26f",
+      "beforeRegions": 62,
+      "afterRegions": 65,
+      "smallPocketsClosed": 2
+    },
+    {
+      "assetId": "nursery-rhymes-baby-cradle",
+      "beforeSha256": "7ca556b3754a02752b9ed9b74df6d8b5a7a22b7c61fd366b8ac86957e7e26174",
+      "sourceHash": "62581580b00a8b6c11f1a854bc5636e916cd5fe201d57b1f585015cdd30c565b",
+      "inkHash": "d5895975db2a8c4ddb0735819a39b78d26ce0082a1d1dd7a67235b4e54ea4791",
+      "lines": 1,
+      "addedArea": 5.031748506742588,
+      "appliedClosureIds": [
+        "4cd51beb-5716-4819-a3f3-1298916d3a7b"
+      ],
+      "afterSha256": "4955cce31809a359e1470529e63eac1d345c54e3ba571339e23e967d63b2c1f2",
+      "beforeRegions": 102,
+      "afterRegions": 103,
+      "smallPocketsClosed": 1
+    },
+    {
+      "assetId": "nursery-rhymes-schoolhouse",
+      "beforeSha256": "9b153f2ef06ea15f0be2f6d3bc1f8b93d39717f200a1df8b652604070de84d18",
+      "sourceHash": "e74f931cfb4e061edfc922aaf69f989ec1f3e82997bb068c66f9d9824b7d8c3d",
+      "inkHash": "739a65ecc27e4d7944cd54dc897b31b200fb9691f3eeeff9b3f509e1703934cd",
+      "lines": 6,
+      "addedArea": 45.82492946198545,
+      "appliedClosureIds": [
+        "d5974d8f-d7e7-4d65-b407-e6e09af5e6b4",
+        "3ffd82a6-b3cf-486d-9d8b-d5dcd157541b",
+        "48f0c0b6-4213-4b00-ba0f-b8de574968aa",
+        "3a06f789-8338-4afb-976d-905f7c2b801b",
+        "fd7b0c20-cacb-469c-a38a-474958c8c72b",
+        "f5d3eb48-4073-4692-ae68-62f8b0d094d3"
+      ],
+      "afterSha256": "de2573c6131c3c6767215aaba3693536a081b0438769be0bb099d527e63d3a42",
+      "beforeRegions": 160,
+      "afterRegions": 166,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fall-apple-basket",
+      "beforeSha256": "a7e3c220e54972f95510c535cdf848248d80346aa0f31ee28cab9dbafc43b6ca",
+      "sourceHash": "e0537a9c44f2ab0b8432884b00f2a4adfc0e1360eef4eb60fb18d9559736c50d",
+      "inkHash": "3f7d2d0d11305da2d4f1021c111cd4a098021e1ebe178976f9edbf13676a8f7b",
+      "lines": 1,
+      "addedArea": 3.951523595273102,
+      "appliedClosureIds": [
+        "c824103f-0051-43bf-9a08-d11c9e28d3a2"
+      ],
+      "afterSha256": "5fcabbb20b9e637abd9203440240ae801b1092500634c148a7a2daa4af19981b",
+      "beforeRegions": 109,
+      "afterRegions": 110,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "horizons-autumn-woodland",
+      "beforeSha256": "00c085f36f052d7410fc3f61bb9c612724bf0c2e38ccdb36158dfab1501ac814",
+      "sourceHash": "99d9dc170b66876e16e67d3ebdc087356d183d974ea7ef898077bd0c9409480d",
+      "inkHash": "fa71da0d732d8d26ea32c200f7b5377e06820d6920721b7a2afaf892ebf3e338",
+      "lines": 1,
+      "addedArea": 2.1684453843408846,
+      "appliedClosureIds": [
+        "699368ab-1205-4205-aa9a-2822202b1526"
+      ],
+      "afterSha256": "a464be89f03ec4aeea2698fe1bff6323c1733842d4238a061722c533887b6ede",
+      "beforeRegions": 77,
+      "afterRegions": 78,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "category-expansion-fire-engine",
+      "beforeSha256": "d43f9bcf8ab6ae64f917f5273493715e99fa952053cfcae39c8e4ab6a4a01c89",
+      "sourceHash": "1856eb041d6262d15ed5bcafb1b7c223c16c06ba3ac1f4656d05c45711477645",
+      "inkHash": "7e1dd9a45196f1c6274cfe8dbebb8f8b80b0009bff1d4db4fc8cf14a057ca15b",
+      "lines": 2,
+      "addedArea": 16.5003766288919,
+      "appliedClosureIds": [
+        "b8a138c3-1421-4765-9a18-b0fbac0e4c7a",
+        "3ef616ae-03a5-46d3-b1fc-d8cab599d7dd"
+      ],
+      "afterSha256": "28060f2f7da3f0c4c44ff1d83798c0fd49a40b5690328349c637b356da771129",
+      "beforeRegions": 217,
+      "afterRegions": 219,
+      "smallPocketsClosed": 1
+    }
+  ]
+}

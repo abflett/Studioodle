@@ -8,7 +8,7 @@ const summary=JSON.parse(fs.readFileSync(path.join(directory,'summary.json'),'ut
 const assets=selectBatchAssets(JSON.parse(fs.readFileSync('art/stickers.json','utf8')),summary.assetIds);
 const audit=JSON.parse(fs.readFileSync(path.join(directory,'audit.json'),'utf8'));
 const digest=data=>crypto.createHash('sha256').update(data).digest('hex');
-const pipelineHash=digest(['build-stickers.mjs','clean-ink-components.mjs','discover-regions.mjs','svg-regions.mjs'].map(file=>fs.readFileSync(`scripts/${file}`,'utf8')).join('\n'));
+const pipelineHash=digest(['build-stickers.mjs','clean-ink-components.mjs','discover-regions.mjs','svg-regions.mjs','svg-rect-path.mjs'].map(file=>fs.readFileSync(`scripts/${file}`,'utf8')).join('\n'));
 if(summary.completed!==assets.length||summary.failed||summary.unresolved.length||audit.assets!==assets.length||audit.problems.length||pipelineHash!==summary.pipelineHash)
  throw Error('A complete successful batch and current clean audit are required before promotion');
 const changes=[];

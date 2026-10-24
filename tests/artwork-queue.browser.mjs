@@ -12,16 +12,19 @@ export async function checkArtworkQueue({cdp,evaluate}){
  await wait('!globalThis.queueReload&&document.querySelector(".review-sidebar code")?.textContent==="counting-03"');await ready();
  await evaluate(`(()=>{const filter=document.querySelector('.review-sidebar select');Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(filter,'history-1');filter.dispatchEvent(new Event('change',{bubbles:true}));})()`);
  await ready();
- assert.equal(await evaluate(`document.querySelector('select[aria-label="Artwork"]').options.length`),7,'History 1 contains only the assets changed in v4');
+ assert.equal(await evaluate(`document.querySelector('select[aria-label="Artwork"]').options.length`),17,'History 1 contains only the assets changed in v5');
+ await evaluate(`(()=>{globalThis.latestExport=undefined;const capture=event=>{const link=event.target.closest('a[download]');if(!link)return;event.preventDefault();fetch(link.href).then(r=>r.text()).then(text=>globalThis.latestExport=text);document.removeEventListener('click',capture,true);};document.addEventListener('click',capture,true);document.querySelector('button.review-primary').click();})()`);
+ await wait('!!globalThis.latestExport');
+ const latestExport=JSON.parse(await evaluate('globalThis.latestExport'));assert.equal(latestExport.scope,'history-1');assert.equal(latestExport.assets.length,17);assert(latestExport.assets.some(a=>a.assetId==='tree'));assert(!latestExport.assets.some(a=>a.assetId==='fall-badger'));
  await evaluate(`(()=>{const filter=document.querySelector('.review-sidebar select');Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(filter,'history-2');filter.dispatchEvent(new Event('change',{bubbles:true}));})()`);await ready();
- assert.equal(await evaluate(`document.querySelector('select[aria-label="Artwork"]').options.length`),10,'History 2 contains only the previous v3 repair set');
- await evaluate(`globalThis.historyExport=undefined;const capture=event=>{const link=event.target.closest('a[download]');if(!link)return;event.preventDefault();fetch(link.href).then(r=>r.text()).then(text=>globalThis.historyExport=text);document.removeEventListener('click',capture,true);};document.addEventListener('click',capture,true);document.querySelector('button.review-primary').click()`);
+ assert.equal(await evaluate(`document.querySelector('select[aria-label="Artwork"]').options.length`),7,'History 2 contains only the previous v4 repair set');
+ await evaluate(`(()=>{globalThis.historyExport=undefined;const capture=event=>{const link=event.target.closest('a[download]');if(!link)return;event.preventDefault();fetch(link.href).then(r=>r.text()).then(text=>globalThis.historyExport=text);document.removeEventListener('click',capture,true);};document.addEventListener('click',capture,true);document.querySelector('button.review-primary').click();})()`);
  await wait('!!globalThis.historyExport');
  const previousExport=JSON.parse(await evaluate('globalThis.historyExport'));
- assert.equal(previousExport.scope,'history-2');assert.equal(previousExport.assets.length,10);
- assert(previousExport.assets.some(a=>a.assetId==='fantasy-moon-sorceress'));
- assert(!previousExport.assets.some(a=>a.assetId==='fall-badger'),'History 2 export must exclude assets changed only in other passes');
- await evaluate(`(()=>{const filter=document.querySelector('.review-sidebar select');Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(filter,'history-1');filter.dispatchEvent(new Event('change',{bubbles:true}));})()`);await ready();
+ assert.equal(previousExport.scope,'history-2');assert.equal(previousExport.assets.length,7);
+ assert(previousExport.assets.some(a=>a.assetId==='fall-badger'));
+ assert(!previousExport.assets.some(a=>a.assetId==='fantasy-moon-sorceress'),'History 2 export must exclude assets changed only in other passes');
+ await evaluate(`(()=>{const filter=document.querySelector('.review-sidebar select');Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(filter,'history-2');filter.dispatchEvent(new Event('change',{bubbles:true}));})()`);await ready();
  assert.equal((await record('circle')).reviewed,true,'Viewing line tasks must not reset prior inspection status');
  await evaluate(`const select=document.querySelector('select[aria-label="Artwork"]');select.value='fall-badger';select.dispatchEvent(new Event('change',{bubbles:true}))`);
  await wait('document.querySelector(".review-sidebar code").textContent==="fall-badger"&&!document.querySelector(".review-tools").disabled');await ready();
@@ -64,7 +67,7 @@ export async function checkArtworkQueue({cdp,evaluate}){
  assert(await evaluate(`!![...document.querySelector('select[aria-label="Artwork"]').options].find(o=>o.value==='fall-badger')`),'Reviewed line tasks must remain visible until actual repair');
  await evaluate(`globalThis.queueExport=undefined;document.addEventListener('click',event=>{const a=event.target.closest('a[download]');if(a){event.preventDefault();fetch(a.href).then(r=>r.text()).then(text=>globalThis.queueExport=text);}},{capture:true});document.querySelector('button.review-primary').click()`);
  await wait('!!globalThis.queueExport');
- const exported=JSON.parse(await evaluate('globalThis.queueExport'));assert.equal(exported.scope,'history-1');assert.equal(exported.assets.length,7);assert.equal(exported.assets.find(a=>a.assetId==='fall-badger').closures.length,2,'Line export must include finished annotations hidden by the remaining filter');assert(!exported.assets.some(a=>a.assetId==='circle'));
+ const exported=JSON.parse(await evaluate('globalThis.queueExport'));assert.equal(exported.scope,'history-2');assert.equal(exported.assets.length,7);assert.equal(exported.assets.find(a=>a.assetId==='fall-badger').closures.length,2,'Line export must include finished annotations hidden by the remaining filter');assert(!exported.assets.some(a=>a.assetId==='circle'));
  // Reimporting our own normalized export must also refresh old local checksums.
  await evaluate(`(()=>{const transfer=new DataTransfer();transfer.items.add(new File([globalThis.queueExport],'line-repairs.json',{type:'application/json'}));const input=document.querySelector('input[type=file]');input.files=transfer.files;input.dispatchEvent(new Event('change',{bubbles:true}));})()`);
  await wait('document.querySelector(".review-save-status").textContent.startsWith("Saved locally")');
@@ -72,7 +75,7 @@ export async function checkArtworkQueue({cdp,evaluate}){
  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'d',code:'KeyD'});await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'d',code:'KeyD'});
  await wait('document.querySelector(".review-sidebar code").textContent!=="fall-badger"');await ready();
  await evaluate('globalThis.queueReload=true');await cdp('Page.reload');await wait('!globalThis.queueReload&&document.querySelector(".review-sheet img")?.complete');
- assert.equal(await evaluate('document.querySelector(".review-sidebar select").value'),'history-1','Queue selection must survive reload');
+ assert.equal(await evaluate('document.querySelector(".review-sidebar select").value'),'history-2','Queue selection must survive reload');
  const historyScreenshot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile('work/tests/artwork-history.png',Buffer.from(historyScreenshot.data,'base64'));
  const snapshot=await evaluate(`JSON.parse(localStorage.getItem('studioodle-artwork-review-v1'))`);
  const has=(a,target)=>target==='reviewed'?a.reviewed:target==='markers'?a.markers.length>0:target==='lines'?!!a.closures?.length:target==='notes'?!!(a.notes||a.markers.some(m=>m.note)||a.closures?.some(l=>l.note)):has(a,'reviewed')||has(a,'markers')||has(a,'lines')||has(a,'notes');

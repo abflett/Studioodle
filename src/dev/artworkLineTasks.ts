@@ -5,22 +5,25 @@ import lineProgressV3 from '../../docs/studioodle-line-repairs-2026-10-24v3.prog
 import markerProgressV3 from '../../docs/studioodle-marker-repairs-2026-10-24v3.progress.json';
 import lineProgressV4 from '../../docs/studioodle-line-repairs-2026-10-24v4.progress.json';
 import markerProgressV4 from '../../docs/studioodle-marker-repairs-2026-10-24v4.progress.json';
+import lineProgressV5 from '../../docs/studioodle-line-repairs-2026-10-24v5.progress.json';
+import markerProgressV5 from '../../docs/studioodle-marker-repairs-2026-10-24v5.progress.json';
 import type { AssetReview } from './artworkReviewModel';
 
 export const lineRepairTasks = progress.assets.filter(asset => asset.notes.trim() || asset.operations.some(operation => operation.status === 'deferred' && operation.kind === 'add-region'));
-const linePasses = [...lineProgress.assets, ...lineProgressV2.assets, ...lineProgressV3.assets, ...lineProgressV4.assets];
-const markerPasses = [...markerProgressV3.assets, ...markerProgressV4.assets];
-const revisionPasses = [...lineProgress.assets, ...lineProgressV2.assets, ...lineProgressV3.assets, ...markerProgressV3.assets, ...lineProgressV4.assets, ...markerProgressV4.assets];
-// Metadata may span older passes; the two browse histories are bounded to one pass each.
-export const rebuiltLineTasks = [...new Map(linePasses.map(task => [task.assetId, task])).values()].map(task => {
-  let latest = task;
-  for (const markers of markerPasses) if (markers.assetId === task.assetId && markers.beforeSha256 === latest.afterSha256) latest = { ...latest, afterSha256: markers.afterSha256, afterRegions: markers.afterRegions };
-  return latest;
-});
+const markerPasses = [...markerProgressV3.assets, ...markerProgressV4.assets, ...markerProgressV5.assets];
+const revisionPasses = [...lineProgress.assets, ...lineProgressV2.assets, ...lineProgressV3.assets, ...markerProgressV3.assets, ...lineProgressV4.assets, ...markerProgressV4.assets, ...lineProgressV5.assets, ...markerProgressV5.assets];
+interface RepairMetadata { assetId: string; beforeSha256: string; afterSha256: string; beforeRegions: number; afterRegions: number; lines: number }
+// Metadata includes marker-only repairs; browse histories remain bounded to one pass.
+const latestMetadata = new Map<string, RepairMetadata>();
+for (const pass of revisionPasses) {
+  const previous = latestMetadata.get(pass.assetId), hasLines = pass.appliedClosureIds.length > 0;
+  latestMetadata.set(pass.assetId, { assetId: pass.assetId, beforeSha256: hasLines ? pass.beforeSha256 : previous?.beforeSha256 ?? pass.beforeSha256, afterSha256: pass.afterSha256, beforeRegions: hasLines ? pass.beforeRegions : previous?.beforeRegions ?? pass.beforeRegions, afterRegions: pass.afterRegions, lines: hasLines ? pass.lines : previous?.lines ?? 0 });
+}
+export const rebuiltLineTasks = [...latestMetadata.values()];
 const changedIds = (entries: { assetId: string; beforeSha256: string; afterSha256: string }[]) => [...new Set(entries.filter(entry => entry.beforeSha256 !== entry.afterSha256).map(entry => entry.assetId))];
 export const repairHistory = [
-  { id: 'history-1', label: 'History 1', pass: 'v4', assetIds: changedIds([...lineProgressV4.assets, ...markerProgressV4.assets]) },
-  { id: 'history-2', label: 'History 2', pass: 'v3', assetIds: changedIds([...lineProgressV3.assets, ...markerProgressV3.assets]) },
+  { id: 'history-1', label: 'History 1', pass: 'v5', assetIds: changedIds([...lineProgressV5.assets, ...markerProgressV5.assets]) },
+  { id: 'history-2', label: 'History 2', pass: 'v4', assetIds: changedIds([...lineProgressV4.assets, ...markerProgressV4.assets]) },
 ];
 export interface CurrentReviewRevision {
   sha256: string; viewBox: number[]; regionAt: (x: number, y: number) => number;

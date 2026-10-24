@@ -306,3 +306,46 @@ Effort: low per explicit instruction; the existing scripts handled all 22 line a
 marker instructions. Fixed effort in this pass was splitting recent browse histories
 from the complete revision ledger and verifying filter/export isolation. Exact token
 telemetry is unavailable.
+
+## October 24 - full-library v5 inspection
+
+Input: `studioodle-artwork-review-2026-10-24v5.json` (all 364 assets), preserved
+unchanged. **17 assets changed**, with every submitted instruction resolved.
+Applied **13 lines across six assets first** (Shepherd Child 2, Baby Cradle 1,
+Schoolhouse 6, Apple Basket 1, Autumn Woodland 1, Fire Engine 2). Line-stage regions
+increased **727 -> 741**; established cleanup handled four tiny pockets.
+
+Then resolved **13 transparency markers**, **eight fill markers** and **one alignment
+note** against the rebuilt regions. Three fills were already enclosed by the supplied
+lines. The other five explicitly reversed earlier cutouts: Spaceship 2, Cave Bat 1,
+Office Chair 2. Each add point matched the same enclosed white component as a stored
+cutout seed; only those matching seeds were removed. No inferred linework or blanket
+restoration was used. All eight fill points were verified white in the final renders.
+The 13 cutout-stage targets changed **1,490 -> 1,482 regions** (-13 removals +5 fills).
+Cutout-only and restoration validators confirm unchanged ink, requested point states,
+original-source preservation, and retained interiors for every unmarked region.
+
+Both Baker cutout markers sat on ink above their propagated region paths. Verified
+white seeds in the same regions were selected: (44.7007, 174.395) ->
+(44.6875, 174.6875), and (50.2436, 168.5749) -> (50.1875, 168.6875). Submitted marker
+coordinates remain unchanged; adjusted seeds and original points are in the ledger.
+
+The Simple Tree alignment note exposed a converter bug: rounded SVG rectangles were
+reconstructed with quadratic corners rather than their circular/elliptical arcs. The
+converter now preserves exact SVG radius geometry, including separate radius clamps.
+Only Tree was regenerated for this correction. A 4x source-alpha comparison improved
+from **20,905 mismatched pixels to zero**, with a regression for all four corners and
+an inspector browser comparison against the untouched authored SVG.
+
+Separate [line](studioodle-line-repairs-2026-10-24v5.progress.json) and
+[marker](studioodle-marker-repairs-2026-10-24v5.progress.json) ledgers retain exact
+instruction IDs, source/geometry hashes, restored seeds and outcomes. Diagnostics:
+ignored `work/line-repair-2026-10-24v5/` and `work/marker-repair-2026-10-24v5/`.
+**History 1 now contains these 17 v5 assets; History 2 contains the seven v4 assets.**
+Marker-only repairs now get current repair metadata as well as line repairs. Original
+artwork, older repair ledgers and later annotations remain preserved.
+
+Effort: low per explicit line/cutout, medium fixed effort for component-matched cutout
+restoration and the rounded-corner converter regression. The existing scripts handled
+all 35 instructions; two subpixel seed adjustments required geometric checks. Exact
+per-task token telemetry is unavailable. No requests remain deferred.

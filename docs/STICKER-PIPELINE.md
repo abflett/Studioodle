@@ -225,3 +225,28 @@ while genuinely missing regions need a further authored fix. Record satisfied fi
 IDs along with completed cutout IDs, so the inspector retires exactly the instructions
 that were applied. A satisfied fill can share the line-stage checksum without requiring
 an artificial artwork change. The v3 marker ledger demonstrates this case for Forest Elf.
+
+### Explicit fill requests that reverse cutouts
+
+If an add/fill point remains transparent after the line pass, it may match a previously
+accepted cutout rather than an open gap. `restore-reviewed-cutouts.mjs` renders the
+current ink and discovers its white components with cutout seeds temporarily disabled.
+It removes only seeds in the same enclosed component as an explicit add marker and
+rejects requests that match no such component. The original marker positions stay intact.
+
+```sh
+node scripts/restore-reviewed-cutouts.mjs work/marker-pass/review.json --out=work/marker-pass --apply
+# Add restoration asset IDs to the targeted rebuild, then audit and validate:
+node scripts/validate-restored-cutouts.mjs work/marker-pass
+```
+
+Restoration validation requires byte-identical ink, newly paintable requested points,
+and retained interiors for every existing region. Keep the restoration report with the
+stage and promote only after both the cutout and restoration validations pass. Record
+restored seeds in the marker ledger. Do not remove unrelated cutouts or add speculative
+closures to satisfy the request.
+
+Authored SVG rounded rectangles use exact elliptical arc commands via
+`svg-rect-path.mjs`; quadratic corner approximations caused region/outline mismatch.
+The helper is part of the build/resume/promotion fingerprint so changing it invalidates
+cached conversions. Only explicitly selected assets are rebuilt after a converter fix.

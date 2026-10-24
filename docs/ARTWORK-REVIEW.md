@@ -19,8 +19,8 @@ artwork, without a hover tint painting over the black ink.
 - Space toggles Reviewed for the current asset. Holding it down does not repeatedly
   toggle the status. Shortcuts are inactive while typing in notes or search fields.
 - Search by title, ID or category. **History 1** is the default and contains only
-  artwork changed by the latest repair pass (v4: seven assets). **History 2** contains
-  only the immediately preceding pass (v3: ten assets). These are pass-specific sets,
+  artwork changed by the latest repair pass (v5: 17 assets). **History 2** contains
+  only the immediately preceding pass (v4: seven assets). These are pass-specific sets,
   not a cumulative list. When another pass is accepted, rotate the sets: the new
   pass becomes History 1 and the previous History 1 becomes History 2. Older ledgers
   remain on disk for provenance and annotation reconciliation.
