@@ -76,7 +76,7 @@ export function usePaperView(paper: { width: number; height: number }, requested
     const box = element.getBoundingClientRect();
     return { x: (client.x - box.left - view.x) / view.zoom, y: (client.y - box.top - view.y) / view.zoom };
   };
-  const zoomAt = (client: { x: number; y: number }, multiplier: number) => {
+  const zoomAt = (client: { x: number; y: number }, multiplier: number, target = client) => {
     const element = viewport.current, view = current.current, point = pointAt(client);
     if (!element || !view || !point) return requestedZoom ?? 1;
     const box = element.getBoundingClientRect();
@@ -84,8 +84,8 @@ export function usePaperView(paper: { width: number; height: number }, requested
     const nextZoom = Math.max(view.zoom, fitted * multiplier);
     // Precision magnification is anchored exactly, even beside the page edge.
     const next = { ...view, zoom: nextZoom,
-      x: client.x - box.left - point.x * nextZoom,
-      y: client.y - box.top - point.y * nextZoom,
+      x: target.x - box.left - point.x * nextZoom,
+      y: target.y - box.top - point.y * nextZoom,
     };
     current.current = next; drag.current = null; setPosition({ x: next.x, y: next.y });
     return nextZoom / fitted;

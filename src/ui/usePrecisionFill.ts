@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import type { Point } from '../editor/document';
 
-type Gesture = { startedAt: number; sequence: number; id: number; client: Point; element: HTMLElement; timer?: number; restore?: () => void };
+type Gesture = { startedAt: number; sequence: number; id: number; client: Point; element: HTMLElement; timer?: number; restore?: () => void; offset?: Point };
 type Options = {
   enabled: boolean;
-  magnify: (client: Point) => () => void;
+  magnify: (client: Point) => { restore: () => void; offset: Point };
   fill: (client: Point) => void;
 };
 
@@ -28,11 +28,12 @@ export function usePrecisionFill(options: Options) {
     setAim(undefined);
     setMagnified(false);
     // Quick fills stay anchored to the original press, even if release drifts.
-    const point = gesture.restore ? client ?? gesture.client : gesture.client;
+    const physical = gesture.restore ? client ?? gesture.client : gesture.client;
+    const point = { x: physical.x + (gesture.offset?.x ?? 0), y: physical.y + (gesture.offset?.y ?? 0) };
     const box = gesture.element.getBoundingClientRect();
     if (gesture.element.hasPointerCapture(gesture.id)) gesture.element.releasePointerCapture(gesture.id);
     try {
-      if (apply && point.x >= box.left && point.x < box.right && point.y >= box.top && point.y < box.bottom) {
+      if (apply && physical.x >= box.left && physical.x < box.right && physical.y >= box.top && physical.y < box.bottom && point.x >= box.left && point.x < box.right && point.y >= box.top && point.y < box.bottom) {
         latest.current.fill(point);
         setReleasedAim({ x: point.x - box.left, y: point.y - box.top,
           elapsed: gesture.restore ? 500 : Math.min(499, performance.now() - gesture.startedAt) });
@@ -60,7 +61,7 @@ export function usePrecisionFill(options: Options) {
   useEffect(() => { if (!options.enabled) finishRef.current(false); }, [options.enabled, finishRef]);
   const showAim = (gesture: Gesture) => {
     const box = gesture.element.getBoundingClientRect();
-    setAim({ x: gesture.client.x - box.left, y: gesture.client.y - box.top, sequence: gesture.sequence });
+    setAim({ x: gesture.client.x + (gesture.offset?.x ?? 0) - box.left, y: gesture.client.y + (gesture.offset?.y ?? 0) - box.top, sequence: gesture.sequence });
   };
   const stop = (event: ReactPointerEvent<HTMLElement>) => { event.preventDefault(); event.stopPropagation(); };
   return { aim, magnified, releasedAim, handlers: {
@@ -76,7 +77,9 @@ export function usePrecisionFill(options: Options) {
       if (event.pointerId !== appMousePointerId) event.currentTarget.setPointerCapture(event.pointerId);
       gesture.timer = window.setTimeout(() => {
         if (active.current !== gesture) return;
-        gesture.restore = latest.current.magnify(gesture.client);
+        const magnification = latest.current.magnify(gesture.client);
+        gesture.restore = magnification.restore;
+        gesture.offset = magnification.offset;
         setMagnified(true);
         showAim(gesture);
       }, 500);
