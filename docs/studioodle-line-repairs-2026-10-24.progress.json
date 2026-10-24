@@ -1,0 +1,632 @@
+{
+  "reviewFile": "docs/studioodle-line-repairs-2026-10-24-line-repair.json",
+  "reviewSha256": "4db5ae090de13e323680f378c7cb47b695710ac1a1df485bcc6bc07199147b95",
+  "ignored": "All marker requests and fill seeds; existing accepted cutouts retained",
+  "assets": [
+    {
+      "assetId": "alphabet-u-unicorn",
+      "beforeSha256": "34fbb437a512e755713b0a5421571e7b4c92ba48c848a2fced9378f0342d72c8",
+      "sourceHash": "b40503fa3d2548cf168e4542c7f9804c3680340510809414a23dfc529a1555ef",
+      "inkHash": "b467df1b95c9975854f498d6e1b55d10ff45c557c1b675985e000e6d02233cab",
+      "lines": 1,
+      "addedArea": 19.370953807730984,
+      "appliedClosureIds": [
+        "2ca3b0c6-f24f-488b-99ff-a71756e1ef52"
+      ],
+      "afterSha256": "5a0591340d594ff332039b6ae80e5237a8c08ba727c1e8a39c12660bad34f053",
+      "beforeRegions": 38,
+      "afterRegions": 39,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "nursery-rhymes-friendly-spider",
+      "beforeSha256": "7c39898e408e8dbaca18ec362fb39043edb0d3c5dc1da4d49a41671e1ac3a96f",
+      "sourceHash": "2fdf4f27eae845d860cf657d1f04c78695c410c15b24e6fbb42e7af3b5c6e08d",
+      "inkHash": "992feb0f0df2ac474d256257c7a0dfbcda893c0820732708cb8c0c13115b8637",
+      "lines": 1,
+      "addedArea": 4.112704724999276,
+      "appliedClosureIds": [
+        "9333d75a-b754-4fbf-bc5c-611e3c90baf3"
+      ],
+      "afterSha256": "ef27dc2fe12894a4ac489a1b768a5c86fbf87031aaaaea775b3cea7b8d9d8d3a",
+      "beforeRegions": 24,
+      "afterRegions": 25,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "nursery-rhymes-shepherd-child",
+      "beforeSha256": "c597da0b7d2e591688a31b7b4d7cdb675062c12efb9be3232404b5540566a863",
+      "sourceHash": "c9cde90dcb4b605afcf339c3c561816942b754d13cd6de5940ffc7726dd35b76",
+      "inkHash": "663f25f6465c6b4bf856146cbaaea031f56ea1a66d5c3329e61589c3117dc5db",
+      "lines": 2,
+      "addedArea": 2.2639712311620315,
+      "appliedClosureIds": [
+        "5973f3c3-894d-463d-b209-6d9b5cbf4d02",
+        "cfdd01cb-deab-4bed-a741-74c092bdb4fc"
+      ],
+      "afterSha256": "78f938d3393ba311592ffeb5d3d24c500249c2f449cc5bbfb0c953df53b4f158",
+      "beforeRegions": 62,
+      "afterRegions": 64,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "alphabet-c-cat",
+      "beforeSha256": "80d0fbec8e0534dd40df1ebe7465a62002960f8506811bfda56aa2d499d9fd39",
+      "sourceHash": "a093410bcd0a9d30247412bc4d0d8417ed77a72005493da28b189546b5458ab1",
+      "inkHash": "7fc7c853d79e2d3f8d1db83adcdd76ab398b2344528a48520ba17009a9cf24cf",
+      "lines": 5,
+      "addedArea": 230.05493767211192,
+      "appliedClosureIds": [
+        "530c20de-236d-478d-96eb-3bbd749b1902",
+        "f5df0920-6dcb-4dd5-8783-71adafe82666",
+        "aa96416f-dbb1-433e-99b0-1e06ebcdadd5",
+        "c4458236-7977-4021-8105-dfb7a92a06f9",
+        "d6ed5a93-f715-4ae3-9cf6-31557683bc98"
+      ],
+      "afterSha256": "872e971896b45e57cd47ea63543de7a79cfd5ddfda296f1f0fd273e447eaedb5",
+      "beforeRegions": 12,
+      "afterRegions": 14,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "nursery-rhymes-cradle-tree",
+      "beforeSha256": "049a8145dbff77632119338d85c39cfd130e582a0d778a129b733eba65ebb5e9",
+      "sourceHash": "8fcfe904a7e834d68601a8be733929a92602b9c5ab4a756dab691713be0763ff",
+      "inkHash": "2b2beae48121504b5338461bac407a053eabcc05970cd184da9b6d59e383890e",
+      "lines": 23,
+      "addedArea": 55.461648968390364,
+      "appliedClosureIds": [
+        "79fdaf25-8f8f-459e-9adc-f60eb1c4f705",
+        "cbe7b71e-7073-4a15-9f8b-8c00bbb366b6",
+        "fc10da39-6149-4672-8664-140f81bfbde6",
+        "ce046fe7-afad-4486-a9d6-c5ac2a11c70f",
+        "e6708c24-813a-4bbe-9721-c3881495518d",
+        "d898b0ca-bfd3-4bd5-b517-6dae1da08550",
+        "7965c6f4-6fa4-4704-a764-c509128d841a",
+        "d9f6ff77-103d-4289-a6e4-eec49a2380e6",
+        "fe2c6602-54a0-488a-9235-54dc984d414d",
+        "4b6bd2ef-731e-402a-bb7f-e684b8e4e337",
+        "fe1914d0-74ff-4cb4-b131-a2bc34e545c8",
+        "c42e87e4-30c0-4abe-9c56-98f04b5661f5",
+        "e78bffd7-ce9d-490c-bb91-dde44721577c",
+        "705b18ad-f2d0-4097-94f2-3b05f0304fb1",
+        "fffae45d-4835-4b0e-90e5-51f50923da80",
+        "60091600-fcec-4246-a7dd-9dfa3f7719d5",
+        "45a3d9fa-ad57-4b99-85e6-2f07dae24fa5",
+        "8353438d-c450-4eb9-86ee-4d1bda42f8c1",
+        "6161f030-fb5d-4f68-9ef8-4defe55e56c9",
+        "6b8e2222-0653-4029-b331-e0bfecd0fbcd",
+        "11d4243e-dec8-4386-8427-18f5ce75eb6f",
+        "205197a2-dd24-4dad-9b1a-0567534bfd6d",
+        "c78f8865-0aa3-43dd-993e-2262aef823bb"
+      ],
+      "afterSha256": "328f96c48f75eaf2e63e0aeac1087f8533491fc54c4e0070e5c4e1a3db3ba7e6",
+      "beforeRegions": 31,
+      "afterRegions": 42,
+      "smallPocketsClosed": 2
+    },
+    {
+      "assetId": "nursery-rhymes-jack-be-nimble",
+      "beforeSha256": "cad4f690e2239c8f0393b2c9ba7694fbe63e3b24918fe9cf998d86d2061f90c4",
+      "sourceHash": "f62e17981c11bd86018ed9ff035828d267c72c9d5d27aa7916f0306777b82358",
+      "inkHash": "b5f137639daaf60e06ca16889676b4a93a01e9c1c30ae1bbec4a5bc807aac0b9",
+      "lines": 2,
+      "addedArea": 11.821294442026556,
+      "appliedClosureIds": [
+        "c8235f40-07c3-42b7-aa24-e77853333172",
+        "0045c5d0-5c06-46a4-809b-0abd08be9398"
+      ],
+      "afterSha256": "7954cf82f7f71a95fe81e9237a0ce700ef703595ae6563aeb6be514ac01b90ba",
+      "beforeRegions": 50,
+      "afterRegions": 53,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "nursery-rhymes-storybook-fiddler",
+      "beforeSha256": "ab1fa3a069911307e6b5b9f6ef2aa3e5a722af86b2fc465eab55fb1348b19a03",
+      "sourceHash": "4632827e16235861473d25a03d7c8000f78efe82a05038102fa7c7a6095585fe",
+      "inkHash": "c89d9da6adda849341cbc7c415f6fe271d09d3b3394662c9ae3a06c59482df90",
+      "lines": 1,
+      "addedArea": 1.5918665015215083,
+      "appliedClosureIds": [
+        "1a200ecd-6968-4080-8a43-f6708aaf72cb"
+      ],
+      "afterSha256": "9148c12ea1d033a302e76174b1e7f19f1ecc350a7e5910f6426f56b3cf73d0da",
+      "beforeRegions": 114,
+      "afterRegions": 115,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "nursery-rhymes-garden-child",
+      "beforeSha256": "b13b94c204081148920e696477b9cb9a9cf19a6a0994d0512d6e585ff2eea624",
+      "sourceHash": "e180a1c315371d3e5ca71ac15421622eef86cbc10edd95ce0350a58afa313bc3",
+      "inkHash": "61e43373cf94a16a71d34396543ce5df097ce1837ff16b706c301996b497b5df",
+      "lines": 1,
+      "addedArea": 0.7980206898064353,
+      "appliedClosureIds": [
+        "53af5633-1c09-4783-a1e6-e23d1d2f7925"
+      ],
+      "afterSha256": "139a6a80c35229e19749edc1df862f583bcc2d2a6317eca75aaad146007726d1",
+      "beforeRegions": 99,
+      "afterRegions": 100,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fall-pumpkin",
+      "beforeSha256": "5ac903554a07eb3fc9199c4ec4ce4b3411cee32e6f36c1425bcbac1cfd49200a",
+      "sourceHash": "f9da9a8ca09bdd7938deecc503f8c4488d007c18e40518b2ac3c773225294b04",
+      "inkHash": "e0036c40b5331eb38484795a44411b2990c4c2ba211bb5309e879282aa69c517",
+      "lines": 1,
+      "addedArea": 13.260154531425542,
+      "appliedClosureIds": [
+        "0c5cf78a-5161-45b7-b4a9-79f1f3737bdc"
+      ],
+      "afterSha256": "3716912f2ad2d429367767115aaca372d648d4db7a1aa9fd09abf04e995e6016",
+      "beforeRegions": 15,
+      "afterRegions": 16,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fall-scarecrow",
+      "beforeSha256": "9394775acb1bbb09796e93e6d10ea54bdefb44853af5204722d1699844aa6b63",
+      "sourceHash": "fefdb5ac37c231a366e87c317bbe6915f9ab9b3d8c54a6b70d21681a6b433662",
+      "inkHash": "df98041294663afeabcc3f8d52cb7a987dc8c504ebea2c4286d4556f3929ebb3",
+      "lines": 1,
+      "addedArea": 0.8654766036470392,
+      "appliedClosureIds": [
+        "d78c7cf5-d5bb-4558-9c54-419b60363045"
+      ],
+      "afterSha256": "42df62c2509b40e97a777f70a6b223063f42e9b387c272fd4904aea879339528",
+      "beforeRegions": 184,
+      "afterRegions": 185,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fall-autumn-tree",
+      "beforeSha256": "e3c072a7cd3d982dcb95df411fd8c495e371b301bf550a3cb5049d9a723954c0",
+      "sourceHash": "b7e23c0043dec4cab2a7005a12b05b9490499fc2bd1b7c695fa16f4859a3747b",
+      "inkHash": "cd9dec9e28bbfee7b0a6549f12247157374ac5dba6fb3d3f5c970d472654e269",
+      "lines": 25,
+      "addedArea": 100.93132287677508,
+      "appliedClosureIds": [
+        "ef3ef333-83a8-43bf-bf03-c08f0f377a27",
+        "3f4e7b01-0712-49d6-afc8-390f63d8a270",
+        "1de1eee2-6d9e-492a-b29d-f6ea29507a0f",
+        "91a0abca-fd92-44fc-9a42-06a508c326bf",
+        "461ca3b5-7cfc-41e2-83e4-7b10f1ec7249",
+        "6e10ac0a-48c2-4e1b-91f5-ae73506a0502",
+        "063cce0c-e4d0-46f1-90ab-c5d6e328fd9c",
+        "93385476-3a32-40d4-8c8b-f5527fb9e46c",
+        "b1169821-a06f-4ef6-8724-fdfbf187aeb5",
+        "c980a96b-c460-48cc-a2ed-e03409975f60",
+        "184f947c-bbbc-4dba-928d-95f053cb19eb",
+        "61cf5cf8-8f0b-4c9c-96d9-52b2f2d43c57",
+        "06eee804-ab6d-45ec-aedc-19bb6ed4885a",
+        "3516b939-46f9-4d53-bc1e-3dcc4e5d62ea",
+        "c3a3356c-b14b-4b1e-b308-db78a60740d1",
+        "61cbd860-3e8f-4c0d-9b25-6c82f56169dd",
+        "00c622ff-a54a-438f-8be3-b6fe7270c5e6",
+        "eda49292-bd21-4bda-80de-388554047355",
+        "a4657667-e3cc-4011-a061-78ecd5296d76",
+        "a9564b6d-55ee-48ae-87e0-df21023f9cf8",
+        "aed7940c-460d-4eb6-b88e-87d68cff80ce",
+        "a18d7ff1-850e-41e9-9e0c-04d8ab42dfc9",
+        "61ffe03d-e931-44dc-9c9d-5e5da188b65d",
+        "88fdaf54-c074-4422-8bb3-557fec2e26db",
+        "a3cd07bd-338c-4b0e-a234-28d3761db9bc"
+      ],
+      "afterSha256": "9730fc2347cf38e72e52cfa599ca55e8fc134a28944598dc35a71d385e8948f7",
+      "beforeRegions": 11,
+      "afterRegions": 23,
+      "smallPocketsClosed": 3
+    },
+    {
+      "assetId": "fall-harvest-basket",
+      "beforeSha256": "258890bed3645d2ea94c074d0031ac928896970b0564eff7408653f3e5503694",
+      "sourceHash": "d27f32172414ad976acc6378b5d4dc81a8610d94c5e7c55ea1333e918de847b0",
+      "inkHash": "12925368689a51d807ec1986c335b8aeafa276fa1778bca7e24d1faca30d6d23",
+      "lines": 1,
+      "addedArea": 3.156418911689798,
+      "appliedClosureIds": [
+        "06d9751a-ef36-4b42-97fa-0e94f675c51b"
+      ],
+      "afterSha256": "896efe93d53da9bfc59d93b14f3f263780dddc83e5ff18f5b1cbc06a54e5dc36",
+      "beforeRegions": 135,
+      "afterRegions": 136,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fall-hay-bale",
+      "beforeSha256": "9fad4d6fab7796334831f7ce370d4157869b84b32f623ad14d39d3b325782a65",
+      "sourceHash": "fc2ed5e8b6de6233cc2e7f31f02d02fe31db32c026336d361d5705f982ff6903",
+      "inkHash": "139bfc8ce82cbea0caee2bb575898ce2713216ae47d08032849305ce22a0342b",
+      "lines": 1,
+      "addedArea": 5.288728899770831,
+      "appliedClosureIds": [
+        "e81d4ea5-7d1f-4c20-b7a1-ed299b24c714"
+      ],
+      "afterSha256": "9f1fe53d68f823a3d2b2bcbee9b4e4df25ab6753861378bd386d285679c7ce5e",
+      "beforeRegions": 43,
+      "afterRegions": 44,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fall-wheat-sheaf",
+      "beforeSha256": "2de5770e0875e545882d1193fdf28db35210dfae1864a6ceb1afb31af0db0d36",
+      "sourceHash": "2ec621b592fc3d63a5fb433ead2da41aa5f3d5cca0e3e0db61ca20b55e79e656",
+      "inkHash": "4b98e389b470c904f322ec2ec9c2efdb7484df15d7b412c51910a5c0f7112456",
+      "lines": 4,
+      "addedArea": 13.867929055654713,
+      "appliedClosureIds": [
+        "66db7feb-6713-45d9-bb12-2967f25aaacd",
+        "e7cc82a1-61fc-4026-bb7a-73e5c400f085",
+        "122feba8-daa2-4d39-974d-92d3b919035f",
+        "fd7d986f-9492-41ab-b1fd-653a528be247"
+      ],
+      "afterSha256": "7206485921a9a7f65829ae25c9c4d8981e9f79c3dd21371fe605ad9d3a818d1e",
+      "beforeRegions": 92,
+      "afterRegions": 96,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fall-raccoon",
+      "beforeSha256": "7a9a3e1fa111dbd4c74156d6b751ed870495d7c1218b3e3992c95e6d5112e804",
+      "sourceHash": "89b8c9f04c82ad66da210c754d6ae3134aaa8dc9e6a5e62ca8f7a2561c0afe4a",
+      "inkHash": "e2797b604a7f74ffee095d778afbe97f955f0b173ea8c0109fb0e0f1fd4a5454",
+      "lines": 6,
+      "addedArea": 18.058593353665856,
+      "appliedClosureIds": [
+        "d6b57897-ca98-41c6-b022-a67e5bfdabce",
+        "67ab54f5-93fa-459b-90fc-f3272507de5b",
+        "8af6592f-bc10-4dd5-9a28-e998aeda21f9",
+        "e9e90eba-5074-4f10-b454-8a0a429e1587",
+        "bf56393d-9a4a-4efa-8771-ff432e294c03",
+        "ad033bd4-e402-41fb-9879-5e20dd5108c7"
+      ],
+      "afterSha256": "59a8d20d938985d959a9977e3bdc3f106b5d6c0da9e1439cda5b3f7c40a174b1",
+      "beforeRegions": 23,
+      "afterRegions": 25,
+      "smallPocketsClosed": 1
+    },
+    {
+      "assetId": "fall-badger",
+      "beforeSha256": "3667640400d52c0f4fb7948c773d00344e622c89fb157939ca4b95a270e748cb",
+      "sourceHash": "ad0914dc922dbcf9bcdb56196137e24ad5901cb49396872ee11eaeef10a75113",
+      "inkHash": "beb08cb077b906961cb3500ba1b7d66aa4047e2174aaf7386931cfbf95c52b35",
+      "lines": 4,
+      "addedArea": 20.548362912044468,
+      "appliedClosureIds": [
+        "e197c0be-feb3-4493-a280-fdfc97efbd41",
+        "4df532f0-9877-44a0-8d6a-85e4102ffbac",
+        "61cba0cb-b404-4e43-8ee1-c70b88b9c35e",
+        "b2760bde-7772-4999-86f9-db6b6983c3bd"
+      ],
+      "afterSha256": "f0442de9405aa222333c4e30e2601a24af10c0d386c5e2d56ad9e47c03432ecf",
+      "beforeRegions": 26,
+      "afterRegions": 27,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "horizons-forest-clearing",
+      "beforeSha256": "ec064e94b09055970e100e15caa687885b7fdaddcf805b6ece4fce4dab54f4c4",
+      "sourceHash": "ff40f6af1accb9b150cb58a0aba843362202dd57a3794ff321dff6e610f3c9a3",
+      "inkHash": "ff784dcc5f66ee8084bb9ddfb86551d01d5a80e7899527971efa571f3597fdb8",
+      "lines": 2,
+      "addedArea": 6.045285983484064,
+      "appliedClosureIds": [
+        "eaf11d40-5407-49bc-af3b-b81d72beaa09",
+        "547bdfc5-b008-46d2-95f7-c07277583191"
+      ],
+      "afterSha256": "04774ab8662fc8d39c2e07d8aed385b3b1cc4db6d0a5a01aba908bcf956bb7d6",
+      "beforeRegions": 99,
+      "afterRegions": 101,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "horizons-jungle-opening",
+      "beforeSha256": "52490506a89633cb2dddf4534eed990e1327cc719ef38b24f278ef013a05aab8",
+      "sourceHash": "fbfa8a0a322e9d3e55d3f72a7cb86508c19c766a598243c03126f1a039d9439f",
+      "inkHash": "2c45088677b29ab3ba46794f56b10a011c450266043e8762078fe0a521febcf2",
+      "lines": 1,
+      "addedArea": 7.623930169160303,
+      "appliedClosureIds": [
+        "64ca1eaf-9a00-4a94-8154-69e3c02357ec"
+      ],
+      "afterSha256": "1dec37470f15b6d4765f26bc31355a00851ba819dffa86cd53eca1b5d84d9948",
+      "beforeRegions": 141,
+      "afterRegions": 142,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "horizons-birch-woodland",
+      "beforeSha256": "ed8e303dc22f53b9b88ff1a4f79c4c7fa189322845973bc09309fda5b7e42a01",
+      "sourceHash": "7af9e1c822e02c4209b6387c6b54c64daa625dc1919c50a19c85baa635aaf67f",
+      "inkHash": "7c3af5eb917f7d27f99ce5e88ca0aac5c4090e3c12cea52ce3c31e7cf7ec8a76",
+      "lines": 64,
+      "addedArea": 627.1638218709413,
+      "appliedClosureIds": [
+        "7b056f4d-0591-4806-8b41-8b56db446a66",
+        "d8bc8b18-84a6-453b-9c3d-794887e1783f",
+        "59e629c6-62f6-4ef1-a489-446aa7058a21",
+        "76bbe0d5-b290-4cad-8ac6-239df81dcc14",
+        "e01f5ed3-901f-49d5-a773-267f60c0a11d",
+        "f1c66c23-2039-4070-9e7c-c77335ee1212",
+        "df4f2c89-61aa-4dd1-bea6-9a58b25082cf",
+        "6723ea60-0974-4933-9247-06ec5c026db1",
+        "2e1f4f98-ea22-4e9a-86da-dc8c83d7d861",
+        "5f7b115c-383a-452b-b6e8-07cb85dbd585",
+        "a12c8650-96a9-440e-8004-d15e8af5c2d3",
+        "03c037af-0b7b-45f7-96d4-e75d67d320b2",
+        "c7a9064b-146e-4f2f-b012-5d9be93fa62d",
+        "b0b87bfd-c4f2-4ed0-97d6-0053b250f932",
+        "a8210b32-ab10-440e-a859-9cb3f2b77540",
+        "73d9682d-12a7-43da-b431-0784df4c8ed3",
+        "97393ccf-7409-4006-861f-11b1ea4760a1",
+        "d3d6d3f2-3772-4e50-9510-b91172f18661",
+        "915572e4-88da-4d8e-b8ee-6cd59d6a0858",
+        "97d248d1-fe6d-4dff-ace2-18303b96f261",
+        "d303a206-1448-4009-acc0-4fbe7284907e",
+        "bc383046-b4f9-4747-96f1-fa590004e18e",
+        "175dfb61-096a-4cd9-97cc-9062457d7d93",
+        "8722de2a-88d0-4985-9414-e5be982151c4",
+        "c0133915-ed00-4703-ba08-fdf126781e3d",
+        "2939fe77-dbf7-4547-841b-702413d102d7",
+        "81f7f52b-6f64-4b09-a5e0-ec9e4b9bc186",
+        "9ccb667f-ed90-44e3-ba5f-019c978697fc",
+        "aac0127b-e019-4182-966b-1ca623833893",
+        "e7d41a55-6843-4278-b8fe-763bc7b122cc",
+        "a7c3a60c-33a7-4900-94b2-756e6dab0c56",
+        "96d78c0c-24c0-4c1e-8e96-02f6f9ca5819",
+        "e356fbd7-1c78-4bfb-91da-28ad9e303e1c",
+        "7d41b1f9-08a8-4e6d-a609-bf8f42de7333",
+        "159a9c10-d358-4052-9fbe-18af9600b8c3",
+        "3c89712e-0601-4ce9-88c0-292148277bed",
+        "28d673cf-79fd-4fbd-bd7c-39d114813a07",
+        "ab306d3c-f438-47c1-8d2f-fbda397decf1",
+        "3692e620-c6af-4eb1-a765-5f2a6bcbe0ba",
+        "6cd855b0-30c4-4d6b-838d-67a8202f8f65",
+        "0fbce24f-d9cf-4c11-a676-89e1bb13de98",
+        "940e7221-68c4-4141-96e6-6c732cf52b3f",
+        "3830d4ea-9d28-436f-9edb-290fbed58a94",
+        "f1f3d333-ac60-4e0e-a1b8-bee3049c483b",
+        "e7d594f4-214f-493a-938f-6b7a73083fac",
+        "6c15ec54-48b1-48ca-8ada-8748909ea1fc",
+        "1160b017-6d16-4052-ad6a-b8034ee3367f",
+        "ea61ef9b-4a09-458a-8dec-528f2829ff19",
+        "265feab5-27e9-4139-ba0b-45988df6097b",
+        "29bec5b1-d1a2-4cd6-9da3-442c52cd1414",
+        "f327b41a-f6e3-49d8-8490-68b5d529c9b1",
+        "7efe176e-4210-4d01-a539-3eedcd5e0509",
+        "59b44d14-9e59-4882-a44d-37a327e72779",
+        "e9d9c735-5865-4cbb-af2f-d2939a4bdaa5",
+        "d311e1ad-23e2-4fa5-a15d-5e63b07195e2",
+        "9b3956f2-915e-4ff7-900d-37c8eeb2079c",
+        "0a6ecc50-b337-4ee1-bb7d-793443a41404",
+        "928e006e-be48-46bb-bde6-e9bcb6342d24",
+        "540e74ca-9448-4a21-9ffb-acb686809d74",
+        "e27eb66f-743f-4532-9a6b-37226d43b43f",
+        "cf669b93-04ee-4610-8de8-be87df96099a",
+        "8b74f662-57eb-4b35-b2d7-d195c4b5e2c4",
+        "2b69e77b-fc9c-4571-946f-aa91d850306b",
+        "8f8af7f1-e7a0-4db4-9817-ec406461bb10"
+      ],
+      "afterSha256": "dd5b30591d7f091fb683ddb3ef141f614ea463d36087764ab769aa32ebf3ba65",
+      "beforeRegions": 98,
+      "afterRegions": 143,
+      "smallPocketsClosed": 11
+    },
+    {
+      "assetId": "horizons-beach-dunes",
+      "beforeSha256": "2cd42c4dca6822e94c8a5c4f6958bad211a56619840161ffb0f3abf82e1157a3",
+      "sourceHash": "05f211271a05de68b835e6bd7c8b84b6b62a352fa7a9f1696c62dbeb002ce269",
+      "inkHash": "503c0c9a4bcde04e715d3f080b4e68fabce48045034d9d8ef79cd12ef18176a4",
+      "lines": 3,
+      "addedArea": 26.294031157089194,
+      "appliedClosureIds": [
+        "a2a42096-6680-48eb-a7e1-ba2f50a72469",
+        "1d3bf537-7453-4f7b-95ae-f4e9fa0f559d",
+        "7d55c32b-fb28-48c6-81dc-f5a9fe3d7c51"
+      ],
+      "afterSha256": "17d84da6c63474f693409edb9cb3a89e37add30da71e60a29a7deae01e07b150",
+      "beforeRegions": 63,
+      "afterRegions": 66,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "category-expansion-octopus",
+      "beforeSha256": "60c9eb93a14dd6119b6835a01f7f082e487ae127d12e9fcdafccc7331b419272",
+      "sourceHash": "50d900677c5ed0a08c8c13aebc6dfa110b53f20859c6e3b08257f4354eaada96",
+      "inkHash": "91547c040654f38229295ff94654c375dadadacf4770b66d7b9cc97543d3ea43",
+      "lines": 5,
+      "addedArea": 13.374925041205643,
+      "appliedClosureIds": [
+        "3989284e-84b1-4c21-af1b-95001f5c373c",
+        "f2f1ae95-16fd-4405-8d46-89828c08a444",
+        "83f987a3-07a4-4ef6-b448-9a2e5ab442cb",
+        "c234ddb7-e17a-48dd-962e-ba7414bc7a29",
+        "579c5b46-f18b-4e1a-a42d-732c2deca656"
+      ],
+      "afterSha256": "26ab859df869a232db3a2c00a911bc41954014f2bb692daeb30a8cf55738f154",
+      "beforeRegions": 76,
+      "afterRegions": 81,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "collection-expansion-pet-dog",
+      "beforeSha256": "8940e09d95f2df49f91c185058723c75dfcc3320eca3c2ebec873ba933a82c47",
+      "sourceHash": "ee3a08e48d3572f69a9e76f32f7939b112c1af783700353744e474e5f0c095af",
+      "inkHash": "b3995d97e112112fcf377d8d310081deeaede667e873ad0645047eb2791bbc52",
+      "lines": 1,
+      "addedArea": 3.7390833004610613,
+      "appliedClosureIds": [
+        "e863e968-6a9a-41ec-a78c-594045651d1a"
+      ],
+      "afterSha256": "f981b3180a930a325eb11f057a43e035ce0b09cfebe1bc770958b284325f22f3",
+      "beforeRegions": 11,
+      "afterRegions": 12,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "collection-expansion-child-wheelchair",
+      "beforeSha256": "3e30b1185c12b703321b62ad9b23e1ed78106a766bae579f83f327b2d81db06a",
+      "sourceHash": "aaf9c1ed9dad52cb9e4dc59841d724373ea815459ded8fa123c35ee25373aea6",
+      "inkHash": "464a8ba5c20ac9ac0f9236146b95077af8073d232113a22099c815917cd386e9",
+      "lines": 1,
+      "addedArea": 7.487807691297348,
+      "appliedClosureIds": [
+        "21d02102-6231-4d47-98e0-22b9fda2fd98"
+      ],
+      "afterSha256": "674185d75d1da8b5f7eff2f4e1ebdd5e68b8bd55c1a7fab38dca6511cf237ea2",
+      "beforeRegions": 273,
+      "afterRegions": 274,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fantasy-wandering-wizard",
+      "beforeSha256": "1361f3b1e87b0674095377de40bd52c4556de66cd48d7484c92504bec6f66859",
+      "sourceHash": "a1b6fb0051ddea113b666bafecf80f61cfd6cc80ea697ad7f5669db0309e016a",
+      "inkHash": "2c9eca4734687fe544df8caa9d1edfb526b8bc7cbcc122d5311dfacbc43c2ae2",
+      "lines": 1,
+      "addedArea": 1.3499102404202858,
+      "appliedClosureIds": [
+        "e6a7c8b7-bb32-4b9b-a757-b00dba53daf7"
+      ],
+      "afterSha256": "a7b287d87b951cd16bfe505aeb8ef662544d81f0e0531a6d13827d48a9dd1de2",
+      "beforeRegions": 105,
+      "afterRegions": 106,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fantasy-moon-sorceress",
+      "beforeSha256": "37ac946356b0484e7c8d7e9f0256eb88ff7ef2f79282654b82d04d8647ee9698",
+      "sourceHash": "8aee2af124fff465651c569b905b4daca99f9ffc86841a1908926cb4d850fa04",
+      "inkHash": "ce81663bbdc52bc13cb05c95359a1cade8df01f8128a8faa47ade386f37bcf07",
+      "lines": 3,
+      "addedArea": 21.29789673947016,
+      "appliedClosureIds": [
+        "e624f49b-9329-4590-b61d-c7c5ff5e43bb",
+        "4ab3e7c3-b5d9-4162-b837-0272de54808b",
+        "3bffd2ea-cf5c-4bf4-96fa-2ed24702db27"
+      ],
+      "afterSha256": "fe28f3497f4733311eee49a4dcd2fd6b352f6ff6e01cb381ecb002f394d297b4",
+      "beforeRegions": 195,
+      "afterRegions": 198,
+      "smallPocketsClosed": 1
+    },
+    {
+      "assetId": "fantasy-woodland-ranger",
+      "beforeSha256": "e3ad7ffe6bb67a71f37cf0b20b6170008f3c62b6e869e24cd4f0d3fd559fc386",
+      "sourceHash": "93d18886ad6ae63bc7ffd8312e3bc934bf2991159f14332ec9c918dfbbe93a3a",
+      "inkHash": "ece89672948498c5c4cc0bc7946d27995f6b1fe2aa4212dabf90c8b763185700",
+      "lines": 1,
+      "addedArea": 310.07314665285594,
+      "appliedClosureIds": [
+        "2a04dfba-958c-4dfe-9bc5-94af220f8c8a"
+      ],
+      "afterSha256": "9e34e30440bb609b5a0cd5c3bddcc1da8531e0d88a6cd82bcd6db6d2a976b10e",
+      "beforeRegions": 186,
+      "afterRegions": 190,
+      "smallPocketsClosed": 1
+    },
+    {
+      "assetId": "fantasy-potion-alchemist",
+      "beforeSha256": "2b676df31ede434173f1b10cbe752ea3b9ca9febad98f944fd2a6dd179a60604",
+      "sourceHash": "8f40c661a94255cfa6abd0b7753a86e9f3b8723a7bd8f9570a0d3347a71d7e6f",
+      "inkHash": "24c8b9ed5d46c8cdcf43c86b9f0a2fb77d29beda1fed42228dd04a29f0a31156",
+      "lines": 4,
+      "addedArea": 23.811405091193592,
+      "appliedClosureIds": [
+        "d9fce85c-e7ae-4e57-9fef-a2c305bcbccf",
+        "41e779f8-bd42-4385-9083-076eb597ddb1",
+        "52b79ccd-30a5-4726-944a-31d814f6879c",
+        "be545487-4b34-4aaf-a1de-8c89a3c844b4"
+      ],
+      "afterSha256": "ce4ffbce2aa117bb85a4ed6a83c54ebf029ff3e142cab9671d154b0c8e6d00e6",
+      "beforeRegions": 254,
+      "afterRegions": 259,
+      "smallPocketsClosed": 4
+    },
+    {
+      "assetId": "fantasy-forest-elf",
+      "beforeSha256": "9267fa3693fc29c4695972ac5af78e8eba1de33b45c3004447f53f29a34a91b3",
+      "sourceHash": "68d6a4853fe69d75c9a8ea15afd3642444100ad1dccab3ef24ea2f48ae3d83ad",
+      "inkHash": "de68ad223ed92c2eb031d2df016be53a0ef839f53e42696eeb72f98f3850ff38",
+      "lines": 2,
+      "addedArea": 24.705750105640618,
+      "appliedClosureIds": [
+        "05dd2ebe-2e3d-4e0b-97f8-65fa08dd75b1",
+        "21da2767-7ee6-4f29-80de-0f754b3d5254"
+      ],
+      "afterSha256": "47b54209a189fdb929a7523948d8e57224030417842c12e5f7abc2f3cf5afb34",
+      "beforeRegions": 196,
+      "afterRegions": 198,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fantasy-cloud-serpent",
+      "beforeSha256": "47cd356f5640d099a2d33f640dc46172debd98ee2d46963dfad0b02b1290339a",
+      "sourceHash": "ccb9a65999ad6cc8b1f57e53e1a520856b5e7397a4897d3a5e024c67a47f42c0",
+      "inkHash": "9532b9e92603e79c4890f1ee52a1b97c089d48670dff43b59170c6ae4d994718",
+      "lines": 18,
+      "addedArea": 60.334272447984404,
+      "appliedClosureIds": [
+        "97de6959-e6c5-4dd0-afdc-ad67852ef08b",
+        "73bed326-0a26-40d7-967b-bb87d9f7a04a",
+        "83d3361f-56f4-4273-b2b8-50237a744ae8",
+        "e05193e6-c778-4629-a1e8-555940b91b38",
+        "6070191d-a650-4fc0-a766-f2c8a1c9bc9c",
+        "ceb4c25d-3c83-4417-b748-3e18dc9ca6d9",
+        "8f04ad52-cd9c-4196-9105-4c1c30f9c5ce",
+        "24448c85-0e4d-4e72-bc98-8128e78e5068",
+        "fef0f248-2330-4954-89b8-5b0bb64f2382",
+        "6ac028db-ad55-40ac-9bdf-05fd811878d8",
+        "5a86fe18-33f2-4570-aa6a-d1c535557e74",
+        "2a92b6e7-843a-4cca-a409-21107b04d4e8",
+        "57b9998b-4354-49de-95cc-c72a0f7c098e",
+        "09748e80-90fc-4b9f-8710-845ac5f83714",
+        "fd3c56ff-48df-4d30-a28f-8adff5f02dab",
+        "d4e219d6-2fd5-4496-8f59-7532c9bd5505",
+        "015b16e3-a224-4933-bd59-4bb01add0608",
+        "c7b13c6a-e7d2-4e98-a7c1-5b59cfd197fa"
+      ],
+      "afterSha256": "6e33224d3005aba01ec25f9471f7eeaa8a1e1a96a3127e485f526eea48f7d533",
+      "beforeRegions": 78,
+      "afterRegions": 90,
+      "smallPocketsClosed": 1
+    },
+    {
+      "assetId": "fantasy-three-headed-hydra",
+      "beforeSha256": "fd5312662f347817c4a9c77f7db2428a71d50babbe454e382dc9c56f983f1063",
+      "sourceHash": "500cbb7df21ba90367eb4204093d8fb306cd4b85b3ba01f94c1b0a565ad9ebd3",
+      "inkHash": "8c0e365923a0581e0eb137c20523f7b9fc06cc38a37270b15f6ddc1c35a061be",
+      "lines": 4,
+      "addedArea": 10.868801559017811,
+      "appliedClosureIds": [
+        "118cd1d5-d2c0-4001-a0df-16a3551e688f",
+        "207ff3b6-2937-463c-90a4-27412413d3f5",
+        "30b8a72a-53bc-49f7-a9ea-2f8159d25640",
+        "8cd77921-79ef-4de8-9a24-6eebff16a597"
+      ],
+      "afterSha256": "129c8cff3538b16317c5cd5696b926ad262fb772917a4f3af055005a0c9d6454",
+      "beforeRegions": 158,
+      "afterRegions": 162,
+      "smallPocketsClosed": 0
+    },
+    {
+      "assetId": "fantasy-forest-treant",
+      "beforeSha256": "06a0d224334876c24de8f016d7009fdbe10e9cdc3747ad9ebac43e3c18fe3241",
+      "sourceHash": "f77b463dee090d2b28f987ee0fe82f9ec8620b926183a3873e342bef95eb1472",
+      "inkHash": "26b1db10631005b24a7fcd2d2627905a2c2929093b421c93c5faa104e5773d3c",
+      "lines": 2,
+      "addedArea": 10.991150267489502,
+      "appliedClosureIds": [
+        "1f9db119-6f29-489d-b851-a9198431a436",
+        "1378d65b-19ff-44d0-a8c4-92d97f380479"
+      ],
+      "afterSha256": "1430ce6b976ae7adf4172e334d10441c86cf3418450d012ae38fd9f1c0744984",
+      "beforeRegions": 83,
+      "afterRegions": 85,
+      "smallPocketsClosed": 0
+    }
+  ]
+}

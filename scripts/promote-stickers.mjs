@@ -16,7 +16,8 @@ for(const asset of assets){
  const report=JSON.parse(fs.readFileSync(path.join(directory,'reports',asset.id+'.json'),'utf8'));
  const data=fs.readFileSync(path.join(directory,'vector',asset.id+'.svg'));
  const sourceHash=digest(fs.readFileSync(asset.source));
- if(report.pipelineHash!==pipelineHash||sourceHash!==report.sourceHash||digest(JSON.stringify(asset)+sourceHash)!==report.inputHash||digest(data)!==report.outputHash)
+ const inkSourceHash=asset.inkSource?digest(fs.readFileSync(asset.inkSource)):undefined;
+ if(report.pipelineHash!==pipelineHash||sourceHash!==report.sourceHash||inkSourceHash!==report.inkSourceHash||digest(JSON.stringify(asset)+sourceHash+(inkSourceHash??''))!==report.inputHash||digest(data)!==report.outputHash)
   throw Error(`Stale or modified conversion: ${asset.id}`);
  const destination=`src/assets/vector/${asset.id}.svg`,previous=fs.readFileSync(destination);
  if(!previous.equals(data))changes.push({id:asset.id,destination,previous,data});

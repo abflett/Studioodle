@@ -170,3 +170,35 @@ choose a verified white interior point of the same reviewed region and record
 the adjustment separately from the original marker coordinates. Resume rebuilds
 only changed inputs. Do not rerun the original planning command after promotion:
 the review checksums intentionally stop matching modified assets.
+
+## Explicit line-repair pass
+
+For exported A/B or curved closure geometry, run:
+
+```sh
+node scripts/prepare-line-repairs.mjs docs/line-review.json --out=work/line-pass --apply
+node scripts/rebuild-stickers.mjs --ids-file=work/line-pass/targets.json --out=work/line-pass
+node scripts/audit-stickers.mjs work/line-pass
+# Inspect work/line-pass/review.html before promoting.
+node scripts/promote-stickers.mjs work/line-pass
+```
+
+Preparation verifies every reviewed SVG checksum before writing anything. It starts
+from the current shipped filled ink, outlines only the proposed strokes with round
+ends/joins (0.002 logical-unit flattening tolerance, five-decimal offset precision),
+and unions them with the original Beziers. It checks that original black area was
+not lost. Markers and fill seeds never drive this pass. Existing accepted manifest
+cutouts remain in force during region discovery.
+
+The accepted editable compound-ink SVGs live in `art/source/stickers/line-repairs/`.
+Manifest `inkSource` selects these on subsequent rebuilds; `source` and the original
+art stay unchanged. Staging, resume, audit and promotion hash both source inputs,
+so the edits cannot be silently lost or reused after an ink source changes.
+Normal small-region cleanup still runs after region rediscovery.
+
+Record the promoted before/after hashes and applied closure IDs in a repair ledger
+like `studioodle-line-repairs-2026-10-24.progress.json`. The inspector uses that ledger
+to select the exact rebuilt assets, retire applied proposals, refresh region IDs,
+and reopen those assets for inspection without replaying lines or deleting notes.
+The original exported JSON stays untouched. Regenerated IDs use a fresh development
+drawing namespace; no old-save compatibility is added.

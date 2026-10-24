@@ -5,7 +5,7 @@ import { emptyReview, markerLabels, mergeReviews, parseReview, reviewStorageKey 
 import type { ArtworkReview, AssetReview, LineDraft, ReviewClosure, ReviewTool, ReviewAsset, ReviewMarker } from './artworkReviewModel';
 import type { ReviewArtwork } from './artworkReviewAsset';
 import { loadReviewArtwork } from './artworkReviewAsset';
-import { lineRepairIds, lineRepairTasks, refreshKnownRepair, hasRecordedRepair } from './artworkLineTasks';
+import { lineRepairIds, lineRepairTasks, refreshKnownRepair, hasRecordedRepair, rebuiltLineTasks } from './artworkLineTasks';
 import './artworkReview.css';
 
 const assets: ReviewAsset[] = manifest;
@@ -36,7 +36,7 @@ export function ArtworkReviewApp() {
   const [message, setMessage] = useState(initial.message);
   const [assetId, setAssetId] = useState(() => {
     const id = new URLSearchParams(location.search).get('asset');
-    return assets.some(asset => asset.id === id) ? id! : assets[0]!.id;
+    return assets.some(asset => asset.id === id) ? id! : rebuiltLineTasks[0]?.assetId ?? assets[0]!.id;
   });
   const [query, setQuery] = useState(''), [filter, setFilter] = useState(() => {
     const value = new URLSearchParams(location.search).get('filter');
@@ -52,8 +52,9 @@ export function ArtworkReviewApp() {
   const current = review.assets.find(entry => entry.assetId === assetId);
   const selectedMarker = current?.markers.find(marker => marker.id === selected);
   const selectedLine = current?.closures?.find(line => line.id === selected);
-  const lineIds = lineRepairIds(review);
+  const lineIds = lineRepairIds();
   const currentTask = lineRepairTasks.find(task => task.assetId === assetId);
+  const rebuiltTask = rebuiltLineTasks.find(task => task.assetId === assetId);
   const visible = assets.filter(asset => {
     const entry = review.assets.find(entry => entry.assetId === asset.id);
     return `${asset.title} ${asset.id} ${asset.category}`.toLowerCase().includes(query.toLowerCase()) &&
@@ -160,8 +161,8 @@ export function ArtworkReviewApp() {
     </header>
     <aside className="review-sidebar">
       <label>Find artwork<input type="search" value={query} placeholder="Name, ID or category" onChange={event => setQuery(event.target.value)} /></label>
-      <label>Browse<select value={filter} onChange={event => chooseFilter(event.target.value)}><option value="line-repairs">Line repairs ({lineIds.size})</option><option value="all">All artwork</option><option value="unreviewed">Fresh review - unchecked artwork</option></select></label>
-      <small>Line repairs stays visible while you annotate. Reviewed means inspected, not repaired.</small>
+      <label>Browse<select value={filter} onChange={event => chooseFilter(event.target.value)}><option value="line-repairs">Rebuilt linework - inspect ({lineIds.size})</option><option value="all">All artwork</option><option value="unreviewed">Fresh review - unchecked artwork</option></select></label>
+      <small>Inspect the regenerated regions and mark any remaining gaps. This list contains only assets with applied line work.</small>
       <button onClick={resetReviewed}>Reset all Reviewed checkboxes</button>
       <small>Begin a fresh inspection pass after repairs. Keeps every note, marker and proposed line.</small>
       <select aria-label="Artwork" value={index >= 0 ? assetId : ''} onChange={event => choose(event.target.value)}>
@@ -170,7 +171,7 @@ export function ArtworkReviewApp() {
       </select>
       <nav className="review-browse"><button onClick={() => navigate(-1)} disabled={!visible.length} aria-label="Previous artwork">← Previous</button><span>{index < 0 ? '—' : index + 1} / {visible.length}</span><button onClick={() => navigate(1)} disabled={!visible.length} aria-label="Next artwork">Next →</button></nav>
       <div><h1>{asset.title}</h1><code>{asset.id}</code></div>
-      {currentTask && <div className="review-task-summary"><strong>Line repair task</strong><small>{currentTask.operations.filter(operation => operation.status === 'deferred').length} pending markers{currentTask.notes.trim() ? ` · ${currentTask.notes}` : ''}</small></div>}
+      {rebuiltTask ? <div className="review-task-summary"><strong>Linework applied</strong><small>{rebuiltTask.lines} lines merged; {rebuiltTask.beforeRegions} to {rebuiltTask.afterRegions} regions. Inspect fills and remaining gaps.</small></div> : currentTask && <div className="review-task-summary"><strong>Line repair task</strong><small>{currentTask.operations.filter(operation => operation.status === 'deferred').length} pending markers{currentTask.notes.trim() ? ` · ${currentTask.notes}` : ''}</small></div>}
       <label className="review-check"><input type="checkbox" checked={current?.reviewed ?? false} disabled={!editable} onChange={event => updateEntry(entry => ({ ...entry, reviewed: event.target.checked }))} /> Reviewed</label>
       <fieldset disabled={!editable} className="review-tools"><legend>Review tool</legend>{(['select', 'note', 'remove-region', 'add-region', 'close-line'] as ReviewTool[]).map((kind, index) => <button key={kind} className={kind} aria-pressed={mode === kind} onClick={() => chooseTool(kind)}>{kind === 'select' ? 'Select / move' : `${index} · ${kind === 'close-line' ? 'Close line' : markerLabels[kind]}`}</button>)}</fieldset>
       <label>Artwork notes<textarea aria-label="Artwork notes" rows={3} value={current?.notes ?? ''} disabled={!editable} placeholder="Overall issues or suggestions…" onChange={event => updateEntry(entry => ({ ...entry, notes: event.target.value }))} /></label>

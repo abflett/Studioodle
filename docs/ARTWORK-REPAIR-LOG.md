@@ -198,3 +198,28 @@ All entries below are **Low** effort cutout corrections. Full marker IDs and coo
 ## Reproduce / continue
 
 See [the sticker pipeline](STICKER-PIPELINE.md#repairs-from-an-artwork-review) for planning, selected rebuild, resume and validation commands. The completed stage is work/artwork-repair-pass/. Do not rerun the original export as though its checksums describe repaired files. For future operations, start from the ledger's after checksum or a fresh export, and retain the old marker IDs as provenance.
+
+## October 24 - explicit line closures, version 2
+
+Applied `studioodle-line-repairs-2026-10-24-line-repair.json`: **191 lines across
+31 assets**, merged into one compound ink path per asset before rediscovering
+regions. **2,975 -> 3,111 regions** in the target set; existing cleanup closed
+24 tiny pockets with zero unresolved pockets. All marker requests and fill seeds
+were ignored; previously accepted cutout seeds were retained. The two exported
+assets without closures were left unchanged.
+
+Original source artwork and the submitted review remain intact. Accepted editable
+ink sources and the manifest make rebuilds reproducible. Per-asset hashes, applied
+line IDs, region totals and pocket cleanup counts are in
+[the line repair ledger](studioodle-line-repairs-2026-10-24.progress.json).
+Before/after diagnostics and the clean geometry audit are under ignored
+`work/line-repair-2026-10-24/`. Cradle Tree, Autumn Tree, Birch Woodland and Cloud
+Serpent particularly need the requested region inspection after their many closures.
+
+Effort: **low incremental AI attention per closure** once exact endpoints and
+widths are supplied; one script processed all 191. Curve outlining/union and region
+tracing consumed local compute rather than per-image prompting. Pipeline setup,
+validation and inspector integration were the main fixed effort. Exact token
+counts are not available, so this is an effort grade rather than token telemetry.
+Remaining decisions about incorrectly enclosed white/transparent areas are deferred
+to the next inspection; no semantic add/remove inference was made in this pass.

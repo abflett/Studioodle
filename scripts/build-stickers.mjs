@@ -43,11 +43,11 @@ for(const asset of assets) {
   if(target && id!==target) continue;
   if(pending && fs.existsSync(`${out}/${id}.svg`)) continue;
   const base=`${work}/${id}`, source=asset.source;
-  if(inspectionDirectory && asset.mode==='svg')throw new Error('Stage inspection currently supports raster sources only');
+  if(inspectionDirectory && (asset.mode==='svg'||asset.inkSource))throw new Error('Stage inspection currently supports raster sources only');
   const inspection=inspectionDirectory?stickerInspection(inspectionDirectory,asset,{threshold:inspectionThreshold}):undefined;
   let commands,matrix,inkSvg,cleanupReport;
-  if(asset.mode==='svg') {
-    const original=fs.readFileSync(source,'utf8'), parsed=svgCommands(original);
+  if(asset.mode==='svg'||asset.inkSource) {
+    const original=fs.readFileSync(asset.inkSource??source,'utf8').trim(), parsed=svgCommands(original);
     commands=parsed.commands;matrix=[width/parsed.sourceWidth,0,0,height/parsed.sourceHeight,0,0];
     inkSvg=`<g transform="scale(${matrix[0]} ${matrix[3]})">${original.replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'')}</g>`;
   } else {

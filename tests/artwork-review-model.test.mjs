@@ -30,7 +30,7 @@ test('dragging the curve midpoint controls the visible curve, and closure geomet
 });
 test('recorded repairs refresh region references without losing new lines, notes or review status',()=>{
  const input=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-23.json','utf8'));
- assert.equal(tasks.lineRepairIds(input).size,33);
+ assert.equal(tasks.lineRepairIds(input).size,31);
  const wizard=input.assets.find(a=>a.assetId==='fantasy-wandering-wizard');
  wizard.closures=[{id:'existing-line',a:{x:1,y:1},b:{x:2,y:2},control:null,width:1,fillSeed:null,note:'preserve',createdAt:'2026-10-23T00:00:00Z'}];
  const original=structuredClone(wizard),task=tasks.lineRepairTasks.find(a=>a.assetId===wizard.assetId);
@@ -41,4 +41,19 @@ test('recorded repairs refresh region references without losing new lines, notes
  assert.deepEqual(wizard,original,'Never mutate existing annotations');
  assert.equal(tasks.refreshKnownRepair(refreshed,revision),refreshed,'Refresh is idempotent');
  assert.equal(tasks.refreshKnownRepair(wizard,{...revision,sha256:'0'.repeat(64)}),wizard,'Unknown revisions retain their guard');
+});
+
+test('rebuilt artwork starts inspection on the new revision without replaying applied lines',()=>{
+ const exported=JSON.parse(fs.readFileSync('docs/studioodle-line-repairs-2026-10-24-line-repair.json','utf8'));
+ const old=exported.assets.find(a=>a.assetId==='fantasy-wandering-wizard'),task=tasks.rebuiltLineTasks.find(a=>a.assetId===old.assetId);
+ const extra={...old.closures[0],id:'unexported-new-line'};
+ const base={...old,closures:[...old.closures,extra]},before=structuredClone(base);
+ const revision={sha256:task.afterSha256,viewBox:base.viewBox,regionAt:()=>123};
+ const next=tasks.refreshKnownRepair(base,revision);
+ assert.equal(next.reviewed,false);assert.equal(next.sha256,task.afterSha256);
+ assert.deepEqual(next.closures,[extra],'Only actually applied line IDs leave the proposal overlay');
+ assert.equal(next.notes,base.notes);assert.equal(next.markers[0].x,base.markers[0].x);assert.equal(next.markers[0].regionId,123);
+ assert.deepEqual(base,before);assert.equal(tasks.refreshKnownRepair(next,revision),next,'Reloading must not reset completed inspection');
+ const historical=JSON.parse(fs.readFileSync('docs/studioodle-artwork-review-2026-10-23.json','utf8')).assets.find(a=>a.assetId===old.assetId);
+ assert.equal(tasks.refreshKnownRepair(historical,revision).sha256,task.afterSha256,'The earlier cutout repair can be reconciled through the line repair');
 });

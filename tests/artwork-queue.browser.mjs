@@ -7,14 +7,15 @@ export async function checkArtworkQueue({cdp,evaluate}){
  const screen=point=>evaluate(`(()=>{const r=document.querySelector('.review-sheet').getBoundingClientRect(),v=document.querySelector('.review-marker-layer').viewBox.baseVal;return{x:r.x+${point.x}/v.width*r.width,y:r.y+${point.y}/v.height*r.height}})()`);
  const click=async(point,button='right')=>{const p=await screen(point);for(const type of ['mousePressed','mouseReleased'])await cdp('Input.dispatchMouseEvent',{type,...p,button,clickCount:1});};
  // Use only this harness's isolated browser storage; seed the user's historical review.
- await evaluate(`(async()=>{const original=await(await fetch('/docs/studioodle-artwork-review-2026-10-23.json')).json();globalThis.queueOriginal=original;localStorage.setItem('studioodle-artwork-review-v1',JSON.stringify(original));globalThis.queueReload=true;})()`);
+ await evaluate(`(async()=>{const original=await(await fetch('/docs/studioodle-artwork-review-2026-10-23.json')).json();const lines=await(await fetch('/docs/studioodle-line-repairs-2026-10-24-line-repair.json')).json();original.assets=original.assets.map(old=>lines.assets.find(a=>a.assetId===old.assetId)??old);globalThis.queueOriginal=original;localStorage.setItem('studioodle-artwork-review-v1',JSON.stringify(original));globalThis.queueReload=true;})()`);
  await cdp('Page.navigate',{url:'http://127.0.0.1:1433/artwork-review.html?asset=counting-03'});
  await wait('!globalThis.queueReload&&document.querySelector(".review-sidebar code")?.textContent==="counting-03"');await ready();
  await evaluate(`const filter=document.querySelector('.review-sidebar select');Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set.call(filter,'line-repairs');filter.dispatchEvent(new Event('change',{bubbles:true}))`);
- assert.equal(await evaluate(`document.querySelector('select[aria-label="Artwork"]').options.length-1`),33,'Line task set must include broader notes as well as markers');
+ assert.equal(await evaluate(`document.querySelector('select[aria-label="Artwork"]').options.length-1`),31,'Inspection queue must include exactly the assets with applied lines');
  assert.equal((await record('circle')).reviewed,true,'Viewing line tasks must not reset prior inspection status');
  await evaluate(`const select=document.querySelector('select[aria-label="Artwork"]');select.value='fantasy-wandering-wizard';select.dispatchEvent(new Event('change',{bubbles:true}))`);
  await wait('document.querySelector(".review-sidebar code").textContent==="fantasy-wandering-wizard"&&!document.querySelector(".review-tools").disabled');await ready();
+ assert.equal(await evaluate('document.querySelectorAll(".review-proposed-line").length'),0,'Applied proposals must not overlay merged ink');
  let wizard=await record('fantasy-wandering-wizard');assert.equal(wizard.markers.length,1,'Completed removal markers must no longer obscure pending line work');
  assert.equal(wizard.notes,'close line so we can fill hair');
  const markers=wizard.markers.length;
@@ -49,11 +50,11 @@ export async function checkArtworkQueue({cdp,evaluate}){
  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'Delete',code:'Delete'});await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'Delete',code:'Delete'});
  assert.equal((await record('fantasy-wandering-wizard')).markers.length,markers+1,'Delete removes selected marker only');
  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:' ',code:'Space'});await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:' ',code:'Space'});
- assert.equal((await record('fantasy-wandering-wizard')).reviewed,false);
+ assert.equal((await record('fantasy-wandering-wizard')).reviewed,true);
  assert(await evaluate(`!![...document.querySelector('select[aria-label="Artwork"]').options].find(o=>o.value==='fantasy-wandering-wizard')`),'Reviewed line tasks must remain visible until actual repair');
  await evaluate(`globalThis.queueExport=undefined;document.addEventListener('click',event=>{const a=event.target.closest('a[download]');if(a){event.preventDefault();fetch(a.href).then(r=>r.text()).then(text=>globalThis.queueExport=text);}},{capture:true});document.querySelector('button.review-primary').click()`);
  await wait('!!globalThis.queueExport');
- const exported=JSON.parse(await evaluate('globalThis.queueExport'));assert.equal(exported.scope,'line-repairs');assert.equal(exported.assets.length,33);assert.equal(exported.assets.find(a=>a.assetId==='fantasy-wandering-wizard').closures.length,2,'Line export must include finished annotations hidden by the remaining filter');assert(!exported.assets.some(a=>a.assetId==='circle'));
+ const exported=JSON.parse(await evaluate('globalThis.queueExport'));assert.equal(exported.scope,'line-repairs');assert.equal(exported.assets.length,31);assert.equal(exported.assets.find(a=>a.assetId==='fantasy-wandering-wizard').closures.length,2,'Line export must include finished annotations hidden by the remaining filter');assert(!exported.assets.some(a=>a.assetId==='circle'));
  // Reimporting our own normalized export must also refresh old local checksums.
  await evaluate(`(()=>{const transfer=new DataTransfer();transfer.items.add(new File([globalThis.queueExport],'line-repairs.json',{type:'application/json'}));const input=document.querySelector('input[type=file]');input.files=transfer.files;input.dispatchEvent(new Event('change',{bubbles:true}));})()`);
  await wait('document.querySelector(".review-save-status").textContent.startsWith("Saved locally")');

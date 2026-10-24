@@ -18,18 +18,20 @@ artwork, without a hover tint painting over the black ink.
   Browsing wraps around and follows the search and review filter.
 - Space toggles Reviewed for the current asset. Holding it down does not repeatedly
   toggle the status. Shortcuts are inactive while typing in notes or search fields.
-- Search by title, ID or category. **Line repairs** is the default: the 33 assets
-  recorded for line work, including broader notes without point markers, plus new
-  add/fill or line annotations. This is one stable list: Reviewed does not hide
-  these tasks, because inspecting an asset does not mean its repair was applied.
+- Search by title, ID or category. **Rebuilt linework - inspect** is the default:
+  exactly the 31 assets with applied lines from the October 24 repair export.
+  It stays visible regardless of Reviewed so you can inspect regenerated regions,
+  add/remove-region issues and remaining line gaps without losing the target set.
 - **All artwork** shows the library. **Fresh review - unchecked artwork** hides
   assets already inspected. The selected filter survives reload in the page URL.
 - After the repairs are applied, click **Reset all Reviewed checkboxes** to begin
   another inspection pass. It unchecks every asset and selects the fresh-review
   filter. Notes, markers and proposed lines remain intact. It never runs on reload.
-- Known first-pass cutout repairs refresh automatically when artwork opens:
+- Recorded cutout and line repairs refresh automatically when artwork opens:
   completed cutout markers leave the working copy, pending marker region IDs are
-  refreshed, and notes, new lines and Reviewed status are retained. Original
+  refreshed. Applied line IDs leave the proposal overlay; unsubmitted lines and
+  notes remain. A rebuilt asset starts unchecked for reinspection once, then its
+  new Reviewed status survives reload. Original
   exports and the repair ledger are unchanged. Export also refreshes known repairs
   on assets not yet opened, without modifying local annotations.
 - Ctrl-click (Cmd-click on Mac): mark a region that should become transparent.
@@ -108,8 +110,8 @@ want, without exporting individual images. Browser autosave happens on every
 edit, so navigation never requires an export. A downloaded file is a snapshot
 and is not automatically overwritten by later edits.
 
-While the Line repairs filter is selected, the button becomes **Export line
-repairs** and exports the entire line-task set, including tasks already marked
+While the rebuilt-linework filter is selected, the button becomes **Export line
+repairs** and exports the entire rebuilt-asset set, including tasks already marked
 Reviewed. This keeps finished curve instructions
 in the handoff without mixing in old completed cutout-only reviews. Switch to All
 artwork for a complete export of all locally stored annotations.

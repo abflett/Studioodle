@@ -16,6 +16,7 @@ for(const asset of assets){
  const svg=fs.readFileSync(path.join(directory,'vector',asset.id+'.svg'),'utf8');
  const fail=message=>problems.push({id:asset.id,message});
  if(digest(fs.readFileSync(asset.source))!==report.sourceHash)fail('Original source changed during conversion');
+ if(asset.inkSource&&digest(fs.readFileSync(asset.inkSource))!==report.inkSourceHash)fail('Accepted ink source changed during conversion');
  if(digest(svg)!==report.outputHash)fail('Staged output checksum mismatch');
  if(report.cleanup?.remainingSmallComponents||report.cleanup?.unresolved?.length)fail('Small regions remain unresolved');
  if(!svg.includes(`viewBox="0 0 ${asset.width} ${asset.height}"`))fail('Artwork dimensions changed');

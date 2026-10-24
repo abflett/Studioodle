@@ -1977,7 +1977,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1024x1152+87+44"
+    "crop": "1024x1152+87+44",
+    "inkSource": "art/source/stickers/line-repairs/alphabet-c-cat.svg"
   },
   {
     "id": "alphabet-d-dragon",
@@ -2447,7 +2448,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1100x1188+81+27"
+    "crop": "1100x1188+81+27",
+    "inkSource": "art/source/stickers/line-repairs/alphabet-u-unicorn.svg"
   },
   {
     "id": "alphabet-v-viking",
@@ -2818,7 +2820,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1131x1109+62+0"
+    "crop": "1131x1109+62+0",
+    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-friendly-spider.svg"
   },
   {
     "id": "nursery-rhymes-drainpipe",
@@ -2866,7 +2869,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "813x1222+220+14"
+    "crop": "813x1222+220+14",
+    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-shepherd-child.svg"
   },
   {
     "id": "nursery-rhymes-woolly-lamb",
@@ -3294,7 +3298,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1219x1204+22+25"
+    "crop": "1219x1204+22+25",
+    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-cradle-tree.svg"
   },
   {
     "id": "nursery-rhymes-cloud-pillow",
@@ -3816,7 +3821,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1049x1128+117+44"
+    "crop": "1049x1128+117+44",
+    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-jack-be-nimble.svg"
   },
   {
     "id": "nursery-rhymes-old-king-cole",
@@ -3870,7 +3876,8 @@
         147.8262,
         112.7199
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-storybook-fiddler.svg"
   },
   {
     "id": "nursery-rhymes-storybook-kettle",
@@ -4100,7 +4107,8 @@
         46.8462,
         207.4966
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/nursery-rhymes-garden-child.svg"
   },
   {
     "id": "nursery-rhymes-rowing-child",
@@ -4178,7 +4186,8 @@
         168.0018,
         57.5156
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/fall-pumpkin.svg"
   },
   {
     "id": "fall-maple-leaf",
@@ -4226,7 +4235,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1118x1224+69+4"
+    "crop": "1118x1224+69+4",
+    "inkSource": "art/source/stickers/line-repairs/fall-scarecrow.svg"
   },
   {
     "id": "fall-squirrel-acorn",
@@ -4280,7 +4290,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1204x1211+25+20"
+    "crop": "1204x1211+25+20",
+    "inkSource": "art/source/stickers/line-repairs/fall-autumn-tree.svg"
   },
   {
     "id": "fall-leaf-pile",
@@ -4566,7 +4577,8 @@
         79.3605,
         64.4493
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/fall-harvest-basket.svg"
   },
   {
     "id": "fall-rake",
@@ -4620,7 +4632,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1190x846+31+213"
+    "crop": "1190x846+31+213",
+    "inkSource": "art/source/stickers/line-repairs/fall-hay-bale.svg"
   },
   {
     "id": "fall-oak-leaf",
@@ -4690,7 +4703,8 @@
         153.7573,
         135.4533
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/fall-wheat-sheaf.svg"
   },
   {
     "id": "fall-pumpkin-cluster",
@@ -5090,7 +5104,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1013x1165+74+32"
+    "crop": "1013x1165+74+32",
+    "inkSource": "art/source/stickers/line-repairs/fall-raccoon.svg"
   },
   {
     "id": "fall-badger",
@@ -5114,7 +5129,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1180x884+37+182"
+    "crop": "1180x884+37+182",
+    "inkSource": "art/source/stickers/line-repairs/fall-badger.svg"
   },
   {
     "id": "fall-beaver",
@@ -5619,7 +5635,8 @@
     "placementNotes": "Keep full square canvas. Oversized background with open foreground; move vertically to adjust horizon. No visible frame.",
     "horizon": true,
     "horizonStart": -0.1,
-    "horizonOverscan": 1.2
+    "horizonOverscan": 1.2,
+    "inkSource": "art/source/stickers/line-repairs/horizons-forest-clearing.svg"
   },
   {
     "id": "horizons-woodland-trail",
@@ -5669,7 +5686,8 @@
     "placementNotes": "Keep full square canvas. Oversized background with open foreground; move vertically to adjust horizon. No visible frame.",
     "horizon": true,
     "horizonStart": -0.1,
-    "horizonOverscan": 1.2
+    "horizonOverscan": 1.2,
+    "inkSource": "art/source/stickers/line-repairs/horizons-jungle-opening.svg"
   },
   {
     "id": "horizons-birch-woodland",
@@ -5701,7 +5719,8 @@
         1
       ]
     ],
-    "analysisGapClosure": 1
+    "analysisGapClosure": 1,
+    "inkSource": "art/source/stickers/line-repairs/horizons-birch-woodland.svg"
   },
   {
     "id": "horizons-autumn-woodland",
@@ -5817,7 +5836,8 @@
     "placementNotes": "Keep full square canvas. Oversized background with open foreground; move vertically to adjust horizon. No visible frame.",
     "horizon": true,
     "horizonStart": -0.1,
-    "horizonOverscan": 1.2
+    "horizonOverscan": 1.2,
+    "inkSource": "art/source/stickers/line-repairs/horizons-beach-dunes.svg"
   },
   {
     "id": "horizons-village-rooftops",
@@ -6109,7 +6129,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; flip and scale to suit the scene. Source conversion is ready for visual review.",
-    "crop": "1205x1119+31+59"
+    "crop": "1205x1119+31+59",
+    "inkSource": "art/source/stickers/line-repairs/category-expansion-octopus.svg"
   },
   {
     "id": "category-expansion-dolphin",
@@ -6477,7 +6498,8 @@
         117.6785,
         124.2219
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/collection-expansion-pet-dog.svg"
   },
   {
     "id": "collection-expansion-pet-cat",
@@ -6697,7 +6719,8 @@
         54.1649,
         111.7997
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/collection-expansion-child-wheelchair.svg"
   },
   {
     "id": "collection-expansion-grandparent",
@@ -7223,7 +7246,8 @@
         75.0048,
         302.6387
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/fantasy-wandering-wizard.svg"
   },
   {
     "id": "fantasy-moon-sorceress",
@@ -7247,7 +7271,8 @@
     ],
     "detail": "moderate",
     "facing": "none",
-    "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion."
+    "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
+    "inkSource": "art/source/stickers/line-repairs/fantasy-moon-sorceress.svg"
   },
   {
     "id": "fantasy-armored-warrior",
@@ -7309,7 +7334,8 @@
         80.1089,
         90.7984
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/fantasy-woodland-ranger.svg"
   },
   {
     "id": "fantasy-dwarf-guardian",
@@ -7529,7 +7555,8 @@
         111.042,
         71.3836
       ]
-    ]
+    ],
+    "inkSource": "art/source/stickers/line-repairs/fantasy-potion-alchemist.svg"
   },
   {
     "id": "fantasy-goblin-tinkerer",
@@ -7612,7 +7639,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "488x1245+385+4"
+    "crop": "488x1245+385+4",
+    "inkSource": "art/source/stickers/line-repairs/fantasy-forest-elf.svg"
   },
   {
     "id": "fantasy-flower-fairy",
@@ -7961,7 +7989,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1189x1214+44+14"
+    "crop": "1189x1214+44+14",
+    "inkSource": "art/source/stickers/line-repairs/fantasy-cloud-serpent.svg"
   },
   {
     "id": "fantasy-three-headed-hydra",
@@ -7984,7 +8013,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1124x1205+99+24"
+    "crop": "1124x1205+99+24",
+    "inkSource": "art/source/stickers/line-repairs/fantasy-three-headed-hydra.svg"
   },
   {
     "id": "fantasy-griffin",
@@ -8158,7 +8188,8 @@
     "detail": "moderate",
     "facing": "none",
     "placementNotes": "Preserve aspect ratio; position and scale to suit the scene. Review enclosed negative spaces after conversion.",
-    "crop": "1008x1241+126+5"
+    "crop": "1008x1241+126+5",
+    "inkSource": "art/source/stickers/line-repairs/fantasy-forest-treant.svg"
   },
   {
     "id": "fantasy-cave-troll",

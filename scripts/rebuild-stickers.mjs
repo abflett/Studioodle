@@ -26,7 +26,7 @@ function summary(){
 }
 function record(result){results.push(result);completed++;fs.writeFileSync(path.join(directory,'summary.json'),JSON.stringify(summary(),null,2)+'\n');console.log(`${completed}/${assets.length} ${result.id}: ${result.status}${result.regionCount===undefined?'':` (${result.regionCount} regions, ${result.cleanup?.removed??0} removed)`}`);}
 async function convert(asset){
- const id=asset.id,sourceHash=digest(fs.readFileSync(asset.source)),inputHash=digest(JSON.stringify(asset)+sourceHash);
+ const id=asset.id,sourceHash=digest(fs.readFileSync(asset.source)),inkSourceHash=asset.inkSource?digest(fs.readFileSync(asset.inkSource)):undefined,inputHash=digest(JSON.stringify(asset)+sourceHash+(inkSourceHash??''));
  const output=path.join(directory,'vector',id+'.svg'),reportPath=path.join(directory,'reports',id+'.json');
  const existing=fs.readFileSync(`src/assets/vector/${id}.svg`),before=path.join(directory,'before',id+'.svg');
  if(!fs.existsSync(before))fs.writeFileSync(before,existing);
@@ -39,7 +39,7 @@ async function convert(asset){
   await new Promise((resolve,reject)=>execFile(process.execPath,['scripts/build-stickers.mjs',id,`--out=${path.join(directory,'vector')}`,`--report=${reportPath}`,'--no-catalog'],
    {timeout,maxBuffer:8*1024*1024,windowsHide:true,env:{...process.env,MAGICK_THREAD_LIMIT:'1'}},(error,stdout,stderr)=>error?reject(Object.assign(error,{diagnostic:stderr||stdout})):resolve()));
   const built=JSON.parse(fs.readFileSync(reportPath,'utf8')),svg=fs.readFileSync(output);
-  const result={...built,status:'ok',pipelineHash,inputHash,sourceHash,elapsedMs:Date.now()-started,
+  const result={...built,status:'ok',pipelineHash,inputHash,sourceHash,inkSourceHash,elapsedMs:Date.now()-started,
    beforeBytes:existing.length,beforeRegions:(existing.toString().match(/id="region-\d+"/g)??[]).length,
    changed:!existing.equals(svg),outputHash:digest(svg)};
   fs.writeFileSync(reportPath,JSON.stringify(result,null,2)+'\n');record(result);
