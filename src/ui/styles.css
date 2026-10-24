@@ -269,15 +269,9 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
   padding: 8px;
   border-radius: 22px;
   z-index: 2;
-  animation: sticker-ribbon-enter 180ms ease-out;
 }
 .sticker-ribbon button { flex: 0 1 auto; min-width: 56px; }
 .sticker-ribbon button:disabled { opacity: .4; cursor: var(--app-cursor-default, default); background: transparent; }
-@keyframes sticker-ribbon-enter {
-  from { opacity: 0; transform: translate(-50%, -16px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
-}
-@media (prefers-reduced-motion: reduce) { .sticker-ribbon { animation: none; } }
 @media (max-height: 520px) {
   .art-options button { min-height: 64px; gap: 8px; }
   .category-options svg { width: 32px; height: 32px; }
@@ -454,20 +448,15 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 .ribbon-shell { position: relative; flex-shrink: 0; z-index: 3; --ribbon-well: var(--tool-well); background: transparent; box-shadow: 0 3px 8px -2px var(--ribbon-shadow); }
 .ribbon-shell .main-ribbon { position: relative; z-index: 2; background: transparent; box-shadow: none; }
 .ribbon-shell .sticker-ribbon {
-  top: calc(100% - 8px); left: 50%; transform: translateX(-50%);
+  top: 100%; left: 50%; transform: translateX(-50%);
   width: max-content; max-width: calc(100% - 20px); margin: 0;
-  padding: 14px 8px 8px;
+  padding: 6px 8px 8px;
   border-radius: 0 0 22px 22px;
   background: transparent;
   box-shadow: 0 4px 8px -2px var(--ribbon-shadow);
   z-index: 1;
-  animation: sticker-drawer-enter 200ms ease-out;
+  animation: none;
 }
-@keyframes sticker-drawer-enter {
-  from { opacity: 0; clip-path: inset(0 0 100% 0 round 0 0 22px 22px); transform: translate(-50%, -12px); }
-  to { opacity: 1; clip-path: inset(0 0 0 0 round 0 0 22px 22px); transform: translate(-50%, 0); }
-}
-@media (prefers-reduced-motion: reduce) { .ribbon-shell .sticker-ribbon { animation: none; } }
 
 /* Shared wells identify the four paired sticker adjustments. */
 .sticker-ribbon .sticker-adjustment { flex-direction: row; flex: 0 0 auto; align-items: center; gap: 4px; padding: 3px; border-radius: 18px; background: var(--ribbon-well); }
