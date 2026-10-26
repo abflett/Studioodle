@@ -130,6 +130,13 @@ clicking its heart only toggles favorite. Single-view artwork still opens the
 canvas directly. This supersedes the earlier direct-to-canvas grid experiment.
 Verified batch arrows, favorite toggles and selecting the correct single page.
 
+Detail icon wells: [filling bar](41-detail-bar.png), [terrain](42-detail-terrain.png),
+[vial](43-detail-vial.png). Open [difficulty-options.html](difficulty-options.html)
+to compare selected states. All three use the same stroke weight, target sizes and
+well treatment. Bar/vial imply an amount but can resemble battery/potion status;
+terrain suggests increasing challenge but can resemble a subject/theme category.
+No choice is approved and these studies do not change the current overlay icons.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.

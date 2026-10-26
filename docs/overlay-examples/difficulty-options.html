@@ -1,0 +1,17 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Detail icon studies</title><style>
+*{box-sizing:border-box}body{margin:0;padding:32px;background:#1c2b43;color:#f6f0e2;font:14px 'Segoe UI',sans-serif}main{display:flex;flex-direction:column;gap:28px;align-items:flex-start}section{display:flex;gap:22px;align-items:center}.label{width:135px;line-height:1.5;color:#bec8da}.well{display:flex;gap:5px;background:#ffffff0b;border-radius:18px;padding:5px;width:max-content}button{display:grid;place-items:center;width:48px;height:48px;padding:7px;border:0;border-radius:13px;background:transparent;color:#f6f0e2;cursor:pointer}button[aria-pressed=true]{background:#ddc799;color:#243148}button:focus-visible{outline:2px solid #ddc799;outline-offset:3px}svg{display:block;width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.fill{fill:currentColor;stroke:none}.quiet{opacity:.4}.note{margin-top:30px;color:#bec8da;max-width:520px;font-size:12px;line-height:1.6}
+</style><main>
+<section><span class="label">A / Filling bar</span><div class="well" id="bar" role="group" aria-label="Detail level: filling bar"></div></section>
+<section><span class="label">B / Terrain</span><div class="well" id="terrain" role="group" aria-label="Detail level: terrain"></div></section>
+<section><span class="label">C / Vial</span><div class="well" id="vial" role="group" aria-label="Detail level: vial"></div></section>
+</main><p class="note">Hover for meaning. Tap to compare the selected state. These are icon studies, not artwork classifications.</p>
+<script>
+const bar=[3,9,16].map(w=>'<rect x="2" y="7" width="24" height="14" rx="4"/><rect class="fill" x="5" y="10" width="'+w+'" height="8" rx="1.4"/>');
+const terrain=[
+'<path d="M2 23h24M3 19c7 0 13-2 22-5"/>',
+'<path d="M2 23h24M2 20c4 0 5-10 12-10s8 10 12 10"/>',
+'<path d="M2 23h24M2 20 11 5l6 10 3-5 6 10M8 10l3 2 3-2"/>'];
+const vial=[6,12,18].map(h=>'<path d="M10 3h8M10 3v4l-3 3v12c0 3 14 3 14 0V10l-3-3V3"/><path class="fill" d="M9 '+(24-h)+'h10v'+(h-3)+'q-5 2-10 0Z"/>');
+for(const [name,icons] of Object.entries({bar,terrain,vial})){const well=document.getElementById(name);icons.forEach((paths,i)=>{const b=document.createElement('button');b.title=['Simple detail','Medium detail','High detail'][i];b.setAttribute('aria-label',b.title);b.setAttribute('aria-pressed',i===0);b.innerHTML='<svg viewBox="0 0 28 28" aria-hidden="true">'+paths+'</svg>';b.onclick=()=>{well.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b))};well.append(b)})}
+window.ready=true;
+</script></html>

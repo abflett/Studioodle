@@ -191,6 +191,10 @@ page returns to its single view; tapping single-view artwork/action still opens
 the canvas directly. This revises the earlier grid direct-open proposal. Grid
 remains optional and its retention is still under discussion. Captures 38-40.
 
+The overview grid flow is accepted for now. Detail-icon proposals are being
+compared independently: filling bar, vial and terrain (gentle slope, hill,
+mountains). See wells 41-43 and `difficulty-options.html`; no final icon choice.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.
