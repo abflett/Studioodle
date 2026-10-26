@@ -203,3 +203,25 @@ backgrounds are referenced directly from the app's interface assets.
 Rendered in Chromium at 1080 x 800 and 430 x 880, checked visually, with runtime
 error and horizontal-overflow checks. This does not establish touch usability or
 approve any layout for implementation. No storage, original artwork or app UI changed.
+
+## Blank paper setup studies
+
+The app's blank setup is unchanged. Review the standalone
+[blank-paper.html](blank-paper.html) for the proposed two-step redesign:
+
+- [Paper size/orientation](56-blank-paper-size.png), [paper color](57-blank-paper-color.png).
+- [Phone portrait size](58-blank-paper-portrait-size.png), [phone portrait color](59-blank-paper-portrait-color.png).
+- [Phone landscape color](60-blank-paper-landscape-color.png).
+
+No visible headings, Full Page/Half Page captions or Tall/Wide text. Bold A4/A5
+and inch dimensions sit inside solid paper silhouettes, inverting the old outline
+look; selected paper is gold. Preset silhouettes retain relative physical sizes.
+A small paper/palette step well is navigable, back/close stay at the top corners,
+and Next is an arrow. The final step uses the reviewed drawing illustration and
+shows a small selected-paper/color summary at bottom left. The palette uses the
+same 32 colors as the app. Orientation, size and color selections work in memory;
+Start/Close display mockup notices only. SVG/CSS artwork, no new generated images.
+
+Rendered at desktop and portrait/landscape phone sizes; size, square orientation
+and exclusive color-selection interactions checked. These are proposals, not
+approved production changes.

@@ -72,7 +72,9 @@ user authoring route. All current custom templates consolidate into the workshop
 record on the next successful atomic write; failed writes preserve original data.
 Existing source keys are read-only and ignored once that record is authoritative.
 See [coloring books](COLORING-BOOKS.md). Simple/toddler modes and parent lock remain
-future work. The other overlay designs are not implemented yet.
+future work. The other overlay designs are not implemented yet. Blank paper size/orientation
+and color are now under review in `docs/overlay-examples/blank-paper.html` and
+captures 56-60; these are mockups only.
 
 [Design brief](OVERLAY-DESIGN.md) and [layout examples](overlay-examples/README.md)
 record the review. No new scene artwork or blanket asset processing was included.

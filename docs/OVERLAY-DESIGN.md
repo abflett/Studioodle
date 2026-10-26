@@ -222,3 +222,12 @@ approved yet.
 
 After those decisions, implement the Coloring Pages slice and use it to test the
 pattern before changing the other overlays.
+
+## Blank page setup proposal
+
+Next discussion is the blank-page size/orientation and color overlays. Mockups
+56-60 remove redundant visible headings/captions, move bold size markings into
+solid paper shapes, use icon-only orientation and two navigable step icons, and
+reuse the reviewed drawing action on the final color step. A small selected-paper
+preview carries context into color selection. The app remains unchanged pending
+review; see `overlay-examples/blank-paper.html`.
