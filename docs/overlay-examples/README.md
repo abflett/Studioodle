@@ -121,6 +121,15 @@ Solid centered favorite badges: [single](35-focus-centered-solid-heart.png),
 and explicit zero-padding flex centering with fixed SVG dimensions, preventing
 small badges from pushing the icon off-center. Favorited hearts remain filled.
 
+Overview-selection grid: [landscape](38-grid-overview-landscape.png),
+[mixed paper](39-grid-overview-mixed.png),
+[after choosing a page](40-grid-choice-single-view.png). Grid mode has no utilities
+or drawing action. A compact range badge replaces the tall footer. Clicking a
+page returns to that page in single view, where utilities and drawing are available;
+clicking its heart only toggles favorite. Single-view artwork still opens the
+canvas directly. This supersedes the earlier direct-to-canvas grid experiment.
+Verified batch arrows, favorite toggles and selecting the correct single page.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.

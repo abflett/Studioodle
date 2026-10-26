@@ -185,6 +185,12 @@ see captures 33/34. Paper proportions and full drawings remain unchanged.
 Favorite badges now use solid outlines too, with explicit centered icon alignment
 and no padding-induced offset; favorited hearts remain filled. See captures 35-37.
 
+Current grid experiment is an overview for selection: no footer utilities or
+drawing action, a compact range badge and retained side arrows. Tapping a grid
+page returns to its single view; tapping single-view artwork/action still opens
+the canvas directly. This revises the earlier grid direct-open proposal. Grid
+remains optional and its retention is still under discussion. Captures 38-40.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

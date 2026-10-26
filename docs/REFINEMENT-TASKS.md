@@ -15,7 +15,8 @@ approved implementation decisions. This is the sole task list for that work.
   single preview first, optional grid, navigation and browsing-position retention.
   Tapping artwork or the drawing action opens the canvas directly (confirmed).
   Review grid wells, retained side arrows and mixed page ratios in examples 28-30
-  before applying the overlay to the app; resolve grid Share/Delete targets.
+  before applying the overlay to the app. Latest overview experiment (38-40)
+  returns grid choices to single view for Share/Delete/drawing, with no grid utilities.
 - [ ] Agree on composition/detail filters, subject/theme needs, personal/imported
   collection treatment and whether single-sticker pages are curated or generated.
 - [ ] Inspect representative sticker/scene region statistics and propose detail
