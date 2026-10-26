@@ -149,6 +149,10 @@ The refined action removes paper wings, white highlights and the flower, keeping
 a blank open book, clean pencil, restrained wind strokes and sparkles. See Focus
 captures 19 and 20 and original `magic-pencil-flourish-v3` artwork.
 
+The latest refinement keeps the pencil angle but restores a smaller curved,
+lifted-page book, adds tapered wind and a subtle breeze beside the book, and places
+sparkles on/around the destination. See Focus captures 21 and 22, artwork v4.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

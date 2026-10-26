@@ -59,6 +59,12 @@ white highlights and flower. A simple flying pencil meets a blank open book,
 with restrained wind strokes and sparkles. Original transparent artwork and
 metadata are `art/source/interface/magic-pencil-flourish-v3.*`.
 
+Balanced magical-book study: [Focus](21-focus-buoyant-magic-book.png),
+[favorited](22-focus-buoyant-magic-book-favorite.png). Keeps the downward pencil
+angle with a smaller, buoyant blank book, lifted curved pages, tapered wind behind
+the pencil, a short breeze beside the book and sparkles around the book itself.
+Original artwork/metadata are `art/source/interface/magic-pencil-flourish-v4.*`.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.
