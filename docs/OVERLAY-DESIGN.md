@@ -153,6 +153,10 @@ The latest refinement keeps the pencil angle but restores a smaller curved,
 lifted-page book, adds tapered wind and a subtle breeze beside the book, and places
 sparkles on/around the destination. See Focus captures 21 and 22, artwork v4.
 
+The current button study trims transparent padding from the v4 illustration and
+fits it into a 142 x 50 button with balanced margins, retaining the original art.
+See Focus captures 23 and 24.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

@@ -65,6 +65,13 @@ angle with a smaller, buoyant blank book, lifted curved pages, tapered wind behi
 the pencil, a short breeze beside the book and sparkles around the book itself.
 Original artwork/metadata are `art/source/interface/magic-pencil-flourish-v4.*`.
 
+Fitted-button refinement: [Focus](23-focus-fitted-draw-button.png),
+[favorited](24-focus-fitted-draw-button-favorite.png). The button is now 142 x 50
+CSS pixels, with the illustration fitted at 118 x 44. Transparent padding was
+trimmed from v4 using crop bounds (332, 48, 2033, 683), retaining an 18-pixel margin
+around visible ink. The derivative is `assets/magic-pencil-v4-cropped.png`; the
+original under `art/source/interface/` is untouched. No redraw or stretching.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.
