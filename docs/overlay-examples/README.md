@@ -143,6 +143,27 @@ Accepted terrain icons in context: [single view](44-focus-terrain-filters.png),
 replace the geometric detail symbols. Category icons are unchanged pending the
 next discussion; detail buttons still only demonstrate selection, not actual scoring.
 
+Broad categories and mobile layouts:
+
+- [Desktop](50-categories-desktop.png).
+- [Phone landscape](51-categories-phone-landscape.png), [phone portrait](52-categories-phone-portrait.png).
+- [Portrait with four categories plus All](53-categories-portrait-four-groups.png).
+- [Portrait grid](54-categories-portrait-grid.png), [landscape grid](55-categories-landscape-grid.png).
+
+Proposed groups: All, Characters (face), Animals (paw), Places & Nature (tree),
+Things including vehicles/objects (toy truck), Letters & Numbers (learning book).
+The last category is a candidate rather than an approved addition. The comparison
+viewer can show/hide it. Prototype page tags intentionally overlap and demonstrate
+filter interaction; final classification needs authoring review.
+
+Portrait wraps detail/favorites to a second row, preserving 44-pixel category
+targets; landscape keeps one row. Grid becomes two columns/three rows in portrait.
+At narrower widths below 390px, categories themselves wrap rather than shrinking
+targets. Captures use 430x844 / 844x430 viewports with only the inset overlay shown.
+Single previews keep their original paper ratio rather than expanding the white
+page to fill the available portrait height. Controls were checked for viewport
+overflow in landscape and browser runtime errors.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.

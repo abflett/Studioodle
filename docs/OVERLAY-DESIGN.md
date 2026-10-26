@@ -199,6 +199,13 @@ Terrain is the accepted detail-icon direction: gentle slope, hill, mountains.
 It is now shown in the current single/grid mockups (44-46). Categories are the
 next design topic; actual detail classification remains unimplemented.
 
+Broad-category proposal merges vehicles/objects into Things, alongside Characters,
+Animals and Places & Nature. Letters & Numbers is an optional fifth group under
+review; All is separate. Mobile studies 50-55 compare portrait/landscape and the
+four/five-group choice, with wrapping rather than compressed controls. Categories
+can overlap; sample classifications are illustrative. No production taxonomy is
+approved yet.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.
