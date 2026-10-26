@@ -127,7 +127,9 @@ Focus is the preferred layout. The next desktop study moves current/total page
 numbering and the red dotted/filled favorite heart onto the preview, and places
 the grid toggle after the favorites filter. See the overlay-only Focus captures
 in the examples folder. The latest badge is flat white with a thin border and regular-weight numerals,
-placed bottom right; the favorite heart is top right. Styling remains provisional.
+placed bottom right; the favorite heart is top right. Styling remains provisional. A further study replaces the detail wheel with a
+circle/hexagon/floral-outline progression and enlarges the paper-and-pencil primary
+action to make starting a drawing more prominent.
 
 ## First discussion
 

@@ -24,6 +24,12 @@ is at top right. Grid/single sits beside the filters after the favorites filter.
 screenshots above retain the initial comparison layouts; phone refinements are
 not part of this round. Page numbers currently refer to the filtered sequence.
 
+Latest action/detail study: [Focus with shape filters and larger drawing action](11-focus-shapes-and-draw.png),
+[filled-heart variant](12-focus-shapes-and-draw-favorite.png). Detail progresses
+from circle to hexagon to a lobed floral outline, avoiding star ratings and wheel
+spokes. The larger primary button uses a paper-and-pencil drawing illustration.
+These remain icon proposals for review.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.
@@ -34,7 +40,7 @@ not part of this round. Page numbers currently refer to the filtered sequence.
   The example displays a notice; it does not actually open an editor.
 - Hearts toggle in memory only. The top heart filters to favorites. Category icons
   filter a small illustrative grouping of the six shipped pages.
-- Simple/medium/intricate circle icons propose a visual language for detail.
+- Circle/hexagon/floral-outline icons propose a visual language for detail.
   They change their selected appearance only; no difficulty scoring is implemented.
 - Add, Share, Close and Delete show explanatory notices instead of performing writes.
   Delete is displayed to compare placement for a custom-page scenario; the shipped
