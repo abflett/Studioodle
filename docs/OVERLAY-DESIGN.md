@@ -177,6 +177,11 @@ Grid refinement removes image padding so previews meet card edges along their
 limiting dimension, with fixed overlaid heart/page badges. Keep full artwork and
 aspect ratios rather than cropping or stretching; see captures 31/32.
 
+Latest grid study removes repeated page-number badges and visible wells, leaving
+floating papers with subtle edges/shadows and hearts attached to the actual paper
+corners. The filter heart returns to a solid red outline. Grid range stays below;
+see captures 33/34. Paper proportions and full drawings remain unchanged.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

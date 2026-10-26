@@ -108,6 +108,13 @@ expands until one dimension meets the card edges, retaining original proportions
 and the full drawing. Unused space on the other axis stays as the card well.
 Favorite and page-number badges stay fixed at top/bottom right and may overlay art.
 
+Floating-paper grid study: [landscape](33-grid-floating-landscape.png),
+[mixed paper](34-grid-floating-mixed.png). Removes per-card page counts and visible
+well borders/backgrounds. Each paper keeps its actual proportions with a subtle
+edge/shadow; the favorite badge attaches to the paper corner, not an invisible
+cell corner. Bottom range remains the only grid numbering. The top favorites
+filter uses a solid red outline, filled when active; page hearts remain dotted.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.
