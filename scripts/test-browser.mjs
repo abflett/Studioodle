@@ -179,6 +179,7 @@ try {
 
   console.log('Picture output:', JSON.stringify(output));
   if (output.meanError >= 2 || output.differentFraction >= .03) throw Error('SVG differs from editor: '+JSON.stringify(output));
+  console.log('Coloring pages:', await evaluate("import('/tests/browser/coloring-page-picker.ts').then(m => m.checkColoringPagePicker())"));
   console.log('Paper view:', await evaluate("import('/tests/browser/paper-view.ts').then(m => m.checkPaperView())"));
   const cursors = await evaluate("import('/tests/browser/cursors.ts').then(m => m.checkCursors())");
   await fs.writeFile('work/tests/cursor-surfaces.png', Buffer.from(cursors.preview.split(',')[1], 'base64'));

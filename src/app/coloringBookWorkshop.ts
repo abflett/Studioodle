@@ -4,10 +4,10 @@ import { coloringBookPage, makeColoringBook, mergeColoringPages } from '../edito
 import { createLocalColoringBook } from '../platform/localColoringBook';
 import type { EditorSetup } from '../editor/setup';
 
-export const workshopRepository = createLocalColoringBook();
+export const workshopRepository = createLocalColoringBook(undefined, () => coloringPageRepository.load());
 
-export function workshopPages(custom: EditorSetup[] = coloringPageRepository.load()) {
-  const base = [...coloringPages, ...custom].map(p => coloringBookPage(p, p.id!, p.title, 0));
+export function workshopPages() {
+  const base = coloringPages.map(p => coloringBookPage(p, p.id!, p.title, 0));
   return mergeColoringPages(base, workshopRepository.load().pages);
 }
 

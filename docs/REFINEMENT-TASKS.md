@@ -7,32 +7,28 @@ There is no planned engine migration or old-save compatibility work.
 
 ## Active product design: overlays and coloring-page discovery
 
-Start with [the overlay design brief](OVERLAY-DESIGN.md). The user has requested
-planning/discussion first; proposed taxonomy, layouts and sharing flows are not
-approved implementation decisions. This is the sole task list for that work.
+The Coloring Pages Focus layout is implemented using the six existing scenes;
+[design brief](OVERLAY-DESIGN.md) and [examples](overlay-examples/README.md) retain
+the visual discussion. This remains the sole implementation backlog.
 
-- [ ] Choose the Coloring Pages arrangement using [layout examples](overlay-examples/README.md):
-  single preview first, optional grid, navigation and browsing-position retention.
-  Tapping artwork or the drawing action opens the canvas directly (confirmed).
-  Review grid wells, retained side arrows and mixed page ratios in examples 28-30
-  before applying the overlay to the app. Latest overview experiment (38-40)
-  returns grid choices to single view for Share/Delete/drawing, with no grid utilities.
-- [ ] Agree on composition/detail filters, subject/theme needs, personal/imported
-  collection treatment and whether single-sticker pages are curated or generated.
+- [x] Implement single preview and optional overview grid, direct single-to-canvas
+  opening, grid-to-single selection, filter-relative counts and retained navigation.
+- [x] Apply broad subject categories, terrain detail controls, persistent favorites,
+  curated metadata for shipped scenes and lightweight custom-page defaults.
 - [ ] Inspect representative sticker/scene region statistics and propose detail
   bands with visual review and manual overrides; avoid bulk asset regeneration.
-- [ ] Prototype portrait, landscape and short-window layouts; settle shared close,
+- [x] Prototype portrait, landscape and short-window layouts; settle shared close,
   back, filter, utility and primary-action positions with accessible icon labels.
-- [ ] Consolidate authoritative custom-page storage and atomic operations (see
-  implementation item 4) before expanding template import/save paths.
-- [ ] Implement the agreed Coloring Pages gallery and filters with lightweight
+- [x] Consolidate current template sources on successful atomic collection writes;
+  save/import/delete now preserve previous records on failure.
+- [x] Implement the agreed Coloring Pages gallery and filters with lightweight
   browsing metadata, loading/error/empty states and responsive navigation.
-- [ ] Remove the dedicated user-facing Edit Page path; verify open, arrange, save
+- [x] Remove the dedicated user-facing Edit Page path; verify open, arrange, save
   drawing and save-as-new-coloring-page as the ordinary authoring journey. Decide
   the future of debug/revision controls without losing useful authoring capabilities.
-- [ ] Agree on manual sharing: one/many pages, file/code format, import preview,
-  duplicate IDs, validation, limits and clipboard fallback.
-- [ ] Implement template import/share separately from PNG/SVG/PDF picture output;
+- [x] Provide per-page copy/download and multi-page import preview; imported pages
+  receive fresh IDs, with validation/size limits and manual clipboard fallback.
+- [x] Implement template import/share separately from PNG/SVG/PDF picture output;
   verify round trips, missing assets, malformed input, collisions and storage failure.
 - [ ] Apply the reviewed overlay pattern to paper/orientation, paper color,
   stickers/categories, brush/fill, picture export, delete and settings. Reduce
@@ -81,17 +77,7 @@ between safe batches, add operation cancellation/progress and budget temporary
 allocations/output bytes. Keep exact curves and vector printing; a PDF converter
 requiring DOM cannot simply be moved unchanged to a worker.
 
-### 4. Make custom-page edits atomic (medium priority, confirmed partial-write path)
-
-`ui/SelectionScreen.tsx` deletes a custom page from `workshopRepository` and then
-`coloringPageRepository`. A failure on the second write can leave only the first
-change committed. Two separate geometry-template stores also duplicate load/save
-paths. Consider one authoritative page repository/record so revisions and quick
-"save as coloring page" share atomic operations. Inject storage failures between
-steps; require either a complete delete or the previous page to remain available.
-This concerns templates/revisions, not the IndexedDB painted-picture store.
-
-### 5. Align background placement with permitted document sizes (medium priority)
+### 4. Align background placement with permitted document sizes (medium priority)
 
 `Artwork.add` scales interior/horizon stickers to page width without the manual
 transform's scale cap; `pictureValidation.ts` rejects scales above 4. A permitted
@@ -101,7 +87,7 @@ Choose one consistent policy for automatic background sizing versus validation,
 then round-trip a maximum-size scene with added scenery. Saves now reject invalid
 snapshots explicitly instead of silently losing them on reload.
 
-### 6. Measure remaining interaction and decode hot paths (medium priority)
+### 5. Measure remaining interaction and decode hot paths (medium priority)
 
 `Artwork.move` may scan an entire local silhouette to find a visible point;
 `Artwork.overlaps` scans overlapping page bounds, and moving a sticker clears
@@ -114,7 +100,7 @@ peak allocations and definition rebuilds, then bound total transient bytes witho
 weakening hit accuracy. These costs were identified by inspection, not newly
 benchmarked in this pass.
 
-### 7. Finish async UI/input behavior checks (medium priority, behavior choice)
+### 6. Finish async UI/input behavior checks (medium priority, behavior choice)
 
 - `EditorPreview` can still complete a pending sticker load after its picker is
   closed; its placement uses the initiating view's captured coordinates. Decide
@@ -130,7 +116,7 @@ benchmarked in this pass.
   SVG/print, pointer capture, touch routing, canvas budgets and CSS still need
   Firefox and Safari/iPad coverage before multiplatform claims.
 
-### 8. Clarify browser offline/install expectations (lower priority, product choice)
+### 7. Clarify browser offline/install expectations (lower priority, product choice)
 
 There is no service worker or web-install manifest, and sticker sources load
 lazily. A running tab can work with already loaded resources, but an offline

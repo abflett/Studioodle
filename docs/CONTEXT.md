@@ -55,28 +55,27 @@ Adding a marker must not focus notes. Cleanup categories are explicit and undoab
 
 ## Current interface design focus
 
-Refine coloring-page selection, browsing, editing and sharing with all existing
-features available. Fresh settings enable painting controls and the coloring page
-workshop. Custom-page delete remains available alongside Edit Page. Simple mode,
-toddler mode and parent locking are later work.
+The new Coloring Pages overlay is implemented with the existing six scenes.
+Single preview is the default; artwork or the magical pencil/book action opens a
+fresh drawing directly. Grid is an optional six-page overview; choosing a card
+returns to single view. Side arrows/keyboard/swipes browse, and counts refer to
+the active filter. Page hearts persist locally; initial order puts favorites first
+without jumping when a heart is toggled. Filter controls use All, Characters,
+Animals, Places & Nature, Things, Letters & Numbers, and terrain detail icons.
+Shipped pages have curated `browse` metadata in the canonical book. Custom pages
+use lightweight subject/sticker-count defaults, not geometric difficulty scoring.
 
-The next phase is an overlay UX overhaul, starting with Coloring Pages. Planning
-and discussion come first. See [design brief](OVERLAY-DESIGN.md) for requested
-direction versus proposals, and the single refinement backlog for tasks. Focus:
-less redundant text, consistent icon/navigation placement, responsive galleries,
-composition/detail discovery, manual template sharing, and removal of the
-user-facing Edit Page path in favor of ordinary open/save-as-page authoring.
+Single view has Add (paste code/JSON file with validation and preview), Share
+(copy code/download JSON) and custom-only Delete. Imports create independent IDs.
+The dedicated Edit Page action is removed; normal open/arrange/save-as-page is the
+user authoring route. All current custom templates consolidate into the workshop
+record on the next successful atomic write; failed writes preserve original data.
+Existing source keys are read-only and ignored once that record is authoritative.
+See [coloring books](COLORING-BOOKS.md). Simple/toddler modes and parent lock remain
+future work. The other overlay designs are not implemented yet.
 
-Coloring-page browsing should open the canvas directly when artwork or the drawing
-action is tapped. Prefer a large single preview; optional grid remains under review.
-Three layout examples plus grid and phone captures are in
-[docs/overlay-examples](overlay-examples/README.md). They are standalone discussion
-mockups. Focus is preferred; the user wants the earlier fancier action/utility
-arrangement. Grid wells with side arrows and mixed paper proportions (captures
-28-30) led to an overview grid: tap a page to return to single view, no grid
-utilities, compact range badge. Terrain icons (slope/hill/mountains) are accepted
-for detail and shown in captures 44-46. Categories are next to discuss before
-app implementation.
+[Design brief](OVERLAY-DESIGN.md) and [layout examples](overlay-examples/README.md)
+record the review. No new scene artwork or blanket asset processing was included.
 
 Brush/eraser gestures can now start in the surrounding drawing workspace and
 continue onto the page, with page clipping, single-action undo and cancellation.

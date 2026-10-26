@@ -140,6 +140,15 @@
             "scale": 0.5848958333333333
           }
         ]
+      },
+      "browse": {
+        "categories": [
+          "characters",
+          "animals",
+          "nature",
+          "things"
+        ],
+        "detail": "medium"
       }
     },
     {
@@ -239,6 +248,13 @@
             "scale": 0.5848958333333333
           }
         ]
+      },
+      "browse": {
+        "categories": [
+          "nature",
+          "things"
+        ],
+        "detail": "simple"
       }
     },
     {
@@ -346,6 +362,13 @@
             "scale": 0.5848958333333333
           }
         ]
+      },
+      "browse": {
+        "categories": [
+          "animals",
+          "nature"
+        ],
+        "detail": "simple"
       }
     },
     {
@@ -493,6 +516,13 @@
             "scale": 0.5848958333333333
           }
         ]
+      },
+      "browse": {
+        "categories": [
+          "characters",
+          "learning"
+        ],
+        "detail": "medium"
       }
     },
     {
@@ -916,6 +946,14 @@
             "flipX": false
           }
         ]
+      },
+      "browse": {
+        "categories": [
+          "animals",
+          "nature",
+          "things"
+        ],
+        "detail": "detailed"
       }
     },
     {
@@ -1177,6 +1215,13 @@
             "flipX": false
           }
         ]
+      },
+      "browse": {
+        "categories": [
+          "animals",
+          "nature"
+        ],
+        "detail": "detailed"
       }
     }
   ]

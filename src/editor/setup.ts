@@ -1,8 +1,10 @@
+import type { ColoringPageInfo } from './coloringPageInfo';
 import type { ArtworkDocument } from './document';
 import { contrastingDrawingColor } from './palette';
 export type PaperFormat = 'square' | 'landscape' | 'portrait';
 export type EditorSetup = {
   id?: string;
+  browse?: ColoringPageInfo;
   /** Ephemeral workshop target; never part of saved pictures or shared books. */
   authoringPageId?: string;
   document?: ArtworkDocument;

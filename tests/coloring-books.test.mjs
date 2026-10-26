@@ -1,10 +1,13 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
 import { createServer } from 'vite';
-let server, domain, createStore, pages;
+let server, domain, createStore, pages, sharing, favorites, browsing;
 before(async () => {
   server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
   domain = await server.ssrLoadModule('/src/editor/coloringBook.ts');
+  sharing = await server.ssrLoadModule('/src/app/coloringPageSharing.ts');
+  favorites = await server.ssrLoadModule('/src/platform/pageFavorites.ts');
+  browsing = await server.ssrLoadModule('/src/app/coloringPageBrowsing.ts');
   ({ createLocalColoringBook: createStore } = await server.ssrLoadModule('/src/platform/localColoringBook.ts'));
   ({ coloringPages: pages } = await server.ssrLoadModule('/src/app/coloringPages.ts'));
 });
@@ -54,4 +57,47 @@ test('local imports replace revisions by stable ID, append new pages and write a
 test('corrupt workshop storage is reported without silently overwriting revisions', () => {
   let writes = 0; const store = createStore(() => ({ getItem: () => '{', setItem: () => writes++ }));
   assert.throws(()=>store.load()); assert.throws(()=>store.merge(domain.makeColoringBook('Test',pages))); assert.equal(writes,0);
+});
+
+test('browsing metadata survives sharing and rejects invalid filter values', () => {
+  for (const page of pages) {
+    assert.ok(page.browse.categories.length); assert.ok(page.browse.detail);
+    assert.deepEqual(domain.parseColoringBook(JSON.stringify(domain.makeColoringBook('Browse', [page]))).pages[0].browse, page.browse);
+  }
+  const bad = domain.makeColoringBook('Bad', [pages[0]]); bad.pages[0].browse.categories = ['invented'];
+  assert.throws(() => domain.parseColoringBook(JSON.stringify(bad)));
+  const custom = structuredClone(pages[0]); delete custom.browse;
+  assert.ok(browsing.pageInfo(custom).categories.includes('nature'));
+});
+
+test('sharing code round-trips Unicode, accepts JSON, and imports independent copies', () => {
+  const book = domain.makeColoringBook('Coloring', [{...pages[0], title: 'A snowman \u2603'}]);
+  const code = sharing.pageSharingCode(book);
+  assert.deepEqual(sharing.parsePageSharingCode(code), book);
+  assert.deepEqual(sharing.parsePageSharingCode(JSON.stringify(book)), book);
+  const copy = sharing.independentPages(book);
+  assert.notEqual(copy.pages[0].id, book.pages[0].id);
+  assert.deepEqual(copy.pages[0].document, book.pages[0].document);
+  assert.throws(() => sharing.parsePageSharingCode('studioodle-page:2:%%%'));
+  assert.throws(() => sharing.parsePageSharingCode('unrecognized'));
+});
+
+test('favorite storage preserves prior values on failed writes and reports corrupt data', () => {
+  let data = null, fail = false;
+  const store = favorites.createPageFavorites(() => ({getItem: () => data, setItem: (_, text) => { if (fail) throw Error('Quota'); data = text; }}));
+  store.save(['winter', 'winter', 'beach']); assert.deepEqual(store.load(), ['winter','beach']);
+  fail = true; assert.throws(() => store.save([])); assert.deepEqual(store.load(), ['winter','beach']);
+  data = '{}'; assert.throws(() => store.load());
+});
+
+test('current template sources consolidate atomically and deleted pages do not reappear', () => {
+  let data = null, fail = false, reads = 0;
+  const legacy = [{...pages[1],id:'existing-custom'}];
+  const store = createStore(() => ({getItem:()=>data,setItem:(_,text)=>{if(fail)throw Error('Quota');data=text;}}),()=>{reads++;return legacy;});
+  assert.equal(store.load().pages[0].id,'existing-custom');assert.equal(data,null,'Reading must not write');
+  fail=true;assert.throws(()=>store.delete('existing-custom'));assert.equal(data,null);assert.equal(store.load().pages.length,1);
+  fail=false;store.merge(domain.makeColoringBook('New',[{...pages[0],id:'new-custom'}]));
+  assert.deepEqual(store.load().pages.map(p=>p.id),['existing-custom','new-custom']);
+  const count=reads;store.delete('existing-custom');assert.equal(reads,count,'Authoritative record must not read retired source');
+  assert.deepEqual(store.load().pages.map(p=>p.id),['new-custom']);
 });

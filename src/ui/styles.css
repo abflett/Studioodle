@@ -422,12 +422,12 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 
 /* Use the available phone width for the large picker overlays. */
 @media (max-width: 560px) {
-  .setup-dialog:not(.settings-dialog):not(.delete-picture-dialog):not(.export-dialog) {
+  .setup-dialog:not(.settings-dialog):not(.delete-picture-dialog):not(.export-dialog):not(.coloring-picker):not(.page-transfer-dialog) {
     width: 100%; max-width: 100vw;
     height: min(600px, calc(100dvh - 24px));
     margin: auto; border-radius: 24px;
   }
-  .setup-dialog:not(.settings-dialog):not(.delete-picture-dialog):not(.export-dialog) .wizard {
+  .setup-dialog:not(.settings-dialog):not(.delete-picture-dialog):not(.export-dialog):not(.coloring-picker):not(.page-transfer-dialog) .wizard {
     padding: 16px max(12px, env(safe-area-inset-right)) 16px max(12px, env(safe-area-inset-left)); gap: 14px;
   }
   .sticker-dialog .sticker-outline-options { gap: 8px; }
@@ -820,3 +820,89 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 
 /* Fill the existing stage for portrait and square saves without moving the stack or controls. */
 .picture-carousel:is([data-paper-shape="portrait"], [data-paper-shape="square"]) { --sheet-fill: 1; }
+
+/* Coloring book: a page-first browser, with a quiet optional overview. */
+.setup-dialog.coloring-picker { width: min(940px, calc(100vw - 24px)); height: min(660px, calc(100dvh - 24px)); border-radius: 30px; }
+.coloring-picker-body { height: 100%; display: flex; flex-direction: column; gap: 14px; padding: 20px; }
+.coloring-picker .page-control { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 46px; height: 46px; min-width: 44px; min-height: 44px; padding: 8px; border: 0; border-radius: 14px; background: transparent; color: var(--text); }
+.coloring-picker .page-control svg { display: block; width: 26px; height: 26px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.coloring-picker .page-control[aria-pressed='true']:not(.page-heart):not(.page-favorites-filter):not(.page-view-toggle) { background: var(--action); color: var(--action-text); }
+.coloring-picker button:focus-visible { outline: 3px solid var(--action); outline-offset: 3px; }
+.page-browser-top { position: relative; flex: 0 0 auto; padding: 0 56px; min-height: 46px; }
+.coloring-picker .page-browser-top > .dialog-header { display: contents; }
+.page-browser-top .dialog-heading { width: 100%; }
+.page-browser-top .dialog-heading > h2 { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.coloring-picker .page-view-toggle, .coloring-picker .page-browser-top .dialog-close { position: absolute; top: 50%; transform: translateY(-50%); border-radius: 50%; background: var(--ribbon-well); }
+.coloring-picker .page-view-toggle { left: 0; }
+.coloring-picker .page-browser-top .dialog-close { right: 0; }
+.page-filters { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.page-filter-well { display: flex; align-items: center; gap: 3px; padding: 4px; border-radius: 18px; background: var(--ribbon-well); }
+.coloring-picker .page-favorites-filter { color: #df6c83; border-radius: 50%; background: var(--ribbon-well); }
+.page-favorites-filter[aria-pressed='true'] svg, .page-heart[aria-pressed='true'] svg { fill: currentColor; }
+.page-browse-content { position: relative; min-height: 0; flex: 1; padding: 0 64px; display: flex; align-items: center; justify-content: center; touch-action: pan-y; }
+.coloring-picker .page-browse-arrow { position: absolute; top: 50%; transform: translateY(-50%); border-radius: 50%; background: var(--ribbon-well); }
+.page-previous { left: 0; } .page-next { right: 0; }
+.coloring-page-single, .coloring-page-grid { width: 100%; height: 100%; min-width: 0; min-height: 0; }
+.coloring-page-single { display: flex; align-items: center; justify-content: center; }
+.coloring-page-cell { container-type: size; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 0; }
+.coloring-page-single .coloring-page-cell { width: 100%; height: 100%; }
+.coloring-page-sheet { position: relative; width: min(calc(100cqw - 8px), calc((100cqh - 8px) * var(--page-ratio))); aspect-ratio: var(--page-ratio); flex: none; }
+.page-artwork-button { display: block; position: relative; width: 100%; height: 100%; padding: 0; border: 2px solid var(--preview-border); border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 4px 14px var(--shadow); }
+.page-artwork-button > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.coloring-picker .page-heart { position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; padding: 0; border: 1px solid #df6c8340; border-radius: 50%; color: #df6c83; background: #fff8f1f5; box-shadow: 0 2px 5px #0002; }
+.coloring-picker .page-heart svg { width: 23px; height: 23px; transform: translateY(-.5px); }
+.page-number-badge { position: absolute; right: 12px; bottom: 12px; border: 1px solid #c7cdd3; border-radius: 9px; padding: 6px 11px; background: #fff; color: #435260; font-size: 14px; font-weight: 400; font-variant-numeric: tabular-nums; pointer-events: none; }
+.page-preview-status { position: absolute; inset: 0; display: grid; place-items: center; color: #435260; }
+.page-preview-status svg { width: 28px; height: 28px; }
+.page-preview-status:has(.preview-spinner) { animation: preview-loading-reveal 0s 120ms both; }
+.coloring-page-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.coloring-page-grid .page-artwork-button { border-width: 1px; border-color: #a8b2c2; border-radius: 7px; }
+.coloring-page-grid .page-heart { width: 32px; height: 32px; min-width: 32px; min-height: 32px; top: -5px; right: -5px; }
+.coloring-page-grid .page-heart::after { content: ''; position: absolute; inset: -6px; }
+.coloring-page-grid .page-heart svg { width: 19px; height: 19px; }
+.page-browser-footer { position: relative; flex: 0 0 auto; min-height: 52px; display: flex; justify-content: center; align-items: center; padding: 0 156px; }
+.page-utilities { display: flex; align-items: center; gap: 6px; }
+.page-draw-action { position: absolute; right: 0; display: flex; align-items: center; justify-content: center; width: 142px; height: 50px; padding: 0; border: 0; border-radius: 17px; color: var(--action-text); background: var(--action); box-shadow: 0 2px 6px var(--shadow); }
+.page-draw-action img { width: 118px; height: 44px; object-fit: contain; }
+/* The monochrome flourish follows light-mode button ink through its original alpha. */
+:root:not([data-theme='dark']) .page-draw-action img { visibility: hidden; }
+:root:not([data-theme='dark']) .page-draw-action::after { content: ''; width: 118px; height: 44px; background: var(--action-text); mask: url('../assets/interface/start-coloring.png') center / contain no-repeat; position: absolute; }
+.coloring-picker-body[data-grid='true'] .page-browser-footer { min-height: 30px; padding: 0; }
+.page-range-badge { border: 1px solid var(--border); border-radius: 10px; padding: 5px 11px; font-size: 12px; font-weight: 400; font-variant-numeric: tabular-nums; background: var(--ribbon-well); }
+.page-empty-state { text-align: center; max-width: 360px; }
+.page-browser-message { margin: 0; font-size: 13px; text-align: center; }
+.setup-dialog.page-transfer-dialog { width: min(580px, calc(100vw - 24px)); height: auto; max-height: calc(100dvh - 24px); overflow: auto; }
+.page-transfer-body { padding: 22px; display: flex; flex-direction: column; gap: 18px; }
+.page-transfer-body label { display: flex; flex-direction: column; gap: 8px; }
+.page-transfer-body textarea { width: 100%; height: 120px; resize: vertical; border: 1px solid var(--border); border-radius: 12px; padding: 12px; background: var(--surface); color: var(--text); font: 13px monospace; }
+.page-transfer-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.page-transfer-actions .go-button, .page-import-preview .go-button { display: flex; align-items: center; gap: 8px; }
+.page-import-preview { text-align: center; }
+.page-import-preview > img { display: block; width: 100%; max-height: 180px; object-fit: contain; }
+.page-import-preview .go-button { margin: 0 auto; }
+@media (hover: hover) { .coloring-picker .page-control:not(:disabled):is(:hover, .app-mouse-hover) { background-color: var(--ribbon-well); } .page-draw-action:is(:hover, .app-mouse-hover) { filter: brightness(1.06); } }
+@media (max-width: 620px) {
+  .coloring-picker-body { padding: 12px; gap: 12px; }
+  .coloring-picker .page-control { width: 44px; height: 44px; padding: 8px; }
+  .page-browser-top { padding: 0 48px; }
+  .page-filters { justify-content: flex-start; gap: 8px; }
+  .page-filter-well { gap: 0; padding: 3px; }
+  .coloring-picker .page-view-toggle, .coloring-picker .page-browser-top .dialog-close { top: 25px; }
+  .page-browse-content { padding: 0 36px; }
+  .coloring-picker .page-browse-arrow { width: 32px; min-width: 32px; padding: 4px; }
+  .coloring-page-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 14px 10px; }
+  .coloring-page-grid .page-heart { width: 30px; height: 30px; min-width: 30px; min-height: 30px; }
+  .coloring-page-grid .page-heart svg { width: 18px; height: 18px; }
+  .page-browser-footer { padding-left: 0; padding-right: 122px; justify-content: flex-start; }
+  .page-draw-action { width: 116px; }
+  .page-draw-action img, :root:not([data-theme='dark']) .page-draw-action::after { width: 100px; height: 42px; }
+  .coloring-picker-body[data-grid='true'] .page-browser-footer { justify-content: center; }
+}
+@media (max-width: 410px) { .page-categories { display: grid; grid-template-columns: repeat(3, 44px); } }
+@media (max-height: 520px) and (min-width: 621px) {
+  .coloring-picker-body { padding: 12px; gap: 10px; }
+  .coloring-picker .page-control { width: 44px; height: 44px; }
+  .page-filter-well { padding: 3px; gap: 0; }
+  .page-browser-footer { min-height: 46px; }
+  .page-draw-action { height: 46px; }
+}

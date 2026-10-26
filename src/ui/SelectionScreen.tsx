@@ -1,9 +1,10 @@
+import { ColoringPagePicker } from './ColoringPagePicker';
 import { Brand } from './Brand';
 import { paperRotation } from '../app/paperLayers';
 import { ExportPictureDialog } from './ExportPictureDialog';
 import { PaperSetup } from './PaperSetup';
 import { DialogHeader } from './DialogHeader';
-import { workshopPages, workshopRepository } from '../app/coloringBookWorkshop';
+import { saveWorkshopPage, workshopPages, workshopRepository } from '../app/coloringBookWorkshop';
 import { coloringPages } from '../app/coloringPages';
 import { DeletePictureDialog } from './DeletePictureDialog';
 import { isDesktop, toggleDesktopFullscreen, watchDesktopFullscreen } from '../platform/desktop';
@@ -16,13 +17,12 @@ import type { PaperPresetId } from '../editor/paperPresets';
 import { contrastingDrawingColor } from '../editor/palette';
 import { closeOnBackdrop } from './dialog';
 import { createColoringPage } from '../editor/coloringPage';
-import { coloringPageRepository } from '../app/pictures';
 import { usePictureLibrary } from './usePictureLibrary';
 import type { SavedPicture } from '../editor/savedPicture';
 import { printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, Save, Pencil, LoaderCircle, RotateCw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, Save, LoaderCircle, RotateCw } from 'lucide-react';
 import { pictureChoices, savedStackArtwork, portfolioPaper } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
@@ -71,7 +71,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   const [background, setBackground] = useState('#f6f2e8');
   const { library, saved, sampleIndex, setSampleIndex, current, currentError, retry, removePicture, restorePicture } = usePictureLibrary();
   const [customPages, setCustomPages] = useState(() => {
-    try { return coloringPageRepository.load(); } catch { return []; }
+    try { return workshopRepository.load().pages; } catch { return []; }
   });
   const [bookState, setBookState] = useState(() => { try { return { pages: workshopPages(), error: false }; } catch { return { pages: [], error: true }; } });
   const scenes: EditorSetup[] = bookState.error ? [...coloringPages, ...customPages] : bookState.pages;
@@ -97,10 +97,9 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     try {
       if (deletingPage) {
         workshopRepository.delete(picture.id);
-        coloringPageRepository.delete(picture.id);
         setCustomPages(pages => pages.filter(item => item.id !== picture.id));
         refreshBooks();
-        setSceneIndex(index => Math.max(0, Math.min(index, scenes.length - 2)));
+        setInitialSceneId(undefined);
         setDeletingPage(false); setRemoved(undefined); setActionError(undefined); setNotice('Coloring page removed');
         return;
       }
@@ -115,11 +114,11 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
       setRemoved(undefined); setActionError(undefined);
     } catch { setActionError('Could not restore this picture.'); }
   };
-  const [sceneIndex, setSceneIndex] = useState(0);
+  const [initialSceneId, setInitialSceneId] = useState<string>();
 
   const dialog = useRef<HTMLDialogElement>(null);
   const stepHeading = useRef<HTMLHeadingElement>(null);
-  const open = step !== null;
+  const open = step !== null && step !== 'scene';
 
   useEffect(() => {
     const modal = dialog.current;
@@ -140,17 +139,15 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     setPageTurn(direction);
     setSampleIndex(index => (index + (direction === 'next' ? 1 : saved.length - 1)) % saved.length);
   };
-  const scene = scenes[Math.min(sceneIndex, scenes.length - 1)]!;
-  const customScene = !coloringPages.some(page => page.id === scene.id) ? scene as SavedPicture : undefined;
   const addColoringPage = () => {
     if (!current || current.document.surfaces.length < 2) return;
     try {
       const number = customPages.reduce((max, page) => Math.max(max, Number(/^Coloring page (\d+)$/i.exec(page.title)?.[1] ?? 0)), 0) + 1;
       const page = createColoringPage(current, `Coloring Page ${number}`);
-      coloringPageRepository.save(page);
+      saveWorkshopPage(page, page.id, page.title);
       setCustomPages(pages => [page, ...pages]);
       refreshBooks();
-      setSceneIndex(Math.max(0, workshopPages().findIndex(p => p.id === page.id))); setStep('scene');
+      setInitialSceneId(page.id); setStep('scene');
       setRemoved(undefined); setActionError(undefined); setNotice('Added to coloring pages');
     } catch { setActionError('Could not save coloring page. Device storage may be full or unavailable.'); }
   };
@@ -177,7 +174,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
             <button className={`choice-card choice-${item.id}`} key={item.id}
               aria-label={item.id === 'blank' ? 'Draw a new picture' : 'Color a picture'}
               title={item.id === 'blank' ? 'Draw a new picture' : 'Color a picture'}
-              onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
+              onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } else setInitialSceneId(undefined); setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
               <span className="choice-art">
                 <img className="choice-illustration" src={item.artwork} alt="" aria-hidden="true" draggable={false} decoding="async" />
               </span>
@@ -233,21 +230,18 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
           <div className="wizard-body">
             {step === 'shape' && <PaperSetup paperPreset={paperPreset} orientation={orientation} onPreset={setPaperPreset} onOrientation={value => { setManualOrientation(true); setOrientation(value); }} />}
             {step === 'paper' && <ColorPicker label="Canvas background colors" color={parseInt(background.slice(1), 16)} onChoose={(value) => setBackground(`#${value.toString(16).padStart(6, '0')}`)} />}
-            {step === 'scene' && <div className="scene-picker">
-              <button className="icon-button" aria-label="Previous coloring page" onClick={() => setSceneIndex((value) => (value + scenes.length - 1) % scenes.length)}><Arrow direction="left" /></button>
-              <figure><button type="button" className="scene-preview-button" aria-label={`Draw ${scene.title}`} onClick={() => openPicture(scene)}><SavedPreview picture={scene} /></button><figcaption aria-live="polite">{scene.title}</figcaption></figure>
-              <button className="icon-button" aria-label="Next coloring page" onClick={() => setSceneIndex((value) => (value + 1) % scenes.length)}><Arrow direction="right" /></button>
-            </div>}
+
           </div>
           <footer className="wizard-footer">
-            {step === 'scene' ? <div className="workshop-actions">{settings.workshop && <button className="go-button secondary-action" onClick={() => { dialog.current?.close(); onOpen({ ...scene, id: undefined, authoringPageId: scene.id }); }}><Pencil /><span>Edit Page</span></button>}{customScene && <button className="icon-button" aria-label="Delete this custom coloring page" title="Delete coloring page" onClick={() => { setDeletingPage(true); setPendingDelete(customScene); }}><Trash2 /></button>}</div> : step === 'paper' ? <button className="icon-button" aria-label="Back to paper shape" onClick={() => setStep('shape')}><ArrowLeft aria-hidden="true" /></button> : <span />}
+            {step === 'paper' ? <button className="icon-button" aria-label="Back to paper shape" onClick={() => setStep('shape')}><ArrowLeft aria-hidden="true" /></button> : <span />}
             <button className="go-button" onClick={() => {
               if (step === 'shape') setStep('paper');
-              else openPicture(step === 'scene' ? scene : { title: 'Blank Page', format: paperPreset === 'square' ? 'square' : orientation, size: presetSize(paperPreset, orientation), background, leafColor: contrastingDrawingColor(background) });
+              else openPicture({ title: 'Blank Page', format: paperPreset === 'square' ? 'square' : orientation, size: presetSize(paperPreset, orientation), background, leafColor: contrastingDrawingColor(background) });
             }}>{step === 'shape' ? 'Next' : 'Let’s draw'}<ArrowRight aria-hidden="true" /></button>
           </footer>
         </div>
       </dialog>
+      {step === 'scene' && <ColoringPagePicker pages={scenes} initialPageId={initialSceneId} bundledIds={new Set(coloringPages.map(page => page.id))} onClose={() => setStep(null)} onOpen={setup => { setStep(null); openPicture(setup); }} onAdded={() => refreshBooks()} onDelete={page => { setDeletingPage(true); setPendingDelete(page); }} />}
       {exportingPicture && <ExportPictureDialog picture={exportingPicture} onClose={() => setExportingPicture(undefined)} />}
       <DeletePictureDialog picture={pendingDelete} onCancel={() => { setPendingDelete(undefined); setDeletingPage(false); }} onConfirm={removeCurrent} />
       <SelectionSettings settings={settings} onSettingsChange={onSettingsChange} open={settingsOpen} onClose={() => setSettingsOpen(false)} theme={theme} onThemeChange={onThemeChange} />

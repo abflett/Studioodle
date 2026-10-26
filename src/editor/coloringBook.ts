@@ -1,22 +1,25 @@
+import { normalizePageInfo } from './coloringPageInfo';
+import type { ColoringPageInfo } from './coloringPageInfo';
 import { isSavedPicture } from './pictureValidation';
 import { paperSize } from './document';
 import type { EditorSetup } from './setup';
 import type { SavedPicture } from './savedPicture';
 
+export type ColoringBookPage = SavedPicture & { browse?: ColoringPageInfo };
 export type ColoringBook = {
   format: 'studioodle-coloring-book';
   version: 2;
   title: string;
-  pages: SavedPicture[];
+  pages: ColoringBookPage[];
 };
 export const maxBookBytes = 20 * 1024 * 1024;
 const validId = (id: string) => /^[a-z0-9][a-z0-9._-]{0,119}$/i.test(id);
 
 /** A book carries geometry only. Explicit projection also discards editor-only metadata. */
-export function coloringBookPage(source: EditorSetup, id: string, title = source.title, updatedAt = Date.now()): SavedPicture {
+export function coloringBookPage(source: EditorSetup, id: string, title = source.title, updatedAt = Date.now()): ColoringBookPage {
   if (!source.document || !validId(id) || !title.trim() || title.trim().length > 160) throw new Error('A page needs a valid ID, title, and document.');
   const size = paperSize(source.format, source.size);
-  const page: SavedPicture = {
+  const page: ColoringBookPage = {
     id, title: title.trim(), version: 5, updatedAt, format: source.format, size,
     background: '#ffffff', leafColor: 0x242428,
     document: { version: 5, width: size.width, height: size.height,
@@ -29,6 +32,8 @@ export function coloringBookPage(source: EditorSetup, id: string, title = source
       })),
     },
   };
+  const browse = normalizePageInfo(source.browse);
+  if (browse) page.browse = browse;
   if (page.document.surfaces.length > 1000 || !isSavedPicture(page)) throw new Error(`Invalid geometry or unavailable sticker in “${title}”.`);
   return page;
 }
@@ -57,7 +62,7 @@ export function parseColoringBook(text: string): ColoringBook {
 }
 
 /** Revisions replace matching IDs without moving pages; new pages append in book order. */
-export function mergeColoringPages(base: SavedPicture[], revisions: SavedPicture[]): SavedPicture[] {
+export function mergeColoringPages(base: ColoringBookPage[], revisions: ColoringBookPage[]): ColoringBookPage[] {
   const result = new Map(base.map(p => [p.id, p]));
   for (const page of revisions) result.set(page.id, page);
   return [...result.values()];

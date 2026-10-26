@@ -1,5 +1,10 @@
 # Overlay design direction
 
+The current Coloring Pages Focus design, broad categories and terrain icons are
+implemented with the six existing scenes. Current behavior is in
+[Coloring books](COLORING-BOOKS.md). Earlier studies below are design history, not
+additional implementation requirements. Other overlays remain future work.
+
 Working design brief, 24 October 2026. This records the requested direction and
 proposals for discussion; it does not describe shipped behavior. Implementation
 work is tracked only in [Refinement tasks](REFINEMENT-TASKS.md).

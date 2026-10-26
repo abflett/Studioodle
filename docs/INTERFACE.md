@@ -143,3 +143,20 @@ Brush and eraser gestures may begin in the surrounding drawing workspace and
 continue onto the page. Paint remains clipped to the page; the entire gesture
 is one undo action and cancellation restores the previous artwork. Toolbar and
 overlay presses do not start painting.
+
+## Coloring Pages picker
+
+The approved Focus layout is now in the app. There is no visible dialog heading;
+accessible names/tooltips remain. Categories and terrain detail toggles sit above
+a single large paper preview. A thin white current/total badge and centered solid
+red favorite heart overlay the paper. The drawing action uses the reviewed
+magical pencil/blank-book artwork; utilities are centered in the footer on desktop
+and flow beside the action on narrow screens. No Edit Page action remains.
+
+The grid is a floating-paper overview with six bounded previews, original paper
+ratios, favorite badges, side arrows and a compact filter-relative range. Choosing
+an image returns to single view; single-view image/action opens the canvas directly.
+The grid omits utilities and the drawing action. Arrows/left-right keys and horizontal
+swipes navigate; details can be toggled off to include all levels. Empty filters
+have an explicit reset. Add/Share use a separate focused transfer dialog, and
+Delete appears only for custom pages. See [Coloring books](COLORING-BOOKS.md).
