@@ -141,6 +141,10 @@ centered filters. A generated flat line-art pencil with a looping magical trail
 fills the wide drawing button. See Focus captures 15 and 16; original artwork and
 metadata are under `art/source/interface/`. This is still a design experiment.
 
+A subsequent action study gives the pencil page-like wings and an open coloring
+book destination, with short wind strokes replacing the ink-like loop. See Focus
+captures 17 and 18 and `magic-pencil-flourish-v2` under original interface artwork.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

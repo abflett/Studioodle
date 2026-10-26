@@ -45,6 +45,14 @@ transparent artwork and generation metadata are retained under
 `art/source/interface/magic-pencil-flourish-v1.*`; the HTML uses its alpha as a CSS
 mask so ink follows the button foreground. This remains a mockup-only proposal.
 
+Winged-pencil/book study: [Focus](17-focus-winged-pencil-book.png),
+[favorited](18-focus-winged-pencil-book-favorite.png). The pencil travels toward
+an open coloring book with a small flower outline, with page-like wings and short
+airy motion strokes instead of a continuous ink trail. The original RGBA artwork
+and generation metadata are retained as `art/source/interface/magic-pencil-flourish-v2.*`.
+This variant displays the generated image directly, including its pale wing accents;
+version 1 is preserved for comparison. No app controls have been changed.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.
