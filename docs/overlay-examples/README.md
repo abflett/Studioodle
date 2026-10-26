@@ -17,8 +17,10 @@ the proposed app overlays themselves have no visible headings or button captions
 
 The current HTML incorporates the desktop/landscape refinement. New overlay-only
 captures: [ordinary heart](07-focus-refined.png) and [favorited](08-focus-favorite.png).
-The page carries a current/total badge and dotted red favorite heart, filled when
-active. Grid/single sits beside the filters after the favorites filter. Earlier
+Latest variant: [flat white badge](09-focus-white-badge.png) and
+[favorited](10-focus-white-badge-favorite.png). The page number uses regular-weight
+text on a thin-bordered white badge at bottom right; the dotted/filled red heart
+is at top right. Grid/single sits beside the filters after the favorites filter. Earlier
 screenshots above retain the initial comparison layouts; phone refinements are
 not part of this round. Page numbers currently refer to the filtered sequence.
 

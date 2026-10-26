@@ -126,7 +126,8 @@ before implementing. The three arrangements and icon choices are proposals.
 Focus is the preferred layout. The next desktop study moves current/total page
 numbering and the red dotted/filled favorite heart onto the preview, and places
 the grid toggle after the favorites filter. See the overlay-only Focus captures
-in the examples folder. Badge styling remains provisional.
+in the examples folder. The latest badge is flat white with a thin border and regular-weight numerals,
+placed bottom right; the favorite heart is top right. Styling remains provisional.
 
 ## First discussion
 
