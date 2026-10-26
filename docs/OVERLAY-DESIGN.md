@@ -131,6 +131,11 @@ placed bottom right; the favorite heart is top right. Styling remains provisiona
 circle/hexagon/floral-outline progression and enlarges the paper-and-pencil primary
 action to make starting a drawing more prominent.
 
+The latest reversible desktop experiment centers the filter row and lower utility
+group. The primary action is wider/shorter with a playful pencil-and-scribble icon;
+the detail progression uses circle, hexagon and nested hexagon to avoid settings
+or rating associations. See Focus captures 13 and 14.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

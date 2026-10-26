@@ -30,6 +30,13 @@ from circle to hexagon to a lobed floral outline, avoiding star ratings and whee
 spokes. The larger primary button uses a paper-and-pencil drawing illustration.
 These remain icon proposals for review.
 
+Centered-controls experiment: [Focus](13-focus-centered-controls.png),
+[favorited](14-focus-centered-controls-favorite.png). Filters and bottom utilities
+are centered independently, with Close and the primary action at the right.
+The drawing button is wider and shorter, showing a pencil, loose scribble and
+small spark accents rather than a document. Detail uses a nested hexagon instead
+of the floral/cog outline. This is a reversible desktop comparison, not a final choice.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.
