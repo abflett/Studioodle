@@ -1,0 +1,54 @@
+# Coloring Pages overlay examples
+
+Design studies for discussion, 26 October 2026. These are review artifacts, not
+changes to the app. Open [index.html](index.html) directly in a browser, or inspect
+the screenshots below. The text above the panel belongs to the comparison viewer;
+the proposed app overlays themselves have no visible headings or button captions.
+
+| Study | Screenshot | What to compare |
+| --- | --- | --- |
+| A: Focus | [Desktop](01-focus.png) | Largest single preview; filters above, utilities below |
+| B: Side tools | [Desktop](02-side-tools.png) | Add/share/custom-delete in a side rail |
+| C: Filmstrip | [Desktop](03-filmstrip.png) | Large preview plus direct visual jumps to nearby pages |
+| Optional grid | [Desktop](04-grid.png) | Six previews, with independent heart targets |
+| Narrow portrait | [Dark](05-phone-focus.png), [light](06-phone-light.png) | Wrapped filters and a panel inset from the screen edges |
+
+## Interactions in the example
+
+- Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.
+- Left/right browse; the grid/single toggle remembers the current browsing index.
+  Grid images open directly rather than entering a selection mode. Returning to
+  single view resumes the last browsing position, or the last image tapped.
+- Tapping the large artwork or pencil action simulates opening the drawing canvas.
+  The example displays a notice; it does not actually open an editor.
+- Hearts toggle in memory only. The top heart filters to favorites. Category icons
+  filter a small illustrative grouping of the six shipped pages.
+- Simple/medium/intricate circle icons propose a visual language for detail.
+  They change their selected appearance only; no difficulty scoring is implemented.
+- Add, Share, Close and Delete show explanatory notices instead of performing writes.
+  Delete is displayed to compare placement for a custom-page scenario; the shipped
+  example pages cannot actually be deleted. The final app would show it only for custom pages.
+
+## Review questions
+
+A is the simplest starting point. Does the lower-left utility group feel clear,
+or does B's grouped side rail make the controls easier to discover? Does C add
+useful visual navigation, or too much competing imagery? Are the circle detail
+symbols understandable without labels? Does the optional grid need more than one
+density, or is one overview plus one large-page view enough?
+
+The sample category/detail symbols and import/share icons are proposals, not a
+final icon set. Favorites-first ordering and the sharing/paste dialogs are outside
+these layout studies. Keeping a stable page while toggling favorites is deliberate.
+
+## Artwork and verification
+
+Previews under `pages/` are documentation-only raster renders of the canonical
+`src/assets/coloringBook.json`, using the current vector SVG exporter. They are not
+a second authored book or runtime asset catalog. The actual scene proportions and
+ink are preserved. Panel/background colors follow the existing app theme; the
+backgrounds are referenced directly from the app's interface assets.
+
+Rendered in Chromium at 1080 x 800 and 430 x 880, checked visually, with runtime
+error and horizontal-overflow checks. This does not establish touch usability or
+approve any layout for implementation. No storage, original artwork or app UI changed.

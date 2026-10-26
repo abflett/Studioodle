@@ -114,10 +114,19 @@ behavior explicitly: the current book merge treats a matching ID as a revision,
 which may be surprising for user-to-user imports. Preserve existing local pages on
 failure and resolve authoritative/atomic template storage before adding more writes.
 
+## Confirmed browsing preference and layout examples
+
+As of 26 October 2026, tapping an image or a drawing-action icon should open the
+canvas directly. Do not add a selection/confirmation step. A single large preview
+is preferred for simplicity; a grid toggle remains a candidate for finding pages.
+When switching back to single view, retain the last browsing position rather than
+requiring a selected page. Review [the layout examples](overlay-examples/README.md)
+before implementing. The three arrangements and icon choices are proposals.
+
 ## First discussion
 
-1. Agree on a thumbnail gallery and whether tapping opens the editor immediately
-   or opens a larger preview with a clear start action.
+1. Choose a single-preview layout and whether an optional grid overview is useful.
+   Direct tap-to-open is confirmed.
 2. Agree on composition/detail filters and whether single-subject pages are
    generated from every sticker or curated.
 3. Agree on where Import/Share live and whether sharing starts with one page.

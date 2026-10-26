@@ -11,8 +11,9 @@ Start with [the overlay design brief](OVERLAY-DESIGN.md). The user has requested
 planning/discussion first; proposed taxonomy, layouts and sharing flows are not
 approved implementation decisions. This is the sole task list for that work.
 
-- [ ] Agree on the Coloring Pages journey: responsive gallery, tap behavior,
-  preview/start action, navigation and selected-item retention.
+- [ ] Choose the Coloring Pages arrangement using [layout examples](overlay-examples/README.md):
+  single preview first, optional grid, navigation and browsing-position retention.
+  Tapping artwork or the drawing action opens the canvas directly (confirmed).
 - [ ] Agree on composition/detail filters, subject/theme needs, personal/imported
   collection treatment and whether single-sticker pages are curated or generated.
 - [ ] Inspect representative sticker/scene region statistics and propose detail

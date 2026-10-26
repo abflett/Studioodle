@@ -1,6 +1,6 @@
 # Current context
 
-Updated 24 October 2026. Read `AGENTS.md` first, then this file and the documentation
+Updated 26 October 2026. Read `AGENTS.md` first, then this file and the documentation
 for the requested feature. Use the checked-out repository root (`git rev-parse
 --show-toplevel`); a client's initial working directory may point elsewhere.
 
@@ -66,6 +66,12 @@ direction versus proposals, and the single refinement backlog for tasks. Focus:
 less redundant text, consistent icon/navigation placement, responsive galleries,
 composition/detail discovery, manual template sharing, and removal of the
 user-facing Edit Page path in favor of ordinary open/save-as-page authoring.
+
+Coloring-page browsing should open the canvas directly when artwork or the drawing
+action is tapped. Prefer a large single preview; optional grid remains under review.
+Three layout examples plus grid and phone captures are in
+[docs/overlay-examples](overlay-examples/README.md). They are standalone discussion
+mockups; no app overlay implementation has been approved.
 
 Brush/eraser gestures can now start in the surrounding drawing workspace and
 continue onto the page, with page clipping, single-action undo and cancellation.
