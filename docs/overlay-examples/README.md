@@ -37,6 +37,14 @@ The drawing button is wider and shorter, showing a pencil, loose scribble and
 small spark accents rather than a document. Detail uses a nested hexagon instead
 of the floral/cog outline. This is a reversible desktop comparison, not a final choice.
 
+Magic-pencil study: [Focus](15-focus-magic-pencil.png),
+[favorited](16-focus-magic-pencil-favorite.png). Grid/single now sits at far left,
+mirroring Close. Filters remain centered. The short, wide drawing action uses a
+generated monochrome pencil with a looping trail, dust dots and sparkles. Original
+transparent artwork and generation metadata are retained under
+`art/source/interface/magic-pencil-flourish-v1.*`; the HTML uses its alpha as a CSS
+mask so ink follows the button foreground. This remains a mockup-only proposal.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.

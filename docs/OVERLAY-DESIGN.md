@@ -136,6 +136,11 @@ group. The primary action is wider/shorter with a playful pencil-and-scribble ic
 the detail progression uses circle, hexagon and nested hexagon to avoid settings
 or rating associations. See Focus captures 13 and 14.
 
+The latest study places grid/single at the far left opposite Close and retains
+centered filters. A generated flat line-art pencil with a looping magical trail
+fills the wide drawing button. See Focus captures 15 and 16; original artwork and
+metadata are under `art/source/interface/`. This is still a design experiment.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

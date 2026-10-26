@@ -1,0 +1,8 @@
+{
+  "date": "2026-10-26",
+  "purpose": "Proposed Focus overlay drawing-action artwork; design study only",
+  "generator": "Built-in image_gen",
+  "source": "magic-pencil-flourish-v1.png",
+  "usage": "The mockup uses the original alpha as a CSS mask so the ink follows the button foreground color. Original generated pixels remain untouched.",
+  "promptSummary": "Transparent horizontal UI flourish: flat monochrome dark navy line-art flying pencil on right with looping wave trail from left, restrained fairy-dust dots and four-point sparkles, rounded clean strokes, no literal fairy, face, paper, text, gradients or button background. Designed for a short wide playful coloring-app action button."
+}
