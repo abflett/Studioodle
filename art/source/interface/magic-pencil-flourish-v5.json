@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-26",
+  "generator": "Built-in image_gen",
+  "purpose": "Simplified small-scale CTA artwork for centered/right layout comparison",
+  "source": "magic-pencil-flourish-v5.png",
+  "promptSummary": "Transparent bold consistent navy line-art flying pencil, small buoyant blank open book, two airy disconnected wind curves, one sparkle above book. Minimal barrel/cover detail, no dust dots, wings, white fills, text or shading. Balanced wide composition readable at 118 by 44 pixels.",
+  "mockupCrop": [
+    67,
+    94,
+    1994,
+    666
+  ],
+  "originalSize": [
+    2059,
+    764
+  ]
+}

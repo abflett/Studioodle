@@ -157,6 +157,13 @@ The current button study trims transparent padding from the v4 illustration and
 fits it into a 142 x 50 button with balanced margins, retaining the original art.
 See Focus captures 23 and 24.
 
+Page numbering is confirmed as current position / total within the active filter;
+it is a rough browsing guide, not a stable global page number. Compare captures 25
+and 26: utilities return to bottom left, while the primary drawing action is either
+right-aligned or centered. Both include simplified stronger action artwork, a small
+optical upward adjustment and matching red heart treatments. Placement is not yet
+approved; these remain discussion mockups.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

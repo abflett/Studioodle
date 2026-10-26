@@ -72,6 +72,15 @@ trimmed from v4 using crop bounds (332, 48, 2033, 683), retaining an 18-pixel ma
 around visible ink. The derivative is `assets/magic-pencil-v4-cropped.png`; the
 original under `art/source/interface/` is untouched. No redraw or stretching.
 
+Action placement comparison: [utilities left, action right](25-focus-left-tools-right-action.png)
+and [utilities left, action centered](26-focus-left-tools-center-action.png).
+The viewer has an Action: right / center switch outside the app panel. Both
+variants use simplified, stronger pencil/book contours, fewer details, an optical
+upward adjustment, and consistent red dotted/filled hearts. Add has a small gap
+before page-specific Share/Delete. Page counts are confirmed relative to the
+current filter, not stable global page IDs. Original artwork is v5, with a cropped
+documentation derivative under `assets/` and crop metadata beside the original.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.
