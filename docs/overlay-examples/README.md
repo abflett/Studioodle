@@ -81,6 +81,27 @@ before page-specific Share/Delete. Page counts are confirmed relative to the
 current filter, not stable global page IDs. Original artwork is v5, with a cropped
 documentation derivative under `assets/` and crop metadata beside the original.
 
+Grid wells and arrows study:
+
+- [Single view with restored fancier artwork and centered utilities](27-focus-preferred-single.png).
+- [Six landscape pages in matching wells](28-grid-landscape-wells.png).
+- [Landscape, portrait and square together](29-grid-mixed-paper-wells.png).
+- [Next batch with two remaining pages](30-grid-next-batch.png).
+
+Use the grid toggle and Landscape / mixed paper control in the comparison viewer.
+Arrows page through batches of six and retain the current batch when returning to
+single view. Each well has a favorite heart and a filter-relative page count.
+Artwork is contained at its original aspect ratio; no stretching or cover crop.
+The six landscape previews are the canonical bundled pages. Portrait dragon and
+square butterfly are explicitly mockup-only single-subject paper-format studies
+using shipped stickers, not additions to the bundled coloring book.
+
+The grid shows Add in the footer and omits the drawing action because tapping a
+card opens it directly. Share/Delete have no implicit selected target in grid mode;
+their grid placement remains a design decision. The restored utility placement
+interprets the user's preferred earlier version as example 23; confirm if another
+reference was intended. No app UI has changed during this grid discussion.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.

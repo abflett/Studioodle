@@ -164,6 +164,15 @@ right-aligned or centered. Both include simplified stronger action artwork, a sm
 optical upward adjustment and matching red heart treatments. Placement is not yet
 approved; these remain discussion mockups.
 
+The user prefers the earlier fancier drawing action and utility placement over
+captures 25/26. Current mockup interprets that as capture 23 (v4 artwork, centered
+utilities, right CTA); exact reference can be corrected during review. Before app
+implementation, review grid cards in consistent wells, side navigation arrows and
+mixed paper proportions: captures 27-30. The six bundled landscape scenes plus
+mockup-only portrait/square single subjects demonstrate containment without crop.
+Grid page actions need an explicit target; current study shows Add in the footer
+and direct card-to-canvas opening, leaving grid Share/Delete placement unresolved.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

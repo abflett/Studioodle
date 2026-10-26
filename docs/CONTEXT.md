@@ -71,7 +71,9 @@ Coloring-page browsing should open the canvas directly when artwork or the drawi
 action is tapped. Prefer a large single preview; optional grid remains under review.
 Three layout examples plus grid and phone captures are in
 [docs/overlay-examples](overlay-examples/README.md). They are standalone discussion
-mockups; no app overlay implementation has been approved.
+mockups. Focus is preferred; the user wants the earlier fancier action/utility
+arrangement. Grid wells with side arrows and mixed paper proportions (captures
+28-30) are under discussion before app implementation.
 
 Brush/eraser gestures can now start in the surrounding drawing workspace and
 continue onto the page, with page clipping, single-action undo and cancellation.
