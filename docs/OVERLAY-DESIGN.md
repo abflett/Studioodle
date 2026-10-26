@@ -199,9 +199,6 @@ Terrain is the accepted detail-icon direction: gentle slope, hill, mountains.
 It is now shown in the current single/grid mockups (44-46). Categories are the
 next design topic; actual detail classification remains unimplemented.
 
-Current overlay studies match canvas-ribbon wells with solid tool-well colors,
-fine inset borders and soft shadows on filters and utilities. See captures 47-49.
-
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

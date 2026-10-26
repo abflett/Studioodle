@@ -143,12 +143,6 @@ Accepted terrain icons in context: [single view](44-focus-terrain-filters.png),
 replace the geometric detail symbols. Category icons are unchanged pending the
 next discussion; detail buttons still only demonstrate selection, not actual scoring.
 
-Ribbon-well styling: [single view](47-focus-ribbon-wells.png),
-[landscape grid](48-grid-ribbon-wells-landscape.png),
-[mixed grid](49-grid-ribbon-wells-mixed.png). Filter groups, top standalone controls
-and single-view utility group now use the canvas ribbon's solid tool-well colors,
-fine inset border and soft outer shadow. Layout and interactions are unchanged.
-
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.
