@@ -2,26 +2,21 @@ import { ColoringPagePicker } from './ColoringPagePicker';
 import { Brand } from './Brand';
 import { paperRotation } from '../app/paperLayers';
 import { ExportPictureDialog } from './ExportPictureDialog';
-import { PaperSetup } from './PaperSetup';
-import { DialogHeader } from './DialogHeader';
+import { BlankPageSetup } from './BlankPageSetup';
 import { saveWorkshopPage, workshopPages, workshopRepository } from '../app/coloringBookWorkshop';
 import { coloringPages } from '../app/coloringPages';
 import { DeletePictureDialog } from './DeletePictureDialog';
 import { isDesktop, toggleDesktopFullscreen, watchDesktopFullscreen } from '../platform/desktop';
 import type { AppSettings } from './settings';
 import { SelectionSettings } from './SelectionSettings';
-import { ColorPicker } from './ColorPicker';
 import { paperSize } from '../editor/document';
-import { presetSize } from '../editor/paperPresets';
 import type { PaperPresetId } from '../editor/paperPresets';
-import { contrastingDrawingColor } from '../editor/palette';
-import { closeOnBackdrop } from './dialog';
 import { createColoringPage } from '../editor/coloringPage';
 import { usePictureLibrary } from './usePictureLibrary';
 import type { SavedPicture } from '../editor/savedPicture';
 import { printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, Save, LoaderCircle, RotateCw } from 'lucide-react';
 import { pictureChoices, savedStackArtwork, portfolioPaper } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
@@ -116,19 +111,6 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   };
   const [initialSceneId, setInitialSceneId] = useState<string>();
 
-  const dialog = useRef<HTMLDialogElement>(null);
-  const stepHeading = useRef<HTMLHeadingElement>(null);
-  const open = step !== null && step !== 'scene';
-
-  useEffect(() => {
-    const modal = dialog.current;
-    if (!modal) return;
-    if (open && !modal.open) modal.showModal();
-    if (!open && modal.open) modal.close();
-    return () => { if (modal.open) modal.close(); };
-  }, [open]);
-  useEffect(() => { if (step) stepHeading.current?.focus({ preventScroll: true }); }, [step]);
-
   const currentSummary = saved[sampleIndex];
   const previewSize = paperSize(currentSummary?.format ?? 'landscape', currentSummary?.size);
   const previewRatio = previewSize.width / previewSize.height;
@@ -151,9 +133,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
       setRemoved(undefined); setActionError(undefined); setNotice('Added to coloring pages');
     } catch { setActionError('Could not save coloring page. Device storage may be full or unavailable.'); }
   };
-  const stepTitle = step === 'shape' ? 'Pick your paper' : step === 'paper' ? 'Pick a paper color' : 'Coloring Pages';
   const openPicture = (setup: EditorSetup) => {
-    dialog.current?.close();
+    setStep(null);
     // Templates are immutable starting points, each use gets a fresh saved-picture id.
     onOpen(step === 'scene' ? { ...setup, id: undefined } : setup);
   };
@@ -222,26 +203,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
         </section>
       </section>
 
-      <dialog className="setup-dialog" ref={dialog} aria-labelledby="setup-title" onCancel={() => setStep(null)} onClick={(event) => closeOnBackdrop(event, () => setStep(null))} onAuxClick={(event) => { if (event.button === 2) closeOnBackdrop(event, () => setStep(null)); }}>
-        <div className="wizard">
-          <DialogHeader id="setup-title" title={stepTitle} headingRef={stepHeading} onClose={() => setStep(null)} closeLabel="Close setup">
-            {step !== 'scene' && <div className="wizard-steps" aria-label={`Step ${step === 'shape' ? 1 : 2} of 2`}><span className={step === 'shape' ? 'active' : ''} /><span className={step === 'paper' ? 'active' : ''} /></div>}
-          </DialogHeader>
-          <div className="wizard-body">
-            {step === 'shape' && <PaperSetup paperPreset={paperPreset} orientation={orientation} onPreset={setPaperPreset} onOrientation={value => { setManualOrientation(true); setOrientation(value); }} />}
-            {step === 'paper' && <ColorPicker label="Canvas background colors" color={parseInt(background.slice(1), 16)} onChoose={(value) => setBackground(`#${value.toString(16).padStart(6, '0')}`)} />}
-
-          </div>
-          <footer className="wizard-footer">
-            {step === 'paper' ? <button className="icon-button" aria-label="Back to paper shape" onClick={() => setStep('shape')}><ArrowLeft aria-hidden="true" /></button> : <span />}
-            <button className="go-button" onClick={() => {
-              if (step === 'shape') setStep('paper');
-              else openPicture({ title: 'Blank Page', format: paperPreset === 'square' ? 'square' : orientation, size: presetSize(paperPreset, orientation), background, leafColor: contrastingDrawingColor(background) });
-            }}>{step === 'shape' ? 'Next' : 'Let’s draw'}<ArrowRight aria-hidden="true" /></button>
-          </footer>
-        </div>
-      </dialog>
-      {step === 'scene' && <ColoringPagePicker pages={scenes} initialPageId={initialSceneId} bundledIds={new Set(coloringPages.map(page => page.id))} onClose={() => setStep(null)} onOpen={setup => { setStep(null); openPicture(setup); }} onAdded={() => refreshBooks()} onDelete={page => { setDeletingPage(true); setPendingDelete(page); }} />}
+      {(step === 'shape' || step === 'paper') && <BlankPageSetup step={step} onStep={setStep} paperPreset={paperPreset} orientation={orientation} background={background} onPreset={setPaperPreset} onOrientation={value => { setManualOrientation(true); setOrientation(value); }} onBackground={setBackground} onClose={() => setStep(null)} onOpen={openPicture} />}
+      {step === 'scene' && <ColoringPagePicker pages={scenes} initialPageId={initialSceneId} bundledIds={new Set(coloringPages.map(page => page.id))} onClose={() => setStep(null)} onOpen={openPicture} onAdded={() => refreshBooks()} onDelete={page => { setDeletingPage(true); setPendingDelete(page); }} />}
       {exportingPicture && <ExportPictureDialog picture={exportingPicture} onClose={() => setExportingPicture(undefined)} />}
       <DeletePictureDialog picture={pendingDelete} onCancel={() => { setPendingDelete(undefined); setDeletingPage(false); }} onConfirm={removeCurrent} />
       <SelectionSettings settings={settings} onSettingsChange={onSettingsChange} open={settingsOpen} onClose={() => setSettingsOpen(false)} theme={theme} onThemeChange={onThemeChange} />

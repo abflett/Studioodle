@@ -168,3 +168,10 @@ URLs, bounded to six grid entries without editor hit maps. `coloringPageInfo`
 defines portable optional curated metadata; `coloringPageBrowsing` supplies
 lightweight defaults for custom pages. Imports validate and preview before one
 collection write, assigning fresh IDs. Favorites use a separate small local record.
+
+`BlankPageSetup` owns its native dialog and accessible icon step navigation while
+SelectionScreen retains preset/orientation/background choices. `PaperArtwork`
+draws physical-ratio folded silhouettes with size marks and optional contrasting
+summary ink. Blank setup opts into ColorPicker's full palette; other uses keep
+responsive pagination. The existing paper-presets module remains authoritative
+for physical dimensions and scene-unit conversion.

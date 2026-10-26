@@ -3,7 +3,8 @@
 The current Coloring Pages Focus design, broad categories and terrain icons are
 implemented with the six existing scenes. Current behavior is in
 [Coloring books](COLORING-BOOKS.md). Earlier studies below are design history, not
-additional implementation requirements. Other overlays remain future work.
+additional implementation requirements. The approved blank paper setup is also implemented; editor/settings/output
+overlays remain future work.
 
 Working design brief, 24 October 2026. This records the requested direction and
 proposals for discussion; it does not describe shipped behavior. Implementation
@@ -231,3 +232,7 @@ solid paper shapes, use icon-only orientation and two navigable step icons, and
 reuse the reviewed drawing action on the final color step. A small selected-paper
 preview carries context into color selection. The app remains unchanged pending
 review; see `overlay-examples/blank-paper.html`.
+
+Blank-page proposal 56-60 is approved and implemented. Current behavior is in
+[Interface](INTERFACE.md#blank-page-setup-overlays). The standalone examples remain
+references rather than app code. No new paper formats or painting behavior changed.

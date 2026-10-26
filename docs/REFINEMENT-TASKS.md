@@ -7,7 +7,8 @@ There is no planned engine migration or old-save compatibility work.
 
 ## Active product design: overlays and coloring-page discovery
 
-The Coloring Pages Focus layout is implemented using the six existing scenes;
+The Coloring Pages Focus layout is implemented using the six existing scenes,
+and the reviewed blank paper size/color steps are now implemented;
 [design brief](OVERLAY-DESIGN.md) and [examples](overlay-examples/README.md) retain
 the visual discussion. This remains the sole implementation backlog.
 
@@ -30,8 +31,10 @@ the visual discussion. This remains the sole implementation backlog.
   receive fresh IDs, with validation/size limits and manual clipboard fallback.
 - [x] Implement template import/share separately from PNG/SVG/PDF picture output;
   verify round trips, missing assets, malformed input, collisions and storage failure.
-- [ ] Apply the reviewed overlay pattern to paper/orientation, paper color,
-  stickers/categories, brush/fill, picture export, delete and settings. Reduce
+- [x] Apply the approved blank paper/orientation and color layout, with internal
+  size markings, step navigation, full palette, paper summary and shared drawing action.
+- [ ] Extend the reviewed overlay pattern to stickers/categories, brush/fill,
+  picture export, delete and settings. Reduce
   redundant visible headings while retaining meaningful guidance and dialog names.
 - [ ] Validate keyboard/focus, pointer/touch, responsive density, no clipped controls
   and browsing performance as the page/sticker libraries grow. Run appropriate web

@@ -7,8 +7,9 @@ function pageSize() {
   return matchMedia('(max-width: 559px), (max-height: 429px)').matches ? 16 : 32;
 }
 
-export function ColorPicker({ color, onChoose, label = 'Drawing colors' }: { color: number; onChoose: (color: number) => void; label?: string }) {
-  const [count, setCount] = useState(pageSize);
+export function ColorPicker({ color, onChoose, label = 'Drawing colors', allColors = false }: { color: number; onChoose: (color: number) => void; label?: string; allColors?: boolean }) {
+  const [responsiveCount, setCount] = useState(pageSize);
+  const count = allColors ? drawingColors.length : responsiveCount;
   const [page, setPage] = useState(() => {
     const index = drawingColors.findIndex((item) => item.value === color);
     return Math.floor(Math.max(0, index) / pageSize());
@@ -19,7 +20,7 @@ export function ColorPicker({ color, onChoose, label = 'Drawing colors' }: { col
     return () => window.removeEventListener('resize', resize);
   }, []);
   const pages = drawingColors.length / count;
-  const current = Math.min(page, pages - 1);
+  const current = allColors ? 0 : Math.min(page, pages - 1);
   return <div className="color-picker">
     <div className="art-colors" role="group" aria-label={label}>
       {drawingColors.slice(current * count, (current + 1) * count).map((item) => <button

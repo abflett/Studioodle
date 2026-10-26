@@ -160,3 +160,22 @@ The grid omits utilities and the drawing action. Arrows/left-right keys and hori
 swipes navigate; details can be toggled off to include all levels. Empty filters
 have an explicit reset. Add/Share use a separate focused transfer dialog, and
 Delete appears only for custom pages. See [Coloring books](COLORING-BOOKS.md).
+
+## Blank page setup overlays
+
+The reviewed two-step blank-page layout is implemented. Size markings (A4, A5,
+4 x 6 in, 6 x 6 in) sit inside solid folded paper artwork rather than below it.
+The selected preset has a gold paper face and highlighted well; physical size
+ratios, dimensions and orientation behavior are unchanged. Tall/Wide controls are
+icon-only with accessible labels; square disables orientation without clearing
+the prior choice. The paper and palette step icons provide direct back/forward
+navigation while keeping selections intact. Redundant headings/captions are
+visually hidden; dialog names, focus management and tooltips remain.
+
+The color step shows the complete 32-color palette, a small paper-size/orientation
+summary reflecting the chosen background, and the shared magical pencil/book
+Start action. Summary text uses contrasting ink on dark/light backgrounds. On
+narrow screens presets use two columns and colors four; short landscape uses a
+compact eight-column palette. Shorter viewports scroll only the choice area,
+leaving step, close/back and action controls reachable. Other editor color pickers
+retain their existing pagination. Preview references are in overlay examples 56-60.
