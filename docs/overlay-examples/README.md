@@ -102,6 +102,12 @@ their grid placement remains a design decision. The restored utility placement
 interprets the user's preferred earlier version as example 23; confirm if another
 reference was intended. No app UI has changed during this grid discussion.
 
+Edge-fit grid refinement: [landscape](31-grid-edge-fit-landscape.png),
+[mixed paper](32-grid-edge-fit-mixed.png). Card padding is removed; each image
+expands until one dimension meets the card edges, retaining original proportions
+and the full drawing. Unused space on the other axis stays as the card well.
+Favorite and page-number badges stay fixed at top/bottom right and may overlay art.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.

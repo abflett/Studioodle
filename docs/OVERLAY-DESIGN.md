@@ -173,6 +173,10 @@ mockup-only portrait/square single subjects demonstrate containment without crop
 Grid page actions need an explicit target; current study shows Add in the footer
 and direct card-to-canvas opening, leaving grid Share/Delete placement unresolved.
 
+Grid refinement removes image padding so previews meet card edges along their
+limiting dimension, with fixed overlaid heart/page badges. Keep full artwork and
+aspect ratios rather than cropping or stretching; see captures 31/32.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.
