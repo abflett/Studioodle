@@ -13,6 +13,15 @@ the proposed app overlays themselves have no visible headings or button captions
 | Optional grid | [Desktop](04-grid.png) | Six previews, with independent heart targets |
 | Narrow portrait | [Dark](05-phone-focus.png), [light](06-phone-light.png) | Wrapped filters and a panel inset from the screen edges |
 
+## Focus refinement
+
+The current HTML incorporates the desktop/landscape refinement. New overlay-only
+captures: [ordinary heart](07-focus-refined.png) and [favorited](08-focus-favorite.png).
+The page carries a current/total badge and dotted red favorite heart, filled when
+active. Grid/single sits beside the filters after the favorites filter. Earlier
+screenshots above retain the initial comparison layouts; phone refinements are
+not part of this round. Page numbers currently refer to the filtered sequence.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.

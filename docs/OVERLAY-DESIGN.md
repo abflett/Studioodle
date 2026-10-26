@@ -123,6 +123,11 @@ When switching back to single view, retain the last browsing position rather tha
 requiring a selected page. Review [the layout examples](overlay-examples/README.md)
 before implementing. The three arrangements and icon choices are proposals.
 
+Focus is the preferred layout. The next desktop study moves current/total page
+numbering and the red dotted/filled favorite heart onto the preview, and places
+the grid toggle after the favorites filter. See the overlay-only Focus captures
+in the examples folder. Badge styling remains provisional.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.
