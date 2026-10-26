@@ -73,7 +73,10 @@ Three layout examples plus grid and phone captures are in
 [docs/overlay-examples](overlay-examples/README.md). They are standalone discussion
 mockups. Focus is preferred; the user wants the earlier fancier action/utility
 arrangement. Grid wells with side arrows and mixed paper proportions (captures
-28-30) are under discussion before app implementation.
+28-30) led to an overview grid: tap a page to return to single view, no grid
+utilities, compact range badge. Terrain icons (slope/hill/mountains) are accepted
+for detail and shown in captures 44-46. Categories are next to discuss before
+app implementation.
 
 Brush/eraser gestures can now start in the surrounding drawing workspace and
 continue onto the page, with page clipping, single-action undo and cancellation.

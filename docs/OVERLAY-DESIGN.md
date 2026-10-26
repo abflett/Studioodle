@@ -195,6 +195,10 @@ The overview grid flow is accepted for now. Detail-icon proposals are being
 compared independently: filling bar, vial and terrain (gentle slope, hill,
 mountains). See wells 41-43 and `difficulty-options.html`; no final icon choice.
 
+Terrain is the accepted detail-icon direction: gentle slope, hill, mountains.
+It is now shown in the current single/grid mockups (44-46). Categories are the
+next design topic; actual detail classification remains unimplemented.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.

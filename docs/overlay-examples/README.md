@@ -137,6 +137,12 @@ well treatment. Bar/vial imply an amount but can resemble battery/potion status;
 terrain suggests increasing challenge but can resemble a subject/theme category.
 No choice is approved and these studies do not change the current overlay icons.
 
+Accepted terrain icons in context: [single view](44-focus-terrain-filters.png),
+[landscape grid](45-grid-terrain-landscape.png),
+[mixed grid](46-grid-terrain-mixed.png). Gentle slope, hill and mountains now
+replace the geometric detail symbols. Category icons are unchanged pending the
+next discussion; detail buttons still only demonstrate selection, not actual scoring.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.
@@ -147,7 +153,7 @@ No choice is approved and these studies do not change the current overlay icons.
   The example displays a notice; it does not actually open an editor.
 - Hearts toggle in memory only. The top heart filters to favorites. Category icons
   filter a small illustrative grouping of the six shipped pages.
-- Circle/hexagon/floral-outline icons propose a visual language for detail.
+- Gentle-slope/hill/mountain icons convey a visual language for detail.
   They change their selected appearance only; no difficulty scoring is implemented.
 - Add, Share, Close and Delete show explanatory notices instead of performing writes.
   Delete is displayed to compare placement for a custom-page scenario; the shipped
