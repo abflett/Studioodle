@@ -115,6 +115,12 @@ edge/shadow; the favorite badge attaches to the paper corner, not an invisible
 cell corner. Bottom range remains the only grid numbering. The top favorites
 filter uses a solid red outline, filled when active; page hearts remain dotted.
 
+Solid centered favorite badges: [single](35-focus-centered-solid-heart.png),
+[landscape grid](36-grid-solid-hearts-landscape.png),
+[mixed grid](37-grid-solid-hearts-mixed.png). Page hearts now use solid red outlines
+and explicit zero-padding flex centering with fixed SVG dimensions, preventing
+small badges from pushing the icon off-center. Favorited hearts remain filled.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.

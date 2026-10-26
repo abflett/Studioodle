@@ -182,6 +182,9 @@ floating papers with subtle edges/shadows and hearts attached to the actual pape
 corners. The filter heart returns to a solid red outline. Grid range stays below;
 see captures 33/34. Paper proportions and full drawings remain unchanged.
 
+Favorite badges now use solid outlines too, with explicit centered icon alignment
+and no padding-induced offset; favorited hearts remain filled. See captures 35-37.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.
