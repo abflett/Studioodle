@@ -53,6 +53,12 @@ and generation metadata are retained as `art/source/interface/magic-pencil-flour
 This variant displays the generated image directly, including its pale wing accents;
 version 1 is preserved for comparison. No app controls have been changed.
 
+Polished pencil/book study: [Focus](19-focus-polished-pencil-book.png),
+[favorited](20-focus-polished-pencil-book-favorite.png). Removes the page wings,
+white highlights and flower. A simple flying pencil meets a blank open book,
+with restrained wind strokes and sparkles. Original transparent artwork and
+metadata are `art/source/interface/magic-pencil-flourish-v3.*`.
+
 ## Interactions in the example
 
 - Switch A/B/C using the controls outside the overlay; Light / Dark changes theme.

@@ -145,6 +145,10 @@ A subsequent action study gives the pencil page-like wings and an open coloring
 book destination, with short wind strokes replacing the ink-like loop. See Focus
 captures 17 and 18 and `magic-pencil-flourish-v2` under original interface artwork.
 
+The refined action removes paper wings, white highlights and the flower, keeping
+a blank open book, clean pencil, restrained wind strokes and sparkles. See Focus
+captures 19 and 20 and original `magic-pencil-flourish-v3` artwork.
+
 ## First discussion
 
 1. Choose a single-preview layout and whether an optional grid overview is useful.
