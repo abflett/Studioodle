@@ -1,4 +1,4 @@
-﻿# Magical, playful and zen / three icon directions
+﻿# Magical, playful and zen / seven icon directions / two rounds
 
 Generated on 29 October 2026 with the **built-in image_gen tool**. No CLI/API fallback
 was used. [Exact generation prompts and C's targeted edit](prompts.json) are retained.
@@ -23,14 +23,35 @@ Only that corrected final board is retained here. Original generated files remai
 in the tool's default generated-images directory; these project copies are the
 review deliverables.
 
-Suggested next comparison: A's character with C's restraint for small ribbon and
-overlay controls, using B as inspiration for larger painted entry-point actions.
-This is a recommendation, not a selected style. Keep functional cues unmistakable:
-a plus adds, a check confirms, a peeled corner means stickers, and undo points left.
-Magic should come from shape, gesture and a few purposeful accents, rather than
-putting a sparkle on every icon.
+## Round two / following Paper Charms
 
-The app is unchanged. After choosing a direction, refine a small representative
+Paper Charms is the user's current favorite: warm color, texture and depth, mostly
+gender-neutral, with a good balance of life and simplicity. Enchanted Ink reads
+well but overuses whiskers and sparks; a plus-like sparkle can mislead. Gentle
+Gesture feels too flat and lifeless beside the other options. This feedback
+supersedes the initial suggestion to combine A and C.
+
+The four follow-ups use the actual app's easel, coloring-book and paper-stack
+paintings as image references. [Exact round-two prompts](round-02-prompts.json)
+record the inputs and each direction. The same six functions and paired light/dark
+button examples keep the comparison consistent.
+
+| Direction | Board | What it explores | What to refine |
+| --- | --- | --- | --- |
+| D / Watercolor workshop | [Full board](04-watercolor-workshop.png) | Fine ink edges, watercolor washes, cream paper and warm wood, close to the existing entry artwork | Reduce texture and detail; keep the book's plus clearly an action rather than a medallion |
+| E / Handmade keepsakes | [Full board](05-handmade-keepsakes.png) | Tactile wood and paper, quiet craft materials and warm carved forms | Simplify grain and shading; check consistent weight across wood and paper objects |
+| F / Gouache daydream | [Full board](06-gouache-daydream.png) | Broader painted color, softer edges and gently modeled volume | Preserve silhouettes and contrast when reduced, especially pale forms on light buttons |
+| G / Folded storybook | [Full board](07-folded-storybook.png) | Curling cream paper, teal undersides and flowing folds; closest continuation of Paper Charms | Simplify folds and fiber texture; verify that the sculpted brush reads immediately at small size |
+
+The user chose B / Paper Charms over the follow-ups. The production target is
+smooth, compact SVG artwork that preserves its soft depth and rounded forms,
+without fiber texture or heavy outlines. Review the
+[single printer study](../paper-charms/printer-study/index.html) before expanding.
+Keep functional cues unmistakable: a plus adds, a check confirms, a peeled corner
+means stickers, and undo points left. Magic should come from shape and gesture,
+rather than putting a sparkle on every icon.
+
+The app is unchanged. Before expanding the selected direction, refine a small representative
 family at true 26–32px and test its light/dark, selected/disabled and touch states
 before redrawing all icons. Preserve editable vector sources for production where
 appropriate; do not treat the raster sheets as an automatically usable icon atlas.

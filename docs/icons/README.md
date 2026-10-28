@@ -28,11 +28,17 @@ are exact snapshots of their current simple SVG shapes.
 
 ## New art directions
 
-[Three ImageGen boards and exact prompts](directions/README.md) explore the same
+[Seven ImageGen boards across two rounds, with exact prompts](directions/README.md) explore the same
 six controls: add to coloring pages, brush, fill, stickers, colors and undo.
-These are raster concept sheets, not accepted runtime replacements. No application
+Paper Charms is selected; four follow-ups draw from the existing
+easel, book and paper-stack paintings. These are raster concept sheets, not accepted runtime replacements. No application
 icons, mechanics or styles have changed. Review the visual family first, then make
 and test a small set of production-size icons before extending it to the whole app.
+
+The current next step is the [single printer SVG study](paper-charms/printer-study/index.html):
+smooth rounded paths and gradient shading, shown at 26, 32 and 48px on both themes.
+The user requested this checkpoint before any further full-set work. Large textured
+raster trials and the unfinished integration are parked outside the app.
 
 Verified: all 135 cards and 15 groups render, source images resolve, the atlas has no
 horizontal overflow at desktop size, and every imported Lucide glyph is represented.
