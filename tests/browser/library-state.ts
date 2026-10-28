@@ -19,8 +19,7 @@ export async function checkLibraryState() {
     document: { version: 5, width: 32, height: 24, surfaces: [{ id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff }] },
   }));
   const initial = [...pictures], gates = new Map<string, () => void>();
-  let lists = 0;
-  pictureRepository.list = async () => { lists++; return pictures.map(pictureSummary); };
+  pictureRepository.list = async () => pictures.map(pictureSummary);
   pictureRepository.get = async id => pictures.find(picture => picture.id === id);
   pictureRepository.save = async picture => { pictures = [picture, ...pictures.filter(item => item.id !== picture.id)]; };
   pictureRepository.delete = id => new Promise(resolve => { gates.set(id, () => { pictures = pictures.filter(item => item.id !== id); resolve(); }); });
@@ -44,20 +43,6 @@ export async function checkLibraryState() {
       assert(host.querySelector('.saved-preview')?.getAttribute('aria-busy') === 'false', 'Warm preview must be ready for the next painted frame');
       assert(!host.querySelector('.preview-loading'), 'Warm navigation must not flash a loading indicator');
     }
-    const background = { ...initial[0]!, id: 'background-'+crypto.randomUUID() };
-    let finish!: () => void;
-    const prepared = new Promise<void>(resolve => { finish = resolve; });
-    const before = lists;
-    const saving = original.save(background, async () => { await prepared; return background; });
-    try {
-      await waitFor(() => lists > before);
-      await new Promise(requestAnimationFrame);
-      const duringSave = lists;
-      finish(); await saving;
-      await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);
-      assert(lists === duringSave, 'Save completion must not refresh an unchanged library or restart preview loading');
-      assert(host.querySelector('.saved-preview')?.getAttribute('aria-busy') === 'false','An unrelated save must keep the current preview ready');
-    } finally { finish(); await saving; await original.delete(background.id); }
     current!.setSampleIndex(2);await waitFor(() => current?.sampleIndex === 2);
     const actions=current!;
     const first=actions.removePicture(initial[0]!), second=actions.removePicture(initial[1]!);
@@ -76,6 +61,6 @@ export async function checkLibraryState() {
     assert(getComputedStyle(indicator).visibility === 'visible', 'Slow loads must still show the spinner');
     flushSync(() => root.render(createElement(SavedPreview, { picture: initial[0]!, unavailable: true })));
     assert(getComputedStyle(indicator).visibility === 'visible' && !!indicator.querySelector('svg'), 'Load failures must display immediately');
-    return { concurrentDeletes: true, selectionClamp: true, restoreSelection: true, warmNavigation: true, quietSaveCompletion: true, delayedSpinner: true };
+    return { concurrentDeletes: true, selectionClamp: true, restoreSelection: true, warmNavigation: true, delayedSpinner: true };
   } finally { root.unmount();host.remove();Object.assign(pictureRepository,original); }
 }

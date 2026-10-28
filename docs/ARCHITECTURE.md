@@ -128,25 +128,14 @@ records. Metadata and artwork save/delete atomically in the same transaction.
 The home screen lists only ordered summaries and loads a cancellable five-picture
 window: current, next, previous, two ahead, two behind. Only the selected picture
 prepares a preview. See [picture-library measurements](PICTURE-LIBRARY.md).
-Completed actions capture detached save checkpoints with copied property/region
-containers and shared immutable geometry. `app/pictureSaveQueue.ts` owns one active
-write and one latest pending checkpoint per drawing beyond canvas lifetime. Only
-uncompacted checkpoint regions use the existing paint worker; preparation never
-waits on or rewrites live artwork/history. Save completion follows checkpoint
-compaction and transaction commit, while editing continues independently. Home
-finishes input and navigates without a storage barrier. The repository overlays
-pending checkpoints for immediate browsing/reopening and notifies the library only
-when checkpoint contents change. Save completion/retry status does not restart
-the five-picture loader or unchanged previews. Per-region save preparations reuse
-compacted immutable paint until that region changes; undo invalidates the affected
-region. Live maintenance can reuse the same prepared result. Background saves yield
-the input task first, and ending a gesture no longer forces duplicate compaction.
-Delete cancels pending checkpoints and waits out an active write
-before removing the stored record. Failures retain the latest checkpoint, retry
-with 1–30 second backoff and surface a retry notice. IndexedDB uses normal durability;
-an interrupted transaction preserves the previous committed drawing and summary,
-but the most recent actions may be lost on process/power loss. No minute timer,
-separate persistence worker, backup journal or persisted undo log is introduced.
+Saves use the original minute/Home/Ctrl+S path. The session waits for live paint
+compaction, captures the current document and completes only after the atomic
+IndexedDB transaction commits. Edits arriving during a save retain their order
+in the session queue. Dirty revisions skip untouched and unchanged drawings;
+failed writes remain dirty and keep Home/guarded close in the editor. There is no
+per-action save queue, persistence checkpoint cache or additional compaction job.
+The worker, live paint maintenance and rendering/loading paths match 6425608.
+The database namespace and document format are unchanged, preserving user artwork.
 Settings and the atomic custom-page collection
 still use small localStorage records. Development drawings from the
 old localStorage repository are not migrated to the IndexedDB library.

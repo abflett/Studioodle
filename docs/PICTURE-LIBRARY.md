@@ -62,47 +62,30 @@ one transaction, and completion means the transaction committed. A failed write
 leaves both previous records intact. There is no migration from previous
 development libraries, and the vector document format has not changed.
 
-## Action-based saving
+## Save policy and regression coverage
 
-Completed strokes, fills and sticker edits (including undo) queue detached
-checkpoints. The app-level queue survives canvas disposal, with one active write
-and one latest pending checkpoint per drawing. Home can browse and reopen the
-latest pending checkpoint immediately. Live input does not wait for disk or
-checkpoint compaction. Failures retain the pending drawing, retry with increasing
-1–30 second delays and show an app-wide retry notice. Deletion discards queued
-checkpoints and waits for the active write before deleting, preventing resurrection.
+Saving runs every minute and on Home/Ctrl+S/guarded desktop close, only when artwork
+changed. It waits for live paint compaction and one atomic drawing/summary write.
+The action-save queue, checkpoint caches and pending library overlay have been
+removed; normal reads and the five-picture window use the pre-change paths.
+The drawing database remains studioodle-library-v8, with existing documents intact.
 
-Checkpoints copy small surface/region/blob containers and share immutable vector
-geometry. Only uncompacted regions go through the existing paint worker before
-the atomic IndexedDB write. No input-stroke log, persisted undo history or separate
-persistence worker is required. Normal IndexedDB durability is retained; the latest
-actions can be lost on abrupt shutdown, while a transaction abort preserves the
-previous complete drawing and its summary. Browser backgrounding finishes current
-pointer input; it does not rely on an asynchronous unload save.
+A same-workload comparison against commit 6425608 used a synthetic colored moon
+sorceress (199 regions) and 16 multi-sample brush gestures. Action saving performed
+12 writes and sent 2,198 paint blobs across 42 worker jobs; minute/manual saving
+performed one explicit write and sent 832 blobs across 33 jobs. Live paint and
+undo still use the worker. This confirms added scheduling/storage load; it does
+not reproduce the user's exact saved picture or establish its loading latency.
+After outstanding work drained, standalone load/render was about 8-14 ms in both
+versions on this machine. Responsiveness takes priority over per-action recovery.
 
-Save completion and retries no longer trigger summary reloads or restart the
-five-picture window. Only new checkpoint contents notify browsing; unchanged
-summary lists keep their existing identity and previews. Explicit retry still
-invalidates the failed current record. Pending metadata is captured before and
-after storage reads, so a write finishing mid-read needs no extra library refresh.
-
-`npm run test:save` checks eight sticker flips over an existing painted page. The
-28 October focused worker test went from eight paint-compaction jobs (884 ms total)
-to one reused job (227 ms), with eight writes and maximum synchronous dispatch
-around 1 ms in both runs. The writer is a test double: these totals measure
-preparation/queue behavior, not disk throughput or physical pointer latency.
-The same regression checks that live maintenance reuses a brush save's preparation.
-The 120-drawing library profile retained five records, with a prefetched current
-record available in 0.1 ms and cold reads around 19 ms; those timings exclude
-rendering. Browser interaction tests verify warm previews stay ready while an
-unrelated save finishes.
-
-The 28 October desktop browser regression captured a synthetic 7.0 MB drawing
-(180,001 vertices) in 0.3 ms using shared geometry. Its direct validation/storage
-write took 113 ms. These are single-run measurements, exclude worker compaction
-and are not tablet or power-loss guarantees. The same suite verifies aborted-write
-rollback, pending Home previews, retry, continued input and save completion after
-canvas disposal. Run `npm run test:browser`; generated measurements stay in `work/`.
+`tests/browser/moon-save-recovery.ts` retains the colored-sticker workload and
+asserts zero writes while painting, one explicit save, no unchanged rewrite and
+preserved colored regions through repeated load/render. Run the full browser suite
+or `node scripts/test-browser.mjs --moon-profile`. A restored-path run loaded and
+rendered in roughly 8-9 ms. Timings are diagnostics, not device-level guarantees.
+Storage regressions still abort a transaction mid-write to verify both previous
+committed records survive. No browser data reset, migration or native build is needed.
 
 ## Browser measurement, 2026-10-22
 

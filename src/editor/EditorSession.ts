@@ -12,8 +12,7 @@ import type { SavedPicture } from './savedPicture';
 import type { ArtworkChange } from './artworkChange';
 
 export type EditorSessionPorts = {
-  save: (picture: SavedPicture, prepare?: () => Promise<SavedPicture>) => void|Promise<void>;
-  autoSave?: boolean;
+  save: (picture: SavedPicture) => void|Promise<void>;
   changed: () => void;
 };
 
@@ -25,10 +24,6 @@ export class EditorSession {
   private revision = 0;
   private nextRevision = 0;
   private savedRevision = 0;
-  private lastRequestedRevision = 0;
-  private savesPending = 0;
-  private lastSave?: { revision: number; result: Promise<boolean> };
-  private lastSnapshotTime = 0;
   private readonly previousRevisions = new WeakMap<ArtworkChange, number>();
   private color: number;
   private selected?: string;
@@ -51,7 +46,6 @@ export class EditorSession {
   private defer(action:()=>void){if(!this.pendingOperation)return false;this.deferred.push(action);return true;}
   constructor(private readonly setup: EditorSetup, private readonly ports: EditorSessionPorts) {
     if (!setup.id) throw new Error('An editor document must have an ID before opening.');
-    if ('updatedAt' in setup && typeof setup.updatedAt === 'number') this.lastSnapshotTime = setup.updatedAt;
     preparePaintWorker();
     const initial = initialDrawingSettings(setup);
     this.color = initial.color;
@@ -80,14 +74,13 @@ export class EditorSession {
     }
     if (command.type === 'save') {
       this.end();
-      if (this.revision === this.savedRevision && this.revision === this.lastRequestedRevision && !this.savesPending) { command.onComplete(true, false); return; }
-      const written = this.lastSave?.revision !== this.revision;
-      void this.saveCurrent().then(ok => command.onComplete(ok, ok && written));
-      return;
-    }
-    if (command.type === 'leave') {
-      this.end();
-      command.onComplete();
+      if (this.revision === this.savedRevision) { command.onComplete(true, false); return; }
+      const revision = this.revision;
+      this.pendingOperation=this.document.compactPaint().then(()=>this.ports.save(this.snapshot())).then(
+        ()=>{ this.savedRevision = revision; command.onComplete(true, true); },()=>command.onComplete(false)).finally(()=>{
+          this.pendingOperation=undefined;
+          while(!this.pendingOperation&&this.deferred.length)this.deferred.shift()!();
+        });
       return;
     }
     if (command.type === 'cancel-input') {
@@ -160,7 +153,6 @@ export class EditorSession {
       if (change) {
         this.document.undoChange(change);
         this.revision = this.previousRevisions.get(change)!;
-        this.autoSave();
       }
       this.document.setFocus(this.focused);
       this.selected = this.focused;
@@ -178,30 +170,10 @@ export class EditorSession {
     }
     this.notifyChanged();
   }
-  private snapshot(document = this.document.serialize()): SavedPicture {
-    this.lastSnapshotTime = Math.max(Date.now(), this.lastSnapshotTime + 1);
+  private snapshot(): SavedPicture {
+    const document=this.document.serialize();
     return { id: this.setup.id!, title: this.setup.title, format: this.setup.format, size: paperSize(this.setup.format, this.setup.size),
-      background: this.setup.background, leafColor: this.setup.leafColor, version: document.version, updatedAt: this.lastSnapshotTime, document };
-  }
-  private autoSave() { if (this.ports.autoSave) void this.saveCurrent(); }
-  private saveCurrent(): Promise<boolean> {
-    if (this.lastSave?.revision === this.revision) return this.lastSave.result;
-    if (this.revision === this.savedRevision && this.revision === this.lastRequestedRevision && !this.savesPending) return Promise.resolve(true);
-    const revision = this.revision;
-    const checkpoint = this.document.checkpoint();
-    const picture = this.snapshot(checkpoint.document);
-    this.lastRequestedRevision = revision;
-    this.savesPending++;
-    // The queue receives the checkpoint immediately, including for Home previews.
-    let saving: void | Promise<void>;
-    try { saving = this.ports.save(picture, async () => ({ ...picture, document: await checkpoint.compact() })); }
-    catch { saving = Promise.reject(Error('Could not save drawing.')); }
-    const result = Promise.resolve(saving).then(() => { this.savedRevision = revision; return true; }, () => {
-      if (this.lastSave?.revision === revision) this.lastSave = undefined;
-      return false;
-    }).finally(() => { this.savesPending--; });
-    this.lastSave = { revision, result };
-    return result;
+      background: this.setup.background, leafColor: this.setup.leafColor, version: document.version, updatedAt: Date.now(), document };
   }
   get needsAnimation() { return !this.disposed && !this.pendingOperation && this.activePointer !== undefined && ((this.tool === 'brush' && this.brushOptions.kind === 'spray') || !!this.stroke?.remaining); }
   dispose() {
@@ -230,7 +202,6 @@ export class EditorSession {
     this.previousRevisions.set(change, this.revision);
     this.revision = ++this.nextRevision;
     this.history.push(change);
-    this.autoSave();
   }
   private edit(change: () => boolean) {
     this.document.beginChange();
@@ -256,11 +227,7 @@ export class EditorSession {
       if (this.selected) {
         const position = this.document.position(this.selected)!;
         this.drag = { id: this.selected, dx: point.x - position.x, dy: point.y - position.y };
-      } else {
-        this.selected = this.focused;
-        // Keep this pointer stream in Select until release, so it cannot also fill.
-        this.selectionExit = !this.focused;
-      }
+      } else { this.selected = this.focused; this.selectionExit = !this.focused; }
     } else {
       this.previous = point;
       this.stroke = this.tool === 'brush' && this.brushOptions.kind !== 'spray' ? new StrokeSmoothing(point) : undefined;
@@ -313,8 +280,8 @@ export class EditorSession {
     }
     const change=this.document.endChange();
     if(flush)this.recordChange(change);else this.document.undoChange(change);
-    // Paint maintenance already schedules itself; do not duplicate each save job
-    // or force compaction during tool changes and selection-only gestures.
+    void this.document.compactPaint();
+    // Consume the Select pointer stream before returning to Fill.
     const selectionExit = this.selectionExit;
     if (flush && selectionExit) this.tool = 'bucket';
     this.selectionExit = false;

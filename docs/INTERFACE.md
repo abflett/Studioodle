@@ -21,16 +21,13 @@ Artwork owns surface paint, regions, placement, order, serialization and composi
 Canvas2D renders vector ink and vector paint at display resolution. `EditorSession` handles editing commands, undo and gesture transactions; the browser canvas adapter handles
 pointer input and draws the selection overlay. React positions the page and controls Fit-relative zoom.
 
-Each completed artwork action queues a background save of the version-5 document;
-there is no minute timer. Untouched blank paper and unchanged coloring pages are
-not added to Your pictures. Reopened drawings are not rewritten until edited.
-Tool/color choices, view changes and canceled gestures do not count as edits.
-Undo queues the restored artwork. Home finishes input and returns immediately,
-without waiting for storage; the queue and latest previews survive the canvas.
-Failed writes preserve the previous committed drawing, retry with bounded backoff
-and show a retry notice on Home or in the editor. Ctrl+S waits for its checkpoint;
-normal desktop close also flushes pending writes. A browser/process shutdown may
-lose the latest pending actions; no asynchronous unload guarantee is made.
+Home saves pending edits before returning; autosave checks every minute. Ctrl+S
+and guarded desktop close use the same save path. Untouched blank paper, unchanged
+coloring pages and clean reopened drawings are not written. Tool/color choices,
+view changes and canceled gestures do not count as edits. Undoing to the opening
+state before the first save, or the last-saved revision, skips the write. Failed
+saves keep the drawing open for retry. Saving waits for paint compaction and the
+atomic storage commit; there are no per-action background writes.
 Your pictures browses version-5 local saves and offers delete/undo-delete, PNG/SVG/PDF export and vector printing.
 Old development save formats are intentionally unsupported. See [the sticker pipeline](STICKER-PIPELINE.md) for
 the authoring format, region maps, loading/caches and cleanup decisions.
@@ -101,7 +98,7 @@ The primary ribbon uses icon-only controls in this order:
 
 Home | Move page, Zoom, Select | Erase, Brush, Fill, Stickers, Colors | Undo
 
-Home is separate because it leaves the workspace. View and selection controls form one group; drawing controls form another. Undo stays at the far end as an easy-to-find recovery action away from Home. This placement is a product design choice, not a universal usability rule.
+Home is separate because it saves and leaves the workspace. View and selection controls form one group; drawing controls form another. Undo stays at the far end as an easy-to-find recovery action away from Home. This placement is a product design choice, not a universal usability rule.
 
 Groups use subtle rounded wells separated by spacing, with compact outer ribbon padding. On narrow screens, the primary ribbon stays on one row and shares the available width proportionally between its ten buttons. Buttons use 48px targets on wide screens and 44px height on compact screens, with widths adapting to the available space, accessible names, desktop title tooltips, visible keyboard focus, and selected-tool feedback. The color picker uses a neutral palette icon with a separate current-color dot so the icon remains visible for very light or dark colors.
 

@@ -141,7 +141,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     <div className="ribbon-shell">
     <header className="art-ribbon main-ribbon" aria-label="Art tools">
       <div className="ribbon-group" role="group" aria-label="Home">
-        <button title="Home" aria-label="Go home" onClick={goHome}><House aria-hidden="true" /></button>
+        <button title="Home" aria-label="Save and go home" onClick={goHome}><House aria-hidden="true" /></button>
       </div>
       <div className="ribbon-group" role="group" aria-label="View and selection">
         <button title="Move the page (H)" aria-keyshortcuts="H" aria-label="Move the page" aria-pressed={tool === 'pan'} onClick={() => chooseTool('pan')}><Move aria-hidden="true" /></button>

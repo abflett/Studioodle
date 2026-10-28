@@ -10,8 +10,6 @@ import type { MultiPolygon, Pair } from './polygonGeometry';
 import type { PaintBlob, PaintSnapshot, VectorPaintData, VectorPaintRegion } from './vectorPaintTypes';
 import type { VectorDefinition } from './vectorDefinition';
 
-type SaveRegion = { version: number; snapshot: PaintSnapshot; prepared?: Promise<VectorPaintRegion> };
-
 export class VectorPaint {
     private regions:Map<number,VectorPaintRegion>;
     private display?:PaintDisplayCache;
@@ -25,9 +23,6 @@ export class VectorPaint {
     private failed=false;
     private stableCounts=new Map<number,number>();
     private compacted=new WeakSet<PaintBlob[]>();
-    private regionVersions = new Map<number, number>();
-    private saveRegions = new Map<number, SaveRegion>();
-    private changedRegion(id: number) { this.regionVersions.set(id, (this.regionVersions.get(id) ?? 0) + 1); }
     private paths=new WeakMap<MultiPolygon,Path2D>();
     private coveragePaths=new WeakMap<VectorPaintRegion,{blobs:PaintBlob[];count:number;path:Path2D}>();
     private path(geometry:MultiPolygon){let path=this.paths.get(geometry);if(!path){path=paintPath(geometry);this.paths.set(geometry,path);}return path;}
@@ -50,38 +45,7 @@ export class VectorPaint {
             needsCompaction:!!region?.blobs.length&&!this.compacted.has(region.blobs),compacted:this.stableCounts.get(id)??0};
     }
     snapshotRegions(){return [...this.regions.keys()].map(id=>this.snapshotRegion(id));}
-    /** Reuse prepared paint across geometry-only edits and only compact changed regions. */
-    checkpoint() {
-        const entries = [...this.regions.keys()].map(id => {
-            const version = this.regionVersions.get(id) ?? 0;
-            let entry = this.saveRegions.get(id);
-            if (!entry || entry.version !== version) {
-                entry = { version, snapshot: this.snapshotRegion(id) };
-                this.saveRegions.set(id, entry);
-            }
-            return entry;
-        });
-        for (const id of this.saveRegions.keys()) if (!this.regions.has(id)) this.saveRegions.delete(id);
-        const data: VectorPaintData = { version: 1, regions: entries.map(entry => entry.snapshot.region!) };
-        return { data, compact: async (): Promise<VectorPaintData> => {
-            const pending = entries.filter(entry => entry.snapshot.needsCompaction && !entry.prepared);
-            if (pending.length) {
-                const job = computePaint({ regions: pending.map(entry => entry.snapshot.region!), compacted: pending.map(entry => entry.snapshot.compacted ?? 0) });
-                pending.forEach((entry, index) => {
-                    const prepared = job.then(result => {
-                        if (!result[index]) throw Error('Could not prepare drawing for saving.');
-                        entry.snapshot = { region: result[index]!, needsCompaction: false, compacted: result[index]!.blobs.length };
-                        return result[index]!;
-                    });
-                    entry.prepared = prepared;
-                    void prepared.catch(() => { if (entry.prepared === prepared) entry.prepared = undefined; });
-                });
-            }
-            return { version: 1, regions: await Promise.all(entries.map(entry => entry.prepared ?? entry.snapshot.region!)) };
-        } };
-    }
     restoreRegion(id:number,snapshot:PaintSnapshot){
-        this.changedRegion(id);
         this.display?.invalidate();
         this.revision++;this.dirty.delete(id);this.stableCounts.set(id,snapshot.compacted??0);
         if(snapshot.region){
@@ -103,11 +67,11 @@ export class VectorPaint {
             return (this.pendingMerge?this.pendingMerge.then(prepare,prepare):prepare()).then(([result])=>{
                 // A different edit supersedes an in-flight fill; never paint stale topology.
                 if(!result||revision!==this.revision)return false;
-                this.changedRegion(id);this.changing?.(id);this.display?.invalidate();this.stableCounts.set(id,result.blobs.length);this.compacted.add(result.blobs);this.dirty.delete(id);for(const blob of result.blobs)this.trackDisplay(blob.geometry);this.regions.set(id,result);this.revision++;return true;
+                this.changing?.(id);this.display?.invalidate();this.stableCounts.set(id,result.blobs.length);this.compacted.add(result.blobs);this.dirty.delete(id);for(const blob of result.blobs)this.trackDisplay(blob.geometry);this.regions.set(id,result);this.revision++;return true;
             });
         }
         if(paintStyleKey(r.base,r.pattern)===key)return false;
-        this.changedRegion(id);this.changing?.(id);this.display?.invalidate();this.regions.set(id,r);this.compacted.delete(r.blobs);r.base=color;r.pattern=pattern;this.revision++;if(r.blobs.length)this.schedule(id);return true;
+        this.changing?.(id);this.display?.invalidate();this.regions.set(id,r);this.compacted.delete(r.blobs);r.base=color;r.pattern=pattern;this.revision++;if(r.blobs.length)this.schedule(id);return true;
     }
     apply(definition:VectorDefinition,geometry:MultiPolygon,color:number){
         const bounds=geometryBounds(geometry),pieces:MultiPolygon[]=[];let changed=false;
@@ -121,7 +85,6 @@ export class VectorPaint {
             const existing=this.regions.get(region.id);
             if((!existing||!existing.blobs.length)&&paintStyleKey(existing?.base??this.defaultColor,existing?.pattern)===paintStyleKey(color))continue;
             this.changing?.(region.id);
-            this.changedRegion(region.id);
             const paint=this.region(region.id);this.compacted.delete(paint.blobs);
             this.trackDisplay(coverage);this.display?.append({regionId:region.id,color,geometry:coverage});
             paint.blobs.push({color,geometry:coverage});this.dirty.add(region.id);changed=true;
@@ -131,7 +94,7 @@ export class VectorPaint {
         // combined coverage in one operation; no second union is needed here.
         return{changed,coverage:pieces.flat()};
     }
-    dispose(){this.display?.dispose();this.display=undefined;this.disposed=true;this.revision++;this.saveRegions.clear();this.regionVersions.clear();if(this.timer)clearTimeout(this.timer);this.timer=undefined;}
+    dispose(){this.display?.dispose();this.display=undefined;this.disposed=true;this.revision++;if(this.timer)clearTimeout(this.timer);this.timer=undefined;}
     private schedule(id?:number){if(this.disposed)return;if(id!==undefined)this.dirty.add(id);this.failed=false;if(this.timer)return;this.timer=setTimeout(()=>{this.timer=undefined;void this.flush();},120);}
     private async flush():Promise<void>{
         if(this.timer){clearTimeout(this.timer);this.timer=undefined;}
@@ -140,13 +103,7 @@ export class VectorPaint {
         const snapshot=[...this.dirty].map(id=>this.regions.get(id)!).map(r=>({...r,blobs:[...r.blobs]}));
         this.dirty.clear();
         try {
-            const prepared = snapshot.map(region => {
-                const cached = this.saveRegions.get(region.id);
-                return cached?.version === (this.regionVersions.get(region.id) ?? 0) ? cached.prepared : undefined;
-            });
-            this.pendingMerge = prepared.every(result => result !== undefined)
-                ? Promise.all(prepared as Promise<VectorPaintRegion>[])
-                : computePaint({regions:snapshot,compacted:snapshot.map(region=>this.stableCounts.get(region.id)??0)});
+            this.pendingMerge=computePaint({regions:snapshot,compacted:snapshot.map(region=>this.stableCounts.get(region.id)??0)});
             const merged=await this.pendingMerge;
             if(this.disposed)return;
             // Compact a completed prefix even while new strokes arrive. A fill

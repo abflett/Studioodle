@@ -45,19 +45,17 @@ Keep all existing features enabled by default during this design phase.
 
 ## Open implementation work
 
-### 1. Validate action-based saves on physical devices
+### 1. Revisit save/recovery only with end-to-end responsiveness evidence
 
-Completed actions now queue detached checkpoints with one write and one latest
-pending state per drawing. Home is independent of disk; pending reads/reopens and
-bounded retries are implemented. Automated checks cover input during saves,
-coalescing, canvas disposal, failed-write retry, pending previews and atomic rollback
-when a transaction is aborted mid-write. The accepted policy allows losing the
-latest actions on abrupt shutdown while retaining the previous committed drawing.
-No strict per-stroke disk flush, backup journal or guaranteed unload save is needed.
-On actual tablets/native builds, verify restoration after backgrounding, process
-termination and interrupted saves. Simulated transaction aborts do not establish
-hardware power-loss behavior. IndexedDB is device-local storage, not a backup;
-browser eviction remains possible. Native builds only when requested.
+Minute/Home/Ctrl+S saves are restored after the user reported severe slowdown
+with action-based background saving. Keep untouched/unchanged drawings unsaved.
+Do not restore the action queue or save-region caches based on isolated job-count
+benchmarks. Any future proposal needs a complex colored moon-sorceress workload,
+real storage writes, foreground drawing, Home navigation, saved-picture cycling
+and user review. The current worker/loading paths match the pre-change version.
+Atomic interruption tests preserve the prior committed drawing/summary; the latest
+unsaved actions can still be lost on abrupt process/power loss. Physical-device
+backgrounding/recovery remains useful validation; native builds only when requested.
 
 ### 2. Recover from brush/render faults (high priority, fault-path gap)
 

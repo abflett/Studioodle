@@ -94,30 +94,29 @@ temporary old-color fringes that previously vanished after cleanup and redraw.
 Temporary hold-to-fill zoom preserves the exact pointer anchor without pan
 clamping, including through layout updates; release/cancellation restores the view.
 
-Editor saves now run after completed artwork actions, including undo, with no minute
-timer. Untouched pages, canceled gestures and tool/color choices do not start saves.
-Detached checkpoints share immutable geometry; worker compaction and IndexedDB
-writes run independently of editing. The app-level queue retains one active and
-one latest pending checkpoint per drawing, survives Home/canvas disposal and supplies
-pending previews/reopens. Failures retry with bounded backoff and an app-wide notice.
-Drawing and summary remain atomic; losing the latest pending actions on abrupt
-shutdown is acceptable. Home finishes input without waiting for disk; Ctrl+S and
-normal desktop close can flush. See architecture and the picture-library guide.
+Saving is restored to the pre-action-save policy: every minute, Ctrl+S, Home and
+normal guarded desktop close, only after artwork edits. Untouched blank/templates
+and clean reopened pictures do not write. Home waits for a successful save and
+keeps the drawing open on failure. Drawing format 5 and studioodle-library-v8 are
+unchanged; existing drawings are retained.
 
-Selection now switches directly between clicked stickers. Empty page/workspace
+The action-save queue, save checkpoints/caches and extra worker compaction path
+were removed after a user-reported responsiveness regression. VectorPaint, Artwork,
+worker transport and saved-picture browsing match commit 6425608. Keep one live
+paint-compaction worker and the existing asynchronous undo maintenance. Do not
+reintroduce per-action saves without an end-to-end colored-sticker workload.
+
+Selection still switches directly between clicked stickers. Empty page/workspace
 presses outside the border clear the drawer and return to Fill on release, consuming
 the pointer stream; cancellation restores selection and focused mode retains Done.
-Save preparation reuses immutable compacted regions until their paint changes,
-including safe invalidation on undo. Live maintenance reuses prepared results
-instead of forcing duplicate work at gesture end. Saving yields the input task;
-save completion/status no longer restarts the saved-picture loader/previews.
-`npm run test:save` verifies eight geometry edits only compact existing paint once.
+A colored moon-sorceress regression verifies no writes while painting, one explicit
+save, no clean rewrite, and preserved paint through repeated load/render.
 
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.
-The action-based save policy is implemented; physical shutdown/device validation
-and brush/render fault recovery remain. Other open items cover export budgets, atomic custom
+Minute/Home saves are restored. Any future save-policy work must preserve
+responsiveness; brush/render fault recovery remains open. Other open items cover export budgets, atomic custom
 pages, background sizing, async input, offline policy and physical device testing.
 The user wants to resume feature work after important refinements; don't invent
 another engine migration or treat old completed reports as new tasks.

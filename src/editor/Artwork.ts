@@ -70,20 +70,6 @@ export class Artwork {
     dispose() { this.change=undefined; for (const surface of this.surfaces) surface.vectorPaint.dispose(); }
     async compactPaint(){await Promise.all(this.surfaces.map(surface=>surface.vectorPaint.settled()));}
     serialize():ArtworkDocument{return{version:5,width:this.width,height:this.height,surfaces:this.surfaces.map(surface=>surface.serialize())};}
-    /** Detached containers share immutable geometry; saving never waits on live input. */
-    checkpoint() {
-        const paint = this.surfaces.map(surface => surface.vectorPaint.checkpoint());
-        const document: ArtworkDocument = { version: 5, width: this.width, height: this.height,
-            surfaces: this.surfaces.map((surface, index) => {
-                return { ...surface.data, vectorPaint: paint[index]!.data };
-            }),
-        };
-        return { document, compact: async () => {
-            const prepared = await Promise.all(paint.map(checkpoint => checkpoint.compact()));
-            const surfaces = document.surfaces.map((surface, index) => ({ ...surface, vectorPaint: prepared[index]! }));
-            return { ...document, surfaces };
-        } };
-    }
     beginChange() {
         if (this.change) throw Error('An artwork change is already active');
         this.change = new ArtworkChange();

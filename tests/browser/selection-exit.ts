@@ -20,7 +20,7 @@ export async function checkSelectionExit() {
       { id: 'first', kind: 'circle', x: 100, y: 100, scale: .15, color: 0 },
       { id: 'second', kind: 'circle', x: 300, y: 100, scale: .15, color: 0 },
     ] },
-  }, () => { writes++; }, true);
+  }, () => { writes++; });
   const pointer = (target: HTMLElement, type: string, x: number, y: number) => {
     const box = host.getBoundingClientRect();
     target.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 7, button: 0, buttons: type === 'pointerup' ? 0 : 1, clientX: box.left + x, clientY: box.top + y }));
@@ -41,7 +41,8 @@ export async function checkSelectionExit() {
     click(workspace, -25, 100); assert(!selected && String(tool) === 'bucket', 'Surrounding workspace must also exit selection');
     const picture = await new Promise<SavedPicture>(resolve => bridge.send({ type: 'snapshot', onComplete: resolve }));
     assert(picture.document.surfaces.every(surface => !surface.vectorPaint?.regions.length), 'Exiting selection must not paint or fill');
-    assert(writes === 0, 'Selection-only interactions must not autosave');
+    await new Promise<void>(resolve => bridge.send({ type: 'save', onComplete: () => resolve() }));
+    assert(writes === 0, 'Selection-only interactions must not dirty the drawing');
     return { switchSticker: true, emptyPage: true, workspace: true, reusablePointer: true, noPaint: true };
   } finally { editor.destroy(); workspace.remove(); }
 }

@@ -12,7 +12,7 @@ export function EditorCanvas({ bridge, setup, zoom, offsetX, offsetY, focused }:
   const editor = useRef<CanvasEditor | null>(null);
   useEffect(() => {
     if (!host.current) return;
-    const active = new CanvasEditor(host.current, bridge, setup, pictureRepository.save, true);
+    const active = new CanvasEditor(host.current, bridge, setup, picture => pictureRepository.save(picture));
     editor.current = active;
     return () => { active.destroy(); editor.current = null; };
   }, [bridge, setup]);
