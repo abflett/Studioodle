@@ -9,7 +9,9 @@ import { useCanvasGestures } from './useCanvasGestures';
 import { useEditorShortcuts } from './useEditorShortcuts';
 import type { AppSettings } from './settings';
 import { StickerSelectionToolbar } from './StickerSelectionToolbar';
-import { StickerBrowser } from './StickerBrowser';
+import { StickerBrowser, StickerFilters } from './StickerBrowser';
+import type { StickerDetail } from './stickerCatalog';
+import { StickerInkPicker } from './StickerInkPicker';
 import { BrushPicker } from './BrushPicker';
 import { defaultBrush } from '../editor/toolOptions';
 import { ColorPicker } from './ColorPicker';
@@ -40,8 +42,10 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
   useEffect(() => bridge.onFocus(setFocused), [bridge]);
   const [selected, setSelected] = useState<string>();
   const selectionDrawer = useRef<HTMLDivElement>(null);
-  const [useCurrentOutline, setUseCurrentOutline] = useState(false);
-  const outlineColor = useCurrentOutline ? color : 0x242428;
+  const [outlineColor, setOutlineColor] = useState(0x000000);
+  const [inkPicker, setInkPicker] = useState(false);
+  const inkButton = useRef<HTMLButtonElement>(null);
+  const [stickerDetail, setStickerDetail] = useState<StickerDetail>();
   useEffect(() => bridge.onTool(setTool), [bridge]);
   const [selectionOrder, setSelectionOrder] = useState({ forward: false, backward: false });
   useEffect(() => bridge.onSelection((id, order) => {
@@ -93,7 +97,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
   useCanvasGestures(touchGestures);
   const selectBrush = () => { chooseTool('brush'); if (settings.advancedPainting) setPicker('brush'); else { setBrushOptions(defaultBrush); bridge.send({ type: 'set-brush', options: defaultBrush }); } };
   const selectFill = () => chooseTool('bucket');
-  const openStickers = () => { if (!focused) { setUseCurrentOutline(false); setCategoryId(null); setPicker('stickers'); } };
+  const openStickers = () => { if (!focused) { setCategoryId(null); setPicker('stickers'); } };
   const stepZoom = (factor: number) => {
     const view = captureView(), box = viewport.current?.getBoundingClientRect();
     if (!view || !box) return;
@@ -172,18 +176,18 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       {picker === 'brush' ? <BrushPicker value={brushOptions} onChange={options => { setBrushOptions(options); bridge.send({ type: 'set-brush', options }); }} onClose={() => setPicker(null)} headingRef={pickerTitle} /> : <div className="wizard" aria-busy={loadingSticker}>
         {loadingSticker && <progress aria-label="Loading sticker" />}
         {stickerError && <button onClick={() => setStickerError(false)}>Could not load sticker. Tap to dismiss.</button>}
-        <DialogHeader id="art-picker-title" headingRef={pickerTitle} title={picker === 'stickers' ? category?.title ?? 'Stickers' : 'Pick a color'} onClose={() => setPicker(null)} closeLabel="Close picker" back={picker === 'stickers' && category ? { label: 'Back to sticker categories', onClick: () => setCategoryId(null) } : undefined} />
+        <DialogHeader id="art-picker-title" headingRef={pickerTitle} title={picker === 'stickers' ? category?.title ?? 'Stickers' : 'Pick a color'} onClose={() => setPicker(null)} closeLabel="Close picker" back={picker === 'stickers' && category ? { label: 'Back to sticker categories', onClick: () => setCategoryId(null) } : undefined}>
+          {picker === 'stickers' && <div className="sticker-header-controls"><button ref={inkButton} className="icon-button sticker-ink-button" aria-label="Choose sticker ink color" title="Sticker ink color" aria-haspopup="dialog" onClick={() => setInkPicker(true)}><Palette aria-hidden="true" /><span className="ribbon-color-dot" aria-hidden="true" style={{ background: `#${outlineColor.toString(16).padStart(6, '0')}` }} /></button><StickerFilters value={stickerDetail} onChange={setStickerDetail} /></div>}
+        </DialogHeader>
         <div className="wizard-body">
 
           {picker === 'colors' && <ColorPicker color={color} onChoose={(value) => { setColor(value); bridge.send({ type: 'set-color', color: value }); setPicker(null); }} />}
-          {picker === 'stickers' && <StickerBrowser key={categoryId ?? 'categories'} categoryId={categoryId} color={outlineColor} onCategory={setCategoryId} onAdd={(kind) => { if (loadingSticker) return; setLoadingSticker(true); void prepareStickers([kind]).then(() => { bridge.send({ type: 'add-sticker', sticker: kind, outlineColor, point: { x: ((viewport.current?.clientWidth ?? 0) / 2 - position.x) / zoom, y: ((viewport.current?.clientHeight ?? 0) / 2 - position.y) / zoom } }); setPicker(null); }).catch(() => setStickerError(true)).finally(() => setLoadingSticker(false)); }} />}
+          {picker === 'stickers' && <StickerBrowser key={`${categoryId ?? 'categories'}:${stickerDetail ?? 'all'}`} categoryId={categoryId} detail={stickerDetail} onCategory={setCategoryId} onAdd={(kind) => { if (loadingSticker) return; setLoadingSticker(true); void prepareStickers([kind]).then(() => { bridge.send({ type: 'add-sticker', sticker: kind, outlineColor, point: { x: ((viewport.current?.clientWidth ?? 0) / 2 - position.x) / zoom, y: ((viewport.current?.clientHeight ?? 0) / 2 - position.y) / zoom } }); setPicker(null); }).catch(() => setStickerError(true)).finally(() => setLoadingSticker(false)); }} />}
         </div>
-        {picker === 'stickers' && <footer className="sticker-outline-options" role="group" aria-label="Sticker outline color">
-          <button aria-pressed={!useCurrentOutline} onClick={() => setUseCurrentOutline(false)}><span style={{ background: '#242428' }} />Charcoal</button>
-          <button aria-pressed={useCurrentOutline} onClick={() => setUseCurrentOutline(true)}><span style={{ background: `#${color.toString(16).padStart(6, '0')}` }} />Current color</button>
-        </footer>}
+
       </div>}
     </dialog>
+    {inkPicker && <StickerInkPicker returnFocus={inkButton} color={outlineColor} onChoose={value => { setOutlineColor(value); setInkPicker(false); }} onClose={() => setInkPicker(false)} />}
     {settings.workshop && workshopPicture && <ColoringPageWorkshop picture={workshopPicture} targetId={workshopTarget} onClose={() => setWorkshopPicture(undefined)} onSaved={(id, title) => { setWorkshopTarget(id); setWorkshopTitle(title); }} />}
   </main>;
 }

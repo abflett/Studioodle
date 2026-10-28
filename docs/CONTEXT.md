@@ -24,13 +24,16 @@ The fill-pattern overlay and settings command are removed; the painting-controls
 preference now controls the brush overlay only. Existing saved patterned artwork
 still renders and exports through the current vector paint format.
 
-Sticker overlay studies 01 and 02 are ready for feedback in `docs/sticker-overlay-examples/`.
-It keeps the current icons but removes visible category labels, shows all ten
-categories in one responsive grid, and retains black/selected-color ink in an
-icon-only footer well. Study 02 compares footer-free headers: ink left with centered
-difficulty versus a centered ink/difficulty cluster. Filters and the small ink
-palette demonstrate layout state only, not production filtering. Pure black/white is the intended artwork direction; this
-is a docs-only preview and does not change app colors or existing drawings.
+The sticker overlay implements study 02's centered ink/detail header. All ten
+category icons appear without labels or category paging; unavailable categories
+stay in place but are disabled by the All/Easy/Medium/Detailed filter. Sticker
+metadata comes from authored `detail` in `art/stickers.json` through assetLibrary.
+The separate native ink-color dialog reuses the full drawing palette and preserves
+category/filter/page, returning focus to the ink button. Ink starts at pure black
+per drawing session and is independent of the drawing color. No footer remains.
+Default black/white palette values, new blank paper, bundled page ink and new-page
+paint defaults are now #000000/#ffffff. Existing saves and deliberately colored
+ink/backgrounds are preserved. Study captures remain design references.
 
 ## Artwork status
 

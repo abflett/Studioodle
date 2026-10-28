@@ -1,10 +1,10 @@
 // A shared 32-color drawing palette; artwork stores RGB values independently.
 export const drawingColors = [
-  { name: 'Dark charcoal', value: 0x242428 },
+  { name: 'Black', value: 0x000000 },
   { name: 'Slate gray', value: 0x6c717b },
   { name: 'Cool silver', value: 0xb0b5bc },
   { name: 'Icy blue-white', value: 0xcce8ff },
-  { name: 'Warm cream', value: 0xf6f2e8 },
+  { name: 'White', value: 0xffffff },
   { name: 'Soft peach', value: 0xf1c49c },
   { name: 'Golden tan', value: 0xd79862 },
   { name: 'Dark cocoa', value: 0x2b1810 },

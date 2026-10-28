@@ -36,9 +36,10 @@ the visual discussion. This remains the sole implementation backlog.
 - [ ] Extend the reviewed overlay pattern to stickers/categories,
   picture export, delete and settings. Reduce
   redundant visible headings while retaining meaningful guidance and dialog names.
-  Sticker [study 01](sticker-overlay-examples/README.md) is awaiting feedback: current
-  icons without visible labels, all categories in one responsive grid, and retained
-  black/selected-color ink. Pure black/white app changes are not implemented yet.
+  Stickers now implement [study 02](sticker-overlay-examples/README.md): centered
+  ink/detail controls, icon-only categories and stickers, responsive grids, authored
+  difficulty filters and an independent ink-color dialog. Pure black/white defaults
+  are applied; existing drawings retain their colors.
   Brush is implemented from approved [study 04](brush-overlay-examples/README.md):
   one brush, round/diagonal/opaque-scatter tips, full-width sizing and a small
   theme-colored footer sample in a matching well, with no divider. Fill now selects immediately with solid color and has no overlay. The other listed overlays remain to be refined.

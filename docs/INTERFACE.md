@@ -195,3 +195,22 @@ narrow screens presets use two columns and colors four; short landscape uses a
 compact eight-column palette. Shorter viewports scroll only the choice area,
 leaving step, close/back and action controls reachable. Other editor color pickers
 retain their existing pagination. Preview references are in overlay examples 56-60.
+
+
+### Sticker browser
+
+The sticker overlay uses the centered header from sticker study 02: a palette
+button with the same borderless color dot as the main ribbon, followed by an
+All/Easy/Medium/Detailed filter well, with Close on the right and Back on the left
+inside categories. Category icons show all ten subjects in a responsive grid;
+category and sticker buttons retain accessible names/tooltips without visible labels.
+Filters use authored simple/moderate/detailed metadata. Categories without matches
+remain in position but disabled. Sticker pages show twelve previews on desktop or
+six on small/short screens. Changing category or detail starts at the first page.
+
+Ink defaults to #000000 for a new editor session. Its separate native color dialog
+reuses the drawing palette without changing the current paint color. Choosing ink
+or cancelling returns to the same category, detail and page, with focus restored to
+the ink button. The chosen ink remains available for subsequent sticker placements.
+Black and white palette swatches and new blank paper use #000000/#ffffff; bundled
+page ink is black. Theme surfaces stay soft, and saved custom colors are preserved.

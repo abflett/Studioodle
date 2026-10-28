@@ -37,7 +37,7 @@ export function parsePageSharingCode(input: string) {
     return parseColoringBook(JSON.stringify({ format: 'studioodle-coloring-book', version: 2,
       title: layout.title, pages: layout.pages.map(page => ({
         id: page.id, title: page.title, format: page.format, size: page.size, browse: page.browse,
-        version: 5, updatedAt: 0, background: '#ffffff', leafColor: 0x242428,
+        version: 5, updatedAt: 0, background: '#ffffff', leafColor: 0x000000,
         document: { version: 5, width: page.size.width, height: page.size.height,
           surfaces: page.surfaces.map(surface => ({
             id: surface.id, kind: surface.kind, x: surface.x, y: surface.y,

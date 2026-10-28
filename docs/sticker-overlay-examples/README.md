@@ -1,3 +1,7 @@
+Implementation note: study 02 B (centered controls) is now implemented. The app
+uses the main ribbon?s borderless ink dot and the full color picker; these earlier
+captures remain unchanged as design history.
+
 # Sticker overlay / study 01
 
 Layout proposal only; the app is unchanged. Open [the interactive study](index.html)

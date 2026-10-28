@@ -21,7 +21,7 @@ export function coloringBookPage(source: EditorSetup, id: string, title = source
   const size = paperSize(source.format, source.size);
   const page: ColoringBookPage = {
     id, title: title.trim(), version: 5, updatedAt, format: source.format, size,
-    background: '#ffffff', leafColor: 0x242428,
+    background: '#ffffff', leafColor: 0x000000,
     document: { version: 5, width: size.width, height: size.height,
       surfaces: source.document.surfaces.map(s => ({
         id: s.id, kind: s.kind, x: s.x, y: s.y, color: s.kind === 'canvas' ? 0xffffff : s.color,

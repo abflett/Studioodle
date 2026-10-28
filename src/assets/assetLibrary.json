@@ -3,2184 +3,2548 @@
     "id": "circle",
     "title": "Circle",
     "category": "shapes",
-    "sortOrder": 0
+    "sortOrder": 0,
+    "detail": "simple"
   },
   {
     "id": "square",
     "title": "Square",
     "category": "shapes",
-    "sortOrder": 1
+    "sortOrder": 1,
+    "detail": "simple"
   },
   {
     "id": "triangle",
     "title": "Triangle",
     "category": "shapes",
-    "sortOrder": 2
+    "sortOrder": 2,
+    "detail": "simple"
   },
   {
     "id": "counting-01",
     "title": "1 - Astronaut",
     "category": "characters",
-    "sortOrder": 0
+    "sortOrder": 0,
+    "detail": "detailed"
   },
   {
     "id": "counting-02",
     "title": "2 - Pirate",
     "category": "characters",
-    "sortOrder": 1
+    "sortOrder": 1,
+    "detail": "detailed"
   },
   {
     "id": "counting-03",
     "title": "3 - Chef",
     "category": "characters",
-    "sortOrder": 2
+    "sortOrder": 2,
+    "detail": "detailed"
   },
   {
     "id": "counting-04",
     "title": "4 - Gardener",
     "category": "characters",
-    "sortOrder": 3
+    "sortOrder": 3,
+    "detail": "detailed"
   },
   {
     "id": "counting-05",
     "title": "5 - Knight",
     "category": "characters",
-    "sortOrder": 4
+    "sortOrder": 4,
+    "detail": "detailed"
   },
   {
     "id": "counting-06",
     "title": "6 - Wizard",
     "category": "characters",
-    "sortOrder": 5
+    "sortOrder": 5,
+    "detail": "detailed"
   },
   {
     "id": "counting-07",
     "title": "7 - Explorer",
     "category": "characters",
-    "sortOrder": 6
+    "sortOrder": 6,
+    "detail": "detailed"
   },
   {
     "id": "counting-08",
     "title": "8 - Dancer",
     "category": "characters",
-    "sortOrder": 7
+    "sortOrder": 7,
+    "detail": "detailed"
   },
   {
     "id": "counting-09",
     "title": "9 - Firefighter",
     "category": "characters",
-    "sortOrder": 8
+    "sortOrder": 8,
+    "detail": "detailed"
   },
   {
     "id": "counting-10",
     "title": "10 - Musician",
     "category": "characters",
-    "sortOrder": 9
+    "sortOrder": 9,
+    "detail": "detailed"
   },
   {
     "id": "winter-skater",
     "title": "Skater",
     "category": "characters",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "detail": "moderate"
   },
   {
     "id": "winter-skater-friend",
     "title": "Skating Friend",
     "category": "characters",
-    "sortOrder": 11
+    "sortOrder": 11,
+    "detail": "moderate"
   },
   {
     "id": "winter-santa-sleigh",
     "title": "Santa And Sleigh",
     "category": "characters",
-    "sortOrder": 12
+    "sortOrder": 12,
+    "detail": "detailed"
   },
   {
     "id": "space-alien",
     "title": "Alien Explorer",
     "category": "characters",
-    "sortOrder": 13
+    "sortOrder": 13,
+    "detail": "detailed"
   },
   {
     "id": "alphabet-a-astronaut",
     "title": "A - Astronaut",
     "category": "characters",
-    "sortOrder": 1000
+    "sortOrder": 1000,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-b-bee",
     "title": "B - Bee",
     "category": "characters",
-    "sortOrder": 1001
+    "sortOrder": 1001,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-c-cat",
     "title": "C - Cat",
     "category": "characters",
-    "sortOrder": 1002
+    "sortOrder": 1002,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-d-dragon",
     "title": "D - Dragon",
     "category": "characters",
-    "sortOrder": 1003
+    "sortOrder": 1003,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-e-elephant",
     "title": "E - Elephant",
     "category": "characters",
-    "sortOrder": 1004
+    "sortOrder": 1004,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-f-firefighter",
     "title": "F - Firefighter",
     "category": "characters",
-    "sortOrder": 1005
+    "sortOrder": 1005,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-g-giraffe",
     "title": "G - Giraffe",
     "category": "characters",
-    "sortOrder": 1006
+    "sortOrder": 1006,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-h-horse",
     "title": "H - Horse",
     "category": "characters",
-    "sortOrder": 1007
+    "sortOrder": 1007,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-i-ice-cream",
     "title": "I - Ice Cream",
     "category": "characters",
-    "sortOrder": 1008
+    "sortOrder": 1008,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-j-jellyfish",
     "title": "J - Jellyfish",
     "category": "characters",
-    "sortOrder": 1009
+    "sortOrder": 1009,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-k-kangaroo",
     "title": "K - Kangaroo",
     "category": "characters",
-    "sortOrder": 1010
+    "sortOrder": 1010,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-l-lion",
     "title": "L - Lion",
     "category": "characters",
-    "sortOrder": 1011
+    "sortOrder": 1011,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-m-monkey",
     "title": "M - Monkey",
     "category": "characters",
-    "sortOrder": 1012
+    "sortOrder": 1012,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-n-nurse",
     "title": "N - Nurse",
     "category": "characters",
-    "sortOrder": 1013
+    "sortOrder": 1013,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-o-octopus",
     "title": "O - Octopus",
     "category": "characters",
-    "sortOrder": 1014
+    "sortOrder": 1014,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-p-pirate",
     "title": "P - Pirate",
     "category": "characters",
-    "sortOrder": 1015
+    "sortOrder": 1015,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-q-queen",
     "title": "Q - Queen",
     "category": "characters",
-    "sortOrder": 1016
+    "sortOrder": 1016,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-r-robot",
     "title": "R - Robot",
     "category": "characters",
-    "sortOrder": 1017
+    "sortOrder": 1017,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-s-snake",
     "title": "S - Snake",
     "category": "characters",
-    "sortOrder": 1018
+    "sortOrder": 1018,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-t-tiger",
     "title": "T - Tiger",
     "category": "characters",
-    "sortOrder": 1019
+    "sortOrder": 1019,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-u-unicorn",
     "title": "U - Unicorn",
     "category": "characters",
-    "sortOrder": 1020
+    "sortOrder": 1020,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-v-viking",
     "title": "V - Viking",
     "category": "characters",
-    "sortOrder": 1021
+    "sortOrder": 1021,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-w-wizard",
     "title": "W - Wizard",
     "category": "characters",
-    "sortOrder": 1022
+    "sortOrder": 1022,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-x-x-ray",
     "title": "X - X-ray",
     "category": "characters",
-    "sortOrder": 1023
+    "sortOrder": 1023,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-y-yak",
     "title": "Y - Yak",
     "category": "characters",
-    "sortOrder": 1024
+    "sortOrder": 1024,
+    "detail": "moderate"
   },
   {
     "id": "alphabet-z-zebra",
     "title": "Z - Zebra",
     "category": "characters",
-    "sortOrder": 1025
+    "sortOrder": 1025,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-humpty-dumpty",
     "title": "Humpty Dumpty",
     "category": "characters",
-    "sortOrder": 1027
+    "sortOrder": 1027,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-baby-cradle",
     "title": "Baby in Cradle",
     "category": "characters",
-    "sortOrder": 1028
+    "sortOrder": 1028,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-shepherd-child",
     "title": "Little Bo Peep",
     "category": "characters",
-    "sortOrder": 1036
+    "sortOrder": 1036,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-jack-pail",
     "title": "Jack with Pail",
     "category": "characters",
-    "sortOrder": 1038
+    "sortOrder": 1038,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-jill",
     "title": "Jill",
     "category": "characters",
-    "sortOrder": 1039
+    "sortOrder": 1039,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-farmer",
     "title": "Old MacDonald Farmer",
     "category": "characters",
-    "sortOrder": 1045
+    "sortOrder": 1045,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-dish-spoon",
     "title": "Running Dish and Spoon",
     "category": "characters",
-    "sortOrder": 1047
+    "sortOrder": 1047,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-royal-guard",
     "title": "Royal Guard",
     "category": "characters",
-    "sortOrder": 1049
+    "sortOrder": 1049,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-mary",
     "title": "Mary with Schoolbook",
     "category": "characters",
-    "sortOrder": 1055
+    "sortOrder": 1055,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-miss-muffet",
     "title": "Little Miss Muffet",
     "category": "characters",
-    "sortOrder": 1057
+    "sortOrder": 1057,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-baker",
     "title": "Pat-a-Cake Baker",
     "category": "characters",
-    "sortOrder": 1059
+    "sortOrder": 1059,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-little-boy-blue",
     "title": "Little Boy Blue",
     "category": "characters",
-    "sortOrder": 1062
+    "sortOrder": 1062,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-jack-be-nimble",
     "title": "Jack Be Nimble",
     "category": "characters",
-    "sortOrder": 1070
+    "sortOrder": 1070,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-old-king-cole",
     "title": "Old King Cole",
     "category": "characters",
-    "sortOrder": 1071
+    "sortOrder": 1071,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-storybook-fiddler",
     "title": "Storybook Fiddler",
     "category": "characters",
-    "sortOrder": 1072
+    "sortOrder": 1072,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-garden-child",
     "title": "Nursery Garden Child",
     "category": "characters",
-    "sortOrder": 1080
+    "sortOrder": 1080,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-rowing-child",
     "title": "Rowing Child",
     "category": "characters",
-    "sortOrder": 1081
+    "sortOrder": 1081,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-bus-driver",
     "title": "Bus Driver",
     "category": "characters",
-    "sortOrder": 1082
+    "sortOrder": 1082,
+    "detail": "moderate"
   },
   {
     "id": "fall-scarecrow",
     "title": "Friendly Scarecrow",
     "category": "characters",
-    "sortOrder": 1085
+    "sortOrder": 1085,
+    "detail": "moderate"
   },
   {
     "id": "fall-child-raking",
     "title": "Child Raking Leaves",
     "category": "characters",
-    "sortOrder": 1104
+    "sortOrder": 1104,
+    "detail": "moderate"
   },
   {
     "id": "fall-child-leaf-jump",
     "title": "Child Jumping into Leaves",
     "category": "characters",
-    "sortOrder": 1105
+    "sortOrder": 1105,
+    "detail": "moderate"
   },
   {
     "id": "fall-apple-picking-child",
     "title": "Child Carrying Apples",
     "category": "characters",
-    "sortOrder": 1125
+    "sortOrder": 1125,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-child-waving",
     "title": "Waving Child",
     "category": "characters",
-    "sortOrder": 1176
+    "sortOrder": 1176,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-child-with-backpack",
     "title": "Child With Backpack",
     "category": "characters",
-    "sortOrder": 1177
+    "sortOrder": 1177,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-child-wheelchair",
     "title": "Child Using a Wheelchair",
     "category": "characters",
-    "sortOrder": 1178
+    "sortOrder": 1178,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-grandparent",
     "title": "Grandparent",
     "category": "characters",
-    "sortOrder": 1179
+    "sortOrder": 1179,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-firefighter",
     "title": "Firefighter",
     "category": "characters",
-    "sortOrder": 1180
+    "sortOrder": 1180,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-gardener",
     "title": "Gardener",
     "category": "characters",
-    "sortOrder": 1181
+    "sortOrder": 1181,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-wandering-wizard",
     "title": "Wandering Wizard",
     "category": "characters",
-    "sortOrder": 1400
+    "sortOrder": 1400,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-moon-sorceress",
     "title": "Moon Sorceress",
     "category": "characters",
-    "sortOrder": 1401
+    "sortOrder": 1401,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-armored-warrior",
     "title": "Armored Warrior",
     "category": "characters",
-    "sortOrder": 1402
+    "sortOrder": 1402,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-woodland-ranger",
     "title": "Woodland Ranger",
     "category": "characters",
-    "sortOrder": 1403
+    "sortOrder": 1403,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-dwarf-guardian",
     "title": "Dwarf Guardian",
     "category": "characters",
-    "sortOrder": 1404
+    "sortOrder": 1404,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-halfling-traveler",
     "title": "Halfling Traveler",
     "category": "characters",
-    "sortOrder": 1405
+    "sortOrder": 1405,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-human-bard",
     "title": "Traveling Bard",
     "category": "characters",
-    "sortOrder": 1406
+    "sortOrder": 1406,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-hooded-scout",
     "title": "Hooded Scout",
     "category": "characters",
-    "sortOrder": 1407
+    "sortOrder": 1407,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-nature-druid",
     "title": "Nature Druid",
     "category": "characters",
-    "sortOrder": 1408
+    "sortOrder": 1408,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-healing-cleric",
     "title": "Healing Cleric",
     "category": "characters",
-    "sortOrder": 1409
+    "sortOrder": 1409,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-young-apprentice",
     "title": "Young Apprentice",
     "category": "characters",
-    "sortOrder": 1410
+    "sortOrder": 1410,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-potion-alchemist",
     "title": "Potion Alchemist",
     "category": "characters",
-    "sortOrder": 1411
+    "sortOrder": 1411,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-goblin-tinkerer",
     "title": "Goblin Tinkerer",
     "category": "characters",
-    "sortOrder": 1412
+    "sortOrder": 1412,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-goblin-traveler",
     "title": "Goblin Traveler",
     "category": "characters",
-    "sortOrder": 1413
+    "sortOrder": 1413,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-forest-elf",
     "title": "Forest Elf",
     "category": "characters",
-    "sortOrder": 1414
+    "sortOrder": 1414,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-flower-fairy",
     "title": "Flower Fairy",
     "category": "characters",
-    "sortOrder": 1415
+    "sortOrder": 1415,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-mushroom-fairy",
     "title": "Mushroom Fairy",
     "category": "characters",
-    "sortOrder": 1416
+    "sortOrder": 1416,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-shell-mermaid",
     "title": "Shell Mermaid",
     "category": "characters",
-    "sortOrder": 1417
+    "sortOrder": 1417,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-merfolk-explorer",
     "title": "Merfolk Explorer",
     "category": "characters",
-    "sortOrder": 1418
+    "sortOrder": 1418,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-centaur-guide",
     "title": "Centaur Guide",
     "category": "characters",
-    "sortOrder": 1419
+    "sortOrder": 1419,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-faun-musician",
     "title": "Faun Musician",
     "category": "characters",
-    "sortOrder": 1420
+    "sortOrder": 1420,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-stone-giant",
     "title": "Stone Giant",
     "category": "characters",
-    "sortOrder": 1421
+    "sortOrder": 1421,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-woodland-gnome",
     "title": "Woodland Gnome",
     "category": "characters",
-    "sortOrder": 1422
+    "sortOrder": 1422,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-kindly-orc",
     "title": "Orc Adventurer",
     "category": "characters",
-    "sortOrder": 1423
+    "sortOrder": 1423,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-stone-golem",
     "title": "Stone Golem",
     "category": "characters",
-    "sortOrder": 1433
+    "sortOrder": 1433,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-forest-treant",
     "title": "Walking Tree",
     "category": "characters",
-    "sortOrder": 1434
+    "sortOrder": 1434,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-cave-troll",
     "title": "Cave Troll",
     "category": "characters",
-    "sortOrder": 1435
+    "sortOrder": 1435,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-skeleton-guardian",
     "title": "Skeleton Guardian",
     "category": "characters",
-    "sortOrder": 1438
+    "sortOrder": 1438,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-enchanted-armour",
     "title": "Enchanted Armour",
     "category": "characters",
-    "sortOrder": 1439
+    "sortOrder": 1439,
+    "detail": "moderate"
   },
   {
     "id": "spring-bunny",
     "title": "Bunny",
     "category": "animals",
-    "sortOrder": 0
+    "sortOrder": 0,
+    "detail": "moderate"
   },
   {
     "id": "spring-bird",
     "title": "Bird",
     "category": "animals",
-    "sortOrder": 1
+    "sortOrder": 1,
+    "detail": "moderate"
   },
   {
     "id": "winter-reindeer",
     "title": "Reindeer",
     "category": "animals",
-    "sortOrder": 2
+    "sortOrder": 2,
+    "detail": "moderate"
   },
   {
     "id": "spring-butterfly",
     "title": "Butterfly",
     "category": "animals",
-    "sortOrder": 3
+    "sortOrder": 3,
+    "detail": "moderate"
   },
   {
     "id": "garden-butterfly",
     "title": "Garden Butterfly",
     "category": "animals",
-    "sortOrder": 4
+    "sortOrder": 4,
+    "detail": "moderate"
   },
   {
     "id": "animal-giraffe",
     "title": "Giraffe",
     "category": "animals",
-    "sortOrder": 5
+    "sortOrder": 5,
+    "detail": "detailed"
   },
   {
     "id": "animal-elephant",
     "title": "Elephant",
     "category": "animals",
-    "sortOrder": 6
+    "sortOrder": 6,
+    "detail": "moderate"
   },
   {
     "id": "animal-lion",
     "title": "Lion",
     "category": "animals",
-    "sortOrder": 7
+    "sortOrder": 7,
+    "detail": "moderate"
   },
   {
     "id": "animal-hippo",
     "title": "Hippo",
     "category": "animals",
-    "sortOrder": 8
+    "sortOrder": 8,
+    "detail": "moderate"
   },
   {
     "id": "animal-zebra",
     "title": "Zebra",
     "category": "animals",
-    "sortOrder": 9
+    "sortOrder": 9,
+    "detail": "detailed"
   },
   {
     "id": "animal-rhino",
     "title": "Rhino",
     "category": "animals",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "detail": "moderate"
   },
   {
     "id": "animal-leopard",
     "title": "Leopard",
     "category": "animals",
-    "sortOrder": 11
+    "sortOrder": 11,
+    "detail": "detailed"
   },
   {
     "id": "animal-ostrich",
     "title": "Ostrich",
     "category": "animals",
-    "sortOrder": 12
+    "sortOrder": 12,
+    "detail": "moderate"
   },
   {
     "id": "animal-buffalo",
     "title": "Buffalo",
     "category": "animals",
-    "sortOrder": 13
+    "sortOrder": 13,
+    "detail": "moderate"
   },
   {
     "id": "animal-meerkat",
     "title": "Meerkat",
     "category": "animals",
-    "sortOrder": 14
+    "sortOrder": 14,
+    "detail": "moderate"
   },
   {
     "id": "animal-warthog",
     "title": "Warthog",
     "category": "animals",
-    "sortOrder": 15
+    "sortOrder": 15,
+    "detail": "moderate"
   },
   {
     "id": "animal-crocodile",
     "title": "Crocodile",
     "category": "animals",
-    "sortOrder": 16
+    "sortOrder": 16,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-fiddle-cat",
     "title": "Fiddle Cat",
     "category": "animals",
-    "sortOrder": 1029
+    "sortOrder": 1029,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-jumping-cow",
     "title": "Jumping Cow",
     "category": "animals",
-    "sortOrder": 1030
+    "sortOrder": 1030,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-climbing-mouse",
     "title": "Climbing Mouse",
     "category": "animals",
-    "sortOrder": 1033
+    "sortOrder": 1033,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-friendly-spider",
     "title": "Friendly Spider",
     "category": "animals",
-    "sortOrder": 1034
+    "sortOrder": 1034,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-woolly-lamb",
     "title": "Woolly Lamb",
     "category": "animals",
-    "sortOrder": 1037
+    "sortOrder": 1037,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-mother-duck",
     "title": "Mother Duck",
     "category": "animals",
-    "sortOrder": 1043
+    "sortOrder": 1043,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-duckling",
     "title": "Duckling",
     "category": "animals",
-    "sortOrder": 1044
+    "sortOrder": 1044,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-royal-horse",
     "title": "King's Horse",
     "category": "animals",
-    "sortOrder": 1048
+    "sortOrder": 1048,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-baa-baa-sheep",
     "title": "Baa Baa Sheep",
     "category": "animals",
-    "sortOrder": 1053
+    "sortOrder": 1053,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-mother-goose",
     "title": "Mother Goose",
     "category": "animals",
-    "sortOrder": 1063
+    "sortOrder": 1063,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-goose",
     "title": "Storybook Goose",
     "category": "animals",
-    "sortOrder": 1064
+    "sortOrder": 1064,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-singing-blackbird",
     "title": "Singing Blackbird",
     "category": "animals",
-    "sortOrder": 1075
+    "sortOrder": 1075,
+    "detail": "moderate"
   },
   {
     "id": "fall-squirrel-acorn",
     "title": "Squirrel with Acorn",
     "category": "animals",
-    "sortOrder": 1086
+    "sortOrder": 1086,
+    "detail": "moderate"
   },
   {
     "id": "fall-hedgehog",
     "title": "Hedgehog",
     "category": "animals",
-    "sortOrder": 1089
+    "sortOrder": 1089,
+    "detail": "moderate"
   },
   {
     "id": "fall-fox",
     "title": "Woodland Fox",
     "category": "animals",
-    "sortOrder": 1091
+    "sortOrder": 1091,
+    "detail": "moderate"
   },
   {
     "id": "fall-owl",
     "title": "Woodland Owl",
     "category": "animals",
-    "sortOrder": 1093
+    "sortOrder": 1093,
+    "detail": "moderate"
   },
   {
     "id": "fall-turkey",
     "title": "Turkey",
     "category": "animals",
-    "sortOrder": 1097
+    "sortOrder": 1097,
+    "detail": "moderate"
   },
   {
     "id": "fall-snail",
     "title": "Garden Snail",
     "category": "animals",
-    "sortOrder": 1112
+    "sortOrder": 1112,
+    "detail": "moderate"
   },
   {
     "id": "fall-raccoon",
     "title": "Woodland Raccoon",
     "category": "animals",
-    "sortOrder": 1117
+    "sortOrder": 1117,
+    "detail": "moderate"
   },
   {
     "id": "fall-badger",
     "title": "Woodland Badger",
     "category": "animals",
-    "sortOrder": 1118
+    "sortOrder": 1118,
+    "detail": "moderate"
   },
   {
     "id": "fall-beaver",
     "title": "Woodland Beaver",
     "category": "animals",
-    "sortOrder": 1119
+    "sortOrder": 1119,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-sea-turtle",
     "title": "Sea Turtle",
     "category": "animals",
-    "sortOrder": 1154
+    "sortOrder": 1154,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-octopus",
     "title": "Octopus",
     "category": "animals",
-    "sortOrder": 1155
+    "sortOrder": 1155,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-dolphin",
     "title": "Dolphin",
     "category": "animals",
-    "sortOrder": 1156
+    "sortOrder": 1156,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-tropical-fish",
     "title": "Tropical Fish",
     "category": "animals",
-    "sortOrder": 1157
+    "sortOrder": 1157,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-pet-dog",
     "title": "Pet Dog",
     "category": "animals",
-    "sortOrder": 1170
+    "sortOrder": 1170,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-pet-cat",
     "title": "Pet Cat",
     "category": "animals",
-    "sortOrder": 1171
+    "sortOrder": 1171,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-farm-pig",
     "title": "Farm Pig",
     "category": "animals",
-    "sortOrder": 1172
+    "sortOrder": 1172,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-farm-goat",
     "title": "Farm Goat",
     "category": "animals",
-    "sortOrder": 1173
+    "sortOrder": 1173,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-farm-hen",
     "title": "Farm Hen",
     "category": "animals",
-    "sortOrder": 1174
+    "sortOrder": 1174,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-farm-donkey",
     "title": "Farm Donkey",
     "category": "animals",
-    "sortOrder": 1175
+    "sortOrder": 1175,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-branching-coral",
     "title": "Branching Coral",
     "category": "animals",
-    "sortOrder": 1183
+    "sortOrder": 1183,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-tube-sponge",
     "title": "Tube Sponge",
     "category": "animals",
-    "sortOrder": 1184
+    "sortOrder": 1184,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-clam-with-pearl",
     "title": "Clam With Pearl",
     "category": "animals",
-    "sortOrder": 1186
+    "sortOrder": 1186,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-triceratops",
     "title": "Triceratops",
     "category": "animals",
-    "sortOrder": 1188
+    "sortOrder": 1188,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-stegosaurus",
     "title": "Stegosaurus",
     "category": "animals",
-    "sortOrder": 1189
+    "sortOrder": 1189,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-brachiosaurus",
     "title": "Brachiosaurus",
     "category": "animals",
-    "sortOrder": 1190
+    "sortOrder": 1190,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-tyrannosaurus",
     "title": "Tyrannosaurus",
     "category": "animals",
-    "sortOrder": 1191
+    "sortOrder": 1191,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-parasaurolophus",
     "title": "Parasaurolophus",
     "category": "animals",
-    "sortOrder": 1192
+    "sortOrder": 1192,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-pteranodon",
     "title": "Pteranodon",
     "category": "animals",
-    "sortOrder": 1193
+    "sortOrder": 1193,
+    "detail": "moderate"
   },
   {
     "id": "dinosaur-spotted-long-neck",
     "title": "Spotted Long-Neck Dinosaur",
     "category": "animals",
-    "sortOrder": 1300
+    "sortOrder": 1300,
+    "detail": "detailed"
   },
   {
     "id": "dinosaur-striped-tyrannosaurus",
     "title": "Striped Tyrannosaurus",
     "category": "animals",
-    "sortOrder": 1301
+    "sortOrder": 1301,
+    "detail": "detailed"
   },
   {
     "id": "dinosaur-spotted-triceratops",
     "title": "Spotted Triceratops",
     "category": "animals",
-    "sortOrder": 1302
+    "sortOrder": 1302,
+    "detail": "detailed"
   },
   {
     "id": "fantasy-dragon-hatchling",
     "title": "Dragon Hatchling",
     "category": "animals",
-    "sortOrder": 1424
+    "sortOrder": 1424,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-mountain-dragon",
     "title": "Mountain Dragon",
     "category": "animals",
-    "sortOrder": 1425
+    "sortOrder": 1425,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-flying-wyvern",
     "title": "Flying Wyvern",
     "category": "animals",
-    "sortOrder": 1426
+    "sortOrder": 1426,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-cloud-serpent",
     "title": "Cloud Serpent",
     "category": "animals",
-    "sortOrder": 1427
+    "sortOrder": 1427,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-three-headed-hydra",
     "title": "Three-Headed Hydra",
     "category": "animals",
-    "sortOrder": 1428
+    "sortOrder": 1428,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-griffin",
     "title": "Griffin",
     "category": "animals",
-    "sortOrder": 1429
+    "sortOrder": 1429,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-phoenix",
     "title": "Phoenix",
     "category": "animals",
-    "sortOrder": 1430
+    "sortOrder": 1430,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-pegasus",
     "title": "Pegasus",
     "category": "animals",
-    "sortOrder": 1431
+    "sortOrder": 1431,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-unicorn",
     "title": "Unicorn",
     "category": "animals",
-    "sortOrder": 1432
+    "sortOrder": 1432,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-cave-bat",
     "title": "Cave Bat",
     "category": "animals",
-    "sortOrder": 1436
+    "sortOrder": 1436,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-smiling-slime",
     "title": "Smiling Slime",
     "category": "animals",
-    "sortOrder": 1437
+    "sortOrder": 1437,
+    "detail": "moderate"
   },
   {
     "id": "garden-tree",
     "title": "Apple Tree",
     "category": "plants",
-    "sortOrder": 0
+    "sortOrder": 0,
+    "detail": "moderate"
   },
   {
     "id": "tree",
     "title": "Simple Tree",
     "category": "plants",
-    "sortOrder": 1
+    "sortOrder": 1,
+    "detail": "simple"
   },
   {
     "id": "beach-palm",
     "title": "Palm Tree",
     "category": "plants",
-    "sortOrder": 2
+    "sortOrder": 2,
+    "detail": "moderate"
   },
   {
     "id": "winter-pine",
     "title": "Pine Tree",
     "category": "plants",
-    "sortOrder": 3
+    "sortOrder": 3,
+    "detail": "moderate"
   },
   {
     "id": "garden-bush",
     "title": "Bush",
     "category": "plants",
-    "sortOrder": 4
+    "sortOrder": 4,
+    "detail": "simple"
   },
   {
     "id": "garden-grass",
     "title": "Grass",
     "category": "plants",
-    "sortOrder": 5
+    "sortOrder": 5,
+    "detail": "simple"
   },
   {
     "id": "garden-flower",
     "title": "Flower",
     "category": "plants",
-    "sortOrder": 6
+    "sortOrder": 6,
+    "detail": "moderate"
   },
   {
     "id": "flower",
     "title": "Simple Flower",
     "category": "plants",
-    "sortOrder": 7
+    "sortOrder": 7,
+    "detail": "simple"
   },
   {
     "id": "garden-blossom",
     "title": "Blossom",
     "category": "plants",
-    "sortOrder": 8
+    "sortOrder": 8,
+    "detail": "simple"
   },
   {
     "id": "spring-tulip",
     "title": "Tulip",
     "category": "plants",
-    "sortOrder": 9
+    "sortOrder": 9,
+    "detail": "moderate"
   },
   {
     "id": "garden-mushroom",
     "title": "Mushroom",
     "category": "plants",
-    "sortOrder": 10
+    "sortOrder": 10,
+    "detail": "simple"
   },
   {
     "id": "nursery-rhymes-cradle-tree",
     "title": "Lullaby Tree",
     "category": "plants",
-    "sortOrder": 1051
+    "sortOrder": 1051,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-garden-bells",
     "title": "Silver Garden Bells",
     "category": "plants",
-    "sortOrder": 1078
+    "sortOrder": 1078,
+    "detail": "moderate"
   },
   {
     "id": "fall-maple-leaf",
     "title": "Maple Leaf",
     "category": "plants",
-    "sortOrder": 1084
+    "sortOrder": 1084,
+    "detail": "moderate"
   },
   {
     "id": "fall-autumn-tree",
     "title": "Autumn Tree",
     "category": "plants",
-    "sortOrder": 1087
+    "sortOrder": 1087,
+    "detail": "moderate"
   },
   {
     "id": "fall-leaf-pile",
     "title": "Leaf Pile",
     "category": "plants",
-    "sortOrder": 1088
+    "sortOrder": 1088,
+    "detail": "moderate"
   },
   {
     "id": "fall-oak-leaf",
     "title": "Oak Leaf",
     "category": "plants",
-    "sortOrder": 1101
+    "sortOrder": 1101,
+    "detail": "moderate"
   },
   {
     "id": "fall-wheat-sheaf",
     "title": "Wheat Sheaf",
     "category": "plants",
-    "sortOrder": 1102
+    "sortOrder": 1102,
+    "detail": "moderate"
   },
   {
     "id": "fall-cornstalk",
     "title": "Cornstalk",
     "category": "plants",
-    "sortOrder": 1107
+    "sortOrder": 1107,
+    "detail": "moderate"
   },
   {
     "id": "fall-apple-tree",
     "title": "Apple Tree",
     "category": "plants",
-    "sortOrder": 1108
+    "sortOrder": 1108,
+    "detail": "moderate"
   },
   {
     "id": "fall-mushroom-cluster",
     "title": "Woodland Mushroom Cluster",
     "category": "plants",
-    "sortOrder": 1109
+    "sortOrder": 1109,
+    "detail": "moderate"
   },
   {
     "id": "fall-hollow-log",
     "title": "Hollow Log",
     "category": "plants",
-    "sortOrder": 1111
+    "sortOrder": 1111,
+    "detail": "moderate"
   },
   {
     "id": "fall-chrysanthemum-pot",
     "title": "Chrysanthemum Pot",
     "category": "plants",
-    "sortOrder": 1116
+    "sortOrder": 1116,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-seaweed-fronds",
     "title": "Seaweed Fronds",
     "category": "plants",
-    "sortOrder": 1182
+    "sortOrder": 1182,
+    "detail": "moderate"
   },
   {
     "id": "garden-sun",
     "title": "Sun With Rays",
     "category": "sky",
-    "sortOrder": 0
+    "sortOrder": 0,
+    "detail": "simple"
   },
   {
     "id": "spring-sun",
     "title": "Round Sun",
     "category": "sky",
-    "sortOrder": 1
+    "sortOrder": 1,
+    "detail": "simple"
   },
   {
     "id": "garden-cloud",
     "title": "Cloud",
     "category": "sky",
-    "sortOrder": 2
+    "sortOrder": 2,
+    "detail": "simple"
   },
   {
     "id": "spring-cloud",
     "title": "Simple Cloud",
     "category": "sky",
-    "sortOrder": 3
+    "sortOrder": 3,
+    "detail": "simple"
   },
   {
     "id": "garden-rainbow",
     "title": "Rainbow",
     "category": "sky",
-    "sortOrder": 4
+    "sortOrder": 4,
+    "detail": "simple"
   },
   {
     "id": "counting-star",
     "title": "Star",
     "category": "sky",
-    "sortOrder": 5
+    "sortOrder": 5,
+    "detail": "simple"
   },
   {
     "id": "nursery-rhymes-twinkling-star",
     "title": "Twinkling Star",
     "category": "sky",
-    "sortOrder": 1026
+    "sortOrder": 1026,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-sleepy-moon",
     "title": "Sleepy Crescent Moon",
     "category": "sky",
-    "sortOrder": 1031
+    "sortOrder": 1031,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-cloud-pillow",
     "title": "Cloud Pillow",
     "category": "sky",
-    "sortOrder": 1052
+    "sortOrder": 1052,
+    "detail": "moderate"
   },
   {
     "id": "spring-meadow",
     "title": "Meadow Horizon",
     "category": "landscapes",
-    "sortOrder": 0
+    "sortOrder": 0,
+    "detail": "simple"
   },
   {
     "id": "beach-shore",
     "title": "Seashore Horizon",
     "category": "landscapes",
-    "sortOrder": 1
+    "sortOrder": 1,
+    "detail": "simple"
   },
   {
     "id": "winter-snow",
     "title": "Snow Horizon",
     "category": "landscapes",
-    "sortOrder": 2
+    "sortOrder": 2,
+    "detail": "simple"
   },
   {
     "id": "winter-pond",
     "title": "Pond",
     "category": "landscapes",
-    "sortOrder": 3
+    "sortOrder": 3,
+    "detail": "simple"
   },
   {
     "id": "garden-path",
     "title": "Path",
     "category": "landscapes",
-    "sortOrder": 4
+    "sortOrder": 4,
+    "detail": "simple"
   },
   {
     "id": "garden-stone",
     "title": "Stone",
     "category": "landscapes",
-    "sortOrder": 5
+    "sortOrder": 5,
+    "detail": "simple"
   },
   {
     "id": "beach-shell",
     "title": "Shell",
     "category": "landscapes",
-    "sortOrder": 6
+    "sortOrder": 6,
+    "detail": "simple"
   },
   {
     "id": "space-crater",
     "title": "Moon Crater",
     "category": "landscapes",
-    "sortOrder": 7
+    "sortOrder": 7,
+    "detail": "detailed"
   },
   {
     "id": "nursery-rhymes-grassy-hill",
     "title": "Grassy Hill",
     "category": "landscapes",
-    "sortOrder": 1065
+    "sortOrder": 1065,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-duck-pond",
     "title": "Duck Pond",
     "category": "landscapes",
-    "sortOrder": 1066
+    "sortOrder": 1066,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-cockle-shell",
     "title": "Cockle Shell",
     "category": "landscapes",
-    "sortOrder": 1079
+    "sortOrder": 1079,
+    "detail": "moderate"
   },
   {
     "id": "horizons-alpine-peaks",
     "title": "Alpine Peaks",
     "category": "landscapes",
-    "sortOrder": 1126
+    "sortOrder": 1126,
+    "detail": "moderate"
   },
   {
     "id": "horizons-rounded-mountains",
     "title": "Rounded Mountains",
     "category": "landscapes",
-    "sortOrder": 1127
+    "sortOrder": 1127,
+    "detail": "moderate"
   },
   {
     "id": "horizons-layered-foothills",
     "title": "Layered Foothills",
     "category": "landscapes",
-    "sortOrder": 1128
+    "sortOrder": 1128,
+    "detail": "moderate"
   },
   {
     "id": "horizons-flat-prairie",
     "title": "Flat Prairie",
     "category": "landscapes",
-    "sortOrder": 1129
+    "sortOrder": 1129,
+    "detail": "moderate"
   },
   {
     "id": "horizons-rolling-farmland",
     "title": "Rolling Farmland",
     "category": "landscapes",
-    "sortOrder": 1130
+    "sortOrder": 1130,
+    "detail": "moderate"
   },
   {
     "id": "horizons-desert-dunes",
     "title": "Desert Dunes",
     "category": "landscapes",
-    "sortOrder": 1131
+    "sortOrder": 1131,
+    "detail": "moderate"
   },
   {
     "id": "horizons-red-rock-mesas",
     "title": "Red Rock Mesas",
     "category": "landscapes",
-    "sortOrder": 1132
+    "sortOrder": 1132,
+    "detail": "moderate"
   },
   {
     "id": "horizons-canyon-valley",
     "title": "Canyon Valley",
     "category": "landscapes",
-    "sortOrder": 1133
+    "sortOrder": 1133,
+    "detail": "moderate"
   },
   {
     "id": "horizons-river-valley",
     "title": "River Valley",
     "category": "landscapes",
-    "sortOrder": 1134
+    "sortOrder": 1134,
+    "detail": "moderate"
   },
   {
     "id": "horizons-lake-basin",
     "title": "Lake Basin",
     "category": "landscapes",
-    "sortOrder": 1135
+    "sortOrder": 1135,
+    "detail": "moderate"
   },
   {
     "id": "horizons-pine-forest",
     "title": "Layered Pine Forest",
     "category": "landscapes",
-    "sortOrder": 1136
+    "sortOrder": 1136,
+    "detail": "moderate"
   },
   {
     "id": "horizons-deciduous-forest",
     "title": "Layered Deciduous Forest",
     "category": "landscapes",
-    "sortOrder": 1137
+    "sortOrder": 1137,
+    "detail": "moderate"
   },
   {
     "id": "horizons-forest-clearing",
     "title": "Forest Clearing",
     "category": "landscapes",
-    "sortOrder": 1138
+    "sortOrder": 1138,
+    "detail": "moderate"
   },
   {
     "id": "horizons-woodland-trail",
     "title": "Woodland Trail",
     "category": "landscapes",
-    "sortOrder": 1139
+    "sortOrder": 1139,
+    "detail": "moderate"
   },
   {
     "id": "horizons-jungle-opening",
     "title": "Jungle Opening",
     "category": "landscapes",
-    "sortOrder": 1140
+    "sortOrder": 1140,
+    "detail": "moderate"
   },
   {
     "id": "horizons-birch-woodland",
     "title": "Birch Woodland",
     "category": "landscapes",
-    "sortOrder": 1141
+    "sortOrder": 1141,
+    "detail": "moderate"
   },
   {
     "id": "horizons-autumn-woodland",
     "title": "Autumn Woodland",
     "category": "landscapes",
-    "sortOrder": 1142
+    "sortOrder": 1142,
+    "detail": "moderate"
   },
   {
     "id": "horizons-snowy-forest",
     "title": "Snowy Forest",
     "category": "landscapes",
-    "sortOrder": 1143
+    "sortOrder": 1143,
+    "detail": "moderate"
   },
   {
     "id": "horizons-coastal-cliffs",
     "title": "Coastal Cliffs",
     "category": "landscapes",
-    "sortOrder": 1144
+    "sortOrder": 1144,
+    "detail": "moderate"
   },
   {
     "id": "horizons-beach-dunes",
     "title": "Beach Dunes",
     "category": "landscapes",
-    "sortOrder": 1145
+    "sortOrder": 1145,
+    "detail": "moderate"
   },
   {
     "id": "horizons-village-rooftops",
     "title": "Village Rooftops",
     "category": "landscapes",
-    "sortOrder": 1146
+    "sortOrder": 1146,
+    "detail": "moderate"
   },
   {
     "id": "horizons-suburban-neighborhood",
     "title": "Suburban Neighborhood",
     "category": "landscapes",
-    "sortOrder": 1147
+    "sortOrder": 1147,
+    "detail": "moderate"
   },
   {
     "id": "horizons-city-skyline",
     "title": "City Skyline",
     "category": "landscapes",
-    "sortOrder": 1148
+    "sortOrder": 1148,
+    "detail": "moderate"
   },
   {
     "id": "horizons-harbor-skyline",
     "title": "Harbor Skyline",
     "category": "landscapes",
-    "sortOrder": 1149
+    "sortOrder": 1149,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-underwater-rocks",
     "title": "Underwater Rocks",
     "category": "landscapes",
-    "sortOrder": 1185
+    "sortOrder": 1185,
+    "detail": "moderate"
   },
   {
     "id": "collection-expansion-seabed-horizon",
     "title": "Seabed Horizon",
     "category": "landscapes",
-    "sortOrder": 1187
+    "sortOrder": 1187,
+    "detail": "moderate"
   },
   {
     "id": "interiors-cave-chamber",
     "title": "Cave Chamber",
     "category": "landscapes",
-    "sortOrder": 1448
+    "sortOrder": 1448,
+    "detail": "moderate"
   },
   {
     "id": "interiors-cave-side-passage",
     "title": "Cave Side Passage",
     "category": "landscapes",
-    "sortOrder": 1449
+    "sortOrder": 1449,
+    "detail": "moderate"
   },
   {
     "id": "interiors-tavern-room",
     "title": "Tavern Room",
     "category": "landscapes",
-    "sortOrder": 1454
+    "sortOrder": 1454,
+    "detail": "moderate"
   },
   {
     "id": "interiors-tavern-corner",
     "title": "Tavern Corner",
     "category": "landscapes",
-    "sortOrder": 1455
+    "sortOrder": 1455,
+    "detail": "moderate"
   },
   {
     "id": "interiors-palace-chamber",
     "title": "Palace Chamber",
     "category": "landscapes",
-    "sortOrder": 1460
+    "sortOrder": 1460,
+    "detail": "moderate"
   },
   {
     "id": "interiors-palace-gallery",
     "title": "Palace Gallery",
     "category": "landscapes",
-    "sortOrder": 1461
+    "sortOrder": 1461,
+    "detail": "moderate"
   },
   {
     "id": "interiors-great-hall",
     "title": "Great Hall",
     "category": "landscapes",
-    "sortOrder": 1466
+    "sortOrder": 1466,
+    "detail": "moderate"
   },
   {
     "id": "interiors-arched-hallway",
     "title": "Arched Hallway",
     "category": "landscapes",
-    "sortOrder": 1467
+    "sortOrder": 1467,
+    "detail": "moderate"
   },
   {
     "id": "interiors-cottage-kitchen",
     "title": "Cottage Kitchen",
     "category": "landscapes",
-    "sortOrder": 1472
+    "sortOrder": 1472,
+    "detail": "moderate"
   },
   {
     "id": "interiors-cottage-attic",
     "title": "Cottage Attic",
     "category": "landscapes",
-    "sortOrder": 1473
+    "sortOrder": 1473,
+    "detail": "moderate"
   },
   {
     "id": "interiors-home-living-room",
     "title": "Home Living Room",
     "category": "landscapes",
-    "sortOrder": 1478
+    "sortOrder": 1478,
+    "detail": "moderate"
   },
   {
     "id": "interiors-home-room-corner",
     "title": "Home Room Corner",
     "category": "landscapes",
-    "sortOrder": 1479
+    "sortOrder": 1479,
+    "detail": "moderate"
   },
   {
     "id": "interiors-office-room",
     "title": "Office Room",
     "category": "landscapes",
-    "sortOrder": 1484
+    "sortOrder": 1484,
+    "detail": "moderate"
   },
   {
     "id": "interiors-office-corner",
     "title": "Office Corner",
     "category": "landscapes",
-    "sortOrder": 1485
+    "sortOrder": 1485,
+    "detail": "moderate"
   },
   {
     "id": "interiors-bedroom-room",
     "title": "Bedroom Room",
     "category": "landscapes",
-    "sortOrder": 1490
+    "sortOrder": 1490,
+    "detail": "moderate"
   },
   {
     "id": "interiors-bedroom-corner",
     "title": "Bedroom Corner",
     "category": "landscapes",
-    "sortOrder": 1491
+    "sortOrder": 1491,
+    "detail": "moderate"
   },
   {
     "id": "garden-house",
     "title": "Cottage",
     "category": "buildings",
-    "sortOrder": 0
+    "sortOrder": 0,
+    "detail": "moderate"
   },
   {
     "id": "winter-cabin",
     "title": "Snowy Cabin",
     "category": "buildings",
-    "sortOrder": 1
+    "sortOrder": 1,
+    "detail": "detailed"
   },
   {
     "id": "garden-window",
     "title": "Window",
     "category": "buildings",
-    "sortOrder": 2
+    "sortOrder": 2,
+    "detail": "moderate"
   },
   {
     "id": "garden-fence",
     "title": "Fence",
     "category": "buildings",
-    "sortOrder": 3
+    "sortOrder": 3,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-drainpipe",
     "title": "House Drainpipe",
     "category": "buildings",
-    "sortOrder": 1035
+    "sortOrder": 1035,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-stone-well",
     "title": "Stone Well",
     "category": "buildings",
-    "sortOrder": 1040
+    "sortOrder": 1040,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-barn",
     "title": "Storybook Barn",
     "category": "buildings",
-    "sortOrder": 1046
+    "sortOrder": 1046,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-brick-wall",
     "title": "Humpty's Brick Wall",
     "category": "buildings",
-    "sortOrder": 1050
+    "sortOrder": 1050,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-schoolhouse",
     "title": "Little Schoolhouse",
     "category": "buildings",
-    "sortOrder": 1056
+    "sortOrder": 1056,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-stone-bridge",
     "title": "Stone Bridge",
     "category": "buildings",
-    "sortOrder": 1067
+    "sortOrder": 1067,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-storybook-castle",
     "title": "Storybook Castle",
     "category": "buildings",
-    "sortOrder": 1068
+    "sortOrder": 1068,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-shoe-house",
     "title": "Shoe House",
     "category": "buildings",
-    "sortOrder": 1069
+    "sortOrder": 1069,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-town-house",
     "title": "Town House",
     "category": "buildings",
-    "sortOrder": 1162
+    "sortOrder": 1162,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-fire-station",
     "title": "Fire Station",
     "category": "buildings",
-    "sortOrder": 1163
+    "sortOrder": 1163,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-lighthouse",
     "title": "Lighthouse",
     "category": "buildings",
-    "sortOrder": 1164
+    "sortOrder": 1164,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-windmill",
     "title": "Windmill",
     "category": "buildings",
-    "sortOrder": 1165
+    "sortOrder": 1165,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-wizard-tower",
     "title": "Wizard Tower",
     "category": "buildings",
-    "sortOrder": 1443
+    "sortOrder": 1443,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-castle-gate",
     "title": "Castle Gate",
     "category": "buildings",
-    "sortOrder": 1444
+    "sortOrder": 1444,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-enchanted-door",
     "title": "Enchanted Door",
     "category": "buildings",
-    "sortOrder": 1447
+    "sortOrder": 1447,
+    "detail": "moderate"
   },
   {
     "id": "spring-watering-can",
     "title": "Watering Can",
     "category": "objects",
-    "sortOrder": 0
+    "sortOrder": 0,
+    "detail": "moderate"
   },
   {
     "id": "beach-umbrella",
     "title": "Umbrella",
     "category": "objects",
-    "sortOrder": 1
+    "sortOrder": 1,
+    "detail": "moderate"
   },
   {
     "id": "beach-ball",
     "title": "Ball",
     "category": "objects",
-    "sortOrder": 2
+    "sortOrder": 2,
+    "detail": "simple"
   },
   {
     "id": "beach-towel",
     "title": "Towel",
     "category": "objects",
-    "sortOrder": 3
+    "sortOrder": 3,
+    "detail": "simple"
   },
   {
     "id": "winter-present",
     "title": "Present",
     "category": "objects",
-    "sortOrder": 5
+    "sortOrder": 5,
+    "detail": "moderate"
   },
   {
     "id": "counting-bunting",
     "title": "Bunting",
     "category": "objects",
-    "sortOrder": 6
+    "sortOrder": 6,
+    "detail": "simple"
   },
   {
     "id": "nursery-rhymes-grandfather-clock",
     "title": "Grandfather Clock",
     "category": "objects",
-    "sortOrder": 1032
+    "sortOrder": 1032,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-wool-sacks",
     "title": "Three Wool Sacks",
     "category": "objects",
-    "sortOrder": 1054
+    "sortOrder": 1054,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-little-teapot",
     "title": "Little Teapot",
     "category": "objects",
-    "sortOrder": 1058
+    "sortOrder": 1058,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-muffin-tray",
     "title": "Muffin Tray",
     "category": "objects",
-    "sortOrder": 1060
+    "sortOrder": 1060,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-candlestick",
     "title": "Candlestick",
     "category": "objects",
-    "sortOrder": 1061
+    "sortOrder": 1061,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-storybook-kettle",
     "title": "Storybook Kettle",
     "category": "objects",
-    "sortOrder": 1073
+    "sortOrder": 1073,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-porridge-pot",
     "title": "Porridge Pot",
     "category": "objects",
-    "sortOrder": 1076
+    "sortOrder": 1076,
+    "detail": "moderate"
   },
   {
     "id": "fall-rain-boots",
     "title": "Rain Boots",
     "category": "objects",
-    "sortOrder": 1094
+    "sortOrder": 1094,
+    "detail": "moderate"
   },
   {
     "id": "fall-wheelbarrow-leaves",
     "title": "Wheelbarrow of Leaves",
     "category": "objects",
-    "sortOrder": 1095
+    "sortOrder": 1095,
+    "detail": "moderate"
   },
   {
     "id": "fall-rake",
     "title": "Garden Rake",
     "category": "objects",
-    "sortOrder": 1099
+    "sortOrder": 1099,
+    "detail": "moderate"
   },
   {
     "id": "fall-hay-bale",
     "title": "Hay Bale",
     "category": "objects",
-    "sortOrder": 1100
+    "sortOrder": 1100,
+    "detail": "moderate"
   },
   {
     "id": "fall-flying-kite",
     "title": "Flying Kite",
     "category": "objects",
-    "sortOrder": 1113
+    "sortOrder": 1113,
+    "detail": "moderate"
   },
   {
     "id": "fall-autumn-scarf",
     "title": "Autumn Scarf",
     "category": "objects",
-    "sortOrder": 1114
+    "sortOrder": 1114,
+    "detail": "moderate"
   },
   {
     "id": "fall-mittens",
     "title": "Mittens",
     "category": "objects",
-    "sortOrder": 1115
+    "sortOrder": 1115,
+    "detail": "moderate"
   },
   {
     "id": "fall-harvest-lantern",
     "title": "Harvest Lantern",
     "category": "objects",
-    "sortOrder": 1124
+    "sortOrder": 1124,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-teddy-bear",
     "title": "Teddy Bear",
     "category": "objects",
-    "sortOrder": 1166
+    "sortOrder": 1166,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-toy-blocks",
     "title": "Toy Blocks",
     "category": "objects",
-    "sortOrder": 1167
+    "sortOrder": 1167,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-toy-drum",
     "title": "Toy Drum",
     "category": "objects",
-    "sortOrder": 1168
+    "sortOrder": 1168,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-soccer-ball",
     "title": "Soccer Ball",
     "category": "objects",
-    "sortOrder": 1169
+    "sortOrder": 1169,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-treasure-chest",
     "title": "Treasure Chest",
     "category": "objects",
-    "sortOrder": 1440
+    "sortOrder": 1440,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-spellbook",
     "title": "Spellbook",
     "category": "objects",
-    "sortOrder": 1441
+    "sortOrder": 1441,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-potion-bottle",
     "title": "Potion Bottle",
     "category": "objects",
-    "sortOrder": 1442
+    "sortOrder": 1442,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-dragon-egg",
     "title": "Dragon Egg",
     "category": "objects",
-    "sortOrder": 1445
+    "sortOrder": 1445,
+    "detail": "moderate"
   },
   {
     "id": "fantasy-crystal-cluster",
     "title": "Crystal Cluster",
     "category": "objects",
-    "sortOrder": 1446
+    "sortOrder": 1446,
+    "detail": "moderate"
   },
   {
     "id": "interiors-cave-stalagmites",
     "title": "Cave Stalagmites",
     "category": "objects",
-    "sortOrder": 1450
+    "sortOrder": 1450,
+    "detail": "moderate"
   },
   {
     "id": "interiors-hanging-stalactites",
     "title": "Hanging Stalactites",
     "category": "objects",
-    "sortOrder": 1451
+    "sortOrder": 1451,
+    "detail": "moderate"
   },
   {
     "id": "interiors-cave-stone-arch",
     "title": "Cave Stone Arch",
     "category": "objects",
-    "sortOrder": 1452
+    "sortOrder": 1452,
+    "detail": "moderate"
   },
   {
     "id": "interiors-small-campfire",
     "title": "Small Campfire",
     "category": "objects",
-    "sortOrder": 1453
+    "sortOrder": 1453,
+    "detail": "moderate"
   },
   {
     "id": "interiors-tavern-table",
     "title": "Tavern Table",
     "category": "objects",
-    "sortOrder": 1456
+    "sortOrder": 1456,
+    "detail": "moderate"
   },
   {
     "id": "interiors-tavern-stool",
     "title": "Tavern Stool",
     "category": "objects",
-    "sortOrder": 1457
+    "sortOrder": 1457,
+    "detail": "moderate"
   },
   {
     "id": "interiors-wooden-barrel",
     "title": "Wooden Barrel",
     "category": "objects",
-    "sortOrder": 1458
+    "sortOrder": 1458,
+    "detail": "moderate"
   },
   {
     "id": "interiors-tavern-tankard",
     "title": "Tavern Tankard",
     "category": "objects",
-    "sortOrder": 1459
+    "sortOrder": 1459,
+    "detail": "moderate"
   },
   {
     "id": "interiors-royal-throne",
     "title": "Royal Throne",
     "category": "objects",
-    "sortOrder": 1462
+    "sortOrder": 1462,
+    "detail": "moderate"
   },
   {
     "id": "interiors-palace-column",
     "title": "Palace Column",
     "category": "objects",
-    "sortOrder": 1463
+    "sortOrder": 1463,
+    "detail": "moderate"
   },
   {
     "id": "interiors-palace-vase",
     "title": "Palace Vase",
     "category": "objects",
-    "sortOrder": 1464
+    "sortOrder": 1464,
+    "detail": "moderate"
   },
   {
     "id": "interiors-royal-cabinet",
     "title": "Royal Cabinet",
     "category": "objects",
-    "sortOrder": 1465
+    "sortOrder": 1465,
+    "detail": "moderate"
   },
   {
     "id": "interiors-hall-bench",
     "title": "Hall Bench",
     "category": "objects",
-    "sortOrder": 1468
+    "sortOrder": 1468,
+    "detail": "moderate"
   },
   {
     "id": "interiors-wall-banner",
     "title": "Wall Banner",
     "category": "objects",
-    "sortOrder": 1469
+    "sortOrder": 1469,
+    "detail": "moderate"
   },
   {
     "id": "interiors-wall-torch",
     "title": "Wall Torch",
     "category": "objects",
-    "sortOrder": 1470
+    "sortOrder": 1470,
+    "detail": "moderate"
   },
   {
     "id": "interiors-arched-window",
     "title": "Arched Window",
     "category": "objects",
-    "sortOrder": 1471
+    "sortOrder": 1471,
+    "detail": "moderate"
   },
   {
     "id": "interiors-stone-fireplace",
     "title": "Stone Fireplace",
     "category": "objects",
-    "sortOrder": 1474
+    "sortOrder": 1474,
+    "detail": "moderate"
   },
   {
     "id": "interiors-cooking-pot",
     "title": "Cooking Pot",
     "category": "objects",
-    "sortOrder": 1475
+    "sortOrder": 1475,
+    "detail": "moderate"
   },
   {
     "id": "interiors-cottage-cupboard",
     "title": "Cottage Cupboard",
     "category": "objects",
-    "sortOrder": 1476
+    "sortOrder": 1476,
+    "detail": "moderate"
   },
   {
     "id": "interiors-empty-woven-basket",
     "title": "Empty Woven Basket",
     "category": "objects",
-    "sortOrder": 1477
+    "sortOrder": 1477,
+    "detail": "moderate"
   },
   {
     "id": "interiors-home-sofa",
     "title": "Home Sofa",
     "category": "objects",
-    "sortOrder": 1480
+    "sortOrder": 1480,
+    "detail": "moderate"
   },
   {
     "id": "interiors-home-armchair",
     "title": "Home Armchair",
     "category": "objects",
-    "sortOrder": 1481
+    "sortOrder": 1481,
+    "detail": "moderate"
   },
   {
     "id": "interiors-coffee-table",
     "title": "Coffee Table",
     "category": "objects",
-    "sortOrder": 1482
+    "sortOrder": 1482,
+    "detail": "moderate"
   },
   {
     "id": "interiors-floor-lamp",
     "title": "Floor Lamp",
     "category": "objects",
-    "sortOrder": 1483
+    "sortOrder": 1483,
+    "detail": "moderate"
   },
   {
     "id": "interiors-office-desk",
     "title": "Office Desk",
     "category": "objects",
-    "sortOrder": 1486
+    "sortOrder": 1486,
+    "detail": "moderate"
   },
   {
     "id": "interiors-office-chair",
     "title": "Office Chair",
     "category": "objects",
-    "sortOrder": 1487
+    "sortOrder": 1487,
+    "detail": "moderate"
   },
   {
     "id": "interiors-filing-cabinet",
     "title": "Filing Cabinet",
     "category": "objects",
-    "sortOrder": 1488
+    "sortOrder": 1488,
+    "detail": "moderate"
   },
   {
     "id": "interiors-desktop-computer",
     "title": "Desktop Computer",
     "category": "objects",
-    "sortOrder": 1489
+    "sortOrder": 1489,
+    "detail": "moderate"
   },
   {
     "id": "interiors-single-bed",
     "title": "Single Bed",
     "category": "objects",
-    "sortOrder": 1492
+    "sortOrder": 1492,
+    "detail": "moderate"
   },
   {
     "id": "interiors-bedside-table",
     "title": "Bedside Table",
     "category": "objects",
-    "sortOrder": 1493
+    "sortOrder": 1493,
+    "detail": "moderate"
   },
   {
     "id": "interiors-bedroom-wardrobe",
     "title": "Bedroom Wardrobe",
     "category": "objects",
-    "sortOrder": 1494
+    "sortOrder": 1494,
+    "detail": "moderate"
   },
   {
     "id": "interiors-bedroom-dresser",
     "title": "Bedroom Dresser",
     "category": "objects",
-    "sortOrder": 1495
+    "sortOrder": 1495,
+    "detail": "moderate"
   },
   {
     "id": "space-spaceship",
     "title": "Explorer Spaceship",
     "category": "vehicles",
-    "sortOrder": 4
+    "sortOrder": 4,
+    "detail": "detailed"
   },
   {
     "id": "nursery-rhymes-rowboat",
     "title": "Rowboat with Oars",
     "category": "vehicles",
-    "sortOrder": 1041
+    "sortOrder": 1041,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-friendly-bus",
     "title": "Friendly Bus",
     "category": "vehicles",
-    "sortOrder": 1042
+    "sortOrder": 1042,
+    "detail": "moderate"
   },
   {
     "id": "fall-pumpkin-wagon",
     "title": "Pumpkin Wagon",
     "category": "vehicles",
-    "sortOrder": 1106
+    "sortOrder": 1106,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-compact-car",
     "title": "Compact Car",
     "category": "vehicles",
-    "sortOrder": 1150
+    "sortOrder": 1150,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-farm-tractor",
     "title": "Farm Tractor",
     "category": "vehicles",
-    "sortOrder": 1151
+    "sortOrder": 1151,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-fire-engine",
     "title": "Fire Engine",
     "category": "vehicles",
-    "sortOrder": 1152
+    "sortOrder": 1152,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-propeller-airplane",
     "title": "Propeller Airplane",
     "category": "vehicles",
-    "sortOrder": 1153
+    "sortOrder": 1153,
+    "detail": "moderate"
   },
   {
     "id": "garden-apple",
     "title": "Apple",
     "category": "food",
-    "sortOrder": 0
+    "sortOrder": 0,
+    "detail": "simple"
   },
   {
     "id": "nursery-rhymes-storybook-pie",
     "title": "Storybook Pie",
     "category": "food",
-    "sortOrder": 1074
+    "sortOrder": 1074,
+    "detail": "moderate"
   },
   {
     "id": "nursery-rhymes-hot-cross-buns",
     "title": "Hot Cross Buns",
     "category": "food",
-    "sortOrder": 1077
+    "sortOrder": 1077,
+    "detail": "moderate"
   },
   {
     "id": "fall-pumpkin",
     "title": "Pumpkin",
     "category": "food",
-    "sortOrder": 1083
+    "sortOrder": 1083,
+    "detail": "moderate"
   },
   {
     "id": "fall-apple-basket",
     "title": "Apple Basket",
     "category": "food",
-    "sortOrder": 1090
+    "sortOrder": 1090,
+    "detail": "moderate"
   },
   {
     "id": "fall-acorn",
     "title": "Acorn",
     "category": "food",
-    "sortOrder": 1092
+    "sortOrder": 1092,
+    "detail": "moderate"
   },
   {
     "id": "fall-corn",
     "title": "Corn on the Cob",
     "category": "food",
-    "sortOrder": 1096
+    "sortOrder": 1096,
+    "detail": "moderate"
   },
   {
     "id": "fall-harvest-basket",
     "title": "Harvest Basket",
     "category": "food",
-    "sortOrder": 1098
+    "sortOrder": 1098,
+    "detail": "moderate"
   },
   {
     "id": "fall-pumpkin-cluster",
     "title": "Pumpkin Cluster",
     "category": "food",
-    "sortOrder": 1103
+    "sortOrder": 1103,
+    "detail": "moderate"
   },
   {
     "id": "fall-chestnuts",
     "title": "Chestnuts",
     "category": "food",
-    "sortOrder": 1110
+    "sortOrder": 1110,
+    "detail": "moderate"
   },
   {
     "id": "fall-gourds",
     "title": "Decorative Gourds",
     "category": "food",
-    "sortOrder": 1120
+    "sortOrder": 1120,
+    "detail": "moderate"
   },
   {
     "id": "fall-pear",
     "title": "Harvest Pear",
     "category": "food",
-    "sortOrder": 1121
+    "sortOrder": 1121,
+    "detail": "moderate"
   },
   {
     "id": "fall-plum",
     "title": "Harvest Plum",
     "category": "food",
-    "sortOrder": 1122
+    "sortOrder": 1122,
+    "detail": "moderate"
   },
   {
     "id": "fall-cornucopia",
     "title": "Cornucopia",
     "category": "food",
-    "sortOrder": 1123
+    "sortOrder": 1123,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-banana-bunch",
     "title": "Banana Bunch",
     "category": "food",
-    "sortOrder": 1158
+    "sortOrder": 1158,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-strawberry",
     "title": "Strawberry",
     "category": "food",
-    "sortOrder": 1159
+    "sortOrder": 1159,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-sandwich",
     "title": "Sandwich",
     "category": "food",
-    "sortOrder": 1160
+    "sortOrder": 1160,
+    "detail": "moderate"
   },
   {
     "id": "category-expansion-birthday-cake",
     "title": "Birthday Cake",
     "category": "food",
-    "sortOrder": 1161
+    "sortOrder": 1161,
+    "detail": "moderate"
   }
 ]

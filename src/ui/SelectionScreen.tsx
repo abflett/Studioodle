@@ -63,7 +63,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     return () => query.removeEventListener('change', update);
   }, [manualOrientation]);
   const [pageTurn, setPageTurn] = useState<'next' | 'previous'>();
-  const [background, setBackground] = useState('#f6f2e8');
+  const [background, setBackground] = useState('#ffffff');
   const { library, saved, sampleIndex, setSampleIndex, current, currentError, retry, removePicture, restorePicture } = usePictureLibrary();
   const [customPages, setCustomPages] = useState(() => {
     try { return workshopRepository.load().pages; } catch { return []; }

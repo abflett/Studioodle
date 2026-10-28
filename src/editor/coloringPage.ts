@@ -4,7 +4,7 @@ import type { SavedPicture } from './savedPicture';
 export function createColoringPage(source: SavedPicture, title: string): SavedPicture {
   return {
     ...source, version: 5, id: crypto.randomUUID(), title, updatedAt: Date.now(),
-    background: '#ffffff', leafColor: 0x242428,
+    background: '#ffffff', leafColor: 0x000000,
     document: {
       ...source.document, version: 5,
       surfaces: source.document.surfaces.map(surface => {

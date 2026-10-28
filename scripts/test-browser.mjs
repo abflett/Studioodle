@@ -239,6 +239,43 @@ try {
   await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'g',code:'KeyG',windowsVirtualKeyCode:71});
   await waitFor(`document.querySelector('button[aria-label="Fill"]').getAttribute('aria-pressed')==='true'&&!document.querySelector('dialog[open]')`);
 
+  await evaluate(`document.querySelector('button[aria-label="Stickers"]').click()`);
+  await waitFor(`document.querySelectorAll('.sticker-category-grid button').length===10`);
+  if(!await evaluate(`getComputedStyle(document.querySelector('.sticker-ink-button .ribbon-color-dot')).boxShadow==='none'&&getComputedStyle(document.querySelector('.sticker-ink-button .ribbon-color-dot')).borderWidth==='0px'`))throw Error('Sticker ink dot must match ribbon without border');
+  for(const [width,height] of [[1000,720],[390,844],[320,568],[844,390]]){
+    await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+    for(const theme of ['dark','light']){
+      await evaluate(`document.documentElement.dataset.theme='${theme}'`);
+      const fits=await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>{const d=document.querySelector('.sticker-dialog'),b=d.getBoundingClientRect();resolve(b.left>=0&&b.right<=innerWidth&&b.top>=0&&b.bottom<=innerHeight&&d.scrollWidth<=d.clientWidth&&[...d.querySelectorAll('button')].every(e=>{const r=e.getBoundingClientRect();return r.left>=b.left&&r.right<=b.right&&r.top>=b.top&&r.bottom<=b.bottom}));})))`);
+      if(!fits)throw Error(`Sticker layout overflows ${width}x${height} ${theme}`);
+      const shot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile(`work/tests/stickers-${width}x${height}-${theme}.png`,Buffer.from(shot.data,'base64'));
+    }
+  }
+  await cdp('Emulation.clearDeviceMetricsOverride');
+  await evaluate(`document.querySelector('button[aria-label="Medium stickers"]').click();document.querySelector('button[aria-label="Animals"]').click()`);
+  await waitFor(`!!document.querySelector('.sticker-item')`);
+  const filtered=await evaluate(`(async()=>{const {stickerCategories}=await import('/src/ui/stickerCatalog.ts');return [...document.querySelectorAll('.sticker-item')].every(b=>stickerCategories.find(c=>c.id==='animals').items.some(i=>i.title===b.getAttribute('aria-label')&&i.detail==='moderate'));})()`);
+  if(!filtered)throw Error('Sticker difficulty must use authored metadata');
+  if(await evaluate(`!!document.querySelector('button[aria-label="Next stickers"]')`))await evaluate(`document.querySelector('button[aria-label="Next stickers"]').click()`);
+  const stickerBefore=await evaluate(`JSON.stringify([...document.querySelectorAll('.sticker-item')].map(b=>b.getAttribute('aria-label')))`);
+  const paintColorBefore=await evaluate(`document.querySelector('.main-ribbon .ribbon-color-dot').style.background`);
+  await evaluate(`document.querySelector('.sticker-ink-button').click()`);
+  await waitFor(`!!document.querySelector('.sticker-ink-dialog[open]')`);
+  await evaluate(`document.querySelector('.sticker-ink-dialog button[aria-label="White"]').click()`);
+  await waitFor(`!document.querySelector('.sticker-ink-dialog')`);
+  if(!await evaluate(`document.querySelector('.sticker-ink-button .ribbon-color-dot').style.background==='rgb(255, 255, 255)'&&document.activeElement===document.querySelector('.sticker-ink-button')`))throw Error('Ink selection must return focus and use selected RGB');
+  if(await evaluate(`document.querySelector('.main-ribbon .ribbon-color-dot').style.background`)!==paintColorBefore||await evaluate(`JSON.stringify([...document.querySelectorAll('.sticker-item')].map(b=>b.getAttribute('aria-label')))`)!==stickerBefore)throw Error('Ink choice must preserve drawing color and browsing state');
+  await evaluate(`document.querySelector('.sticker-ink-button').click()`);
+  await waitFor(`!!document.querySelector('.sticker-ink-dialog[open]')`);
+  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+  await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+  await waitFor(`!document.querySelector('.sticker-ink-dialog')&&!!document.querySelector('.sticker-dialog[open]')`);
+  await evaluate(`document.querySelector('.sticker-ink-button').click()`);
+  await waitFor(`!!document.querySelector('.sticker-ink-dialog[open]')`);
+  await evaluate(`document.querySelector('.sticker-ink-dialog button[aria-label="Black"]').click()`);
+  await waitFor(`!document.querySelector('.sticker-ink-dialog')`);
+  await evaluate(`document.querySelector('.sticker-dialog button[aria-label="Close picker"]').click()`);
+  await waitFor(`!document.querySelector('.sticker-dialog[open]')`);
   await evaluate('document.querySelector("button[aria-label=Brush]").click()');
   await waitFor('!!document.querySelector("button[aria-label=" + JSON.stringify("Close picker") + "]")');
   await evaluate('document.querySelector("button[aria-label=" + JSON.stringify("Close picker") + "]").click()');

@@ -15,7 +15,7 @@ export async function checkBlankPageSetup(){
   const [step,onStep]=useState<'shape'|'paper'>('shape');
   const [paperPreset,onPreset]=useState<PaperPresetId>('full');
   const [orientation,onOrientation]=useState<'portrait'|'landscape'>('landscape');
-  const [background,onBackground]=useState('#f6f2e8');
+  const [background,onBackground]=useState('#ffffff');
   return createElement(BlankPageSetup,{step,onStep,paperPreset,onPreset,orientation,onOrientation,background,onBackground,onClose:()=>{},onOpen:setup=>{opened=setup;}});
  }
  root.render(createElement(Harness));
@@ -32,7 +32,7 @@ export async function checkBlankPageSetup(){
   await click(drawingColors[0]!.name);
   assert(container.querySelector('.blank-paper-summary')?.getAttribute('aria-label')?.includes(drawingColors[0]!.name),'Selected color must update paper summary');
   const mark=container.querySelector('.blank-paper-summary text')!;
-  assert(getComputedStyle(mark).fill!=='rgb(36, 36, 40)','Dark paper needs contrasting size marking');
+  assert(getComputedStyle(mark).fill!=='rgb(0, 0, 0)','Dark paper needs contrasting size marking');
   await click('Back to paper shape');
   assert(container.querySelector('[aria-label="Tall"]')?.getAttribute('aria-pressed')==='true','Back navigation must retain orientation');
   container.querySelectorAll<HTMLButtonElement>('.blank-size-choice')[3]!.click();await frame();
@@ -43,7 +43,7 @@ export async function checkBlankPageSetup(){
   assert(container.querySelector('[aria-pressed="true"].paper-color')?.getAttribute('aria-label')===drawingColors[0]!.name,'Step navigation must preserve color');
   await click('Start drawing');
   assert(opened?.format==='portrait'&&opened.size?.width===559&&opened.size.height===794,'Start must use selected A5 physical dimensions');
-  assert(opened?.background==='#242428','Start must use selected background');
+  assert(opened?.background==='#000000','Start must use selected background');
   return {paperMarks:true,stepNavigation:true,fullPalette:true,selectionRetention:true,squareOrientation:true,physicalDimensions:true,summaryContrast:true};
  }finally{root.unmount();container.remove();}
 }
