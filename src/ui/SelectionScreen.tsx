@@ -17,7 +17,7 @@ import type { SavedPicture } from '../editor/savedPicture';
 import { printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
 import { useEffect, useState } from 'react';
-import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, Save, LoaderCircle, RotateCw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, BookPlus, LoaderCircle, RotateCw } from 'lucide-react';
 import { pictureChoices, savedStackArtwork, portfolioPaper } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
@@ -188,7 +188,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
                 {(library.error || currentError) && <button className="icon-button" aria-label="Retry loading saved pictures" title="Retry loading" onClick={retry}><RotateCw aria-hidden="true" /></button>}
                 {saved.length > 0 && <>
                   <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) { setDeletingPage(false); setPendingDelete(current); } }}><Trash2 /></button>
-                  <button className="icon-button" disabled={!current || current.document.surfaces.length < 2} aria-label="Save selected picture as a coloring page" title={current && current.document.surfaces.length > 1 ? "Save as coloring page" : "Arrange stickers in a picture to make a coloring page"} onClick={addColoringPage}><Save aria-hidden="true" /></button>
+                  <button className="icon-button" disabled={!current || current.document.surfaces.length < 2} aria-label="Add selected picture to coloring pages" title={current && current.document.surfaces.length > 1 ? "Add to coloring pages" : "Arrange stickers in a picture to make a coloring page"} onClick={addColoringPage}><BookPlus aria-hidden="true" /></button>
                   <button className="icon-button" disabled={!current} aria-label="Print selected saved picture" title="Print picture" onClick={() => { if (current) printPicture(current, () => setActionError('Could not open printing. Allow the print window and try again.')); }}><Printer /></button>
                   <button className="icon-button" disabled={!current} aria-label="Export selected saved picture" title="Export picture" aria-haspopup="dialog" onClick={() => setExportingPicture(current)}><Download /></button>
                 </>}
