@@ -59,6 +59,9 @@ The direction is professional clarity with more warmth and life: an inviting,
 playful/zen coloring studio. The custom open book is the starting point, not the
 finished icon standard. Avoid adding decorative noise to every control.
 
+- [x] Gather the [current icon inventory and three ImageGen directions](icons/README.md):
+  135 uses/states across 15 groups, with six representative controls per style board.
+  The directions await feedback; runtime icons are unchanged.
 - [ ] Make a focused visual comparison of the main ribbon and newer overlays in light
   and dark themes. Set shared rules for wells, button silhouettes, corner radii,
   padding, gaps, icon scale/stroke and focus/hover/pressed/disabled states. Decide

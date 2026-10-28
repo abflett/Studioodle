@@ -61,6 +61,13 @@ ink tables. New storage namespaces are library-v9, workshop.v3 and v6.coloring;
 format-5 saves and v3 sharing codes are intentionally unsupported. Blank paper
 setup retains its simple fixed RGB background palette.
 
+The icon-family design pass starts in `docs/icons/`: a single-page inventory of
+135 current uses/states across 15 areas (all 61 Lucide imports plus custom SVG,
+painted actions and cursors), and three built-in ImageGen concept boards for six
+representative controls. Enchanted ink, Paper charms and Gentle gesture remain
+review options; no runtime icons or styles have been replaced. Exact prompts are
+retained with the boards. Review at actual button size before expanding a family.
+
 ## Artwork status
 
 All 364 stickers were upgraded to the current small-region pipeline. Accepted
