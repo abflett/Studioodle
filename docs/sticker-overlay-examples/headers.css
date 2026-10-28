@@ -1,0 +1,18 @@
+.header-study { padding: 28px 32px 32px; gap: 34px; }
+.filter-header { position: relative; display: flex; align-items: center; justify-content: center; min-height: 58px; padding-inline: 58px; }
+.filter-header .close { top: 50%; transform: translateY(-50%); }
+.filter-header .ink-button { position: relative; width: 46px; height: 46px; flex: none; }
+.balanced .filter-header > .ink-button { position: absolute; left: 0; top: 50%; transform: translateY(-50%); }
+.ink-dot { position: absolute; width: 12px; height: 12px; right: 7px; bottom: 6px; border-radius: 50%; box-shadow: 0 0 0 1px #ffffff70; }
+.difficulty-well { display: flex; gap: 4px; padding: 5px; border-radius: 18px; background: var(--well); }
+.difficulty-well button { display: grid; place-items: center; width: 48px; height: 46px; border-radius: 13px; }
+.difficulty-well button[aria-pressed=true] { background: var(--action); color: var(--ink); }
+.difficulty-well svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.center-controls { display: flex; gap: 14px; align-items: center; }
+.header-study .category-grid { padding: 4px 12px 0; gap: 24px 18px; }
+.header-study .category { height: 108px; }
+.picker-backdrop { position: fixed; inset: 0; display: grid; place-items: center; background: #09142688; backdrop-filter: blur(5px); }
+.ink-picker { position: relative; width: min(360px,calc(100vw - 32px)); background: var(--panel); border: 2px solid var(--border); border-radius: 24px; padding: 76px 28px 28px; box-shadow: 0 24px 70px #0004; }
+.picker-close { position: absolute; top: 16px; right: 16px; }.ink-swatches { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }.ink-swatches button { display: grid; place-items: center; padding: 8px; border-radius: 14px; }.ink-swatches span { display: block; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #ffffff55; }.ink-swatches button[aria-pressed=true] { background: var(--action); }
+@media(max-width:560px) { .header-study { padding: 22px 18px 26px; gap: 26px; }.filter-header { padding-inline: 48px; }.difficulty-well { gap: 0; padding: 4px; }.difficulty-well button { width: 36px; height: 44px; }.center-controls { gap: 6px; }.centered .filter-header { padding-left: 0; }.header-study .category-grid { padding: 0; gap: 12px; }.header-study .category { height: 76px; } }
+@media(max-height:500px) and (min-width:561px) { .header-study { padding: 20px 28px 24px; gap: 18px; }.header-study .category { height: 82px; }.header-study .category-grid { gap: 14px 18px; } }
