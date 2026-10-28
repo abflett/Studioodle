@@ -29,15 +29,15 @@ async fn save_picture(app: tauri::AppHandle, name: String, format: String, bytes
 
 #[tauri::command]
 async fn save_coloring_book(app: tauri::AppHandle, name: String, text: String) -> Result<bool, String> {
-    if text.len() > 20 * 1024 * 1024 {
+    if text.len() > "studioodle-page:3:".len() + 4 * ((20 * 1024 * 1024 + 2) / 3) {
         return Err("Coloring book is too large".into());
     }
     tauri::async_runtime::spawn_blocking(move || {
         let selected = app.dialog().file().set_title("Save Coloring Book")
-            .set_file_name(&name).add_filter("Coloring Book JSON", &["json"]).blocking_save_file();
+            .set_file_name(&name).add_filter("Studioodle Pages", &["studioodle"]).blocking_save_file();
         let Some(selected) = selected else { return Ok(false); };
         let mut path = selected.into_path().map_err(|error| error.to_string())?;
-        if path.extension().is_none() { path.set_extension("json"); }
+        if path.extension().is_none() { path.set_extension("studioodle"); }
         std::fs::write(path, text).map_err(|error| error.to_string())?;
         Ok(true)
     }).await.map_err(|error| error.to_string())?

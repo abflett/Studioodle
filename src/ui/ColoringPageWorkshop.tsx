@@ -32,7 +32,7 @@ export function ColoringPageWorkshop({ picture, targetId, onSaved, onClose }: {
           void Promise.resolve().then(() => downloadColoringBook(makeColoringBook(title, [coloringBookPage(picture, targetId ?? crypto.randomUUID(), title)]))).then(saved => { if (saved) setMessage('Page exported.'); }).catch(() => setMessage('Could not export this page.')).finally(() => setBusy(false));
         }}><Download /><span>Export Page</span></button>
       </div>
-      {!targetId && <p>Save a new page first, or choose Edit Page in the picture picker to revise an existing page.</p>}
+      {!targetId && <p>Save a new page first to enable revisions in this session.</p>}
       {message && <p role="status">{message}</p>}
     </div>
   </dialog>;

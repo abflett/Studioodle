@@ -1,6 +1,6 @@
 # Coloring Books and the Page Workshop
 
-Books are offline JSON files referencing shipped sticker IDs. No account, server,
+Books use internal JSON structures referencing shipped sticker IDs; portable exports are encoded text files. No account, server,
 custom sticker embedding or online hub is involved. A recipient needs an app
 version containing the referenced stickers.
 
@@ -40,18 +40,25 @@ they do not revise coloring templates.
 Single view exposes Add, Share, and Delete for custom pages only. Grid has no
 utilities; choose a page to return to single view first.
 
-- Add accepts a pasted `studioodle-page:2:` base64 UTF-8 sharing code, raw book JSON,
-  or a JSON file. Validate and preview before adding. Multi-page books are supported.
+- Add accepts a pasted `studioodle-page:3:` base64 UTF-8 sharing code,
+  or a `.studioodle` text file containing that same code. Validate and preview before adding. Multi-page books are supported.
 - Imported pages always get fresh independent IDs, so another user's page cannot
   replace a bundled or device-local revision. Repeated imports create separate copies.
 - Share offers Copy Code and Download File for the current page. If clipboard
   access is unavailable, the code is selected for manual copying. Codes encode
   data, not online links; base64 is neither compression nor encryption.
-- File export uses browser download or the existing native JSON save adapter.
+- File export uses browser download or the native text save adapter.
   Cancelled native saves do not report success. No native build is required for web work.
 
+Version 3 identifies the portable layout schema; the code is base64, not a hash.
+The payload contains titles, paper dimensions, browsing metadata and ordered sticker
+references/transforms (plus the paper surface), with no color or paint fields.
+The app supplies black outlines and white paper when importing. Older version-2
+codes and raw JSON are not accepted by the user import flow. Internal storage and
+the bundled authoring collection remain JSON.
+
 Templates keep sticker order, position, size, rotation and flips. Paint, paper
-colors and outline colors are stripped to black ink on white. JSON does not embed
+colors and outline colors are stripped to black ink on white. The sharing format does not embed
 sticker assets. PNG/SVG/PDF picture exports remain separate from template sharing.
 Device-local storage is not a backup; export pages before clearing app/browser data.
 
@@ -101,16 +108,16 @@ all grid cards. Editor geometry still prepares only when a page is opened.
 }
 ```
 
-Book format version 2 wraps vector-only document/saved-picture format 5. Old development exports are intentionally unsupported. Page IDs must be unique, 1–120 letters/digits/dots/underscores/hyphens, starting with a letter or digit. Limits: 20 MB per import/export, 1,000 pages, 1,000 surfaces per page, and 160-character titles. Unknown sticker IDs, unsupported versions, malformed geometry, and duplicate IDs reject the entire import. Additional fields are discarded during normalization. An ID collision deliberately means a revision, so use Save New Page for an independent variant.
+Book format version 2 wraps vector-only document/saved-picture format 5. Old development exports are intentionally unsupported. Page IDs must be unique, 1–120 letters/digits/dots/underscores/hyphens, starting with a letter or digit. Limits: 20 MB decoded data (up to about 28 MB encoded), 1,000 pages, 1,000 surfaces per page, and 160-character titles. Unknown sticker IDs, unsupported versions, malformed geometry, and duplicate IDs reject the entire import. Additional fields are discarded during normalization. An ID collision deliberately means a revision, so use Save New Page for an independent variant.
 
 ## Updating the production collection
 
-The canonical bundled collection is `src/assets/coloringBook.json`, loaded by `src/app/coloringPages.ts`. Its IDs remain stable (`winter`, `beach`, `spring`, `counting`, `garden`, `safari` for the initial six pages). Workshop exports use exactly the same format. Scene previews and catalogs read this same collection directly.
+The canonical bundled collection is `src/assets/coloringBook.json`, loaded by `src/app/coloringPages.ts`. Its IDs remain stable (`winter`, `beach`, `spring`, `counting`, `garden`, `safari` for the initial six pages). Workshop exports encode color-free layouts as version-3 sharing codes; the install command decodes them into the internal book format. Scene previews and catalogs read this same collection directly.
 
 After reviewing an exported file, install it with:
 
 ```sh
-npm run books:install -- path/to/reviewed-book.json
+npm run books:install -- path/to/reviewed-book.studioodle
 npm run check
 ```
 
@@ -119,4 +126,4 @@ The install command validates the file before replacing the bundled collection. 
 The domain format and normalization live in `src/editor/coloringBook.ts`, storage
 in `src/platform/localColoringBook.ts`, collection composition in
 `src/app/coloringBookWorkshop.ts`, and sharing-code helpers in
-`src/app/coloringPageSharing.ts`.
+`src/editor/pageSharing.ts`.

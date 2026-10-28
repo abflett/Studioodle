@@ -70,11 +70,21 @@ test('browsing metadata survives sharing and rejects invalid filter values', () 
   assert.ok(browsing.pageInfo(custom).categories.includes('nature'));
 });
 
-test('sharing code round-trips Unicode, accepts JSON, and imports independent copies', () => {
-  const book = domain.makeColoringBook('Coloring', [{...pages[0], title: 'A snowman \u2603'}]);
+test('sharing code round-trips Unicode layouts without color data and imports independent copies', () => {
+  const source = structuredClone(pages[0]);
+  Object.assign(source.document.surfaces[1], { rotation: 37, scale: 0.75, flipX: true, flipY: true, color: 0xff0000,
+    vectorPaint: { version: 1, regions: [{ id: 1, base: 0xff0000, blobs: [] }] } });
+  const book = domain.makeColoringBook('Coloring', [{...source, title: 'A snowman \u2603'}]);
   const code = sharing.pageSharingCode(book);
   assert.deepEqual(sharing.parsePageSharingCode(code), book);
-  assert.deepEqual(sharing.parsePageSharingCode(JSON.stringify(book)), book);
+  assert.throws(() => sharing.parsePageSharingCode(JSON.stringify(book)));
+  const wire = JSON.parse(Buffer.from(code.split(':')[2], 'base64').toString('utf8'));
+  assert.equal(code.startsWith('studioodle-page:3:'), true);
+  assert.equal(/"(color|background|leafColor|vectorPaint|paint|updatedAt)":/.test(JSON.stringify(wire)), false);
+  for (const mutate of [w => w.pages[0].surfaces[1].kind = 'missing-sticker', w => w.pages[0].surfaces[1].scale = -1, w => w.pages[0].size.width = -1]) {
+    const invalid = structuredClone(wire); mutate(invalid);
+    assert.throws(() => sharing.parsePageSharingCode('studioodle-page:3:' + Buffer.from(JSON.stringify(invalid)).toString('base64')));
+  }
   const copy = sharing.independentPages(book);
   assert.notEqual(copy.pages[0].id, book.pages[0].id);
   assert.deepEqual(copy.pages[0].document, book.pages[0].document);

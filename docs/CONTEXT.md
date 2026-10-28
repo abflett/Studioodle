@@ -1,6 +1,6 @@
 # Current context
 
-Updated 26 October 2026. Read `AGENTS.md` first, then this file and the documentation
+Updated 28 October 2026. Read `AGENTS.md` first, then this file and the documentation
 for the requested feature. Use the checked-out repository root (`git rev-parse
 --show-toplevel`); a client's initial working directory may point elsewhere.
 
@@ -65,8 +65,8 @@ Animals, Places & Nature, Things, Letters & Numbers, and terrain detail icons.
 Shipped pages have curated `browse` metadata in the canonical book. Custom pages
 use lightweight subject/sticker-count defaults, not geometric difficulty scoring.
 
-Single view has Add (paste code/JSON file with validation and preview), Share
-(copy code/download JSON) and custom-only Delete. Imports create independent IDs.
+Single view has Add (paste code/.studioodle file with validation and preview), Share
+(copy code/download the same code as a .studioodle text file) and custom-only Delete. Imports create independent IDs. Portable codes use studioodle-page:3: and carry sticker layouts without color or paint fields; internal books/storage remain JSON.
 The dedicated Edit Page action is removed; normal open/arrange/save-as-page is the
 user authoring route. All current custom templates consolidate into the workshop
 record on the next successful atomic write; failed writes preserve original data.

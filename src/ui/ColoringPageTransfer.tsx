@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Clipboard, Copy, Download, FilePlus2, Upload } from 'lucide-react';
 import type { EditorSetup } from '../editor/setup';
-import { makeColoringBook, maxBookBytes } from '../editor/coloringBook';
+import { makeColoringBook } from '../editor/coloringBook';
 import type { ColoringBook } from '../editor/coloringBook';
-import { independentPages, pageSharingCode, parsePageSharingCode } from '../app/coloringPageSharing';
+import { independentPages, maxSharingCodeBytes, pageSharingCode, parsePageSharingCode } from '../app/coloringPageSharing';
 import { workshopRepository } from '../app/coloringBookWorkshop';
 import { downloadColoringBook } from '../platform/coloringBookOutput';
 import { DialogHeader } from './DialogHeader';
@@ -26,7 +26,7 @@ export function ColoringPageTransfer({ page, onAdded, onClose }: { page?: Editor
   return <dialog ref={dialog} className="setup-dialog page-transfer-dialog" aria-labelledby="page-transfer-title" onCancel={onClose} onClick={e => closeOnBackdrop(e, onClose)}>
     <div className="page-transfer-body">
       <DialogHeader id="page-transfer-title" title={page ? 'Share Coloring Page' : 'Add Coloring Pages'} onClose={onClose} closeLabel="Close page sharing" />
-      <label>{page ? 'Sharing code' : 'Paste a sharing code or book JSON'}<textarea ref={input} aria-label="Page sharing code" value={text} readOnly={!!page} maxLength={Math.ceil(maxBookBytes * 1.5 + 32)} onChange={e => { request.current++; setBusy(false); setText(e.target.value); setIncoming(undefined); setMessage(''); }} /></label>
+      <label>{page ? 'Sharing code' : 'Paste a sharing code'}<textarea ref={input} aria-label="Page sharing code" value={text} readOnly={!!page} maxLength={maxSharingCodeBytes} onChange={e => { request.current++; setBusy(false); setText(e.target.value); setIncoming(undefined); setMessage(''); }} /></label>
       <div className="page-transfer-actions">
         {shared ? <>
           <button className="go-button" disabled={busy} onClick={() => {
@@ -37,9 +37,9 @@ export function ColoringPageTransfer({ page, onAdded, onClose }: { page?: Editor
         </> : <>
           <button className="go-button" disabled={!text.trim() || busy} onClick={validate}><Clipboard /><span>Preview Pages</span></button>
           <button className="go-button secondary-action" disabled={busy} onClick={() => file.current?.click()}><Upload /><span>Open File</span></button>
-          <input ref={file} type="file" accept=".json,application/json,text/plain" hidden onChange={e => {
+          <input ref={file} type="file" accept=".studioodle,text/plain" hidden onChange={e => {
             const selected = e.target.files?.[0]; e.target.value = ''; if (!selected) return;
-            setIncoming(undefined); setMessage(''); if (selected.size > maxBookBytes) { setMessage('File exceeds the 20 MB limit.'); return; }
+            setIncoming(undefined); setMessage(''); if (selected.size > maxSharingCodeBytes) { setMessage('Sharing file is too large.'); return; }
             const identity = ++request.current; setBusy(true);
             void selected.text().then(value => { if (identity === request.current) { setText(value); setIncoming(undefined); } }).catch(() => { if (identity === request.current) setMessage('Could not read this file.'); }).finally(() => { if (identity === request.current) setBusy(false); });
           }} />
