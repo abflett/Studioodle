@@ -76,7 +76,7 @@ export function SelectionSettings({ open, onClose, theme, onThemeChange, setting
         <DialogHeader id="advanced-settings-title" title="Advanced Settings" onClose={close} closeLabel="Close advanced settings" back={{ label: "Back to settings", onClick: back }} />
         <div className="advanced-settings-options">
           <button className="advanced-controls-setting" role="switch" aria-checked={settings.advancedPainting} aria-labelledby="advanced-painting-label" onClick={() => onSettingsChange({ ...settings, advancedPainting: !settings.advancedPainting })}>
-            <span className="settings-description"><span id="advanced-painting-label">Painting controls</span><small>Brush sizes, types, and fill patterns</small></span><span className="settings-switch" aria-hidden="true"><span /></span>
+            <span className="settings-description"><span id="advanced-painting-label">Brush controls</span><small>Brush sizes and tip effects</small></span><span className="settings-switch" aria-hidden="true"><span /></span>
           </button>
           <button className="advanced-controls-setting" role="switch" aria-checked={settings.workshop} aria-labelledby="workshop-label" onClick={() => onSettingsChange({ ...settings, workshop: !settings.workshop })}>
             <span className="settings-description"><span id="workshop-label">Coloring page workshop</span><small>Page editing tools</small></span><span className="settings-switch" aria-hidden="true"><span /></span>

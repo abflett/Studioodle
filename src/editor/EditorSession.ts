@@ -2,7 +2,7 @@ import { Artwork } from './Artwork';
 import { UndoHistory } from './UndoHistory';
 import { preparePaintWorker } from './paintWorker';
 import { StrokeSmoothing } from './strokeSmoothing';
-import { defaultBrush, defaultFill } from './toolOptions';
+import { defaultBrush } from './toolOptions';
 import type { EditorCommand, EditorTool } from './bridge';
 import { initialDrawingSettings } from './setup';
 import type { EditorSetup } from './setup';
@@ -37,7 +37,6 @@ export class EditorSession {
   private drag?: { id: string; dx: number; dy: number };
   private tool: EditorTool = 'bucket';
   private brushOptions = defaultBrush;
-  private fillOptions = defaultFill;
   private previous?: Point;
   private stroke?: StrokeSmoothing;
   private activePointer?: number;
@@ -112,7 +111,7 @@ export class EditorSession {
         console.error('Vector bucket fill failed; paint was preserved.', error);
       };
       let result: boolean | Promise<boolean>;
-      try { result = this.document.fill(command.point, this.color, this.fillOptions); }
+      try { result = this.document.fill(command.point, this.color); }
       catch (error) { failed(error); return; }
       const finish=(changed:boolean)=>{if(this.disposed)return;const change=this.document.endChange();if(changed)this.recordChange(change);this.notifyChanged();};
       if(typeof result==='boolean')finish(result);
@@ -145,7 +144,6 @@ export class EditorSession {
     }
     if (command.type === 'set-color') this.color = command.color;
     if (command.type === 'set-brush') this.brushOptions = command.options;
-    if (command.type === 'set-fill') this.fillOptions = command.options;
     if (command.type === 'set-tool') { this.tool = command.tool; this.selected = this.focused; }
     if (command.type === 'clear-selection') { this.selected = undefined; this.tool = 'bucket'; }
     if ((command.type === 'duplicate-selection' || command.type === 'delete-selection') && this.selected) {

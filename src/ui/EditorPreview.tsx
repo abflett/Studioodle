@@ -10,9 +10,8 @@ import { useEditorShortcuts } from './useEditorShortcuts';
 import type { AppSettings } from './settings';
 import { StickerSelectionToolbar } from './StickerSelectionToolbar';
 import { StickerBrowser } from './StickerBrowser';
-import { FillPicker } from './ToolOptions';
 import { BrushPicker } from './BrushPicker';
-import { defaultBrush, defaultFill } from '../editor/toolOptions';
+import { defaultBrush } from '../editor/toolOptions';
 import { ColorPicker } from './ColorPicker';
 import { stickerCategories } from './stickerCatalog';
 import { closeOnBackdrop } from './dialog';
@@ -20,7 +19,7 @@ import { paperSize } from '../editor/document';
 import { usePaperView } from './usePaperView';
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
-import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Check, Eraser, MousePointer2, Move, ZoomIn, BookOpen } from 'lucide-react';
+import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Eraser, MousePointer2, Move, ZoomIn, BookOpen } from 'lucide-react';
 import { EditorCanvas } from './EditorCanvas';
 import { createEditorBridge } from '../editor/bridge';
 import type { EditorTool } from '../editor/bridge';
@@ -28,7 +27,7 @@ import type { EditorSetup } from '../editor/setup';
 import { initialDrawingSettings } from '../editor/setup';
 import { prepareStickers } from '../editor/vectorStickers';
 
-type Picker = 'stickers' | 'colors' | 'brush' | 'fill';
+type Picker = 'stickers' | 'colors' | 'brush';
 export default function EditorPreview({ setup, onBack, settings }: { setup: EditorSetup; onBack: () => void; settings: AppSettings }) {
   const [workshopPicture, setWorkshopPicture] = useState<SavedPicture>();
   const [workshopTarget, setWorkshopTarget] = useState(setup.authoringPageId);
@@ -51,7 +50,6 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
   }), [bridge]);
   const { saveStatus, dismissSaveStatus, save, goHome } = useEditorSaving(bridge, onBack);
   const [brushOptions, setBrushOptions] = useState(defaultBrush);
-  const [fillOptions, setFillOptions] = useState(defaultFill);
   const [picker, setPicker] = useState<Picker | null>(null);
   const [loadingSticker, setLoadingSticker] = useState(false);
   const [stickerError, setStickerError] = useState(false);
@@ -94,7 +92,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     setZoom: (value: number) => setZoom(value), cancelInput: () => bridge.send({ type: 'cancel-input' }) };
   useCanvasGestures(touchGestures);
   const selectBrush = () => { chooseTool('brush'); if (settings.advancedPainting) setPicker('brush'); else { setBrushOptions(defaultBrush); bridge.send({ type: 'set-brush', options: defaultBrush }); } };
-  const selectFill = () => { chooseTool('bucket'); if (settings.advancedPainting) setPicker('fill'); else { setFillOptions(defaultFill); bridge.send({ type: 'set-fill', options: defaultFill }); } };
+  const selectFill = () => chooseTool('bucket');
   const openStickers = () => { if (!focused) { setUseCurrentOutline(false); setCategoryId(null); setPicker('stickers'); } };
   const stepZoom = (factor: number) => {
     const view = captureView(), box = viewport.current?.getBoundingClientRect();
@@ -152,7 +150,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       <div className="ribbon-group" role="group" aria-label="Drawing tools">
         <button title="Erase (E)" aria-keyshortcuts="E" aria-label="Erase" aria-pressed={tool === 'erase'} onClick={() => chooseTool('erase')}><Eraser aria-hidden="true" /></button>
         <button title="Brush (B)" aria-keyshortcuts="B" aria-label="Brush" aria-pressed={tool === 'brush'} onClick={selectBrush} aria-haspopup={settings.advancedPainting ? 'dialog' : undefined}><Brush aria-hidden="true" /></button>
-        <button title="Fill (G)" aria-keyshortcuts="G" aria-label="Fill" aria-pressed={tool === 'bucket'} onClick={selectFill} aria-haspopup={settings.advancedPainting ? 'dialog' : undefined}><PaintBucket aria-hidden="true" /></button>
+        <button title="Fill (G)" aria-keyshortcuts="G" aria-label="Fill" aria-pressed={tool === 'bucket'} onClick={selectFill}><PaintBucket aria-hidden="true" /></button>
         <button title={focused ? "Finish focus to add stickers" : "Stickers (S)"} aria-label="Stickers" disabled={!!focused} onClick={openStickers} aria-haspopup="dialog"><Shapes aria-hidden="true" /></button>
         <button title="Colors (C)" aria-keyshortcuts="C" aria-label="Colors" onClick={() => setPicker('colors')} aria-haspopup="dialog"><Palette aria-hidden="true" /><span className="ribbon-color-dot" aria-hidden="true" style={{ background: `#${color.toString(16).padStart(6, '0')}` }} /></button>
       </div>
@@ -174,18 +172,16 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       {picker === 'brush' ? <BrushPicker value={brushOptions} onChange={options => { setBrushOptions(options); bridge.send({ type: 'set-brush', options }); }} onClose={() => setPicker(null)} headingRef={pickerTitle} /> : <div className="wizard" aria-busy={loadingSticker}>
         {loadingSticker && <progress aria-label="Loading sticker" />}
         {stickerError && <button onClick={() => setStickerError(false)}>Could not load sticker. Tap to dismiss.</button>}
-        <DialogHeader id="art-picker-title" headingRef={pickerTitle} title={picker === 'stickers' ? category?.title ?? 'Stickers' : picker === 'colors' ? 'Pick a color' : 'Fill'} onClose={() => setPicker(null)} closeLabel="Close picker" back={picker === 'stickers' && category ? { label: 'Back to sticker categories', onClick: () => setCategoryId(null) } : undefined} />
+        <DialogHeader id="art-picker-title" headingRef={pickerTitle} title={picker === 'stickers' ? category?.title ?? 'Stickers' : 'Pick a color'} onClose={() => setPicker(null)} closeLabel="Close picker" back={picker === 'stickers' && category ? { label: 'Back to sticker categories', onClick: () => setCategoryId(null) } : undefined} />
         <div className="wizard-body">
 
           {picker === 'colors' && <ColorPicker color={color} onChoose={(value) => { setColor(value); bridge.send({ type: 'set-color', color: value }); setPicker(null); }} />}
-          {picker === 'fill' && <FillPicker value={fillOptions} color={color} onChange={(options) => { setFillOptions(options); bridge.send({ type: 'set-fill', options }); }} />}
           {picker === 'stickers' && <StickerBrowser key={categoryId ?? 'categories'} categoryId={categoryId} color={outlineColor} onCategory={setCategoryId} onAdd={(kind) => { if (loadingSticker) return; setLoadingSticker(true); void prepareStickers([kind]).then(() => { bridge.send({ type: 'add-sticker', sticker: kind, outlineColor, point: { x: ((viewport.current?.clientWidth ?? 0) / 2 - position.x) / zoom, y: ((viewport.current?.clientHeight ?? 0) / 2 - position.y) / zoom } }); setPicker(null); }).catch(() => setStickerError(true)).finally(() => setLoadingSticker(false)); }} />}
         </div>
         {picker === 'stickers' && <footer className="sticker-outline-options" role="group" aria-label="Sticker outline color">
           <button aria-pressed={!useCurrentOutline} onClick={() => setUseCurrentOutline(false)}><span style={{ background: '#242428' }} />Charcoal</button>
           <button aria-pressed={useCurrentOutline} onClick={() => setUseCurrentOutline(true)}><span style={{ background: `#${color.toString(16).padStart(6, '0')}` }} />Current color</button>
         </footer>}
-        {picker === 'fill' && <footer className="tool-settings-footer"><button className="go-button" onClick={() => setPicker(null)}><Check /><span>Done</span></button></footer>}
       </div>}
     </dialog>
     {settings.workshop && workshopPicture && <ColoringPageWorkshop picture={workshopPicture} targetId={workshopTarget} onClose={() => setWorkshopPicture(undefined)} onSaved={(id, title) => { setWorkshopTarget(id); setWorkshopTitle(title); }} />}

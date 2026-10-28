@@ -1,6 +1,6 @@
 import type { SavedPicture } from './savedPicture';
 import type { Point, StickerKind } from './document';
-import type { BrushOptions, FillOptions } from './toolOptions';
+import type { BrushOptions } from './toolOptions';
 export type EditorTool = 'brush' | 'bucket' | 'select' | 'pan' | 'erase';
 export type SelectionOrder = { forward: boolean; backward: boolean };
 export type EditorCommand =
@@ -8,7 +8,6 @@ export type EditorCommand =
   | { type: 'set-color'; color: number }
   | { type: 'set-tool'; tool: EditorTool }
   | { type: 'set-brush'; options: BrushOptions }
-  | { type: 'set-fill'; options: FillOptions }
   | { type: 'flip-selection'; axis: 'horizontal' | 'vertical' }
   | { type: 'transform-selection'; scaleDelta: number; rotationDelta: number }
   | { type: 'order-selection'; direction: 'forward' | 'backward' }

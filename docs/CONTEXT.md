@@ -19,6 +19,11 @@ share square/A4 portrait/A4 landscape geometry: masked full-bleed art, border/fo
 overlay and a static stack. Preserve aspect ratios, edge alignment, stable carousel
 layout and the user's artwork; do not invent preview backgrounds to hide cropping.
 
+Fill now selects immediately (toolbar or G) and applies the selected solid color.
+The fill-pattern overlay and settings command are removed; the painting-controls
+preference now controls the brush overlay only. Existing saved patterned artwork
+still renders and exports through the current vector paint format.
+
 ## Artwork status
 
 All 364 stickers were upgraded to the current small-region pipeline. Accepted

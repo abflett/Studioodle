@@ -33,12 +33,12 @@ the visual discussion. This remains the sole implementation backlog.
   verify round trips, missing assets, malformed input, collisions and storage failure.
 - [x] Apply the approved blank paper/orientation and color layout, with internal
   size markings, step navigation, full palette, paper summary and shared drawing action.
-- [ ] Extend the reviewed overlay pattern to stickers/categories, brush/fill,
+- [ ] Extend the reviewed overlay pattern to stickers/categories,
   picture export, delete and settings. Reduce
   redundant visible headings while retaining meaningful guidance and dialog names.
   Brush is implemented from approved [study 04](brush-overlay-examples/README.md):
   one brush, round/diagonal/opaque-scatter tips, full-width sizing and a small
-  theme-colored footer sample in a matching well, with no divider. Fill and the other listed overlays remain to be refined.
+  theme-colored footer sample in a matching well, with no divider. Fill now selects immediately with solid color and has no overlay. The other listed overlays remain to be refined.
 - [ ] Validate keyboard/focus, pointer/touch, responsive density, no clipped controls
   and browsing performance as the page/sticker libraries grow. Run appropriate web
   checks; native builds only when requested.

@@ -231,6 +231,14 @@ try {
   await waitFor('!!document.querySelector("[aria-label^=Canvas]")');
   await evaluate('document.querySelector("dialog[open] .wizard-footer .go-button").click()');
   await waitFor('!!document.querySelector(".canvas-host canvas")');
+  await evaluate(`document.querySelector('button[aria-label="Fill"]').click()`);
+  await waitFor(`document.querySelector('button[aria-label="Fill"]').getAttribute('aria-pressed')==='true'&&!document.querySelector('dialog[open]')`);
+  if(await evaluate(`document.querySelector('button[aria-label="Fill"]').hasAttribute('aria-haspopup')`))throw Error('Fill must select directly, without a popup');
+  await evaluate(`document.querySelector('button[aria-label="Move the page"]').click();document.activeElement.blur()`);
+  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'g',code:'KeyG',windowsVirtualKeyCode:71});
+  await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'g',code:'KeyG',windowsVirtualKeyCode:71});
+  await waitFor(`document.querySelector('button[aria-label="Fill"]').getAttribute('aria-pressed')==='true'&&!document.querySelector('dialog[open]')`);
+
   await evaluate('document.querySelector("button[aria-label=Brush]").click()');
   await waitFor('!!document.querySelector("button[aria-label=" + JSON.stringify("Close picker") + "]")');
   await evaluate('document.querySelector("button[aria-label=" + JSON.stringify("Close picker") + "]").click()');
