@@ -1,10 +1,11 @@
 # Overlay design direction
 
-Brush design study 03 is available in
+Brush design study 04 is available in
 [brush-overlay-examples](brush-overlay-examples/README.md). It proposes one brush
 with round, two fixed diagonal and opaque scattered-circle tips; a full-width
 size row and compact gold/teal sample beside Apply replace the stacked cards and
-white preview. A shared segmented selector and quieter spacing unify the controls. Circle accumulation is geometric, with no transparency or
+white preview. Tips and preview share subtle wells; the size row remains open.
+There is no divider, and the sample is quieter than the confirmation action. Circle accumulation is geometric, with no transparency or
 blending. This is for visual review; production controls and painting are unchanged.
 
 The current Coloring Pages Focus design, broad categories and terrain icons are

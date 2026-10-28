@@ -25,7 +25,7 @@
   document.querySelector('.apply').innerHTML = svg('<path d="m6 12 4 4L19 7"/>');
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   function stamp(x, y, t) {
-    const diameter = size * .64, radius = diameter / 2; context.save(); context.translate(x, y);
+    const diameter = size * .58, radius = diameter / 2; context.save(); context.translate(x, y);
     if (tip === 'spray') {
       // Opaque circles accumulate; the static middle depicts a longer dwell.
       const passes = 1 + Math.floor(10 * Math.sin(t * Math.PI) ** 4);
@@ -44,7 +44,7 @@
   function sample() {
     if (!context) return;
     const box = canvas.getBoundingClientRect(); context.clearRect(0, 0, box.width, box.height); seed = 17;
-    context.fillStyle = getComputedStyle(document.body).getPropertyValue('--gold').trim();
+    context.fillStyle = getComputedStyle(document.body).getPropertyValue('--sample-ink').trim();
     const steps = Math.max(80, Math.ceil(box.width * .78 / Math.max(.6, size * (tip === 'spray' ? .18 : .045))));
     for (let i = 0; i <= steps; i++) {
       const t = i / steps;

@@ -1,4 +1,4 @@
-# Brush overlay / study 03
+# Brush overlay / study 04
 
 Open [the interactive study](index.html). Use `?preview` for the overlay alone and
 `?preview&theme=light` for light mode. The app is unchanged. For the bundled font,
@@ -7,11 +7,11 @@ direct file opening may use the system font.
 
 | View | Screenshot |
 | --- | --- |
-| Desktop, round | [Study 03](10-brush-v3-desktop-dark.png) |
-| Desktop, opaque scatter | [Spray-like tip](11-brush-v3-spray-dark.png) |
-| Phone portrait | [Portrait](12-brush-v3-portrait-dark.png) |
-| Desktop light | [Light theme](13-brush-v3-desktop-light.png) |
-| Short landscape | [Landscape](14-brush-v3-short-landscape.png) |
+| Desktop, round | [Study 04](15-brush-v4-desktop-dark.png) |
+| Desktop, opaque scatter | [Spray-like tip](16-brush-v4-spray-dark.png) |
+| Phone portrait | [Portrait](17-brush-v4-portrait-dark.png) |
+| Desktop light | [Light theme](18-brush-v4-desktop-light.png) |
+| Short landscape | [Landscape](19-brush-v4-short-landscape.png) |
 
 ## Simplified model
 
@@ -26,16 +26,18 @@ The size control spans the complete content width directly beneath the tips.
 The slider, editable number and one-unit minus/plus controls retain the proposed
 1-64 range in page units. A smaller premade curved stroke sits beside the apply
 button in a shared footer.
-It uses warm gold in dark mode and teal in light mode, directly on the panel,
-without a white paper card. It updates with the tip and size, and has no pointer
+It uses slightly muted warm gold in dark mode and teal in light mode, inside
+a shallow well matching the tip selector. There is no white paper card. It updates with the tip and size, and has no pointer
 interaction, eraser, hand cue or practice drawing. The preview is a proportional
 miniature rather than a screen-pixel ruler.
 
 One shared segmented tip well replaces the four large cards. The full-width size
 row has no enclosing card; its number field is the only small framed control.
-A subtle divider separates the sample/action footer. Tighter shared alignments,
-smaller radii and consistent 44px-or-larger button targets keep the compact panel
-usable. Close and the check-mark apply button keep their established positions.
+The divider is removed. Only the tips and preview use group wells; the size row
+stays open, avoiding another nested surface. A 22px desktop gap separates the
+preview well and Apply, and the stroke is slightly thinner and more muted so it
+reads as information while Apply remains the primary action. Shared radii, aligned
+centers and 44px-or-larger button targets keep the compact panel usable. Close and the check-mark apply button keep their established positions.
 
 ## Opaque scattered circles
 
@@ -53,10 +55,11 @@ there is no animated spray, save activity, editor change or storage access.
 
 ## Earlier comparison
 
-[Study 02](05-brush-v2-desktop-dark.png) retains the stacked arrangement and white
+[Study 03](10-brush-v3-desktop-dark.png) retains the unboxed sample and divider
+for comparison. [Study 02](05-brush-v2-desktop-dark.png) retains the stacked arrangement and white
 preview for comparison. [Study 01](01-brush-desktop-dark.png) retains the earlier
 instrument choices and large practice surface.
-Current HTML/CSS/JS represent study 03; the earlier source remains in Git history.
+Current HTML/CSS/JS represent study 04; the earlier source remains in Git history.
 
 Checked at desktop, portrait and short-landscape sizes in dark/light themes.
 Tip selection, exact size entry, limits, disabled boundary buttons, full-width

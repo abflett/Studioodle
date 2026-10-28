@@ -36,9 +36,9 @@ the visual discussion. This remains the sole implementation backlog.
 - [ ] Extend the reviewed overlay pattern to stickers/categories, brush/fill,
   picture export, delete and settings. Reduce
   redundant visible headings while retaining meaningful guidance and dialog names.
-  Brush discussion continues with [study 03](brush-overlay-examples/README.md):
+  Brush discussion continues with [study 04](brush-overlay-examples/README.md):
   one brush, round/diagonal/opaque-scatter tips, full-width sizing and a small
-  theme-colored footer sample in a compact unified layout. This remains a design study, not approved implementation work.
+  theme-colored footer sample in a matching well, with no divider. This remains a design study, not approved implementation work.
 - [ ] Validate keyboard/focus, pointer/touch, responsive density, no clipped controls
   and browsing performance as the page/sticker libraries grow. Run appropriate web
   checks; native builds only when requested.
