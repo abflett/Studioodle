@@ -31,6 +31,7 @@
     "test:browser": "node scripts/test-browser.mjs",
     "test:review": "node scripts/test-browser.mjs --artwork-review",
     "test:library": "node scripts/test-browser.mjs --library-profile",
+    "test:save": "node scripts/test-browser.mjs --save-profile",
     "test:memory": "node scripts/test-browser.mjs --memory-profile",
     "test:scene": "node scripts/test-browser.mjs --scene-profile --scene-cache-mib=64 --scene-repeat=2",
     "review:build": "vite build --config tools/artwork-review/vite.config.ts",

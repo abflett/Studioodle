@@ -148,6 +148,13 @@ The selected-sticker drawer sits directly below the full main ribbon, including
 when the ribbon wraps. It appears immediately without an entrance animation and
 does not overlap the main toolbar.
 
+In Select, clicking another sticker switches selection directly. Clicking within
+the selected border retains it, including transparent margins; clicking empty page
+or surrounding workspace clears the border/drawer and returns to Fill on release.
+The exit press/release is consumed, so it cannot also fill. Canceling that gesture
+restores the previous selection. Toolbar/drawer presses retain their normal actions;
+focused-sticker mode keeps its explicit Done behavior.
+
 Brush and eraser gestures may begin in the surrounding drawing workspace and
 continue onto the page. Paint remains clipped to the page; the entire gesture
 is one undo action and cancellation restores the previous artwork. Toolbar and

@@ -234,13 +234,15 @@ test('input continues during a pending save and later edits require their own sa
 
 test('background saves coalesce pending states and outlive Home and canvas disposal', async () => {
   const written = []; let complete;
+  let started;
+  const writing = new Promise(resolve => { started = resolve; });
   const queue = createSaveQueue(async picture => {
-    if (!written.length) await new Promise(resolve => { complete = resolve; });
+    if (!written.length) await new Promise(resolve => { complete = resolve; started(); });
     written.push(picture);
   });
   const editor = new EditorSession(fixture(), { save: queue.enqueue, autoSave: true, changed() {} });
   editor.execute({ type: 'add-sticker', sticker: 'animal-lion', outlineColor: 0, point: { x: 5, y: 5 } });
-  await new Promise(resolve => setImmediate(resolve));
+  await writing;
   editor.execute({ type: 'set-tool', tool: 'brush' });
   editor.begin({ x: 2, y: 2 }, 1, 0); editor.release({ x: 3, y: 3 }, 1, 1);
   editor.execute({ type: 'undo' });
@@ -287,9 +289,11 @@ test('undo supersedes a failed checkpoint even when it returns to the saved revi
 
 test('deleting a pending drawing waits for its active write and discards later checkpoints', async () => {
   let complete, writes = 0;
-  const queue = createSaveQueue(async () => { await new Promise(resolve => { complete = resolve; }); writes++; });
+  let started;
+  const writing = new Promise(resolve => { started = resolve; });
+  const queue = createSaveQueue(async () => { await new Promise(resolve => { complete = resolve; started(); }); writes++; });
   const first = queue.enqueue(fixture()).catch(() => {});
-  await new Promise(resolve => setImmediate(resolve));
+  await writing;
   const second = queue.enqueue({ ...fixture(), title: 'Superseded' }).catch(() => {});
   const removed = queue.discard('picture-1');
   complete(); await Promise.all([first, second, removed]);

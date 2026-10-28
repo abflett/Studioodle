@@ -8,13 +8,16 @@ type Entry = { latest: Request; pending?: Request; running?: Promise<void>; fail
 export function createPictureSaveQueue(write: (picture: SavedPicture) => Promise<void>) {
   const entries = new Map<string, Entry>();
   const listeners = new Set<() => void>();
+  const pictureListeners = new Set<() => void>();
   const notify = () => { for (const listener of listeners) listener(); };
   const start = (id: string, entry: Entry) => {
     if (entry.running || entry.canceled || !entry.pending) return;
     if (entry.retry) clearTimeout(entry.retry);
     entry.retry = undefined;
     const request = entry.pending; entry.pending = undefined;
-    entry.running = Promise.resolve().then(async () => {
+    // Yield the action's input/render task before snapshot preparation and IDB cloning.
+    entry.running = new Promise<void>(resolve => setTimeout(resolve, 0)).then(async () => {
+      if (entry.canceled) return;
       const picture = request.prepare ? await request.prepare() : request.picture;
       if (entry.canceled) return;
       await write(picture);
@@ -49,12 +52,14 @@ export function createPictureSaveQueue(write: (picture: SavedPicture) => Promise
           entry.latest = request; entry.pending = request;
         }
         start(picture.id, entry); notify();
+        for (const listener of pictureListeners) listener();
       });
     },
     latest(id: string) { return entries.get(id)?.latest.picture; },
     pending() { return [...entries.values()].map(entry => entry.latest.picture); },
     hasErrors() { return [...entries.values()].some(entry => entry.failed); },
     subscribe(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener); }; },
+    subscribePictures(listener: () => void) { pictureListeners.add(listener); return () => { pictureListeners.delete(listener); }; },
     retry() { for (const [id, entry] of entries) start(id, entry); },
     async flush() {
       for (const [id, entry] of entries) start(id, entry);

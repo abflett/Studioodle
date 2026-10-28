@@ -80,6 +80,23 @@ actions can be lost on abrupt shutdown, while a transaction abort preserves the
 previous complete drawing and its summary. Browser backgrounding finishes current
 pointer input; it does not rely on an asynchronous unload save.
 
+Save completion and retries no longer trigger summary reloads or restart the
+five-picture window. Only new checkpoint contents notify browsing; unchanged
+summary lists keep their existing identity and previews. Explicit retry still
+invalidates the failed current record. Pending metadata is captured before and
+after storage reads, so a write finishing mid-read needs no extra library refresh.
+
+`npm run test:save` checks eight sticker flips over an existing painted page. The
+28 October focused worker test went from eight paint-compaction jobs (884 ms total)
+to one reused job (227 ms), with eight writes and maximum synchronous dispatch
+around 1 ms in both runs. The writer is a test double: these totals measure
+preparation/queue behavior, not disk throughput or physical pointer latency.
+The same regression checks that live maintenance reuses a brush save's preparation.
+The 120-drawing library profile retained five records, with a prefetched current
+record available in 0.1 ms and cold reads around 19 ms; those timings exclude
+rendering. Browser interaction tests verify warm previews stay ready while an
+unrelated save finishes.
+
 The 28 October desktop browser regression captured a synthetic 7.0 MB drawing
 (180,001 vertices) in 0.3 ms using shared geometry. Its direct validation/storage
 write took 113 ms. These are single-run measurements, exclude worker compaction

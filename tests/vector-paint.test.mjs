@@ -12,6 +12,25 @@ before(async()=>{
 after(async()=>{await server?.close();});
 const count=g=>g.flat(2).length;
 const stroke=(state,definition,a,b,radius,color,square)=>state.apply(definition,geometry.brushBlob(a,b,radius,square),color).changed;
+
+test('save checkpoints reuse unchanged regions and keep newer edits and undo independent', async () => {
+ const shape=geometry.brushBlob([5,5],[15,5],2);
+ const state=new VectorPaint({version:1,regions:[{id:1,base:0xffffff,blobs:[{color:1,geometry:shape},{color:1,geometry:shape}]},{id:2,base:2,blobs:[]}]});
+ const before=state.snapshotRegion(1),first=state.checkpoint(),prepared=await first.compact();
+ assert.equal(prepared.regions[0].blobs.length,1);
+ assert.strictEqual((await state.checkpoint().compact()).regions[0],prepared.regions[0]);
+ state.fill(2,3);
+ const changed=await state.checkpoint().compact();
+ assert.strictEqual(changed.regions[0],prepared.regions[0]);
+ assert.equal(changed.regions[1].base,3);assert.equal(prepared.regions[1].base,2);
+ state.fill(1,4);const pending=state.checkpoint();
+ state.restoreRegion(1,before);
+ const [old,restored]=await Promise.all([pending.compact(),state.checkpoint().compact()]);
+ assert.equal(old.regions[0].base,4);assert.equal(restored.regions[0].base,0xffffff);
+ assert.equal(first.data.regions[0].blobs.length,2,'Prepared results must not rewrite a captured checkpoint');
+ state.dispose();
+ assert.deepEqual(await pending.compact(),old,'Detached saves must remain usable after disposal');
+});
 test('a thousand repeated strokes compact to one stable color blob',()=>{
  const shape=geometry.brushBlob([5,5],[15,15],2);
  const result=geometry.compactRegion({id:1,base:0xffffff,blobs:Array.from({length:1000},()=>({color:0x773399,geometry:shape}))});

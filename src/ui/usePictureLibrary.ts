@@ -10,17 +10,22 @@ export function usePictureLibrary() {
   const [window] = useState(() => new PictureWindow((id, signal) => pictureRepository.get(id, signal)));
   const loaded = useSyncExternalStore(window.subscribe, window.getSnapshot);
   const [refresh, setRefresh] = useState(0);
-  useEffect(() => pictureSaves.subscribe(() => setRefresh(value => value + 1)), []);
+  const [retryAttempt, setRetryAttempt] = useState(0);
+  useEffect(() => pictureSaves.subscribePictures(() => setRefresh(value => value + 1)), []);
   const setSampleIndex = (value: SetStateAction<number>) => setLibrary(previous => ({ ...previous, index: typeof value === 'function' ? value(previous.index) : value }));
   useEffect(() => {
     let active = true;
     void pictureRepository.list().then(
-      pictures => { if (active) setLibrary(previous => ({ pictures, error: false, loading: false, index: Math.max(0, pictures.findIndex(picture => picture.id === previous.pictures[previous.index]?.id)) })); },
+      pictures => { if (active) setLibrary(previous => {
+        const unchanged = pictures.length === previous.pictures.length && pictures.every((picture, index) => picture.id === previous.pictures[index]?.id && picture.updatedAt === previous.pictures[index]?.updatedAt);
+        if (unchanged && !previous.loading && !previous.error) return previous;
+        return { pictures: unchanged ? previous.pictures : pictures, error: false, loading: false, index: Math.max(0, pictures.findIndex(picture => picture.id === previous.pictures[previous.index]?.id)) };
+      }); },
       () => { if (active) setLibrary(previous => ({ ...previous, error: true, loading: false })); },
     );
     return () => { active = false; };
   }, [refresh]);
-  useEffect(() => { window.select(library.pictures, library.index); }, [window, library.pictures, library.index, refresh]);
+  useEffect(() => { window.select(library.pictures, library.index); }, [window, library.pictures, library.index, retryAttempt]);
   useEffect(() => () => window.dispose(), [window]);
   const summary = library.pictures[library.index];
   const matches = loaded.id === summary?.id && loaded.updatedAt === summary?.updatedAt;
@@ -42,5 +47,5 @@ export function usePictureLibrary() {
     setLibrary({ pictures, error: false, loading: false, index: Math.max(0, pictures.findIndex(item => item.id === picture.id)) });
   };
   return { library, saved: library.pictures, sampleIndex: library.index, setSampleIndex, current, currentError,
-    retry: () => setRefresh(value => value + 1), removePicture, restorePicture };
+    retry: () => { if (summary) window.invalidate(summary.id); setRefresh(value => value + 1); setRetryAttempt(value => value + 1); }, removePicture, restorePicture };
 }

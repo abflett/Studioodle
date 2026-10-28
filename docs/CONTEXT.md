@@ -104,6 +104,15 @@ Drawing and summary remain atomic; losing the latest pending actions on abrupt
 shutdown is acceptable. Home finishes input without waiting for disk; Ctrl+S and
 normal desktop close can flush. See architecture and the picture-library guide.
 
+Selection now switches directly between clicked stickers. Empty page/workspace
+presses outside the border clear the drawer and return to Fill on release, consuming
+the pointer stream; cancellation restores selection and focused mode retains Done.
+Save preparation reuses immutable compacted regions until their paint changes,
+including safe invalidation on undo. Live maintenance reuses prepared results
+instead of forcing duplicate work at gesture end. Saving yields the input task;
+save completion/status no longer restarts the saved-picture loader/previews.
+`npm run test:save` verifies eight geometry edits only compact existing paint once.
+
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.

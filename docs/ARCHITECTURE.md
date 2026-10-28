@@ -135,8 +135,13 @@ uncompacted checkpoint regions use the existing paint worker; preparation never
 waits on or rewrites live artwork/history. Save completion follows checkpoint
 compaction and transaction commit, while editing continues independently. Home
 finishes input and navigates without a storage barrier. The repository overlays
-pending checkpoints for immediate browsing/reopening and notifies the library as
-writes settle. Delete cancels pending checkpoints and waits out an active write
+pending checkpoints for immediate browsing/reopening and notifies the library only
+when checkpoint contents change. Save completion/retry status does not restart
+the five-picture loader or unchanged previews. Per-region save preparations reuse
+compacted immutable paint until that region changes; undo invalidates the affected
+region. Live maintenance can reuse the same prepared result. Background saves yield
+the input task first, and ending a gesture no longer forces duplicate compaction.
+Delete cancels pending checkpoints and waits out an active write
 before removing the stored record. Failures retain the latest checkpoint, retry
 with 1–30 second backoff and surface a retry notice. IndexedDB uses normal durability;
 an interrupted transaction preserves the previous committed drawing and summary,

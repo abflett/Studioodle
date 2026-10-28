@@ -81,6 +81,10 @@ try {
     const { checkArtworkQueue } = await import('../tests/artwork-queue.browser.mjs');
     await checkArtworkQueue({ cdp, evaluate });
     if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
+  }else if(process.argv.includes('--save-profile')){
+    const metrics = await evaluate("import('/tests/browser/save-performance.ts').then(m=>m.profileSavePerformance())");
+    await fs.writeFile('work/tests/save-performance-results.json', JSON.stringify(metrics, null, 2));
+    console.log('Save performance:', JSON.stringify(metrics));
   }else if(libraryProfile){
     const setup=await evaluate("import('/tests/browser/picture-library-profile.ts').then(m=>m.prepareLibraryProfile())");
     const samples=[];
@@ -202,6 +206,8 @@ try {
   const canvasEditor = await evaluate("import('/tests/browser/canvas-editor.ts').then(m => m.checkCanvasEditor())");
   console.log('Canvas editor:', JSON.stringify(canvasEditor));
   result.canvasEditor = canvasEditor;
+  result.selectionExit = await evaluate("import('/tests/browser/selection-exit.ts').then(m => m.checkSelectionExit())");
+  console.log('Selection:', JSON.stringify(result.selectionExit));
   const seams=await evaluate("import('/tests/browser/seams.ts').then(m => m.checkPaintSeams())");
   await fs.writeFile('work/tests/paint-seams.png',Buffer.from(seams.diagnosticPng.split(',')[1],'base64'));delete seams.diagnosticPng;
   console.log('Paint seams:',JSON.stringify(seams));
@@ -247,6 +253,10 @@ try {
   await cdp('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:touchAt.x+15,y:touchAt.y,id:1}]});
   await cdp('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:touchAt.x+15,y:touchAt.y,id:1},{x:touchAt.x+50,y:touchAt.y+30,id:2}]});
   await cdp('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await evaluate(`document.querySelector('button[aria-label="Select and move stickers"]').click()`);
+  await cdp('Input.dispatchMouseEvent', {type:'mousePressed',...touchAt,button:'left',buttons:1,clickCount:1});
+  await cdp('Input.dispatchMouseEvent', {type:'mouseReleased',...touchAt,button:'left',buttons:0,clickCount:1});
+  await waitFor(`document.querySelector('button[aria-label="Fill"]').getAttribute('aria-pressed')==='true'`);
   await evaluate('document.querySelector("button[aria-label=" + JSON.stringify("Go home") + "]").click()');
   await waitFor('!!document.querySelector(".choice-blank")');
   const afterPinch = await evaluate('(async()=>{const {pictureRepository:r,pictureSaves}=await import("/src/app/pictures.ts");await pictureSaves.flush();return (await r.get((await r.list())[0].id)).document;})()');
@@ -345,7 +355,7 @@ try {
     if(!paperLayout)throw Error(`Paper choices must stay above the unlabeled saved-picture stack at ${width}x${height}`);
   }
   await cdp('Emulation.clearDeviceMetricsOverride');
-  result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,backgroundSaveRetry:true,deleteRestore:true,exportChoices:true,exportRetry:true};
+  result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,selectionExit:true,backgroundSaveRetry:true,deleteRestore:true,exportChoices:true,exportRetry:true};
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
   await fs.writeFile('work/tests/app-after-reopen.png',Buffer.from(screenshot.data,'base64'));
   if(process.argv.includes('--dense-profile')){

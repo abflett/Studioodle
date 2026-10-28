@@ -41,6 +41,7 @@ export class EditorSession {
   private previous?: Point;
   private stroke?: StrokeSmoothing;
   private activePointer?: number;
+  private selectionExit = false;
   private gestureUndo?: { selected?: string; tool: EditorTool };
   private nextSpray = 0;
   private nextSmoothing = 0;
@@ -210,6 +211,7 @@ export class EditorSession {
     this.gestureUndo = undefined;
     this.stroke = undefined; this.previous = undefined; this.drag = undefined;
     this.activePointer = undefined;
+    this.selectionExit = false;
     this.document.dispose();
   }
   update(time: number) {
@@ -245,13 +247,20 @@ export class EditorSession {
     this.document.beginChange();
     this.gestureUndo = { selected: this.selected, tool: this.tool };
     if (this.tool === 'select') {
+      const picked = this.document.pick(point);
+      const bounds = this.selected ? this.document.bounds(this.selected) : undefined;
+      const insideBorder = bounds && point.x >= bounds.x - 5 && point.x <= bounds.x + bounds.width + 5 && point.y >= bounds.y - 5 && point.y <= bounds.y + bounds.height + 5;
       this.selected = this.focused
-        ? (this.document.pick(point) === this.focused ? this.focused : undefined)
-        : this.document.pick(point);
+        ? (picked === this.focused ? this.focused : undefined)
+        : picked ?? (insideBorder ? this.selected : undefined);
       if (this.selected) {
         const position = this.document.position(this.selected)!;
         this.drag = { id: this.selected, dx: point.x - position.x, dy: point.y - position.y };
-      } else { this.selected = this.focused; if (!this.focused) this.tool = 'bucket'; }
+      } else {
+        this.selected = this.focused;
+        // Keep this pointer stream in Select until release, so it cannot also fill.
+        this.selectionExit = !this.focused;
+      }
     } else {
       this.previous = point;
       this.stroke = this.tool === 'brush' && this.brushOptions.kind !== 'spray' ? new StrokeSmoothing(point) : undefined;
@@ -304,11 +313,15 @@ export class EditorSession {
     }
     const change=this.document.endChange();
     if(flush)this.recordChange(change);else this.document.undoChange(change);
-    void this.document.compactPaint();
+    // Paint maintenance already schedules itself; do not duplicate each save job
+    // or force compaction during tool changes and selection-only gestures.
+    const selectionExit = this.selectionExit;
+    if (flush && selectionExit) this.tool = 'bucket';
+    this.selectionExit = false;
     this.stroke = undefined; this.gestureUndo = undefined; this.previous = undefined;
     this.drag = undefined; this.activePointer = undefined;
     // Include the release position even when the tail writes no additional pixels.
-    if (flush && hadStroke) this.notifyChanged();
+    if (flush && (hadStroke || selectionExit)) this.notifyChanged();
   }
   private notifyChanged() { this.ports.changed(); }
 }
