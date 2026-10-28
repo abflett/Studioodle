@@ -1,7 +1,7 @@
 ﻿# Studioodle icon inventory and direction studies
 
 Open [the single-page inventory](index.html), or zoom the [full-size current icon sheet](current-icons.png).
-The page contains **135 uses/states in 15 groups**, including all **61 Lucide glyphs**
+The page contains **135 uses/states in 15 groups**, including all **60 Lucide glyphs**
 currently imported by the main UI, custom SVG controls, palette/detail/brush/paper
 pictograms, cursor artwork, the brand mark and illustrated entry-point actions.
 
@@ -31,13 +31,15 @@ are exact snapshots of their current simple SVG shapes.
 [Seven ImageGen boards across two rounds, with exact prompts](directions/README.md) explore the same
 six controls: add to coloring pages, brush, fill, stickers, colors and undo.
 Paper Charms is selected; four follow-ups draw from the existing
-easel, book and paper-stack paintings. These are raster concept sheets, not accepted runtime replacements. No application
-icons, mechanics or styles have changed. Review the visual family first, then make
+easel, book and paper-stack paintings. These are raster concept sheets. Only the
+saved-picture print button now uses the smooth printer SVG; its behavior is unchanged.
+Review the visual family first, then make
 and test a small set of production-size icons before extending it to the whole app.
 
 The current next step is the [single printer SVG study](paper-charms/printer-study/index.html):
 smooth rounded paths and gradient shading, shown at 26, 32 and 48px on both themes.
-The user requested this checkpoint before any further full-set work. Large textured
+That one SVG is now installed on the print button for in-app review. The user
+requested this checkpoint before any further full-set work. Large textured
 raster trials and the unfinished integration are parked outside the app.
 
 Verified: all 135 cards and 15 groups render, source images resolve, the atlas has no

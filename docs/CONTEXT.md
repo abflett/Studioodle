@@ -62,15 +62,18 @@ format-5 saves and v3 sharing codes are intentionally unsupported. Blank paper
 setup retains its simple fixed RGB background palette.
 
 The icon-family design pass starts in `docs/icons/`: a single-page inventory of
-135 current uses/states across 15 areas (all 61 Lucide imports plus custom SVG,
+135 current uses/states across 15 areas (all 60 Lucide imports plus custom SVG,
 painted actions and cursors), and seven built-in ImageGen concept boards across two rounds for six
 representative controls. Paper Charms is the selected visual direction. Four follow-ups
 explore watercolor, handmade wood, gouache and folded paper using the actual entry
-paintings as references. No runtime icons or styles have been replaced. Exact prompts
+paintings as references. Only the saved-picture print button uses the new artwork:
+`art/source/interface/printer.svg`, copied from the smooth-gradient printer study.
+All other runtime icons retain their existing artwork. Exact prompts
 and feedback are retained with the boards. The user rejected the heavy-outline SVG
 translation and large textured raster rollout. Review the single smooth-gradient
 printer SVG in `docs/icons/paper-charms/printer-study/` before expanding the family.
-The unfinished integration is parked; app code remains unchanged.
+The unfinished bulk integration is parked. Judge the printer in the app before
+expanding the family; printing behavior and button dimensions are unchanged.
 
 ## Artwork status
 

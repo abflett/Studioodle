@@ -64,7 +64,8 @@ finished icon standard. Avoid adding decorative noise to every control.
   Two rounds are available; Paper Charms is selected. Review the
   [single smooth SVG printer study](icons/paper-charms/printer-study/index.html)
   before expanding the set. Avoid heavy outlines and raster fiber texture.
-  Runtime icons are unchanged; the unfinished bulk integration is parked.
+  Only the saved-picture print button now uses the smooth SVG for in-app review;
+  the unfinished bulk integration is parked.
 - [ ] Make a focused visual comparison of the main ribbon and newer overlays in light
   and dark themes. Set shared rules for wells, button silhouettes, corner radii,
   padding, gaps, icon scale/stroke and focus/hover/pressed/disabled states. Decide

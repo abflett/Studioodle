@@ -51,7 +51,7 @@ Keep functional cues unmistakable: a plus adds, a check confirms, a peeled corne
 means stickers, and undo points left. Magic should come from shape and gesture,
 rather than putting a sparkle on every icon.
 
-The app is unchanged. Before expanding the selected direction, refine a small representative
+Only the smooth SVG printer trial is installed in the app. Before expanding the selected direction, refine a small representative
 family at true 26–32px and test its light/dark, selected/disabled and touch states
 before redrawing all icons. Preserve editable vector sources for production where
 appropriate; do not treat the raster sheets as an automatically usable icon atlas.

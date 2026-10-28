@@ -35,7 +35,8 @@ try {
     ...[['Focus / refit','ScanSearch'],['Duplicate','Copy'],['Delete sticker','Trash2'],['Finish selection / focus','Check']].map(([label,name])=>icon(label,name,source('StickerSelectionToolbar')))
   ]);
   group('03 · Home, saved pictures and app entry','Library actions and native-window controls; artwork entry points are shown separately below.',[
-    ...[['Previous picture','ArrowLeft'],['Next picture','ArrowRight'],['Settings','Settings'],['Exit','LogOut'],['Enter fullscreen','Fullscreen'],['Leave fullscreen','Minimize'],['Delete picture','Trash2'],['Print picture','Printer'],['Export picture','Download'],['Undo delete','Undo2'],['Retry preview','RotateCw']].map(([label,name])=>icon(label,name,source('SelectionScreen'))),
+    ...[['Previous picture','ArrowLeft'],['Next picture','ArrowRight'],['Settings','Settings'],['Exit','LogOut'],['Enter fullscreen','Fullscreen'],['Leave fullscreen','Minimize'],['Delete picture','Trash2'],['Export picture','Download'],['Undo delete','Undo2'],['Retry preview','RotateCw']].map(([label,name])=>icon(label,name,source('SelectionScreen'))),
+    custom('Print picture','<svg viewBox="0 0 256 256" aria-hidden="true"><image href="../../art/source/interface/printer.svg" width="256" height="256" /></svg>',source('SelectionScreen')),
     custom('Add to coloring pages',node(ColoringPageActionIcon,{added:false}),source('ColoringPageActionIcon')),
     custom('Already added',node(ColoringPageActionIcon,{added:true}),source('ColoringPageActionIcon')),
     icon('Back to Studioodle','Play',source('App')),
