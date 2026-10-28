@@ -1,0 +1,23 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Nunito Variable', sans-serif; }
+.study { --text: #f6f0e2; --panel: linear-gradient(135deg,#293b56,#1c2b43); --border: #697a94; --well: #0e1b2c30; --action: #dfca99; --ink: #24364e; min-height: 100dvh; padding: 90px 24px 40px; display: grid; place-items: center; background: radial-gradient(ellipse at 40% 15%,#293b56,#0a1527 80%); color: var(--text); }
+.study.light { --text: #35545c; --panel: linear-gradient(135deg,#faf5e7,#efe9d6); --border: #a7bdbd; --well: #35545c09; --action: #3e747d; --ink: #ffffff; background: radial-gradient(ellipse at 40% 15%,#e6eee7,#9bb7b8); }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: transparent; }
+button:focus-visible { outline: 3px solid var(--action); outline-offset: 4px; }
+button:hover { background: var(--well); }
+button svg { display: block; width: 26px; height: 26px; stroke-width: 1.8; }
+.review { position: absolute; top: 22px; left: 28px; right: 28px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.review strong, .review span { display: block; }.review span { font-size: 13px; opacity: .7; margin-top: 3px; }.review button { padding: 10px 16px; border-radius: 14px; background: var(--well); }
+.panel { width: min(760px,100%); padding: 28px 32px 26px; border: 2px solid var(--border); border-radius: 30px; background: var(--panel); box-shadow: 0 24px 70px #0003; display: flex; flex-direction: column; gap: 22px; }
+.panel-top { position: relative; height: 44px; flex-shrink: 0; }
+.utility { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--well); }.close { position: absolute; right: 0; top: 0; }.back { position: absolute; left: 0; top: 0; }
+.category-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 22px 18px; padding: 8px 12px 18px; }
+.category { height: 98px; border-radius: 22px; display: grid; place-items: center; }.category svg { width: 42px; height: 42px; stroke-width: 1.7; }
+.panel-footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 62px; gap: 12px; }
+.ink-well { display: flex; gap: 5px; padding: 5px; background: var(--well); border-radius: 20px; }.ink-well button { position: relative; width: 64px; height: 50px; display: grid; place-items: center; border-radius: 15px; }.ink-well button[aria-pressed=true] { background: var(--action); color: var(--ink); }
+.black-ink { width: 25px; height: 25px; border-radius: 50%; background: #000000; box-shadow: 0 0 0 1px #ffffff60; }.selected-color { position: absolute; right: 12px; bottom: 9px; width: 10px; height: 10px; border-radius: 50%; background: #be79bd; box-shadow: 0 0 0 2px var(--panel); }
+.sticker-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }.sticker { height: 108px; padding: 10px; border-radius: 16px; background: #ffffff; }.sticker img { width: 100%; height: 100%; object-fit: contain; }.paging { display: flex; align-items: center; gap: 8px; }.paging span { font-size: 12px; white-space: nowrap; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+body:has(.preview) .review { display: none; }.study.preview { padding: 12px; }
+@media(max-width:560px) { .study { padding: 100px 12px 24px; }.panel { padding: 20px 18px 22px; gap: 20px; border-radius: 26px; }.category-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; padding: 0 0 8px; }.category { height: 76px; }.category svg { width: 36px; height: 36px; }.category:last-child { grid-column: 2; }.panel-footer { grid-template-columns: 1fr auto 1fr; gap: 4px; }.sticker-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }.sticker { height: 80px; }.panel:has(.sticker-grid) .panel-footer { grid-template-columns: 1fr auto; }.paging { gap: 2px; }.review { left: 18px; right: 18px; }.review span { max-width: 250px; } }
+@media(max-height:500px) and (min-width:561px) { .panel { padding: 18px 24px; gap: 8px; }.category-grid { gap: 8px 18px; padding: 0 8px; }.category { height: 78px; }.sticker { height: 60px; }.sticker-grid { grid-template-columns: repeat(6,minmax(0,1fr)); gap: 8px; } }
