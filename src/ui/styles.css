@@ -977,3 +977,5 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .sticker-item-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; }.sticker-item { height: 90px; }
 }
 @media(max-height:500px) and (min-width:561px) { .art-dialog.sticker-dialog .wizard { padding: 20px 28px 24px; gap: 18px; }.sticker-category-grid { gap: 14px 18px; }.sticker-category-grid button { height: 82px; }.sticker-item-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }.sticker-item { height: 82px; } }
+
+.coloring-page-add[data-added='true'] { color: var(--muted); }

@@ -221,3 +221,12 @@ workshop ribbon action, revision/export dialog and advanced-settings switch are
 removed. Regular picture saving, page import/export and saving a picture as a
 coloring page remain user features. Development diagnostics and artwork review
 belong in standalone tools rather than the app UI.
+
+
+The saved-picture action uses custom curved open-book artwork with a plus outside
+the page. Once its sticker layout exists in custom coloring pages, it becomes a
+muted disabled book-check labeled ?Added to coloring pages.? Layout identity includes
+paper dimensions, sticker kinds, transforms, order and ink; it excludes paint,
+paper color, IDs and titles. This confirmation survives reopening and resets for
+a changed layout or removal of its matching custom page. A failed write does not
+show confirmation and can be retried.

@@ -12,12 +12,14 @@ import { SelectionSettings } from './SelectionSettings';
 import { paperSize } from '../editor/document';
 import type { PaperPresetId } from '../editor/paperPresets';
 import { createColoringPage } from '../editor/coloringPage';
+import { coloringPageLayoutKey } from '../editor/coloringPageLayout';
+import { ColoringPageActionIcon } from './ColoringPageActionIcon';
 import { usePictureLibrary } from './usePictureLibrary';
 import type { SavedPicture } from '../editor/savedPicture';
 import { printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
-import { useEffect, useState } from 'react';
-import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, BookPlus, LoaderCircle, RotateCw } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, LoaderCircle, RotateCw } from 'lucide-react';
 import { pictureChoices, savedStackArtwork, portfolioPaper } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
@@ -70,7 +72,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   });
   const [bookState, setBookState] = useState(() => { try { return { pages: workshopPages(), error: false }; } catch { return { pages: [], error: true }; } });
   const scenes: EditorSetup[] = bookState.error ? [...coloringPages, ...customPages] : bookState.pages;
-  const refreshBooks = () => { try { setBookState({ pages: workshopPages(), error: false }); } catch { setBookState(previous => ({ ...previous, error: true })); } };
+  const refreshBooks = () => { try { const pages = workshopPages(); setBookState({ pages, error: false }); setCustomPages(workshopRepository.load().pages); } catch { setBookState(previous => ({ ...previous, error: true })); } };
   const [notice, setNotice] = useState<string>();
   useEffect(() => {
     if (!notice) return;
@@ -121,8 +123,10 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
     setPageTurn(direction);
     setSampleIndex(index => (index + (direction === 'next' ? 1 : saved.length - 1)) % saved.length);
   };
+  const addedLayouts = useMemo(() => new Set(customPages.map(coloringPageLayoutKey)), [customPages]);
+  const pageAdded = !!current && addedLayouts.has(coloringPageLayoutKey(current));
   const addColoringPage = () => {
-    if (!current || current.document.surfaces.length < 2) return;
+    if (!current || current.document.surfaces.length < 2 || pageAdded) return;
     try {
       const number = customPages.reduce((max, page) => Math.max(max, Number(/^Coloring page (\d+)$/i.exec(page.title)?.[1] ?? 0)), 0) + 1;
       const page = createColoringPage(current, `Coloring Page ${number}`);
@@ -188,7 +192,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
                 {(library.error || currentError) && <button className="icon-button" aria-label="Retry loading saved pictures" title="Retry loading" onClick={retry}><RotateCw aria-hidden="true" /></button>}
                 {saved.length > 0 && <>
                   <button className="icon-button" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) { setDeletingPage(false); setPendingDelete(current); } }}><Trash2 /></button>
-                  <button className="icon-button" disabled={!current || current.document.surfaces.length < 2} aria-label="Add selected picture to coloring pages" title={current && current.document.surfaces.length > 1 ? "Add to coloring pages" : "Arrange stickers in a picture to make a coloring page"} onClick={addColoringPage}><BookPlus aria-hidden="true" /></button>
+                  <button className="icon-button coloring-page-add" data-added={pageAdded || undefined} disabled={!current || current.document.surfaces.length < 2 || pageAdded} aria-label={pageAdded ? "Added to coloring pages" : "Add selected picture to coloring pages"} title={pageAdded ? "Added to coloring pages" : current && current.document.surfaces.length > 1 ? "Add to coloring pages" : "Arrange stickers in a picture to make a coloring page"} onClick={addColoringPage}><ColoringPageActionIcon added={pageAdded} /></button>
                   <button className="icon-button" disabled={!current} aria-label="Print selected saved picture" title="Print picture" onClick={() => { if (current) printPicture(current, () => setActionError('Could not open printing. Allow the print window and try again.')); }}><Printer /></button>
                   <button className="icon-button" disabled={!current} aria-label="Export selected saved picture" title="Export picture" aria-haspopup="dialog" onClick={() => setExportingPicture(current)}><Download /></button>
                 </>}

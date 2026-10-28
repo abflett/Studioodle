@@ -40,6 +40,13 @@ button, revision/export dialog, settings toggle and ephemeral authoring route ar
 removed. Keep development/review tooling standalone. User page import/export and
 save-as-coloring-page remain, including existing custom pages and their storage.
 
+The saved-picture Add to coloring pages action uses the custom curved open book.
+A matching custom page changes plus to a muted disabled check, derived from saved
+layout content so it survives navigation/reloads. Paint, paper color and metadata
+are ignored; sticker transforms, order, ink and page dimensions determine a match.
+Failed additions leave the action available; deleting the matching custom page
+restores it. No extra save-format fields or browser tracking records are added.
+
 ## Artwork status
 
 All 364 stickers were upgraded to the current small-region pipeline. Accepted

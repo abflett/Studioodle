@@ -445,6 +445,7 @@ try {
     if(!paperLayout)throw Error(`Paper choices must stay above the unlabeled saved-picture stack at ${width}x${height}`);
   }
   await cdp('Emulation.clearDeviceMetricsOverride');
+  result.coloringPageAction=await evaluate("import('/tests/browser/coloring-page-action.ts').then(m=>m.checkColoringPageAction())");
   result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,selectionExit:true,backgroundSaveRetry:true,deleteRestore:true,exportChoices:true,exportRetry:true};
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
   await fs.writeFile('work/tests/app-after-reopen.png',Buffer.from(screenshot.data,'base64'));

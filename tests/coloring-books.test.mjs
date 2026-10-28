@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
 import { createServer } from 'vite';
-let server, domain, createStore, pages, sharing, favorites, browsing;
+let server, domain, createStore, pages, sharing, favorites, browsing, layoutKey;
 before(async () => {
   server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
   domain = await server.ssrLoadModule('/src/editor/coloringBook.ts');
+  ({ coloringPageLayoutKey: layoutKey } = await server.ssrLoadModule('/src/editor/coloringPageLayout.ts'));
   sharing = await server.ssrLoadModule('/src/app/coloringPageSharing.ts');
   favorites = await server.ssrLoadModule('/src/platform/pageFavorites.ts');
   browsing = await server.ssrLoadModule('/src/app/coloringPageBrowsing.ts');
@@ -114,4 +115,26 @@ test('current template sources consolidate atomically and deleted pages do not r
   assert.deepEqual(store.load().pages.map(p=>p.id),['existing-custom','new-custom']);
   const count=reads;store.delete('existing-custom');assert.equal(reads,count,'Authoritative record must not read retired source');
   assert.deepEqual(store.load().pages.map(p=>p.id),['new-custom']);
+});
+
+
+test('added-page identity ignores paint and storage metadata but tracks every exported layout property', () => {
+  const original = structuredClone(pages[0]), key = layoutKey(original);
+  const painted = structuredClone(original);
+  painted.id = 'another'; painted.title = 'Another title'; painted.updatedAt++;
+  painted.background = '#ff0000'; painted.leafColor = 0xff0000;
+  painted.document.surfaces[0].color = 0xff0000;
+  for (const s of painted.document.surfaces) {
+    s.id = 'copy-' + s.id;
+    s.vectorPaint = { version: 1, regions: [{ id: 1, base: 0x123456, blobs: [] }] };
+  }
+  assert.equal(layoutKey(painted), key);
+  for (const [field, value] of [['x', 123.25], ['y', 456.5], ['color', 0x123456], ['scale', 1.234], ['rotation', 17], ['flipX', true], ['flipY', true], ['kind', 'circle']]) {
+    const changed = structuredClone(original); changed.document.surfaces[1][field] = value;
+    assert.notEqual(layoutKey(changed), key, field);
+  }
+  const reordered = structuredClone(original); reordered.document.surfaces.reverse();
+  assert.notEqual(layoutKey(reordered), key, 'Sticker layer order');
+  const resized = structuredClone(original); resized.size.width++;
+  assert.notEqual(layoutKey(resized), key, 'Paper dimensions');
 });
