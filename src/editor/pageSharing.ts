@@ -4,7 +4,7 @@ import type { ColoringBook } from './coloringBook';
 const prefix = 'studioodle-page:3:';
 export const maxSharingCodeBytes = prefix.length + 4 * Math.ceil(maxBookBytes / 3);
 
-/** Portable layout only: colors and paint are supplied by the app on import. */
+/** Portable sticker layout and ink colors; paper and unpainted regions stay white. */
 export function pageSharingCode(book: ColoringBook) {
   const checked = makeColoringBook(book.title, book.pages);
   if (new TextEncoder().encode(JSON.stringify(checked)).length > maxBookBytes) throw Error('This page is too large to share.');
@@ -12,6 +12,7 @@ export function pageSharingCode(book: ColoringBook) {
     id: page.id, title: page.title, format: page.format, size: page.size, browse: page.browse,
     surfaces: page.document.surfaces.map(surface => ({
       id: surface.id, kind: surface.kind, x: surface.x, y: surface.y,
+      ...(surface.kind !== 'canvas' ? { inkColor: surface.color } : {}),
       scale: surface.scale, rotation: surface.rotation, flipX: surface.flipX, flipY: surface.flipY,
     })),
   })) });
@@ -21,7 +22,7 @@ export function pageSharingCode(book: ColoringBook) {
 
 type Layout = { title: string; pages: { id: string; title: string; format: string;
   size: { width: number; height: number }; browse?: unknown;
-  surfaces: { id: string; kind: string; x: number; y: number; scale?: number; rotation?: number; flipX?: boolean; flipY?: boolean }[] }[] };
+  surfaces: { id: string; kind: string; x: number; y: number; scale?: number; rotation?: number; flipX?: boolean; flipY?: boolean; inkColor?: number }[] }[] };
 
 export function parsePageSharingCode(input: string) {
   const text = input.trim();
@@ -41,7 +42,7 @@ export function parsePageSharingCode(input: string) {
           surfaces: page.surfaces.map(surface => ({
             id: surface.id, kind: surface.kind, x: surface.x, y: surface.y,
             scale: surface.scale, rotation: surface.rotation, flipX: surface.flipX, flipY: surface.flipY,
-            color: surface.kind === 'canvas' ? 0xffffff : 0,
+            color: surface.kind === 'canvas' ? 0xffffff : (surface.inkColor === undefined ? 0 : surface.inkColor),
           })),
         },
       })),

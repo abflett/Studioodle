@@ -49,7 +49,7 @@ Horizon stickers now use manifest placement metadata and insert immediately abov
 
 ### Custom coloring pages
 
-The selection screen's save utility button copies the selected saved picture into the coloring-page picker. Templates keep paper size, sticker order, positions, scale, rotation and flips. All vector paint are removed, the canvas becomes white and sticker outlines become black. Freehand marks are paint and are omitted. A picture needs at least one sticker to create a useful template.
+The selection screen's save utility button copies the selected saved picture into the coloring-page picker. Templates keep paper size, sticker order, positions, scale, rotation and flips. All vector paint is removed, the canvas becomes white and sticker ink colors are preserved. Freehand marks are paint and are omitted. A picture needs at least one sticker to create a useful template.
 
 Templates are stored locally under `studioodle.v5.coloring.` separately from `Your pictures`. Each use receives a new picture ID, so coloring a template never overwrites it or the source picture. The picker previews the new template immediately; custom entries can be deleted through the existing confirmation dialog. Built-in pages cannot be deleted. `coloringPage.ts` creates copies and storage adapters validate both libraries.
 

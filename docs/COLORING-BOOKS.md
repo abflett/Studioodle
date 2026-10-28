@@ -52,13 +52,13 @@ utilities; choose a page to return to single view first.
 
 Version 3 identifies the portable layout schema; the code is base64, not a hash.
 The payload contains titles, paper dimensions, browsing metadata and ordered sticker
-references/transforms (plus the paper surface), with no color or paint fields.
-The app supplies black outlines and white paper when importing. Older version-2
+references/transforms and per-sticker inkColor (plus the paper surface), with no paint fields.
+The app supplies white paper and regions when importing; omitted inkColor defaults to black. Older version-2
 codes and raw JSON are not accepted by the user import flow. Internal storage and
 the bundled authoring collection remain JSON.
 
-Templates keep sticker order, position, size, rotation and flips. Paint, paper
-colors and outline colors are stripped to black ink on white. The sharing format does not embed
+Templates keep sticker order, position, size, rotation, flips and ink colors. Paint and paper
+colors are removed, leaving white paper and white sticker regions. The sharing format does not embed
 sticker assets. PNG/SVG/PDF picture exports remain separate from template sharing.
 Device-local storage is not a backup; export pages before clearing app/browser data.
 
@@ -112,7 +112,7 @@ Book format version 2 wraps vector-only document/saved-picture format 5. Old dev
 
 ## Updating the production collection
 
-The canonical bundled collection is `src/assets/coloringBook.json`, loaded by `src/app/coloringPages.ts`. Its IDs remain stable (`winter`, `beach`, `spring`, `counting`, `garden`, `safari` for the initial six pages). Workshop exports encode color-free layouts as version-3 sharing codes; the install command decodes them into the internal book format. Scene previews and catalogs read this same collection directly.
+The canonical bundled collection is `src/assets/coloringBook.json`, loaded by `src/app/coloringPages.ts`. Its IDs remain stable (`winter`, `beach`, `spring`, `counting`, `garden`, `safari` for the initial six pages). Workshop exports encode layouts with sticker ink colors as version-3 sharing codes; the install command decodes them into the internal book format. Scene previews and catalogs read this same collection directly.
 
 After reviewing an exported file, install it with:
 

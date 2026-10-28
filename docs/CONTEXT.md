@@ -66,7 +66,7 @@ Shipped pages have curated `browse` metadata in the canonical book. Custom pages
 use lightweight subject/sticker-count defaults, not geometric difficulty scoring.
 
 Single view has Add (paste code/.studioodle file with validation and preview), Share
-(copy code/download the same code as a .studioodle text file) and custom-only Delete. Imports create independent IDs. Portable codes use studioodle-page:3: and carry sticker layouts without color or paint fields; internal books/storage remain JSON.
+(copy code/download the same code as a .studioodle text file) and custom-only Delete. Imports create independent IDs. Portable codes use studioodle-page:3: and carry sticker layouts and ink colors without paint fields; internal books/storage remain JSON.
 The dedicated Edit Page action is removed; normal open/arrange/save-as-page is the
 user authoring route. All current custom templates consolidate into the workshop
 record on the next successful atomic write; failed writes preserve original data.

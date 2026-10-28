@@ -22,7 +22,7 @@ export function ColoringPageWorkshop({ picture, targetId, onSaved, onClose }: {
   return <dialog ref={dialog} className="setup-dialog settings-dialog workshop-dialog" aria-labelledby="page-workshop-title" onCancel={onClose} onClick={e => closeOnBackdrop(e, onClose)}>
     <div className="wizard">
       <DialogHeader id="page-workshop-title" title="Save Coloring Page" onClose={onClose} closeLabel="Close page workshop" />
-      <p>Saves sticker positions, sizes, flips, and layer order. Paint is removed and outlines are black on white paper.</p>
+      <p>Saves sticker positions, sizes, flips, and layer order. Ink colors are kept; paint is removed, leaving white paper and regions.</p>
       <label className="workshop-field">Page title<input value={title} maxLength={160} onChange={e => setTitle(e.target.value)} /></label>
       <div className="workshop-actions">
         <button className="go-button" disabled={!targetId || !title.trim() || busy} onClick={() => { if (targetId) save(targetId); }}><Save /><span>Save Revision</span></button>

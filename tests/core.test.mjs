@@ -112,7 +112,7 @@ test('custom coloring pages preserve transforms but clear paint without changing
   const page = createColoringPage(source, 'My Template');
   assert.notEqual(page.id, source.id);
   assert.equal(page.background, '#ffffff');
-  assert.deepEqual(page.document.surfaces[1], { ...source.document.surfaces[1], color: 0 });
+  assert.deepEqual(page.document.surfaces[1], source.document.surfaces[1]);
   assert.equal(page.document.surfaces[0].vectorPaint, undefined);
   assert.deepEqual(source, original);
 });
