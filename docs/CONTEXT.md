@@ -82,6 +82,12 @@ Other editor/settings/output overlays still await refinement.
 [Design brief](OVERLAY-DESIGN.md) and [layout examples](overlay-examples/README.md)
 record the review. No new scene artwork or blanket asset processing was included.
 
+The next design discussion is the brush overlay. A standalone first study lives
+in `docs/brush-overlay-examples/`: illustrated type choices, practice paper, round/
+square plus proposed oval/chisel tips, a 1–64 slider with exact number entry and
+one-unit adjustments. Dark/light and portrait/short-landscape captures are included.
+This is a proposal only; no app brush settings, rendering or persistence changed.
+
 Brush/eraser gestures can now start in the surrounding drawing workspace and
 continue onto the page, with page clipping, single-action undo and cancellation.
 

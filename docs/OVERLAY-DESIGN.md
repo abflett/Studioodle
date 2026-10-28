@@ -1,5 +1,11 @@
 # Overlay design direction
 
+Brush design study 01 is now available in
+[brush-overlay-examples](brush-overlay-examples/README.md). It carries the visual
+approach into illustrated brush choices, a practice surface, continuous size
+adjustment with exact entry and proposed oval/chisel tips. It is for discussion;
+the production brush overlay and painting engine are unchanged.
+
 The current Coloring Pages Focus design, broad categories and terrain icons are
 implemented with the six existing scenes. Current behavior is in
 [Coloring books](COLORING-BOOKS.md). Earlier studies below are design history, not
