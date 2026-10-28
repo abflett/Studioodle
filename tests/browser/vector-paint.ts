@@ -11,7 +11,7 @@ function assert(value:unknown,message:string):asserts value{if(!value)throw Erro
 export async function checkVectorPaint(){
  const svg=await(await fetch('/src/assets/vector/fantasy-moon-sorceress.svg')).text();
  const vector=decodeSvgDefinition(svg);
- const doc:ArtworkDocument={version:5,width:400,height:500,surfaces:[{id:'page',kind:'canvas',x:0,y:0,color:0xffffff},
+ const doc:ArtworkDocument={version:6,width:400,height:500,surfaces:[{id:'page',kind:'canvas',x:0,y:0,color:0xffffff},
  {id:'moon',kind:'fantasy-moon-sorceress',x:170,y:240,color:0x242428}]};
  const art=Artwork.restore(doc,()=>vector);
  assert((await art.fill({x:170,y:174},0x773399)),'Vector bucket fills');

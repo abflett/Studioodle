@@ -8,9 +8,10 @@ export type RegionBefore = { surfaceId: string; id: number; paint: PaintSnapshot
 
 /** Previous values for one action. Geometry is shared and never mutated in place. */
 export class ArtworkChange {
+    readonly colors = new Map<number, number | null>();
     readonly surfaces = new Map<string, SurfaceBefore | undefined>();
     readonly regions = new Map<string, RegionBefore>();
-    get empty() { return !this.surfaces.size && !this.regions.size; }
+    get empty() { return !this.surfaces.size && !this.regions.size && !this.colors.size; }
     private snapshots() {
         return [...this.regions.values()].map(region => region.paint)
             .concat([...this.surfaces.values()].flatMap(surface => surface?.paint ?? []));
@@ -29,7 +30,7 @@ export class ArtworkChange {
     /** Conservative JS-memory estimates, not serialized JSON sizes or heap telemetry. */
     resources() {
         const resources = new Map<MultiPolygon, number>();
-        let overhead = 256 + this.surfaces.size * 256 + this.regions.size * 128;
+        let overhead = 256 + this.colors.size * 24 + this.surfaces.size * 256 + this.regions.size * 128;
         for (const surface of this.surfaces.values()) if (surface) overhead += surface.data.id.length * 2;
         for (const snapshot of this.snapshots()) {
             const region = snapshot.region;

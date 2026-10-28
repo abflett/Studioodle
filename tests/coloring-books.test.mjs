@@ -80,16 +80,20 @@ test('sharing code preserves Unicode, ink and transforms without paint and impor
   assert.deepEqual(sharing.parsePageSharingCode(code), book);
   assert.throws(() => sharing.parsePageSharingCode(JSON.stringify(book)));
   const wire = JSON.parse(Buffer.from(code.split(':')[2], 'base64').toString('utf8'));
-  assert.equal(code.startsWith('studioodle-page:3:'), true);
+  assert.equal(code.startsWith('studioodle-page:4:'), true);
   assert.equal(/"(color|background|leafColor|vectorPaint|paint|updatedAt)":/.test(JSON.stringify(wire)), false);
-  for (const mutate of [w => w.pages[0].surfaces[1].kind = 'missing-sticker', w => w.pages[0].surfaces[1].scale = -1, w => w.pages[0].size.width = -1, ...[-1, 0x1000000, 1.5, null, 'red'].map(color => w => { w.pages[0].surfaces[1].inkColor = color; })]) {
+  for (const mutate of [w => w.pages[0].surfaces[1].kind = 'missing-sticker', w => w.pages[0].surfaces[1].scale = -1, w => w.pages[0].size.width = -1, ...[-161, 0x1000000, 1.5, null, 'red'].map(color => w => { w.pages[0].surfaces[1].inkColor = color; })]) {
     const invalid = structuredClone(wire); mutate(invalid);
-    assert.throws(() => sharing.parsePageSharingCode('studioodle-page:3:' + Buffer.from(JSON.stringify(invalid)).toString('base64')));
+    assert.throws(() => sharing.parsePageSharingCode('studioodle-page:4:' + Buffer.from(JSON.stringify(invalid)).toString('base64')));
   }
   assert.equal(wire.pages[0].surfaces[1].inkColor, 0xff0000);
   assert.equal(wire.pages[0].surfaces[0].inkColor, undefined);
+  for (const mutate of [w => w.pages[0].paletteVersion = 2, w => w.pages[0].customColors = [], w => w.pages[0].customColors[0] = -1]) {
+    const invalid = structuredClone(wire); mutate(invalid);
+    assert.throws(() => sharing.parsePageSharingCode('studioodle-page:4:' + Buffer.from(JSON.stringify(invalid)).toString('base64')));
+  }
   const noInk = structuredClone(wire); delete noInk.pages[0].surfaces[1].inkColor;
-  assert.equal(sharing.parsePageSharingCode('studioodle-page:3:' + Buffer.from(JSON.stringify(noInk)).toString('base64')).pages[0].document.surfaces[1].color, 0);
+  assert.equal(sharing.parsePageSharingCode('studioodle-page:4:' + Buffer.from(JSON.stringify(noInk)).toString('base64')).pages[0].document.surfaces[1].color, 0);
   const copy = sharing.independentPages(book);
   assert.notEqual(copy.pages[0].id, book.pages[0].id);
   assert.deepEqual(copy.pages[0].document, book.pages[0].document);
@@ -137,4 +141,18 @@ test('added-page identity ignores paint and storage metadata but tracks every ex
   assert.notEqual(layoutKey(reordered), key, 'Sticker layer order');
   const resized = structuredClone(original); resized.size.width++;
   assert.notEqual(layoutKey(resized), key, 'Paper dimensions');
+});
+
+
+test('page identity tracks linked ink slots as well as their resolved colors', () => {
+  const first = structuredClone(pages[0]);
+  first.document.customColors = Array(32).fill(null);
+  first.document.customColors[0] = first.document.customColors[1] = 0x3366cc;
+  first.document.surfaces[1].color = -129;
+  const second = structuredClone(first); second.document.surfaces[1].color = -130;
+  assert.notEqual(layoutKey(first), layoutKey(second));
+  const edited = structuredClone(first); edited.document.customColors[0] = 0xff0000;
+  assert.notEqual(layoutKey(first), layoutKey(edited));
+  const unused = structuredClone(first); unused.document.customColors[1] = 0xff0000;
+  assert.equal(layoutKey(first), layoutKey(unused));
 });

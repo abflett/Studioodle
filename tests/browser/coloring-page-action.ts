@@ -6,12 +6,12 @@ import { workshopRepository } from '../../src/app/coloringBookWorkshop';
 import type { SavedPicture } from '../../src/editor/savedPicture';
 
 export async function checkColoringPageAction() {
-  const stored = localStorage.getItem('studioodle.workshop.v2');
+  const stored = localStorage.getItem('studioodle.workshop.v3');
   const container = document.createElement('div'); document.body.append(container);
   const root = createRoot(container), originalMerge = workshopRepository.merge;
-  const picture: SavedPicture = { id: 'page-action-test', title: 'Page action test', version: 5, updatedAt: Date.now() + 100000,
+  const picture: SavedPicture = { id: 'page-action-test', title: 'Page action test', version: 6, updatedAt: Date.now() + 100000,
     format: 'landscape', size: { width: 320, height: 240 }, background: '#ffffff', leafColor: 0,
-    document: { version: 5, width: 320, height: 240, surfaces: [{ id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff }, { id: 'circle', kind: 'circle', x: 137, y: 119, color: 0, scale: .3 }] } };
+    document: { version: 6, width: 320, height: 240, surfaces: [{ id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff }, { id: 'circle', kind: 'circle', x: 137, y: 119, color: 0, scale: .3 }] } };
   const wait = async (check: () => unknown) => { for (let i = 0; i < 300; i++) { if (check()) return; await new Promise(resolve => setTimeout(resolve, 20)); } throw Error('Coloring-page action timed out'); };
   const action = () => container.querySelector<HTMLButtonElement>('.coloring-page-add');
   const assert = (ok: unknown, message: string) => { if (!ok) throw Error(message); };
@@ -47,6 +47,6 @@ export async function checkColoringPageAction() {
   } finally {
     workshopRepository.merge = originalMerge; root.unmount(); container.remove();
     await pictureRepository.delete(picture.id);
-    if (stored === null) localStorage.removeItem('studioodle.workshop.v2'); else localStorage.setItem('studioodle.workshop.v2', stored);
+    if (stored === null) localStorage.removeItem('studioodle.workshop.v3'); else localStorage.setItem('studioodle.workshop.v3', stored);
   }
 }

@@ -1,3 +1,4 @@
+import { nearestFixedColor } from './colorPalettes';
 import type { ColoringPageInfo } from './coloringPageInfo';
 import type { ArtworkDocument } from './document';
 import { contrastingDrawingColor } from './palette';
@@ -17,6 +18,6 @@ export function initialDrawingSettings(setup: EditorSetup) {
   const blank = /^blank page$/i.test(setup.title) && !setup.document;
   return {
     tool: blank ? 'brush' as const : 'bucket' as const,
-    color: blank ? contrastingDrawingColor(setup.background) : setup.leafColor,
+    color: nearestFixedColor(blank ? contrastingDrawingColor(setup.background) : setup.leafColor),
   };
 }

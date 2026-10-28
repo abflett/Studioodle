@@ -22,7 +22,7 @@ export async function checkPaperPreview() {
     const [original, cutout, silhouette] = await Promise.all([paper.artwork, paper.artworkMask, paper.backingMask].map(load));
     const width = 420, height = Math.round(width / paper.ratio);
     const x = 0, y = 0, w = width, h = height;
-    const art = Artwork.restore({ version: 5, width: 210, height: Math.round(210 / paper.ratio), surfaces: [{
+    const art = Artwork.restore({ version: 6, width: 210, height: Math.round(210 / paper.ratio), surfaces: [{
       id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0x24335c,
       vectorPaint: { version: 1, regions: [{ id: 1, base: 0x24335c, blobs: [{
         color: 0xff2020, geometry: rectangleGeometry(101, 4, 8, 8),

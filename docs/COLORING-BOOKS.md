@@ -40,7 +40,7 @@ they do not revise coloring templates.
 Single view exposes Add, Share, and Delete for custom pages only. Grid has no
 utilities; choose a page to return to single view first.
 
-- Add accepts a pasted `studioodle-page:3:` base64 UTF-8 sharing code,
+- Add accepts a pasted `studioodle-page:4:` base64 UTF-8 sharing code,
   or a `.studioodle` text file containing that same code. Validate and preview before adding. Multi-page books are supported.
 - Imported pages always get fresh independent IDs, so another user's page cannot
   replace a bundled or device-local revision. Repeated imports create separate copies.
@@ -64,8 +64,8 @@ Device-local storage is not a backup; export pages before clearing app/browser d
 
 ## Local storage
 
-`studioodle.workshop.v2` is the authoritative custom-page/revision record. For
-existing current-format templates previously saved under `studioodle.v5.coloring.`,
+`studioodle.workshop.v3` is the authoritative custom-page/revision record. For
+existing current-format templates previously saved under `studioodle.v6.coloring.`,
 reads combine those pages with workshop revisions without writing. The next
 successful save/import/delete writes the complete collection once with a local-only
 `localPages` marker. Thereafter old individual template keys are ignored. This
@@ -73,7 +73,7 @@ consolidates the current two authoring sources without discarding valid pages;
 quota failures leave both previous sources intact. Deletion no longer performs
 partial writes across two repositories. The marker is never exported.
 
-Painted drawings remain in `studioodle-library-v8` IndexedDB. The picker uses
+Painted drawings remain in `studioodle-library-v9` IndexedDB. The picker uses
 bounded disposable SVG image previews and does not construct Artwork/hit maps for
 all grid cards. Editor geometry still prepares only when a page is opened.
 
@@ -108,7 +108,7 @@ all grid cards. Editor geometry still prepares only when a page is opened.
 }
 ```
 
-Book format version 2 wraps vector-only document/saved-picture format 5. Old development exports are intentionally unsupported. Page IDs must be unique, 1–120 letters/digits/dots/underscores/hyphens, starting with a letter or digit. Limits: 20 MB decoded data (up to about 28 MB encoded), 1,000 pages, 1,000 surfaces per page, and 160-character titles. Unknown sticker IDs, unsupported versions, malformed geometry, and duplicate IDs reject the entire import. Additional fields are discarded during normalization. An ID collision deliberately means a revision, so use Save New Page for an independent variant.
+Book format version 2 wraps vector-only document/saved-picture format 6. Old development exports are intentionally unsupported. Page IDs must be unique, 1–120 letters/digits/dots/underscores/hyphens, starting with a letter or digit. Limits: 20 MB decoded data (up to about 28 MB encoded), 1,000 pages, 1,000 surfaces per page, and 160-character titles. Unknown sticker IDs, unsupported versions, malformed geometry, and duplicate IDs reject the entire import. Additional fields are discarded during normalization. An ID collision deliberately means a revision, so use Save New Page for an independent variant.
 
 ## Updating the production collection
 

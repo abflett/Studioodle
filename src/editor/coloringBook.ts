@@ -20,9 +20,9 @@ export function coloringBookPage(source: EditorSetup, id: string, title = source
   if (!source.document || !validId(id) || !title.trim() || title.trim().length > 160) throw new Error('A page needs a valid ID, title, and document.');
   const size = paperSize(source.format, source.size);
   const page: ColoringBookPage = {
-    id, title: title.trim(), version: 5, updatedAt, format: source.format, size,
+    id, title: title.trim(), version: 6, updatedAt, format: source.format, size,
     background: '#ffffff', leafColor: 0x000000,
-    document: { version: 5, width: size.width, height: size.height,
+    document: { version: 6, paletteVersion: 1, customColors: [...(source.document.customColors ?? Array(32).fill(null))], width: size.width, height: size.height,
       surfaces: source.document.surfaces.map(s => ({
         id: s.id, kind: s.kind, x: s.x, y: s.y, color: s.kind === 'canvas' ? 0xffffff : s.color,
         ...(s.scale !== undefined ? { scale: s.scale } : {}),

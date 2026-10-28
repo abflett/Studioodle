@@ -45,6 +45,7 @@ export class CanvasEditor {
     this.bridge.selectionChanged(selected, order);
     this.bridge.toolChanged(tool);
     this.bridge.focusChanged(focused);
+    this.bridge.paletteChanged(this.session.customColors, this.session.activeColor);
     this.invalidate();
   };
 

@@ -4,7 +4,7 @@ import { formatPictureTitle } from '../editor/pictureTitles';
 
 /** Resolve storage at call time, so unavailable storage follows the caller's error path. */
 export function createLocalTemplateRepository(storage: () => Storage = () => localStorage) {
-  const prefix = 'studioodle.v5.coloring.';
+  const prefix = 'studioodle.v6.coloring.';
   return {
     save(picture: SavedPicture) { storage().setItem(prefix + picture.id, JSON.stringify(picture)); },
     delete(id: string) { storage().removeItem(prefix + id); },

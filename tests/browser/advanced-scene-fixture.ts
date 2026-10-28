@@ -41,7 +41,7 @@ export async function createAdvancedSceneFixture(){
    await art.compactPaint();
   }
   art.setFocus();await art.compactPaint();await history.settled();
-  const picture:SavedPicture={id:'advanced-scene-profile',version:5,title:'Advanced Safari Stress Scene',updatedAt:1,format:'landscape',size:{width:doc.width,height:doc.height},background:'#e8dcc0',leafColor:0x242428,document:art.serialize()};
+  const picture:SavedPicture={id:'advanced-scene-profile',version:6,title:'Advanced Safari Stress Scene',updatedAt:1,format:'landscape',size:{width:doc.width,height:doc.height},background:'#e8dcc0',leafColor:0x242428,document:art.serialize()};
   const paint=picture.document.surfaces.flatMap(s=>s.vectorPaint?.regions??[]);
   const vertices=paint.flatMap(r=>r.blobs).flatMap(b=>b.geometry).flatMap(p=>p).reduce((n,r)=>n+r.length,0);
   return {picture,metrics:{stickers:doc.surfaces.length-1,regions,setupStrokes:strokes,setupBrushSamples:samples,blobs:paint.reduce((n,r)=>n+r.blobs.length,0),vertices,documentJsonBytes:new Blob([JSON.stringify(picture)]).size,setupMs:performance.now()-start}};

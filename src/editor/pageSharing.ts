@@ -1,7 +1,8 @@
+import { validCustomColors } from './colorPalettes';
 import { makeColoringBook, maxBookBytes, parseColoringBook } from './coloringBook';
 import type { ColoringBook } from './coloringBook';
 
-const prefix = 'studioodle-page:3:';
+const prefix = 'studioodle-page:4:';
 export const maxSharingCodeBytes = prefix.length + 4 * Math.ceil(maxBookBytes / 3);
 
 /** Portable sticker layout and ink colors; paper and unpainted regions stay white. */
@@ -9,7 +10,7 @@ export function pageSharingCode(book: ColoringBook) {
   const checked = makeColoringBook(book.title, book.pages);
   if (new TextEncoder().encode(JSON.stringify(checked)).length > maxBookBytes) throw Error('This page is too large to share.');
   const text = JSON.stringify({ title: checked.title, pages: checked.pages.map(page => ({
-    id: page.id, title: page.title, format: page.format, size: page.size, browse: page.browse,
+    id: page.id, title: page.title, format: page.format, size: page.size, browse: page.browse, paletteVersion: page.document.paletteVersion ?? 1, customColors: page.document.customColors ?? Array(32).fill(null),
     surfaces: page.document.surfaces.map(surface => ({
       id: surface.id, kind: surface.kind, x: surface.x, y: surface.y,
       ...(surface.kind !== 'canvas' ? { inkColor: surface.color } : {}),
@@ -21,24 +22,25 @@ export function pageSharingCode(book: ColoringBook) {
 }
 
 type Layout = { title: string; pages: { id: string; title: string; format: string;
-  size: { width: number; height: number }; browse?: unknown;
+  size: { width: number; height: number }; browse?: unknown; paletteVersion: 1; customColors: (number | null)[];
   surfaces: { id: string; kind: string; x: number; y: number; scale?: number; rotation?: number; flipX?: boolean; flipY?: boolean; inkColor?: number }[] }[] };
 
 export function parsePageSharingCode(input: string) {
   const text = input.trim();
   if (text.length > maxSharingCodeBytes) throw Error('This sharing code is too large.');
-  if (!text.startsWith(prefix)) throw Error('Use a Studioodle page sharing code (version 3).');
+  if (!text.startsWith(prefix)) throw Error('Use a Studioodle page sharing code (version 4).');
   try {
     const binary = atob(text.slice(prefix.length));
     const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
     if (bytes.length > maxBookBytes) throw Error('Too large.');
     const layout = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)) as Layout;
+    if (!Array.isArray(layout.pages) || layout.pages.some(page => page.paletteVersion !== 1 || !validCustomColors(page.customColors))) throw Error('Unsupported palette definition.');
     // Reuse document validation for sticker availability, dimensions and transforms.
     return parseColoringBook(JSON.stringify({ format: 'studioodle-coloring-book', version: 2,
       title: layout.title, pages: layout.pages.map(page => ({
         id: page.id, title: page.title, format: page.format, size: page.size, browse: page.browse,
-        version: 5, updatedAt: 0, background: '#ffffff', leafColor: 0x000000,
-        document: { version: 5, width: page.size.width, height: page.size.height,
+        version: 6, updatedAt: 0, background: '#ffffff', leafColor: 0x000000,
+        document: { version: 6, paletteVersion: page.paletteVersion, customColors: page.customColors, width: page.size.width, height: page.size.height,
           surfaces: page.surfaces.map(surface => ({
             id: surface.id, kind: surface.kind, x: surface.x, y: surface.y,
             scale: surface.scale, rotation: surface.rotation, flipX: surface.flipX, flipY: surface.flipY,

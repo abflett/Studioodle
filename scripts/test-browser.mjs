@@ -197,6 +197,8 @@ try {
   if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
   if(vectorPaint.diagnosticPng){await fs.writeFile('work/tests/moon-vector-paint.png',Buffer.from(vectorPaint.diagnosticPng.split(',')[1],'base64'));delete vectorPaint.diagnosticPng;}
   const paintDisplay = await evaluate("import('/tests/browser/paint-display.ts').then(m => m.checkPaintDisplay())");
+  result.paletteColors=await evaluate("import('/tests/browser/palette-colors.ts').then(m=>m.checkPaletteColors())");
+  console.log('Palette colors:',JSON.stringify(result.paletteColors));
   result.pictureOutput=output;
   result.libraryState=await evaluate("import('/tests/browser/library-state.ts').then(m => m.checkLibraryState())");
   result.paintDisplay=paintDisplay;
@@ -241,6 +243,61 @@ try {
   await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'g',code:'KeyG',windowsVirtualKeyCode:71});
   await waitFor(`document.querySelector('button[aria-label="Fill"]').getAttribute('aria-pressed')==='true'&&!document.querySelector('dialog[open]')`);
 
+  const clickFirstCustomSlot=async()=>{
+    const point=await evaluate(`(()=>{const r=document.querySelectorAll('.palette-swatch')[0].getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()`);
+    await cdp('Input.dispatchMouseEvent',{type:'mousePressed',...point,button:'left',buttons:1,clickCount:1});
+    await cdp('Input.dispatchMouseEvent',{type:'mouseReleased',...point,button:'left',buttons:0,clickCount:1});
+  };
+  await evaluate(`document.querySelector('button[aria-label="Colors"]').click()`);
+  await waitFor(`document.querySelectorAll('.color-palette-tab').length===5`);
+  for(const name of ['Everyday','Pastel','Vivid','Moody','Custom']){
+    await evaluate(`document.querySelector('button[aria-label="${name} palette"]').click()`);
+    await waitFor(`document.querySelector('button[aria-label="${name} palette"]').getAttribute('aria-pressed')==='true'&&document.querySelectorAll('.palette-swatch').length===32`);
+  }
+  if(await evaluate(`document.querySelectorAll('.palette-swatch.is-empty').length`)!==32)throw Error('New custom palettes must start empty');
+  for(const [width,height] of [[1000,760],[390,844],[320,568],[844,390]]){
+    await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+    for(const theme of ['dark','light']){
+      await evaluate(`document.documentElement.dataset.theme='${theme}'`);
+      const fit=await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>{const d=document.querySelector('.palette-dialog'),r=d.getBoundingClientRect();resolve(r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight&&d.scrollWidth<=d.clientWidth)})))`);
+      if(!fit)throw Error(`Palette overflows ${width}x${height} ${theme}`);
+      const shot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile(`work/tests/palette-${width}x${height}-${theme}.png`,Buffer.from(shot.data,'base64'));
+    }
+  }
+  await cdp('Emulation.clearDeviceMetricsOverride');
+  await clickFirstCustomSlot();
+  await waitFor(`!!document.querySelector('.palette-custom-dialog[open]')`);
+  const initialCustomHex=await evaluate(`document.querySelector('.custom-hex-field').value`);
+  await evaluate(`document.querySelector('.custom-sv-field').focus()`);
+  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowUp',code:'ArrowUp',windowsVirtualKeyCode:38});
+  await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowUp',code:'ArrowUp',windowsVirtualKeyCode:38});
+  if(await evaluate(`document.querySelector('.custom-hex-field').value`)===initialCustomHex)throw Error('Saturation/brightness must support keyboard input');
+  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+  await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+  await waitFor(`!document.querySelector('.palette-custom-dialog')&&document.querySelectorAll('.palette-swatch.is-empty').length===32&&document.activeElement===document.querySelectorAll('.palette-swatch')[0]`);
+  await clickFirstCustomSlot();
+  await waitFor(`!!document.querySelector('.palette-custom-dialog[open]')`);
+  const customPickerShot=await cdp('Page.captureScreenshot',{format:'png'});await fs.writeFile('work/tests/custom-color-picker.png',Buffer.from(customPickerShot.data,'base64'));
+  await evaluate(`document.querySelector('.custom-hex-field').focus();document.querySelector('.custom-hex-field').select()`);
+  await cdp('Input.insertText',{text:'#3366CC'});
+  await evaluate(`document.querySelector('button[aria-label="Apply custom color"]').click()`);
+  await waitFor(`!document.querySelector('.palette-custom-dialog')&&!document.querySelector('.palette-dialog[open]')&&document.querySelector('.main-ribbon .ribbon-color-dot').style.background==='rgb(51, 102, 204)'`);
+  await evaluate(`document.querySelector('button[aria-label="Colors"]').click()`);
+  await waitFor(`document.querySelector('button[aria-label="Custom palette"]')?.getAttribute('aria-pressed')==='true'`);
+  await evaluate(`document.querySelector('button[aria-label="Edit custom palette"]').click()`);
+  await waitFor(`document.querySelector('button[aria-label="Finish editing custom palette"]')?.getAttribute('aria-pressed')==='true'`);
+  await clickFirstCustomSlot();
+  await waitFor(`!!document.querySelector('.palette-custom-dialog[open]')`);
+  await evaluate(`document.querySelector('.custom-hex-field').focus();document.querySelector('.custom-hex-field').select()`);
+  await cdp('Input.insertText',{text:'#GGGGGG'});
+  await waitFor(`document.querySelector('button[aria-label="Apply custom color"]').disabled`);
+  await evaluate(`document.querySelector('.custom-hex-field').select()`);await cdp('Input.insertText',{text:'#33AA66'});
+  await evaluate(`document.querySelector('button[aria-label="Apply custom color"]').click()`);
+  await waitFor(`!document.querySelector('.palette-custom-dialog')&&!!document.querySelector('.palette-dialog[open]')&&document.querySelector('.main-ribbon .ribbon-color-dot').style.background==='rgb(51, 170, 102)'`);
+  await evaluate(`document.querySelector('.palette-dialog button[aria-label="Close picker"]').click()`);
+  await waitFor(`!document.querySelector('.palette-dialog[open]')`);
+  await evaluate(`document.querySelector('button[aria-label="Undo"]').click()`);
+  await waitFor(`document.querySelector('.main-ribbon .ribbon-color-dot').style.background==='rgb(51, 102, 204)'`);
   await evaluate(`document.querySelector('button[aria-label="Stickers"]').click()`);
   await waitFor(`document.querySelectorAll('.sticker-category-grid button').length===10`);
   if(!await evaluate(`getComputedStyle(document.querySelector('.sticker-ink-button .ribbon-color-dot')).boxShadow==='none'&&getComputedStyle(document.querySelector('.sticker-ink-button .ribbon-color-dot')).borderWidth==='0px'`))throw Error('Sticker ink dot must match ribbon without border');
@@ -324,6 +381,8 @@ try {
   await waitFor(`document.querySelector('.brush-size-number')?.value==='6'`);
   await evaluate(`document.querySelector('button[aria-label="Make brush one unit smaller"]').click()`);
   await evaluate(`document.querySelector('button[aria-label="Use this brush"]').click()`);
+  await waitFor(`!document.querySelector('dialog[open]')`);
+  await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))`);
   const at = await evaluate('(()=>{const b=document.querySelector(".canvas-host").getBoundingClientRect();return {x:b.left+b.width*.4,y:b.top+b.height*.4};})()');
   await cdp('Input.dispatchMouseEvent', {type:'mousePressed',...at,button:'left',buttons:1,clickCount:1});
   await cdp('Input.dispatchMouseEvent', {type:'mouseMoved',x:at.x+40,y:at.y+20,buttons:1});
@@ -425,7 +484,7 @@ try {
   await waitFor(`!document.querySelector('button[aria-label="Undo delete"]')`);
   const restored = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => await pictureRepository.get(${JSON.stringify(deletedId)}))`);
   if (!restored || JSON.stringify(restored.document) !== JSON.stringify(afterPinch)) throw Error('Undo delete did not restore the saved drawing');
-  await evaluate(`import('/src/app/pictures.ts').then(({pictureRepository:r})=>r.save({...${JSON.stringify(restored)},id:'portfolio-second',title:'Second drawing',updatedAt:${restored.updatedAt}-1,format:'portrait',size:{width:24,height:32},document:{version:5,width:24,height:32,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:16777215}]}}))`);
+  await evaluate(`import('/src/app/pictures.ts').then(({pictureRepository:r})=>r.save({...${JSON.stringify(restored)},id:'portfolio-second',title:'Second drawing',updatedAt:${restored.updatedAt}-1,format:'portrait',size:{width:24,height:32},document:{version:6,width:24,height:32,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:16777215}]}}))`);
   await evaluate("document.documentElement.dataset.beforeReload='yes'");
   await cdp('Page.reload');
   await waitFor('!document.documentElement?.dataset.beforeReload && !!document.querySelector(".choice-blank") && !!document.querySelector(".previous-picture:not(:disabled)")');

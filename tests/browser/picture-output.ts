@@ -40,7 +40,7 @@ export async function checkPictureOutput() {
       })) },
     })), { id: 'circle', kind: 'circle', x: 250, y: 40, scale: .3, color: 0x443355 }];
   const picture: EditorSetup = { title: 'Vector output <test> & curves', format: 'landscape', size: { width: 500, height: 400 }, background: '#f6f2e8', leafColor: 0,
-    document: { version: 5, width: 500, height: 400, surfaces } };
+    document: { version: 6, width: 500, height: 400, surfaces } };
   const before = JSON.stringify(picture);
   const svg = await pictureSvg(picture);
   assert(!svg.querySelector('image, foreignObject'), 'SVG output must be vector-only and self-contained');

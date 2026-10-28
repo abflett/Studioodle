@@ -1,3 +1,4 @@
+import { resolveColor } from './colorPalettes';
 import { geometryBounds } from './vectorPaintStyles';
 import { paperSize } from './document';
 import type { SurfaceData, StickerKind } from './document';
@@ -7,7 +8,6 @@ import type { MultiPolygon } from './polygonGeometry';
 import { vectorStickerUrl } from './stickerUrls';
 
 const namespace = 'http://www.w3.org/2000/svg';
-const hex = (color: number) => `#${color.toString(16).padStart(6, '0')}`;
 const pathData = (geometry: MultiPolygon) => geometry.flatMap(polygon => polygon.map(ring =>
   ring.length ? `M${ring.map(point => point.join(',')).join('L')}Z` : '',
 )).join('');
@@ -19,6 +19,7 @@ function element<K extends keyof SVGElementTagNameMap>(name: K, attributes: Reco
 
 /** Exact source curves plus numeric paint; no display caches or hit-map allocations. */
 export async function pictureSvg(picture: EditorSetup): Promise<SVGSVGElement> {
+  const hex = (color: number) => `#${resolveColor(color, picture.document?.customColors).toString(16).padStart(6, '0')}`;
   const { width, height } = picture.document ?? paperSize(picture.format, picture.size);
   const svg = element('svg', { viewBox: `0 0 ${width} ${height}`, width: `${width / 96}in`, height: `${height / 96}in` });
   const title = element('title'); title.textContent = picture.title; svg.append(title);

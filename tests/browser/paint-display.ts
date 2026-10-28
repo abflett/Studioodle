@@ -9,7 +9,7 @@ function denseDocument():ArtworkDocument{
   const points=Array.from({length:240},(_,i)=>[150+Math.cos(i*Math.PI/120)*radius,150+Math.sin(i*Math.PI/120)*radius] as [number,number]);
   if(reverse)points.reverse();points.push([...points[0]!] as [number,number]);return points;
  };
- return {version:5,width:300,height:300,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:0xffffff,vectorPaint:{version:1,regions:[{id:1,base:0xffffff,
+ return {version:6,width:300,height:300,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:0xffffff,vectorPaint:{version:1,regions:[{id:1,base:0xffffff,
   blobs:Array.from({length:8},(_,i)=>({color:[0x773399,0xee7733,0x228899][i%3]!,geometry:[[ring(140-i*14),ring(129-i*14,true)]]}))}]}}]};
 }
 const pixel=(ctx:CanvasRenderingContext2D,x:number,y:number)=>[...ctx.getImageData(x,y,1,1).data];
@@ -18,7 +18,7 @@ async function checkFilledEdgeStability(){
   const edge=Math.floor(i/200),t=(i%200)/200,a=vertices[edge]!,b=vertices[(edge+1)%3]!;
   return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t] as [number,number];
  }).concat([vertices[0]!])];
- const art=Artwork.restore({version:5,width:300,height:300,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:0xffffff,vectorPaint:{version:1,regions:[{id:1,base:0xffffff,blobs:[
+ const art=Artwork.restore({version:6,width:300,height:300,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:0xffffff,vectorPaint:{version:1,regions:[{id:1,base:0xffffff,blobs:[
   {color:0x773399,geometry:[triangle([[20,20],[280,280],[20,280]])]},
   {color:0x223355,geometry:[triangle([[20,20],[280,20],[280,280]])]},
  ]}]}}]});

@@ -21,7 +21,7 @@ Artwork owns surface paint, regions, placement, order, serialization and composi
 Canvas2D renders vector ink and vector paint at display resolution. `EditorSession` handles editing commands, undo and gesture transactions; the browser canvas adapter handles
 pointer input and draws the selection overlay. React positions the page and controls Fit-relative zoom.
 
-Each completed artwork action queues a background save of the version-5 document;
+Each completed artwork action queues a background save of the version-6 document;
 there is no minute timer. Untouched blank paper and unchanged coloring pages are
 not added to Your pictures. Reopened drawings are not rewritten until edited.
 Tool/color choices, view changes and canceled gestures do not count as edits.
@@ -31,7 +31,7 @@ Failed writes preserve the previous committed drawing, retry with bounded backof
 and show a retry notice on Home or in the editor. Ctrl+S waits for its checkpoint;
 normal desktop close also flushes pending writes. A browser/process shutdown may
 lose the latest pending actions; no asynchronous unload guarantee is made.
-Your pictures browses version-5 local saves and offers delete/undo-delete, PNG/SVG/PDF export and vector printing.
+Your pictures browses version-6 local saves and offers delete/undo-delete, PNG/SVG/PDF export and vector printing.
 Old development save formats are intentionally unsupported. See [the sticker pipeline](STICKER-PIPELINE.md) for
 the authoring format, region maps, loading/caches and cleanup decisions.
 See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries.
@@ -60,7 +60,7 @@ Horizon stickers now use manifest placement metadata and insert immediately abov
 
 The selection screen's save utility button copies the selected saved picture into the coloring-page picker. Templates keep paper size, sticker order, positions, scale, rotation and flips. All vector paint is removed, the canvas becomes white and sticker ink colors are preserved. Freehand marks are paint and are omitted. A picture needs at least one sticker to create a useful template.
 
-Templates are stored locally under `studioodle.v5.coloring.` separately from `Your pictures`. Each use receives a new picture ID, so coloring a template never overwrites it or the source picture. The picker previews the new template immediately; custom entries can be deleted through the existing confirmation dialog. Built-in pages cannot be deleted. `coloringPage.ts` creates copies and storage adapters validate both libraries.
+Templates are stored locally in the atomic `studioodle.workshop.v3` collection separately from `Your pictures`. Each use receives a new picture ID, so coloring a template never overwrites it or the source picture. The picker previews the new template immediately; custom entries can be deleted through the existing confirmation dialog. Built-in pages cannot be deleted. `coloringPage.ts` creates copies and storage adapters validate both libraries.
 
 ## Shortcuts and gestures
 
@@ -193,8 +193,7 @@ summary reflecting the chosen background, and the shared magical pencil/book
 Start action. Summary text uses contrasting ink on dark/light backgrounds. On
 narrow screens presets use two columns and colors four; short landscape uses a
 compact eight-column palette. Shorter viewports scroll only the choice area,
-leaving step, close/back and action controls reachable. Other editor color pickers
-retain their existing pagination. Preview references are in overlay examples 56-60.
+leaving step, close/back and action controls reachable. Editor painting and ink pickers use the five-palette selector described below. Preview references are in overlay examples 56-60.
 
 
 ### Sticker browser
@@ -230,3 +229,25 @@ paper dimensions, sticker kinds, transforms, order and ink; it excludes paint,
 paper color, IDs and titles. This confirmation survives reopening and resets for
 a changed layout or removal of its matching custom page. A failed write does not
 show confirmation and can be retried.
+
+
+### Five-palette color selector
+
+Painting and sticker ink use the same wordless color overlay: a centered well with
+Everyday/Pastel/Vivid/Moody/Custom triangle-dot previews and a 32-swatch grid. Changing
+a palette does not change the selected color. Normal swatch selection returns to
+the canvas (or sticker browser for ink). Custom starts with empty outlined slots.
+Clicking an empty slot opens a nested solid-color picker; confirming assigns and
+selects that slot. The footer pencil enables edit mode for every custom slot; its
+highlighted check exits editing. Editing a filled slot changes all marks/ink linked
+to that slot, without switching the selected slot or changing any other drawing.
+There is no deletion or opacity control. Used slots stay defined except when undoing
+the action that first assigned them.
+
+The custom picker has saturation/brightness (pointer or arrow keys), hue, previous/
+new previews, copy/paste hex entry and Apply. Invalid hex disables Apply. Cancel,
+Escape or the backdrop discards draft changes. Focus returns to the initiating slot.
+Palette edits are undoable and saved as artwork actions. On compact screens the
+grid uses four columns and scrolls within short dialogs; wide short screens retain
+eight smaller columns. Blank paper background selection remains a simple fixed
+32-color palette; background RGB is independent of linked custom paint.

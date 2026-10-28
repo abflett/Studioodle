@@ -6,9 +6,9 @@ import type { SavedPicture } from '../../src/editor/savedPicture';
 
 export async function profileSavePerformance() {
   await prepareStickers(['circle']);
-  const picture: SavedPicture = { id: 'save-profile', version: 5, title: 'Save profile', updatedAt: 1,
+  const picture: SavedPicture = { id: 'save-profile', version: 6, title: 'Save profile', updatedAt: 1,
     format: 'landscape', size: { width: 400, height: 300 }, background: '#ffffff', leafColor: 0,
-    document: { version: 5, width: 400, height: 300, surfaces: [
+    document: { version: 6, width: 400, height: 300, surfaces: [
       { id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff, vectorPaint: { version: 1, regions: [
         { id: 1, base: 0xffffff, blobs: Array.from({ length: 320 }, (_, i) => ({ color: i % 2 ? 0x224488 : 0xaa5533, geometry: rectangleGeometry(i % 80 * 4, Math.floor(i / 80) * 50, i % 80 * 4 + 3, Math.floor(i / 80) * 50 + 40) })) },
       ] } },
@@ -36,7 +36,7 @@ export async function profileSavePerformance() {
     }
     if (writes !== 8 || jobs !== 1) throw Error(`Eight edits should save eight times and compact unchanged paint once (writes=${writes}, jobs=${jobs}).`);
     const geometry = { edits: 8, writes, jobs, regions, totalMs: performance.now() - start, maxDispatchMs: Math.max(...durations) };
-    brush = new EditorSession({ ...picture, id: 'brush-save-profile', document: { version: 5, width: 400, height: 300, surfaces: [{ id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff }] } }, { save: saves.enqueue, autoSave: true, changed() {} });
+    brush = new EditorSession({ ...picture, id: 'brush-save-profile', document: { version: 6, width: 400, height: 300, surfaces: [{ id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff }] } }, { save: saves.enqueue, autoSave: true, changed() {} });
     brush.execute({ type: 'set-tool', tool: 'brush' });
     brush.begin({ x: 10, y: 10 }, 2, 0); brush.move({ x: 80, y: 80 }, 2, true, 1); brush.release({ x: 80, y: 80 }, 2, 1);
     await saves.flush(); await brush.artwork.compactPaint();

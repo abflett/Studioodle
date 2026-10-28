@@ -38,7 +38,8 @@ export class VectorPaint {
         return cached.path;
     }
     // Restore is read-only: previews/exports must never queue paint maintenance.
-    constructor(data?:VectorPaintData,private readonly defaultColor=0xffffff,private readonly changing?:(id:number)=>void){this.regions=new Map(structuredClone(data?.regions??[]).map(region=>[region.id,region]));for(const region of this.regions.values())for(const blob of region.blobs)this.trackDisplay(blob.geometry);}
+    constructor(data?:VectorPaintData,private readonly defaultColor=0xffffff,private readonly changing?:(id:number)=>void,private readonly resolve:(color:number)=>number=(color)=>color){this.regions=new Map(structuredClone(data?.regions??[]).map(region=>[region.id,region]));for(const region of this.regions.values())for(const blob of region.blobs)this.trackDisplay(blob.geometry);}
+    invalidateColors() { this.display?.invalidate(); }
     private trackDisplay(geometry:MultiPolygon){
         if(this.displayPoints>=1024)return;
         for(const polygon of geometry)for(const ring of polygon)this.displayPoints+=ring.length;
@@ -185,14 +186,14 @@ export class VectorPaint {
     private drawDelta(ctx:CanvasRenderingContext2D,definition:VectorDefinition,paint:DisplayPaint){
         const region=definition.regions.find(region=>region.id===paint.regionId);
         if(!region)return;
-        ctx.save();ctx.clip(region.path);drawPaint(ctx,this.path(paint.geometry),paint.color,region.bounds,paint.pattern);ctx.restore();
+        ctx.save();ctx.clip(region.path);drawPaint(ctx,this.path(paint.geometry),this.resolve(paint.color),region.bounds,paint.pattern);ctx.restore();
     }
     private drawVectors(ctx:CanvasRenderingContext2D,definition:VectorDefinition){
         ctx.fillStyle=`#${this.defaultColor.toString(16).padStart(6,'0')}`;ctx.fill(definition.silhouette);
         for(const region of definition.regions){
             const paint=this.regions.get(region.id);
             if(!paint)continue;
-            if(paint.base!==this.defaultColor||paint.pattern)drawPaint(ctx,region.path,paint.base,region.bounds,paint.pattern);
+            if(paint.base!==this.defaultColor||paint.pattern)drawPaint(ctx,region.path,this.resolve(paint.base),region.bounds,paint.pattern);
             if(!paint?.blobs.length)continue;
             ctx.save();ctx.clip(region.path);
             const first=paint.blobs[0]!,style=paintStyleKey(first.color,first.pattern);
@@ -205,12 +206,12 @@ export class VectorPaint {
                 const m=ctx.getTransform(),scale=Math.min(Math.hypot(m.a,m.b),Math.hypot(m.c,m.d));
                 ctx.lineWidth=2/Math.max(.0001,scale);ctx.lineJoin='round';ctx.lineCap='round';
                 for(const blob of paint.blobs)if(!blob.pattern||blob.pattern.pattern==='solid'){
-                    ctx.strokeStyle=`#${blob.color.toString(16).padStart(6,'0')}`;ctx.stroke(this.path(blob.geometry));
+                    ctx.strokeStyle=`#${this.resolve(blob.color).toString(16).padStart(6,'0')}`;ctx.stroke(this.path(blob.geometry));
                 }
                 ctx.restore();
             }
             for(const blob of paint.blobs){
-                drawPaint(ctx,this.path(blob.geometry),blob.color,region.bounds,blob.pattern);
+                drawPaint(ctx,this.path(blob.geometry),this.resolve(blob.color),region.bounds,blob.pattern);
             }
             ctx.restore();
         }

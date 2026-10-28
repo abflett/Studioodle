@@ -9,7 +9,7 @@ import { workshopRepository } from '../../src/app/coloringBookWorkshop';
 const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
 function assert(value:unknown,message:string):asserts value{if(!value)throw Error(message);}
 export async function checkColoringPagePicker(){
- const keys=['studioodle.page-favorites.v1','studioodle.workshop.v2'];
+ const keys=['studioodle.page-favorites.v1','studioodle.workshop.v3'];
  const previous=keys.map(key=>localStorage.getItem(key));
  localStorage.removeItem(keys[0]!);
  const container=document.createElement('div');document.body.append(container);const root=createRoot(container);
@@ -37,7 +37,7 @@ export async function checkColoringPagePicker(){
   await click('Simple detail (toggle filter)');assert(!!container.querySelector('.page-empty-state'),'Empty filter state');
   const reset=[...container.querySelectorAll<HTMLButtonElement>('button')].find(b=>b.textContent==='Show all pages')!;reset.click();await frame();
   await click('Share coloring page');
-  const code=container.querySelector<HTMLTextAreaElement>('textarea')!;assert(code.value.startsWith('studioodle-page:3:'),'Share must expose portable code');
+  const code=container.querySelector<HTMLTextAreaElement>('textarea')!;assert(code.value.startsWith('studioodle-page:4:'),'Share must expose portable code');
   let downloaded: Promise<string> | undefined;
   const captureDownload = (event: MouseEvent) => {
     const link = event.target;

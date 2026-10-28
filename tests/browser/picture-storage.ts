@@ -7,8 +7,8 @@ export async function checkPictureStorage(){
  const name='studioodle-storage-test-'+crypto.randomUUID(),repository=createIndexedPictureRepository(name);
  try{
   const ring=Array.from({length:180000},(_,i)=>[16+Math.cos(i/180000*Math.PI*2)*10,12+Math.sin(i/180000*Math.PI*2)*10] as [number,number]);ring.push(ring[0]!);
-  const picture:SavedPicture={id:'large',version:5,title:'Large drawing',updatedAt:1,format:'landscape',size:{width:32,height:24},background:'#ffffff',leafColor:0,
-   document:{version:5,width:32,height:24,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:0xffffff,vectorPaint:{version:1,regions:[{id:1,base:0xffffff,blobs:[{color:0x773399,geometry:[[ring]]}]}]}}]}};
+  const picture:SavedPicture={id:'large',version:6,title:'Large drawing',updatedAt:1,format:'landscape',size:{width:32,height:24},background:'#ffffff',leafColor:0,
+   document:{version:6,width:32,height:24,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:0xffffff,vectorPaint:{version:1,regions:[{id:1,base:0xffffff,blobs:[{color:0x773399,geometry:[[ring]]}]}]}}]}};
   const bytes=JSON.stringify(picture).length;assert(bytes>5*1024*1024,'Storage regression must exceed typical localStorage quota');
   const artwork = Artwork.restore(picture.document);
   const captureStart = performance.now(), checkpoint = artwork.checkpoint(), checkpointCaptureMs = performance.now() - captureStart;

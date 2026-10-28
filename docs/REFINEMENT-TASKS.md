@@ -36,10 +36,10 @@ the visual discussion. This remains the sole implementation backlog.
   verify round trips, missing assets, malformed input, collisions and storage failure.
 - [x] Apply the approved blank paper/orientation and color layout, with internal
   size markings, step navigation, full palette, paper summary and shared drawing action.
-- [ ] Review [color study 01](color-overlay-examples/README.md): five 32-slot palettes,
-  three-dot selector, custom edit mode and solid HSV/hex picker. After layout approval,
-  implement fixed palette slots 0?127 and drawing-owned custom slots 128?159 with
-  slot-based merging, undo, saving and resolved-color exports as one focused change.
+- [x] Implement [color study 01](color-overlay-examples/README.md): five 32-slot palettes,
+  three-dot selector, custom edit mode and solid HSV/hex picker. Fixed palette slots
+  0?127 and drawing-owned custom slots 128?159 merge by identity; recoloring,
+  asynchronous saves, undo, display caches and resolved-color exports are covered.
 - [ ] Extend the reviewed overlay pattern to stickers/categories,
   picture export, delete and settings. Reduce
   redundant visible headings while retaining meaningful guidance and dialog names.

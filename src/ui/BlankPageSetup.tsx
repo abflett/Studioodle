@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { ArrowRight, Copy, Palette } from 'lucide-react';
 import { DialogHeader } from './DialogHeader';
 import { PaperArtwork, PaperSetup } from './PaperSetup';
-import { ColorPicker } from './ColorPicker';
+import { PaperColorPicker } from './PaperColorPicker';
 import { closeOnBackdrop } from './dialog';
 import { paperPresets, presetSize } from '../editor/paperPresets';
 import type { PaperPresetId } from '../editor/paperPresets';
@@ -31,7 +31,7 @@ export function BlankPageSetup({ step, onStep, paperPreset, orientation, backgro
         </div>
       </DialogHeader>
       <div className="blank-setup-content">
-        {step === 'shape' ? <PaperSetup paperPreset={paperPreset} orientation={orientation} onPreset={onPreset} onOrientation={onOrientation} /> : <ColorPicker allColors label="Canvas background colors" color={parseInt(background.slice(1), 16)} onChoose={color => onBackground(`#${color.toString(16).padStart(6, '0')}`)} />}
+        {step === 'shape' ? <PaperSetup paperPreset={paperPreset} orientation={orientation} onPreset={onPreset} onOrientation={onOrientation} /> : <PaperColorPicker color={parseInt(background.slice(1), 16)} onChoose={color => onBackground(`#${color.toString(16).padStart(6, '0')}`)} />}
       </div>
       <footer className="wizard-footer blank-setup-footer">
         {step === 'paper' && <span className="blank-paper-summary" role="img" aria-label={`${paper.detail}, ${paperPreset === 'square' ? 'square' : orientation}, ${colorName} paper`}><PaperArtwork preset={paperPreset} orientation={orientation} color={background} /></span>}

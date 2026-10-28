@@ -19,7 +19,7 @@ export async function checkSavedPreviewFit() {
       const ratio = portfolioPaper(width! / height!).ratio;
       host.style.height = `${420 / ratio}px`;
       const picture: EditorSetup = { title: 'Edge-to-edge fit', format: 'landscape', background: '#ffffff', leafColor: 0,
-        size: { width: width!, height: height! }, document: { version: 5, width: width!, height: height!, surfaces: [{
+        size: { width: width!, height: height! }, document: { version: 6, width: width!, height: height!, surfaces: [{
           id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0x202748,
           vectorPaint: { version: 1, regions: [{ id: 1, base: 0x202748, blobs: [
             { color: 0xff2020, geometry: rectangleGeometry(0, 0, width!, height! * .04) },

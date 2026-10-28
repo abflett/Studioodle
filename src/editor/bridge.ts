@@ -1,3 +1,4 @@
+import type { CustomColors } from './colorPalettes';
 import type { SavedPicture } from './savedPicture';
 import type { Point, StickerKind } from './document';
 import type { BrushOptions } from './toolOptions';
@@ -6,6 +7,7 @@ export type SelectionOrder = { forward: boolean; backward: boolean };
 export type EditorCommand =
   | { type: 'fill-at'; point: Point }
   | { type: 'set-color'; color: number }
+  | { type: 'set-custom-color'; index: number; color: number }
   | { type: 'set-tool'; tool: EditorTool }
   | { type: 'set-brush'; options: BrushOptions }
   | { type: 'flip-selection'; axis: 'horizontal' | 'vertical' }
@@ -20,6 +22,8 @@ export type EditorCommand =
   | { type: 'save'; onComplete: (saved: boolean, written?: boolean) => void };
 
 export function createEditorBridge() {
+  let lastPalette: { colors: CustomColors; color: number } | undefined;
+  const paletteListeners = new Set<(colors: CustomColors, color: number) => void>();
   const listeners = new Set<(command: EditorCommand) => void>();
   const selectionListeners = new Set<(id: string | undefined, order: SelectionOrder) => void>();
   const focusListeners = new Set<(id: string | undefined) => void>();
@@ -29,6 +33,16 @@ export function createEditorBridge() {
   let previousSelection: { id?: string; order: SelectionOrder } | undefined;
   let focusPublished = false;
   return {
+    paletteChanged(colors: CustomColors, color: number) {
+      if (lastPalette?.colors === colors && lastPalette.color === color) return;
+      lastPalette = { colors, color };
+      for (const listener of paletteListeners) listener(colors, color);
+    },
+    onPalette(listener: (colors: CustomColors, color: number) => void) {
+      paletteListeners.add(listener);
+      if (lastPalette) listener(lastPalette.colors, lastPalette.color);
+      return () => { paletteListeners.delete(listener); };
+    },
     focusChanged(id?: string) {
       if (focusPublished && previousFocus === id) return;
       focusPublished = true; previousFocus = id;

@@ -51,7 +51,7 @@ objects. `useLatest` exposes committed callbacks to long-lived DOM listeners;
 do not mutate callback refs during render. Modal and pointer listener cleanup must
 remain symmetric, including React development effect replay.
 
-Drawings and their small summaries use the `pictures` and `summaries` stores in IndexedDB database `studioodle-library-v8`; custom pages/revisions use the atomic `studioodle.workshop.v2` collection record. Documents use vector-only format 5. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
+Drawings and their small summaries use the `pictures` and `summaries` stores in IndexedDB database `studioodle-library-v9`; custom pages/revisions use the atomic `studioodle.workshop.v3` collection record. Documents use vector-only format 6. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
 
 `VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no raster paint arrays. Complex surfaces have disposable viewport display canvases under a shared 64 MiB pixel budget; export and print render vectors directly. Shared lookup arrays support only hit testing. A bounds-grid index selects candidate regions for brush clipping, shared by instances of the same definition. See [Vector Painting](VECTOR-PAINT.md).
 
@@ -190,6 +190,30 @@ collection write, assigning fresh IDs. Favorites use a separate small local reco
 `BlankPageSetup` owns its native dialog and accessible icon step navigation while
 SelectionScreen retains preset/orientation/background choices. `PaperArtwork`
 draws physical-ratio folded silhouettes with size marks and optional contrasting
-summary ink. Blank setup opts into ColorPicker's full palette; other uses keep
-responsive pagination. The existing paper-presets module remains authoritative
+summary ink. Blank setup uses PaperColorPicker with a fixed RGB palette; editor painting and
+sticker ink use PalettePicker with 32 slots per selected palette. The existing paper-presets module remains authoritative
 for physical dimensions and scene-unit conversion.
+
+
+## Versioned palette references
+
+`colorPalettes.ts` defines four immutable 32-color sets for palette version 1.
+A color token `-slot-1` identifies one of 160 slots. Nonnegative RGB values remain
+literal paper/source-art colors; product painting and selected sticker ink use
+slot tokens. Geometry and workers treat tokens as opaque color identities, so
+identical RGB values in separate slots never merge. No input-stroke log is added.
+
+Format-6 documents serialize `paletteVersion: 1` and `customColors`, a 32-element
+array of null or 24-bit RGB. New drawings begin with all custom slots null. A custom
+assignment/edit records one previous value in ArtworkChange, changes an immutable
+table copy, invalidates affected drawing display caches, and goes through normal
+revision/undo/save handling. Palette history shares existing geometry; late paint
+worker results cannot rewrite the table or resolve colors themselves. Checkpoints
+copy the table immediately alongside their immutable geometry references.
+
+Canvas and SVG exports resolve tokens from the document table at render time;
+PNG/PDF/printing inherit those paths. Page sharing v4 carries the custom ink table
+and palette version without paint. Old namespaces/formats are not migrated.
+The editor bridge publishes custom tables and the current paint token so undo
+updates palette swatches, ribbon dots and cursors together. If undo removes the
+active custom assignment, painting falls back to fixed black.

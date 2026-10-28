@@ -1,7 +1,12 @@
+Implementation note: study 01 is now implemented in the app, including slot-linked
+custom colors, undo, fresh format-6 storage and resolved-color exports. The captures
+and standalone prototype below remain unchanged as design references. Production
+custom palettes start empty; the six colors in these screenshots are demo data.
+
 # Color overlay / study 01
 
-Design preview only. The app still uses RGB paint; no palette-reference, save,
-undo or recoloring architecture has changed.
+The standalone study is a visual reference. The production app now implements
+the linked palette model; current behavior is documented in [Interface](../INTERFACE.md).
 
 Open [the interactive study](index.html) through the Vite dev server at
 `/docs/color-overlay-examples/index.html`. Use `?preview` for the overlay alone,
@@ -32,7 +37,7 @@ slot. The prototype keeps the palette open when a swatch is selected for easier
 comparison; normal app color selection will retain its immediate return to drawing.
 Custom values exist only in this preview's memory and reset on reload.
 
-## Agreed implementation direction, awaiting layout approval
+## Agreed implementation direction (now implemented in the app)
 
 - Slots 0–127: four fixed app palettes; saves reference slot IDs and a palette version.
 - Slots 128–159: 32 drawing-owned custom values, initially undefined, stored in that save.

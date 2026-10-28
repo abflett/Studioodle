@@ -19,7 +19,7 @@ export async function checkRegionCoverage() {
   assert(highestId.hitRegionAt?.(8.5, 20) === 65535, 'Ink marker must not overflow maximum region IDs');
   const clipped = decodeSvgDefinition(fixture.replace('<g id="ink">', '<defs><clipPath id="left"><path d="M0 0H35V50H0Z"/></clipPath></defs><g id="ink" clip-path="url(#left)">'));
   assert(!clipped.contains(40, 40), 'Invisible clipped ink must not receive hits');
-  const doc: ArtworkDocument = { version: 5, width: 200, height: 200, surfaces: [
+  const doc: ArtworkDocument = { version: 6, width: 200, height: 200, surfaces: [
     { id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff },
     { id: 'sticker', kind: 'circle', x: 100, y: 100, scale: 4, color: 0 },
   ] };

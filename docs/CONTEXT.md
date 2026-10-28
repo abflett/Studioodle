@@ -1,6 +1,6 @@
 # Current context
 
-Updated 28 October 2026. Read `AGENTS.md` first, then this file and the documentation
+Updated 29 October 2026. Read `AGENTS.md` first, then this file and the documentation
 for the requested feature. Use the checked-out repository root (`git rev-parse
 --show-toplevel`); a client's initial working directory may point elsewhere.
 
@@ -8,8 +8,8 @@ for the requested feature. Use the checked-out repository root (`git rev-parse
 
 Studioodle is a pre-v1 drawing/coloring app with React, Canvas2D display and vector
 paint/ink. Phaser and raster painting have been removed. Keep one vector engine;
-old development drawings can break. Saved documents are format 5; the current
-drawing database is `studioodle-library-v8`. See [architecture](ARCHITECTURE.md).
+old development drawings can break. Saved documents are format 6; the current
+drawing database is `studioodle-library-v9`. See [architecture](ARCHITECTURE.md).
 No native builds unless the user explicitly asks. Completed coherent changes are
 committed and pushed to the configured upstream after appropriate checks.
 
@@ -47,12 +47,19 @@ are ignored; sticker transforms, order, ink and page dimensions determine a matc
 Failed additions leave the action available; deleting the matching custom page
 restores it. No extra save-format fields or browser tracking records are added.
 
-Color overlay study 01 is ready for layout feedback in `docs/color-overlay-examples/`.
-It shows five 32-slot palettes (Everyday/Pastel/Vivid/Moody/Custom), three-dot palette
-icons, custom edit mode and a solid HSV/hex picker. Six populated custom slots are
-demo data only. The agreed future model uses immutable/versioned fixed slots 0?127
-and drawing-owned custom slots 128?159, with paint merging by slot rather than RGB.
-This is design-only: painting, persistence and exports still store RGB as before.
+The color selector implements study 01: five 32-slot palettes, three-dot selector,
+custom edit mode, solid HSV/hex picker and shared use by painting/sticker ink.
+Version-1 fixed slots 0?127 use Everyday/Pastel/Vivid/Moody; custom slots 128?159
+start null and belong to each drawing. Compact negative color tokens encode the
+slot index as `-slot-1`, distinct from literal RGB paper/source art. Production
+painting and chosen ink use slot tokens; merging compares tokens, never resolved
+RGB. Palette edits capture one previous table value, invalidate display pixels
+without rebuilding geometry, participate in undo and action-based saving, and
+update ribbon/cursor colors. All serialized drawings include paletteVersion 1 and
+32 custom entries. PNG/SVG/PDF/print resolve colors; page sharing v4 carries custom
+ink tables. New storage namespaces are library-v9, workshop.v3 and v6.coloring;
+format-5 saves and v3 sharing codes are intentionally unsupported. Blank paper
+setup retains its simple fixed RGB background palette.
 
 ## Artwork status
 
@@ -101,7 +108,7 @@ Shipped pages have curated `browse` metadata in the canonical book. Custom pages
 use lightweight subject/sticker-count defaults, not geometric difficulty scoring.
 
 Single view has Add (paste code/.studioodle file with validation and preview), Share
-(copy code/download the same code as a .studioodle text file) and custom-only Delete. Imports create independent IDs. Portable codes use studioodle-page:3: and carry sticker layouts and ink colors without paint fields; internal books/storage remain JSON.
+(copy code/download the same code as a .studioodle text file) and custom-only Delete. Imports create independent IDs. Portable codes use studioodle-page:4: and carry sticker layouts and ink colors without paint fields; internal books/storage remain JSON.
 The dedicated Edit Page action is removed; normal open/arrange/save-as-page is the
 user authoring route. All current custom templates consolidate into the workshop
 record on the next successful atomic write; failed writes preserve original data.
@@ -111,7 +118,7 @@ future work. Blank paper setup now also uses the approved two-step layout: bold 
 inside folded paper silhouettes, icon-only orientation/navigation, clickable
 paper/color step icons, a selected-paper/color summary and the shared magical
 drawing action. Physical sizes and automatic/manual orientation behavior remain
-unchanged. Blank setup shows all 32 colors; editor palette pagination is unchanged.
+unchanged. Blank setup shows all 32 colors; the editor shows all 32 slots of the selected palette.
 Other editor/settings/output overlays still await refinement.
 
 [Design brief](OVERLAY-DESIGN.md) and [layout examples](overlay-examples/README.md)

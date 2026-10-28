@@ -21,7 +21,9 @@ export type SurfaceData = {
 export const defaultPaintDpi = 150;
 export const exportScale = (dpi = defaultPaintDpi) => dpi / 96;
 export type ArtworkDocument = {
-    version: 5;
+    version: 6;
+    paletteVersion?: 1;
+    customColors?: (number | null)[];
     width: number;
     height: number;
     surfaces: SurfaceData[];

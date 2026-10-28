@@ -1,3 +1,4 @@
+import { definedColor, slotColor } from './colorPalettes';
 import { Artwork } from './Artwork';
 import { UndoHistory } from './UndoHistory';
 import { preparePaintWorker } from './paintWorker';
@@ -59,6 +60,8 @@ export class EditorSession {
     this.document = setup.document ? Artwork.restore(setup.document) : Artwork.create(size.width, size.height, setup.background);
   }
 
+  get customColors() { return this.document.customColors; }
+  get activeColor() { return this.color; }
   get artwork() { return this.document; }
   get state() {
     return {
@@ -142,7 +145,8 @@ export class EditorSession {
       const selected = this.selected;
       this.edit(() => this.document.flip(selected, command.axis));
     }
-    if (command.type === 'set-color') this.color = command.color;
+    if (command.type === 'set-color' && definedColor(command.color, this.document.customColors)) this.color = command.color;
+    if (command.type === 'set-custom-color') this.edit(() => this.document.setCustomColor(command.index, command.color));
     if (command.type === 'set-brush') this.brushOptions = command.options;
     if (command.type === 'set-tool') { this.tool = command.tool; this.selected = this.focused; }
     if (command.type === 'clear-selection') { this.selected = undefined; this.tool = 'bucket'; }
@@ -321,5 +325,5 @@ export class EditorSession {
     // Include the release position even when the tail writes no additional pixels.
     if (flush && (hadStroke || selectionExit)) this.notifyChanged();
   }
-  private notifyChanged() { this.ports.changed(); }
+  private notifyChanged() { if (!definedColor(this.color, this.document.customColors)) this.color = slotColor(0); this.ports.changed(); }
 }

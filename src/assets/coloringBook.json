@@ -6,7 +6,7 @@
     {
       "id": "winter",
       "title": "Christmas Skating Village",
-      "version": 5,
+      "version": 6,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -16,7 +16,7 @@
       "background": "#ffffff",
       "leafColor": 0,
       "document": {
-        "version": 5,
+        "version": 6,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -154,7 +154,7 @@
     {
       "id": "beach",
       "title": "Sunny Beach Day",
-      "version": 5,
+      "version": 6,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -164,7 +164,7 @@
       "background": "#ffffff",
       "leafColor": 0,
       "document": {
-        "version": 5,
+        "version": 6,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -260,7 +260,7 @@
     {
       "id": "spring",
       "title": "Spring Garden",
-      "version": 5,
+      "version": 6,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -270,7 +270,7 @@
       "background": "#ffffff",
       "leafColor": 0,
       "document": {
-        "version": 5,
+        "version": 6,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -374,7 +374,7 @@
     {
       "id": "counting",
       "title": "Counting Costume Parade",
-      "version": 5,
+      "version": 6,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -384,7 +384,7 @@
       "background": "#ffffff",
       "leafColor": 0,
       "document": {
-        "version": 5,
+        "version": 6,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -528,7 +528,7 @@
     {
       "id": "garden",
       "title": "Cottage Garden",
-      "version": 5,
+      "version": 6,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -538,7 +538,7 @@
       "background": "#ffffff",
       "leafColor": 0,
       "document": {
-        "version": 5,
+        "version": 6,
         "width": 1123,
         "height": 794,
         "surfaces": [
@@ -959,7 +959,7 @@
     {
       "id": "safari",
       "title": "Safari Watering Hole",
-      "version": 5,
+      "version": 6,
       "updatedAt": 0,
       "format": "landscape",
       "size": {
@@ -969,7 +969,7 @@
       "background": "#ffffff",
       "leafColor": 0,
       "document": {
-        "version": 5,
+        "version": 6,
         "width": 1123,
         "height": 794,
         "surfaces": [

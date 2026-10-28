@@ -23,9 +23,9 @@ after(async () => { await server?.close(); });
 
 function fixture(id = 'picture-1') {
   return {
-    id, version: 5, title: 'Blank Page', format: 'landscape',
+    id, version: 6, title: 'Blank Page', format: 'landscape',
     size: { width: 32, height: 24 }, background: '#ffffff', leafColor: 0x242428, updatedAt: 1,
-    document: { version: 5, width: 32, height: 24, surfaces: [
+    document: { version: 6, width: 32, height: 24, surfaces: [
       { id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff },
     ] },
   };
@@ -51,7 +51,7 @@ function library() {
 test('current template keys round-trip and deletion removes the template', () => {
   const { store, pages } = library();
   const page = fixture();pages.save(page);
-  assert.deepEqual(JSON.parse(store.getItem('studioodle.v5.coloring.picture-1')), page);
+  assert.deepEqual(JSON.parse(store.getItem('studioodle.v6.coloring.picture-1')), page);
   assert.deepEqual(pages.load(), [page]);pages.delete(page.id);
   assert.deepEqual(pages.load(), []);
 });
@@ -59,9 +59,9 @@ test('current template keys round-trip and deletion removes the template', () =>
 test('corrupt, foreign and mismatched records do not hide valid pages', () => {
   const { store, pages } = library();
   pages.save(fixture());
-  store.setItem('studioodle.v5.coloring.bad-json', '{');
-  store.setItem('studioodle.v5.coloring.null', 'null');
-  store.setItem('studioodle.v5.coloring.wrong-id', JSON.stringify(fixture('another-id')));
+  store.setItem('studioodle.v6.coloring.bad-json', '{');
+  store.setItem('studioodle.v6.coloring.null', 'null');
+  store.setItem('studioodle.v6.coloring.wrong-id', JSON.stringify(fixture('another-id')));
   store.setItem('unrelated', JSON.stringify(fixture('other')));
   assert.deepEqual(pages.load(), [fixture()]);
 });
@@ -403,7 +403,7 @@ test('coloring page creation strips vector paint without mutating the saved draw
 test('current vector pages round-trip and obsolete formats are ignored', () => {
   const {pages}=library();
   const first=fixture('first');const vector=fixture('vector');
-  vector.version=5;vector.document.version=5;
+  vector.version=6;vector.document.version=6;
   vector.document.surfaces.push({id:'moon',kind:'fantasy-moon-sorceress',x:10,y:10,color:0,vectorPaint:{version:1,regions:[{id:1,base:0x773399,blobs:[]}]}});
   pages.save(first);pages.save(vector);
   const loaded=pages.load();

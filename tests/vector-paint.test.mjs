@@ -65,12 +65,12 @@ test('input nodes use the fine grid and saved snapshots survive later merging',a
 });
 test('saved vector paint validates and cannot be mixed with raster runs',()=>{
  const shape=geometry.brushBlob([1,1],[2,2],1);
- const picture={version:5,id:'v',title:'v',format:'landscape',size:{width:100,height:70},background:'#ffffff',leafColor:0,updatedAt:1,
- document:{version:5,width:100,height:70,surfaces:[{id:'page',kind:'canvas',x:0,y:0,color:0xffffff},
+ const picture={version:6,id:'v',title:'v',format:'landscape',size:{width:100,height:70},background:'#ffffff',leafColor:0,updatedAt:1,
+ document:{version:6,width:100,height:70,surfaces:[{id:'page',kind:'canvas',x:0,y:0,color:0xffffff},
  {id:'moon',kind:'fantasy-moon-sorceress',x:50,y:35,color:0,vectorPaint:{version:1,regions:[{id:1,base:0xffffff,blobs:[{color:2,geometry:shape}]}]}}]}};
  assert.equal(valid(picture),true);
  picture.version=3;picture.document.version=3;assert.equal(valid(picture),false);
- picture.version=5;picture.document.version=5;
+ picture.version=6;picture.document.version=6;
  picture.document.surfaces[1].paint=[[0,1,0]];assert.equal(valid(picture),false);
  delete picture.document.surfaces[1].paint;
  picture.document.surfaces[1].vectorPaint.regions[0].blobs[0].geometry[0][0][0][0]=NaN;

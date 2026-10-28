@@ -15,7 +15,7 @@ export async function checkSelectionExit() {
   let selected: string | undefined, tool = '', writes = 0;
   bridge.onSelection(id => { selected = id; }); bridge.onTool(value => { tool = value; });
   const editor = new CanvasEditor(host, bridge, { id: 'selection-test', title: 'Selection', format: 'landscape', size: { width: 400, height: 300 }, background: '#ffffff', leafColor: 0,
-    document: { version: 5, width: 400, height: 300, surfaces: [
+    document: { version: 6, width: 400, height: 300, surfaces: [
       { id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff },
       { id: 'first', kind: 'circle', x: 100, y: 100, scale: .15, color: 0 },
       { id: 'second', kind: 'circle', x: 300, y: 100, scale: .15, color: 0 },

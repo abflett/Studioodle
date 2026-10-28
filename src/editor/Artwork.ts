@@ -1,3 +1,5 @@
+import type { CustomColors } from './colorPalettes';
+import { emptyCustomColors, resolveColor, validRgb, validCustomColors } from './colorPalettes';
 import { ArtworkChange } from './artworkChange';
 import polygonClipping from './polygonGeometry';
 import { vectorStickerSize } from './vectorCatalog';
@@ -18,7 +20,7 @@ class Surface {
     readonly logicalWidth: number;
     readonly logicalHeight: number;
     readonly opaqueBounds: {left:number;top:number;right:number;bottom:number};
-    constructor(readonly data:SurfaceData,width:number,height:number,definition?:VectorDefinition,changing?:(id:number)=>void){
+    constructor(readonly data:SurfaceData,width:number,height:number,definition?:VectorDefinition,changing?:(id:number)=>void,resolve:(color:number)=>number=(color)=>color){
         if(data.kind==='canvas'){
             const path=new Path2D();path.rect(0,0,width,height);
             const inside=(x:number,y:number)=>x>=0&&y>=0&&x<width&&y<height;
@@ -28,7 +30,7 @@ class Surface {
         }else this.vector=definition??vectorDefinition(data.kind);
         this.logicalWidth=this.vector.width;this.logicalHeight=this.vector.height;
         this.opaqueBounds=this.vector.bounds;
-        this.vectorPaint=new VectorPaint(data.vectorPaint,data.kind==='canvas'?data.color:0xffffff,changing);
+        this.vectorPaint=new VectorPaint(data.vectorPaint,data.kind==='canvas'?data.color:0xffffff,changing,resolve);
         delete data.vectorPaint;
     }
     worldPoint(x:number,y:number):Point{
@@ -53,27 +55,41 @@ class Surface {
 }
 export class Artwork {
     private surfaces: Surface[];
+    private custom = emptyCustomColors();
+    get customColors(): CustomColors { return this.custom; }
+    private resolve = (color: number) => resolveColor(color, this.custom);
+    setCustomColor(index: number, color: number) {
+        if (!Number.isInteger(index) || index < 0 || index >= 32 || !validRgb(color)) throw Error('Invalid custom color');
+        if (this.custom[index] === color) return false;
+        if (this.change && !this.change.colors.has(index)) this.change.colors.set(index, this.custom[index]!);
+        this.custom = this.custom.map((value, i) => i === index ? color : value);
+        for (const surface of this.surfaces) surface.vectorPaint.invalidateColors();
+        return true;
+    }
     private focusedId?: string;
     private change?: ArtworkChange;
     private overlapCache = new Map<string, boolean>();
     constructor(private readonly width: number, private readonly height: number, data: SurfaceData[], private readonly definitionFor: (kind: StickerKind) => VectorDefinition = vectorDefinition) {
-        this.surfaces = data.map(surface => new Surface({...surface}, width, height, surface.kind === 'canvas' ? undefined : this.definitionFor(surface.kind), id=>this.capturePaint(surface.id,id)));
+        this.surfaces = data.map(surface => new Surface({...surface}, width, height, surface.kind === 'canvas' ? undefined : this.definitionFor(surface.kind), id=>this.capturePaint(surface.id,id),this.resolve));
     }
     static create(width: number, height: number, background: string) {
         return new Artwork(width, height, [{ id: 'canvas', kind: 'canvas', x: 0, y: 0, color: parseInt(background.slice(1), 16) }]);
     }
     static restore(doc:ArtworkDocument,definitionFor:(kind:StickerKind)=>VectorDefinition=vectorDefinition){
-        if(doc.version!==5)throw Error('Unsupported drawing format; start a new picture.');
-        return new Artwork(doc.width,doc.height,doc.surfaces,definitionFor);
+        if(doc.version!==6)throw Error('Unsupported drawing format; start a new picture.');
+        const art = new Artwork(doc.width,doc.height,doc.surfaces,definitionFor);
+        if (doc.paletteVersion !== undefined && doc.paletteVersion !== 1 || doc.customColors !== undefined && !validCustomColors(doc.customColors)) throw Error('Invalid drawing palette');
+        art.custom = [...(doc.customColors ?? emptyCustomColors())];
+        return art;
     }
     get size() { return { width: this.width, height: this.height }; }
     dispose() { this.change=undefined; for (const surface of this.surfaces) surface.vectorPaint.dispose(); }
     async compactPaint(){await Promise.all(this.surfaces.map(surface=>surface.vectorPaint.settled()));}
-    serialize():ArtworkDocument{return{version:5,width:this.width,height:this.height,surfaces:this.surfaces.map(surface=>surface.serialize())};}
+    serialize():ArtworkDocument{return{version:6,paletteVersion:1,customColors:[...this.custom],width:this.width,height:this.height,surfaces:this.surfaces.map(surface=>surface.serialize())};}
     /** Detached containers share immutable geometry; saving never waits on live input. */
     checkpoint() {
         const paint = this.surfaces.map(surface => surface.vectorPaint.checkpoint());
-        const document: ArtworkDocument = { version: 5, width: this.width, height: this.height,
+        const document: ArtworkDocument = { version: 6, paletteVersion: 1, customColors: [...this.custom], width: this.width, height: this.height,
             surfaces: this.surfaces.map((surface, index) => {
                 return { ...surface.data, vectorPaint: paint[index]!.data };
             }),
@@ -119,6 +135,10 @@ export class Artwork {
         } : undefined);
     }
     undoChange(change: ArtworkChange) {
+        if (change.colors.size) {
+            this.custom = this.custom.map((color, index) => change.colors.has(index) ? change.colors.get(index)! : color);
+            for (const surface of this.surfaces) surface.vectorPaint.invalidateColors();
+        }
         for (const [id, before] of [...change.surfaces].reverse()) {
             const index = this.surfaces.findIndex(surface => surface.data.id === id);
             let surface = this.surfaces[index];
@@ -127,7 +147,7 @@ export class Artwork {
                 continue;
             }
             if (!surface) {
-                surface = new Surface({ ...before.data }, this.width, this.height, this.definitionFor(before.data.kind as StickerKind), region => this.capturePaint(id, region));
+                surface = new Surface({ ...before.data }, this.width, this.height, this.definitionFor(before.data.kind as StickerKind), region => this.capturePaint(id, region),this.resolve);
             } else {
                 this.surfaces.splice(index, 1);
                 for (const key of Object.keys(surface.data)) Reflect.deleteProperty(surface.data, key);
@@ -142,7 +162,7 @@ export class Artwork {
     }
     add(kind: StickerKind, color: number, point: Point) {
         const id=crypto.randomUUID();this.captureSurface(id);
-        const surface = new Surface({ id, kind, color, x: Math.round(point.x), y: Math.round(point.y) }, this.width, this.height, this.definitionFor(kind),region=>this.capturePaint(id,region));
+        const surface = new Surface({ id, kind, color, x: Math.round(point.x), y: Math.round(point.y) }, this.width, this.height, this.definitionFor(kind),region=>this.capturePaint(id,region),this.resolve);
         {
             const bounds = surface.bounds();
             surface.data.scale = Math.min(1, this.width * .6 / Math.max(1, bounds.width), this.height * .6 / Math.max(1, bounds.height));
@@ -204,7 +224,7 @@ export class Artwork {
         const data = original.serialize();
         data.id = crypto.randomUUID();
         this.captureSurface(data.id);
-        const copy = new Surface(data, this.width, this.height, original.vector,region=>this.capturePaint(data.id,region));
+        const copy = new Surface(data, this.width, this.height, original.vector,region=>this.capturePaint(data.id,region),this.resolve);
         this.surfaces.push(copy);
         this.move(data.id, { x: data.x + 24, y: data.y + 24 });
         return data.id;
@@ -369,7 +389,7 @@ export class Artwork {
         }
         for(const surface of surfaces){
             ctx.save();this.transformSurface(ctx,surface);
-            surface.vectorPaint.draw(ctx,surface.vector,cacheDisplay);drawVectorInk(ctx,surface.vector,hex(surface.data.color),thumbnail);ctx.restore();
+            surface.vectorPaint.draw(ctx,surface.vector,cacheDisplay);drawVectorInk(ctx,surface.vector,hex(this.resolve(surface.data.color)),thumbnail);ctx.restore();
         }
         ctx.restore();
     }

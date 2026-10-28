@@ -14,9 +14,9 @@ async function waitFor(test: () => boolean) {
 }
 export async function checkLibraryState() {
   const original = { ...pictureRepository };
-  let pictures: SavedPicture[] = ['a','b','c'].map(id => ({ id, title: id, version: 5, updatedAt: 1,
+  let pictures: SavedPicture[] = ['a','b','c'].map(id => ({ id, title: id, version: 6, updatedAt: 1,
     format: 'landscape', size: { width: 32, height: 24 }, background: '#ffffff', leafColor: 0,
-    document: { version: 5, width: 32, height: 24, surfaces: [{ id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff }] },
+    document: { version: 6, width: 32, height: 24, surfaces: [{ id: 'paper', kind: 'canvas', x: 0, y: 0, color: 0xffffff }] },
   }));
   const initial = [...pictures], gates = new Map<string, () => void>();
   let lists = 0;

@@ -12,7 +12,8 @@ import type { StickerDetail } from './stickerCatalog';
 import { StickerInkPicker } from './StickerInkPicker';
 import { BrushPicker } from './BrushPicker';
 import { defaultBrush } from '../editor/toolOptions';
-import { ColorPicker } from './ColorPicker';
+import { PalettePicker } from './PalettePicker';
+import { emptyCustomColors, resolveColor, slotColor, usablePaletteColor } from '../editor/colorPalettes';
 import { stickerCategories } from './stickerCatalog';
 import { closeOnBackdrop } from './dialog';
 import { paperSize } from '../editor/document';
@@ -31,13 +32,16 @@ type Picker = 'stickers' | 'colors' | 'brush';
 export default function EditorPreview({ setup, onBack, settings }: { setup: EditorSetup; onBack: () => void; settings: AppSettings }) {
   const [bridge] = useState(createEditorBridge);
   const [color, setColor] = useState(() => initialDrawingSettings(setup).color);
+  const [customColors, setCustomColors] = useState(() => setup.document?.customColors ?? emptyCustomColors());
+  useEffect(() => bridge.onPalette((colors, active) => { setCustomColors([...colors]); setColor(active); }), [bridge]);
   const [tool, setTool] = useState<EditorTool>(() => initialDrawingSettings(setup).tool);
-  const cursorStyle = useToolCursorStyle(tool, color);
+  const cursorStyle = useToolCursorStyle(tool, resolveColor(usablePaletteColor(color, customColors), customColors));
   const [focused, setFocused] = useState<string>();
   useEffect(() => bridge.onFocus(setFocused), [bridge]);
   const [selected, setSelected] = useState<string>();
   const selectionDrawer = useRef<HTMLDivElement>(null);
-  const [outlineColor, setOutlineColor] = useState(0x000000);
+  const [chosenOutline, setOutlineColor] = useState(slotColor(0));
+  const outlineColor = usablePaletteColor(chosenOutline, customColors);
   const [inkPicker, setInkPicker] = useState(false);
   const inkButton = useRef<HTMLButtonElement>(null);
   const [stickerDetail, setStickerDetail] = useState<StickerDetail>();
@@ -151,7 +155,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
         <button title="Brush (B)" aria-keyshortcuts="B" aria-label="Brush" aria-pressed={tool === 'brush'} onClick={selectBrush} aria-haspopup={settings.advancedPainting ? 'dialog' : undefined}><Brush aria-hidden="true" /></button>
         <button title="Fill (G)" aria-keyshortcuts="G" aria-label="Fill" aria-pressed={tool === 'bucket'} onClick={selectFill}><PaintBucket aria-hidden="true" /></button>
         <button title={focused ? "Finish focus to add stickers" : "Stickers (S)"} aria-label="Stickers" disabled={!!focused} onClick={openStickers} aria-haspopup="dialog"><Shapes aria-hidden="true" /></button>
-        <button title="Colors (C)" aria-keyshortcuts="C" aria-label="Colors" onClick={() => setPicker('colors')} aria-haspopup="dialog"><Palette aria-hidden="true" /><span className="ribbon-color-dot" aria-hidden="true" style={{ background: `#${color.toString(16).padStart(6, '0')}` }} /></button>
+        <button title="Colors (C)" aria-keyshortcuts="C" aria-label="Colors" onClick={() => setPicker('colors')} aria-haspopup="dialog"><Palette aria-hidden="true" /><span className="ribbon-color-dot" aria-hidden="true" style={{ background: `#${resolveColor(usablePaletteColor(color, customColors), customColors).toString(16).padStart(6, '0')}` }} /></button>
       </div>
       <div className="ribbon-group" role="group" aria-label="History">
         <button title="Undo (Ctrl/Cmd+Z or Backspace)" aria-keyshortcuts="Control+Z Meta+Z Backspace" aria-label="Undo" onClick={() => bridge.send({ type: 'undo' })}><Undo2 aria-hidden="true" /></button>
@@ -166,21 +170,20 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       </div>
     </section>
     {saveStatus !== 'idle' && <div className="save-notice" role="status"><span>{saveStatus === 'saved' ? 'Saved to Your pictures' : 'Could not save. Device storage may be full or unavailable.'}</span><button className="icon-button" aria-label="Dismiss save message" onClick={dismissSaveStatus}><X /></button></div>}
-    <dialog className={`setup-dialog art-dialog ${picker === 'stickers' ? 'sticker-dialog' : ''} ${picker === 'brush' ? 'brush-dialog' : ''}`} ref={dialog} onCancel={() => setPicker(null)} onClick={(event) => closeOnBackdrop(event, () => setPicker(null))} onAuxClick={(event) => { if (event.button === 2) closeOnBackdrop(event, () => setPicker(null)); }} aria-labelledby="art-picker-title">
-      {picker === 'brush' ? <BrushPicker value={brushOptions} onChange={options => { setBrushOptions(options); bridge.send({ type: 'set-brush', options }); }} onClose={() => setPicker(null)} headingRef={pickerTitle} /> : <div className="wizard" aria-busy={loadingSticker}>
+    <dialog className={`setup-dialog art-dialog ${picker === 'stickers' ? 'sticker-dialog' : ''} ${picker === 'brush' ? 'brush-dialog' : ''} ${picker === 'colors' ? 'palette-dialog' : ''}`} ref={dialog} onCancel={() => setPicker(null)} onClick={(event) => closeOnBackdrop(event, () => setPicker(null))} onAuxClick={(event) => { if (event.button === 2) closeOnBackdrop(event, () => setPicker(null)); }} aria-labelledby="art-picker-title">
+      {picker === 'colors' ? <PalettePicker color={color} custom={customColors} onChoose={value => { setColor(value); bridge.send({ type: 'set-color', color: value }); setPicker(null); }} onEdit={(index, value) => bridge.send({ type: 'set-custom-color', index, color: value })} onClose={() => setPicker(null)} headingRef={pickerTitle} /> : picker === 'brush' ? <BrushPicker value={brushOptions} onChange={options => { setBrushOptions(options); bridge.send({ type: 'set-brush', options }); }} onClose={() => setPicker(null)} headingRef={pickerTitle} /> : <div className="wizard" aria-busy={loadingSticker}>
         {loadingSticker && <progress aria-label="Loading sticker" />}
         {stickerError && <button onClick={() => setStickerError(false)}>Could not load sticker. Tap to dismiss.</button>}
         <DialogHeader id="art-picker-title" headingRef={pickerTitle} title={picker === 'stickers' ? category?.title ?? 'Stickers' : 'Pick a color'} onClose={() => setPicker(null)} closeLabel="Close picker" back={picker === 'stickers' && category ? { label: 'Back to sticker categories', onClick: () => setCategoryId(null) } : undefined}>
-          {picker === 'stickers' && <div className="sticker-header-controls"><button ref={inkButton} className="icon-button sticker-ink-button" aria-label="Choose sticker ink color" title="Sticker ink color" aria-haspopup="dialog" onClick={() => setInkPicker(true)}><Palette aria-hidden="true" /><span className="ribbon-color-dot" aria-hidden="true" style={{ background: `#${outlineColor.toString(16).padStart(6, '0')}` }} /></button><StickerFilters value={stickerDetail} onChange={setStickerDetail} /></div>}
+          {picker === 'stickers' && <div className="sticker-header-controls"><button ref={inkButton} className="icon-button sticker-ink-button" aria-label="Choose sticker ink color" title="Sticker ink color" aria-haspopup="dialog" onClick={() => setInkPicker(true)}><Palette aria-hidden="true" /><span className="ribbon-color-dot" aria-hidden="true" style={{ background: `#${resolveColor(outlineColor, customColors).toString(16).padStart(6, '0')}` }} /></button><StickerFilters value={stickerDetail} onChange={setStickerDetail} /></div>}
         </DialogHeader>
         <div className="wizard-body">
 
-          {picker === 'colors' && <ColorPicker color={color} onChoose={(value) => { setColor(value); bridge.send({ type: 'set-color', color: value }); setPicker(null); }} />}
           {picker === 'stickers' && <StickerBrowser key={`${categoryId ?? 'categories'}:${stickerDetail ?? 'all'}`} categoryId={categoryId} detail={stickerDetail} onCategory={setCategoryId} onAdd={(kind) => { if (loadingSticker) return; setLoadingSticker(true); void prepareStickers([kind]).then(() => { bridge.send({ type: 'add-sticker', sticker: kind, outlineColor, point: { x: ((viewport.current?.clientWidth ?? 0) / 2 - position.x) / zoom, y: ((viewport.current?.clientHeight ?? 0) / 2 - position.y) / zoom } }); setPicker(null); }).catch(() => setStickerError(true)).finally(() => setLoadingSticker(false)); }} />}
         </div>
 
       </div>}
     </dialog>
-    {inkPicker && <StickerInkPicker returnFocus={inkButton} color={outlineColor} onChoose={value => { setOutlineColor(value); setInkPicker(false); }} onClose={() => setInkPicker(false)} />}
+    {inkPicker && <StickerInkPicker returnFocus={inkButton} color={outlineColor} custom={customColors} onEdit={(index, value) => bridge.send({ type: 'set-custom-color', index, color: value })} onChoose={value => { setOutlineColor(value); setInkPicker(false); }} onClose={() => setInkPicker(false)} />}
   </main>;
 }
