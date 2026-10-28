@@ -166,12 +166,29 @@ save completion/status no longer restarts the saved-picture loader/previews.
 
 ## Next work and verification
 
-[Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.
-The action-based save policy is implemented; physical shutdown/device validation
-and brush/render fault recovery remain. Other open items cover export budgets, atomic custom
-pages, background sizing, async input, offline policy and physical device testing.
-The user wants to resume feature work after important refinements; don't invent
-another engine migration or treat old completed reports as new tasks.
+The core feature mechanics are now considered complete for the 1.0 direction.
+The user reports positive parent/child testing and wants release readiness next,
+not more main-app tooling. [Refinement tasks](REFINEMENT-TASKS.md) is the single
+ordered release backlog: (1) performance/reliability, (2) one friendly, playful/zen
+custom icon and ribbon/overlay control family in both themes, (3) 1,000+ accepted
+stickers from the current 364, (4) a much larger solo-page and composed-scene library
+from the current six pages, and (5) structured beta/release validation.
+
+First task: reproduce/profile scatter/spray and dense paint using the user's detailed
+Moon Sorceress when available, a synthetic stress drawing and a simple control.
+Other reported problems are slow detailed-canvas fills, panning and saved-gallery
+loading/cycling. The user previously saw slowdown even after reverting save changes;
+do not assume a save/worker cause without measurement. Keep diagnostics standalone.
+Set minimum-device workloads and measurable budgets before choosing optimizations.
+
+Solo coloring pages should fit visible subject bounds and preserve proportions,
+with intentional margins and orientation. Roughly 80% of suitable stickers is a
+curation target, not a mandate to publish boring or awkward subjects. Keep composed
+scenes as a separate content stream and the canonical bundled layouts in coloringBook.json.
+The book-plus/check pair should pilot more organic, slightly asymmetric custom
+icons with restrained sparkle; preserve clear meaning and avoid decorative noise.
+Existing engineering findings, reviewer protections, palette/undo/save behavior,
+physical-device checks and the explicit-native-build rule remain in force.
 
 Run `npm run check` for normal checks; `npm run test:browser` for app behavior.
 Reviewer changes also need `npm run review:typecheck`, `npm run test:review` and,

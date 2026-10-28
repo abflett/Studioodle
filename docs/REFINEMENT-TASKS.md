@@ -1,11 +1,171 @@
-# Remaining refinement and validation
+# Road to Studioodle 1.0
 
-Current open work, in practical priority order. Completed architecture/source reviews
-and one-time measurements live in Git history; current behavior is documented in
-[architecture](ARCHITECTURE.md), [performance](PERFORMANCE.md) and the feature guides.
-There is no planned engine migration or old-save compatibility work.
+Updated 29 October 2026. Core feature mechanics are complete enough to shift from
+feature expansion to performance, visual cohesion, content and beta validation.
+Parents and children have already enjoyed the current small library; the next work
+should make that experience reliable and richer, rather than add more tools.
 
-## Active product design: overlays and coloring-page discovery
+This is the sole implementation backlog. Work through the release priorities below
+one coherent task at a time, retaining the existing engineering findings and checks
+later in this file. Current baseline: **364 stickers and six bundled coloring pages**.
+The content goal is **1,000+ accepted stickers**, not merely generated candidates.
+Keep small parent/child beta sessions running throughout these phases; do not wait
+for the entire content library to be finished before testing improvements.
+No new engine migration is planned; old development saves may still break before
+release, but public save/update policy must be settled before 1.0.
+
+## 1. Performance and reliability — first release blockers
+
+The user reports severe slowdowns with scatter/spray, ordinary painting, fills on
+already detailed pages, panning and saved-picture browsing/loading. These are real
+reported user-experience problems; their causes and costs still need measurement.
+Earlier reverting the save changes did not remove the slowdown. Do not assume the
+save queue, a particular worker or the latest palette work is responsible.
+
+- [ ] **Next task: reproduce and profile scatter/spray and dense painting.** Use a
+  user-provided detailed drawing (including the colored Moon Sorceress when available),
+  a repeatable synthetic stress drawing and a simple control page. Cover sustained
+  stationary spray, long strokes, overlapping strokes and increasing paint density.
+  Capture input-to-visible latency, longest main-thread tasks, worker job/queue time,
+  geometry/node/blob growth, display work, save work and peak memory. Separate cold
+  loads from warm reuse, and record device/browser/build conditions. Keep diagnostics
+  in standalone tools/tests and ignored `work/`, never in the main app ribbon.
+- [ ] Fix the measured spray/paint bottlenecks first. Keep the opaque scattered-circle
+  effect and slot-based color identity. Bound queued work and transient allocations;
+  investigate batching, coverage reuse, compaction and scheduling based on evidence.
+  A dedicated worker or snapshot cache is an option to evaluate, not a predetermined
+  solution. Preserve clipping, immediate feedback, gesture undo and action saving.
+- [ ] Profile and fix fills on detailed canvases: distinguish region/topology search,
+  geometry preparation, worker queueing, redraw and persistence. Check repeated fills,
+  fill after spray, undo and cancellation without blocking other interactions.
+- [ ] Profile and fix panning/zooming under heavy paint. Separate display-cache misses,
+  geometry rendering, region decoding and memory pressure. Reuse stable geometry and
+  display work without losing fine detail or showing stale custom-palette colors.
+- [ ] Improve cold reopen and saved-picture carousel latency. Measure preview loading,
+  SVG/definition decode, paint restoration, prefetch, stale-load cancellation and
+  cache eviction independently. Rapid browsing must not accumulate obsolete work.
+- [ ] Set explicit response-time and memory budgets after measuring the minimum target
+  device, then add focused regressions. Use representative long sessions and complex
+  artwork, not only empty-page timings. Release acceptance: no crashes/freezes or
+  multi-second input stalls in the agreed workloads; browsing and navigation remain
+  responsive, memory/queues settle, and artwork/undo/save integrity is preserved.
+- [ ] Finish the gesture-failure rollback and physical save-interruption validation
+  described in the engineering findings below. These remain blockers even if the
+  ordinary-input performance fixes are successful.
+
+## 2. One friendly, playful and calm visual language
+
+The direction is professional clarity with more warmth and life: an inviting,
+playful/zen coloring studio. The custom open book is the starting point, not the
+finished icon standard. Avoid adding decorative noise to every control.
+
+- [ ] Make a focused visual comparison of the main ribbon and newer overlays in light
+  and dark themes. Set shared rules for wells, button silhouettes, corner radii,
+  padding, gaps, icon scale/stroke and focus/hover/pressed/disabled states. Decide
+  where circles versus rounded squares have a clear role; avoid arbitrary differences
+  between a ribbon action and the same action in an overlay. Review before broad edits.
+- [ ] Refine the book-plus/book-check pair as the first custom-icon pilot: gently curved
+  pages, a little asymmetry and a restrained spark, while keeping the add/added meaning
+  unmistakable at actual button size. Preserve the existing success/disabled behavior.
+- [ ] Build a cohesive custom icon family in reviewed batches: primary drawing tools,
+  navigation/library actions, category/detail/palette controls, then utility actions.
+  Replace utilitarian placeholders without changing established interactions. Use
+  clear silhouettes, accessible names/tooltips and consistent visual weight; retain
+  editable vector sources where appropriate. Do not count an icon as finished only
+  because it looks attractive enlarged.
+- [ ] Apply the approved control system across the ribbon, brush, sticker, palette,
+  coloring-page, export, delete and settings overlays. Check light/dark contrast,
+  pure black/white artwork, keyboard focus, touch use, selected/disabled clarity,
+  portrait/landscape/short windows and narrow screens. Keep meaningful spacing.
+- [ ] Observe parents/children using ambiguous icons without coaching. Refine confusing
+  actions before removing any remaining helpful guidance. Prioritize recognition and
+  predictable feedback over making every control decorative or wordless.
+
+## 3. Grow to 1,000+ useful, reviewed stickers
+
+At least **636 additional accepted stickers** are needed from the current 364.
+Plan subject coverage and creative usefulness rather than fill a numeric quota.
+
+- [ ] Audit coverage and plan themed packs with coherent art direction: characters,
+  animals, plants, places/buildings, vehicles, everyday objects, food and useful scene
+  elements. Include simple through detailed subjects, useful poses/facing directions,
+  and complementary scenery. Track accepted counts and meaningful variety by pack.
+- [ ] Produce and review a small pilot pack before scaling production. Check that its
+  subjects work both alone and as scene-building elements alongside existing art.
+  Keep source art, generation metadata and accepted editable sources in the existing
+  `art/source/stickers/<pack>/` structure, with clear provenance and usage rights.
+- [ ] Expand in manageable reviewed batches until the accepted library exceeds 1,000.
+  Maintain stable IDs, metadata/detail classifications, dimensions, visible bounds
+  and catalog ordering. Preserve crisp black line art, white enclosed regions and
+  intentional transparency. Avoid padding the count with trivial duplicates.
+- [ ] Run each batch through conversion and standalone artwork review: holes/leaks,
+  missed or tiny regions, stray/closed ink, clipping and representative fills. Tune
+  small-region cleanup on targeted examples before any broad regeneration. Preserve
+  reviewer annotations/history and promote useful failures into focused fixtures.
+- [ ] Validate the real expanded library's startup, browsing, asset loading, cache
+  pressure and package footprint. Do not eagerly decode every sticker or trade away
+  art quality to hide an unmeasured loading bottleneck.
+
+## 4. Build a substantially larger coloring-page library
+
+Combine full-page single-subject pages with composed scenes. Aim to use roughly
+**80% of suitable stickers** as worthwhile individual pages: about 290 at the current
+library size, and around 800 at 1,000 stickers, subject to visual curation. These are
+planning estimates, not an obligation to publish weak pages.
+
+- [ ] Classify existing stickers as strong solo-page subjects, scene-only elements or
+  unsuitable for standalone pages. Background strips, textures, overly plain shapes
+  and awkward crops should not become full-page pages just to hit a percentage.
+- [ ] Prototype a small, varied set of single-sticker pages before bulk authoring.
+  Fit using visible artwork bounds, preserve proportions, center the visible subject,
+  leave intentional print-safe margins and choose portrait/landscape/square sensibly.
+  Review detailed/tall/wide/asymmetric subjects for clipping and usable coloring areas.
+- [ ] Author accepted full-page subjects in reviewed batches, then repeat for new packs.
+  Keep stable page IDs and useful subject/detail metadata. Do not manufacture sticker
+  duplicates merely to create a page. Use `src/assets/coloringBook.json` as the sole
+  bundled layout source, with standalone tooling reading that source.
+- [ ] Create many more composed scenes alongside solo pages: coherent settings,
+  interesting interactions, varied easy/medium/detailed layouts, balanced negative
+  space and sensible overlaps. Expand themes beyond the six current scenes, using
+  the sticker packs to support creative storytelling.
+- [ ] Review thumbnail recognition, full-page appearance, fill behavior, subject/detail
+  filters and print output before accepting pages. Keep scene/page authoring and
+  diagnostics outside the main app; do not restore developer workshop controls.
+- [ ] Stress the page browser with the target-scale library. Keep filtering, previews,
+  favorites, cold browsing and opening a page responsive without loading every full
+  scene up front. Reuse the performance acceptance workloads from priority 1.
+
+## 5. Structured beta and 1.0 release gate
+
+- [ ] Define the supported beta/release platforms and minimum representative devices.
+  Turn existing parent/child feedback into repeatable observation sessions covering
+  creating, coloring, stickers, custom-color edits, undo, leaving/reopening, browsing,
+  sharing, exporting and printing. Keep one prioritized issue list here.
+- [ ] Run long sessions on modest hardware with heavy spray/paint and large libraries.
+  Check touch/stylus/mouse/keyboard, rotation/resize, lifecycle interruptions, storage
+  failure and recovery. Cover Firefox/Safari/iPad where support is intended; do not
+  infer their behavior from Chromium automation alone.
+- [ ] Close the existing export-budget, background-sizing and async-input findings
+  below, or explicitly scope out unsupported cases before release. Validate actual
+  printing and native output on the platforms being shipped; native builds remain
+  explicitly requested work, not an automatic step after every task.
+- [ ] Settle browser offline/install expectations and test the chosen behavior. Native
+  bundled assets and browser cold/offline loading are different promises; make the
+  product description match the supported behavior.
+- [ ] Before public 1.0, settle durable save/update expectations, freeze fixed-palette
+  slot meanings/versioning and document the beta data-reset policy. Verify upgrades
+  against the declared policy, storage errors and manual export/recovery routes.
+- [ ] Confirm distribution basics: accepted art/font/dependency rights and notices,
+  accurate local-storage/privacy claims, release version/changelog and supported
+  installation/update instructions. This does not require accounts, telemetry or
+  adding an online service.
+- [ ] Ship a release candidate only after the performance workloads meet agreed
+  budgets, supported-device checks pass, critical/data-loss issues are closed, the
+  visual family is consistent and the accepted content goals are reviewed. Avoid new
+  feature scope during the final stabilization pass. Package native targets only
+  when requested.
+
+## Implemented feature baseline and remaining design checks
 
 The Coloring Pages Focus layout is implemented using the six existing scenes,
 and the reviewed blank paper size/color steps are now implemented;
@@ -40,8 +200,8 @@ the visual discussion. This remains the sole implementation backlog.
   three-dot selector, custom edit mode and solid HSV/hex picker. Fixed palette slots
   0?127 and drawing-owned custom slots 128?159 merge by identity; recoloring,
   asynchronous saves, undo, display caches and resolved-color exports are covered.
-- [ ] Extend the reviewed overlay pattern to stickers/categories,
-  picture export, delete and settings. Reduce
+- [ ] Finish the remaining export, delete and settings refinements, then apply
+  the shared ribbon/overlay control system from release priority 2. Reduce
   redundant visible headings while retaining meaningful guidance and dialog names.
   Stickers now implement [study 02](sticker-overlay-examples/README.md): centered
   ink/detail controls, icon-only categories and stickers, responsive grids, authored
@@ -57,9 +217,9 @@ the visual discussion. This remains the sole implementation backlog.
 Simple mode, toddler mode, parent locking and an online sharing hub are later work.
 Keep all existing features enabled by default during this design phase.
 
-## Open implementation work
+## Existing engineering findings supporting the release plan
 
-### 1. Validate action-based saves on physical devices
+### Physical validation of action-based saves
 
 Completed actions now queue detached checkpoints with one write and one latest
 pending state per drawing. Home is independent of disk; pending reads/reopens and
@@ -73,7 +233,7 @@ termination and interrupted saves. Simulated transaction aborts do not establish
 hardware power-loss behavior. IndexedDB is device-local storage, not a backup;
 browser eviction remains possible. Native builds only when requested.
 
-### 2. Recover from brush/render faults (high priority, fault-path gap)
+### Brush/render fault recovery (high priority, fault-path gap)
 
 Bucket rollback and save failures are now covered. However,
 `EditorSession.begin/move/end/update` still call synchronous brush geometry without
@@ -85,7 +245,7 @@ rollback the affected gesture and provide a useful
 retry/save route while preserving the last valid artwork. Do not hide real errors
 or repeatedly redraw the same invalid state in a loop.
 
-### 3. Bound and cancel expensive exports (medium priority, confirmed work location)
+### Bounded/cancellable exports (confirmed work location)
 
 `editor/pictureSvg.ts` builds DOM/path strings and explicit pattern geometry on the
 main thread; `app/picturePdf.ts` also converts on the main thread. PNG has a
@@ -97,7 +257,7 @@ between safe batches, add operation cancellation/progress and budget temporary
 allocations/output bytes. Keep exact curves and vector printing; a PDF converter
 requiring DOM cannot simply be moved unchanged to a worker.
 
-### 4. Align background placement with permitted document sizes (medium priority)
+### Background placement versus permitted document sizes
 
 `Artwork.add` scales interior/horizon stickers to page width without the manual
 transform's scale cap; `pictureValidation.ts` rejects scales above 4. A permitted
@@ -107,7 +267,7 @@ Choose one consistent policy for automatic background sizing versus validation,
 then round-trip a maximum-size scene with added scenery. Saves now reject invalid
 snapshots explicitly instead of silently losing them on reload.
 
-### 5. Measure remaining interaction and decode hot paths (medium priority)
+### Other interaction and decode hot paths
 
 `Artwork.move` may scan an entire local silhouette to find a visible point;
 `Artwork.overlaps` scans overlapping page bounds, and moving a sticker clears
@@ -120,7 +280,7 @@ peak allocations and definition rebuilds, then bound total transient bytes witho
 weakening hit accuracy. These costs were identified by inspection, not newly
 benchmarked in this pass.
 
-### 6. Finish async UI/input behavior checks (medium priority, behavior choice)
+### Async UI/input behavior checks
 
 - `EditorPreview` can still complete a pending sticker load after its picker is
   closed; its placement uses the initiating view's captured coordinates. Decide
@@ -136,7 +296,7 @@ benchmarked in this pass.
   SVG/print, pointer capture, touch routing, canvas budgets and CSS still need
   Firefox and Safari/iPad coverage before multiplatform claims.
 
-### 7. Clarify browser offline/install expectations (lower priority, product choice)
+### Browser offline/install expectations
 
 There is no service worker or web-install manifest, and sticker sources load
 lazily. A running tab can work with already loaded resources, but an offline
@@ -145,7 +305,7 @@ assets are bundled. Decide whether browser install/offline caching is a goal;
 if so, add an explicit versioned strategy with update/eviction tests rather than
 relying on incidental HTTP cache behavior.
 
-## Validation still useful
+## Device/output validation supporting the beta gate
 
 - **Real tablet workload:** repeat the saved complex-scene workload on a modest
   Android tablet. Check sustained brush input, pan/zoom, long-session memory and
