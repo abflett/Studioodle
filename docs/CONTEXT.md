@@ -94,6 +94,12 @@ temporary old-color fringes that previously vanished after cleanup and redraw.
 Temporary hold-to-fill zoom preserves the exact pointer anchor without pan
 clamping, including through layout updates; release/cancellation restores the view.
 
+Editor saves now write only after committed artwork edits. Untouched blank paper,
+unchanged coloring pages and reopened drawings skip writes on autosave/Home/close.
+Undo tracks the last-saved revision (or opening state before the first save); canceled gestures and tool/color
+choices do not start saving. Failed writes remain dirty for retry. The minute
+interval remains unchanged.
+
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.

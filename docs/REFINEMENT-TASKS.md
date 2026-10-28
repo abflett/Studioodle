@@ -48,8 +48,10 @@ Keep all existing features enabled by default during this design phase.
 ### 1. Define background save/recovery behavior (high priority, policy needed)
 
 `ui/useEditorSaving.ts` saves every 60 seconds or on explicit/native guarded exit.
-A browser tab/OS process killed between saves can lose that interval; no page-hide
-checkpoint or dirty-state scheduling exists. Decide the desired relaxing-app
+Only committed artwork edits write; untouched sessions and clean revisions skip
+saves, and failures remain dirty for retry. A browser tab/OS process killed between
+saves can lose that interval; no page-hide checkpoint or edit-triggered checkpoint
+scheduling exists. Decide the desired relaxing-app
 tradeoff, then coalesce dirty checkpoints and best-effort background saves. Do not
 promise an async unload save will always finish or add confirmation prompts by
 default. Verify restoration after backgrounding/discard and no burst of duplicate

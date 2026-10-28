@@ -21,7 +21,11 @@ Artwork owns surface paint, regions, placement, order, serialization and composi
 Canvas2D renders vector ink and vector paint at display resolution. `EditorSession` handles editing commands, undo and gesture transactions; the browser canvas adapter handles
 pointer input and draws the selection overlay. React positions the page and controls Fit-relative zoom.
 
-Home saves the editable version-5 document before returning; autosave runs every minute.
+Home saves pending edits to the editable version-5 document before returning;
+autosave checks every minute. Untouched blank paper and unchanged coloring pages
+are not added to Your pictures. Reopened drawings are not rewritten until edited.
+Tool/color choices and view changes do not count as edits. Undoing to the opening
+state before the first save, or to the last-saved revision, skips the write.
 Your pictures browses version-5 local saves and offers delete/undo-delete, PNG/SVG/PDF export and vector printing.
 Old development save formats are intentionally unsupported. See [the sticker pipeline](STICKER-PIPELINE.md) for
 the authoring format, region maps, loading/caches and cleanup decisions.

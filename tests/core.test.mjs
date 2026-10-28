@@ -156,6 +156,80 @@ function session() {
   return { editor, saved };
 }
 
+const saveSession = editor => new Promise(resolve => editor.execute({ type: 'save', onComplete: (ok, written) => resolve({ ok, written }) }));
+
+test('untouched blank, template and reopened drawings skip saving; navigation is not an edit', async () => {
+  const blank = fixture(); delete blank.document;
+  const template = fixture(); template.document.surfaces.push({ id: 'lion', kind: 'animal-lion', x: 5, y: 5, color: 0 });
+  for (const setup of [blank, template, fixture()]) {
+    let writes = 0;
+    const editor = new EditorSession(setup, { save() { writes++; }, changed() {} });
+    editor.execute({ type: 'set-color', color: 0xff0000 });
+    editor.execute({ type: 'set-tool', tool: 'pan' });
+    editor.execute({ type: 'clear-selection' });
+    editor.execute({ type: 'undo' });
+    await new Promise(resolve => editor.execute({ type: 'snapshot', onComplete: resolve }));
+    assert.deepEqual(await saveSession(editor), { ok: true, written: false });
+    assert.deepEqual(await saveSession(editor), { ok: true, written: false });
+    assert.equal(writes, 0);
+    editor.dispose();
+  }
+});
+
+test('real edits save once, undo restores clean revisions and new branches remain dirty', async () => {
+  const { editor, saved } = session();
+  editor.execute({ type: 'add-sticker', sticker: 'animal-lion', outlineColor: 0, point: { x: 5, y: 5 } });
+  editor.execute({ type: 'undo' });
+  assert.deepEqual(await saveSession(editor), { ok: true, written: false });
+  editor.execute({ type: 'add-sticker', sticker: 'animal-lion', outlineColor: 0, point: { x: 5, y: 5 } });
+  assert.deepEqual(await saveSession(editor), { ok: true, written: true });
+  assert.deepEqual(await saveSession(editor), { ok: true, written: false });
+  editor.execute({ type: 'flip-selection', axis: 'horizontal' });
+  editor.execute({ type: 'undo' });
+  assert.deepEqual(await saveSession(editor), { ok: true, written: false });
+  editor.execute({ type: 'undo' });
+  assert.deepEqual(await saveSession(editor), { ok: true, written: true });
+  editor.execute({ type: 'set-tool', tool: 'brush' });
+  editor.begin({ x: 2, y: 2 }, 1, 0);
+  editor.execute({ type: 'cancel-input' });
+  assert.deepEqual(await saveSession(editor), { ok: true, written: false });
+  editor.begin({ x: 2, y: 2 }, 2, 0);
+  assert.deepEqual(await saveSession(editor), { ok: true, written: true });
+  assert.equal(saved.length, 3);
+  editor.dispose();
+});
+
+test('failed saves stay dirty and queued repeated saves write only once', async () => {
+  let fail = true, writes = 0;
+  const editor = new EditorSession(fixture(), { save() { writes++; if (fail) throw Error('Disk full'); }, changed() {} });
+  editor.execute({ type: 'fill-at', point: { x: 2, y: 2 } });
+  assert.equal((await saveSession(editor)).ok, false);
+  fail = false;
+  const results = await Promise.all([saveSession(editor), saveSession(editor)]);
+  assert.deepEqual(results, [{ ok: true, written: true }, { ok: true, written: false }]);
+  assert.equal(writes, 2);
+  editor.dispose();
+});
+
+test('edits queued behind a pending save still require their own save', async () => {
+  const saved = []; let complete;
+  const editor = new EditorSession(fixture(), { save(picture) {
+    saved.push(picture);
+    if (saved.length === 1) return new Promise(resolve => { complete = resolve; });
+  }, changed() {} });
+  editor.execute({ type: 'fill-at', point: { x: 2, y: 2 } });
+  const first = saveSession(editor);
+  await new Promise(resolve => setImmediate(resolve));
+  editor.execute({ type: 'fill-at', point: { x: 3, y: 3 } });
+  const second = saveSession(editor);
+  complete();
+  assert.deepEqual(await first, { ok: true, written: true });
+  assert.deepEqual(await second, { ok: true, written: true });
+  assert.equal(saved[0].document.surfaces[0].vectorPaint.regions[0].blobs.length, 1);
+  assert.equal(saved[1].document.surfaces[0].vectorPaint.regions[0].blobs.length, 2);
+  editor.dispose();
+});
+
 test('worker fill queues following brush input, save and undo in order', async () => {
   const {editor,saved}=session(),before=editor.artwork.serialize();
   const original=editor.artwork.fill.bind(editor.artwork);let complete;
@@ -177,11 +251,14 @@ test('worker fill queues following brush input, save and undo in order', async (
 
 test('session saves through its port and reports a failed save without changing the artwork', async () => {
   const { editor, saved } = session(); let succeeded;
+  editor.execute({ type: 'fill-at', point: { x: 2, y: 2 } });
   await new Promise(resolve=>editor.execute({ type: 'save', onComplete: value => { succeeded = value; resolve(); } }));
   assert.equal(succeeded, true); assert.equal(saved[0].id, 'picture-1');
   const failing = new EditorSession(fixture(), { save() { throw new Error('Disk full'); }, changed() {} });
+  failing.execute({ type: 'fill-at', point: { x: 2, y: 2 } });
+  const before = failing.artwork.serialize();
   await new Promise(resolve=>failing.execute({ type: 'save', onComplete: value => { succeeded = value; resolve(); } }));
-  assert.equal(succeeded, false); assert.deepEqual(failing.artwork.serialize(), fixture().document);
+  assert.equal(succeeded, false); assert.deepEqual(failing.artwork.serialize(), before);
 });
 
 test('session records a multi-sample stroke as one undo and restores cancelled gesture history', () => {
@@ -288,6 +365,7 @@ test('disposing a session drops queued commands and late asynchronous fill notif
 test('save completion waits for asynchronous storage and reports rejection', async()=>{
  const {editor}=session();let release,completed;
  const failing=new EditorSession(fixture(),{save:()=>new Promise((_,reject)=>{release=reject;}),changed(){}});
+ failing.execute({type:'fill-at',point:{x:2,y:2}});
  failing.execute({type:'save',onComplete:value=>{completed=value;}});
  await new Promise(resolve=>setTimeout(resolve,0));
  assert.equal(completed,undefined);release(new Error('Quota exceeded'));

@@ -9,6 +9,7 @@ import type { EditorSetup } from './setup';
 import { paperSize } from './document';
 import type { Point } from './document';
 import type { SavedPicture } from './savedPicture';
+import type { ArtworkChange } from './artworkChange';
 
 export type EditorSessionPorts = {
   save: (picture: SavedPicture) => void|Promise<void>;
@@ -20,6 +21,10 @@ export class EditorSession {
   private document: Artwork;
   private disposed = false;
   private readonly history = new UndoHistory();
+  private revision = 0;
+  private nextRevision = 0;
+  private savedRevision = 0;
+  private readonly previousRevisions = new WeakMap<ArtworkChange, number>();
   private color: number;
   private selected?: string;
   private focused?: string;
@@ -68,8 +73,10 @@ export class EditorSession {
     }
     if (command.type === 'save') {
       this.end();
+      if (this.revision === this.savedRevision) { command.onComplete(true, false); return; }
+      const revision = this.revision;
       this.pendingOperation=this.document.compactPaint().then(()=>this.ports.save(this.snapshot())).then(
-        ()=>command.onComplete(true),()=>command.onComplete(false)).finally(()=>{
+        ()=>{ this.savedRevision = revision; command.onComplete(true, true); },()=>command.onComplete(false)).finally(()=>{
           this.pendingOperation=undefined;
           while(!this.pendingOperation&&this.deferred.length)this.deferred.shift()!();
         });
@@ -99,7 +106,7 @@ export class EditorSession {
       let result: boolean | Promise<boolean>;
       try { result = this.document.fill(command.point, this.color, this.fillOptions); }
       catch (error) { failed(error); return; }
-      const finish=(changed:boolean)=>{if(this.disposed)return;const change=this.document.endChange();if(changed)this.history.push(change);this.notifyChanged();};
+      const finish=(changed:boolean)=>{if(this.disposed)return;const change=this.document.endChange();if(changed)this.recordChange(change);this.notifyChanged();};
       if(typeof result==='boolean')finish(result);
       else this.pendingOperation=result.then(finish).catch(failed).finally(()=>{
         this.pendingOperation=undefined;
@@ -142,7 +149,10 @@ export class EditorSession {
     }
     if (command.type === 'undo') {
       const change = this.history.pop(this.focused ? this.focusHistoryStart : 0);
-      if (change) this.document.undoChange(change);
+      if (change) {
+        this.document.undoChange(change);
+        this.revision = this.previousRevisions.get(change)!;
+      }
       this.document.setFocus(this.focused);
       this.selected = this.focused;
       if (this.tool === 'select') this.tool = 'bucket';
@@ -185,11 +195,17 @@ export class EditorSession {
     if (this.document.brush(this.previous, this.previous, this.color, false, this.brushOptions)) { this.notifyChanged(); }
   }
   /** Geometry edits retain previous values only for the parts they actually change. */
+  private recordChange(change: ArtworkChange) {
+    if (change.empty) return;
+    this.previousRevisions.set(change, this.revision);
+    this.revision = ++this.nextRevision;
+    this.history.push(change);
+  }
   private edit(change: () => boolean) {
     this.document.beginChange();
     try {
       const changed=change(),before=this.document.endChange();
-      if(changed)this.history.push(before);
+      if(changed)this.recordChange(before);
     } catch(error) { this.document.undoChange(this.document.endChange()); throw error; }
   }
   begin(point: Point, pointerId: number, button: number) {
@@ -258,7 +274,7 @@ export class EditorSession {
         this.document.brush(this.previous, tip, this.color, false, this.brushOptions);
     }
     const change=this.document.endChange();
-    if(flush)this.history.push(change);else this.document.undoChange(change);
+    if(flush)this.recordChange(change);else this.document.undoChange(change);
     void this.document.compactPaint();
     this.stroke = undefined; this.gestureUndo = undefined; this.previous = undefined;
     this.drag = undefined; this.activePointer = undefined;
