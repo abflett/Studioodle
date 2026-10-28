@@ -47,6 +47,13 @@ are ignored; sticker transforms, order, ink and page dimensions determine a matc
 Failed additions leave the action available; deleting the matching custom page
 restores it. No extra save-format fields or browser tracking records are added.
 
+Color overlay study 01 is ready for layout feedback in `docs/color-overlay-examples/`.
+It shows five 32-slot palettes (Everyday/Pastel/Vivid/Moody/Custom), three-dot palette
+icons, custom edit mode and a solid HSV/hex picker. Six populated custom slots are
+demo data only. The agreed future model uses immutable/versioned fixed slots 0?127
+and drawing-owned custom slots 128?159, with paint merging by slot rather than RGB.
+This is design-only: painting, persistence and exports still store RGB as before.
+
 ## Artwork status
 
 All 364 stickers were upgraded to the current small-region pipeline. Accepted
