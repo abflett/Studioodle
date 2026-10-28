@@ -8,7 +8,7 @@ export function createColoringPage(source: SavedPicture, title: string): SavedPi
     document: {
       ...source.document, version: 5,
       surfaces: source.document.surfaces.map(surface => {
-        const clean = { ...surface, color: surface.kind === 'canvas' ? 0xffffff : surface.color };
+        const clean = { ...surface, color: surface.kind === 'canvas' ? 0xffffff : 0x000000 };
         delete clean.vectorPaint;
         return clean;
       }),

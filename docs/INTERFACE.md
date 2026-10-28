@@ -21,13 +21,7 @@ Artwork owns surface paint, regions, placement, order, serialization and composi
 Canvas2D renders vector ink and vector paint at display resolution. `EditorSession` handles editing commands, undo and gesture transactions; the browser canvas adapter handles
 pointer input and draws the selection overlay. React positions the page and controls Fit-relative zoom.
 
-Home saves pending edits before returning; autosave checks every minute. Ctrl+S
-and guarded desktop close use the same save path. Untouched blank paper, unchanged
-coloring pages and clean reopened drawings are not written. Tool/color choices,
-view changes and canceled gestures do not count as edits. Undoing to the opening
-state before the first save, or the last-saved revision, skips the write. Failed
-saves keep the drawing open for retry. Saving waits for paint compaction and the
-atomic storage commit; there are no per-action background writes.
+Home saves the editable version-5 document before returning; autosave runs every minute.
 Your pictures browses version-5 local saves and offers delete/undo-delete, PNG/SVG/PDF export and vector printing.
 Old development save formats are intentionally unsupported. See [the sticker pipeline](STICKER-PIPELINE.md) for
 the authoring format, region maps, loading/caches and cleanup decisions.
@@ -55,7 +49,7 @@ Horizon stickers now use manifest placement metadata and insert immediately abov
 
 ### Custom coloring pages
 
-The selection screen's save utility button copies the selected saved picture into the coloring-page picker. Templates keep paper size, sticker order, positions, scale, rotation and flips. All vector paint is removed, the canvas becomes white and sticker ink colors are preserved. Freehand marks are paint and are omitted. A picture needs at least one sticker to create a useful template.
+The selection screen's save utility button copies the selected saved picture into the coloring-page picker. Templates keep paper size, sticker order, positions, scale, rotation and flips. All vector paint are removed, the canvas becomes white and sticker outlines become black. Freehand marks are paint and are omitted. A picture needs at least one sticker to create a useful template.
 
 Templates are stored locally under `studioodle.v5.coloring.` separately from `Your pictures`. Each use receives a new picture ID, so coloring a template never overwrites it or the source picture. The picker previews the new template immediately; custom entries can be deleted through the existing confirmation dialog. Built-in pages cannot be deleted. `coloringPage.ts` creates copies and storage adapters validate both libraries.
 
@@ -144,13 +138,6 @@ See [artwork sources](../art/README.md) and [scene authoring guide](SCENE-AUTHOR
 The selected-sticker drawer sits directly below the full main ribbon, including
 when the ribbon wraps. It appears immediately without an entrance animation and
 does not overlap the main toolbar.
-
-In Select, clicking another sticker switches selection directly. Clicking within
-the selected border retains it, including transparent margins; clicking empty page
-or surrounding workspace clears the border/drawer and returns to Fill on release.
-The exit press/release is consumed, so it cannot also fill. Canceling that gesture
-restores the previous selection. Toolbar/drawer presses retain their normal actions;
-focused-sticker mode keeps its explicit Done behavior.
 
 Brush and eraser gestures may begin in the surrounding drawing workspace and
 continue onto the page. Paint remains clipped to the page; the entire gesture

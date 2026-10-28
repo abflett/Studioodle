@@ -9,7 +9,6 @@ import type { EditorSetup } from './setup';
 import { paperSize } from './document';
 import type { Point } from './document';
 import type { SavedPicture } from './savedPicture';
-import type { ArtworkChange } from './artworkChange';
 
 export type EditorSessionPorts = {
   save: (picture: SavedPicture) => void|Promise<void>;
@@ -21,10 +20,6 @@ export class EditorSession {
   private document: Artwork;
   private disposed = false;
   private readonly history = new UndoHistory();
-  private revision = 0;
-  private nextRevision = 0;
-  private savedRevision = 0;
-  private readonly previousRevisions = new WeakMap<ArtworkChange, number>();
   private color: number;
   private selected?: string;
   private focused?: string;
@@ -36,7 +31,6 @@ export class EditorSession {
   private previous?: Point;
   private stroke?: StrokeSmoothing;
   private activePointer?: number;
-  private selectionExit = false;
   private gestureUndo?: { selected?: string; tool: EditorTool };
   private nextSpray = 0;
   private nextSmoothing = 0;
@@ -74,10 +68,8 @@ export class EditorSession {
     }
     if (command.type === 'save') {
       this.end();
-      if (this.revision === this.savedRevision) { command.onComplete(true, false); return; }
-      const revision = this.revision;
       this.pendingOperation=this.document.compactPaint().then(()=>this.ports.save(this.snapshot())).then(
-        ()=>{ this.savedRevision = revision; command.onComplete(true, true); },()=>command.onComplete(false)).finally(()=>{
+        ()=>command.onComplete(true),()=>command.onComplete(false)).finally(()=>{
           this.pendingOperation=undefined;
           while(!this.pendingOperation&&this.deferred.length)this.deferred.shift()!();
         });
@@ -107,7 +99,7 @@ export class EditorSession {
       let result: boolean | Promise<boolean>;
       try { result = this.document.fill(command.point, this.color, this.fillOptions); }
       catch (error) { failed(error); return; }
-      const finish=(changed:boolean)=>{if(this.disposed)return;const change=this.document.endChange();if(changed)this.recordChange(change);this.notifyChanged();};
+      const finish=(changed:boolean)=>{if(this.disposed)return;const change=this.document.endChange();if(changed)this.history.push(change);this.notifyChanged();};
       if(typeof result==='boolean')finish(result);
       else this.pendingOperation=result.then(finish).catch(failed).finally(()=>{
         this.pendingOperation=undefined;
@@ -150,10 +142,7 @@ export class EditorSession {
     }
     if (command.type === 'undo') {
       const change = this.history.pop(this.focused ? this.focusHistoryStart : 0);
-      if (change) {
-        this.document.undoChange(change);
-        this.revision = this.previousRevisions.get(change)!;
-      }
+      if (change) this.document.undoChange(change);
       this.document.setFocus(this.focused);
       this.selected = this.focused;
       if (this.tool === 'select') this.tool = 'bucket';
@@ -183,7 +172,6 @@ export class EditorSession {
     this.gestureUndo = undefined;
     this.stroke = undefined; this.previous = undefined; this.drag = undefined;
     this.activePointer = undefined;
-    this.selectionExit = false;
     this.document.dispose();
   }
   update(time: number) {
@@ -197,17 +185,11 @@ export class EditorSession {
     if (this.document.brush(this.previous, this.previous, this.color, false, this.brushOptions)) { this.notifyChanged(); }
   }
   /** Geometry edits retain previous values only for the parts they actually change. */
-  private recordChange(change: ArtworkChange) {
-    if (change.empty) return;
-    this.previousRevisions.set(change, this.revision);
-    this.revision = ++this.nextRevision;
-    this.history.push(change);
-  }
   private edit(change: () => boolean) {
     this.document.beginChange();
     try {
       const changed=change(),before=this.document.endChange();
-      if(changed)this.recordChange(before);
+      if(changed)this.history.push(before);
     } catch(error) { this.document.undoChange(this.document.endChange()); throw error; }
   }
   begin(point: Point, pointerId: number, button: number) {
@@ -218,16 +200,13 @@ export class EditorSession {
     this.document.beginChange();
     this.gestureUndo = { selected: this.selected, tool: this.tool };
     if (this.tool === 'select') {
-      const picked = this.document.pick(point);
-      const bounds = this.selected ? this.document.bounds(this.selected) : undefined;
-      const insideBorder = bounds && point.x >= bounds.x - 5 && point.x <= bounds.x + bounds.width + 5 && point.y >= bounds.y - 5 && point.y <= bounds.y + bounds.height + 5;
       this.selected = this.focused
-        ? (picked === this.focused ? this.focused : undefined)
-        : picked ?? (insideBorder ? this.selected : undefined);
+        ? (this.document.pick(point) === this.focused ? this.focused : undefined)
+        : this.document.pick(point);
       if (this.selected) {
         const position = this.document.position(this.selected)!;
         this.drag = { id: this.selected, dx: point.x - position.x, dy: point.y - position.y };
-      } else { this.selected = this.focused; this.selectionExit = !this.focused; }
+      } else { this.selected = this.focused; if (!this.focused) this.tool = 'bucket'; }
     } else {
       this.previous = point;
       this.stroke = this.tool === 'brush' && this.brushOptions.kind !== 'spray' ? new StrokeSmoothing(point) : undefined;
@@ -279,16 +258,12 @@ export class EditorSession {
         this.document.brush(this.previous, tip, this.color, false, this.brushOptions);
     }
     const change=this.document.endChange();
-    if(flush)this.recordChange(change);else this.document.undoChange(change);
+    if(flush)this.history.push(change);else this.document.undoChange(change);
     void this.document.compactPaint();
-    // Consume the Select pointer stream before returning to Fill.
-    const selectionExit = this.selectionExit;
-    if (flush && selectionExit) this.tool = 'bucket';
-    this.selectionExit = false;
     this.stroke = undefined; this.gestureUndo = undefined; this.previous = undefined;
     this.drag = undefined; this.activePointer = undefined;
     // Include the release position even when the tail writes no additional pixels.
-    if (flush && (hadStroke || selectionExit)) this.notifyChanged();
+    if (flush && hadStroke) this.notifyChanged();
   }
   private notifyChanged() { this.ports.changed(); }
 }

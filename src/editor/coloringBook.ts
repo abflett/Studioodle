@@ -15,7 +15,7 @@ export type ColoringBook = {
 export const maxBookBytes = 20 * 1024 * 1024;
 const validId = (id: string) => /^[a-z0-9][a-z0-9._-]{0,119}$/i.test(id);
 
-/** A book carries sticker geometry and ink colors, without paint. Explicit projection also discards editor-only metadata. */
+/** A book carries geometry only. Explicit projection also discards editor-only metadata. */
 export function coloringBookPage(source: EditorSetup, id: string, title = source.title, updatedAt = Date.now()): ColoringBookPage {
   if (!source.document || !validId(id) || !title.trim() || title.trim().length > 160) throw new Error('A page needs a valid ID, title, and document.');
   const size = paperSize(source.format, source.size);
@@ -24,7 +24,7 @@ export function coloringBookPage(source: EditorSetup, id: string, title = source
     background: '#ffffff', leafColor: 0x242428,
     document: { version: 5, width: size.width, height: size.height,
       surfaces: source.document.surfaces.map(s => ({
-        id: s.id, kind: s.kind, x: s.x, y: s.y, color: s.kind === 'canvas' ? 0xffffff : s.color,
+        id: s.id, kind: s.kind, x: s.x, y: s.y, color: s.kind === 'canvas' ? 0xffffff : 0,
         ...(s.scale !== undefined ? { scale: s.scale } : {}),
         ...(s.rotation !== undefined ? { rotation: s.rotation } : {}),
         ...(s.flipX !== undefined ? { flipX: s.flipX } : {}),

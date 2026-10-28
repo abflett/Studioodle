@@ -81,8 +81,6 @@ try {
     const { checkArtworkQueue } = await import('../tests/artwork-queue.browser.mjs');
     await checkArtworkQueue({ cdp, evaluate });
     if(runtimeErrors.length)throw Error(`Browser runtime errors: ${JSON.stringify(runtimeErrors)}`);
-  }else if(process.argv.includes('--moon-profile')){
-    console.log('Colored moon saves:', JSON.stringify(await evaluate("import('/tests/browser/moon-save-recovery.ts').then(m=>m.checkMoonSaveRecovery())")));
   }else if(libraryProfile){
     const setup=await evaluate("import('/tests/browser/picture-library-profile.ts').then(m=>m.prepareLibraryProfile())");
     const samples=[];
@@ -204,9 +202,6 @@ try {
   const canvasEditor = await evaluate("import('/tests/browser/canvas-editor.ts').then(m => m.checkCanvasEditor())");
   console.log('Canvas editor:', JSON.stringify(canvasEditor));
   result.canvasEditor = canvasEditor;
-  result.selectionExit = await evaluate("import('/tests/browser/selection-exit.ts').then(m=>m.checkSelectionExit())");
-  result.moonSaves = await evaluate("import('/tests/browser/moon-save-recovery.ts').then(m=>m.checkMoonSaveRecovery())");
-  console.log('Colored moon saves:', JSON.stringify(result.moonSaves));
   const seams=await evaluate("import('/tests/browser/seams.ts').then(m => m.checkPaintSeams())");
   await fs.writeFile('work/tests/paint-seams.png',Buffer.from(seams.diagnosticPng.split(',')[1],'base64'));delete seams.diagnosticPng;
   console.log('Paint seams:',JSON.stringify(seams));

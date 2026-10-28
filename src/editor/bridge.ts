@@ -17,7 +17,7 @@ export type EditorCommand =
   | { type: 'undo' | 'exit-focus' | 'cancel-input' }
   | { type: 'clear-selection' | 'duplicate-selection' | 'delete-selection' }
   | { type: 'snapshot'; onComplete: (picture: SavedPicture) => void }
-  | { type: 'save'; onComplete: (saved: boolean, written?: boolean) => void };
+  | { type: 'save'; onComplete: (saved: boolean) => void };
 
 export function createEditorBridge() {
   const listeners = new Set<(command: EditorCommand) => void>();

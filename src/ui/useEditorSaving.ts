@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { EditorBridge } from '../editor/bridge';
 import { guardDesktopClose, isDesktop } from '../platform/desktop';
 
-/** Exit paths save pending edits first; clean sessions leave without a write. */
+/** All editor exit paths save first; failed saves leave the document open. */
 export function useEditorSaving(bridge: EditorBridge, onBack: () => void) {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
   useEffect(() => {
@@ -24,8 +24,8 @@ export function useEditorSaving(bridge: EditorBridge, onBack: () => void) {
   return {
     saveStatus,
     dismissSaveStatus: () => setSaveStatus('idle'),
-    save: () => bridge.send({ type: 'save', onComplete: (saved, written) => setSaveStatus(saved ? (written ? 'saved' : 'idle') : 'error') }),
-    goHome: () => bridge.send({ type: 'save', onComplete: saved => {
+    save: () => bridge.send({ type: 'save', onComplete: saved => setSaveStatus(saved ? 'saved' : 'error') }),
+    saveAndLeave: () => bridge.send({ type: 'save', onComplete: saved => {
       if (saved) onBack(); else setSaveStatus('error');
     } }),
   };

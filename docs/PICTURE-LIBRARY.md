@@ -55,37 +55,12 @@ All six illustrations and their six derived masks decode during the splash along
 wordless home screen opens with its art ready. These are decorative interface
 assets; painting and output stay vector.
 
-The fresh pre-release IndexedDB database is `studioodle-library-v8` (schema 1).
+The fresh pre-release IndexedDB database is `studioodle-library-v1` (schema 1).
 `pictures` stores full format-5 drawings; `summaries` stores explicit metadata
 projections with a compound update-time/ID index. Both records save and delete in
 one transaction, and completion means the transaction committed. A failed write
 leaves both previous records intact. There is no migration from previous
 development libraries, and the vector document format has not changed.
-
-## Save policy and regression coverage
-
-Saving runs every minute and on Home/Ctrl+S/guarded desktop close, only when artwork
-changed. It waits for live paint compaction and one atomic drawing/summary write.
-The action-save queue, checkpoint caches and pending library overlay have been
-removed; normal reads and the five-picture window use the pre-change paths.
-The drawing database remains studioodle-library-v8, with existing documents intact.
-
-A same-workload comparison against commit 6425608 used a synthetic colored moon
-sorceress (199 regions) and 16 multi-sample brush gestures. Action saving performed
-12 writes and sent 2,198 paint blobs across 42 worker jobs; minute/manual saving
-performed one explicit write and sent 832 blobs across 33 jobs. Live paint and
-undo still use the worker. This confirms added scheduling/storage load; it does
-not reproduce the user's exact saved picture or establish its loading latency.
-After outstanding work drained, standalone load/render was about 8-14 ms in both
-versions on this machine. Responsiveness takes priority over per-action recovery.
-
-`tests/browser/moon-save-recovery.ts` retains the colored-sticker workload and
-asserts zero writes while painting, one explicit save, no unchanged rewrite and
-preserved colored regions through repeated load/render. Run the full browser suite
-or `node scripts/test-browser.mjs --moon-profile`. A restored-path run loaded and
-rendered in roughly 8-9 ms. Timings are diagnostics, not device-level guarantees.
-Storage regressions still abort a transaction mid-write to verify both previous
-committed records survive. No browser data reset, migration or native build is needed.
 
 ## Browser measurement, 2026-10-22
 

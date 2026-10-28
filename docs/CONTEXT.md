@@ -1,6 +1,6 @@
 # Current context
 
-Updated 28 October 2026. Read `AGENTS.md` first, then this file and the documentation
+Updated 26 October 2026. Read `AGENTS.md` first, then this file and the documentation
 for the requested feature. Use the checked-out repository root (`git rev-parse
 --show-toplevel`); a client's initial working directory may point elsewhere.
 
@@ -65,8 +65,8 @@ Animals, Places & Nature, Things, Letters & Numbers, and terrain detail icons.
 Shipped pages have curated `browse` metadata in the canonical book. Custom pages
 use lightweight subject/sticker-count defaults, not geometric difficulty scoring.
 
-Single view has Add (paste code/.studioodle file with validation and preview), Share
-(copy code/download the same code as a .studioodle text file) and custom-only Delete. Imports create independent IDs. Portable codes use studioodle-page:3: and carry sticker layouts and ink colors without paint fields; internal books/storage remain JSON.
+Single view has Add (paste code/JSON file with validation and preview), Share
+(copy code/download JSON) and custom-only Delete. Imports create independent IDs.
 The dedicated Edit Page action is removed; normal open/arrange/save-as-page is the
 user authoring route. All current custom templates consolidate into the workshop
 record on the next successful atomic write; failed writes preserve original data.
@@ -94,29 +94,11 @@ temporary old-color fringes that previously vanished after cleanup and redraw.
 Temporary hold-to-fill zoom preserves the exact pointer anchor without pan
 clamping, including through layout updates; release/cancellation restores the view.
 
-Saving is restored to the pre-action-save policy: every minute, Ctrl+S, Home and
-normal guarded desktop close, only after artwork edits. Untouched blank/templates
-and clean reopened pictures do not write. Home waits for a successful save and
-keeps the drawing open on failure. Drawing format 5 and studioodle-library-v8 are
-unchanged; existing drawings are retained.
-
-The action-save queue, save checkpoints/caches and extra worker compaction path
-were removed after a user-reported responsiveness regression. VectorPaint, Artwork,
-worker transport and saved-picture browsing match commit 6425608. Keep one live
-paint-compaction worker and the existing asynchronous undo maintenance. Do not
-reintroduce per-action saves without an end-to-end colored-sticker workload.
-
-Selection still switches directly between clicked stickers. Empty page/workspace
-presses outside the border clear the drawer and return to Fill on release, consuming
-the pointer stream; cancellation restores selection and focused mode retains Done.
-A colored moon-sorceress regression verifies no writes while painting, one explicit
-save, no clean rewrite, and preserved paint through repeated load/render.
-
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.
-Minute/Home saves are restored. Any future save-policy work must preserve
-responsiveness; brush/render fault recovery remains open. Other open items cover export budgets, atomic custom
+Highest priorities needing a behavior decision are save/recovery scheduling and
+brush/render fault recovery. Other open items cover export budgets, atomic custom
 pages, background sizing, async input, offline policy and physical device testing.
 The user wants to resume feature work after important refinements; don't invent
 another engine migration or treat old completed reports as new tasks.

@@ -128,15 +128,8 @@ records. Metadata and artwork save/delete atomically in the same transaction.
 The home screen lists only ordered summaries and loads a cancellable five-picture
 window: current, next, previous, two ahead, two behind. Only the selected picture
 prepares a preview. See [picture-library measurements](PICTURE-LIBRARY.md).
-Saves use the original minute/Home/Ctrl+S path. The session waits for live paint
-compaction, captures the current document and completes only after the atomic
-IndexedDB transaction commits. Edits arriving during a save retain their order
-in the session queue. Dirty revisions skip untouched and unchanged drawings;
-failed writes remain dirty and keep Home/guarded close in the editor. There is no
-per-action save queue, persistence checkpoint cache or additional compaction job.
-The worker, live paint maintenance and rendering/loading paths match 6425608.
-The database namespace and document format are unchanged, preserving user artwork.
-Settings and the atomic custom-page collection
+Save completion follows paint compaction and transaction commit; queued
+edits retain their order while saving. Settings and the atomic custom-page collection
 still use small localStorage records. Development drawings from the
 old localStorage repository are not migrated to the IndexedDB library.
 

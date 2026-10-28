@@ -45,17 +45,16 @@ Keep all existing features enabled by default during this design phase.
 
 ## Open implementation work
 
-### 1. Revisit save/recovery only with end-to-end responsiveness evidence
+### 1. Define background save/recovery behavior (high priority, policy needed)
 
-Minute/Home/Ctrl+S saves are restored after the user reported severe slowdown
-with action-based background saving. Keep untouched/unchanged drawings unsaved.
-Do not restore the action queue or save-region caches based on isolated job-count
-benchmarks. Any future proposal needs a complex colored moon-sorceress workload,
-real storage writes, foreground drawing, Home navigation, saved-picture cycling
-and user review. The current worker/loading paths match the pre-change version.
-Atomic interruption tests preserve the prior committed drawing/summary; the latest
-unsaved actions can still be lost on abrupt process/power loss. Physical-device
-backgrounding/recovery remains useful validation; native builds only when requested.
+`ui/useEditorSaving.ts` saves every 60 seconds or on explicit/native guarded exit.
+A browser tab/OS process killed between saves can lose that interval; no page-hide
+checkpoint or dirty-state scheduling exists. Decide the desired relaxing-app
+tradeoff, then coalesce dirty checkpoints and best-effort background saves. Do not
+promise an async unload save will always finish or add confirmation prompts by
+default. Verify restoration after backgrounding/discard and no burst of duplicate
+writes while input/fill is pending. IndexedDB remains device-local storage, not a
+backup; browser storage eviction is still possible.
 
 ### 2. Recover from brush/render faults (high priority, fault-path gap)
 
