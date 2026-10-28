@@ -32,13 +32,15 @@ are exact snapshots of their current simple SVG shapes.
 six controls: add to coloring pages, brush, fill, stickers, colors and undo.
 Paper Charms is selected; four follow-ups draw from the existing
 easel, book and paper-stack paintings. These are raster concept sheets. Only the
-saved-picture print button now uses the smooth printer SVG; its behavior is unchanged.
+four saved-picture actions now use smooth SVGs: delete, add-to-book, print and export.
+Their behavior is unchanged; only these controls use the enlarged image-only trial.
 Review the visual family first, then make
 and test a small set of production-size icons before extending it to the whole app.
 
 The current next step is the [single printer SVG study](paper-charms/printer-study/index.html):
 smooth rounded paths and gradient shading, shown at 26, 32 and 48px on both themes.
-That one SVG is now installed on the print button for in-app review. The user
+That printer is now joined by three matching action drawings (including the
+book's plus/check state), without circle wells or hard glow borders. The user
 requested this checkpoint before any further full-set work. Large textured
 raster trials and the unfinished integration are parked outside the app.
 

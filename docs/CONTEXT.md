@@ -66,17 +66,19 @@ The icon-family design pass starts in `docs/icons/`: a single-page inventory of
 painted actions and cursors), and seven built-in ImageGen concept boards across two rounds for six
 representative controls. Paper Charms is the selected visual direction. Four follow-ups
 explore watercolor, handmade wood, gouache and folded paper using the actual entry
-paintings as references. Only the saved-picture print button uses the new artwork:
-`art/source/interface/printer.svg`, copied from the smooth-gradient printer study.
-All other runtime icons retain their existing artwork. Exact prompts
+paintings as references. The four saved-picture actions now use smooth SVG artwork:
+delete, add-to-book (plus/check), print and export. Accepted sources live under
+`art/source/interface/` (`printer.svg` and `saved-*.svg`). Other runtime icons retain
+their existing artwork. Exact prompts
 and feedback are retained with the boards. The user rejected the heavy-outline SVG
 translation and large textured raster rollout. Review the single smooth-gradient
 printer SVG in `docs/icons/paper-charms/printer-study/` before expanding the family.
-The unfinished bulk integration is parked. Judge the printer in the app before
-expanding the family. The printer alone now uses an image-only control: no circular
-well, 42px artwork inside the existing 44px target (30px inside 32px on short screens),
-a theme-aware silhouette edge/shadow and 8% artwork-only hover scale. Keyboard focus
-and reduced-motion behavior remain; printing and neighboring buttons are unchanged.
+The unfinished bulk integration is parked. Judge these four in the app before
+expanding the family. They use image-only controls without circle wells or hard
+glow outlines: 52px targets with 50px artwork, 48px targets on narrow screens and
+40px on short screens. Hover gives an 8% scale, 3px lift, soft highlight and slight
+brightening; reduced motion keeps the highlight/brightening without movement.
+Keyboard focus, disabled/check feedback and all four action handlers are preserved.
 
 ## Artwork status
 
