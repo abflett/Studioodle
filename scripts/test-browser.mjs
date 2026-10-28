@@ -231,6 +231,8 @@ try {
   await waitFor('!!document.querySelector("[aria-label^=Canvas]")');
   await evaluate('document.querySelector("dialog[open] .wizard-footer .go-button").click()');
   await waitFor('!!document.querySelector(".canvas-host canvas")');
+  if(await evaluate(`!!document.querySelector('[aria-label="Coloring page workshop"], .workshop-dialog')`))throw Error('Developer workshop must not be exposed in the editor');
+
   await evaluate(`document.querySelector('button[aria-label="Fill"]').click()`);
   await waitFor(`document.querySelector('button[aria-label="Fill"]').getAttribute('aria-pressed')==='true'&&!document.querySelector('dialog[open]')`);
   if(await evaluate(`document.querySelector('button[aria-label="Fill"]').hasAttribute('aria-haspopup')`))throw Error('Fill must select directly, without a popup');

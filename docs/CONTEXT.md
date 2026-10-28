@@ -35,6 +35,11 @@ Default black/white palette values, new blank paper, bundled page ink and new-pa
 paint defaults are now #000000/#ffffff. Existing saves and deliberately colored
 ink/backgrounds are preserved. Study captures remain design references.
 
+The main app no longer exposes developer workshop controls: the editor ribbon
+button, revision/export dialog, settings toggle and ephemeral authoring route are
+removed. Keep development/review tooling standalone. User page import/export and
+save-as-coloring-page remain, including existing custom pages and their storage.
+
 ## Artwork status
 
 All 364 stickers were upgraded to the current small-region pipeline. Accepted

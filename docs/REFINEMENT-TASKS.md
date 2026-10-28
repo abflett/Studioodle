@@ -12,6 +12,9 @@ and the reviewed blank paper size/color steps are now implemented;
 [design brief](OVERLAY-DESIGN.md) and [examples](overlay-examples/README.md) retain
 the visual discussion. This remains the sole implementation backlog.
 
+- [x] Remove in-app developer workshop controls, its revision dialog, settings
+  switch and authoring-mode setup. Keep reviewer/diagnostics standalone and preserve
+  ordinary page import/export, save-as-page and existing custom-page storage.
 - [x] Implement single preview and optional overview grid, direct single-to-canvas
   opening, grid-to-single selection, filter-relative counts and retained navigation.
 - [x] Apply broad subject categories, terrain detail controls, persistent favorites,

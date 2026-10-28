@@ -209,7 +209,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
       <DeletePictureDialog picture={pendingDelete} onCancel={() => { setPendingDelete(undefined); setDeletingPage(false); }} onConfirm={removeCurrent} />
       <SelectionSettings settings={settings} onSettingsChange={onSettingsChange} open={settingsOpen} onClose={() => setSettingsOpen(false)} theme={theme} onThemeChange={onThemeChange} />
 
-      {bookState.error && <p className="workshop-storage-error" role="alert">Workshop pages could not be loaded. Saved revisions have not been changed.</p>}
+      {bookState.error && <p className="workshop-storage-error" role="alert">Coloring pages could not be loaded. Saved pages have not been changed.</p>}
       {(removed || actionError || notice) && <div className="save-notice library-notice" role="status" onPointerEnter={() => setToastPaused(true)} onPointerLeave={() => setToastPaused(false)} onFocusCapture={() => setToastPaused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setToastPaused(false); }}>
         <span>{actionError ?? notice ?? 'Picture removed'}</span>
         {removed && <button className="icon-button" aria-label="Undo delete" onClick={undoRemove}><Undo2 /></button>}
