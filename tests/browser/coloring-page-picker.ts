@@ -37,7 +37,23 @@ export async function checkColoringPagePicker(){
   await click('Simple detail (toggle filter)');assert(!!container.querySelector('.page-empty-state'),'Empty filter state');
   const reset=[...container.querySelectorAll<HTMLButtonElement>('button')].find(b=>b.textContent==='Show all pages')!;reset.click();await frame();
   await click('Share coloring page');
-  const code=container.querySelector<HTMLTextAreaElement>('textarea')!;assert(code.value.startsWith('studioodle-page:2:'),'Share must expose portable code');
+  const code=container.querySelector<HTMLTextAreaElement>('textarea')!;assert(code.value.startsWith('studioodle-page:3:'),'Share must expose portable code');
+  let downloaded: Promise<string> | undefined;
+  const captureDownload = (event: MouseEvent) => {
+    const link = event.target;
+    if (link instanceof HTMLAnchorElement && link.download) {
+      event.preventDefault();
+      assert(link.download.endsWith('.studioodle'), 'Page download must use the Studioodle extension');
+      downloaded = fetch(link.href).then(response => response.text());
+    }
+  };
+  document.addEventListener('click', captureDownload, true);
+  try {
+    const download = [...container.querySelectorAll<HTMLButtonElement>('button')].find(button => button.textContent?.includes('Download File'))!;
+    download.click(); await frame();
+    assert(downloaded, 'Share must download a code file');
+    assert(await downloaded === code.value, 'Download and Copy Code must contain exactly the same code');
+  } finally { document.removeEventListener('click', captureDownload, true); }
   await click('Close page sharing');await click('Add coloring pages');
   const input=container.querySelector<HTMLTextAreaElement>('textarea')!;
   const value=pageSharingCode(makeColoringBook('Imported',[coloringPages[0]!]));

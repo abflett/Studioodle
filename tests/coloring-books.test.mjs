@@ -20,7 +20,7 @@ test('bundled collection shares the portable format and stable IDs', () => {
   assert.equal(new Set(pages.map(p => p.id)).size, pages.length);
 });
 
-test('book pages remove paint and colors while preserving exact geometry and source', () => {
+test('book pages remove paint and paper color while preserving sticker ink and geometry', () => {
   const source = structuredClone(pages[0]);
   source.background = '#ff0000'; source.leafColor = 0xff0000;
   source.document.surfaces[1].vectorPaint = {version:1,regions:[{id:1,base:0xff0000,blobs:[]}]};
@@ -31,7 +31,7 @@ test('book pages remove paint and colors while preserving exact geometry and sou
   assert.equal(page.id, 'revised'); assert.equal(page.title, 'Revised Page');
   assert.equal(page.background, '#ffffff');
   for (const [i, s] of page.document.surfaces.entries()) {
-    assert.equal(s.vectorPaint, undefined); assert.equal(s.color, i === 0 ? 0xffffff : 0);
+    assert.equal(s.vectorPaint, undefined); assert.equal(s.color, i === 0 ? 0xffffff : source.document.surfaces[i].color);
     assert.deepEqual([s.kind,s.x,s.y,s.scale,s.rotation,s.flipX,s.flipY], [source.document.surfaces[i].kind,source.document.surfaces[i].x,source.document.surfaces[i].y,source.document.surfaces[i].scale,source.document.surfaces[i].rotation,source.document.surfaces[i].flipX,source.document.surfaces[i].flipY]);
   }
   assert.deepEqual(source, before);
@@ -70,11 +70,25 @@ test('browsing metadata survives sharing and rejects invalid filter values', () 
   assert.ok(browsing.pageInfo(custom).categories.includes('nature'));
 });
 
-test('sharing code round-trips Unicode, accepts JSON, and imports independent copies', () => {
-  const book = domain.makeColoringBook('Coloring', [{...pages[0], title: 'A snowman \u2603'}]);
+test('sharing code preserves Unicode, ink and transforms without paint and imports independent copies', () => {
+  const source = structuredClone(pages[0]);
+  Object.assign(source.document.surfaces[1], { rotation: 37, scale: 0.75, flipX: true, flipY: true, color: 0xff0000,
+    vectorPaint: { version: 1, regions: [{ id: 1, base: 0xff0000, blobs: [] }] } });
+  const book = domain.makeColoringBook('Coloring', [{...source, title: 'A snowman \u2603'}]);
   const code = sharing.pageSharingCode(book);
   assert.deepEqual(sharing.parsePageSharingCode(code), book);
-  assert.deepEqual(sharing.parsePageSharingCode(JSON.stringify(book)), book);
+  assert.throws(() => sharing.parsePageSharingCode(JSON.stringify(book)));
+  const wire = JSON.parse(Buffer.from(code.split(':')[2], 'base64').toString('utf8'));
+  assert.equal(code.startsWith('studioodle-page:3:'), true);
+  assert.equal(/"(color|background|leafColor|vectorPaint|paint|updatedAt)":/.test(JSON.stringify(wire)), false);
+  for (const mutate of [w => w.pages[0].surfaces[1].kind = 'missing-sticker', w => w.pages[0].surfaces[1].scale = -1, w => w.pages[0].size.width = -1, ...[-1, 0x1000000, 1.5, null, 'red'].map(color => w => { w.pages[0].surfaces[1].inkColor = color; })]) {
+    const invalid = structuredClone(wire); mutate(invalid);
+    assert.throws(() => sharing.parsePageSharingCode('studioodle-page:3:' + Buffer.from(JSON.stringify(invalid)).toString('base64')));
+  }
+  assert.equal(wire.pages[0].surfaces[1].inkColor, 0xff0000);
+  assert.equal(wire.pages[0].surfaces[0].inkColor, undefined);
+  const noInk = structuredClone(wire); delete noInk.pages[0].surfaces[1].inkColor;
+  assert.equal(sharing.parsePageSharingCode('studioodle-page:3:' + Buffer.from(JSON.stringify(noInk)).toString('base64')).pages[0].document.surfaces[1].color, 0);
   const copy = sharing.independentPages(book);
   assert.notEqual(copy.pages[0].id, book.pages[0].id);
   assert.deepEqual(copy.pages[0].document, book.pages[0].document);

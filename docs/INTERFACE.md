@@ -21,7 +21,16 @@ Artwork owns surface paint, regions, placement, order, serialization and composi
 Canvas2D renders vector ink and vector paint at display resolution. `EditorSession` handles editing commands, undo and gesture transactions; the browser canvas adapter handles
 pointer input and draws the selection overlay. React positions the page and controls Fit-relative zoom.
 
-Home saves the editable version-5 document before returning; autosave runs every minute.
+Each completed artwork action queues a background save of the version-5 document;
+there is no minute timer. Untouched blank paper and unchanged coloring pages are
+not added to Your pictures. Reopened drawings are not rewritten until edited.
+Tool/color choices, view changes and canceled gestures do not count as edits.
+Undo queues the restored artwork. Home finishes input and returns immediately,
+without waiting for storage; the queue and latest previews survive the canvas.
+Failed writes preserve the previous committed drawing, retry with bounded backoff
+and show a retry notice on Home or in the editor. Ctrl+S waits for its checkpoint;
+normal desktop close also flushes pending writes. A browser/process shutdown may
+lose the latest pending actions; no asynchronous unload guarantee is made.
 Your pictures browses version-5 local saves and offers delete/undo-delete, PNG/SVG/PDF export and vector printing.
 Old development save formats are intentionally unsupported. See [the sticker pipeline](STICKER-PIPELINE.md) for
 the authoring format, region maps, loading/caches and cleanup decisions.
@@ -49,7 +58,7 @@ Horizon stickers now use manifest placement metadata and insert immediately abov
 
 ### Custom coloring pages
 
-The selection screen's save utility button copies the selected saved picture into the coloring-page picker. Templates keep paper size, sticker order, positions, scale, rotation and flips. All vector paint are removed, the canvas becomes white and sticker outlines become black. Freehand marks are paint and are omitted. A picture needs at least one sticker to create a useful template.
+The selection screen's save utility button copies the selected saved picture into the coloring-page picker. Templates keep paper size, sticker order, positions, scale, rotation and flips. All vector paint is removed, the canvas becomes white and sticker ink colors are preserved. Freehand marks are paint and are omitted. A picture needs at least one sticker to create a useful template.
 
 Templates are stored locally under `studioodle.v5.coloring.` separately from `Your pictures`. Each use receives a new picture ID, so coloring a template never overwrites it or the source picture. The picker previews the new template immediately; custom entries can be deleted through the existing confirmation dialog. Built-in pages cannot be deleted. `coloringPage.ts` creates copies and storage adapters validate both libraries.
 
@@ -92,7 +101,7 @@ The primary ribbon uses icon-only controls in this order:
 
 Home | Move page, Zoom, Select | Erase, Brush, Fill, Stickers, Colors | Undo
 
-Home is separate because it saves and leaves the workspace. View and selection controls form one group; drawing controls form another. Undo stays at the far end as an easy-to-find recovery action away from Home. This placement is a product design choice, not a universal usability rule.
+Home is separate because it leaves the workspace. View and selection controls form one group; drawing controls form another. Undo stays at the far end as an easy-to-find recovery action away from Home. This placement is a product design choice, not a universal usability rule.
 
 Groups use subtle rounded wells separated by spacing, with compact outer ribbon padding. On narrow screens, the primary ribbon stays on one row and shares the available width proportionally between its ten buttons. Buttons use 48px targets on wide screens and 44px height on compact screens, with widths adapting to the available space, accessible names, desktop title tooltips, visible keyboard focus, and selected-tool feedback. The color picker uses a neutral palette icon with a separate current-color dot so the icon remains visible for very light or dark colors.
 
@@ -138,6 +147,13 @@ See [artwork sources](../art/README.md) and [scene authoring guide](SCENE-AUTHOR
 The selected-sticker drawer sits directly below the full main ribbon, including
 when the ribbon wraps. It appears immediately without an entrance animation and
 does not overlap the main toolbar.
+
+In Select, clicking another sticker switches selection directly. Clicking within
+the selected border retains it, including transparent margins; clicking empty page
+or surrounding workspace clears the border/drawer and returns to Fill on release.
+The exit press/release is consumed, so it cannot also fill. Canceling that gesture
+restores the previous selection. Toolbar/drawer presses retain their normal actions;
+focused-sticker mode keeps its explicit Done behavior.
 
 Brush and eraser gestures may begin in the surrounding drawing workspace and
 continue onto the page. Paint remains clipped to the page; the entire gesture

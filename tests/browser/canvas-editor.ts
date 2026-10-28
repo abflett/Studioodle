@@ -3,6 +3,7 @@ import { CanvasViewport } from '../../src/canvas/CanvasViewport';
 import { createEditorBridge } from '../../src/editor/bridge';
 import { prepareStickers } from '../../src/editor/vectorStickers';
 import type { SavedPicture } from '../../src/editor/savedPicture';
+import { createPictureSaveQueue } from '../../src/app/pictureSaveQueue';
 
 const frame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
 function assert(value: unknown, message: string): asserts value { if (!value) throw Error(message); }
@@ -16,7 +17,8 @@ export async function checkCanvasEditor() {
   Object.assign(host.style, { position: 'relative', width: '360px', height: '240px' });
   workspace.append(host); document.body.append(workspace);
   const bridge = createEditorBridge();
-  let renders = 0, saved: SavedPicture | undefined;
+  let renders = 0, writes = 0, saved: SavedPicture | undefined;
+  const saves = createPictureSaveQueue(async picture => { saved = picture; writes++; });
   const original = CanvasViewport.prototype.render;
   CanvasViewport.prototype.render = function(...args) { renders++; return original.apply(this, args); };
   let editor: CanvasEditor | undefined;
@@ -26,8 +28,10 @@ export async function checkCanvasEditor() {
     host.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: id, button: 0, buttons, clientX: box.left + x, clientY: box.top + y }));
   };
   try {
-    editor = new CanvasEditor(host, bridge, { id: 'adapter-test', title: 'Adapter test', format: 'landscape', size: { width: 180, height: 120 }, background: '#ffffff', leafColor: 0 }, picture => { saved = picture; });
+    editor = new CanvasEditor(host, bridge, { id: 'adapter-test', title: 'Adapter test', format: 'landscape', size: { width: 180, height: 120 }, background: '#ffffff', leafColor: 0 }, saves.enqueue, true);
     await frame(); await frame();
+    await new Promise<void>((resolve,reject)=>bridge.send({ type: 'save', onComplete: ok => ok?resolve():reject(Error('Clean exit failed')) }));
+    assert(writes === 0, 'Untouched blank canvas must not create a saved picture');
     await new Promise(resolve => setTimeout(resolve, 100));
     const countedRender = CanvasViewport.prototype.render;
     CanvasViewport.prototype.render = () => { throw Error('Injected display failure'); };
@@ -98,12 +102,22 @@ export async function checkCanvasEditor() {
     assert(added.document.surfaces.length === 2, 'Sticker insertion must survive adapter replacement');
     await new Promise<void>((resolve,reject)=>bridge.send({ type: 'save', onComplete: ok => ok?resolve():reject(Error('Save failed')) }));
     assert(saved?.document.surfaces.length === 2, 'Save port must receive the document');
+    const lastSaved = saved;
+    await new Promise<void>((resolve,reject)=>bridge.send({ type: 'save', onComplete: ok => ok?resolve():reject(Error('Clean save failed')) }));
+    assert(saved === lastSaved, 'Unchanged artwork must not be written again');
+    const checkpoint = Reflect.get(editor, 'session').artwork.checkpoint();
+    const checkpointBefore = JSON.stringify(checkpoint.document);
+    bridge.send({ type: 'undo' });
     // Extreme zoom must allocate only the visible workspace, not a page-sized backing.
     host.style.width = '3600px'; host.style.height = '2400px'; host.style.left = '-1200px';
     editor.invalidate(); await frame(); await frame();
     const canvas = host.querySelector('canvas')!;
     assert(canvas.width <= Math.ceil(360 * density) && canvas.height <= Math.ceil(240 * density), 'Zoom backing must remain viewport bounded');
     editor.destroy(); editor = undefined;
+    await saves.flush();
+    assert(JSON.stringify(checkpoint.document) === checkpointBefore, 'Undo and disposal must not change an earlier save checkpoint');
+    const compacted = await checkpoint.compact();
+    assert(compacted.surfaces.length === 2, 'Detached checkpoint must still compact after the canvas is gone');
     assert(!host.querySelector('canvas'), 'Destroy must remove the display');
     const beforeDestroyed = renders;
     bridge.send({ type: 'undo' }); pointer('pointerdown', 20, 20); await frame();

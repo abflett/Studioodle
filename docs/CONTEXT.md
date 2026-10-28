@@ -1,6 +1,6 @@
 # Current context
 
-Updated 26 October 2026. Read `AGENTS.md` first, then this file and the documentation
+Updated 28 October 2026. Read `AGENTS.md` first, then this file and the documentation
 for the requested feature. Use the checked-out repository root (`git rev-parse
 --show-toplevel`); a client's initial working directory may point elsewhere.
 
@@ -65,8 +65,8 @@ Animals, Places & Nature, Things, Letters & Numbers, and terrain detail icons.
 Shipped pages have curated `browse` metadata in the canonical book. Custom pages
 use lightweight subject/sticker-count defaults, not geometric difficulty scoring.
 
-Single view has Add (paste code/JSON file with validation and preview), Share
-(copy code/download JSON) and custom-only Delete. Imports create independent IDs.
+Single view has Add (paste code/.studioodle file with validation and preview), Share
+(copy code/download the same code as a .studioodle text file) and custom-only Delete. Imports create independent IDs. Portable codes use studioodle-page:3: and carry sticker layouts and ink colors without paint fields; internal books/storage remain JSON.
 The dedicated Edit Page action is removed; normal open/arrange/save-as-page is the
 user authoring route. All current custom templates consolidate into the workshop
 record on the next successful atomic write; failed writes preserve original data.
@@ -94,11 +94,30 @@ temporary old-color fringes that previously vanished after cleanup and redraw.
 Temporary hold-to-fill zoom preserves the exact pointer anchor without pan
 clamping, including through layout updates; release/cancellation restores the view.
 
+Editor saves now run after completed artwork actions, including undo, with no minute
+timer. Untouched pages, canceled gestures and tool/color choices do not start saves.
+Detached checkpoints share immutable geometry; worker compaction and IndexedDB
+writes run independently of editing. The app-level queue retains one active and
+one latest pending checkpoint per drawing, survives Home/canvas disposal and supplies
+pending previews/reopens. Failures retry with bounded backoff and an app-wide notice.
+Drawing and summary remain atomic; losing the latest pending actions on abrupt
+shutdown is acceptable. Home finishes input without waiting for disk; Ctrl+S and
+normal desktop close can flush. See architecture and the picture-library guide.
+
+Selection now switches directly between clicked stickers. Empty page/workspace
+presses outside the border clear the drawer and return to Fill on release, consuming
+the pointer stream; cancellation restores selection and focused mode retains Done.
+Save preparation reuses immutable compacted regions until their paint changes,
+including safe invalidation on undo. Live maintenance reuses prepared results
+instead of forcing duplicate work at gesture end. Saving yields the input task;
+save completion/status no longer restarts the saved-picture loader/previews.
+`npm run test:save` verifies eight geometry edits only compact existing paint once.
+
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.
-Highest priorities needing a behavior decision are save/recovery scheduling and
-brush/render fault recovery. Other open items cover export budgets, atomic custom
+The action-based save policy is implemented; physical shutdown/device validation
+and brush/render fault recovery remain. Other open items cover export budgets, atomic custom
 pages, background sizing, async input, offline policy and physical device testing.
 The user wants to resume feature work after important refinements; don't invent
 another engine migration or treat old completed reports as new tasks.

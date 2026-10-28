@@ -45,16 +45,19 @@ Keep all existing features enabled by default during this design phase.
 
 ## Open implementation work
 
-### 1. Define background save/recovery behavior (high priority, policy needed)
+### 1. Validate action-based saves on physical devices
 
-`ui/useEditorSaving.ts` saves every 60 seconds or on explicit/native guarded exit.
-A browser tab/OS process killed between saves can lose that interval; no page-hide
-checkpoint or dirty-state scheduling exists. Decide the desired relaxing-app
-tradeoff, then coalesce dirty checkpoints and best-effort background saves. Do not
-promise an async unload save will always finish or add confirmation prompts by
-default. Verify restoration after backgrounding/discard and no burst of duplicate
-writes while input/fill is pending. IndexedDB remains device-local storage, not a
-backup; browser storage eviction is still possible.
+Completed actions now queue detached checkpoints with one write and one latest
+pending state per drawing. Home is independent of disk; pending reads/reopens and
+bounded retries are implemented. Automated checks cover input during saves,
+coalescing, canvas disposal, failed-write retry, pending previews and atomic rollback
+when a transaction is aborted mid-write. The accepted policy allows losing the
+latest actions on abrupt shutdown while retaining the previous committed drawing.
+No strict per-stroke disk flush, backup journal or guaranteed unload save is needed.
+On actual tablets/native builds, verify restoration after backgrounding, process
+termination and interrupted saves. Simulated transaction aborts do not establish
+hardware power-loss behavior. IndexedDB is device-local storage, not a backup;
+browser eviction remains possible. Native builds only when requested.
 
 ### 2. Recover from brush/render faults (high priority, fault-path gap)
 

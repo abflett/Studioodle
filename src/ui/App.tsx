@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+import { pictureSaves } from '../app/pictures';
 import { prepareStickers } from '../editor/vectorStickers';
 import { RotateCcw, Play } from 'lucide-react';
 import { startupTaskCount, prepareStudio } from '../app/startup';
@@ -19,6 +20,8 @@ type StartupState =
   | { phase: 'error' };
 
 export function App() {
+  const saveError = useSyncExternalStore(pictureSaves.subscribe, pictureSaves.hasErrors);
+  const saveNotice = saveError && <div className="save-notice" role="status"><span>Could not save your latest changes. Retrying.</span><button className="icon-button" aria-label="Retry saving" title="Retry saving" onClick={() => pictureSaves.retry()}><RotateCcw aria-hidden="true" /></button></div>;
   const [settings, setSettings] = useState(readSettings);
   useAppMouse(settings.mouseSpeed);
   const changeSettings = (next: AppSettings) => { saveSettings(next); setSettings(next); };
@@ -99,7 +102,7 @@ export function App() {
 
   if (choice) {
     const Editor = startup.module.default;
-    return <Editor settings={settings} setup={choice} onBack={() => setChoice(null)} />;
+    return <><Editor settings={settings} setup={choice} onBack={() => setChoice(null)} />{saveNotice}</>;
   }
 
   return <><SelectionScreen settings={settings} onSettingsChange={changeSettings} onExit={exitStudio} onOpen={(setup) => {
@@ -110,5 +113,5 @@ export function App() {
     }).catch(() => setOpenError(true)).finally(() => setOpening(false));
   }} theme={theme} onThemeChange={changeTheme} />
   {opening && <div className="asset-loading"><progress aria-label="Loading picture" /></div>}
-  {openError && <button className="save-notice" onClick={() => setOpenError(false)}>Could not load this picture. Tap to dismiss.</button>}</>;
+  {openError && <button className="save-notice" onClick={() => setOpenError(false)}>Could not load this picture. Tap to dismiss.</button>}{saveNotice}</>;
 }

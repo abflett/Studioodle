@@ -48,7 +48,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     setSelected(id);
     setSelectionOrder(previous => previous.forward === order.forward && previous.backward === order.backward ? previous : order);
   }), [bridge]);
-  const { saveStatus, dismissSaveStatus, save, saveAndLeave } = useEditorSaving(bridge, onBack);
+  const { saveStatus, dismissSaveStatus, save, goHome } = useEditorSaving(bridge, onBack);
   const [brushOptions, setBrushOptions] = useState(defaultBrush);
   const [fillOptions, setFillOptions] = useState(defaultFill);
   const [picker, setPicker] = useState<Picker | null>(null);
@@ -141,7 +141,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     <div className="ribbon-shell">
     <header className="art-ribbon main-ribbon" aria-label="Art tools">
       <div className="ribbon-group" role="group" aria-label="Home">
-        <button title="Home" aria-label="Save and go home" onClick={saveAndLeave}><House aria-hidden="true" /></button>
+        <button title="Home" aria-label="Go home" onClick={goHome}><House aria-hidden="true" /></button>
       </div>
       <div className="ribbon-group" role="group" aria-label="View and selection">
         <button title="Move the page (H)" aria-keyshortcuts="H" aria-label="Move the page" aria-pressed={tool === 'pan'} onClick={() => chooseTool('pan')}><Move aria-hidden="true" /></button>
@@ -162,10 +162,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     </header>
       {((tool === 'select' && selected) || focused) && <StickerSelectionToolbar bridge={bridge} focused={!!focused} order={selectionOrder} drawerRef={selectionDrawer} onFocus={focusSelection} onFinish={finishSelection} />}
     </div>
-    <section className={`art-canvas ${tool === 'pan' ? 'pan-mode' : ''} ${focused ? 'focus-mode' : ''}`} ref={viewport} style={cursorStyle} aria-label="Drawing canvas" tabIndex={0} {...gestureHandlers} onPointerDown={(event) => {
-      if (event.pointerType === 'touch' && event.nativeEvent.isTrusted) return;
-      if (!focused && tool === 'select' && event.target === event.currentTarget) bridge.send({ type: 'clear-selection' });
-    }}>
+    <section className={`art-canvas ${tool === 'pan' ? 'pan-mode' : ''} ${focused ? 'focus-mode' : ''}`} ref={viewport} style={cursorStyle} aria-label="Drawing canvas" tabIndex={0} {...gestureHandlers}>
       <PrecisionFillFeedback aim={precisionFill.aim} magnified={precisionFill.magnified} releasedAim={precisionFill.releasedAim} />
       <div className="canvas-envelope" style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
         <EditorCanvas focused={!!focused} bridge={bridge} setup={setup} zoom={zoom} offsetX={position.x} offsetY={position.y} />

@@ -17,10 +17,10 @@ export class CanvasEditor {
   private pointer?: number;
   private readonly inputSurface: HTMLElement;
 
-  constructor(private readonly host: HTMLElement, private readonly bridge: EditorBridge, setup: EditorSetup, save: EditorSessionPorts['save']) {
+  constructor(private readonly host: HTMLElement, private readonly bridge: EditorBridge, setup: EditorSetup, save: EditorSessionPorts['save'], autoSave = false) {
     const size = paperSize(setup.format, setup.size);
     this.viewport = new CanvasViewport(host, size.width, size.height, this.invalidate);
-    this.session = new EditorSession(setup, { save, changed: this.changed });
+    this.session = new EditorSession(setup, { save, autoSave, changed: this.changed });
     this.unsubscribe = bridge.subscribe(command => this.session.execute(command));
     this.inputSurface = host.closest<HTMLElement>('.art-canvas') ?? host;
     this.inputSurface.addEventListener('pointerdown', this.begin);
@@ -72,8 +72,7 @@ export class CanvasEditor {
     if (this.pointer !== undefined || (event.button !== 0 && event.button !== 2)) return;
     const tool = this.session.state.tool;
     if (tool === 'bucket' || tool === 'pan') return;
-    // Painting can start in the letterbox; selection still starts on the page.
-    if (tool === 'select' && (!(event.target instanceof Node) || !this.host.contains(event.target))) return;
+    // Selection also owns surrounding workspace presses, including letterbox space.
     event.preventDefault();
     this.pointer = event.pointerId;
     // Virtual mouse/touch events are routed by the UI; only real pointers can be captured.
