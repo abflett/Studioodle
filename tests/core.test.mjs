@@ -3,7 +3,7 @@ import { after, before, test } from 'node:test';
 import { createServer } from 'vite';
 import { fileURLToPath } from 'node:url';
 
-let server, createRepository, createBridge, createColoringPage, outputTitle, EditorSession;
+let server, createRepository, createBridge, createColoringPage, outputTitle, EditorSession, createSaveQueue;
 before(async () => {
   server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', plugins: [{
     name: 'session-artwork-double', enforce: 'pre',
@@ -16,6 +16,7 @@ before(async () => {
   ({ createEditorBridge: createBridge } = await server.ssrLoadModule('/src/editor/bridge.ts'));
   ({ createColoringPage } = await server.ssrLoadModule('/src/editor/coloringPage.ts'));
   ({ EditorSession } = await server.ssrLoadModule('/src/editor/EditorSession.ts'));
+  ({ createPictureSaveQueue: createSaveQueue } = await server.ssrLoadModule('/src/app/pictureSaveQueue.ts'));
   ({ outputTitle } = await server.ssrLoadModule('/src/editor/pictureTitles.ts'));
 });
 after(async () => { await server?.close(); });
@@ -163,7 +164,7 @@ test('untouched blank, template and reopened drawings skip saving; navigation is
   const template = fixture(); template.document.surfaces.push({ id: 'lion', kind: 'animal-lion', x: 5, y: 5, color: 0 });
   for (const setup of [blank, template, fixture()]) {
     let writes = 0;
-    const editor = new EditorSession(setup, { save() { writes++; }, changed() {} });
+    const editor = new EditorSession(setup, { save() { writes++; }, autoSave: true, changed() {} });
     editor.execute({ type: 'set-color', color: 0xff0000 });
     editor.execute({ type: 'set-tool', tool: 'pan' });
     editor.execute({ type: 'clear-selection' });
@@ -211,7 +212,7 @@ test('failed saves stay dirty and queued repeated saves write only once', async 
   editor.dispose();
 });
 
-test('edits queued behind a pending save still require their own save', async () => {
+test('input continues during a pending save and later edits require their own save', async () => {
   const saved = []; let complete;
   const editor = new EditorSession(fixture(), { save(picture) {
     saved.push(picture);
@@ -221,6 +222,7 @@ test('edits queued behind a pending save still require their own save', async ()
   const first = saveSession(editor);
   await new Promise(resolve => setImmediate(resolve));
   editor.execute({ type: 'fill-at', point: { x: 3, y: 3 } });
+  assert.equal(editor.artwork.serialize().surfaces[0].vectorPaint.regions[0].blobs.length, 2);
   const second = saveSession(editor);
   complete();
   assert.deepEqual(await first, { ok: true, written: true });
@@ -228,6 +230,71 @@ test('edits queued behind a pending save still require their own save', async ()
   assert.equal(saved[0].document.surfaces[0].vectorPaint.regions[0].blobs.length, 1);
   assert.equal(saved[1].document.surfaces[0].vectorPaint.regions[0].blobs.length, 2);
   editor.dispose();
+});
+
+test('background saves coalesce pending states and outlive Home and canvas disposal', async () => {
+  const written = []; let complete;
+  const queue = createSaveQueue(async picture => {
+    if (!written.length) await new Promise(resolve => { complete = resolve; });
+    written.push(picture);
+  });
+  const editor = new EditorSession(fixture(), { save: queue.enqueue, autoSave: true, changed() {} });
+  editor.execute({ type: 'add-sticker', sticker: 'animal-lion', outlineColor: 0, point: { x: 5, y: 5 } });
+  await new Promise(resolve => setImmediate(resolve));
+  editor.execute({ type: 'set-tool', tool: 'brush' });
+  editor.begin({ x: 2, y: 2 }, 1, 0); editor.release({ x: 3, y: 3 }, 1, 1);
+  editor.execute({ type: 'undo' });
+  const expected = editor.artwork.serialize();
+  assert.deepEqual(queue.latest('picture-1').document, expected);
+  let left = false;
+  editor.execute({ type: 'leave', onComplete: () => { left = true; } });
+  assert.equal(left, true); assert.equal(written.length, 0);
+  editor.dispose(); complete();
+  assert.equal(await queue.flush(), true);
+  assert.equal(written.length, 2, 'Intermediate brush checkpoint should be superseded by undo');
+  assert.deepEqual(written[1].document, expected);
+});
+
+test('failed background writes preserve the latest checkpoint for retry', async () => {
+  let fail = true, stored = fixture();
+  const queue = createSaveQueue(async picture => { if (fail) throw Error('Storage interrupted'); stored = picture; });
+  const latest = { ...fixture(), title: 'Latest drawing' };
+  await assert.rejects(queue.enqueue(latest));
+  assert.equal(stored.title, 'Blank Page');
+  assert.equal(queue.hasErrors(), true); assert.equal(queue.latest(latest.id), latest);
+  fail = false; queue.retry();
+  assert.equal(await queue.flush(), true); assert.equal(stored.title, latest.title);
+  assert.equal(queue.hasErrors(), false);
+});
+
+test('undo supersedes a failed checkpoint even when it returns to the saved revision', async () => {
+  let fail = false, stored;
+  const queue = createSaveQueue(async picture => { if (fail) throw Error('Disk full'); stored = picture; });
+  const editor = new EditorSession(fixture(), { autoSave: true, save: queue.enqueue, changed() {} });
+  editor.execute({ type: 'add-sticker', sticker: 'animal-lion', outlineColor: 0, point: { x: 5, y: 5 } });
+  await saveSession(editor);
+  const expected = stored.document;
+  fail = true;
+  editor.execute({ type: 'flip-selection', axis: 'horizontal' });
+  assert.equal((await saveSession(editor)).ok, false);
+  editor.execute({ type: 'undo' });
+  assert.deepEqual(queue.latest('picture-1').document, expected, 'Retry must not resurrect the undone flip');
+  fail = false;
+  await queue.flush();
+  assert.deepEqual(stored.document, expected);
+  editor.dispose();
+});
+
+test('deleting a pending drawing waits for its active write and discards later checkpoints', async () => {
+  let complete, writes = 0;
+  const queue = createSaveQueue(async () => { await new Promise(resolve => { complete = resolve; }); writes++; });
+  const first = queue.enqueue(fixture()).catch(() => {});
+  await new Promise(resolve => setImmediate(resolve));
+  const second = queue.enqueue({ ...fixture(), title: 'Superseded' }).catch(() => {});
+  const removed = queue.discard('picture-1');
+  complete(); await Promise.all([first, second, removed]);
+  assert.equal(writes, 1); assert.equal(queue.latest('picture-1'), undefined);
+  assert.equal(await queue.flush(), true);
 });
 
 test('worker fill queues following brush input, save and undo in order', async () => {

@@ -20,6 +20,7 @@ export class Artwork {
   undoChange(change) { if(change.beforeDocument)this.document=structuredClone(change.beforeDocument); }
 
   serialize() { return structuredClone(this.document); }
+  checkpoint() { const document = this.serialize(); return { document, compact: async () => document }; }
   setFocus(id) { this.focused = id; }
   bounds(id) { return this.document.surfaces.some(s => s.id === id) ? { x: 0, y: 0, width: 10, height: 10 } : undefined; }
   selectionOrder() { return { forward: false, backward: false }; }

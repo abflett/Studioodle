@@ -9,6 +9,7 @@ import type { BrushOptions, FillOptions } from './toolOptions';
 import type { ArtworkDocument, Point, StickerKind, SurfaceData } from './document';
 import { VectorPaint } from './VectorPaint';
 import { PaintDisplayCache } from './paintDisplayCache';
+import { computePaint } from './paintWorker';
 import { geometryBounds, mapGeometry, rectangleGeometry, styledStroke } from './vectorPaintStyles';
 const hex = (color: number) => '#' + color.toString(16).padStart(6, '0');
 
@@ -70,6 +71,27 @@ export class Artwork {
     dispose() { this.change=undefined; for (const surface of this.surfaces) surface.vectorPaint.dispose(); }
     async compactPaint(){await Promise.all(this.surfaces.map(surface=>surface.vectorPaint.settled()));}
     serialize():ArtworkDocument{return{version:5,width:this.width,height:this.height,surfaces:this.surfaces.map(surface=>surface.serialize())};}
+    /** Detached containers share immutable geometry; saving never waits on live input. */
+    checkpoint() {
+        const pending: { surface: number; region: number; snapshot: ReturnType<VectorPaint['snapshotRegion']> }[] = [];
+        const document: ArtworkDocument = { version: 5, width: this.width, height: this.height,
+            surfaces: this.surfaces.map((surface, index) => {
+                const snapshots = surface.vectorPaint.snapshotRegions();
+                snapshots.forEach((snapshot, region) => { if (snapshot.needsCompaction) pending.push({ surface: index, region, snapshot }); });
+                return { ...surface.data, vectorPaint: { version: 1, regions: snapshots.map(snapshot => snapshot.region!) } };
+            }),
+        };
+        return { document, compact: async () => {
+            if (!pending.length) return document;
+            const merged = await computePaint({ regions: pending.map(item => item.snapshot.region!), compacted: pending.map(item => item.snapshot.compacted ?? 0) });
+            const surfaces = document.surfaces.map(surface => ({ ...surface, vectorPaint: { ...surface.vectorPaint!, regions: [...surface.vectorPaint!.regions] } }));
+            pending.forEach((item, index) => {
+                if (!merged[index]) throw Error('Could not prepare drawing for saving.');
+                surfaces[item.surface]!.vectorPaint.regions[item.region] = merged[index]!;
+            });
+            return { ...document, surfaces };
+        } };
+    }
     beginChange() {
         if (this.change) throw Error('An artwork change is already active');
         this.change = new ArtworkChange();

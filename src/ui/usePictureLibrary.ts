@@ -1,6 +1,6 @@
 import type { SetStateAction } from 'react';
 import { useEffect, useState, useSyncExternalStore } from 'react';
-import { pictureRepository } from '../app/pictures';
+import { pictureRepository, pictureSaves } from '../app/pictures';
 import { PictureWindow } from '../app/pictureWindow';
 import type { SavedPicture } from '../editor/savedPicture';
 import type { PictureSummary } from '../editor/pictureSummary';
@@ -10,6 +10,7 @@ export function usePictureLibrary() {
   const [window] = useState(() => new PictureWindow((id, signal) => pictureRepository.get(id, signal)));
   const loaded = useSyncExternalStore(window.subscribe, window.getSnapshot);
   const [refresh, setRefresh] = useState(0);
+  useEffect(() => pictureSaves.subscribe(() => setRefresh(value => value + 1)), []);
   const setSampleIndex = (value: SetStateAction<number>) => setLibrary(previous => ({ ...previous, index: typeof value === 'function' ? value(previous.index) : value }));
   useEffect(() => {
     let active = true;

@@ -232,7 +232,7 @@ try {
   await cdp('Input.dispatchMouseEvent', {type:'mousePressed',...at,button:'left',buttons:1,clickCount:1});
   await cdp('Input.dispatchMouseEvent', {type:'mouseMoved',x:at.x+40,y:at.y+20,buttons:1});
   await cdp('Input.dispatchMouseEvent', {type:'mouseReleased',x:at.x+40,y:at.y+20,button:'left',buttons:0,clickCount:1});
-  await evaluate('document.querySelector("button[aria-label^=Save]").click()');
+  await evaluate('document.querySelector("button[aria-label=" + JSON.stringify("Go home") + "]").click()');
   await waitFor('!!document.querySelector(".choice-blank")');
   const savedDocument = await evaluate('(async()=>{const r=(await import("/src/app/pictures.ts")).pictureRepository;return (await r.get((await r.list())[0].id)).document;})()');
   if (!savedDocument.surfaces[0].vectorPaint?.regions[0]?.blobs.length) throw Error('Trusted mouse drawing was not saved');
@@ -247,9 +247,9 @@ try {
   await cdp('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:touchAt.x+15,y:touchAt.y,id:1}]});
   await cdp('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:touchAt.x+15,y:touchAt.y,id:1},{x:touchAt.x+50,y:touchAt.y+30,id:2}]});
   await cdp('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
-  await evaluate('document.querySelector("button[aria-label^=Save]").click()');
+  await evaluate('document.querySelector("button[aria-label=" + JSON.stringify("Go home") + "]").click()');
   await waitFor('!!document.querySelector(".choice-blank")');
-  const afterPinch = await evaluate('(async()=>{const r=(await import("/src/app/pictures.ts")).pictureRepository;return (await r.get((await r.list())[0].id)).document;})()');
+  const afterPinch = await evaluate('(async()=>{const {pictureRepository:r,pictureSaves}=await import("/src/app/pictures.ts");await pictureSaves.flush();return (await r.get((await r.list())[0].id)).document;})()');
   const unchanged = await evaluate(`import('/tests/browser/helpers.ts').then(({normalizedPaintDocument}) =>
     JSON.stringify(normalizedPaintDocument(${JSON.stringify(savedDocument)})) === JSON.stringify(normalizedPaintDocument(${JSON.stringify(afterPinch)})))`);
   if(!unchanged){
@@ -257,6 +257,18 @@ try {
     await fs.writeFile('work/tests/touch-after.json',JSON.stringify(afterPinch));
     throw Error('Two-finger gesture did not roll back its partial stroke');
   }
+  // Background failures remain visible after Home and can be retried without reopening.
+  await evaluate(`(async()=>{
+    const {pictureRepository:r}=await import('/src/app/pictures.ts');
+    const picture=await r.get((await r.list())[0].id);
+    globalThis.originalSavePut=IDBObjectStore.prototype.put;
+    IDBObjectStore.prototype.put=function(...args){if(this.name==='pictures')throw Error('Injected save failure');return globalThis.originalSavePut.apply(this,args);};
+    globalThis.failedSave=r.save({...picture,updatedAt:picture.updatedAt+1}).catch(()=>{});
+  })()`);
+  await waitFor(`!!document.querySelector('button[aria-label="Retry saving"]')`);
+  await evaluate(`IDBObjectStore.prototype.put=globalThis.originalSavePut;delete globalThis.originalSavePut;document.querySelector('button[aria-label="Retry saving"]').click()`);
+  await evaluate(`import('/src/app/pictures.ts').then(async ({pictureSaves})=>{if(!await pictureSaves.flush())throw Error('Save retry did not commit');delete globalThis.failedSave;})`);
+  await waitFor(`!document.querySelector('button[aria-label="Retry saving"]')`);
   await waitFor(`!!document.querySelector('button[aria-label="Export selected saved picture"]:not(:disabled)')`);
   await evaluate(`document.querySelector('button[aria-label="Export selected saved picture"]').click()`);
   await waitFor(`!!document.querySelector('dialog[open] button[aria-label="Export as PDF"]')`);
@@ -333,7 +345,7 @@ try {
     if(!paperLayout)throw Error(`Paper choices must stay above the unlabeled saved-picture stack at ${width}x${height}`);
   }
   await cdp('Emulation.clearDeviceMetricsOverride');
-  result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,deleteRestore:true,exportChoices:true,exportRetry:true};
+  result.appInteraction={trustedMouse:true,saveReopen:true,touchCancellation:true,backgroundSaveRetry:true,deleteRestore:true,exportChoices:true,exportRetry:true};
   const screenshot=await cdp('Page.captureScreenshot',{format:'png'});
   await fs.writeFile('work/tests/app-after-reopen.png',Buffer.from(screenshot.data,'base64'));
   if(process.argv.includes('--dense-profile')){

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import type { EditorBridge } from '../editor/bridge';
 import { guardDesktopClose, isDesktop } from '../platform/desktop';
+import { pictureSaves } from '../app/pictures';
 
-/** Exit paths save pending edits first; clean sessions leave without a write. */
+/** Explicit save waits for persistence; Home finishes input without waiting for disk. */
 export function useEditorSaving(bridge: EditorBridge, onBack: () => void) {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
   useEffect(() => {
@@ -10,23 +11,20 @@ export function useEditorSaving(bridge: EditorBridge, onBack: () => void) {
     let disposed = false;
     let stop: (() => void) | undefined;
     void guardDesktopClose(
-      () => new Promise(resolve => bridge.send({ type: 'save', onComplete: resolve })),
+      async () => {
+        const saved = await new Promise<boolean>(resolve => bridge.send({ type: 'save', onComplete: resolve }));
+        return saved && await pictureSaves.flush();
+      },
       () => setSaveStatus('error'),
     ).then(unlisten => {
       if (disposed) unlisten(); else stop = unlisten;
     }).catch(() => setSaveStatus('error'));
     return () => { disposed = true; stop?.(); };
   }, [bridge]);
-  useEffect(() => {
-    const timer = window.setInterval(() => bridge.send({ type: 'save', onComplete: saved => setSaveStatus(saved ? 'idle' : 'error') }), 60_000);
-    return () => window.clearInterval(timer);
-  }, [bridge]);
   return {
     saveStatus,
     dismissSaveStatus: () => setSaveStatus('idle'),
     save: () => bridge.send({ type: 'save', onComplete: (saved, written) => setSaveStatus(saved ? (written ? 'saved' : 'idle') : 'error') }),
-    saveAndLeave: () => bridge.send({ type: 'save', onComplete: saved => {
-      if (saved) onBack(); else setSaveStatus('error');
-    } }),
+    goHome: () => bridge.send({ type: 'leave', onComplete: onBack }),
   };
 }

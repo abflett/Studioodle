@@ -94,17 +94,21 @@ temporary old-color fringes that previously vanished after cleanup and redraw.
 Temporary hold-to-fill zoom preserves the exact pointer anchor without pan
 clamping, including through layout updates; release/cancellation restores the view.
 
-Editor saves now write only after committed artwork edits. Untouched blank paper,
-unchanged coloring pages and reopened drawings skip writes on autosave/Home/close.
-Undo tracks the last-saved revision (or opening state before the first save); canceled gestures and tool/color
-choices do not start saving. Failed writes remain dirty for retry. The minute
-interval remains unchanged.
+Editor saves now run after completed artwork actions, including undo, with no minute
+timer. Untouched pages, canceled gestures and tool/color choices do not start saves.
+Detached checkpoints share immutable geometry; worker compaction and IndexedDB
+writes run independently of editing. The app-level queue retains one active and
+one latest pending checkpoint per drawing, survives Home/canvas disposal and supplies
+pending previews/reopens. Failures retry with bounded backoff and an app-wide notice.
+Drawing and summary remain atomic; losing the latest pending actions on abrupt
+shutdown is acceptable. Home finishes input without waiting for disk; Ctrl+S and
+normal desktop close can flush. See architecture and the picture-library guide.
 
 ## Next work and verification
 
 [Refinement tasks](REFINEMENT-TASKS.md) is the single implementation backlog.
-Highest priorities needing a behavior decision are save/recovery scheduling and
-brush/render fault recovery. Other open items cover export budgets, atomic custom
+The action-based save policy is implemented; physical shutdown/device validation
+and brush/render fault recovery remain. Other open items cover export budgets, atomic custom
 pages, background sizing, async input, offline policy and physical device testing.
 The user wants to resume feature work after important refinements; don't invent
 another engine migration or treat old completed reports as new tasks.

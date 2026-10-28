@@ -128,8 +128,21 @@ records. Metadata and artwork save/delete atomically in the same transaction.
 The home screen lists only ordered summaries and loads a cancellable five-picture
 window: current, next, previous, two ahead, two behind. Only the selected picture
 prepares a preview. See [picture-library measurements](PICTURE-LIBRARY.md).
-Save completion follows paint compaction and transaction commit; queued
-edits retain their order while saving. Settings and the atomic custom-page collection
+Completed actions capture detached save checkpoints with copied property/region
+containers and shared immutable geometry. `app/pictureSaveQueue.ts` owns one active
+write and one latest pending checkpoint per drawing beyond canvas lifetime. Only
+uncompacted checkpoint regions use the existing paint worker; preparation never
+waits on or rewrites live artwork/history. Save completion follows checkpoint
+compaction and transaction commit, while editing continues independently. Home
+finishes input and navigates without a storage barrier. The repository overlays
+pending checkpoints for immediate browsing/reopening and notifies the library as
+writes settle. Delete cancels pending checkpoints and waits out an active write
+before removing the stored record. Failures retain the latest checkpoint, retry
+with 1–30 second backoff and surface a retry notice. IndexedDB uses normal durability;
+an interrupted transaction preserves the previous committed drawing and summary,
+but the most recent actions may be lost on process/power loss. No minute timer,
+separate persistence worker, backup journal or persisted undo log is introduced.
+Settings and the atomic custom-page collection
 still use small localStorage records. Development drawings from the
 old localStorage repository are not migrated to the IndexedDB library.
 
