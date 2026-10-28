@@ -1,4 +1,4 @@
-/* global URLSearchParams, location, document, window, ResizeObserver, devicePixelRatio */
+/* global URLSearchParams, location, document, window, ResizeObserver, devicePixelRatio, getComputedStyle */
 (() => {
   const params = new URLSearchParams(location.search);
   if (params.has('preview')) document.body.classList.add('preview');
@@ -25,18 +25,18 @@
   document.querySelector('.apply').innerHTML = svg('<path d="m6 12 4 4L19 7"/>');
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   function stamp(x, y, t) {
-    const radius = size / 2; context.save(); context.translate(x, y); context.fillStyle = '#8a6ab0';
+    const diameter = size * .64, radius = diameter / 2; context.save(); context.translate(x, y);
     if (tip === 'spray') {
       // Opaque circles accumulate; the static middle depicts a longer dwell.
       const passes = 1 + Math.floor(10 * Math.sin(t * Math.PI) ** 4);
       for (let i = 0; i < passes * 7; i++) {
         const angle = random() * Math.PI * 2, distance = Math.sqrt(random()) * radius;
-        context.beginPath(); context.arc(Math.cos(angle) * distance, Math.sin(angle) * distance, Math.max(.65, size * .035), 0, Math.PI * 2); context.fill();
+        context.beginPath(); context.arc(Math.cos(angle) * distance, Math.sin(angle) * distance, Math.max(.65, diameter * .035), 0, Math.PI * 2); context.fill();
       }
     } else {
       context.beginPath();
       if (tip === 'round') context.arc(0, 0, radius, 0, Math.PI * 2);
-      else { context.rotate(tip === 'rising' ? -Math.PI / 4 : Math.PI / 4); context.roundRect(-radius, -Math.max(.6, radius * .14), size, Math.max(1.2, size * .14), .5); }
+      else { context.rotate(tip === 'rising' ? -Math.PI / 4 : Math.PI / 4); context.roundRect(-radius, -Math.max(.6, radius * .14), diameter, Math.max(1.2, diameter * .14), .5); }
       context.fill();
     }
     context.restore();
@@ -44,6 +44,7 @@
   function sample() {
     if (!context) return;
     const box = canvas.getBoundingClientRect(); context.clearRect(0, 0, box.width, box.height); seed = 17;
+    context.fillStyle = getComputedStyle(document.body).getPropertyValue('--gold').trim();
     const steps = Math.max(80, Math.ceil(box.width * .78 / Math.max(.6, size * (tip === 'spray' ? .18 : .045))));
     for (let i = 0; i <= steps; i++) {
       const t = i / steps;
@@ -69,7 +70,7 @@
   const notice = message => { const element = document.querySelector('.notice'); element.textContent = message; element.classList.add('visible'); window.clearTimeout(window.noticeTimer); window.noticeTimer = window.setTimeout(() => element.classList.remove('visible'), 2600); };
   document.querySelector('.apply').onclick = () => notice(`Study only: use ${effects[tip].label.toLowerCase()}, size ${size}.`);
   document.querySelector('.close').onclick = () => notice('Study only: close brush options.');
-  document.querySelector('#theme').onclick = () => document.body.classList.toggle('light');
+  document.querySelector('#theme').onclick = () => { document.body.classList.toggle('light'); sample(); };
   window.brushStudy = { set: options => { if (effects[options.tip]) tip = options.tip; if (options.size !== undefined && Number.isFinite(Number(options.size))) size = Math.max(1, Math.min(64, Math.round(options.size))); update(); }, state: () => ({ tip, size }) };
   update();
 })();

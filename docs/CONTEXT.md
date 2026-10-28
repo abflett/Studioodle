@@ -82,12 +82,14 @@ Other editor/settings/output overlays still await refinement.
 [Design brief](OVERLAY-DESIGN.md) and [layout examples](overlay-examples/README.md)
 record the review. No new scene artwork or blanket asset processing was included.
 
-The brush design discussion now uses study 02 in `docs/brush-overlay-examples/`:
+The brush design discussion now uses study 03 in `docs/brush-overlay-examples/`:
 one brush with round, two fixed diagonal and opaque scattered-circle tip effects.
-A full-width 1?64 size control sits directly below the tips; a small premade curved
-stroke replaces the practice surface. Scattered circles accumulate geometrically,
+A full-width 1-64 size control sits below one compact segmented tip selector;
+a small gold/teal curved sample shares the footer with Apply, without a white
+preview card. The layout removes repeated card backgrounds and excess spacing.
+Scattered circles accumulate geometrically,
 without transparency or blending. This is a docs-only proposal; the app brush
-settings, painting engine and persistence are unchanged. Study 01 captures remain
+settings, painting engine and persistence are unchanged. Earlier captures remain
 for visual comparison.
 
 Brush/eraser gestures can now start in the surrounding drawing workspace and
