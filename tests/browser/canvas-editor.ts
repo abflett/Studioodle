@@ -80,7 +80,7 @@ export async function checkCanvasEditor() {
     const settledInk=renders;await new Promise(resolve=>setTimeout(resolve,80));
     assert(renders===settledInk,'Paused ink must settle and stop rendering before release');
     pointer('pointerup',100,80,0);bridge.send({type:'undo'});
-    bridge.send({ type: 'set-brush', options: { kind: 'spray' , size: 24, shape: 'round' } });
+    bridge.send({ type: 'set-brush', options: { tip:'scatter', size: 24 } });
     pointer('pointerdown', 70, 70);
     await new Promise(resolve => setTimeout(resolve, 110));
     pointer('pointerup', 70, 70, 0);

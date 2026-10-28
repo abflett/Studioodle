@@ -297,8 +297,6 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 .tool-setting-row button[aria-pressed='true'] { border-color: var(--action); background: color-mix(in srgb, var(--action) 14%, transparent); }
 .tool-setting-row button:disabled { opacity: .4; }
 .tool-setting-row svg { width: 32px; height: 32px; }
-.brush-size-preview { width: 40px; height: 40px; display: grid; place-items: center; }
-.brush-size-preview i { display: block; background: currentColor; }
 .tool-settings-footer { display: flex; justify-content: flex-end; }
 @media (max-height: 520px) {
   .tool-settings { gap: 4px; }
@@ -422,12 +420,12 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 
 /* Use the available phone width for the large picker overlays. */
 @media (max-width: 560px) {
-  .setup-dialog:not(.settings-dialog):not(.delete-picture-dialog):not(.export-dialog):not(.coloring-picker):not(.page-transfer-dialog):not(.blank-page-dialog) {
+  .setup-dialog:not(.settings-dialog):not(.delete-picture-dialog):not(.export-dialog):not(.coloring-picker):not(.page-transfer-dialog):not(.blank-page-dialog):not(.brush-dialog) {
     width: 100%; max-width: 100vw;
     height: min(600px, calc(100dvh - 24px));
     margin: auto; border-radius: 24px;
   }
-  .setup-dialog:not(.settings-dialog):not(.delete-picture-dialog):not(.export-dialog):not(.coloring-picker):not(.page-transfer-dialog):not(.blank-page-dialog) .wizard {
+  .setup-dialog:not(.settings-dialog):not(.delete-picture-dialog):not(.export-dialog):not(.coloring-picker):not(.page-transfer-dialog):not(.blank-page-dialog):not(.brush-dialog) .wizard {
     padding: 16px max(12px, env(safe-area-inset-right)) 16px max(12px, env(safe-area-inset-left)); gap: 14px;
   }
   .sticker-dialog .sticker-outline-options { gap: 8px; }
@@ -974,4 +972,40 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @media (max-width: 360px) {
   .blank-page-dialog .art-colors { grid-template-columns: repeat(4, 44px); gap: 10px 12px; }
   .blank-page-dialog .art-colors .paper-color { width: 44px; height: 44px; }
+}
+/* Compact brush controls share the book picker's quiet wells. */
+.setup-dialog.brush-dialog { width: min(680px, calc(100vw - 24px)); height: fit-content; max-height: calc(100dvh - 24px); overflow: auto; border-radius: 28px; --brush-well: #35545c09; --brush-preview: #557e83; }
+:root[data-theme='dark'] .brush-dialog { --brush-well: #0e1b2c30; --brush-preview: #d2c09a; }
+.brush-picker { display: flex; flex-direction: column; gap: 22px; padding: 24px 26px 20px; }
+.brush-dialog .dialog-header { position: relative; display: block; min-height: 66px; padding: 0 56px; }
+.brush-dialog .dialog-heading > h2 { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.brush-dialog .dialog-close { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+.brush-tips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 5px; width: min(328px, 100%); margin: auto; border-radius: 20px; background: var(--brush-well); }
+.brush-tip { display: grid; place-items: center; height: 54px; min-width: 0; padding: 6px; border: 0; border-radius: 15px; background: transparent; color: var(--text); }
+.brush-tip[aria-pressed='true'] { background: var(--action); color: var(--action-text); }
+.brush-tip svg { width: 38px; height: 38px; fill: none; stroke: currentColor; stroke-linecap: round; }
+.brush-size-control { display: grid; grid-template-columns: 44px minmax(0, 1fr) 52px 44px; gap: 12px; align-items: center; }
+.brush-size-control .icon-button { width: 44px; height: 44px; border: 0; background: transparent; }
+.brush-size-control button:disabled { opacity: .3; }
+.brush-size-slider { appearance: none; width: 100%; min-width: 0; height: 44px; margin: 0; border: 0; border-radius: 8px; background: linear-gradient(to right, var(--action) var(--brush-progress), var(--brush-well) var(--brush-progress)) center / 100% 6px no-repeat; cursor: pointer; }
+.brush-size-slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border: 3px solid var(--action); border-radius: 50%; background: var(--action); box-shadow: 0 2px 5px #0002; }
+.brush-size-slider::-moz-range-thumb { width: 14px; height: 14px; border: 3px solid var(--action); border-radius: 50%; background: var(--action); }
+.brush-size-number { appearance: textfield; width: 52px; height: 40px; padding: 0 4px; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); border-radius: 11px; background: transparent; color: var(--text); text-align: center; font: inherit; font-variant-numeric: tabular-nums; }
+.brush-size-number::-webkit-inner-spin-button, .brush-size-number::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.brush-footer { display: grid; grid-template-columns: minmax(0, 1fr) 80px; gap: 22px; align-items: center; }
+.brush-preview-well { height: 64px; min-width: 0; overflow: hidden; border-radius: 17px; background: var(--brush-well); color: var(--brush-preview); }
+.brush-preview { display: block; width: 100%; height: 64px; }
+.brush-footer .brush-apply { display: grid; place-items: center; width: 80px; height: 48px; min-height: 0; padding: 0; border-radius: 16px; }
+.brush-apply svg { width: 26px; height: 26px; }
+.brush-picker :is(button, input):focus-visible { outline: 3px solid var(--action); outline-offset: 3px; }
+@media (max-width: 560px) {
+  .setup-dialog.brush-dialog { width: calc(100vw - 24px); height: fit-content; border-radius: 24px; }
+  .brush-picker { padding: 18px 17px 15px; gap: 20px; }
+  .brush-dialog .dialog-header { padding-left: 0; padding-right: 52px; min-height: 60px; }
+  .brush-tip { height: 50px; }
+  .brush-size-control { gap: 6px; grid-template-columns: 38px minmax(0, 1fr) 46px 38px; }
+  .brush-size-control .icon-button { width: 38px; }
+  .brush-size-number { width: 46px; }
+  .brush-footer { grid-template-columns: minmax(0, 1fr) 64px; gap: 16px; }
+  .brush-footer .brush-apply { width: 64px; height: 46px; }
 }

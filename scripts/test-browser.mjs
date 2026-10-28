@@ -234,6 +234,49 @@ try {
   await evaluate('document.querySelector("button[aria-label=Brush]").click()');
   await waitFor('!!document.querySelector("button[aria-label=" + JSON.stringify("Close picker") + "]")');
   await evaluate('document.querySelector("button[aria-label=" + JSON.stringify("Close picker") + "]").click()');
+  await evaluate('document.querySelector("button[aria-label=Brush]").click()');
+  await waitFor('!!document.querySelector(".brush-dialog[open]")');
+  for (const [width,height] of [[1024,768],[390,844],[320,568],[844,390]]) {
+    await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+    for (const theme of ['dark','light']) {
+      await evaluate(`document.documentElement.dataset.theme='${theme}'`);
+      const layout=await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        const d=document.querySelector('.brush-dialog'),b=d.getBoundingClientRect();
+        const controls=[...d.querySelectorAll('button,input')].map(e=>e.getBoundingClientRect());
+        resolve(b.height<320&&b.left>=0&&b.right<=innerWidth&&b.top>=0&&b.bottom<=innerHeight&&d.scrollWidth<=d.clientWidth&&controls.every(r=>r.left>=b.left&&r.right<=b.right&&r.top>=b.top&&r.bottom<=b.bottom));
+      })))`);
+      if(!layout)throw Error(`Brush controls overflow at ${width}x${height} ${theme}`);
+      const shot=await cdp('Page.captureScreenshot',{format:'png'});
+      await fs.writeFile(`work/tests/brush-${width}x${height}-${theme}.png`,Buffer.from(shot.data,'base64'));
+    }
+  }
+  await cdp('Emulation.clearDeviceMetricsOverride');
+  for(const label of ['Diagonal tip, rising','Diagonal tip, falling','Scattered circle tip','Round tip']) {
+    await evaluate(`document.querySelector('button[aria-label="${label}"]').click()`);
+    await waitFor(`document.querySelector('button[aria-label="${label}"]').getAttribute('aria-pressed')==='true'`);
+    if(await evaluate(`document.querySelectorAll('.brush-tip[aria-pressed="true"]').length`)!==1)throw Error('Brush tips must be exclusive');
+  }
+  await evaluate(`document.querySelector('button[aria-label="Make brush one unit larger"]').click()`);
+  await waitFor(`document.querySelector('.brush-size-number').value==='6'`);
+  for(const [text,expected] of [['64',64],['0',1],['6',6]]){
+    await evaluate(`document.querySelector('.brush-size-number').focus();document.querySelector('.brush-size-number').select()`);
+    await cdp('Input.insertText',{text});
+    await waitFor(`document.querySelector('.brush-size-number').value==='${expected}'&&document.querySelector('.brush-size-slider').value==='${expected}'`);
+    if(expected===64&&!await evaluate(`document.querySelector('button[aria-label="Make brush one unit larger"]').disabled`))throw Error('Brush maximum must disable increment');
+    if(expected===1&&!await evaluate(`document.querySelector('button[aria-label="Make brush one unit smaller"]').disabled`))throw Error('Brush minimum must disable decrement');
+  }
+  await evaluate(`document.querySelector('.brush-size-slider').focus()`);
+  await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowRight',code:'ArrowRight',windowsVirtualKeyCode:39});
+  await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowRight',code:'ArrowRight',windowsVirtualKeyCode:39});
+  await waitFor(`document.querySelector('.brush-size-number').value==='7'`);
+  await evaluate(`document.querySelector('button[aria-label="Make brush one unit smaller"]').click()`);
+
+  await evaluate(`document.querySelector('button[aria-label="Use this brush"]').click()`);
+  await waitFor(`!document.querySelector('.brush-dialog[open]')`);
+  await evaluate('document.querySelector("button[aria-label=Brush]").click()');
+  await waitFor(`document.querySelector('.brush-size-number')?.value==='6'`);
+  await evaluate(`document.querySelector('button[aria-label="Make brush one unit smaller"]').click()`);
+  await evaluate(`document.querySelector('button[aria-label="Use this brush"]').click()`);
   const at = await evaluate('(()=>{const b=document.querySelector(".canvas-host").getBoundingClientRect();return {x:b.left+b.width*.4,y:b.top+b.height*.4};})()');
   await cdp('Input.dispatchMouseEvent', {type:'mousePressed',...at,button:'left',buttons:1,clickCount:1});
   await cdp('Input.dispatchMouseEvent', {type:'mouseMoved',x:at.x+40,y:at.y+20,buttons:1});

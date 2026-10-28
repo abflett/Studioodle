@@ -34,7 +34,7 @@ export async function createAdvancedSceneFixture(){
     for(let step=0;step<25;step++){
      const t=step/24,x=b.left+(b.right-b.left)*(.12+.76*t),y=b.top+(b.bottom-b.top)*(.15+stroke*.09+Math.sin(t*Math.PI*3+stroke)*.07);
      const point=world(surface,x,y),base=palette[(index+stroke)%palette.length]!,color=stroke%2?Math.min(0xffffff,base+0x181818):((base&0xfefefe)>>1);
-     art.brush(previous??point,point,color,false,{kind:'ink',size:stroke%2?3.5:9,shape:'round'});previous=point;samples++;
+     art.brush(previous??point,point,color,false,{tip:'round',size:stroke%2?3.5:9});previous=point;samples++;
     }
     history.push(art.endChange());strokes++;await pause(17);
    }

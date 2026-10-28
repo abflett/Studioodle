@@ -203,7 +203,7 @@ export class EditorSession {
     this.lastSave = { revision, result };
     return result;
   }
-  get needsAnimation() { return !this.disposed && !this.pendingOperation && this.activePointer !== undefined && ((this.tool === 'brush' && this.brushOptions.kind === 'spray') || !!this.stroke?.remaining); }
+  get needsAnimation() { return !this.disposed && !this.pendingOperation && this.activePointer !== undefined && ((this.tool === 'brush' && this.brushOptions.tip === 'scatter') || !!this.stroke?.remaining); }
   dispose() {
     this.disposed = true;
     this.deferred = [];
@@ -220,7 +220,7 @@ export class EditorSession {
       this.applyStrokePoints(this.stroke.settle(this.strokeTrail));
       this.nextSmoothing=time+12;this.notifyChanged();
     }
-    if (this.tool !== 'brush' || this.brushOptions.kind !== 'spray' || !this.previous || this.activePointer === undefined || time < this.nextSpray) return;
+    if (this.tool !== 'brush' || this.brushOptions.tip !== 'scatter' || !this.previous || this.activePointer === undefined || time < this.nextSpray) return;
     this.nextSpray = time + 40;
     if (this.document.brush(this.previous, this.previous, this.color, false, this.brushOptions)) { this.notifyChanged(); }
   }
@@ -263,7 +263,7 @@ export class EditorSession {
       }
     } else {
       this.previous = point;
-      this.stroke = this.tool === 'brush' && this.brushOptions.kind !== 'spray' ? new StrokeSmoothing(point) : undefined;
+      this.stroke = this.tool === 'brush' && this.brushOptions.tip !== 'scatter' ? new StrokeSmoothing(point) : undefined;
       this.document.brush(point, point, this.color, this.tool === 'erase', this.brushOptions);
     }
     this.notifyChanged();

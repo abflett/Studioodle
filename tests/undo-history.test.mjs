@@ -29,8 +29,8 @@ test('fill history retains only the changed region and restores it without touch
 
 test('a brush gesture captures each affected region once and history compacts pending paint into blobs',async()=>{
  const art=artwork();
- art.beginChange();for(let i=0;i<80;i++)art.brush({x:44,y:50},{x:46,y:50},0x8833aa,false,{size:2,kind:'ink',shape:'round'});art.endChange();
- art.beginChange();for(let i=0;i<20;i++)art.brush({x:45,y:50},{x:47,y:50},0x00ff00,false,{size:2,kind:'ink',shape:'round'});
+ art.beginChange();for(let i=0;i<80;i++)art.brush({x:44,y:50},{x:46,y:50},0x8833aa,false,{size:2,tip:'round'});art.endChange();
+ art.beginChange();for(let i=0;i<20;i++)art.brush({x:45,y:50},{x:47,y:50},0x00ff00,false,{size:2,tip:'round'});
  const before=art.endChange();assert.equal(before.regions.size,1);
  const snapshot=[...before.regions.values()][0].paint;assert.equal(snapshot.region.blobs.length,80);
  const history=new UndoHistory();history.push(before);const pendingBytes=history.retainedBytes;await history.settled();
@@ -95,7 +95,7 @@ test('canceling paint restored from pending saved coverage preserves the compact
  const blob={color:0x8833aa,geometry:rectangle(1,1,6,6)};
  data.surfaces[1].vectorPaint.regions[0].blobs=Array.from({length:80},()=>blob);
  const loaded=Artwork.restore(data,definition);
- loaded.beginChange();loaded.brush({x:44,y:45},{x:46,y:45},0xff8800,false,{size:2,kind:'ink',shape:'round'});
+ loaded.beginChange();loaded.brush({x:44,y:45},{x:46,y:45},0xff8800,false,{size:2,tip:'round'});
  const change=loaded.endChange();assert.equal([...change.regions.values()][0].paint.needsCompaction,true);
  loaded.undoChange(change);await loaded.compactPaint();
  const expected=geometry.compactRegion(data.surfaces[1].vectorPaint.regions[0]);
@@ -113,7 +113,7 @@ test('a late historical worker result cannot overwrite paint restored by undo',a
   history.push(change);
   for(let i=0;i<30&&!jobs.length;i++)await new Promise(resolve=>setTimeout(resolve,1));
   assert.equal(jobs.length,1);
-  art.undoChange(history.pop());art.brush({x:44,y:45},{x:46,y:45},0xff8800,false,{size:2,kind:'ink',shape:'round'});
+  art.undoChange(history.pop());art.brush({x:44,y:45},{x:46,y:45},0xff8800,false,{size:2,tip:'round'});
   const current=art.serialize();
   instances[0].onmessage({data:{id:jobs[0].id,regions:jobs[0].regions.map(geometry.compactRegion)}});
   await history.settled();assert.deepEqual(art.serialize(),current);assert.equal(history.retainedBytes,0);

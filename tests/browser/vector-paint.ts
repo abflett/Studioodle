@@ -15,7 +15,7 @@ export async function checkVectorPaint(){
  {id:'moon',kind:'fantasy-moon-sorceress',x:170,y:240,color:0x242428}]};
  const art=Artwork.restore(doc,()=>vector);
  assert((await art.fill({x:170,y:174},0x773399)),'Vector bucket fills');
- assert(art.brush({x:168,y:175},{x:172,y:175},0x42aadd,false,{size:2,kind:'ink',shape:'round'}),'Vector brush paints');
+ assert(art.brush({x:168,y:175},{x:172,y:175},0x42aadd,false,{size:2,tip:'round'}),'Vector brush paints');
  let saved=art.serialize();
  assert(!('paint' in saved.surfaces[1]!)&&!!saved.surfaces[1]!.vectorPaint,'No raster paint allocated/serialized');
  const canvas=document.createElement('canvas');canvas.width=960;canvas.height=480;
@@ -60,19 +60,19 @@ export async function checkVectorPaint(){
  assert(art.brush({x:170,y:175},{x:170,y:175},0,true),'Vector eraser works');
  await art.compactPaint();
  // Advanced texture tools use vector coverage too.
- assert(restored.brush({x:170,y:175},{x:171,y:175},0xff8800,false,{size:3,kind:'pencil',shape:'round'}),'Textured brush works');
+ assert(restored.brush({x:170,y:175},{x:171,y:175},0xff8800,false,{size:3,tip:'diagonal-up'}),'Textured brush works');
  assert(restored.serialize().surfaces[1]!.vectorPaint&&!('paint' in restored.serialize().surfaces[1]!),'Textured brushes remain vector');
  const page=Artwork.create(100,100,'#ffffff');
  const corners=[{x:20,y:20},{x:80,y:20},{x:80,y:80},{x:20,y:80},{x:20,y:20}];
- for(let i=1;i<corners.length;i++)assert(page.brush(corners[i-1]!,corners[i]!,0,false,{size:6,kind:'ink',shape:'round'}),'Page outline stroke');
+ for(let i=1;i<corners.length;i++)assert(page.brush(corners[i-1]!,corners[i]!,0,false,{size:6,tip:'round'}),'Page outline stroke');
  await page.compactPaint();assert((await page.fill({x:50,y:50},0x22aa66)),'Fill inside a closed page outline');
  const pc=document.createElement('canvas');pc.width=pc.height=100;const pctx=pc.getContext('2d',{willReadFrequently:true})!;page.render(pctx);
  const rgb=(x:number,y:number)=>{const p=pctx.getImageData(x,y,1,1).data;return(p[0]!<<16)|(p[1]!<<8)|p[2]!;};
  assert(rgb(50,50)===0x22aa66&&rgb(5,5)===0xffffff&&rgb(20,50)===0,'Page bucket must preserve its closed vector boundary');
- for(const kind of ['ink','pencil','brush','spray'] as const){
+ for(const tip of ['round','diagonal-up','diagonal-down','scatter'] as const){
   const styled=Artwork.create(100,100,'#ffffff');
-  assert(styled.brush({x:40,y:40},{x:60,y:60},0x773399,false,{size:12,kind,shape:'round'}),`${kind} must paint`);
-  await styled.compactPaint();assert(styled.serialize().surfaces[0]!.vectorPaint!.regions.some(r=>r.blobs.length),`${kind} remains vector`);
+  assert(styled.brush({x:40,y:40},{x:60,y:60},0x773399,false,{size:12,tip}),`${tip} must paint`);
+  await styled.compactPaint();assert(styled.serialize().surfaces[0]!.vectorPaint!.regions.some(r=>r.blobs.length),`${tip} remains vector`);
  }
  for(const pattern of ['dots','stripes','checker'] as const){
   assert((await page.fill({x:50,y:50},0x2244aa,{pattern,spacing:8})),`${pattern} vector fill`);

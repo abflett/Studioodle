@@ -10,7 +10,8 @@ import { useEditorShortcuts } from './useEditorShortcuts';
 import type { AppSettings } from './settings';
 import { StickerSelectionToolbar } from './StickerSelectionToolbar';
 import { StickerBrowser } from './StickerBrowser';
-import { BrushPicker, FillPicker } from './ToolOptions';
+import { FillPicker } from './ToolOptions';
+import { BrushPicker } from './BrushPicker';
 import { defaultBrush, defaultFill } from '../editor/toolOptions';
 import { ColorPicker } from './ColorPicker';
 import { stickerCategories } from './stickerCatalog';
@@ -169,15 +170,14 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       </div>
     </section>
     {saveStatus !== 'idle' && <div className="save-notice" role="status"><span>{saveStatus === 'saved' ? 'Saved to Your pictures' : 'Could not save. Device storage may be full or unavailable.'}</span><button className="icon-button" aria-label="Dismiss save message" onClick={dismissSaveStatus}><X /></button></div>}
-    <dialog className={`setup-dialog art-dialog ${picker === 'stickers' ? 'sticker-dialog' : ''}`} ref={dialog} onCancel={() => setPicker(null)} onClick={(event) => closeOnBackdrop(event, () => setPicker(null))} onAuxClick={(event) => { if (event.button === 2) closeOnBackdrop(event, () => setPicker(null)); }} aria-labelledby="art-picker-title">
-      <div className="wizard" aria-busy={loadingSticker}>
+    <dialog className={`setup-dialog art-dialog ${picker === 'stickers' ? 'sticker-dialog' : ''} ${picker === 'brush' ? 'brush-dialog' : ''}`} ref={dialog} onCancel={() => setPicker(null)} onClick={(event) => closeOnBackdrop(event, () => setPicker(null))} onAuxClick={(event) => { if (event.button === 2) closeOnBackdrop(event, () => setPicker(null)); }} aria-labelledby="art-picker-title">
+      {picker === 'brush' ? <BrushPicker value={brushOptions} onChange={options => { setBrushOptions(options); bridge.send({ type: 'set-brush', options }); }} onClose={() => setPicker(null)} headingRef={pickerTitle} /> : <div className="wizard" aria-busy={loadingSticker}>
         {loadingSticker && <progress aria-label="Loading sticker" />}
         {stickerError && <button onClick={() => setStickerError(false)}>Could not load sticker. Tap to dismiss.</button>}
-        <DialogHeader id="art-picker-title" headingRef={pickerTitle} title={picker === 'stickers' ? category?.title ?? 'Stickers' : picker === 'colors' ? 'Pick a color' : picker === 'brush' ? 'Brush' : 'Fill'} onClose={() => setPicker(null)} closeLabel="Close picker" back={picker === 'stickers' && category ? { label: 'Back to sticker categories', onClick: () => setCategoryId(null) } : undefined} />
+        <DialogHeader id="art-picker-title" headingRef={pickerTitle} title={picker === 'stickers' ? category?.title ?? 'Stickers' : picker === 'colors' ? 'Pick a color' : 'Fill'} onClose={() => setPicker(null)} closeLabel="Close picker" back={picker === 'stickers' && category ? { label: 'Back to sticker categories', onClick: () => setCategoryId(null) } : undefined} />
         <div className="wizard-body">
 
           {picker === 'colors' && <ColorPicker color={color} onChoose={(value) => { setColor(value); bridge.send({ type: 'set-color', color: value }); setPicker(null); }} />}
-          {picker === 'brush' && <BrushPicker value={brushOptions} onChange={(options) => { setBrushOptions(options); bridge.send({ type: 'set-brush', options }); }} />}
           {picker === 'fill' && <FillPicker value={fillOptions} color={color} onChange={(options) => { setFillOptions(options); bridge.send({ type: 'set-fill', options }); }} />}
           {picker === 'stickers' && <StickerBrowser key={categoryId ?? 'categories'} categoryId={categoryId} color={outlineColor} onCategory={setCategoryId} onAdd={(kind) => { if (loadingSticker) return; setLoadingSticker(true); void prepareStickers([kind]).then(() => { bridge.send({ type: 'add-sticker', sticker: kind, outlineColor, point: { x: ((viewport.current?.clientWidth ?? 0) / 2 - position.x) / zoom, y: ((viewport.current?.clientHeight ?? 0) / 2 - position.y) / zoom } }); setPicker(null); }).catch(() => setStickerError(true)).finally(() => setLoadingSticker(false)); }} />}
         </div>
@@ -185,8 +185,8 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
           <button aria-pressed={!useCurrentOutline} onClick={() => setUseCurrentOutline(false)}><span style={{ background: '#242428' }} />Charcoal</button>
           <button aria-pressed={useCurrentOutline} onClick={() => setUseCurrentOutline(true)}><span style={{ background: `#${color.toString(16).padStart(6, '0')}` }} />Current color</button>
         </footer>}
-        {(picker === 'brush' || picker === 'fill') && <footer className="tool-settings-footer"><button className="go-button" onClick={() => setPicker(null)}><Check /><span>Done</span></button></footer>}
-      </div>
+        {picker === 'fill' && <footer className="tool-settings-footer"><button className="go-button" onClick={() => setPicker(null)}><Check /><span>Done</span></button></footer>}
+      </div>}
     </dialog>
     {settings.workshop && workshopPicture && <ColoringPageWorkshop picture={workshopPicture} targetId={workshopTarget} onClose={() => setWorkshopPicture(undefined)} onSaved={(id, title) => { setWorkshopTarget(id); setWorkshopTitle(title); }} />}
   </main>;

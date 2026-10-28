@@ -320,7 +320,7 @@ export class Artwork {
         this.overlapCache.clear();
     }
     brush(from:Point,to:Point,color:number,erase=false,options:BrushOptions=defaultBrush){
-        const shape=erase?{...options,kind:'ink' as const,shape:'round' as const}:options;
+        const shape=erase?{...options,tip:'round' as const}:options;
         let remaining=styledStroke([from.x,from.y],[to.x,to.y],erase?20:options.size/2,shape);
         if(!remaining.length)return false;
         const strokeBounds=geometryBounds(remaining);

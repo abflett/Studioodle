@@ -1,7 +1,7 @@
 # Brush overlay / study 04
 
 Open [the interactive study](index.html). Use `?preview` for the overlay alone and
-`?preview&theme=light` for light mode. The app is unchanged. For the bundled font,
+`?preview&theme=light` for light mode. Study 04 is now implemented in the app; this folder retains its design reference. For the bundled font,
 serve `/docs/brush-overlay-examples/index.html` through the existing Vite server;
 direct file opening may use the system font.
 

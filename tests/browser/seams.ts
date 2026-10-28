@@ -6,9 +6,9 @@ export async function checkPaintSeams(){
  const dark=0x2a190f,purple=0x4b1e64;
  for(let i=0;i<180;i++){
   const a=i/180*Math.PI*2,b=(i+1)/180*Math.PI*2;
-  art.brush({x:50+30*Math.cos(a),y:50+38*Math.sin(a)},{x:50+30*Math.cos(b),y:50+38*Math.sin(b)},dark,false,{kind:'ink',shape:'round',size:2});
+  art.brush({x:50+30*Math.cos(a),y:50+38*Math.sin(a)},{x:50+30*Math.cos(b),y:50+38*Math.sin(b)},dark,false,{tip:'round',size:2});
  }
- art.brush({x:50,y:7},{x:50,y:93},dark,false,{kind:'ink',shape:'round',size:2});
+ art.brush({x:50,y:7},{x:50,y:93},dark,false,{tip:'round',size:2});
  if(!await art.fill({x:65,y:50},purple))throw Error('Right pocket did not fill');
  if(!await art.fill({x:95,y:50},dark))throw Error('Outside did not fill');
  await art.compactPaint();

@@ -51,7 +51,7 @@ export async function checkPaintDisplay(){
   art.render(ctx,false,true);art.render(ref);
   assert(pixel(ctx,300,60).join()===pixel(ref,300,60).join(),'Initial cached vector paint differs');
   fills=0;art.render(ctx,false,true);assert(fills===0,'Unchanged dense paint must reuse its display instead of filling old paths');
-  art.beginChange();art.brush({x:140,y:150},{x:160,y:150},0x00dd55,false,{kind:'ink',size:10,shape:'round'});const undo=art.endChange();
+  art.beginChange();art.brush({x:140,y:150},{x:160,y:150},0x00dd55,false,{tip:'round',size:10});const undo=art.endChange();
   fills=0;art.render(ctx,false,true);assert(fills<=2,'An incremental brush must not redraw old color partitions');
   assert(pixel(ctx,300,300)[1]!>180,'Incremental paint was not displayed');
   await art.compactPaint();fills=0;art.render(ctx,false,true);assert(fills===0,'Worker merging must not rebuild the unchanged picture');

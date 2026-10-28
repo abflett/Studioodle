@@ -1,21 +1,6 @@
-import { Paintbrush, Pencil, PenTool, SprayCan, Circle, Square, PaintBucket } from 'lucide-react';
+import { PaintBucket } from 'lucide-react';
 import { patternPixel } from '../editor/toolOptions';
-import type { BrushOptions, FillOptions } from '../editor/toolOptions';
-
-export function BrushPicker({ value, onChange }: { value: BrushOptions; onChange: (value: BrushOptions) => void }) {
-  return <div className="tool-settings">
-    <div className="tool-setting-row" role="group" aria-label="Brush type">
-      {([{ kind: 'ink', label: 'Ink pen', icon: PenTool }, { kind: 'pencil', label: 'Pencil', icon: Pencil }, { kind: 'brush', label: 'Brush', icon: Paintbrush }, { kind: 'spray', label: 'Spray', icon: SprayCan }] as const).map(({ kind, label, icon: Icon }) => <button key={kind} aria-pressed={value.kind === kind} onClick={() => onChange({ ...value, kind })}><Icon /><span>{label}</span></button>)}
-    </div>
-    <div className="tool-setting-row" role="group" aria-label="Brush tip shape">
-      <button aria-pressed={value.shape === 'round'} onClick={() => onChange({ ...value, shape: 'round' })}><Circle /><span>Round</span></button>
-      <button aria-pressed={value.shape === 'square'} onClick={() => onChange({ ...value, shape: 'square' })}><Square /><span>Square</span></button>
-    </div>
-    <div className="tool-setting-row" role="group" aria-label="Brush thickness">
-      {[2, 5, 10, 20, 40].map((size) => <button key={size} aria-label={`${size} pixel brush`} aria-pressed={value.size === size} onClick={() => onChange({ ...value, size })}><span className="brush-size-preview"><i style={{ width: size, height: size, borderRadius: value.shape === 'round' ? '50%' : '0' }} /></span><span>{size}</span></button>)}
-    </div>
-  </div>;
-}
+import type { FillOptions } from '../editor/toolOptions';
 
 export function FillPicker({ value, color, onChange }: { value: FillOptions; color: number; onChange: (value: FillOptions) => void }) {
   return <div className="tool-settings">

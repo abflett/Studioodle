@@ -21,7 +21,7 @@ export async function profileBrush(Artwork:typeof CurrentArtwork=CurrentArtwork)
   for(const name of ['intersection','difference','union'] as const)polygons[name]=(...args:[MultiPolygon,...MultiPolygon[]])=>{
    const start=performance.now();try{return originals[name](...args);}finally{operations[name].calls++;operations[name].ms+=performance.now()-start;}};
   const originalRandom=Math.random;let seed=12345;Math.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
-  const samples:number[]=[],options:BrushOptions={kind:kind==='spray'?'spray':'ink',size:kind==='spray'?18:6,shape:'round'};
+  const samples:number[]=[],options:BrushOptions={tip:kind==='spray'?'scatter':'round',size:kind==='spray'?18:6};
   let previous={x:width*.45,y:height*.3};
   try{
    for(let i=0;i<120;i++){

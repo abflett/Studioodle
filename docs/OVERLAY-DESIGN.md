@@ -1,17 +1,17 @@
 # Overlay design direction
 
 Brush design study 04 is available in
-[brush-overlay-examples](brush-overlay-examples/README.md). It proposes one brush
+[brush-overlay-examples](brush-overlay-examples/README.md). The approved app implementation uses one brush
 with round, two fixed diagonal and opaque scattered-circle tips; a full-width
 size row and compact gold/teal sample beside Apply replace the stacked cards and
 white preview. Tips and preview share subtle wells; the size row remains open.
 There is no divider, and the sample is quieter than the confirmation action. Circle accumulation is geometric, with no transparency or
-blending. This is for visual review; production controls and painting are unchanged.
+blending. Study 04 is implemented in the app, including fixed diagonal nibs and opaque scattered-circle painting. The standalone study remains a visual reference.
 
 The current Coloring Pages Focus design, broad categories and terrain icons are
 implemented with the six existing scenes. Current behavior is in
 [Coloring books](COLORING-BOOKS.md). Earlier studies below are design history, not
-additional implementation requirements. The approved blank paper setup is also implemented; editor/settings/output
+additional implementation requirements. The approved blank paper setup is also implemented; the brush overlay is implemented; the other editor/settings/output
 overlays remain future work.
 
 Working design brief, 24 October 2026. This records the requested direction and

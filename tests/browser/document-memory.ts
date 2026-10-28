@@ -39,7 +39,7 @@ export async function openMemoryCycle(probe=false){
  host=document.createElement('div');Object.assign(host.style,{position:'fixed',left:'0',top:'0',width:'900px',height:'640px'});document.body.append(host);
  const bridge=createEditorBridge();editor=new CanvasEditor(host,bridge,picture,p=>repository.save(p));
  const session=Reflect.get(editor,'session') as EditorSession;sessionRefs.push(new WeakRef(session));artRefs.push(new WeakRef(session.artwork));
- bridge.send({type:'set-tool',tool:'brush'});bridge.send({type:'set-brush',options:{kind:'ink',size:9,shape:'round'}});
+ bridge.send({type:'set-tool',tool:'brush'});bridge.send({type:'set-brush',options:{tip:'round',size:9}});
  for(let stroke=0;stroke<5;stroke++){
   bridge.send({type:'set-color',color:[0x886699,0x448899,0xddaa66][stroke%3]!});
   const point={x:400,y:400+stroke*20};session.begin(point,1,0);

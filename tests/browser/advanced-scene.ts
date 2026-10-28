@@ -46,7 +46,7 @@ export async function profileAdvancedScene(dpr=1){
   const idleGaps:number[]=[];let idleLast=await frame();for(let i=0;i<20;i++){const now=await frame();idleGaps.push(now-idleLast);idleLast=now;}phases.blankCanvasRafGap=stats(idleGaps);
   let start=performance.now();draw();phases.coldDrawMs=performance.now()-start;
   // Prewarm exact clipping as a separate, reported first-action cost.
-  session.execute({type:'set-tool',tool:'brush'});session.execute({type:'set-brush',options:{kind:'ink',size:7,shape:'round'}});
+  session.execute({type:'set-tool',tool:'brush'});session.execute({type:'set-brush',options:{tip:'round',size:7}});
   const point={x:fixture.document.width*.5,y:fixture.document.height*.55};
   start=performance.now();session.begin(point,1,0);session.release(point,1,1);draw();phases.firstBrushAndDrawMs=performance.now()-start;
   await art.compactPaint();await pause(250);draw();workerJobs.length=0;maxPending=pending;

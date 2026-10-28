@@ -13,7 +13,7 @@ export async function profileDensePaint(Artwork:typeof CurrentArtwork=CurrentArt
    for(let step=1;step<=96;step++){
     const angle=stroke*.71+step*.11;
     const next={x:450+Math.sin(angle*1.7+stroke*.13)*290,y:350+Math.cos(angle*1.3+stroke*.41)*250};
-    art.brush(previous,next,colors[stroke%colors.length]!,false,{kind:'ink',size:5+stroke%4,shape:'round'});previous=next;
+    art.brush(previous,next,colors[stroke%colors.length]!,false,{tip:'round',size:5+stroke%4});previous=next;
    }
    await art.compactPaint();
   }
@@ -26,7 +26,7 @@ export async function profileDensePaint(Artwork:typeof CurrentArtwork=CurrentArt
   try{
    for(let step=0;step<90;step++){
     const point={x:420+Math.sin(step*.17)*70,y:290+step*2};
-    let start=performance.now();art.brush(previous,point,colors[Math.floor(step/8)%colors.length]!,false,{kind:'ink',size:8,shape:'round'});brushMs.push(performance.now()-start);
+    let start=performance.now();art.brush(previous,point,colors[Math.floor(step/8)%colors.length]!,false,{tip:'round',size:8});brushMs.push(performance.now()-start);
     start=performance.now();art.render(ctx,false,true);ctx.getImageData(675,525,1,1);drawMs.push(performance.now()-start);
     await new Promise(resolve=>setTimeout(resolve,16));const now=await frame();frameMs.push(now-lastFrame);lastFrame=now;previous=point;
    }

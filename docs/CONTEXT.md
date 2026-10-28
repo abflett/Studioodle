@@ -82,16 +82,14 @@ Other editor/settings/output overlays still await refinement.
 [Design brief](OVERLAY-DESIGN.md) and [layout examples](overlay-examples/README.md)
 record the review. No new scene artwork or blanket asset processing was included.
 
-The brush design discussion now uses study 04 in `docs/brush-overlay-examples/`:
+The implemented brush overlay follows approved study 04 in `docs/brush-overlay-examples/`:
 one brush with round, two fixed diagonal and opaque scattered-circle tip effects.
 A full-width 1-64 size control sits below one compact segmented tip selector;
 a smaller muted gold/teal sample has a matching shallow well beside Apply. The
 size row stays unboxed and there is no divider. Tip and preview wells follow the
 existing overlay grouping language without enclosing every control.
 Scattered circles accumulate geometrically,
-without transparency or blending. This is a docs-only proposal; the app brush
-settings, painting engine and persistence are unchanged. Earlier captures remain
-for visual comparison.
+without transparency or blending. The old ink/pencil/brush modes are replaced by tip effects. Size supports single-unit steps, direct numeric entry and a slider; the default remains 5. Paint is still saved as vector geometry, with no save-format change. Earlier captures remain for visual comparison.
 
 Brush/eraser gestures can now start in the surrounding drawing workspace and
 continue onto the page, with page clipping, single-action undo and cancellation.
