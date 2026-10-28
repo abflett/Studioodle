@@ -73,7 +73,10 @@ and feedback are retained with the boards. The user rejected the heavy-outline S
 translation and large textured raster rollout. Review the single smooth-gradient
 printer SVG in `docs/icons/paper-charms/printer-study/` before expanding the family.
 The unfinished bulk integration is parked. Judge the printer in the app before
-expanding the family; printing behavior and button dimensions are unchanged.
+expanding the family. The printer alone now uses an image-only control: no circular
+well, 42px artwork inside the existing 44px target (30px inside 32px on short screens),
+a theme-aware silhouette edge/shadow and 8% artwork-only hover scale. Keyboard focus
+and reduced-motion behavior remain; printing and neighboring buttons are unchanged.
 
 ## Artwork status
 
