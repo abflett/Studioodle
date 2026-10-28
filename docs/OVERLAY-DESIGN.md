@@ -1,10 +1,11 @@
 # Overlay design direction
 
-Brush design study 01 is now available in
-[brush-overlay-examples](brush-overlay-examples/README.md). It carries the visual
-approach into illustrated brush choices, a practice surface, continuous size
-adjustment with exact entry and proposed oval/chisel tips. It is for discussion;
-the production brush overlay and painting engine are unchanged.
+Brush design study 02 is available in
+[brush-overlay-examples](brush-overlay-examples/README.md). It proposes one brush
+with round, two fixed diagonal and opaque scattered-circle tips; a full-width
+size control and shallow premade stroke preview replace the instrument row and
+practice surface. Circle accumulation is geometric, with no transparency or
+blending. This is for visual review; production controls and painting are unchanged.
 
 The current Coloring Pages Focus design, broad categories and terrain icons are
 implemented with the six existing scenes. Current behavior is in
