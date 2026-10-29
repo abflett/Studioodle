@@ -43,17 +43,18 @@ button examples keep the comparison consistent.
 | F / Gouache daydream | [Full board](06-gouache-daydream.png) | Broader painted color, softer edges and gently modeled volume | Preserve silhouettes and contrast when reduced, especially pale forms on light buttons |
 | G / Folded storybook | [Full board](07-folded-storybook.png) | Curling cream paper, teal undersides and flowing folds; closest continuation of Paper Charms | Simplify folds and fiber texture; verify that the sculpted brush reads immediately at small size |
 
-The current four-action in-app trial uses **A / Enchanted Ink**. Paper Charms looked
-appealing alone, but its colorful surfaces and depth competed with the main
-selection paintings. The replacement uses native outline SVGs with dark ink on
-light surfaces, cream ink on dark surfaces and small gold/teal accents. Circular
-bordered wells are restored. The [Paper Charms printer study](../paper-charms/printer-study/index.html)
-is retained only as an archived comparison.
+Icon redesign is now deferred at the user's request. The app's original icons and
+button styling are restored. These boards remain inspiration, with no direction
+currently approved for rollout. The colorful Paper Charms trial competed with the
+main artwork, and the hand-redrawn Enchanted Ink trial lost the reference's character.
+The [actual book trace](../enchanted-ink-trace/index.html) and
+[Paper Charms printer study](../paper-charms/printer-study/index.html) remain archived
+comparisons for revisiting the conversion process later.
 Keep functional cues unmistakable: a plus adds, a check confirms, a peeled corner
 means stickers, and undo points left. Magic should come from shape and gesture,
 rather than putting a sparkle on every icon.
 
-Only the four Enchanted Ink saved-picture actions are installed in the app. Before expanding the selected direction, refine a small representative
+No experimental icons are installed in the app. If this work is revisited, refine a small representative
 family at true 26–32px and test its light/dark, selected/disabled and touch states
 before redrawing all icons. Preserve editable vector sources for production where
 appropriate; do not treat the raster sheets as an automatically usable icon atlas.

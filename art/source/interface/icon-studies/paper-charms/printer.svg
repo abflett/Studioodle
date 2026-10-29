@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="body" x1="45" y1="108" x2="208" y2="211" gradientUnits="userSpaceOnUse"><stop stop-color="#8ab8ad"/><stop offset=".48" stop-color="#68a197"/><stop offset="1" stop-color="#3f7a72"/></linearGradient>
+    <linearGradient id="side" x1="206" y1="142" x2="244" y2="172" gradientUnits="userSpaceOnUse"><stop stop-color="#558e85"/><stop offset="1" stop-color="#32665f"/></linearGradient>
+    <linearGradient id="tray" x1="80" y1="65" x2="197" y2="114" gradientUnits="userSpaceOnUse"><stop stop-color="#79ada2"/><stop offset="1" stop-color="#3b756d"/></linearGradient>
+    <linearGradient id="sheet" x1="105" y1="29" x2="160" y2="111" gradientUnits="userSpaceOnUse"><stop stop-color="#fff9ec"/><stop offset=".66" stop-color="#f4e9d1"/><stop offset="1" stop-color="#ddcba9"/></linearGradient>
+    <linearGradient id="sheetEdge" x1="179" y1="34" x2="195" y2="104" gradientUnits="userSpaceOnUse"><stop stop-color="#eee0c3"/><stop offset="1" stop-color="#b9a985"/></linearGradient>
+    <linearGradient id="deck" x1="93" y1="89" x2="143" y2="149" gradientUnits="userSpaceOnUse"><stop stop-color="#fff9ec"/><stop offset=".65" stop-color="#f5ead4"/><stop offset="1" stop-color="#e8d8b9"/></linearGradient>
+    <linearGradient id="deckEdge" x1="124" y1="129" x2="124" y2="149" gradientUnits="userSpaceOnUse"><stop stop-color="#e8d9ba"/><stop offset="1" stop-color="#c7b493"/></linearGradient>
+    <linearGradient id="slot" x1="127" y1="148" x2="127" y2="194" gradientUnits="userSpaceOnUse"><stop stop-color="#214e49"/><stop offset="1" stop-color="#3b7970"/></linearGradient>
+    <linearGradient id="output" x1="128" y1="159" x2="111" y2="235" gradientUnits="userSpaceOnUse"><stop stop-color="#dfccaa"/><stop offset=".22" stop-color="#f9efda"/><stop offset=".8" stop-color="#fff5e3"/><stop offset="1" stop-color="#ebdbbd"/></linearGradient>
+    <linearGradient id="paperShade" x1="127" y1="154" x2="125" y2="177" gradientUnits="userSpaceOnUse"><stop stop-color="#5c4b30" stop-opacity=".32"/><stop offset="1" stop-color="#5c4b30" stop-opacity="0"/></linearGradient>
+    <radialGradient id="gold" cx=".32" cy=".25" r=".85"><stop stop-color="#ffdb8b"/><stop offset=".7" stop-color="#f0bd62"/><stop offset="1" stop-color="#d99e47"/></radialGradient>
+    <linearGradient id="petal" x1="121" y1="173" x2="141" y2="212" gradientUnits="userSpaceOnUse"><stop stop-color="#ffb69b"/><stop offset="1" stop-color="#e99177"/></linearGradient>
+    <linearGradient id="leaf" x1="75" y1="183" x2="108" y2="216" gradientUnits="userSpaceOnUse"><stop stop-color="#85b6a8"/><stop offset="1" stop-color="#4f8c80"/></linearGradient>
+  </defs>
+  <!-- Rear support and the gently leaning input sheet. -->
+  <path d="M65 85c1-15 8-24 23-24l103 3c16 0 24 9 24 26l-1 28-153-7Z" fill="url(#tray)"/>
+  <path d="M87 27c1-3 4-4 8-4l88 2c11 0 17 5 16 16l-9 66-115-6Z" fill="url(#sheetEdge)"/>
+  <path d="M87 26c1-3 4-4 8-4l88 2c10 0 15 5 14 15l-9 66-114-6Z" fill="url(#sheet)"/>
+  <path d="m90 25 92 2c9 0 12 3 13 8" fill="none" stroke="#fffdf5" stroke-opacity=".7" stroke-width="1.1" stroke-linecap="round"/>
+  <!-- Broad curved shell; color layers supply depth without an ink outline. -->
+  <path d="M49 100c-20-1-29 15-31 34l1 35c0 18 6 26 24 28l150 12c18 2 34-8 44-23 7-10 9-22 8-35l-3-18c-2-18-12-27-31-28Z" fill="url(#body)"/>
+  <path d="M218 115c17 2 23 11 25 25l1 17c0 24-11 43-36 50 8-9 10-20 10-34Z" fill="url(#side)"/>
+  <path d="M34 136c0 18 9 25 25 26l139 10" fill="none" stroke="#a2c6b8" stroke-opacity=".23" stroke-width="1.1" stroke-linecap="round"/>
+  <!-- Thin cream lip beneath the top keeps the form layered, not beveled. -->
+  <path d="M54 86c6-2 11-1 18 0l-8 10c-5 5-3 8 5 9l127 6c9 1 11-3 8-10l-4-7c21-2 34 6 37 20 2 12-1 26-9 31-5 4-10 5-20 4L44 138c-16-1-24-7-22-19 3-14 15-25 32-33Z" fill="url(#deckEdge)"/>
+  <path d="M54 84c6-2 11-1 18 0l-8 10c-5 5-3 8 5 9l127 6c9 1 11-3 8-10l-4-7c21-2 34 6 37 20 2 12-1 25-9 30-5 4-10 5-20 4L44 135c-16-1-24-7-22-19 3-13 15-24 32-32Z" fill="url(#deck)"/>
+  <path d="M33 105c6-9 13-15 22-17m-27 33c1 8 7 11 18 12l158 11" fill="none" stroke="#fffaf0" stroke-opacity=".6" stroke-width="1.1" stroke-linecap="round"/>
+  <ellipse cx="209" cy="123" rx="8.7" ry="8.1" fill="#ad8650" opacity=".42"/>
+  <circle cx="208.5" cy="121.5" r="8.1" fill="url(#gold)"/>
+  <path d="M203.5 118c1-2 3-3 5-3" fill="none" stroke="#ffe6ae" stroke-width="1" stroke-linecap="round"/>
+  <!-- Recessed output mouth and a curved page emerging toward the viewer. -->
+  <path d="M65 151c-10-1-14 4-14 13l1 28 137 11 5-33c1-9-3-12-12-13Z" fill="#96c0b3" opacity=".38"/>
+  <path d="M65 153c-9-1-13 4-13 12l1 26 135 11 5-32c1-8-3-11-11-12Z" fill="url(#slot)"/>
+  <path d="m78 157 108 9-15 63c-2 9-7 13-17 12l-107-11c-8-1-10-5-7-12Z" fill="#c3af8b"/>
+  <path d="m78 155 108 9-15 63c-2 9-7 13-17 12l-107-11c-8-1-10-5-7-12Z" fill="url(#output)"/>
+  <path d="m78 155 108 9-4 18-115-10Z" fill="url(#paperShade)"/>
+  <path d="m43 220c-1 4 1 6 7 6l103 11c9 1 14-2 16-10" fill="none" stroke="#fffaf0" stroke-opacity=".7" stroke-width=".9" stroke-linecap="round"/>
+  <!-- One simple printed blossom: enough color to say coloring studio at 32px. -->
+  <path d="M111 218c-12-13-27-16-34-28-3-5-5-9-6-13 12-1 22 5 27 14 5 10 6 18 13 27Z" fill="url(#leaf)"/>
+  <path d="M110 218c-13-5-22 3-33-4 8-9 17-11 24-6Z" fill="url(#leaf)"/>
+  <path d="M131 196c-10-10-12-20-5-24 9-5 15 4 12 13-1 5-4 8-7 11Z" fill="url(#petal)"/>
+  <path d="M132 196c4-13 15-17 20-10 6 8-6 15-20 10Z" fill="url(#petal)"/>
+  <path d="M133 197c14 0 21 9 14 15-7 5-15-4-14-15Z" fill="url(#petal)"/>
+  <path d="M130 198c5 12-1 23-9 19-8-4-3-15 9-19Z" fill="url(#petal)"/>
+  <path d="M129 196c-10 9-23 6-21-3 1-9 13-8 21 3Z" fill="url(#petal)"/>
+  <circle cx="131" cy="196.5" r="5" fill="url(#gold)"/>
+</svg>

@@ -5,7 +5,8 @@
 
 The previous app icons were hand interpretations and lost the reference's tapered
 strokes and organic geometry. This proof uses **the actual PNG shapes** rather
-than redrawing a similar book. It is not installed in the app yet.
+than redrawing a similar book. It is archived for inspiration; icon redesign is
+deferred and the app uses its original icons.
 
 Source: [01-enchanted-ink.png](../directions/01-enchanted-ink.png), rectangle
 `(288, 352, 424, 480)` in source pixels. `book-reference.png` is the unchanged crop

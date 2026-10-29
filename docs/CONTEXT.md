@@ -61,29 +61,19 @@ ink tables. New storage namespaces are library-v9, workshop.v3 and v6.coloring;
 format-5 saves and v3 sharing codes are intentionally unsupported. Blank paper
 setup retains its simple fixed RGB background palette.
 
-The icon-family design pass is under `docs/icons/`: a single-page inventory of
-135 current uses/states across 15 areas (all 60 Lucide imports plus custom artwork),
-with seven built-in ImageGen concept boards and exact prompts. The current four-action
-trial follows **Enchanted Ink** (01), replacing the colorful Paper Charms drawings
-that competed with the main selection artwork. Delete, add-to-book (plus/check),
-print and export use compact hand-authored outline SVGs under `art/source/interface/`.
-`SavedPictureActionIcon` inlines the trusted local paths so ink follows the theme;
-small gold/teal accents keep the family warm without large colored surfaces.
+Icon redesign is **deferred at the user's request**. The app's original icons and
+button styling are restored to their pre-redesign state (`11ea35b`): standard
+Lucide delete/print/export controls and the original custom open-book plus/check.
+No new icon trial is active. Other features and artwork are unchanged.
 
-These four controls again have circular borders and filled wells: 48px targets with
-28px glyphs, 44px/26px on narrow screens and 40px/24px on short screens. Hover changes
-the well and gently scales the glyph 6%; reduced motion retains the well highlight
-without movement. Focus, disabled/check feedback and all action handlers remain.
-The Paper Charms printer study is an archived comparison, not current runtime art.
-The unfinished bulk integration and raster trials remain parked. Review these four
-before expanding the icon family; no other application icons have changed.
-
-Fidelity checkpoint: the user rejected the hand-redrawn Enchanted Ink icons because
-they differ from the actual PNG. `docs/icons/enchanted-ink-trace/` now compares an
-unchanged crop with a real two-color Potrace conversion of that same book. Its
-filled contours preserve tapered strokes instead of reconstructing uniform lines.
-Review this one-book conversion before further icon changes; this proof has not
-replaced the current runtime icons. `trace.py` records the exact masks and settings.
+Keep the exploration assets for future inspiration: seven ImageGen boards, the
+Paper Charms printer study and the actual color-mask/Potrace book proof under
+`docs/icons/`. The compact Enchanted Ink SVG sources remain under
+`art/source/interface/`; the earlier smooth Paper Charms SVGs are preserved under
+`art/source/interface/icon-studies/paper-charms/`. Neither set is imported by the
+app. Bulk raster/draft work remains parked under ignored `work/`; do not resume
+icon generation or rollout without a new user request. `docs/icons/index.html`
+once again records the original 135 uses/states, 15 groups and 61 Lucide imports.
 
 ## Artwork status
 

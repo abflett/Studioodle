@@ -1,7 +1,7 @@
 ﻿# Studioodle icon inventory and direction studies
 
 Open [the single-page inventory](index.html), or zoom the [full-size current icon sheet](current-icons.png).
-The page contains **135 uses/states in 15 groups**, including all **60 Lucide glyphs**
+The page contains **135 uses/states in 15 groups**, including all **61 Lucide glyphs**
 currently imported by the main UI, custom SVG controls, palette/detail/brush/paper
 pictograms, cursor artwork, the brand mark and illustrated entry-point actions.
 
@@ -30,21 +30,20 @@ are exact snapshots of their current simple SVG shapes.
 
 [Seven ImageGen boards across two rounds, with exact prompts](directions/README.md) explore the same
 six controls: add to coloring pages, brush, fill, stickers, colors and undo.
-The current in-app trial follows **[A / Enchanted Ink](directions/01-enchanted-ink.png)**.
-Its hand-redrawn geometry was rejected for differing from the reference. The next
-checkpoint is the [actual PNG-to-SVG book trace](enchanted-ink-trace/index.html),
-which uses color masks and Potrace on the original artwork. This one-icon proof
-is shown beside the unchanged crop and is not installed in the app yet.
-Its quieter linework replaces the colorful Paper Charms treatment on the four
-saved-picture actions: delete, add-to-book (plus/check), print and export. All five
-states are small native SVGs with theme-aware ink and restrained gold/teal accents.
-Circular bordered buttons are restored; hover changes the well and gently scales
-the glyph, with stationary feedback for reduced motion. Action behavior is unchanged.
+Icon redesign is **deferred**. The app again uses its original icons and button
+styling, including the original custom open-book plus/check and Lucide printer.
+The inventory and current screenshots describe that restored state.
 
-The [Paper Charms printer study](paper-charms/printer-study/index.html) remains an
-archived comparison. Its material-heavy, image-only treatment competed with the
-selection paintings. Large raster trials and the unfinished bulk integration stay
-outside the app. Review the current four controls before expanding the family.
+Keep these references for future inspiration; none is installed in the app:
+
+- [Seven concept boards and prompts](directions/README.md).
+- [Smooth Paper Charms printer study](paper-charms/printer-study/index.html).
+- [Actual PNG-to-SVG book trace](enchanted-ink-trace/index.html).
+- [Preserved SVG source sets](../../art/source/interface/icon-studies/README.md).
+
+The user found the colorful drawings distracting and the hand-redrawn line icons
+insufficiently faithful. Revisit the process and visual direction before any new
+rollout. Bulk raster trials and draft integration remain parked under ignored work.
 
 Verified: all 135 cards and 15 groups render, source images resolve, the atlas has no
 horizontal overflow at desktop size, and every imported Lucide glyph is represented.
