@@ -64,7 +64,9 @@ finished icon standard. Avoid adding decorative noise to every control.
   Two rounds are available. The current four saved-picture actions use native
   Enchanted Ink SVGs with restrained gold/teal accents, theme-aware linework and
   restored circular bordered buttons. Paper Charms was too colorful and competed
-  with the main artwork. Check this four-action trial before expanding the family;
+  with the main artwork. The hand-redrawn ink icons were also rejected for fidelity;
+  review the [actual PNG-to-SVG book trace](icons/enchanted-ink-trace/index.html)
+  before further icon work. This conversion proof is not installed in the app;
   the unfinished bulk integration remains parked.
 - [ ] Make a focused visual comparison of the main ribbon and newer overlays in light
   and dark themes. Set shared rules for wells, button silhouettes, corner radii,

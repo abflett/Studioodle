@@ -31,6 +31,10 @@ are exact snapshots of their current simple SVG shapes.
 [Seven ImageGen boards across two rounds, with exact prompts](directions/README.md) explore the same
 six controls: add to coloring pages, brush, fill, stickers, colors and undo.
 The current in-app trial follows **[A / Enchanted Ink](directions/01-enchanted-ink.png)**.
+Its hand-redrawn geometry was rejected for differing from the reference. The next
+checkpoint is the [actual PNG-to-SVG book trace](enchanted-ink-trace/index.html),
+which uses color masks and Potrace on the original artwork. This one-icon proof
+is shown beside the unchanged crop and is not installed in the app yet.
 Its quieter linework replaces the colorful Paper Charms treatment on the four
 saved-picture actions: delete, add-to-book (plus/check), print and export. All five
 states are small native SVGs with theme-aware ink and restrained gold/teal accents.

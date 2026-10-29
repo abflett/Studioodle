@@ -78,6 +78,13 @@ The Paper Charms printer study is an archived comparison, not current runtime ar
 The unfinished bulk integration and raster trials remain parked. Review these four
 before expanding the icon family; no other application icons have changed.
 
+Fidelity checkpoint: the user rejected the hand-redrawn Enchanted Ink icons because
+they differ from the actual PNG. `docs/icons/enchanted-ink-trace/` now compares an
+unchanged crop with a real two-color Potrace conversion of that same book. Its
+filled contours preserve tapered strokes instead of reconstructing uniform lines.
+Review this one-book conversion before further icon changes; this proof has not
+replaced the current runtime icons. `trace.py` records the exact masks and settings.
+
 ## Artwork status
 
 All 364 stickers were upgraded to the current small-region pipeline. Accepted
