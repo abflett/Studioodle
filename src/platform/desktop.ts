@@ -1,6 +1,7 @@
 import { invoke, isTauri } from '@tauri-apps/api/core';
 
-export const isDesktop = isTauri();
+export const isNative = isTauri();
+export const isDesktop = isNative && !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 export async function closeDesktop() {
   const { getCurrentWindow } = await import('@tauri-apps/api/window');

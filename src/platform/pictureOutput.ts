@@ -1,14 +1,22 @@
 import { downloadFile } from './downloadFile';
-import { isDesktop, printDesktopPicture, saveDesktopPicture } from './desktop';
+import { isDesktop, isNative, printDesktopPicture, saveDesktopPicture } from './desktop';
 
 export type PictureFormat = 'png' | 'svg' | 'pdf';
 export async function savePictureFile(blob: Blob, name: string, format: PictureFormat) {
-  if (isDesktop) { await saveDesktopPicture(blob, name, format); return; }
+  if (isNative) { await saveDesktopPicture(blob, name, format); return; }
   downloadFile(blob, name);
 }
 
 export function printVectorPicture(render: () => Promise<SVGSVGElement>, title: string, onError: () => void) {
-  if (isDesktop) { void render().then(svg => printDesktopPicture(svg, title)).catch(onError); return; }
+  if (isNative && !isDesktop) {
+    void render().then(async svg => {
+      const { picturePdf } = await import('../app/picturePdf');
+      const name = `${title.replace(/[^a-z0-9 _-]/gi, '').trim() || 'Studioodle picture'}.pdf`;
+      await saveDesktopPicture(await picturePdf(svg, title), name, 'pdf');
+    }).catch(onError);
+    return;
+  }
+  if (isNative) { void render().then(svg => printDesktopPicture(svg, title)).catch(onError); return; }
   // Open synchronously from the click so browsers permit the print window.
   let preview: Window | null;
   try { preview = window.open('', '_blank'); } catch { onError(); return; }

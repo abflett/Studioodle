@@ -6,6 +6,13 @@ for the requested feature. Use the checked-out repository root (`git rev-parse
 
 ## Product and architecture
 
+Android ARM64 tester packaging is now supported alongside Windows. See
+[Android setup](ANDROID.md) for `npm run android:build`, signing and USB install.
+The shared Rust library has a mobile entry point; desktop window-state behavior
+stays desktop-only. Android uses `com.studioodle.app` and native content-URI file
+exports. Print saves a PDF on Android. Keep the generated Android Gradle sources
+tracked; build output, local SDK paths, secrets and generated Tauri glue stay ignored.
+
 Studioodle is a pre-v1 drawing/coloring app with React, Canvas2D display and vector
 paint/ink. Phaser and raster painting have been removed. Keep one vector engine;
 old development drawings can break. Saved documents are format 6; the current

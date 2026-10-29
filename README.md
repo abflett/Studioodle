@@ -20,6 +20,10 @@ npm run dev
 Routine development uses Vite. Build Windows/Tauri only when explicitly requested;
 see [desktop setup](docs/DESKTOP.md).
 
+Android ARM64 tester builds and USB installation are documented in
+[Android setup](docs/ANDROID.md). Run `npm run android:build` to create a signed
+sideload APK using the local development key.
+
 | Command | Purpose |
 | --- | --- |
 | `npm run review` | Run the standalone artwork reviewer (same origin preserves annotations) |

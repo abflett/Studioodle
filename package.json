@@ -19,6 +19,8 @@
     "tauri": "tauri",
     "desktop:dev": "tauri dev",
     "desktop:build": "tauri build --bundles nsis",
+    "android:init": "tauri android init",
+    "android:build": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-android.ps1",
     "test": "node --test tests/*.test.mjs",
     "brand:icons": "node scripts/build-brand-icons.mjs",
     "assets:build": "node scripts/build-stickers.mjs",

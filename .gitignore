@@ -6,6 +6,8 @@ dist/
 !.env.example
 *.tsbuildinfo
 *.log
+*.keystore
+*.jks
 .DS_Store
 .vscode/*
 !.vscode/extensions.json
@@ -14,7 +16,9 @@ work/
 
 # Rust build output and local Windows release packages
 src-tauri/target/
-src-tauri/gen/
+src-tauri/gen/*
+!src-tauri/gen/android/
+src-tauri/gen/android/.idea/
 release/
 
 # Local third-party authoring executables (not generated scratch output)

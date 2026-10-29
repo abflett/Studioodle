@@ -7,6 +7,10 @@ license = "Apache-2.0"
 edition = "2021"
 rust-version = "1.88"
 
+[lib]
+name = "studioodle_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
 [[bin]]
 name = "Studioodle"
 path = "src/main.rs"
@@ -17,6 +21,9 @@ tauri-build = { version = "2", features = [] }
 [dependencies]
 tauri = { version = "2", features = [] }
 tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-window-state = "2"
 
 [profile.release]
