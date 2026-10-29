@@ -61,13 +61,11 @@ finished icon standard. Avoid adding decorative noise to every control.
 
 - [x] Gather the [current icon inventory and seven ImageGen directions](icons/README.md):
   135 uses/states across 15 groups, with six representative controls per style board.
-  Two rounds are available; Paper Charms is selected. Review the
-  [single smooth SVG printer study](icons/paper-charms/printer-study/index.html)
-  before expanding the set. Avoid heavy outlines and raster fiber texture.
-  The four saved-picture actions now use matching smooth SVGs for in-app review,
-  enlarged without circle wells or hard edge glows. Hover uses lift/scale plus a
-  soft highlight; reduced motion keeps a stationary highlight and brightening.
-  The unfinished bulk integration is parked.
+  Two rounds are available. The current four saved-picture actions use native
+  Enchanted Ink SVGs with restrained gold/teal accents, theme-aware linework and
+  restored circular bordered buttons. Paper Charms was too colorful and competed
+  with the main artwork. Check this four-action trial before expanding the family;
+  the unfinished bulk integration remains parked.
 - [ ] Make a focused visual comparison of the main ribbon and newer overlays in light
   and dark themes. Set shared rules for wells, button silhouettes, corner radii,
   padding, gaps, icon scale/stroke and focus/hover/pressed/disabled states. Decide

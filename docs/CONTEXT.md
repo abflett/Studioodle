@@ -61,24 +61,22 @@ ink tables. New storage namespaces are library-v9, workshop.v3 and v6.coloring;
 format-5 saves and v3 sharing codes are intentionally unsupported. Blank paper
 setup retains its simple fixed RGB background palette.
 
-The icon-family design pass starts in `docs/icons/`: a single-page inventory of
-135 current uses/states across 15 areas (all 60 Lucide imports plus custom SVG,
-painted actions and cursors), and seven built-in ImageGen concept boards across two rounds for six
-representative controls. Paper Charms is the selected visual direction. Four follow-ups
-explore watercolor, handmade wood, gouache and folded paper using the actual entry
-paintings as references. The four saved-picture actions now use smooth SVG artwork:
-delete, add-to-book (plus/check), print and export. Accepted sources live under
-`art/source/interface/` (`printer.svg` and `saved-*.svg`). Other runtime icons retain
-their existing artwork. Exact prompts
-and feedback are retained with the boards. The user rejected the heavy-outline SVG
-translation and large textured raster rollout. Review the single smooth-gradient
-printer SVG in `docs/icons/paper-charms/printer-study/` before expanding the family.
-The unfinished bulk integration is parked. Judge these four in the app before
-expanding the family. They use image-only controls without circle wells or hard
-glow outlines: 52px targets with 50px artwork, 48px targets on narrow screens and
-40px on short screens. Hover gives an 8% scale, 3px lift, soft highlight and slight
-brightening; reduced motion keeps the highlight/brightening without movement.
-Keyboard focus, disabled/check feedback and all four action handlers are preserved.
+The icon-family design pass is under `docs/icons/`: a single-page inventory of
+135 current uses/states across 15 areas (all 60 Lucide imports plus custom artwork),
+with seven built-in ImageGen concept boards and exact prompts. The current four-action
+trial follows **Enchanted Ink** (01), replacing the colorful Paper Charms drawings
+that competed with the main selection artwork. Delete, add-to-book (plus/check),
+print and export use compact hand-authored outline SVGs under `art/source/interface/`.
+`SavedPictureActionIcon` inlines the trusted local paths so ink follows the theme;
+small gold/teal accents keep the family warm without large colored surfaces.
+
+These four controls again have circular borders and filled wells: 48px targets with
+28px glyphs, 44px/26px on narrow screens and 40px/24px on short screens. Hover changes
+the well and gently scales the glyph 6%; reduced motion retains the well highlight
+without movement. Focus, disabled/check feedback and all action handlers remain.
+The Paper Charms printer study is an archived comparison, not current runtime art.
+The unfinished bulk integration and raster trials remain parked. Review these four
+before expanding the icon family; no other application icons have changed.
 
 ## Artwork status
 

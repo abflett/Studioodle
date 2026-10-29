@@ -30,19 +30,17 @@ are exact snapshots of their current simple SVG shapes.
 
 [Seven ImageGen boards across two rounds, with exact prompts](directions/README.md) explore the same
 six controls: add to coloring pages, brush, fill, stickers, colors and undo.
-Paper Charms is selected; four follow-ups draw from the existing
-easel, book and paper-stack paintings. These are raster concept sheets. Only the
-four saved-picture actions now use smooth SVGs: delete, add-to-book, print and export.
-Their behavior is unchanged; only these controls use the enlarged image-only trial.
-Review the visual family first, then make
-and test a small set of production-size icons before extending it to the whole app.
+The current in-app trial follows **[A / Enchanted Ink](directions/01-enchanted-ink.png)**.
+Its quieter linework replaces the colorful Paper Charms treatment on the four
+saved-picture actions: delete, add-to-book (plus/check), print and export. All five
+states are small native SVGs with theme-aware ink and restrained gold/teal accents.
+Circular bordered buttons are restored; hover changes the well and gently scales
+the glyph, with stationary feedback for reduced motion. Action behavior is unchanged.
 
-The current next step is the [single printer SVG study](paper-charms/printer-study/index.html):
-smooth rounded paths and gradient shading, shown at 26, 32 and 48px on both themes.
-That printer is now joined by three matching action drawings (including the
-book's plus/check state), without circle wells or hard glow borders. The user
-requested this checkpoint before any further full-set work. Large textured
-raster trials and the unfinished integration are parked outside the app.
+The [Paper Charms printer study](paper-charms/printer-study/index.html) remains an
+archived comparison. Its material-heavy, image-only treatment competed with the
+selection paintings. Large raster trials and the unfinished bulk integration stay
+outside the app. Review the current four controls before expanding the family.
 
 Verified: all 135 cards and 15 groups render, source images resolve, the atlas has no
 horizontal overflow at desktop size, and every imported Lucide glyph is represented.

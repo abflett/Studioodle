@@ -1,3 +1,4 @@
+import { SavedPictureActionIcon } from './SavedPictureActionIcon';
 import { ColoringPagePicker } from './ColoringPagePicker';
 import { Brand } from './Brand';
 import { paperRotation } from '../app/paperLayers';
@@ -20,9 +21,6 @@ import { printPicture } from '../app/pictureOutput';
 import { SavedPreview } from './SavedPreview';
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, X, Undo2, Settings, LogOut, Fullscreen, Minimize, LoaderCircle, RotateCw } from 'lucide-react';
-import printerArtwork from '../../art/source/interface/printer.svg';
-import deleteArtwork from '../../art/source/interface/saved-delete.svg';
-import exportArtwork from '../../art/source/interface/saved-export.svg';
 import { pictureChoices, savedStackArtwork, portfolioPaper } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
@@ -194,10 +192,10 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
               <nav className="library-actions" aria-label="Selected saved picture actions" data-empty={saved.length === 0 || undefined}>
                 {(library.error || currentError) && <button className="icon-button" aria-label="Retry loading saved pictures" title="Retry loading" onClick={retry}><RotateCw aria-hidden="true" /></button>}
                 {saved.length > 0 && <>
-                  <button className="icon-button library-art-action" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) { setDeletingPage(false); setPendingDelete(current); } }}><img className="library-action-artwork" src={deleteArtwork} alt="" aria-hidden="true" draggable={false} /></button>
+                  <button className="icon-button library-art-action" disabled={!current} aria-label="Delete selected saved picture" title="Delete picture" onClick={() => { if (current) { setDeletingPage(false); setPendingDelete(current); } }}><SavedPictureActionIcon kind="delete" /></button>
                   <button className="icon-button library-art-action coloring-page-add" data-added={pageAdded || undefined} disabled={!current || current.document.surfaces.length < 2 || pageAdded} aria-label={pageAdded ? "Added to coloring pages" : "Add selected picture to coloring pages"} title={pageAdded ? "Added to coloring pages" : current && current.document.surfaces.length > 1 ? "Add to coloring pages" : "Arrange stickers in a picture to make a coloring page"} onClick={addColoringPage}><ColoringPageActionIcon added={pageAdded} /></button>
-                  <button className="icon-button library-art-action print-action-button" disabled={!current} aria-label="Print selected saved picture" title="Print picture" onClick={() => { if (current) printPicture(current, () => setActionError('Could not open printing. Allow the print window and try again.')); }}><img className="library-action-artwork print-action-artwork" src={printerArtwork} alt="" aria-hidden="true" draggable={false} /></button>
-                  <button className="icon-button library-art-action" disabled={!current} aria-label="Export selected saved picture" title="Export picture" aria-haspopup="dialog" onClick={() => setExportingPicture(current)}><img className="library-action-artwork" src={exportArtwork} alt="" aria-hidden="true" draggable={false} /></button>
+                  <button className="icon-button library-art-action print-action-button" disabled={!current} aria-label="Print selected saved picture" title="Print picture" onClick={() => { if (current) printPicture(current, () => setActionError('Could not open printing. Allow the print window and try again.')); }}><SavedPictureActionIcon kind="print" /></button>
+                  <button className="icon-button library-art-action" disabled={!current} aria-label="Export selected saved picture" title="Export picture" aria-haspopup="dialog" onClick={() => setExportingPicture(current)}><SavedPictureActionIcon kind="export" /></button>
                 </>}
               </nav>
               <h2 className="sr-only" id="your-pictures-label">Your pictures</h2>
