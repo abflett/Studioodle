@@ -123,6 +123,12 @@ This is an evolution of the current engine, not a second painting engine.
   interior samples agree and the selected cut still mismatches the edges. Preserve
   exact small corner profiles. Regress 384 radius/offset/matching combinations for
   contour backtracking, retaining the existing radial-error and browser checks.
+- [x] Add an independent round-brush coverage reference and visual difference view
+  to distinguish profile teeth from real sharp cusps at overlapping round arcs.
+  Include a reproducible overlapping-dab example and browser regressions for the
+  reference gap/cusp, comparison controls, drawing while comparing and reset.
+  Reference pixels add 3.81 MiB of diagnostic backing, included in display memory;
+  no extra input log, authoritative raster paint or new profile fix is introduced.
 - [ ] Review the straight-cut demo's appearance and connectivity with the user before
   choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/

@@ -18,6 +18,20 @@ of different sizes. Toggle Match edges on release and redraw either example to
 compare independent fits with joining. Diameter is 1-30 cells in quarter-cell steps.
 Scroll the legend to inspect profiles; unused straight-library slots are reserved.
 
+Compare coverage switches between Cell profiles, Round brush reference and a
+visual Difference overlay. The reference records the same incoming points as
+Canvas2D round-capped segments/circle dabs on a fixed 1000 x 1000 canvas, without
+cell fitting. It starts with the current page; refreshing resets both views.
+Clear, examples and library changes clear both; resize preserves the reference.
+Drawing also works while the reference is displayed.
+
+Draw overlapping dabs demonstrates an important distinction: even ordinary round
+dabs leave pointed cusps where their arcs meet, including a narrow pointed hole
+between three overlapping circles. A round tip does not make the resulting union's
+entire boundary round. The reference separates those real input corners from
+additional cell-fitting artifacts. The difference overlay is a visual blend, not
+a numerical error metric. No further profile correction is implied by this tool.
+
 ## Straight-cut dictionary
 
 The byte layout is base shape in bits 0-4, quarter-turn in bits 5-6 and reflection
@@ -94,6 +108,11 @@ population-count/edge-difference tables occupy 79.75 KiB in total; polygon array
 candidate lists and browser Path2D objects are additional. Only the selected
 library's browser paths are built. Grid/diagnostic arrays and canvas buffers are
 also separate; the UI reports display backing bytes, not total process memory.
+The diagnostic reference adds 4,000,000 backing bytes (3.81 MiB), included in that
+counter. It stores pixels only, with no stroke log, and is never used to paint,
+correct or save the cell model. Edit timings now include reference rendering;
+they are not isolated cell-engine measurements. This is standalone comparison
+instrumentation, not a raster-engine addition to Studioodle.
 
 Canvas2D redraws changed cells, using prebuilt paths and integer physical pixels
 per cell. Resize redraws the page. Opaque colors draw over an opaque base; transparent

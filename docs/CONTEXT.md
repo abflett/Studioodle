@@ -252,6 +252,16 @@ claim is included. `cells:typecheck`, `cells:build` and `test:cells` verify the 
 tool; generated output/captures stay under ignored `work/`. The user runs the dev
 server manually; do not leave a server running after automated tests.
 
+The demo now has a Compare coverage selector: cells, a separately rendered round-
+brush reference, and a visual difference overlay. Every incoming gesture/example
+also updates a fixed 1000 x 1000 Canvas2D reference (3.81 MiB extra, reported in
+display memory); there is no input log and it never changes authoritative cells.
+Clear/library switches reset both; draw/resize work in comparison views. The overlap
+example demonstrates genuine pointed arc-intersection gaps in the reference as
+well as cell approximations. A round brush does not guarantee rounded union/gap
+intersections. This instrumentation does not establish another geometry fix or
+isolated performance result; use it to reproduce before changing profile rules.
+
 Solo coloring pages should fit visible subject bounds and preserve proportions,
 with intentional margins and orientation. Roughly 80% of suitable stickers is a
 curation target, not a mandate to publish boring or awkward subjects. Keep composed

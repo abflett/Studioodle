@@ -7,10 +7,10 @@ const palette = ['#fffdf6', '#25343a', '#d85a55', '#e9ad45', '#6c9c75', '#508aa5
 let field = new CellField('straight', false);
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <header><div><span class="eyebrow">STUDIOODLE / EXPERIMENTS</span><h1>Small cells. Big ideas.</h1><p>Simple straight cuts, with the earlier libraries here to compare.</p></div><span class="badge">100 × 100 cells</span></header>
-  <main><section class="workspace"><div class="canvas-wrap"><canvas id="paint" aria-label="Cell brush drawing canvas"></canvas><canvas id="grid" aria-hidden="true"></canvas><div id="cursor"></div></div><p class="hint">Drag to paint · Paper erases to transparent · Nothing is saved</p></section>
-  <aside><section><h2>Your brush</h2><div id="palette" role="group" aria-label="Brush colors"></div><label class="size-label" for="size">Diameter <output id="diameter">8 cells</output></label><input id="size" type="range" min="1" max="30" step=".25" value="8"><label class="size-label" for="library">Shape library</label><select id="library"><option value="straight">Straight cuts (16 of 32 slots)</option><option value="32">Experimental 32 shapes</option><option value="8">Original 8 profiles</option></select><p class="note library-note">Changing the library clears the canvas.</p><label class="toggle"><input id="show-grid" type="checkbox" checked> Show cell grid</label><label class="toggle"><input id="match-edges" type="checkbox"> Match edges on release</label><button id="example">Draw test strokes</button><button id="circles">Draw circle dabs</button><button id="clear">Clear canvas</button></section>
+  <main><section class="workspace"><div class="canvas-wrap"><canvas id="paint" aria-label="Cell brush drawing canvas"></canvas><canvas id="reference" aria-label="Unquantized round brush reference" hidden></canvas><canvas id="grid" aria-hidden="true"></canvas><div id="cursor"></div></div><p class="hint">Drag to paint · Paper erases to transparent · Nothing is saved</p></section>
+  <aside><section><h2>Your brush</h2><div id="palette" role="group" aria-label="Brush colors"></div><label class="size-label" for="size">Diameter <output id="diameter">8 cells</output></label><input id="size" type="range" min="1" max="30" step=".25" value="8"><label class="size-label" for="library">Shape library</label><select id="library"><option value="straight">Straight cuts (16 of 32 slots)</option><option value="32">Experimental 32 shapes</option><option value="8">Original 8 profiles</option></select><p class="note library-note">Changing the library clears the canvas.</p><label class="size-label" for="view">Compare coverage</label><select id="view"><option value="cells">Cell profiles</option><option value="reference">Round brush reference</option><option value="difference">Difference overlay</option></select><label class="toggle"><input id="show-grid" type="checkbox" checked> Show cell grid</label><label class="toggle"><input id="match-edges" type="checkbox"> Match edges on release</label><button id="example">Draw test strokes</button><button id="circles">Draw circle dabs</button><button id="overlap">Draw overlapping dabs</button><button id="clear">Clear canvas</button></section>
   <section><h2 id="legend-title">Straight cuts: 16 / 32 slots</h2><div id="profiles"></div><p class="note">Each byte selects a base shape, rotation and reflection. Colors can swap sides; paper is transparent.</p></section>
-  <section class="numbers"><h2>Under the surface</h2><dl><dt>Painted cells</dt><dd id="painted">0</dd><dt>Boundary cells</dt><dd id="boundaries">0</dd><dt>Cell data</dt><dd>29.30 KiB</dd><dt>Loaded lookups⁴</dt><dd>${(numericLookupBytes / 1024).toFixed(2)} KiB</dd><dt>Distinct candidates</dt><dd id="candidates">${field.tables.candidates.length}</dd><dt>Stroke samples³</dt><dd id="scratch">0 KiB</dd><dt>Display buffer¹</dt><dd id="buffer">—</dd><dt>Last edit / draw²</dt><dd id="timing">—</dd></dl><p class="note">Straight cuts fit stroke coverage at quarter-edge positions. Neighbor matching is optional; untouched cells never change.</p><p class="note">¹ Drawing + grid canvases; excludes browser/GPU overhead. ² Latest edit and drawing CPU time, not input latency or a benchmark. ³ Temporary sample buffers, released on stroke end; excludes bookkeeping overhead. ⁴ Shared typed tables; excludes polygon and browser path objects.</p></section></aside></main>`;
+  <section class="numbers"><h2>Under the surface</h2><dl><dt>Painted cells</dt><dd id="painted">0</dd><dt>Boundary cells</dt><dd id="boundaries">0</dd><dt>Cell data</dt><dd>29.30 KiB</dd><dt>Loaded lookups⁴</dt><dd>${(numericLookupBytes / 1024).toFixed(2)} KiB</dd><dt>Distinct candidates</dt><dd id="candidates">${field.tables.candidates.length}</dd><dt>Stroke samples³</dt><dd id="scratch">0 KiB</dd><dt>Display buffer¹</dt><dd id="buffer">—</dd><dt>Last edit / draw²</dt><dd id="timing">—</dd></dl><p class="note">Straight cuts fit stroke coverage at quarter-edge positions. Neighbor matching is optional; untouched cells never change.</p><p class="note">¹ Drawing + grid + reference canvases; excludes browser/GPU overhead. ² Latest edit and drawing CPU time, not input latency or a benchmark. ³ Temporary sample buffers, released on stroke end; excludes bookkeeping overhead. ⁴ Shared typed tables; excludes polygon and browser path objects.</p></section></aside></main>`;
 
 function makePaths() { return field.tables.variants.map(polygon => {
   const path = new Path2D();
@@ -23,6 +23,21 @@ const canvas = document.querySelector<HTMLCanvasElement>('#paint')!;
 const grid = document.querySelector<HTMLCanvasElement>('#grid')!;
 const ctx = canvas.getContext('2d')!;
 const gridCtx = grid.getContext('2d')!;
+const reference = document.querySelector<HTMLCanvasElement>('#reference')!;
+reference.width = reference.height = 1000;
+const referenceCtx = reference.getContext('2d')!;
+referenceCtx.scale(10, 10);
+function referenceStroke(a: Point, b: Point, radius: number, color: number) {
+  referenceCtx.globalCompositeOperation = color === 0 ? 'destination-out' : 'source-over';
+  referenceCtx.fillStyle = referenceCtx.strokeStyle = color === 0 ? '#000' : palette[color]!;
+  if (a[0] === b[0] && a[1] === b[1]) {
+    referenceCtx.beginPath(); referenceCtx.arc(a[0], a[1], radius, 0, Math.PI * 2); referenceCtx.fill();
+  } else {
+    referenceCtx.lineWidth = radius * 2; referenceCtx.lineCap = 'round'; referenceCtx.lineJoin = 'round';
+    referenceCtx.beginPath(); referenceCtx.moveTo(a[0], a[1]); referenceCtx.lineTo(b[0], b[1]); referenceCtx.stroke();
+  }
+}
+function clearReference() { referenceCtx.clearRect(0, 0, size, size); }
 const wrap = document.querySelector<HTMLDivElement>('.canvas-wrap')!;
 const cursor = document.querySelector<HTMLDivElement>('#cursor')!;
 const slider = document.querySelector<HTMLInputElement>('#size')!;
@@ -88,7 +103,7 @@ function resize() {
   // Whole physical pixels per cell prevent cracks between cell backgrounds.
   const pixels = Math.max(size, Math.floor(wrap.clientWidth * devicePixelRatio / size) * size);
   canvas.width = canvas.height = grid.width = grid.height = pixels;
-  document.querySelector('#buffer')!.textContent = `${(pixels * pixels * 8 / 1048576).toFixed(2)} MiB`;
+  document.querySelector('#buffer')!.textContent = `${((pixels * pixels * 8 + reference.width * reference.height * 4) / 1048576).toFixed(2)} MiB`;
   gridCtx.clearRect(0, 0, pixels, pixels); gridCtx.beginPath();
   for (let i = 1; i < size; i++) { const p = i * pixels / size + .5; gridCtx.moveTo(p, 0); gridCtx.lineTo(p, pixels); gridCtx.moveTo(0, p); gridCtx.lineTo(pixels, p); }
   gridCtx.strokeStyle = '#25343a20'; gridCtx.lineWidth = 1; gridCtx.stroke(); schedule(true);
@@ -102,6 +117,7 @@ function point(event: PointerEvent): Point {
 }
 function paint(next: Point) {
   const start = performance.now();
+  referenceStroke(previous ?? next, next, Number(slider.value) / 2, slot);
   for (const index of field.paint(previous ?? next, next, Number(slider.value) / 2, slot)) dirty.add(index);
   editMs += performance.now() - start; previous = next; schedule();
 }
@@ -140,16 +156,16 @@ document.querySelector<HTMLSelectElement>('#library')!.onchange = event => {
   const matching = document.querySelector<HTMLInputElement>('#match-edges')!;
   matching.checked = selected !== 'straight';
   field = new CellField(selected === 'straight' ? 'straight' : selected === '32' ? 'experimental' : 'legacy', matching.checked);
-  paths = makePaths(); renderLegend();
+  paths = makePaths(); renderLegend(); clearReference();
   document.querySelector('#candidates')!.textContent = String(field.tables.candidates.length); schedule(true);
 };
 document.querySelector<HTMLButtonElement>('#example')!.onclick = () => {
-  end(); field.clear();
+  end(); field.clear(); clearReference();
   const start = performance.now();
   const stroke = (points: Point[], radius: number, color: number) => {
     field.beginStroke(color);
     let previous = points[0]!;
-    for (const point of points) { field.paint(previous, point, radius, color); previous = point; }
+    for (const point of points) { referenceStroke(previous, point, radius, color); field.paint(previous, point, radius, color); previous = point; }
     field.endStroke();
   };
   stroke([[10, 15], [88, 32]], 2.75, 2);
@@ -160,13 +176,30 @@ document.querySelector<HTMLButtonElement>('#example')!.onclick = () => {
   for (const [i, radius] of [.55, .8, 1.1, 1.5].entries()) stroke([[10 + i * 7, 59]], radius, 3);
   editMs += performance.now() - start; schedule(true);
 };
-document.querySelector<HTMLButtonElement>('#clear')!.onclick = () => { end(); field.clear(); schedule(true); };
+document.querySelector<HTMLButtonElement>('#clear')!.onclick = () => { end(); field.clear(); clearReference(); schedule(true); };
 document.querySelector<HTMLButtonElement>('#circles')!.onclick = () => {
-  end(); field.clear();
+  end(); field.clear(); clearReference();
   const start = performance.now();
   for (const [x, y, radius, color] of [[25, 30, 14, 1], [67, 28, 10.5, 2], [26, 72, 6.25, 5], [65, 70, 3.5, 4]]) {
-    field.beginStroke(color!); field.paint([x!, y!], [x!, y!], radius!, color!); field.endStroke();
+    field.beginStroke(color!); referenceStroke([x!, y!], [x!, y!], radius!, color!); field.paint([x!, y!], [x!, y!], radius!, color!); field.endStroke();
   }
   editMs += performance.now() - start; schedule(true);
 };
 new ResizeObserver(resize).observe(wrap);
+
+document.querySelector<HTMLSelectElement>('#view')!.onchange = event => {
+  const view = (event.target as HTMLSelectElement).value;
+  reference.hidden = view === 'cells';
+  canvas.style.opacity = view === 'reference' ? '0' : '1';
+  reference.style.mixBlendMode = view === 'difference' ? 'difference' : 'normal';
+};
+
+document.querySelector<HTMLButtonElement>('#overlap')!.onclick = () => {
+  end(); field.clear(); clearReference();
+  const start = performance.now();
+  for (const [x, y, radius, color] of [[50, 50, 30, 1], [50, 35, 14, 5], [37, 57.5, 14, 5], [63, 57.5, 14, 5]]) {
+    field.beginStroke(color!); referenceStroke([x!, y!], [x!, y!], radius!, color!);
+    field.paint([x!, y!], [x!, y!], radius!, color!); field.endStroke();
+  }
+  editMs += performance.now() - start; schedule(true);
+};
