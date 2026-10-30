@@ -17,7 +17,7 @@ after(async () => { await server?.close(); });
 const snapshot = field => [field.profile.slice(), field.front.slice(), field.back.slice()];
 
 test('seeded pointer flutter, fractional starts and tightening bends survive repeated boundary traversal', () => {
-  for (const kind of ['arc', 'spiral', 'tightening', 'boundary']) for (const seed of [1, 17, 529]) {
+  for (const kind of ['arc', 'short', 'spiral', 'tightening', 'boundary']) for (const seed of [1, 17, 529]) {
     const offset = [(seed * .17321) % 1, kind === 'boundary' ? .007 : (seed * .61937) % 1];
     const jitter = seed === 1 ? .03 : seed === 17 ? .09 : .21;
     const points = fixtures.thinCurve(kind, offset, 240, { seed, jitter });

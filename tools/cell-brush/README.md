@@ -94,7 +94,7 @@ neighbors never change. No global optimum or arbitrary topology guarantee is cla
 
 ### Thin contour investigation
 
-Use **Draw 1-cell test** to draw an open arc, spiral, loose-to-tight bend or
+Use **Draw 1-cell test** to draw an open arc, short nine-cell-wide arc, spiral, loose-to-tight bend or
 boundary-flutter line with diameter one. Independent X/Y offsets have 0.001-cell
 steps, so starts need not align with cells or quarter crossings. Mouse jitter is
 seeded, independent per-axis noise up to the selected amplitude in cell units.
@@ -108,6 +108,9 @@ cell diagnostics** before drawing, then enable **Click to inspect instead of
 paint** and click the suspect cell. The inspector shows that cell and its eight
 neighbors, actual crossings in orange, quarter-snapped crossings in blue, the
 selected byte/color slots and the actual fitting route (cut/uniform/fallback).
+Pink dots mark the selected profile's disagreements with the 64 accumulated
+source samples; their count is shown below the enlarged cell. This is a sampling
+diagnostic, not a guarantee that the entire contour matches.
 Existing reference/difference views and optional matching remain available.
 
 Capture is off by default. It copies the latest fit's samples/edge intervals per
@@ -119,7 +122,7 @@ Capture affects diagnostic timings; disable it for performance comparisons.
 
 Tests verify observer neutrality, immutable snapshots, browser inspection without
 painting and monotone noiseless open-arc contours at eight offsets. A further sweep
-covers four shapes, three seeds/jitter amplitudes (0.03/0.09/0.21 cells), independent
+covers five shapes, three seeds/jitter amplitudes (0.03/0.09/0.21 cells), independent
 fractional starts, matching off/on and repeated boundary crossings. Duplicate and
 backwards traversal must leave output identical to the same noisy path without
 repeats. Captured analytic edge coverage is checked against the complete noisy

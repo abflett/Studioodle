@@ -149,6 +149,8 @@ This is an evolution of the current engine, not a second painting engine.
 - [ ] Use the thin-contour inspector to isolate the user's hand-drawn outside-edge
   tooth before changing snapping/fallback rules or expanding the profile dictionary.
   Generated smooth fixtures do not yet reliably reproduce the reported spikes.
+  The noisy sweep includes a nine-cell-wide short arc matching the screenshot's
+  approximate scale; pink inspector dots identify source/profile sample mismatches.
 - [ ] Review the straight-cut demo's appearance and connectivity with the user before
   choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/

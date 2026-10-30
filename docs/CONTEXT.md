@@ -270,6 +270,11 @@ existing coverage. Tests cover four shapes/three seeds with matching off/on,
 verify repeats preserve output and compare accumulated edges to the noisy capsule
 union. Browser tests replay noisy native mouse events too. This strengthens the
 reproduction tools without claiming a tooth fix or applying input smoothing.
+The user's subsequent short-arch screenshot motivated a nine-cell-wide arc fixture
+(the original open arc spans 52 cells). It is included in the noisy-input sweep;
+the inspector now marks profile/source sample disagreements in pink. A cropped
+short-curve browser capture is generated under work/tests/cell-brush/. No confirmed
+selection fix follows from this instrumented comparison yet.
 
 The demo now has a Compare coverage selector: cells, a separately rendered round-
 brush reference, and a visual difference overlay. Every incoming gesture/example

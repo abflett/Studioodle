@@ -1,5 +1,5 @@
 import type { Point } from './profiles';
-export type CurveKind = 'arc' | 'spiral' | 'tightening' | 'boundary';
+export type CurveKind = 'arc' | 'short' | 'spiral' | 'tightening' | 'boundary';
 export type CurveOptions = { jitter?: number; seed?: number; retrace?: boolean };
 /** Seeded input noise is repeatable, independent of event batching or wall time. */
 export function thinCurve(kind: CurveKind, offset: number | Point = 0, steps = 240, options: CurveOptions = {}): Point[] {
@@ -10,9 +10,10 @@ export function thinCurve(kind: CurveKind, offset: number | Point = 0, steps = 2
   const points: Point[] = [];
   for (let i = 0; i <= steps; i++) {
     const fraction = i / steps;
-    const angle = kind === 'arc' ? Math.PI + fraction * Math.PI : fraction * Math.PI * 5;
-    const radius = kind === 'arc' ? 26 : 3 + fraction * 26;
-    let base: Point = [50 + Math.cos(angle) * radius, (kind === 'arc' ? 64 : 50) + Math.sin(angle) * radius];
+    const arc = kind === 'arc' || kind === 'short';
+    const angle = arc ? Math.PI + fraction * Math.PI : fraction * Math.PI * 5;
+    const radius = kind === 'short' ? 4.5 : kind === 'arc' ? 26 : 3 + fraction * 26;
+    let base: Point = [50 + Math.cos(angle) * radius, (arc ? 64 : 50) + Math.sin(angle) * radius];
     if (kind === 'tightening') {
       if (i) {
         const distance = 80 / steps;

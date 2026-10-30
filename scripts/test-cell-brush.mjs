@@ -117,6 +117,7 @@ try {
   assert.equal(await evaluate('document.querySelector("#capture-cells").checked'), true);
   assert.equal(await evaluate('document.querySelector("#size").value'), '1');
   assert.ok(await evaluate('document.querySelector("#cell-inspector").textContent.includes("Snapped:")'), 'Fixture captures real and snapped crossings');
+  assert.ok(await evaluate('document.querySelector("#cell-inspector").textContent.includes("Source mismatch:")'), 'Inspector reports source/profile disagreement');
   const thinArc = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
   await fs.writeFile(path.join(output, 'thin-arc-inspector.png'), Buffer.from(thinArc.data, 'base64'));
   await evaluate('document.querySelector("#inspect-cells").click()');
@@ -143,6 +144,9 @@ try {
     const noisy = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
     await fs.writeFile(path.join(output, `thin-${kind}-jitter.png`), Buffer.from(noisy.data, 'base64'));
   }
+  await evaluate('document.querySelector("#curve-kind").value="short"; document.querySelector("#jitter").value=".09"; document.querySelector("#thin-curve").click()'); await settle();
+  const shortImage = await evaluate(`(()=>{const c=document.createElement('canvas');c.width=c.height=600;const source=document.querySelector('#paint'),ctx=c.getContext('2d');ctx.fillStyle='#fffdf6';ctx.fillRect(0,0,600,600);ctx.drawImage(source,source.width*.43,source.height*.56,source.width*.14,source.height*.14,0,0,600,600);return c.toDataURL().split(',')[1]})()`);
+  await fs.writeFile(path.join(output,'short-curve.png'),Buffer.from(shortImage,'base64'));
   // Replay the noisy tightening fixture through native pointer events as well as
   // the example button, including pauses/duplicates and backwards retraversal.
   const samples = await evaluate(`(async()=>{const {thinCurve}=await import('/src/fixtures.ts'); return thinCurve('tightening',[.173,.619],240,{jitter:.09,seed:17,retrace:true});})()`);

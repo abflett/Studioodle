@@ -33,6 +33,13 @@ export class CellInspector {
     ctx.strokeStyle = '#9caaa7'; ctx.lineWidth = 1;
     for (let i = 0; i <= 3; i++) { ctx.beginPath(); ctx.moveTo(i * 100, 0); ctx.lineTo(i * 100, 300); ctx.moveTo(0, i * 100); ctx.lineTo(300, i * 100); ctx.stroke(); }
     ctx.strokeStyle = '#d85a55'; ctx.lineWidth = 2; ctx.strokeRect(101, 101, 98, 98);
+    let mismatches = 0;
+    for (let i = 0; i < 64; i++) {
+      const cell = diagnostic.selected;
+      if (field.tables.sampleColor(cell.profile, cell.front, cell.back, i) === diagnostic.target[i]) continue;
+      mismatches++; ctx.fillStyle = '#ed4264'; ctx.beginPath();
+      ctx.arc(100 + ((i % 8) + .5) * 12.5, 100 + (Math.floor(i / 8) + .5) * 12.5, 2.5, 0, Math.PI * 2); ctx.fill();
+    }
     for (const [points, color, radius] of [[diagnostic.actual, '#eea32d', 5], [diagnostic.snapped, '#309bd3', 3]] as const) {
       ctx.fillStyle = color;
       for (const [x, y] of points) { ctx.beginPath(); ctx.arc(100 + x * 100, 100 + y * 100, radius, 0, Math.PI * 2); ctx.fill(); }
@@ -40,7 +47,7 @@ export class CellInspector {
     this.panel.append(canvas);
     const detail = document.createElement('pre');
     const format = (points: readonly (readonly number[])[]) => points.map(p => `(${p.map(v => Number(v.toFixed(4))).join(', ')})`).join(' ') || 'none';
-    detail.textContent = `Actual: ${format(diagnostic.actual)}\nSnapped: ${format(diagnostic.snapped)}\nProfile byte: ${diagnostic.selected.profile}\nFront/back: ${diagnostic.selected.front}/${diagnostic.selected.back}`;
+    detail.textContent = `Actual: ${format(diagnostic.actual)}\nSnapped: ${format(diagnostic.snapped)}\nProfile byte: ${diagnostic.selected.profile}\nFront/back: ${diagnostic.selected.front}/${diagnostic.selected.back}\nSource mismatch: ${mismatches}/64 (pink dots)`;
     detail.style.whiteSpace = 'pre-wrap'; detail.style.fontSize = '11px';
     this.panel.append(detail);
   }
