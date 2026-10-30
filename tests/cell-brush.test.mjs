@@ -17,6 +17,24 @@ before(async () => {
 after(async () => { await server?.close(); });
 const snapshot = field => [field.profile.slice(), field.front.slice(), field.back.slice()];
 
+test('rectangular display grids address paint, shared edges and bounds independently on both axes', () => {
+  for (const [width, height] of [[381, 212], [87, 161]]) {
+    const field = new model.CellField('straight', false, width, height);
+    assert.equal(field.byteLength, width * height * 3);
+    field.paint([width - 12.3, height - 8.7], [width - 1.1, height - 1.2], 2.5, 5);
+    field.endStroke();
+    assert.equal(field.colorAt(width - 1.1, height - 1.2), 5);
+    assert.equal(field.colorAt(width - 8, height - 6), 5);
+    assert.equal(field.colorAt(1, 1), 0);
+    assert.equal(field.colorAt(width, height - 1), 0);
+    assert.equal(field.colorAt(width - 1, height), 0);
+    assert.equal(field.scratchBytes, 0);
+    field.paint([width - 1.1, height - 1.2], [width - 1.1, height - 1.2], 1, 0); field.endStroke();
+    assert.equal(field.colorAt(width - 1.1, height - 1.2), 0);
+    field.clear(); assert.equal(field.front.some(Boolean), false);
+  }
+});
+
 test('a nearly full fallback cell preserves a better inverted quarter-to-half corner', async () => {
   const fixture = JSON.parse(await readFile(new URL('./fixtures/cell-brush-nearly-full-corner.json', import.meta.url), 'utf8'));
   for (const slot of [1, 5, 0]) {

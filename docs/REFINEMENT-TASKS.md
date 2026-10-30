@@ -153,6 +153,12 @@ This is an evolution of the current engine, not a second painting engine.
 - [ ] Review remaining hand-drawn contour spikes after the coverage-aware fallback
   fix. Use the inspector's crossings and sample mismatches to identify additional
   causes before adding profiles or changing snapping rules.
+- [x] Add a view-sized rectangular grid at approximately four CSS pixels per cell,
+  keeping the 100 x 100 comparison mode and visible desktop tools. Report actual
+  dimensions/storage; preserve drawing/aspect on resize and clear only on explicit
+  refit/mode changes. Verify rectangular addressing/erasing and the 1920 x 1080
+  layout, paint mapping, resize preservation and refit behavior. Update counters
+  incrementally rather than scanning the full larger grid per frame.
 - [ ] Review the straight-cut demo's appearance and connectivity with the user before
   choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/

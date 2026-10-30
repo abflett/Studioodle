@@ -11,7 +11,7 @@ export class CellInspector {
     const diagnostic = this.cells.get(index), field = this.getField();
     this.panel.replaceChildren();
     const title = document.createElement('p');
-    title.textContent = `Cell (${index % 100}, ${Math.floor(index / 100)}) · ${diagnostic?.mode ?? 'not captured'}`;
+    title.textContent = `Cell (${index % field.width}, ${Math.floor(index / field.width)}) · ${diagnostic?.mode ?? 'not captured'}`;
     this.panel.append(title);
     if (!diagnostic) return;
     const canvas = document.createElement('canvas'); canvas.width = canvas.height = 300;
@@ -20,11 +20,11 @@ export class CellInspector {
     const ctx = canvas.getContext('2d')!;
     ctx.fillStyle = '#fffdf6'; ctx.fillRect(0, 0, 300, 300);
     const colors = ['#fffdf6', '#25343a', '#d85a55', '#e9ad45', '#6c9c75', '#508aa5', '#8973ad', '#e999ad'];
-    const cx = index % 100, cy = Math.floor(index / 100);
+    const cx = index % field.width, cy = Math.floor(index / field.width);
     for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
       const x = cx + dx, y = cy + dy;
       if (x < 0 || x >= 100 || y < 0 || y >= 100) continue;
-      const cell = field.cell(y * 100 + x), left = (dx + 1) * 100, top = (dy + 1) * 100;
+      const cell = field.cell(y * field.width + x), left = (dx + 1) * 100, top = (dy + 1) * 100;
       ctx.fillStyle = colors[cell.back]!; ctx.fillRect(left, top, 100, 100);
       ctx.fillStyle = colors[cell.front]!; ctx.beginPath();
       field.tables.variants[cell.profile]!.forEach(([px, py], i) => i ? ctx.lineTo(left + px * 100, top + py * 100) : ctx.moveTo(left + px * 100, top + py * 100));

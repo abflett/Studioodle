@@ -223,9 +223,13 @@ quality before implementing the affected behavior. No second paint engine or
 pixel-only authoritative spray format is planned.
 
 The standalone cell-brush demo lives under `tools/cell-brush/`; run `npm run cells`
-on port 1434. It stays 100 x 100 cells with eight palette slots and three bytes per
-cell (29.30 KiB), transparent paper, diameter/grid controls, repeatable test strokes
-and circle dabs. The new default is Straight cuts: 16 of 32 base slots, with neighbor
+on port 1434. It defaults to a rectangular grid fitted to approximately 4 x 4 CSS
+pixels per cell inside the visible canvas, with desktop tooling scrolling beside
+it. At a 1920 x 1080 browser viewport, the verified layout is 380 x 212 cells
+(236.02 KiB). A 100 x 100 comparison mode remains. Mode changes/explicit refits clear
+the drawing; ordinary resizing preserves the grid/reference and proportions.
+Eight palette slots and three bytes per cell remain, with dynamic memory reporting,
+transparent paper, diameter/grid controls, repeatable test strokes and circle dabs. The new default is Straight cuts: 16 of 32 base slots, with neighbor
 matching off. Empty/full, quarter/half splits, ten corner wedges and two opposite-
 edge cuts cover all 80 quarter-edge straight boundaries under transforms/color
 swaps. Remaining slots are reserved. The experimental 32 and original eight remain
@@ -285,8 +289,9 @@ This identifies one concrete spike cause without claiming all teeth are solved.
 
 The demo now has a Compare coverage selector: cells, a separately rendered round-
 brush reference, and a visual difference overlay. Every incoming gesture/example
-also updates a fixed 1000 x 1000 Canvas2D reference (3.81 MiB extra, reported in
-display memory); there is no input log and it never changes authoritative cells.
+also updates an independent Canvas2D reference (1000 x 1000 in comparison mode;
+roughly four physical pixels per cell adjusted for DPR in display mode, reported
+in display memory); there is no input log and it never changes authoritative cells.
 Clear/library switches reset both; draw/resize work in comparison views. The overlap
 example demonstrates genuine pointed arc-intersection gaps in the reference as
 well as cell approximations. A round brush does not guarantee rounded union/gap
@@ -315,3 +320,9 @@ Local cleanup limitation: automatic approval rejected bulk deletion of `work/`,
 `dist/` and `release/` during this cleanup. Existing generated artifacts remain on
 this machine; they are ignored and do not represent active repair work. The source
 cleanup and validation are independent of that local disk housekeeping.
+
+Rectangular grid tests cover landscape/portrait addressing and edge/erase bounds.
+Browser tests verify 1080p cell sizing, side-by-side tools, painting, resize
+preservation and explicit refit clearing. Counters update incrementally from dirty
+cells rather than rescanning the complete grid every frame. No speedup claim is
+implied by the increased-resolution demo.

@@ -7,7 +7,17 @@ runs the server manually. Build output and test screenshots go under ignored
 
 ## Libraries and controls
 
-The page stays 100 x 100 cells. The new default is **Straight cuts (16 of 32
+The default **4 x 4 display pixels per cell** mode fits a rectangular grid to the
+visible drawing area using CSS pixels, leaving a scrollable tool panel alongside
+it on desktop. A 1920 x 1080 browser viewport currently yields 380 x 212 cells
+(236.02 KiB of cell data); browser zoom and available viewport space affect this.
+The badge shows dimensions and the note shows actual cell size. **100 x 100
+comparison grid** preserves the coarse experiment. Changing modes or clicking
+**Fit grid to view (clears)** allocates a fresh grid and clears both drawing and
+reference. Window resizing preserves model/reference and aspect ratio; refit
+explicitly to restore approximately four-pixel cells at the new window size.
+
+The default library is **Straight cuts (16 of 32
 slots)**, with neighbor matching off. The previous **Experimental 32 shapes** and
 **Original 8 profiles** remain in the dropdown; switching clears the page and
 restores the library's matching default (on for the earlier modes).
@@ -20,8 +30,9 @@ Scroll the legend to inspect profiles; unused straight-library slots are reserve
 
 Compare coverage switches between Cell profiles, Round brush reference and a
 visual Difference overlay. The reference records the same incoming points as
-Canvas2D round-capped segments/circle dabs on a fixed 1000 x 1000 canvas, without
-cell fitting. It starts with the current page; refreshing resets both views.
+Canvas2D round-capped segments/circle dabs without cell fitting. In comparison mode its canvas is 1000 x 1000; display mode
+allocates it at approximately four physical pixels per cell (adjusted for device
+pixel ratio). It starts with the current page; refreshing resets both views.
 Clear, examples and library changes clear both; resize preserves the reference.
 Drawing also works while the reference is displayed.
 
@@ -141,12 +152,13 @@ snapping or fallback selection change is claimed by this instrumentation.
 ### Packed cell storage
 
 Each cell has three packed bytes: profile/orientation, front slot and back slot.
-The grid occupies 30,000 bytes (29.30 KiB), independent of stroke count. Slot zero
+The grid occupies width x height x 3 bytes, independent of stroke count. The
+100 x 100 mode occupies 30,000 bytes (29.30 KiB). Slot zero
 is transparent; paper is the container background. It is not white paint.
 
-Temporary sample payload is at most 640,000 bytes for an earlier-library gesture,
-or 1,920,000 bytes for straight cuts (64 interior + 128 edge samples per touched
-cell). The analytic shared-edge interval records are additional transient allocations
+Temporary sample payload is 64 bytes per touched cell in an earlier library,
+or 192 bytes for straight cuts (64 interior + 128 edge samples). Larger grids
+therefore increase worst-case gesture scratch as well as authoritative storage. The analytic shared-edge interval records are additional transient allocations
 (excluded from the sample-buffer counter). Both buffers and intervals release on
 pointer-up, cancellation, blur or clear. This is scratch
 coverage, not a saved raster or input-stroke log. UI totals exclude Map/object
@@ -158,13 +170,14 @@ population-count/edge-difference tables occupy 79.75 KiB in total; polygon array
 endpoint-index maps, candidate lists and browser Path2D objects are additional. Only the selected
 library's browser paths are built. Grid/diagnostic arrays and canvas buffers are
 also separate; the UI reports display backing bytes, not total process memory.
-The diagnostic reference adds 4,000,000 backing bytes (3.81 MiB), included in that
-counter. It stores pixels only, with no stroke log, and is never used to paint,
+The diagnostic reference contributes width x height x 4 backing bytes, included
+in that counter; it is 3.81 MiB in the 100 x 100 comparison mode. It stores pixels only, with no stroke log, and is never used to paint,
 correct or save the cell model. Edit timings now include reference rendering;
 they are not isolated cell-engine measurements. This is standalone comparison
 instrumentation, not a raster-engine addition to Studioodle.
 
-Canvas2D redraws changed cells, using prebuilt paths and integer physical pixels
+Painted/boundary counters update from dirty cells without scanning the entire
+grid each frame. Canvas2D redraws changed cells, using prebuilt paths and integer physical pixels
 per cell. Resize redraws the page. Opaque colors draw over an opaque base; transparent
 fronts erase their portion. No React, polygon union, worker or shader is involved.
 There is no smoothing, undo, zoom, fills, stickers, source-art conversion or output

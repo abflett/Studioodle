@@ -40,6 +40,8 @@ try {
   const settle = () => evaluate('new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))');
   await evaluate('document.fonts.ready');
   await settle();
+  assert.equal(await evaluate('document.querySelector("#grid-mode").value'), 'display');
+  await evaluate('document.querySelector("#grid-mode").value="legacy"; document.querySelector("#grid-mode").dispatchEvent(new Event("change"))'); await settle();
   assert.equal(await evaluate('document.querySelector("#library").value'), 'straight');
   assert.equal(await evaluate('document.querySelector("#match-edges").checked'), false, 'Independent straight fitting is the default');
   assert.equal(await evaluate('document.querySelectorAll("#profiles canvas").length'), 32);
@@ -49,6 +51,7 @@ try {
     box = await evaluate('(()=>{const b=document.querySelector("#paint").getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height}})()');
     await evaluate(`document.querySelector('[data-slot="${color}"]').click()`);
     const x = box.x + a[0] * box.w, y = box.y + a[1] * box.h;
+    await cdp('Input.dispatchMouseEvent', { type: 'mouseMoved', x, y, buttons: 0 });
     await cdp('Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', buttons: 1, clickCount: 1 });
     for (let i = 1; i <= 18; i++) await cdp('Input.dispatchMouseEvent', { type: 'mouseMoved', x: x + (b[0] - a[0]) * box.w * i / 18, y: y + (b[1] - a[1]) * box.h * i / 18, buttons: 1 });
     await cdp('Input.dispatchMouseEvent', { type: 'mouseReleased', x: box.x + b[0] * box.w, y: box.y + b[1] * box.h, button: 'left', buttons: 0, clickCount: 1 }); await settle();
@@ -122,7 +125,7 @@ try {
   await fs.writeFile(path.join(output, 'thin-arc-inspector.png'), Buffer.from(thinArc.data, 'base64'));
   await evaluate('document.querySelector("#inspect-cells").click()');
   const beforeInspect = await evaluate('document.querySelector("#painted").textContent');
-  await stroke([.5, .38], [.5, .38], 2);
+  await stroke([.505, .385], [.505, .385], 2);
   assert.equal(await evaluate('document.querySelector("#painted").textContent'), beforeInspect, 'Inspection does not paint');
   assert.ok(await evaluate('document.querySelector("#cell-inspector").textContent.includes("Cell (50, 38)")'));
   await evaluate('document.querySelector("#inspect-cells").click(); document.querySelector("#curve-kind").value="spiral"; document.querySelector("#grid-phase").value=".375"; document.querySelector("#grid-phase").dispatchEvent(new Event("input")); document.querySelector("#thin-curve").click()'); await settle();
@@ -160,6 +163,27 @@ try {
   assert.equal(await evaluate('document.querySelector("#scratch").textContent'), '0.00 KiB');
   await evaluate('document.querySelector("#capture-cells").click(); document.querySelector("#size").value="8"');
   assert.equal(await evaluate('document.querySelector("#cell-inspector").textContent'), '', 'Disabling capture releases diagnostics');
+  await cdp('Emulation.setDeviceMetricsOverride', { width: 1920, height: 1080, deviceScaleFactor: 1, mobile: false }); await settle();
+  await evaluate('document.querySelector("#grid-mode").value="display"; document.querySelector("#grid-mode").dispatchEvent(new Event("change"))'); await settle();
+  const displayGrid = await evaluate(`(()=>{
+    const b=document.querySelector('#paint').getBoundingClientRect(), dims=document.querySelector('#grid-info').textContent.match(/[0-9]+/g).map(Number);
+    return {width:dims[0],height:dims[1],cellX:b.width/dims[0],cellY:b.height/dims[1],bottom:b.bottom,right:b.right,bytes:document.querySelector('#cell-data').textContent};
+  })()`);
+  assert.ok(displayGrid.width > 300 && displayGrid.height > 150, 'Display grid follows the usable 1080p canvas');
+  assert.ok(displayGrid.cellX >= 4 && displayGrid.cellX < 4.03 && displayGrid.cellY >= 4 && displayGrid.cellY < 4.03);
+  assert.ok(displayGrid.bottom <= 1080 && displayGrid.right < 1920 - 250, 'Canvas and tooling fit side by side');
+  await evaluate('document.querySelector("#size").value="4"; document.querySelector("#size").dispatchEvent(new Event("input"))');
+  await stroke([.12, .25], [.83, .65], 5);
+  const displayPainted = await evaluate('document.querySelector("#painted").textContent');
+  assert.ok(Number(displayPainted) > 500, 'Pointer mapping reaches across the larger rectangular grid');
+  const displayImage = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
+  await fs.writeFile(path.join(output, 'display-1920x1080.png'), Buffer.from(displayImage.data, 'base64'));
+  await cdp('Emulation.setDeviceMetricsOverride', { width: 1280, height: 900, deviceScaleFactor: 1, mobile: false }); await settle();
+  assert.equal(await evaluate('document.querySelector("#painted").textContent'), displayPainted, 'Resizing preserves the model');
+  await evaluate('document.querySelector("#fit-grid").click()'); await settle();
+  assert.equal(await evaluate('document.querySelector("#painted").textContent'), '0', 'Explicit refit clears and reallocates');
+  console.log('1080p display grid:', displayGrid);
+  await evaluate('document.querySelector("#grid-mode").value="legacy"; document.querySelector("#grid-mode").dispatchEvent(new Event("change")); document.querySelector("#size").value="8"'); await settle();
   await cdp('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true }); await settle();
   assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, 'No mobile horizontal overflow');
   await cdp('Emulation.setTouchEmulationEnabled', { enabled: true });

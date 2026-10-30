@@ -16,9 +16,9 @@ const joinPasses = 6;
 
 export class CellField {
   // Exactly three authoritative bytes per cell; slot zero means transparent.
-  readonly profile = new Uint8Array(size * size);
-  readonly front = new Uint8Array(size * size);
-  readonly back = new Uint8Array(size * size);
+  readonly profile: Uint8Array;
+  readonly front: Uint8Array;
+  readonly back: Uint8Array;
   private working = new Map<number, WorkingCell>();
   private outlineEdges = new Map<number, StrokeEdge>();
   private strokeSlot: number | undefined;
@@ -26,7 +26,9 @@ export class CellField {
   readonly tables: ProfileLibrary;
   // Optional experiment observer; normal painting retains no diagnostic history.
   onFit?: (index: number, diagnostic: CellDiagnostic) => void;
-  constructor(library: LibraryId = 'experimental', public matchNeighbors = true) {
+  constructor(library: LibraryId = 'experimental', public matchNeighbors = true, readonly width = size, readonly height = width) {
+    if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 4096 || height > 4096) throw new RangeError('Grid dimensions must be integers from 1 to 4096');
+    this.profile = new Uint8Array(width * height); this.front = new Uint8Array(width * height); this.back = new Uint8Array(width * height);
     this.library = library;
     this.tables = libraries[this.library];
   }
@@ -36,8 +38,8 @@ export class CellField {
   cell(index: number): Cell { return { profile: this.profile[index]!, front: this.front[index]!, back: this.back[index]! }; }
   colorAt(x: number, y: number): number {
     const cx = Math.floor(x), cy = Math.floor(y);
-    if (cx < 0 || cy < 0 || cx >= size || cy >= size) return 0;
-    const cell = this.cell(cy * size + cx);
+    if (cx < 0 || cy < 0 || cx >= this.width || cy >= this.height) return 0;
+    const cell = this.cell(cy * this.width + cx);
     return this.tables.inProfile(cell.profile, x - cx, y - cy) ? cell.front : cell.back;
   }
   beginStroke(slot: number) { const dirty = this.endStroke(); this.strokeSlot = slot; return dirty; }
@@ -240,8 +242,8 @@ export class CellField {
 
   private neighborColors(index: number): (Uint8Array | undefined)[] {
     const { fineEdgeMasks } = this.tables;
-    const x = index % size, y = Math.floor(index / size);
-    const neighbors = [y ? index - size : -1, x < size - 1 ? index + 1 : -1, y < size - 1 ? index + size : -1, x ? index - 1 : -1];
+    const x = index % this.width, y = Math.floor(index / this.width);
+    const neighbors = [y ? index - this.width : -1, x < this.width - 1 ? index + 1 : -1, y < this.height - 1 ? index + this.width : -1, x ? index - 1 : -1];
     return neighbors.map((neighbor, side) => {
       if (neighbor < 0) return undefined;
       const cell = this.cell(neighbor), opposite = (side + 2) % 4;
@@ -254,10 +256,10 @@ export class CellField {
   private strokeEdge(x: number, y: number, side: number): StrokeEdge {
     const horizontal = side === 0 || side === 2;
     const ex = x + Number(side === 1), ey = y + Number(side === 2);
-    const key = horizontal ? ey * size + ex : size * (size + 1) + ey * (size + 1) + ex;
+    const key = horizontal ? ey * this.width + ex : this.width * (this.height + 1) + ey * (this.width + 1) + ex;
     let edge = this.outlineEdges.get(key);
     if (edge) return edge;
-    const owner = horizontal ? (ey ? (ey - 1) * size + ex : ex) : ey * size + (ex ? ex - 1 : 0);
+    const owner = horizontal ? (ey ? (ey - 1) * this.width + ex : ex) : ey * this.width + (ex ? ex - 1 : 0);
     const ownerSide = horizontal ? (ey ? 2 : 0) : ex ? 1 : 3;
     const original = this.working.get(owner)?.original ?? this.cell(owner);
     const mask = this.tables.fineEdgeMasks[original.profile * 4 + ownerSide]!;
@@ -276,13 +278,13 @@ export class CellField {
     const dirty = this.strokeSlot !== slot ? this.beginStroke(slot) : new Set<number>();
     const dx = b[0] - a[0], dy = b[1] - a[1], length2 = dx * dx + dy * dy;
     const left = Math.max(0, Math.floor(Math.min(a[0], b[0]) - radius));
-    const right = Math.min(size - 1, Math.floor(Math.max(a[0], b[0]) + radius));
+    const right = Math.min(this.width - 1, Math.floor(Math.max(a[0], b[0]) + radius));
     const top = Math.max(0, Math.floor(Math.min(a[1], b[1]) - radius));
-    const bottom = Math.min(size - 1, Math.floor(Math.max(a[1], b[1]) + radius));
+    const bottom = Math.min(this.height - 1, Math.floor(Math.max(a[1], b[1]) + radius));
     for (let y = top; y <= bottom; y++) for (let x = left; x <= right; x++) {
       const centerT = length2 ? Math.max(0, Math.min(1, ((x + .5 - a[0]) * dx + (y + .5 - a[1]) * dy) / length2)) : 0;
       if ((x + .5 - a[0] - centerT * dx) ** 2 + (y + .5 - a[1] - centerT * dy) ** 2 > (radius + Math.SQRT1_2) ** 2) continue;
-      const index = y * size + x, old = this.cell(index);
+      const index = y * this.width + x, old = this.cell(index);
       let working = this.working.get(index), changed = false;
       for (let i = 0; i < count; i++) {
         const px = x + sampleX[i]!, py = y + sampleY[i]!;
