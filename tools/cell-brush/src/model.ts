@@ -1,10 +1,12 @@
 import { libraries, edgeDifference, pop32, sampleX, sampleY, sampleCount as count, monotonicity, reverseMonotonicity } from './profiles';
 import type { Point, LibraryId, ProfileLibrary } from './profiles';
+import { capsuleInterval, paintRuns, edgeColor, cellCrossings, cutKey } from './strokeEdges';
+import type { StrokeEdge, EdgeRun } from './strokeEdges';
 export type { Point } from './profiles';
 export { profiles, profileNames, inProfile } from './profiles';
 export const size = 100;
 type Cell = { profile: number; front: number; back: number };
-type WorkingCell = { target: Uint8Array; original: Cell; edges?: Uint8Array };
+type WorkingCell = { target: Uint8Array; original: Cell; edges?: Uint8Array; outline?: StrokeEdge[] };
 const edgeWeight = 4;
 const joinPasses = 6;
 
@@ -14,6 +16,7 @@ export class CellField {
   readonly front = new Uint8Array(size * size);
   readonly back = new Uint8Array(size * size);
   private working = new Map<number, WorkingCell>();
+  private outlineEdges = new Map<number, StrokeEdge>();
   private strokeSlot: number | undefined;
   readonly library: LibraryId;
   readonly tables: ProfileLibrary;
@@ -54,7 +57,7 @@ export class CellField {
         if (!changed) break;
       }
     }
-    this.working.clear(); this.strokeSlot = undefined; return dirty;
+    this.working.clear(); this.outlineEdges.clear(); this.strokeSlot = undefined; return dirty;
   }
   clear() { this.endStroke(); this.profile.fill(0); this.front.fill(0); this.back.fill(0); }
 
@@ -75,6 +78,32 @@ export class CellField {
         (survivors[color] === survivors[retained] && retained === 0)) retained = color;
     }
     if (retained === slot) { this.profile[index] = slot ? 1 : 0; this.front[index] = slot; this.back[index] = 0; return; }
+    if (working.outline) {
+      const crossings = cellCrossings(working.outline, slot);
+      let direct: number[] | undefined;
+      if (crossings.length === 2) {
+        const [a, b] = crossings as [Point, Point];
+        const sameBorder = (a[0] === b[0] && (a[0] === 0 || a[0] === 1)) || (a[1] === b[1] && (a[1] === 0 || a[1] === 1));
+        direct = sameBorder ? [0, 1] : this.tables.cuts.get(cutKey(a, b));
+      } else if (!crossings.length) direct = [0, 1];
+      if (direct) {
+        // The endpoints determine geometry. Coverage only selects which side is
+        // painted; it cannot replace an exit with a better-scoring different one.
+        let best = { profile: 0, front: slot, back: retained }, bestError = Infinity;
+        for (const profile of direct) for (const reverse of [false, true]) {
+          const front = reverse ? retained : slot, back = reverse ? slot : retained;
+          let error = 0;
+          for (let i = 0; i < count; i++) if (sampleColor(profile, front, back, i) !== target[i]) error++;
+          if (error < bestError) { best = { profile, front, back }; bestError = error; }
+        }
+        if (best.profile <= 1) {
+          const color = best.profile ? best.front : best.back;
+          best = { profile: color ? 1 : 0, front: color, back: 0 };
+        }
+        this.profile[index] = best.profile; this.front[index] = best.front; this.back[index] = best.back;
+        return;
+      }
+    }
     const targetDirection = monotonicity(i => target[i] === slot);
     const simpleBoundary = !!(targetDirection & 3) && !!(targetDirection & 12);
     const followsDirection = (profile: number, front: number, back: number) => {
@@ -200,6 +229,26 @@ export class CellField {
     });
   }
 
+  private strokeEdge(x: number, y: number, side: number): StrokeEdge {
+    const horizontal = side === 0 || side === 2;
+    const ex = x + Number(side === 1), ey = y + Number(side === 2);
+    const key = horizontal ? ey * size + ex : size * (size + 1) + ey * (size + 1) + ex;
+    let edge = this.outlineEdges.get(key);
+    if (edge) return edge;
+    const owner = horizontal ? (ey ? (ey - 1) * size + ex : ex) : ey * size + (ex ? ex - 1 : 0);
+    const ownerSide = horizontal ? (ey ? 2 : 0) : ex ? 1 : 3;
+    const original = this.working.get(owner)?.original ?? this.cell(owner);
+    const mask = this.tables.fineEdgeMasks[original.profile * 4 + ownerSide]!;
+    const runs: EdgeRun[] = [];
+    for (let i = 0; i < 32; i++) {
+      const color = mask & (1 << i) ? original.front : original.back;
+      const last = runs.at(-1);
+      if (last?.color === color) last.to = (i + 1) / 32;
+      else runs.push({ from: i / 32, to: (i + 1) / 32, color });
+    }
+    edge = { start: [ex, ey], horizontal, runs }; this.outlineEdges.set(key, edge); return edge;
+  }
+
   paint(a: Point, b: Point, radius: number, slot: number): Set<number> {
     const { sampleColor } = this.tables;
     const dirty = this.strokeSlot !== slot ? this.beginStroke(slot) : new Set<number>();
@@ -226,23 +275,22 @@ export class CellField {
         working.target[i] = slot; changed = true;
       }
       if (this.library === 'straight') {
-        const edges = working?.edges ?? Uint8Array.from({ length: 128 }, (_, i) => {
-          const side = Math.floor(i / 32), probe = i % 32;
-          return this.tables.fineEdgeMasks[old.profile * 4 + side]! & (1 << probe) ? old.front : old.back;
-        });
-        for (let side = 0; side < 4; side++) for (let i = 0; i < 32; i++) {
-          const t = (i + .5) / 32;
-          const px = x + (side === 1 ? 1 : side === 3 ? 0 : t);
-          const py = y + (side === 0 ? 0 : side === 2 ? 1 : t);
-          const along = length2 ? Math.max(0, Math.min(1, ((px - a[0]) * dx + (py - a[1]) * dy) / length2)) : 0;
-          if ((px - a[0] - along * dx) ** 2 + (py - a[1] - along * dy) ** 2 > radius * radius || edges[side * 32 + i] === slot) continue;
-          if (!working) {
-            working = { original: old, target: Uint8Array.from({ length: count }, (_, sample) => sampleColor(old.profile, old.front, old.back, sample)) };
-            this.working.set(index, working);
-          }
-          edges[side * 32 + i] = slot; changed = true;
+        const outline = [0, 1, 2, 3].map(side => this.strokeEdge(x, y, side));
+        for (const edge of outline) {
+          const interval = capsuleInterval(edge.start, edge.horizontal, a, b, radius);
+          if (!interval) continue;
+          const runs = paintRuns(edge.runs, interval, slot);
+          if (runs !== edge.runs) { edge.runs = runs; edge.crossings = undefined; }
+          changed = true;
         }
-        if (working) working.edges = edges;
+        if (changed && !working) {
+          working = { original: old, target: Uint8Array.from({ length: count }, (_, sample) => sampleColor(old.profile, old.front, old.back, sample)) };
+          this.working.set(index, working);
+        }
+        if (working) {
+          working.outline = outline;
+          working.edges = Uint8Array.from({ length: 128 }, (_, i) => edgeColor(outline[Math.floor(i / 32)]!, (i % 32 + .5) / 32));
+        }
       }
       if (!changed || !working) continue;
       this.fit(index, working, slot);

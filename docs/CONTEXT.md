@@ -231,21 +231,22 @@ edge cuts cover all 80 quarter-edge straight boundaries under transforms/color
 swaps. Remaining slots are reserved. The experimental 32 and original eight remain
 in the dropdown; switching clears the page and resets matching to that mode's default.
 
-Straight mode accumulates 64 interior and 128 shared-coordinate stroke-edge probes
-per touched cell, snaps edge coverage to quarters, then selects a matching cut with
-interior coverage as secondary evidence. No bands/caps/dots are in this dictionary.
-Rounded tangencies now normalize nearly uniform interiors (60/64 samples) to
-full/empty when the selected cut cannot match the rounded edges, preventing repeated
-inverted-corner teeth. Exact small cuts remain. A 384-dab offset/radius/matching
-sweep checks the regression; cell/lookup storage is unchanged.
-One-cut/two-color limits deliberately discard small or conflicting detail; thin
-marks can still show quarter-cell steps. Tests cover complete edge vocabulary,
-circle continuity/error and stroke partitioning with matching off/on. Optional
-joining uses at most six bounded passes over touched cells, matching actual edges
-and penalizing reversals. Older-mode directional eligibility and fitting remain.
-Scratch releases after a gesture; untouched neighbors never change. Both loaded
-libraries and shared numeric lookups total 79.75 KiB, excluding polygons/Path2D
-objects. See the tool README for storage bounds and algorithm limits.
+Straight mode now analytically intersects the swept round brush with grid edges.
+Each physical edge has one shared per-gesture colored-interval record; cached
+quarter crossings determine the cell profile directly via an endpoint index.
+Coverage chooses the side colors, not alternative exits. Degenerate same-border
+or collapsed-corner cuts become uniform; contour segments may lie on grid edges.
+The sampled scorer/neighbor solver remains only for unsupported complex crossings.
+This replaces independent whole-edge-mask fitting for simple outside contours.
+The user's reported teeth concern these outside contours, not overlapping-dab
+cusps; do not conflate them. Tests cover analytic intersections, shared exits,
+full-to-3/4 alignment, curves, orientations, rounding ties and the 384-dab sweep.
+One-cut/two-color limitations still apply to tiny or conflicting detail.
+
+All gesture samples and analytic edge intervals release afterward. Cell data is
+unchanged. Both loaded libraries/shared numeric lookups remain 79.75 KiB; cut-index
+maps, polygons/Path2D objects and transient interval records are additional. See
+the tool README for limits. Matching is off by default for the straight library.
 
 No source-art conversion, main-app engine change, native build or measured speedup
 claim is included. `cells:typecheck`, `cells:build` and `test:cells` verify the isolated

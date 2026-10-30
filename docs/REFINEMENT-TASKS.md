@@ -129,6 +129,14 @@ This is an evolution of the current engine, not a second painting engine.
   reference gap/cusp, comparison controls, drawing while comparing and reset.
   Reference pixels add 3.81 MiB of diagnostic backing, included in display memory;
   no extra input log, authoritative raster paint or new profile fix is introduced.
+- [x] Replace approximate edge-mask fitting for simple straight-library contours
+  with analytic round-brush/grid-edge intersections and shared colored edge
+  intervals. Snap/cache shared crossings and construct the profile from its two
+  endpoints; coverage chooses colors only. Handle collapsed-corner and same-edge
+  cuts explicitly, retaining the old scorer only for unsupported complex crossings.
+  Regress analytic intervals, shared exits, full-to-3/4 alignment, curved strokes,
+  direction/orientation, stable rounding ties and existing circle tests. The user's
+  outside-edge teeth are distinct from true overlap cusps. No main-app engine change.
 - [ ] Review the straight-cut demo's appearance and connectivity with the user before
   choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/

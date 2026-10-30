@@ -47,29 +47,28 @@ quarter positions on the cell perimeter, including color complements. A focused
 regression enumerates every case. No bands, caps, dots or curves are in this set;
 slots 16-31 are excluded from selection, not silently used as empty profiles.
 
-The brush accumulates 8 x 8 interior samples and 32 exact-boundary probes on each
-of four cell edges for the active gesture. Edge probes evaluate the swept capsule
-at shared geometric coordinates. Each group of eight edge probes chooses one
-quarter-edge color by majority (ties favor incoming paint). Independent fitting
-prioritizes these quarter-edge signatures, then interior coverage error. Matching
-edge evidence is from the stroke itself, not a neighbor traversal or diffusion pass.
-Both adjacent cells therefore see the same new-stroke evidence on a shared edge.
+Straight mode intersects the actual round-capped brush segment with each grid
+edge analytically: the swept strip and two circular caps. Each physical edge has
+one shared active-gesture record of colored intervals. Painting overwrites and
+merges those intervals; it does not append an input-stroke log. Quarter crossings
+are cached per edge version, with stable numerical handling at rounding ties.
 
-At rounded tangencies the four independently quantized edges can describe no
-single straight cut. If the selected cut still disagrees with those edges and at
-least 60 of 64 interior probes agree on one color, normalize to that uniform color
-instead of inventing a repeated inverted-corner tooth. Exactly representable small
-corner cuts remain intact. A regression sweeps 384 dabs across three radii, eight
-offsets in each axis and matching off/on, checking contour monotonicity near the
-rounded extremities. This does not add a neighbor correction or blur pass.
+For a cell with one contour, its two outline crossings determine the profile by
+a precomputed endpoint index. Coverage samples choose which side is painted; they
+cannot replace an endpoint with a better-scoring but incompatible exit. These
+simple cases do not need neighbor matching. A contour that collapses onto one
+border becomes a uniform cell with the contour along the grid edge; paired
+crossings that snap to the same corner cancel. This avoids fitting contradictory
+whole-edge color masks near rounded tangencies.
 
-This is an approximation, not a universal watertightness guarantee: an individual
-cell still supports only one straight cut and two colors. Sub-cell dots, narrow
-bands, multiple boundary crossings and three-color junctions must lose detail.
-Previous quantization, corner collapse and incompatible edge patterns can still
-produce quarter-cell steps or small disagreements, especially for thin marks.
-The circle fixtures test radial continuity and <=0.3-cell boundary error at three
-radii with matching both off and on; they do not establish all-shape quality.
+The prior sampled-edge scorer and nearly uniform fallback remain only for cells
+with more complex crossings that one straight cut cannot represent. This is still
+an approximation: narrow bands, tiny enclosed marks and three-color junctions can
+lose detail. Do not infer universal watertightness for arbitrary geometry from the
+simple-contour tests. Regressions check analytic intervals, all 80 quarter-edge
+cuts, actual exit/entry coordinates on continuing cuts, a known full-to-3/4 case,
+curved/shallow strokes in every orientation, circle radial error and the 384-dab
+rounding sweep, with matching off/on.
 
 ## Earlier library and optional joins
 
@@ -87,7 +86,8 @@ Optional joining begins again from complete-gesture independent fits and runs at
 most six alternating sorted passes over touched cells. It compares actual selected
 neighbors using 32 probes per edge, with coverage, continuity and stronger reversal
 penalties. It may sacrifice local coverage to obtain cleaner contours. In straight
-mode, the stroke-derived edge signatures remain part of that objective. Untouched
+mode, direct endpoint construction takes precedence; this scorer is used only for
+unsupported complex crossing cases. Untouched
 neighbors never change. No global optimum or arbitrary topology guarantee is claimed.
 
 ## Storage and rendering
@@ -98,14 +98,16 @@ is transparent; paper is the container background. It is not white paint.
 
 Temporary sample payload is at most 640,000 bytes for an earlier-library gesture,
 or 1,920,000 bytes for straight cuts (64 interior + 128 edge samples per touched
-cell). Buffers release on pointer-up, cancellation, blur or clear. This is scratch
+cell). The analytic shared-edge interval records are additional transient allocations
+(excluded from the sample-buffer counter). Both buffers and intervals release on
+pointer-up, cancellation, blur or clear. This is scratch
 coverage, not a saved raster or input-stroke log. UI totals exclude Map/object
 bookkeeping and temporary fitting allocations. Quantization between separate
 strokes can still lose detail; straight-segment event partition invariance is tested.
 
 Both dictionaries are loaded for comparison. Their typed tables plus the shared
 population-count/edge-difference tables occupy 79.75 KiB in total; polygon arrays,
-candidate lists and browser Path2D objects are additional. Only the selected
+endpoint-index maps, candidate lists and browser Path2D objects are additional. Only the selected
 library's browser paths are built. Grid/diagnostic arrays and canvas buffers are
 also separate; the UI reports display backing bytes, not total process memory.
 The diagnostic reference adds 4,000,000 backing bytes (3.81 MiB), included in that

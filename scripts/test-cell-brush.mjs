@@ -38,6 +38,7 @@ try {
   await cdp('Page.navigate', { url: 'http://127.0.0.1:1435/' });
   for (let i = 0; i < 100; i++) { if (await evaluate('!!document.querySelector("#paint")?.width')) break; await new Promise(r => setTimeout(r, 100)); }
   const settle = () => evaluate('new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))');
+  await evaluate('document.fonts.ready');
   await settle();
   assert.equal(await evaluate('document.querySelector("#library").value'), 'straight');
   assert.equal(await evaluate('document.querySelector("#match-edges").checked'), false, 'Independent straight fitting is the default');
@@ -45,6 +46,7 @@ try {
   assert.equal(await evaluate('document.querySelectorAll("#profiles .reserved").length'), 16, 'Unused straight slots remain visibly reserved');
   let box = await evaluate('(()=>{const b=document.querySelector("#paint").getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height}})()');
   const stroke = async (a, b, color) => {
+    box = await evaluate('(()=>{const b=document.querySelector("#paint").getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height}})()');
     await evaluate(`document.querySelector('[data-slot="${color}"]').click()`);
     const x = box.x + a[0] * box.w, y = box.y + a[1] * box.h;
     await cdp('Input.dispatchMouseEvent', { type: 'mousePressed', x, y, button: 'left', buttons: 1, clickCount: 1 });
@@ -63,6 +65,12 @@ try {
   await evaluate('document.querySelector("#show-grid").click()');
   assert.equal(await evaluate('document.querySelector("#grid").hidden'), true);
   await evaluate('document.querySelector("#show-grid").click()');
+  // Exercise native input before full-page capture temporarily changes the
+  // emulated viewport. Later comparison screenshots use programmatic examples.
+  await evaluate('(()=>{const select=document.querySelector("#view");select.value="reference";select.dispatchEvent(new Event("change"));})()'); await settle();
+  await stroke([.1, .1], [.2, .1], 2);
+  assert.equal(await evaluate('document.querySelector("#reference").getContext("2d").getImageData(150,100,1,1).data[0]'), 216, 'Drawing still works while the reference is displayed');
+  await evaluate('(()=>{const select=document.querySelector("#view");select.value="cells";select.dispatchEvent(new Event("change"));})()'); await settle();
   const image = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
   await fs.writeFile(path.join(output, 'desktop.png'), Buffer.from(image.data, 'base64'));
   await stroke([.5, .5], [.55, .5], 0);
@@ -102,8 +110,6 @@ try {
   assert.ok(cusp[0] === 37 && cusp[1] >= 70 && cusp[2] >= 70, 'The unquantized gap narrows to a real cusp between blue circles');
   const overlapReference = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
   await fs.writeFile(path.join(output, 'overlap-reference.png'), Buffer.from(overlapReference.data, 'base64'));
-  await stroke([.1, .1], [.2, .1], 2);
-  assert.equal(await evaluate('document.querySelector("#reference").getContext("2d").getImageData(150,100,1,1).data[0]'), 216, 'Drawing still works while the reference is displayed');
   await evaluate('(()=>{const select=document.querySelector("#view");select.value="difference";select.dispatchEvent(new Event("change"));})()'); await settle();
   assert.equal(await evaluate('document.querySelector("#reference").style.mixBlendMode'), 'difference');
   await evaluate('(()=>{const select=document.querySelector("#view");select.value="cells";select.dispatchEvent(new Event("change"));})()');

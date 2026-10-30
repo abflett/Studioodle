@@ -1,4 +1,5 @@
 export type Point = readonly [number, number];
+import { cutKey } from './strokeEdges';
 type Polygon = Point[];
 const square: Polygon = [[0, 0], [1, 0], [1, 1], [0, 1]];
 const rectangle = (left: number, top: number, right: number, bottom: number): Polygon => [[left, top], [right, top], [right, bottom], [left, bottom]];
@@ -138,8 +139,22 @@ export function createProfileLibrary(shapes: Polygon[], names: string[]) {
     if (seen.has(key)) return false;
     seen.add(key); return true;
   });
+  const cuts = new Map<number, number[]>();
+  for (const code of candidates) {
+    const polygon = variants[code]!, internal: [Point, Point][] = [];
+    for (let i = 0; i < polygon.length; i++) {
+      const a = polygon[i]!, b = polygon[(i + 1) % polygon.length]!;
+      if ((a[0] === b[0] && (a[0] === 0 || a[0] === 1)) || (a[1] === b[1] && (a[1] === 0 || a[1] === 1))) continue;
+      if (Math.hypot(a[0] - b[0], a[1] - b[1]) > .000001) internal.push([a, b]);
+    }
+    if (internal.length !== 1) continue;
+    const [a, b] = internal[0]!;
+    if ([...a, ...b].some(value => Math.abs(value * 4 - Math.round(value * 4)) > .000001)) continue;
+    const key = cutKey(a, b), codes = cuts.get(key) ?? [];
+    codes.push(code); cuts.set(key, codes);
+  }
   const tableBytes = maskLow.byteLength + maskHigh.byteLength + edgeMasks.byteLength + fineEdgeMasks.byteLength + directionFlags.byteLength;
-  return { shapes, names, variants, inProfile, maskLow, maskHigh, edgeMasks, fineEdgeMasks, directionFlags, sampleColor, candidates, tableBytes };
+  return { shapes, names, variants, inProfile, maskLow, maskHigh, edgeMasks, fineEdgeMasks, directionFlags, sampleColor, candidates, cuts, tableBytes };
 }
 export type ProfileLibrary = ReturnType<typeof createProfileLibrary>;
 export const experimental = createProfileLibrary(profiles, profileNames);

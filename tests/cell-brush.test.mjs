@@ -4,13 +4,91 @@ import { createServer } from 'vite';
 
 let server, model;
 let library;
+let edgeGeometry;
 before(async () => {
   server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
   model = await server.ssrLoadModule('/tools/cell-brush/src/model.ts');
   library = await server.ssrLoadModule('/tools/cell-brush/src/profiles.ts');
+  edgeGeometry = await server.ssrLoadModule('/tools/cell-brush/src/strokeEdges.ts');
 });
 after(async () => { await server?.close(); });
 const snapshot = field => [field.profile.slice(), field.front.slice(), field.back.slice()];
+
+function crossingAt(field, index, side) {
+  const cell = field.cell(index), mask = field.tables.fineEdgeMasks[cell.profile * 4 + side];
+  const colors = Array.from({ length: 32 }, (_, i) => mask & (1 << i) ? cell.front : cell.back);
+  return colors.flatMap((color, i) => i && color !== colors[i - 1] ? [i / 32] : []);
+}
+
+function assertSharedCrossings(field) {
+  let compared = 0;
+  for (let y = 0; y < 100; y++) for (let x = 0; x < 100; x++) {
+    const index = y * 100 + x;
+    for (const [next, side, opposite] of [[x < 99 ? index + 1 : -1, 1, 3], [y < 99 ? index + 100 : -1, 2, 0]]) {
+      if (next < 0) continue;
+      const a = crossingAt(field, index, side), b = crossingAt(field, next, opposite);
+      // A uniform cell can carry a contour along the grid edge itself. Compare
+      // entry/exit coordinates where both cuts continue through the two cells.
+      if (!a.length || !b.length) continue;
+      assert.deepEqual(a, b, `The contour must enter cell ${next} exactly where it exits ${index}`);
+      compared++;
+    }
+  }
+  assert.ok(compared > 10, 'Exercise actual shared contour exits');
+}
+
+test('capsule intersections use the brush outline rather than edge-center occupancy', () => {
+  for (const position of [.125 - 1e-12, .125, .125 + 1e-12]) assert.equal(edgeGeometry.snapQuarter(position), .25, 'Numerical noise must not split a shared rounding tie');
+  const interval = edgeGeometry.capsuleInterval([0, 0], true, [.4, .3], [.4, .3], .5);
+  assert.ok(Math.abs(interval[0]) < 1e-9 && Math.abs(interval[1] - .8) < 1e-9);
+  assert.deepEqual(edgeGeometry.capsuleInterval([0, 0], true, [-1, .25], [2, .25], .5), [0, 1]);
+  assert.equal(edgeGeometry.capsuleInterval([0, 0], true, [.5, 1], [.5, 1], .5), undefined);
+  const a = [12.3, 14.7], b = [85.2, 44.1];
+  for (let x = 10; x < 90; x++) {
+    const forward = edgeGeometry.capsuleInterval([x, 20], true, a, b, 2);
+    const reverse = edgeGeometry.capsuleInterval([x, 20], true, b, a, 2);
+    assert.equal(!!forward, !!reverse);
+    if (forward) for (let i = 0; i < 2; i++) assert.ok(Math.abs(forward[i] - reverse[i]) < 1e-9);
+  }
+  const empty = [{ from: 0, to: 1, color: 0 }];
+  const first = edgeGeometry.paintRuns(empty, [.25, .75], 1);
+  assert.deepEqual(first, [{ from: 0, to: .25, color: 0 }, { from: .25, to: .75, color: 1 }, { from: .75, to: 1, color: 0 }]);
+  assert.strictEqual(edgeGeometry.paintRuns(first, [.3, .7], 1), first, 'Repeated coverage must not accumulate edge records');
+  assert.deepEqual(edgeGeometry.paintRuns(first, [.5, 1], 2), [{ from: 0, to: .25, color: 0 }, { from: .25, to: .5, color: 1 }, { from: .5, to: 1, color: 2 }]);
+});
+
+test('straight contours share exact exit/entry positions without neighbor matching', () => {
+  for (const matching of [false, true]) {
+    for (const [cx, cy, radius] of [[50, 50, 6], [50.125, 50.375, 7.25], [50.3, 49.7, 14]]) {
+      const field = new model.CellField('straight', matching);
+      field.paint([cx, cy], [cx, cy], radius, 1); field.endStroke(); assertSharedCrossings(field);
+    }
+    for (const code of [0, 32, 64, 96, 128, 160, 192, 224]) {
+      const transform = point => library.transformPoint(point.map(v => v / 100), code).map(v => v * 100);
+      const field = new model.CellField('straight', matching);
+      field.paint(transform([10.2, 20.3]), transform([88.1, 43.7]), 3.5, 1); field.endStroke();
+      assertSharedCrossings(field);
+    }
+    const wave = new model.CellField('straight', matching);
+    let previous = [10, 50];
+    for (let i = 0; i <= 64; i++) {
+      const next = [10 + i * 1.25, 50 + Math.sin(i * Math.PI / 32) * 10];
+      wave.paint(previous, next, 3, 1); previous = next;
+    }
+    wave.endStroke(); assertSharedCrossings(wave);
+  }
+  // This stroke's upper outline is y = x/4 + 25.5, so cell (50,38) must
+  // connect its top-left corner to 1/4 down its right edge: full -> 3/4.
+  const field = new model.CellField('straight', false);
+  field.paint([10, 30], [90, 50], 2 / Math.sqrt(1.0625), 1); field.endStroke();
+  const cell = field.cell(3850);
+  const active = side => {
+    const mask = field.tables.fineEdgeMasks[cell.profile * 4 + side];
+    return (cell.front === 1 ? mask : ~mask) >>> 0;
+  };
+  assert.equal(active(3), 0xffffffff, 'The entry is at the corner, not an invented 3/4 split');
+  assert.equal(active(1), 0xffffff00, 'The exit is exactly one quarter down the right edge');
+});
 
 test('straight library covers every quarter-edge cut with only 16 base profiles', () => {
   const straight = library.straight;
