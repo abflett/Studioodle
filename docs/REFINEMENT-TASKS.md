@@ -141,6 +141,11 @@ This is an evolution of the current engine, not a second painting engine.
   cell inspection: actual/snapped crossings, chosen byte/colors, fitting route and
   neighboring cells. Verify capture does not alter output, snapshots do not mutate,
   and the open arc remains monotone at eight offsets. No selection-rule change.
+- [x] Extend thin-contour reproduction with seeded mouse jitter, independent
+  fractional X/Y starts, loose-to-tight bends, boundary flutter, stationary duplicates
+  and backwards retraversal. Sweep seeds/amplitudes with matching off/on; verify
+  idempotent coverage and analytic edges against the full noisy stroke union.
+  Exercise the fixture controls and noisy native pointer input in browser tests.
 - [ ] Use the thin-contour inspector to isolate the user's hand-drawn outside-edge
   tooth before changing snapping/fallback rules or expanding the profile dictionary.
   Generated smooth fixtures do not yet reliably reproduce the reported spikes.

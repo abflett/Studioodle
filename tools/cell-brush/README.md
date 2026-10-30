@@ -94,9 +94,15 @@ neighbors never change. No global optimum or arbitrary topology guarantee is cla
 
 ### Thin contour investigation
 
-Use **Draw 1-cell test** to draw an open arc or spiral with diameter one. Grid
-offset changes both coordinates by 0–0.875 cells without changing the curve.
-Press the button again after changing the offset or shape. It clears the drawing
+Use **Draw 1-cell test** to draw an open arc, spiral, loose-to-tight bend or
+boundary-flutter line with diameter one. Independent X/Y offsets have 0.001-cell
+steps, so starts need not align with cells or quarter crossings. Mouse jitter is
+seeded, independent per-axis noise up to the selected amplitude in cell units.
+The seed reproduces the same samples; change it for a different flutter pattern.
+**Repeat and retrace input samples** adds stationary duplicates and short backwards
+traversals of already-painted segments. Boundary flutter repeatedly hovers around
+a horizontal grid edge; use Y offset 0 or 0.007 to keep noise crossing that edge.
+Press the button again after changing the controls. It clears the drawing
 and enables diagnostic capture. For a hand-drawn reproduction, enable **Capture
 cell diagnostics** before drawing, then enable **Click to inspect instead of
 paint** and click the suspect cell. The inspector shows that cell and its eight
@@ -112,8 +118,14 @@ canvas (360,000 backing bytes) are extra memory outside the displayed counters.
 Capture affects diagnostic timings; disable it for performance comparisons.
 
 Tests verify observer neutrality, immutable snapshots, browser inspection without
-painting and monotone open-arc contours at eight offsets. These fixtures do not
-yet reproduce the user's hand-drawn teeth reliably. No profile dictionary,
+painting and monotone noiseless open-arc contours at eight offsets. A further sweep
+covers four shapes, three seeds/jitter amplitudes (0.03/0.09/0.21 cells), independent
+fractional starts, matching off/on and repeated boundary crossings. Duplicate and
+backwards traversal must leave output identical to the same noisy path without
+repeats. Captured analytic edge coverage is checked against the complete noisy
+capsule union; noisy contours are not required to be monotone. Browser checks also
+replay noisy samples through native mouse events. These checks do not establish
+the cause of the user's pictured teeth. No profile dictionary,
 snapping or fallback selection change is claimed by this instrumentation.
 
 ### Packed cell storage

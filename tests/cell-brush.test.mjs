@@ -16,6 +16,47 @@ before(async () => {
 after(async () => { await server?.close(); });
 const snapshot = field => [field.profile.slice(), field.front.slice(), field.back.slice()];
 
+test('seeded pointer flutter, fractional starts and tightening bends survive repeated boundary traversal', () => {
+  for (const kind of ['arc', 'spiral', 'tightening', 'boundary']) for (const seed of [1, 17, 529]) {
+    const offset = [(seed * .17321) % 1, kind === 'boundary' ? .007 : (seed * .61937) % 1];
+    const jitter = seed === 1 ? .03 : seed === 17 ? .09 : .21;
+    const points = fixtures.thinCurve(kind, offset, 240, { seed, jitter });
+    const replay = fixtures.thinCurve(kind, offset, 240, { seed, jitter, retrace: true });
+    assert.deepEqual(points, fixtures.thinCurve(kind, offset, 240, { seed, jitter }), 'The seed reproduces the exact samples');
+    assert.ok(replay.length > points.length, 'Include duplicate events and backwards retraversal');
+    assert.ok(points.every(p => p.every(v => v > 0 && v < 100)));
+    if (kind === 'boundary') assert.ok(points.filter((p, i) => i && Math.floor(p[1]) !== Math.floor(points[i - 1][1])).length > 20, 'Flutter must repeatedly cross an actual grid boundary');
+    for (const matching of [false, true]) {
+      const plain = new model.CellField('straight', matching), flutter = new model.CellField('straight', matching);
+      const records = new Map(); flutter.onFit = (index, record) => records.set(index, record);
+      for (const [field, samples] of [[plain, points], [flutter, replay]]) {
+        let previous = samples[0];
+        for (const point of samples) { field.paint(previous, point, .5, 1); previous = point; }
+        field.endStroke();
+      }
+      assert.deepEqual(snapshot(flutter), snapshot(plain), `${kind}, seed ${seed}, matching ${matching}: traversing existing coverage must not change the result`);
+      assert.equal(flutter.scratchBytes, 0);
+      // Verify accumulated analytic edges against the whole noisy capsule union,
+      // rather than incorrectly requiring a jittered contour to be monotone.
+      const distance2 = (p, a, b) => {
+        const dx = b[0] - a[0], dy = b[1] - a[1], length = dx * dx + dy * dy;
+        const t = length ? Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / length)) : 0;
+        return (p[0] - a[0] - t * dx) ** 2 + (p[1] - a[1] - t * dy) ** 2;
+      };
+      const checked = new Set();
+      for (const record of records.values()) for (const edge of record.edges) {
+        const key = `${edge.start}:${edge.horizontal}`;
+        if (checked.has(key)) continue; checked.add(key);
+        for (const t of [.173, .493, .819]) {
+          const p = [edge.start[0] + (edge.horizontal ? t : 0), edge.start[1] + (edge.horizontal ? 0 : t)];
+          const inside = points.some((point, i) => distance2(p, points[Math.max(0, i - 1)], point) < .25 - 1e-9);
+          assert.equal(edgeGeometry.edgeColor(edge, t) === 1, inside, `Accumulated coverage disagrees at ${p}`);
+        }
+      }
+    }
+  }
+});
+
 test('thin curve diagnostics preserve painting and retain immutable crossing snapshots only when enabled', () => {
   for (const kind of ['arc', 'spiral']) {
     const points = fixtures.thinCurve(kind, .375);

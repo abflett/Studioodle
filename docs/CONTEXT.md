@@ -263,6 +263,13 @@ display counters (including a 300 x 300 inspector canvas). Generated open arcs
 pass monotonicity at eight offsets; the user's hand-drawn spikes are not reliably
 reproduced yet. Do not assume multi-crossing counts prove the pictured cause.
 No new profile, snapping offset or fallback algorithm change was made in this step.
+The fixtures now also include seeded per-axis jitter, independent 0.001-cell X/Y
+offsets, loose-to-tight curvature and a line fluttering across a grid boundary.
+Optional duplicate samples and backwards retraversals simulate repeated input over
+existing coverage. Tests cover four shapes/three seeds with matching off/on,
+verify repeats preserve output and compare accumulated edges to the noisy capsule
+union. Browser tests replay noisy native mouse events too. This strengthens the
+reproduction tools without claiming a tooth fix or applying input smoothing.
 
 The demo now has a Compare coverage selector: cells, a separately rendered round-
 brush reference, and a visual difference overlay. Every incoming gesture/example

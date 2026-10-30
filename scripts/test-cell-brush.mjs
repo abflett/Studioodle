@@ -129,6 +129,31 @@ try {
   assert.ok(await evaluate('document.querySelector("#cell-inspector").textContent.includes("fallback")'), 'Spiral fixture exposes ambiguous cells without changing profiles');
   const thinSpiral = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
   await fs.writeFile(path.join(output, 'thin-spiral-inspector.png'), Buffer.from(thinSpiral.data, 'base64'));
+  for (const kind of ['tightening', 'boundary']) {
+    await evaluate(`(() => {
+      document.querySelector('#curve-kind').value=${JSON.stringify(kind)};
+      for (const [id,value] of [['grid-phase','.173'],['grid-phase-y',${JSON.stringify(kind === 'boundary' ? '.007' : '.619')}],['jitter','.09'],['noise-seed','17']]) {
+        const input=document.getElementById(id); input.value=value; input.dispatchEvent(new Event('input'));
+      }
+      document.querySelector('#thin-curve').click();
+    })()`); await settle();
+    assert.equal(await evaluate('document.querySelector("#jitter-value").textContent'), '0.09 cells');
+    assert.equal(await evaluate('document.querySelector("#phase-y-value").textContent'), `${kind === 'boundary' ? '0.007' : '0.619'} cells`);
+    assert.ok(Number(await evaluate('document.querySelector("#painted").textContent')) > 50);
+    const noisy = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
+    await fs.writeFile(path.join(output, `thin-${kind}-jitter.png`), Buffer.from(noisy.data, 'base64'));
+  }
+  // Replay the noisy tightening fixture through native pointer events as well as
+  // the example button, including pauses/duplicates and backwards retraversal.
+  const samples = await evaluate(`(async()=>{const {thinCurve}=await import('/src/fixtures.ts'); return thinCurve('tightening',[.173,.619],240,{jitter:.09,seed:17,retrace:true});})()`);
+  await evaluate('document.querySelector("#clear").click(); document.querySelector(\'[data-slot="1"]\').click()'); await settle();
+  box = await evaluate('(()=>{const b=document.querySelector("#paint").getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height}})()');
+  const mousePoint = p => ({ x: box.x + p[0] / 100 * box.w, y: box.y + p[1] / 100 * box.h });
+  await cdp('Input.dispatchMouseEvent', { type: 'mousePressed', ...mousePoint(samples[0]), button: 'left', buttons: 1, clickCount: 1 });
+  for (const p of samples.slice(1)) await cdp('Input.dispatchMouseEvent', { type: 'mouseMoved', ...mousePoint(p), buttons: 1 });
+  await cdp('Input.dispatchMouseEvent', { type: 'mouseReleased', ...mousePoint(samples.at(-1)), button: 'left', buttons: 0, clickCount: 1 }); await settle();
+  assert.ok(Number(await evaluate('document.querySelector("#painted").textContent')) > 80, 'Noisy native input paints a tightening curve');
+  assert.equal(await evaluate('document.querySelector("#scratch").textContent'), '0.00 KiB');
   await evaluate('document.querySelector("#capture-cells").click(); document.querySelector("#size").value="8"');
   assert.equal(await evaluate('document.querySelector("#cell-inspector").textContent'), '', 'Disabling capture releases diagnostics');
   await cdp('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true }); await settle();
