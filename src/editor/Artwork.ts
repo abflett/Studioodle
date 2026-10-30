@@ -398,7 +398,7 @@ export class Artwork {
     brush(from:Point,to:Point,color:number,erase=false,options:BrushOptions=defaultBrush){
         if (!erase && options.tip === 'scatter') return this.sprayStroke(from,to,color,options.size);
         const shape=erase?{...options,tip:'round' as const}:options;
-        let remaining=styledStroke([from.x,from.y],[to.x,to.y],erase?20:options.size/2,shape);
+        let remaining=styledStroke([from.x,from.y],[to.x,to.y],erase?20/3:options.size/2,shape);
         if(!remaining.length)return false;
         const strokeBounds=geometryBounds(remaining);
         if(strokeBounds[0]!<0||strokeBounds[1]!<0||strokeBounds[2]!>this.width||strokeBounds[3]!>this.height)
