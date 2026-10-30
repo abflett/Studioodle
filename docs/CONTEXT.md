@@ -222,6 +222,16 @@ ordering, eraser scope, confinement, appearance, sustained-growth limits and out
 quality before implementing the affected behavior. No second paint engine or
 pixel-only authoritative spray format is planned.
 
+The user considers the cell prototype successful and has parked it. Return to
+main-app vector performance discussion/measurement; preserve crisp vector contours.
+No integration, new profile work or Android/desktop engine split is authorized by
+this decision. Cells beneath existing line art, existing surface masks/clips, a
+2px mobile fallback and worker processing are contingency ideas if vector fixes
+prove insufficient. The main app's engine, saved format and output stay unchanged.
+The refinement backlog now distinguishes existing worker/caching/indexing from
+remaining profiling/optimization tasks; storage/thumbnails remain the next agreed
+implementation batch. Main-app implementation awaits the current discussion.
+
 The standalone cell-brush demo lives under `tools/cell-brush/`; run `npm run cells`
 on port 1434. It defaults to a rectangular grid fitted to approximately 4 x 4 CSS
 pixels per cell inside the visible canvas, with desktop tooling scrolling beside

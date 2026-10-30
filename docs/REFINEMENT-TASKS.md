@@ -91,87 +91,25 @@ Prefer native circle/curve descriptions where appropriate; measure the savings
 from avoiding polygon construction, boolean operations and repeated rendering.
 This is an evolution of the current engine, not a second painting engine.
 
-- [x] Build an isolated low-resolution cell-brush demonstration: `npm run cells`,
-  100 × 100 cells, eight profiles, two color slots per cell, brush diameter, grid
-  and memory diagnostics. Coverage-based fitting replaces shared corner labels and
-  the three-color quadrant fallback; paper is transparent. Model and
-  mouse/touch browser checks pass. This is an experiment, not app-engine integration
-  or proof of the proposed memory/performance advantage; see tools/cell-brush/README.md.
-- [x] Expand the experiment to 32 canonical shape families and byte-encoded rotation/
-  reflection variants. Precompute coverage/edge tables and browser paths, skip
-  equivalent fitting candidates, and use neighbor agreement only for equal-error
-  ties at release without editing untouched cells. Add original-eight mode and
-  repeatable test strokes for visual comparison. Cell data stays 29.30 KiB;
-  numeric lookups add 68.25 KiB shared. Model/browser checks cover transformations,
-  fitting improvement on a shallow-stroke fixture, overlap, release and touch.
-- [x] Correct the expanded demo's backward saw-tooth contours: limit monotone
-  boundary fits to direction-compatible splits/wedges; match actual selected edges
-  using 32 edge probes and bounded join passes, allowing local coverage error in
-  exchange for continuity. Penalize cross-cell direction reversals and preserve
-  untouched cells. Regress shallow strokes in all rotations/reflections and both
-  input directions, with no gaps or backward teeth and a sub-cell contour budget
-  on the fixtures. Shared numeric tables are now 72.50 KiB; no app-engine change.
-- [x] Add a separate straight-cut library, preserving experimental 32/original eight.
-  Sixteen active bases cover all 80 quarter-edge straight boundaries under transforms
-  and color swaps; reserve the other slots. Fit stroke-derived edge coverage and
-  interior coverage independently by default; retain optional neighbor joining.
-  Add repeatable circle dabs, enumerate the edge vocabulary and verify dab continuity/
-  radial error and stroke partitioning with matching off/on. Cell data is unchanged;
-  both dictionaries plus shared numeric tables occupy 79.75 KiB, excluding paths.
-- [x] Fix repeated tangent teeth in straight-cut circle dabs. Rounded edge demands
-  can conflict near a nearly full/empty cell; prefer uniform coverage when 60/64
-  interior samples agree and the selected cut still mismatches the edges. Preserve
-  exact small corner profiles. Regress 384 radius/offset/matching combinations for
-  contour backtracking, retaining the existing radial-error and browser checks.
-- [x] Add an independent round-brush coverage reference and visual difference view
-  to distinguish profile teeth from real sharp cusps at overlapping round arcs.
-  Include a reproducible overlapping-dab example and browser regressions for the
-  reference gap/cusp, comparison controls, drawing while comparing and reset.
-  Reference pixels add 3.81 MiB of diagnostic backing, included in display memory;
-  no extra input log, authoritative raster paint or new profile fix is introduced.
-- [x] Replace approximate edge-mask fitting for simple straight-library contours
-  with analytic round-brush/grid-edge intersections and shared colored edge
-  intervals. Snap/cache shared crossings and construct the profile from its two
-  endpoints; coverage chooses colors only. Handle collapsed-corner and same-edge
-  cuts explicitly, retaining the old scorer only for unsupported complex crossings.
-  Regress analytic intervals, shared exits, full-to-3/4 alignment, curved strokes,
-  direction/orientation, stable rounding ties and existing circle tests. The user's
-  outside-edge teeth are distinct from true overlap cusps. No main-app engine change.
-- [x] Add diameter-one arc/spiral fixtures with adjustable grid phase and opt-in
-  cell inspection: actual/snapped crossings, chosen byte/colors, fitting route and
-  neighboring cells. Verify capture does not alter output, snapshots do not mutate,
-  and the open arc remains monotone at eight offsets. No selection-rule change.
-- [x] Extend thin-contour reproduction with seeded mouse jitter, independent
-  fractional X/Y starts, loose-to-tight bends, boundary flutter, stationary duplicates
-  and backwards retraversal. Sweep seeds/amplitudes with matching off/on; verify
-  idempotent coverage and analytic edges against the full noisy stroke union.
-  Exercise the fixture controls and noisy native pointer input in browser tests.
-- [x] Isolate the user's cell (60,42) fallback override: the nearly-uniform rule
-  replaced a better inverted Corner 1/4-2/4 with Full. Retain the corner when it
-  improves source coverage; regress the reconstructed crossings/sample mask for
-  paint, another palette slot and erasure. Preserve tangent/arc/jitter regressions.
-- [ ] Review remaining hand-drawn contour spikes after the coverage-aware fallback
-  fix. Use the inspector's crossings and sample mismatches to identify additional
-  causes before adding profiles or changing snapping rules.
-- [x] Add a view-sized rectangular grid at approximately four CSS pixels per cell,
-  keeping the 100 x 100 comparison mode and visible desktop tools. Report actual
-  dimensions/storage; preserve drawing/aspect on resize and clear only on explicit
-  refit/mode changes. Verify rectangular addressing/erasing and the 1920 x 1080
-  layout, paint mapping, resize preservation and refit behavior. Update counters
-  incrementally rather than scanning the full larger grid per frame.
-- [x] Add 2 x 2 and 1 x 1 CSS-pixel grid modes alongside 4 x 4. Keep diagnostic
-  reference backing at display scale; avoid full-grid Set allocation and empty-cell
-  canvas clears on redraw. Verify 1080p dimensions, storage, painting and clearing.
-- [x] Profile and optimize one-pixel cell painting: narrow row scans, proven-solid
-  bypass, shared-edge de-duplication, reusable probe/histogram buffers, populated
-  palette slots and coalesced-event layout batching. Add one-pixel cached display
-  rendering. Preserve six pre-optimization model hashes and canonical software
-  rendering across all profile/color cases; report isolated benchmark limits.
-- [ ] Review the straight-cut demo's appearance and connectivity with the user before
-  choosing authoritative cell storage or broad conversion. Compare to indexed raster
-  at comparable quality; include two-color normalization at junctions, thin details and sparse/
-  dense repeated paint. Measure model bytes, caches, conversion/render time and
-  future undo costs independently. No engine replacement is decided.
+Already implemented: a shared geometry worker, dirty-region maintenance and
+compacted-prefix reuse, whole-region solid-fill bypasses, indexed region
+candidates, contained-paper brush bypasses, and a 64 MiB display cache with
+incremental updates, 18% pan overscan and delayed sharp zoom refinement. Measure
+where these paths miss or repeat work before proposing them as new features.
+See VECTOR-PAINT.md and PERFORMANCE.md; older timings are workload-specific.
+
+**Cell experiment: successful proof of concept, parked.** The standalone
+`tools/cell-brush/` tool retains coarse and 4/2/1 CSS-pixel grids, diagnostics and
+reproducible benchmarks; see its README for design, limits and results. Its data
+and rendering have bounded grid storage and avoid accumulating brush-union paths,
+but the user prefers the current vector engine's crisp contours. No app integration,
+new cell profiles, line-art conversion or platform engine split is current work.
+A future fallback could replace paint/fill beneath existing vector line art and
+reuse surface clipping/masking. A 2px Android/tablet option and worker processing
+remain ideas to evaluate only if measured vector improvements are insufficient;
+undo, saved format, palette edits, cross-platform drawings and output would need
+validation. Preserve the demo without continuing its unfinished contour experiments.
+
 - [ ] **Reproduce and profile scatter/spray and dense painting.** Use a
   user-provided detailed drawing (including the colored Moon Sorceress when available),
   a repeatable synthetic stress drawing and a simple control page. Cover sustained
@@ -201,10 +139,15 @@ This is an evolution of the current engine, not a second painting engine.
   Undo retains affected prior chunks/tiles within the memory budget, not full-scene
   copies or a fixed action count. Background cache work must not alter restored
   history. Reject stale cache completions after edits, undo or palette changes.
-- [ ] Fix remaining measured ordinary-paint bottlenecks separately. Bound queued
-  work and transient allocations; investigate batching, coverage reuse, compaction
-  and scheduling based on evidence. A dedicated worker is an option to evaluate,
-  not a predetermined solution. Preserve immediate feedback and action saving.
+- [ ] **Audit ordinary brush work before changing its representation.** Measure
+  input/layout reads, generated samples, region clipping, lower-surface subtraction,
+  allocations, worker transport/queue/compaction and display independently. Trial
+  reusable buffers, per-event/per-frame shared calculations, changed-region-only
+  invalidation and proven-contained region fast paths where measurements justify
+  them. Existing contained-paper shortcuts and dirty-region worker submissions are
+  the baseline, not new work. Keep exact boundary clipping, causal smooth curves,
+  immediate feedback and action saving. Add workers only if measured queue/compute
+  costs justify them; moving work does not remove it.
 - [ ] Profile and fix fills on detailed canvases: distinguish region/topology search,
   geometry preparation, worker queueing, redraw and persistence. Check repeated fills,
   fill after spray, undo and cancellation without blocking other interactions.
@@ -218,11 +161,13 @@ This is an evolution of the current engine, not a second painting engine.
   applying at most one update per animation frame and publishing only necessary
   UI state. Keep input coordinates, pinch anchors, focus/precision zoom, resize
   and cancellation consistent; view changes must not edit or save artwork.
-- [ ] **Reuse pixels while navigating.** Evaluate bounded overscan/tiles for panning
-  and immediate cached-pixel scaling during zoom followed by a sharp refresh.
-  Render newly exposed areas and invalidated content rather than replaying all
-  geometry. Avoid maximum-zoom whole-page bitmaps; measure sharpness, refresh delay,
-  cache memory and stale-result cancellation on real target devices.
+- [ ] **Audit existing pixel reuse while navigating.** Measure hit/miss/rebuild
+  rates of the current 18% overscan, incremental surface caches and delayed sharp
+  zoom refresh. Identify unnecessary invalidations, repeated ink/sticker rendering
+  or cache churn before trying tiles or a different budget. Refresh only newly
+  exposed/changed content where valid; preserve crisp settled views and exact
+  exports. Avoid maximum-zoom whole-page bitmaps and test stale results/palette
+  recoloring on real target devices.
 - [ ] Improve cold reopen and saved-picture carousel latency. Measure preview loading,
   SVG/definition decode, paint restoration, prefetch, stale-load cancellation and
   cache eviction independently. Rapid browsing must not accumulate obsolete work.
