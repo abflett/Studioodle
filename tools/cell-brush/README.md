@@ -1,85 +1,95 @@
 # Cell brush experiment
 
-Run `npm run cells` and open http://localhost:1434/. This is an isolated Vite app,
-with no imports from the normal app or reviewer and no persistent storage. Build
-output goes to ignored `work/cell-brush-dist/`. Commands: `cells:typecheck`,
-`cells:build`, `test:cells` (model regressions and a real headless-browser smoke test).
+Run `npm run cells` and open http://localhost:1434/. This isolated Vite app imports
+neither the normal app nor the reviewer and has no persistent storage. The user
+runs the server manually. Build output and test screenshots go under ignored
+`work/`. Commands: `cells:typecheck`, `cells:build`, `test:cells`.
 
-The square page has 100 × 100 cells. Brush diameter is measured in document cells,
-independent of screen size. Each cell stores a profile/orientation byte and two palette
-slots in three packed Uint8Arrays: 30,000 bytes total (29.30 KiB). Slot zero is
-transparent; the paper color comes from the canvas container, not paint data.
-Paint data never grows with stroke count. Grid buffers, diagnostic flags and canvas
-backings are extra; the UI shows backing-buffer bytes separately. No speedup claim
-or production memory bound is established by this demonstration.
+## Libraries and controls
 
-The default library has 32 authored families: empty/full, centered/offset splits,
-four slopes and four corner wedges, straight/diagonal bands, tapered wedges,
-elbows, V bends, beveled caps, a shoulder, square/diamond/octagonal dots and offset
-dots, half/quarter circles and a round cap. The byte encodes base shape in bits
-0-4, quarter-turn in bits 5-6, and reflection in bit 7. All 256 orientations have
-precomputed contours, masks and edge signatures. Identical interior-mask/fine-edge
-signatures are skipped during fitting; the UI reports the candidate count. Colors
-can swap sides. Circle profiles use fixed 24-segment arc approximations generated
-once, not exact circular primitives. No shared corner labels, three-color cells
-or junction fallbacks remain.
+The page stays 100 x 100 cells. The new default is **Straight cuts (16 of 32
+slots)**, with neighbor matching off. The previous **Experimental 32 shapes** and
+**Original 8 profiles** remain in the dropdown; switching clears the page and
+restores the library's matching default (on for the earlier modes).
 
-The Shape library selector offers the original eight silhouettes for comparison;
-changing it explicitly clears the page. Draw test strokes replaces the page with
-the same shallow line, sine curve, thin ellipse, crossing strokes and dots in either
-mode. Brush diameter can be 1-30 cells in quarter-cell steps. Scroll the legend to
-inspect all 32 canonical families.
+Draw test strokes creates the same shallow line, sine curve, thin ellipse,
+crossings and small marks in each mode. Draw circle dabs creates four solid circles
+of different sizes. Toggle Match edges on release and redraw either example to
+compare independent fits with joining. Diameter is 1-30 cells in quarter-cell steps.
+Scroll the legend to inspect profiles; unused straight-library slots are reserved.
 
-The brush sweeps a capsule over an 8 × 8 staggered sample pattern within each
-touched cell. Samples reconstruct the previous two-color profile with new paint
-overlaid. The initial fitter minimizes mismatched sample colors using two 32-bit coverage
-masks and population-count lookups, trying eligible profiles with both color
-assignments. When three colors are present in this
-temporary target, the candidate pair is the new color and the most prevalent
-surviving old color. Opaque old coverage wins ties against transparency; otherwise
-the original foreground wins equal old-color areas. The original cell also remains
-a candidate and wins exact objective ties, preventing
-unnecessary churn. A color absent from the target cannot be reintroduced by retaining
-the original cell. Full coverage becomes solid paint (or fully transparent erase).
+## Straight-cut dictionary
 
-Per-cell target samples accumulate only for the active gesture, independent of
-event segmentation; they are discarded at release, cancellation, blur or clear.
-This is bounded transient working data, not saved supersampled pixels or a stroke
-log. The UI reports sample-buffer bytes separately, excluding Map/object overhead.
-The maximum sample payload at this resolution is 640,000 bytes if every cell is
-touched. Quantizing between separate strokes can still lose detail; no general
-topology or event-rate-independent curved input guarantee is claimed.
+The byte layout is base shape in bits 0-4, quarter-turn in bits 5-6 and reflection
+in bit 7. Colors can swap sides. The 16 active bases are:
 
-Simple monotone target boundaries may use only split/wedge families (0-11), with
-matching coverage directions. Bands, dots, elbows and curved caps remain available
-for non-monotone targets. This prevents complex profiles winning a few samples
-while introducing repeated saw teeth or scallops on a straight stroke.
+- Empty and full.
+- Uniform splits at 1/4 and 1/2 (3/4 is a transformed/color-swapped variant).
+- Ten adjacent-edge corner wedges: all unordered pairs from 1/4, 1/2, 3/4, 1.
+- Two opposite-edge cuts, from 1/4 to 1/2 and from 1/4 to 3/4.
 
-Match edges on release first reconstructs independent fits from the complete
-gesture, then runs at most six alternating, sorted join passes over active-stroke
-cells only. It compares actual selected neighboring profiles using 32 probes per
-edge. The objective is sample error + edge disagreement + a stronger penalty for
-cross-cell reversals against the target's monotone direction (eight times each
-reversed edge probe). This deliberately permits some local coverage error to
-obtain cleaner contours; agreement is no longer just an equal-error tie-breaker.
-Probe comparisons use shared palette slots and precomputed edge-difference and
-direction tables. A fixed initial state and traversal keep results independent
-of event segmentation. Untouched neighbors never change. This bounded local solver
-does not guarantee a globally optimal contour or preserve every tiny feature.
-Live drawing remains independently fitted; joining happens on stroke release.
-The numeric lookup buffers total 72.50 KiB shared across the grid; authored and
-transformed polygon arrays, candidate lists and browser Path2D objects are additional.
+Together they cover all 80 nondegenerate straight boundaries whose endpoints are
+quarter positions on the cell perimeter, including color complements. A focused
+regression enumerates every case. No bands, caps, dots or curves are in this set;
+slots 16-31 are excluded from selection, not silently used as empty profiles.
 
-Canvas2D renders only changed cells, at whole physical pixels per cell; resize
-redraws the page. Opaque two-color cells draw one color beneath the other, avoiding
-transparent antialias cracks between those colors; transparent fronts erase their
-portion of a colored background. The 256 browser paths are constructed once and
-reused with per-cell transforms. There is no React, polygon union, curve fitting,
-worker or shader. Clear and transparent paper paint allow repeat trials. Strokes are
-intentionally unsmoothed to expose quantization. No undo, zoom, fills, sticker
-surfaces or output conversion yet. Source ink is not normalized or changed.
+The brush accumulates 8 x 8 interior samples and 32 exact-boundary probes on each
+of four cell edges for the active gesture. Edge probes evaluate the swept capsule
+at shared geometric coordinates. Each group of eight edge probes chooses one
+quarter-edge color by majority (ties favor incoming paint). Independent fitting
+prioritizes these quarter-edge signatures, then interior coverage error. Matching
+edge evidence is from the stroke itself, not a neighbor traversal or diffusion pass.
+Both adjacent cells therefore see the same new-stroke evidence on a shared edge.
 
-Next questions: adequate detail, shape vocabulary, neighbor agreement, loss at
-color junctions, and cost versus a palette raster at comparable visual quality. The normal
-app still uses its existing engine. Track implementation work only in
-`docs/REFINEMENT-TASKS.md`, not a separate experiment backlog.
+This is an approximation, not a universal watertightness guarantee: an individual
+cell still supports only one straight cut and two colors. Sub-cell dots, narrow
+bands, multiple boundary crossings and three-color junctions must lose detail.
+Previous quantization, corner collapse and incompatible edge patterns can still
+produce quarter-cell steps or small disagreements, especially for thin marks.
+The circle fixtures test radial continuity and <=0.3-cell boundary error at three
+radii with matching both off and on; they do not establish all-shape quality.
+
+## Earlier library and optional joins
+
+The earlier 32-family dictionary retains bands, wedges, elbows, V bends, caps,
+dots and simple curves (24-segment arc approximations). All orientations have
+precomputed contours, coverage masks and edge signatures. Equivalent masks with
+identical fine edges are skipped during fitting. Counts appear in the UI.
+
+Earlier-library monotone boundaries are limited to direction-compatible splits/
+wedges. Independent scoring minimizes sample mismatch. New paint is paired with
+the most prevalent surviving old color, using current interior samples and (for
+straight cuts) edge samples; opaque coverage wins ties against transparency.
+
+Optional joining begins again from complete-gesture independent fits and runs at
+most six alternating sorted passes over touched cells. It compares actual selected
+neighbors using 32 probes per edge, with coverage, continuity and stronger reversal
+penalties. It may sacrifice local coverage to obtain cleaner contours. In straight
+mode, the stroke-derived edge signatures remain part of that objective. Untouched
+neighbors never change. No global optimum or arbitrary topology guarantee is claimed.
+
+## Storage and rendering
+
+Each cell has three packed bytes: profile/orientation, front slot and back slot.
+The grid occupies 30,000 bytes (29.30 KiB), independent of stroke count. Slot zero
+is transparent; paper is the container background. It is not white paint.
+
+Temporary sample payload is at most 640,000 bytes for an earlier-library gesture,
+or 1,920,000 bytes for straight cuts (64 interior + 128 edge samples per touched
+cell). Buffers release on pointer-up, cancellation, blur or clear. This is scratch
+coverage, not a saved raster or input-stroke log. UI totals exclude Map/object
+bookkeeping and temporary fitting allocations. Quantization between separate
+strokes can still lose detail; straight-segment event partition invariance is tested.
+
+Both dictionaries are loaded for comparison. Their typed tables plus the shared
+population-count/edge-difference tables occupy 79.75 KiB in total; polygon arrays,
+candidate lists and browser Path2D objects are additional. Only the selected
+library's browser paths are built. Grid/diagnostic arrays and canvas buffers are
+also separate; the UI reports display backing bytes, not total process memory.
+
+Canvas2D redraws changed cells, using prebuilt paths and integer physical pixels
+per cell. Resize redraws the page. Opaque colors draw over an opaque base; transparent
+fronts erase their portion. No React, polygon union, worker or shader is involved.
+There is no smoothing, undo, zoom, fills, stickers, source-art conversion or output
+conversion. The normal app's engine and reviewer are unchanged. No production
+speedup claim follows from this prototype. Track work in `docs/REFINEMENT-TASKS.md`.

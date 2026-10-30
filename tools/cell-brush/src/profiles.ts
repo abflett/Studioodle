@@ -68,7 +68,6 @@ export function transformPoint([x, y]: Point, code: number): Point {
   for (let rotation = (code >> 5) & 3; rotation > 0; rotation--) [x, y] = [1 - y, x];
   return [x, y];
 }
-export const variants = Array.from({ length: 256 }, (_, code) => profiles[code & 31]!.map(point => transformPoint(point, code)));
 function contains(polygon: Polygon, x: number, y: number) {
   let inside = false;
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
@@ -77,7 +76,6 @@ function contains(polygon: Polygon, x: number, y: number) {
   }
   return inside;
 }
-export const inProfile = (code: number, x: number, y: number) => contains(variants[code]!, x, y);
 export const sampleCount = 64;
 // Bits: increasing/decreasing in X, increasing/decreasing in Y. These describe
 // coverage, so swapping colors reverses the directional tests.
@@ -101,43 +99,67 @@ export function monotonicity(sample: (i: number) => boolean): number {
 export const reverseMonotonicity = (flags: number) => ((flags & 1) << 1) | ((flags & 2) >> 1) | ((flags & 4) << 1) | ((flags & 8) >> 1);
 export const sampleX = Float64Array.from({ length: sampleCount }, (_, i) => (i % 8 + (Math.floor(i / 8) % 2 ? .375 : .625)) / 8);
 export const sampleY = Float64Array.from({ length: sampleCount }, (_, i) => (Math.floor(i / 8) + .5) / 8);
-export const maskLow = new Uint32Array(256), maskHigh = new Uint32Array(256);
-export const edgeMasks = new Uint8Array(256 * 4);
-export const fineEdgeMasks = new Uint32Array(256 * 4);
-export const directionFlags = new Uint8Array(256);
 export const pop8 = Uint8Array.from({ length: 256 }, (_, n) => { let count = 0; for (; n; n &= n - 1) count++; return count; });
 export const edgeDifference = new Uint8Array(256 * 256);
 export const pop32 = (n: number) => pop8[n & 255]! + pop8[(n >>> 8) & 255]! + pop8[(n >>> 16) & 255]! + pop8[n >>> 24]!;
-for (let code = 0; code < 256; code++) {
-  for (let i = 0; i < sampleCount; i++) if (inProfile(code, sampleX[i]!, sampleY[i]!)) {
-    if (i < 32) maskLow[code] = (maskLow[code]! | (1 << i)) >>> 0;
-    else maskHigh[code] = (maskHigh[code]! | (1 << (i - 32))) >>> 0;
-  }
-  for (let i = 0; i < 8; i++) {
-    const t = (i + .5) / 8, epsilon = .000001;
-    const points: Point[] = [[t, epsilon], [1 - epsilon, t], [t, 1 - epsilon], [epsilon, t]];
-    points.forEach(([x, y], side) => { if (inProfile(code, x, y)) edgeMasks[code * 4 + side] = edgeMasks[code * 4 + side]! | (1 << i); });
-  }
-  directionFlags[code] = monotonicity(i => !!sampleColor(code, 1, 0, i));
-  for (let i = 0; i < 32; i++) {
-    const t = (i + .5) / 32, epsilon = .000001;
-    const points: Point[] = [[t, epsilon], [1 - epsilon, t], [t, 1 - epsilon], [epsilon, t]];
-    points.forEach(([x, y], side) => { if (inProfile(code, x, y)) fineEdgeMasks[code * 4 + side] = (fineEdgeMasks[code * 4 + side]! | (1 << i)) >>> 0; });
-  }
-}
 for (let a = 0; a < 256; a++) for (let b = 0; b < 256; b++) edgeDifference[a * 256 + b] = pop8[a ^ b]!;
+const sharedBytes = sampleX.byteLength + sampleY.byteLength + pop8.byteLength + edgeDifference.byteLength;
 
-// Keep the authored dictionary at 32, but don't score identical sample masks
-// repeatedly. Retain edge-distinct variants even when interior probes coincide.
-const seen = new Set<string>();
-export const candidates = variants.map((_, code) => code).filter(code => {
-  const key = `${maskLow[code]},${maskHigh[code]}:${fineEdgeMasks.slice(code * 4, code * 4 + 4).join(',')}`;
-  if (seen.has(key)) return false;
-  seen.add(key); return true;
-});
-export const legacyCandidates = [0, 1, 2, 34, 4, 36, 68, 100];
-export const numericLookupBytes = sampleX.byteLength + sampleY.byteLength + maskLow.byteLength + maskHigh.byteLength + edgeMasks.byteLength + fineEdgeMasks.byteLength + directionFlags.byteLength + pop8.byteLength + edgeDifference.byteLength;
-export function sampleColor(code: number, front: number, back: number, i: number): number {
-  const on = i < 32 ? maskLow[code]! & (1 << i) : maskHigh[code]! & (1 << (i - 32));
-  return on ? front : back;
+export function createProfileLibrary(shapes: Polygon[], names: string[]) {
+  const variants = Array.from({ length: 256 }, (_, code) => (shapes[code & 31] ?? []).map(point => transformPoint(point, code)));
+  const inProfile = (code: number, x: number, y: number) => contains(variants[code]!, x, y);
+  const maskLow = new Uint32Array(256), maskHigh = new Uint32Array(256);
+  const edgeMasks = new Uint8Array(256 * 4), fineEdgeMasks = new Uint32Array(256 * 4), directionFlags = new Uint8Array(256);
+  const sampleColor = (code: number, front: number, back: number, i: number): number => {
+    const on = i < 32 ? maskLow[code]! & (1 << i) : maskHigh[code]! & (1 << (i - 32));
+    return on ? front : back;
+  };
+  for (let code = 0; code < 256; code++) {
+    for (let i = 0; i < sampleCount; i++) if (inProfile(code, sampleX[i]!, sampleY[i]!)) {
+      if (i < 32) maskLow[code] = (maskLow[code]! | (1 << i)) >>> 0;
+      else maskHigh[code] = (maskHigh[code]! | (1 << (i - 32))) >>> 0;
+    }
+    for (let i = 0; i < 32; i++) {
+      const t = (i + .5) / 32, epsilon = .000001;
+      const points: Point[] = [[t, epsilon], [1 - epsilon, t], [t, 1 - epsilon], [epsilon, t]];
+      points.forEach(([x, y], side) => { if (inProfile(code, x, y)) fineEdgeMasks[code * 4 + side] = (fineEdgeMasks[code * 4 + side]! | (1 << i)) >>> 0; });
+    }
+    for (let i = 0; i < 8; i++) {
+      const t = (i + .5) / 8, epsilon = .000001;
+      const points: Point[] = [[t, epsilon], [1 - epsilon, t], [t, 1 - epsilon], [epsilon, t]];
+      points.forEach(([x, y], side) => { if (inProfile(code, x, y)) edgeMasks[code * 4 + side] = edgeMasks[code * 4 + side]! | (1 << i); });
+    }
+    directionFlags[code] = monotonicity(i => !!sampleColor(code, 1, 0, i));
+  }
+  const seen = new Set<string>();
+  const candidates = variants.map((_, code) => code).filter(code => {
+    if ((code & 31) >= shapes.length) return false;
+    const key = `${maskLow[code]},${maskHigh[code]}:${fineEdgeMasks.slice(code * 4, code * 4 + 4).join(',')}`;
+    if (seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+  const tableBytes = maskLow.byteLength + maskHigh.byteLength + edgeMasks.byteLength + fineEdgeMasks.byteLength + directionFlags.byteLength;
+  return { shapes, names, variants, inProfile, maskLow, maskHigh, edgeMasks, fineEdgeMasks, directionFlags, sampleColor, candidates, tableBytes };
 }
+export type ProfileLibrary = ReturnType<typeof createProfileLibrary>;
+export const experimental = createProfileLibrary(profiles, profileNames);
+export const legacyCandidates = [0, 1, 2, 34, 4, 36, 68, 100];
+export const legacy = { ...experimental, candidates: legacyCandidates };
+
+const quarters = [.25, .5, .75, 1];
+export const straightProfiles: Polygon[] = [[], square, split(1, 0, .25), split(1, 0, .5)];
+export const straightNames = ['Empty', 'Full', 'Split 1/4', 'Split 1/2'];
+for (let a = 0; a < quarters.length; a++) for (let b = a; b < quarters.length; b++) {
+  straightProfiles.push([[0, 0], [quarters[a]!, 0], [0, quarters[b]!]]);
+  straightNames.push(`Corner ${a + 1}/4-${b + 1}/4`);
+}
+// Cuts crossing opposite edges at quarter positions; other opposite-edge cases
+// are uniform splits or rotations/reflections of one of the ten corner wedges.
+straightProfiles.push(split(1, -.25, .25), split(1, -.5, .25));
+straightNames.push('Across 1/4-1/2', 'Across 1/4-3/4');
+export const straight = createProfileLibrary(straightProfiles, straightNames);
+export type LibraryId = 'straight' | 'experimental' | 'legacy';
+export const libraries = { straight, experimental, legacy };
+// These aliases keep the original experiment's focused regressions readable.
+export const { variants, inProfile, maskLow, maskHigh, edgeMasks, fineEdgeMasks, directionFlags, sampleColor, candidates } = experimental;
+export const numericLookupBytes = sharedBytes + experimental.tableBytes + straight.tableBytes;

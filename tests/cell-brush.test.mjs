@@ -12,6 +12,75 @@ before(async () => {
 after(async () => { await server?.close(); });
 const snapshot = field => [field.profile.slice(), field.front.slice(), field.back.slice()];
 
+test('straight library covers every quarter-edge cut with only 16 base profiles', () => {
+  const straight = library.straight;
+  assert.equal(straight.shapes.length, 16);
+  assert.ok(straight.candidates.every(code => (code & 31) < 16));
+  const signatures = new Set(straight.candidates.flatMap(code => {
+    const edges = Array.from(straight.fineEdgeMasks.slice(code * 4, code * 4 + 4));
+    return [edges.join(','), edges.map(mask => (~mask) >>> 0).join(',')];
+  }));
+  const points = [];
+  for (let i = 0; i <= 4; i++) for (const p of [[i, 0], [i, 4], [0, i], [4, i]]) if (!points.some(q => q[0] === p[0] && q[1] === p[1])) points.push(p);
+  const lines = new Set();
+  const gcd = (a, b) => b ? gcd(b, a % b) : a;
+  for (let i = 0; i < points.length; i++) for (let j = i + 1; j < points.length; j++) {
+    const a = points[i], b = points[j];
+    if ((a[0] === b[0] && [0, 4].includes(a[0])) || (a[1] === b[1] && [0, 4].includes(a[1]))) continue;
+    const nx = b[1] - a[1], ny = a[0] - b[0], c = nx * a[0] + ny * a[1];
+    const scale = gcd(gcd(Math.abs(nx), Math.abs(ny)), Math.abs(c)) * (nx ? Math.sign(nx) : Math.sign(ny));
+    lines.add([nx / scale, ny / scale, c / scale].join(','));
+    const masks = [0, 0, 0, 0];
+    for (let n = 0; n < 32; n++) {
+      const t = (n + .5) / 32 * 4, e = .000004;
+      [[t, e], [4 - e, t], [t, 4 - e], [e, t]].forEach(([x, y], side) => { if (nx * x + ny * y <= c) masks[side] = (masks[side] | (1 << n)) >>> 0; });
+    }
+    assert.ok(signatures.has(masks.join(',')), `Missing edge combination ${a} to ${b}`);
+  }
+  assert.equal(lines.size, 80);
+});
+
+test('straight circle dabs are close to circles with or without neighbor matching', () => {
+  for (const matching of [false, true]) for (const radius of [3.5, 6.25, 14]) {
+    const field = new model.CellField('straight', matching), center = [50.3, 49.7];
+    field.paint(center, center, radius, 1);
+    const before = snapshot(field);
+    assert.ok(field.scratchBytes > 0);
+    field.endStroke(); assert.equal(field.scratchBytes, 0);
+    if (!matching) assert.deepEqual(snapshot(field), before, 'Independent fits must not change on release');
+    assert.equal(field.byteLength, 30000);
+    for (let n = 0; n < 360; n++) {
+      const a = n * Math.PI / 180;
+      let edge = 0, leftPaint = false;
+      for (let distance = 0; distance <= radius + 1; distance += .0625) {
+        const on = field.colorAt(center[0] + Math.cos(a) * distance, center[1] + Math.sin(a) * distance) !== 0;
+        if (on) { assert.equal(leftPaint, false, 'Dab must not have holes or isolated radial spikes'); edge = distance; }
+        else leftPaint = true;
+      }
+      assert.ok(Math.abs(edge - radius) <= .3, `Dab edge error exceeds quarter-cell stepping budget: ${edge - radius}`);
+    }
+  }
+});
+
+test('straight stroke fitting and edge coverage are independent of event segmentation', () => {
+  for (const matching of [false, true]) {
+    const whole = new model.CellField('straight', matching), pieces = new model.CellField('straight', matching);
+    const a = [10.2, 20.3], b = [88.1, 43.7];
+    whole.paint(a, b, 3.5, 2);
+    let previous = a;
+    for (let i = 1; i <= 24; i++) {
+      const next = [a[0] + (b[0] - a[0]) * i / 24, a[1] + (b[1] - a[1]) * i / 24];
+      pieces.paint(previous, next, 3.5, 2); previous = next;
+    }
+    whole.endStroke(); pieces.endStroke();
+    assert.deepEqual(snapshot(pieces), snapshot(whole));
+    for (let x = 15; x < 83; x += .25) {
+      const y = a[1] + (x - a[0]) * (b[1] - a[1]) / (b[0] - a[0]);
+      assert.equal(whole.colorAt(x, y), 2);
+    }
+  }
+});
+
 test('all byte codes transform geometry and masks consistently, including reflections', () => {
   assert.equal(library.variants.length, 256);
   assert.ok(library.candidates.length > 64 && library.candidates.length <= 256);
@@ -42,7 +111,7 @@ test('expanded profiles improve independent coverage and joining stays inside a 
     }
     return error;
   };
-  const legacy = new model.CellField(false), expanded = new model.CellField();
+  const legacy = new model.CellField('legacy'), expanded = new model.CellField();
   legacy.paint(a, b, radius, 2); expanded.paint(a, b, radius, 2);
   const before = coverageError(expanded), oldError = coverageError(legacy);
   assert.ok(before < oldError, `${before} should improve on ${oldError} sample mismatches`);

@@ -1,10 +1,10 @@
-import { candidates, legacyCandidates, maskLow, maskHigh, fineEdgeMasks, edgeDifference, pop32, sampleX, sampleY, sampleCount as count, sampleColor, inProfile, monotonicity, directionFlags, reverseMonotonicity } from './profiles';
-import type { Point } from './profiles';
+import { libraries, edgeDifference, pop32, sampleX, sampleY, sampleCount as count, monotonicity, reverseMonotonicity } from './profiles';
+import type { Point, LibraryId, ProfileLibrary } from './profiles';
 export type { Point } from './profiles';
 export { profiles, profileNames, inProfile } from './profiles';
 export const size = 100;
 type Cell = { profile: number; front: number; back: number };
-type WorkingCell = { target: Uint8Array; original: Cell };
+type WorkingCell = { target: Uint8Array; original: Cell; edges?: Uint8Array };
 const edgeWeight = 4;
 const joinPasses = 6;
 
@@ -15,16 +15,21 @@ export class CellField {
   readonly back = new Uint8Array(size * size);
   private working = new Map<number, WorkingCell>();
   private strokeSlot: number | undefined;
-  constructor(readonly expanded = true, public matchNeighbors = true) {}
+  readonly library: LibraryId;
+  readonly tables: ProfileLibrary;
+  constructor(library: LibraryId = 'experimental', public matchNeighbors = true) {
+    this.library = library;
+    this.tables = libraries[this.library];
+  }
 
   get byteLength() { return this.profile.byteLength + this.front.byteLength + this.back.byteLength; }
-  get scratchBytes() { return this.working.size * count; } // Sample buffers only; excludes Map/object overhead.
+  get scratchBytes() { let bytes = 0; for (const working of this.working.values()) bytes += working.target.byteLength + (working.edges?.byteLength ?? 0); return bytes; }
   cell(index: number): Cell { return { profile: this.profile[index]!, front: this.front[index]!, back: this.back[index]! }; }
   colorAt(x: number, y: number): number {
     const cx = Math.floor(x), cy = Math.floor(y);
     if (cx < 0 || cy < 0 || cx >= size || cy >= size) return 0;
     const cell = this.cell(cy * size + cx);
-    return inProfile(cell.profile, x - cx, y - cy) ? cell.front : cell.back;
+    return this.tables.inProfile(cell.profile, x - cx, y - cy) ? cell.front : cell.back;
   }
   beginStroke(slot: number) { const dirty = this.endStroke(); this.strokeSlot = slot; return dirty; }
   endStroke() {
@@ -54,22 +59,26 @@ export class CellField {
   clear() { this.endStroke(); this.profile.fill(0); this.front.fill(0); this.back.fill(0); }
 
   private fit(index: number, working: WorkingCell, slot: number, useNeighbors = false) {
+    const { maskLow, maskHigh, sampleColor, fineEdgeMasks, directionFlags, candidates } = this.tables;
     const { target, original } = working;
     const histogram = new Uint8Array(256);
     for (const color of target) histogram[color] = histogram[color]! + 1;
+    const survivors = working.edges ? Uint16Array.from(histogram) : histogram;
+    if (working.edges) for (const color of working.edges) survivors[color] = survivors[color]! + 1;
     // Largest surviving old color wins, preferring opaque over transparent on an
     // area tie. Color distance and palette numbering do not decide ownership.
-    let retained = original.front !== slot && histogram[original.front] ? original.front :
-      original.back !== slot && histogram[original.back] ? original.back : slot;
-    for (let color = 0; color < histogram.length; color++) {
-      if (color === slot || !histogram[color]) continue;
-      if (retained === slot || histogram[color]! > histogram[retained]! ||
-        (histogram[color] === histogram[retained] && retained === 0)) retained = color;
+    let retained = original.front !== slot && survivors[original.front] ? original.front :
+      original.back !== slot && survivors[original.back] ? original.back : slot;
+    for (let color = 0; color < survivors.length; color++) {
+      if (color === slot || !survivors[color]) continue;
+      if (retained === slot || survivors[color]! > survivors[retained]! ||
+        (survivors[color] === survivors[retained] && retained === 0)) retained = color;
     }
     if (retained === slot) { this.profile[index] = slot ? 1 : 0; this.front[index] = slot; this.back[index] = 0; return; }
     const targetDirection = monotonicity(i => target[i] === slot);
     const simpleBoundary = !!(targetDirection & 3) && !!(targetDirection & 12);
     const followsDirection = (profile: number, front: number, back: number) => {
+      if (this.library === 'straight') return true;
       // A locally monotone boundary uses a split/wedge, not a dot, elbow or
       // rounded cap that happens to win a few probes and adds repeated scallops.
       if (simpleBoundary && (profile & 31) > 11) return false;
@@ -85,6 +94,26 @@ export class CellField {
       let result = 0;
       for (let i = 0; i < count; i++) if (sampleColor(profile, front, back, i) !== target[i]) result++;
       return result;
+    };
+    const referenceEdges = working.edges ? Uint32Array.from({ length: 4 }, (_, side) => {
+      let mask = 0;
+      for (let quarter = 0; quarter < 4; quarter++) {
+        let coverage = 0;
+        for (let i = 0; i < 8; i++) if (working.edges![side * 32 + quarter * 8 + i] === slot) coverage++;
+        if (coverage >= 4) mask |= 255 << (quarter * 8);
+      }
+      return mask >>> 0;
+    }) : undefined;
+    const referenceError = (profile: number, front: number, back: number) => {
+      if (!referenceEdges) return 0;
+      let error = 0;
+      for (let side = 0; side < 4; side++) {
+        const desired = referenceEdges[side]!, mask = fineEdgeMasks[profile * 4 + side]!;
+        const wantedFront = front === slot ? desired : front === retained ? ~desired : 0;
+        const wantedBack = back === slot ? desired : back === retained ? ~desired : 0;
+        error += 32 - pop32(mask & wantedFront) - pop32(~mask & wantedBack);
+      }
+      return error;
     };
     const neighborColors = useNeighbors ? this.neighborColors(index) : undefined;
     const neighborBits = neighborColors?.map(colors => {
@@ -121,12 +150,12 @@ export class CellField {
     const seed = useNeighbors ? this.cell(index) : original;
     const hasFront = !!(maskLow[seed.profile] || maskHigh[seed.profile]);
     const hasBack = maskLow[seed.profile] !== 0xffffffff || maskHigh[seed.profile] !== 0xffffffff;
-    const originalAllowed = (!hasFront || !!histogram[seed.front]) && (!hasBack || !!histogram[seed.back]) && followsDirection(seed.profile, seed.front, seed.back);
+    const originalAllowed = (!hasFront || !!survivors[seed.front]) && (!hasBack || !!survivors[seed.back]) && followsDirection(seed.profile, seed.front, seed.back);
     let best = originalAllowed ? seed : { profile: 1, front: slot, back: 0 };
     const bestError = originalAllowed ? error(best.profile, best.front, best.back) : count - histogram[slot]!;
     const bestEdge = edgeCost(best.profile, best.front, best.back);
-    let bestScore = bestError + edgeWeight * bestEdge;
-    for (const profile of this.expanded ? candidates : legacyCandidates) {
+    let bestScore = bestError + edgeWeight * bestEdge + referenceError(best.profile, best.front, best.back) * 65;
+    for (const profile of candidates) {
       for (const reversed of [false, true]) {
         const front = reversed ? retained : slot, back = reversed ? slot : retained;
         if (!followsDirection(profile, front, back)) continue;
@@ -136,7 +165,7 @@ export class CellField {
         const candidateError = count - pop32(low & frontLow) - pop32(high & frontHigh) - pop32(~low & backLow) - pop32(~high & backHigh);
         if (candidateError > bestScore) continue;
         const candidateEdge = edgeCost(profile, front, back);
-        const score = candidateError + edgeWeight * candidateEdge;
+        const score = candidateError + edgeWeight * candidateEdge + referenceError(profile, front, back) * 65;
         if (score < bestScore) {
           best = { profile, front, back }; bestScore = score;
         }
@@ -151,6 +180,7 @@ export class CellField {
   }
 
   private neighborColors(index: number): (Uint8Array | undefined)[] {
+    const { fineEdgeMasks } = this.tables;
     const x = index % size, y = Math.floor(index / size);
     const neighbors = [y ? index - size : -1, x < size - 1 ? index + 1 : -1, y < size - 1 ? index + size : -1, x ? index - 1 : -1];
     return neighbors.map((neighbor, side) => {
@@ -163,6 +193,7 @@ export class CellField {
   }
 
   paint(a: Point, b: Point, radius: number, slot: number): Set<number> {
+    const { sampleColor } = this.tables;
     const dirty = this.strokeSlot !== slot ? this.beginStroke(slot) : new Set<number>();
     const dx = b[0] - a[0], dy = b[1] - a[1], length2 = dx * dx + dy * dy;
     const left = Math.max(0, Math.floor(Math.min(a[0], b[0]) - radius));
@@ -170,6 +201,8 @@ export class CellField {
     const top = Math.max(0, Math.floor(Math.min(a[1], b[1]) - radius));
     const bottom = Math.min(size - 1, Math.floor(Math.max(a[1], b[1]) + radius));
     for (let y = top; y <= bottom; y++) for (let x = left; x <= right; x++) {
+      const centerT = length2 ? Math.max(0, Math.min(1, ((x + .5 - a[0]) * dx + (y + .5 - a[1]) * dy) / length2)) : 0;
+      if ((x + .5 - a[0] - centerT * dx) ** 2 + (y + .5 - a[1] - centerT * dy) ** 2 > (radius + Math.SQRT1_2) ** 2) continue;
       const index = y * size + x, old = this.cell(index);
       let working = this.working.get(index), changed = false;
       for (let i = 0; i < count; i++) {
@@ -183,6 +216,25 @@ export class CellField {
           this.working.set(index, working);
         }
         working.target[i] = slot; changed = true;
+      }
+      if (this.library === 'straight') {
+        const edges = working?.edges ?? Uint8Array.from({ length: 128 }, (_, i) => {
+          const side = Math.floor(i / 32), probe = i % 32;
+          return this.tables.fineEdgeMasks[old.profile * 4 + side]! & (1 << probe) ? old.front : old.back;
+        });
+        for (let side = 0; side < 4; side++) for (let i = 0; i < 32; i++) {
+          const t = (i + .5) / 32;
+          const px = x + (side === 1 ? 1 : side === 3 ? 0 : t);
+          const py = y + (side === 0 ? 0 : side === 2 ? 1 : t);
+          const along = length2 ? Math.max(0, Math.min(1, ((px - a[0]) * dx + (py - a[1]) * dy) / length2)) : 0;
+          if ((px - a[0] - along * dx) ** 2 + (py - a[1] - along * dy) ** 2 > radius * radius || edges[side * 32 + i] === slot) continue;
+          if (!working) {
+            working = { original: old, target: Uint8Array.from({ length: count }, (_, sample) => sampleColor(old.profile, old.front, old.back, sample)) };
+            this.working.set(index, working);
+          }
+          edges[side * 32 + i] = slot; changed = true;
+        }
+        if (working) working.edges = edges;
       }
       if (!changed || !working) continue;
       this.fit(index, working, slot);

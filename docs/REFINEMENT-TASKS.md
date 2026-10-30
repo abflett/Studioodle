@@ -111,7 +111,14 @@ This is an evolution of the current engine, not a second painting engine.
   untouched cells. Regress shallow strokes in all rotations/reflections and both
   input directions, with no gaps or backward teeth and a sub-cell contour budget
   on the fixtures. Shared numeric tables are now 72.50 KiB; no app-engine change.
-- [ ] Review the expanded demo's appearance and connectivity with the user before
+- [x] Add a separate straight-cut library, preserving experimental 32/original eight.
+  Sixteen active bases cover all 80 quarter-edge straight boundaries under transforms
+  and color swaps; reserve the other slots. Fit stroke-derived edge coverage and
+  interior coverage independently by default; retain optional neighbor joining.
+  Add repeatable circle dabs, enumerate the edge vocabulary and verify dab continuity/
+  radial error and stroke partitioning with matching off/on. Cell data is unchanged;
+  both dictionaries plus shared numeric tables occupy 79.75 KiB, excluding paths.
+- [ ] Review the straight-cut demo's appearance and connectivity with the user before
   choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/
   dense repeated paint. Measure model bytes, caches, conversion/render time and

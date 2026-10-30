@@ -222,28 +222,31 @@ ordering, eraser scope, confinement, appearance, sustained-growth limits and out
 quality before implementing the affected behavior. No second paint engine or
 pixel-only authoritative spray format is planned.
 
-A first standalone cell-brush demo is now under `tools/cell-brush/`. Run `npm run
-cells` on port 1434. It has a 100 × 100 page, 32 base families with precomputed
-rotation/reflection variants, brush diameter and eight palette slots, optional grid,
-clear and repeatable test strokes. An original-eight selector allows comparison
-(switching clears the page). It stores exactly three bytes per
-cell (profile/front/back, 30,000 bytes total); paper is transparent. An 8 × 8
-coverage fitter replaces the shared-corner/three-color quadrant model, which caused
-paper artifacts. It selects new paint plus the dominant surviving old color, with
-the original profile winning exact objective ties. Simple monotone boundaries now
-use direction-compatible split/wedge families rather than complex shoulder/cap
-fits. Two 32-bit coverage masks speed scoring; 32 edge probes compare actual selected
-neighbors on release, with coverage/continuity and reversal penalties. At most six
-alternating join passes revisit active-stroke cells, starting from complete-gesture
-independent fits. Some coverage accuracy is traded for smooth stepped contours.
-Temporary samples release afterward; untouched neighbors never change. Numeric
-lookups add 72.50 KiB shared, excluding polygons/Path2D objects.
-Connectivity remains approximate. See the tool README for rules and limitations.
-It is deliberately coarse, with no stroke smoothing, persistence, undo, fills,
-workers or shaders. No app/reviewer engine changes or measured speedup claims.
-`cells:typecheck`, `cells:build` and `test:cells` verify the isolated tool; output and
-browser captures stay under ignored `work/`. The user runs the dev server manually;
-do not leave a demo server running after automated tests.
+The standalone cell-brush demo lives under `tools/cell-brush/`; run `npm run cells`
+on port 1434. It stays 100 x 100 cells with eight palette slots and three bytes per
+cell (29.30 KiB), transparent paper, diameter/grid controls, repeatable test strokes
+and circle dabs. The new default is Straight cuts: 16 of 32 base slots, with neighbor
+matching off. Empty/full, quarter/half splits, ten corner wedges and two opposite-
+edge cuts cover all 80 quarter-edge straight boundaries under transforms/color
+swaps. Remaining slots are reserved. The experimental 32 and original eight remain
+in the dropdown; switching clears the page and resets matching to that mode's default.
+
+Straight mode accumulates 64 interior and 128 shared-coordinate stroke-edge probes
+per touched cell, snaps edge coverage to quarters, then selects a matching cut with
+interior coverage as secondary evidence. No bands/caps/dots are in this dictionary.
+One-cut/two-color limits deliberately discard small or conflicting detail; thin
+marks can still show quarter-cell steps. Tests cover complete edge vocabulary,
+circle continuity/error and stroke partitioning with matching off/on. Optional
+joining uses at most six bounded passes over touched cells, matching actual edges
+and penalizing reversals. Older-mode directional eligibility and fitting remain.
+Scratch releases after a gesture; untouched neighbors never change. Both loaded
+libraries and shared numeric lookups total 79.75 KiB, excluding polygons/Path2D
+objects. See the tool README for storage bounds and algorithm limits.
+
+No source-art conversion, main-app engine change, native build or measured speedup
+claim is included. `cells:typecheck`, `cells:build` and `test:cells` verify the isolated
+tool; generated output/captures stay under ignored `work/`. The user runs the dev
+server manually; do not leave a server running after automated tests.
 
 Solo coloring pages should fit visible subject bounds and preserve proportions,
 with intentional margins and orientation. Roughly 80% of suitable stickers is a
