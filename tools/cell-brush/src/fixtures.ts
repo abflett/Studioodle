@@ -1,6 +1,12 @@
 import type { Point } from './profiles';
 export type CurveKind = 'arc' | 'short' | 'spiral' | 'tightening' | 'boundary';
 export type CurveOptions = { jitter?: number; seed?: number; retrace?: boolean };
+/** Fixed one-pixel-grid workloads, shared by the benchmark and golden regressions. */
+export const performanceStrokes: Record<string, Point[]> = {
+  jump: [[100, 100], [1400, 720]],
+  fast: Array.from({ length: 13 }, (_, i): Point => [100 + i * 105, 400 + 250 * Math.sin(i * .45)]),
+  steady: Array.from({ length: 121 }, (_, i): Point => [100 + i * 10, 400 + 220 * Math.sin(i * .045)]),
+};
 /** Seeded input noise is repeatable, independent of event batching or wall time. */
 export function thinCurve(kind: CurveKind, offset: number | Point = 0, steps = 240, options: CurveOptions = {}): Point[] {
   let state = (options.seed ?? 1) >>> 0;

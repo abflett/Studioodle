@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
 import { createServer } from 'vite';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 
 let server, model;
 let library;
@@ -16,6 +17,39 @@ before(async () => {
 });
 after(async () => { await server?.close(); });
 const snapshot = field => [field.profile.slice(), field.front.slice(), field.back.slice()];
+
+test('optimized one-pixel fast strokes preserve the pre-optimization cell bytes', async () => {
+  const golden = JSON.parse(await readFile(new URL('./fixtures/cell-brush-performance-golden.json', import.meta.url), 'utf8'));
+  for (const [name, points] of Object.entries(fixtures.performanceStrokes)) for (const background of ['empty', 'painted']) {
+    const field = new model.CellField('straight', false, 1520, 850);
+    if (background === 'painted') { field.profile.fill(1); field.front.fill(2); }
+    let previous = points[0];
+    for (const point of points) { field.paint(previous, point, 4, 1); previous = point; }
+    field.endStroke();
+    assert.equal(createHash('sha256').update(field.profile).update(field.front).update(field.back).digest('hex'), golden[`${name}:${background}`]);
+    assert.equal(field.scratchBytes, 0);
+  }
+});
+
+test('solid-cell fast paths preserve diagnostic painting, overpaint and erasure geometry', () => {
+  const plain = new model.CellField('straight', true, 280, 190), observed = new model.CellField('straight', true, 280, 190);
+  observed.onFit = () => {};
+  for (const [a, b, radius, slot] of [[[10.2, 15.7], [261.3, 174.1], 8, 1], [[275, 60.3], [13.1, 143.9], 3.5, 5], [[20, 100], [259, 100], 5, 0]]) {
+    for (const field of [plain, observed]) { field.paint(a, b, radius, slot); field.paint(b, a, radius, slot); field.endStroke(); }
+    assert.deepEqual(snapshot(plain), snapshot(observed));
+  }
+});
+
+test('reused palette counts retain colors supplied by shared neighboring edges', () => {
+  const field = new model.CellField('straight', false);
+  for (const color of [200, 17, 5]) {
+    const target = new Uint8Array(64); target[0] = 1;
+    field.fit(5050, { target, original: { profile: 0, front: 0, back: 0 }, edges: new Uint8Array(128).fill(color) }, 1);
+    const cell = field.cell(5050);
+    assert.ok(cell.front === color || cell.back === color, 'Populated neighboring colors must participate in retention');
+    assert.ok([0, 1, color].includes(cell.front) && [0, 1, color].includes(cell.back), 'Earlier fits must not leak palette counts');
+  }
+});
 
 test('rectangular display grids address paint, shared edges and bounds independently on both axes', () => {
   for (const [width, height] of [[381, 212], [87, 161]]) {

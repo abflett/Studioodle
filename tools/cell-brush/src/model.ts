@@ -1,6 +1,6 @@
 import { libraries, edgeDifference, pop32, sampleX, sampleY, sampleCount as count, monotonicity, reverseMonotonicity } from './profiles';
 import type { Point, LibraryId, ProfileLibrary } from './profiles';
-import { capsuleInterval, paintRuns, edgeColor, cellCrossings, cutKey } from './strokeEdges';
+import { capsuleInterval, paintRuns, cellCrossings, cutKey } from './strokeEdges';
 import type { StrokeEdge, EdgeRun } from './strokeEdges';
 export type { Point } from './profiles';
 export { profiles, profileNames, inProfile } from './profiles';
@@ -21,6 +21,10 @@ export class CellField {
   readonly back: Uint8Array;
   private working = new Map<number, WorkingCell>();
   private outlineEdges = new Map<number, StrokeEdge>();
+  private solid = new Set<number>();
+  private segment = 0;
+  private histogram = new Uint16Array(256);
+  private survivors = new Uint16Array(256);
   private strokeSlot: number | undefined;
   readonly library: LibraryId;
   readonly tables: ProfileLibrary;
@@ -66,7 +70,7 @@ export class CellField {
       }
     }
     if (this.onFit && this.strokeSlot !== undefined) for (const [index, working] of this.working) this.observeFit(index, working, this.strokeSlot);
-    this.working.clear(); this.outlineEdges.clear(); this.strokeSlot = undefined; return dirty;
+    this.working.clear(); this.outlineEdges.clear(); this.solid.clear(); this.strokeSlot = undefined; return dirty;
   }
   clear() { this.endStroke(); this.profile.fill(0); this.front.fill(0); this.back.fill(0); }
 
@@ -87,15 +91,24 @@ export class CellField {
   private fitCell(index: number, working: WorkingCell, slot: number, useNeighbors = false): CellDiagnostic['mode'] {
     const { maskLow, maskHigh, sampleColor, fineEdgeMasks, directionFlags, candidates } = this.tables;
     const { target, original } = working;
-    const histogram = new Uint8Array(256);
+    const histogram = this.histogram; histogram.fill(0);
     for (const color of target) histogram[color] = histogram[color]! + 1;
-    const survivors = working.edges ? Uint16Array.from(histogram) : histogram;
-    if (working.edges) for (const color of working.edges) survivors[color] = survivors[color]! + 1;
+    const survivors = working.edges ? this.survivors : histogram;
+    const retainedColors = [original.front, original.back];
+    if (working.edges) {
+      survivors.set(histogram);
+      for (const color of working.edges) {
+        if (!survivors[color] && color !== slot && color !== original.front && color !== original.back) retainedColors.push(color);
+        survivors[color] = survivors[color]! + 1;
+      }
+    }
     // Largest surviving old color wins, preferring opaque over transparent on an
     // area tie. Color distance and palette numbering do not decide ownership.
     let retained = original.front !== slot && survivors[original.front] ? original.front :
       original.back !== slot && survivors[original.back] ? original.back : slot;
-    for (let color = 0; color < survivors.length; color++) {
+    // Only populated colors can survive. Shared edges may carry a neighboring
+    // cell's color too; retain those and preserve the original palette-order ties.
+    for (const color of retainedColors.sort((a, b) => a - b)) {
       if (color === slot || !survivors[color]) continue;
       if (retained === slot || survivors[color]! > survivors[retained]! ||
         (survivors[color] === survivors[retained] && retained === 0)) retained = color;
@@ -276,49 +289,83 @@ export class CellField {
   paint(a: Point, b: Point, radius: number, slot: number): Set<number> {
     const { sampleColor } = this.tables;
     const dirty = this.strokeSlot !== slot ? this.beginStroke(slot) : new Set<number>();
+    const segment = ++this.segment;
     const dx = b[0] - a[0], dy = b[1] - a[1], length2 = dx * dx + dy * dy;
     const left = Math.max(0, Math.floor(Math.min(a[0], b[0]) - radius));
     const right = Math.min(this.width - 1, Math.floor(Math.max(a[0], b[0]) + radius));
     const top = Math.max(0, Math.floor(Math.min(a[1], b[1]) - radius));
     const bottom = Math.min(this.height - 1, Math.floor(Math.max(a[1], b[1]) + radius));
-    for (let y = top; y <= bottom; y++) for (let x = left; x <= right; x++) {
-      const centerT = length2 ? Math.max(0, Math.min(1, ((x + .5 - a[0]) * dx + (y + .5 - a[1]) * dy) / length2)) : 0;
-      if ((x + .5 - a[0] - centerT * dx) ** 2 + (y + .5 - a[1] - centerT * dy) ** 2 > (radius + Math.SQRT1_2) ** 2) continue;
-      const index = y * this.width + x, old = this.cell(index);
-      let working = this.working.get(index), changed = false;
-      for (let i = 0; i < count; i++) {
-        const px = x + sampleX[i]!, py = y + sampleY[i]!;
-        const t = length2 ? Math.max(0, Math.min(1, ((px - a[0]) * dx + (py - a[1]) * dy) / length2)) : 0;
-        if ((px - a[0] - t * dx) ** 2 + (py - a[1] - t * dy) ** 2 > radius * radius) continue;
-        const current = working ? working.target[i]! : sampleColor(old.profile, old.front, old.back, i);
-        if (current === slot) continue;
-        if (!working) {
-          working = { original: old, target: Uint8Array.from({ length: count }, (_, sample) => sampleColor(old.profile, old.front, old.back, sample)) };
-          this.working.set(index, working);
+    const reach = radius + Math.SQRT1_2, inner = radius - Math.SQRT1_2;
+    for (let y = top; y <= bottom; y++) {
+      // Only visit the portion of the segment that can reach this row's centers.
+      // The final capsule-distance test remains authoritative.
+      const t0 = dy ? (y + .5 - reach - a[1]) / dy : 0;
+      const t1 = dy ? (y + .5 + reach - a[1]) / dy : 1;
+      const lo = Math.max(0, Math.min(1, Math.min(t0, t1))), hi = Math.max(0, Math.min(1, Math.max(t0, t1)));
+      const rowLeft = Math.max(left, Math.floor(Math.min(a[0] + dx * lo, a[0] + dx * hi) - reach));
+      const rowRight = Math.min(right, Math.floor(Math.max(a[0] + dx * lo, a[0] + dx * hi) + reach));
+      for (let x = rowLeft; x <= rowRight; x++) {
+        const centerT = length2 ? Math.max(0, Math.min(1, ((x + .5 - a[0]) * dx + (y + .5 - a[1]) * dy) / length2)) : 0;
+        const distance2 = (x + .5 - a[0] - centerT * dx) ** 2 + (y + .5 - a[1] - centerT * dy) ** 2;
+        if (distance2 > reach * reach) continue;
+        const index = y * this.width + x, old = this.cell(index);
+        if (this.solid.has(index)) continue;
+        if (this.library === 'straight' && !this.onFit && inner >= 0 && distance2 < inner * inner) {
+          // Distance to a segment is 1-Lipschitz: this proves every point in the
+          // square is covered, including its edges. No fitting or probes are needed.
+          this.profile[index] = slot ? 1 : 0; this.front[index] = slot; this.back[index] = 0;
+          this.working.delete(index); this.solid.add(index);
+          for (const edge of [this.outlineEdges.get(y * this.width + x), this.outlineEdges.get((y + 1) * this.width + x),
+            this.outlineEdges.get(this.width * (this.height + 1) + y * (this.width + 1) + x),
+            this.outlineEdges.get(this.width * (this.height + 1) + y * (this.width + 1) + x + 1)]) {
+            if (edge) { edge.runs = [{ from: 0, to: 1, color: slot }]; edge.crossings = undefined; edge.paintedAt = edge.changedAt = segment; }
+          }
+          if (old.profile !== this.profile[index] || old.front !== slot || old.back !== 0) dirty.add(index);
+          continue;
         }
-        working.target[i] = slot; changed = true;
+        let working = this.working.get(index), changed = false;
+        for (let i = 0; i < count; i++) {
+          const px = x + sampleX[i]!, py = y + sampleY[i]!;
+          const t = length2 ? Math.max(0, Math.min(1, ((px - a[0]) * dx + (py - a[1]) * dy) / length2)) : 0;
+          if ((px - a[0] - t * dx) ** 2 + (py - a[1] - t * dy) ** 2 > radius * radius) continue;
+          const current = working ? working.target[i]! : sampleColor(old.profile, old.front, old.back, i);
+          if (current === slot) continue;
+          if (!working) {
+            working = { original: old, target: Uint8Array.from({ length: count }, (_, sample) => sampleColor(old.profile, old.front, old.back, sample)) };
+            this.working.set(index, working);
+          }
+          working.target[i] = slot; changed = true;
+        }
+        if (this.library === 'straight') {
+          const outline = [0, 1, 2, 3].map(side => this.strokeEdge(x, y, side));
+          for (const edge of outline) {
+            if (edge.paintedAt !== segment) {
+              edge.paintedAt = segment;
+              const interval = capsuleInterval(edge.start, edge.horizontal, a, b, radius);
+              if (interval) {
+                const runs = paintRuns(edge.runs, interval, slot);
+                if (runs !== edge.runs) { edge.runs = runs; edge.crossings = undefined; edge.changedAt = segment; }
+              }
+            }
+            changed = changed || edge.changedAt === segment;
+          }
+          if (changed && !working) {
+            working = { original: old, target: Uint8Array.from({ length: count }, (_, sample) => sampleColor(old.profile, old.front, old.back, sample)) };
+            this.working.set(index, working);
+          }
+          if (working && changed) {
+            working.outline = outline;
+            working.edges ??= new Uint8Array(128);
+            for (let side = 0; side < 4; side++) for (const run of outline[side]!.runs) {
+              const from = Math.max(0, Math.ceil(run.from * 32 - .5)), to = Math.min(32, Math.ceil(run.to * 32 - .5));
+              working.edges.fill(run.color, side * 32 + from, side * 32 + to);
+            }
+          }
+        }
+        if (!changed || !working) continue;
+        this.fit(index, working, slot);
+        if (old.profile !== this.profile[index] || old.front !== this.front[index] || old.back !== this.back[index]) dirty.add(index);
       }
-      if (this.library === 'straight') {
-        const outline = [0, 1, 2, 3].map(side => this.strokeEdge(x, y, side));
-        for (const edge of outline) {
-          const interval = capsuleInterval(edge.start, edge.horizontal, a, b, radius);
-          if (!interval) continue;
-          const runs = paintRuns(edge.runs, interval, slot);
-          if (runs !== edge.runs) { edge.runs = runs; edge.crossings = undefined; }
-          changed = true;
-        }
-        if (changed && !working) {
-          working = { original: old, target: Uint8Array.from({ length: count }, (_, sample) => sampleColor(old.profile, old.front, old.back, sample)) };
-          this.working.set(index, working);
-        }
-        if (working) {
-          working.outline = outline;
-          working.edges = Uint8Array.from({ length: 128 }, (_, i) => edgeColor(outline[Math.floor(i / 32)]!, (i % 32 + .5) / 32));
-        }
-      }
-      if (!changed || !working) continue;
-      this.fit(index, working, slot);
-      if (old.profile !== this.profile[index] || old.front !== this.front[index] || old.back !== this.back[index]) dirty.add(index);
     }
     return dirty;
   }

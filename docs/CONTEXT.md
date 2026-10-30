@@ -332,3 +332,18 @@ Browser tests verify 1080p cell sizing, side-by-side tools, painting, resize
 preservation and explicit refit clearing. Counters update incrementally from dirty
 cells rather than rescanning the complete grid every frame. No speedup claim is
 implied by the increased-resolution demo.
+
+One-pixel performance work adds narrow capsule row scanning, a proven solid-cell
+fast path (capture off), per-segment shared-edge updates, reused edge probe/histogram
+buffers and populated-color retention. All coalesced samples remain; layout/cursor
+updates happen once per pointer event. At one physical pixel/cell, a disposable
+ImageData surface plus 64 KiB/browser-rasterized palette lookup per loaded library
+replaces per-cell paths. It matches canonical software Canvas for all 16,384
+profile/color cases; GPU AA can differ. Extra display payload is reported.
+`cells:bench` runs reproducible model-only workloads. Against 722819e on this Windows
+Node 22.15 machine, worst-event medians fell roughly 326->64 ms (extreme jump),
+44->9 ms (fast curve), 8.7->2.5 ms (steady curve). All six model output hashes match
+and are golden-tested; sample payload fell about 70%, excluding Set/Map overhead.
+Warm headless Edge CPU submission for 16,384 changed cells measured ~17-25->3.5-5 ms. These
+are isolated CPU/render tests, not measured end-to-end latency; huge jumps and
+complex local cases can still lag. Capture stays slower and off by default.

@@ -13,6 +13,7 @@
     "review": "vite --config tools/artwork-review/vite.config.ts --open /artwork-review.html",
     "cells": "vite --config tools/cell-brush/vite.config.ts --open",
     "cells:build": "vite build --config tools/cell-brush/vite.config.ts",
+    "cells:bench": "node scripts/benchmark-cell-brush.mjs",
     "cells:typecheck": "tsc --project tools/cell-brush/tsconfig.json",
     "test:cells": "node --test tests/cell-brush.test.mjs && node scripts/test-cell-brush.mjs",
     "build": "vite build --config vite/config.prod.ts",

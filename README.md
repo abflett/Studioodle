@@ -28,6 +28,7 @@ sideload APK using the local development key.
 | --- | --- |
 | `npm run review` | Run the standalone artwork reviewer (same origin preserves annotations) |
 | `npm run cells` | Open the isolated view-sized cell-brush experiment on port 1434 |
+| `npm run cells:bench` | Measure repeatable cell-model CPU workloads; excludes browser rendering/input latency |
 | `npm run cells:typecheck` / `npm run cells:build` / `npm run test:cells` | Check/build/test the standalone cell-brush demo |
 | `npm run review:typecheck` / `npm run test:review` | Check the isolated reviewer |
 | `npm run review:build` | Build only the reviewer into `work/artwork-review-dist/` |

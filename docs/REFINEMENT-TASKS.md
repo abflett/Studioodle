@@ -162,6 +162,11 @@ This is an evolution of the current engine, not a second painting engine.
 - [x] Add 2 x 2 and 1 x 1 CSS-pixel grid modes alongside 4 x 4. Keep diagnostic
   reference backing at display scale; avoid full-grid Set allocation and empty-cell
   canvas clears on redraw. Verify 1080p dimensions, storage, painting and clearing.
+- [x] Profile and optimize one-pixel cell painting: narrow row scans, proven-solid
+  bypass, shared-edge de-duplication, reusable probe/histogram buffers, populated
+  palette slots and coalesced-event layout batching. Add one-pixel cached display
+  rendering. Preserve six pre-optimization model hashes and canonical software
+  rendering across all profile/color cases; report isolated benchmark limits.
 - [ ] Review the straight-cut demo's appearance and connectivity with the user before
   choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/

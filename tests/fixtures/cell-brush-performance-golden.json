@@ -1,0 +1,9 @@
+{
+  "source": "722819e model, 1520x850, radius 4, straight library, matching off, diagnostics off; SHA-256 of profile/front/back bytes",
+  "jump:empty": "41861e3dca8af37e72f2fa5b6df61069b04341ac5f21cd3e1840c55f71ae784f",
+  "jump:painted": "cd5284df687edadd7911f5b13b83ed3fd5485621554f22625f7c860d8044c467",
+  "fast:empty": "5d41c203205989fa1e27d69686539bd1b8d113603aa043c0632bbb64028853e8",
+  "fast:painted": "62c37495db5357b26cf927764a2d5b1372a5e31c04024cce7352f7cc966ac3c3",
+  "steady:empty": "0a1760f062461629f01766e3296267634c2c304ccf658851faedbb25f6af5866",
+  "steady:painted": "262a2cbdbdfbad8063398ce213b5a499b85b6c26107f06c0a5d117c62cb501ff"
+}

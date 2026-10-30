@@ -199,6 +199,57 @@ try {
     assert.equal(await evaluate('document.querySelector("#painted").textContent'), '0');
     console.log(`${pixels}px display grid:`, fineGrid);
   }
+  const pixelRender = await evaluate(`(async()=>{
+    const {pixelLookup,PixelSurface}=await import('/src/pixelSurface.ts');
+    const {libraries}=await import('/src/profiles.ts');
+    const palette=Array.from(document.querySelectorAll('.swatch'),el=>el.style.getPropertyValue('--color'));
+    const paths=libraries.straight.variants.map(polygon=>{const p=new Path2D();polygon.forEach(([x,y],i)=>i?p.lineTo(x,y):p.moveTo(x,y));if(polygon.length)p.closePath();return p;});
+    const lookup=pixelLookup(paths,palette), make=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c;};
+    const expected=make(256,64), actual=make(256,64), ctx=expected.getContext('2d',{willReadFrequently:true});
+    const surface=new PixelSurface(256,64,lookup,8);
+    const vector=(ctx,x,y,profile,front,back,pathTable=paths)=>{
+      ctx.clearRect(x,y,1,1);
+      if(back){ctx.fillStyle=palette[back];ctx.fillRect(x,y,1,1);}
+      ctx.setTransform(1,0,0,1,x,y);ctx.globalCompositeOperation=front?'source-over':'destination-out';
+      ctx.fillStyle=front?palette[front]:'#000';ctx.fill(pathTable[profile]);ctx.resetTransform();ctx.globalCompositeOperation='source-over';
+    };
+    for(let front=0;front<8;front++)for(let back=0;back<8;back++)for(let profile=0;profile<256;profile++){
+      const row=front*8+back;vector(ctx,profile,row,profile,front,back);surface.set(row*256+profile,profile,front,back);
+    }
+    surface.flush(actual.getContext('2d'));
+    const a=ctx.getImageData(0,0,256,64).data,b=actual.getContext('2d').getImageData(0,0,256,64).data;
+    let mismatches=0,maxDifference=0,alphaMismatches=0;
+    for(let i=0;i<a.length;i++)if(a[i]!==b[i]){mismatches++;maxDifference=Math.max(maxDifference,Math.abs(a[i]-b[i]));if(i%4===3)alphaMismatches++;}
+    const straightMismatches=mismatches;
+    for(const name of ['experimental','legacy']){
+      const otherPaths=libraries[name].variants.map(polygon=>{const p=new Path2D();polygon.forEach(([x,y],i)=>i?p.lineTo(x,y):p.moveTo(x,y));if(polygon.length)p.closePath();return p;});
+      const reference=make(256,64),output=make(256,64),otherCtx=reference.getContext('2d',{willReadFrequently:true});
+      const other=new PixelSurface(256,64,pixelLookup(otherPaths,palette),8);
+      for(let front=0;front<8;front++)for(let back=0;back<8;back++)for(let profile=0;profile<256;profile++){
+        const row=front*8+back;vector(otherCtx,profile,row,profile,front,back,otherPaths);other.set(row*256+profile,profile,front,back);
+      }
+      other.flush(output.getContext('2d'));
+      const expected=otherCtx.getImageData(0,0,256,64).data,actual=output.getContext('2d').getImageData(0,0,256,64).data;
+      for(let i=0;i<expected.length;i++)if(expected[i]!==actual[i]){
+        mismatches++;maxDifference=Math.max(maxDifference,Math.abs(expected[i]-actual[i]));if(i%4===3)alphaMismatches++;
+      }
+    }
+    const large=make(1520,850), largeCtx=large.getContext('2d'), pixels=new PixelSurface(1520,850,lookup,8);
+    const pathTimes=[],pixelTimes=[];
+    for(let repeat=0;repeat<4;repeat++){
+      let start=performance.now();
+      for(let i=0;i<16384;i++){const index=i*79%(1520*850);vector(largeCtx,index%1520,Math.floor(index/1520),i%256,Math.floor(i/2048)%8,Math.floor(i/256)%8);}
+      if(repeat)pathTimes.push(performance.now()-start);
+      start=performance.now();
+      for(let i=0;i<16384;i++)pixels.set(i*79%(1520*850),i%256,Math.floor(i/2048)%8,Math.floor(i/256)%8);
+      pixels.flush(largeCtx);if(repeat)pixelTimes.push(performance.now()-start);
+    }
+    return {straightMismatches,mismatches,maxDifference,alphaMismatches,profileColorCases:49152,pathMedianMs:pathTimes.sort((a,b)=>a-b)[1],pixelMedianMs:pixelTimes.sort((a,b)=>a-b)[1]};
+  })()`);
+  console.log('One-pixel browser render check:', pixelRender);
+  assert.equal(pixelRender.straightMismatches, 0, 'Every straight profile/color case matches canonical software path rendering exactly');
+  assert.equal(pixelRender.alphaMismatches, 0, 'Coverage is identical across all libraries');
+  assert.ok(pixelRender.maxDifference <= 1, 'Curved legacy profiles allow only one RGB level of premultiplication roundtrip error');
   await evaluate('document.querySelector("#grid-mode").value="legacy"; document.querySelector("#grid-mode").dispatchEvent(new Event("change")); document.querySelector("#size").value="8"'); await settle();
   await cdp('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true }); await settle();
   assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, 'No mobile horizontal overflow');

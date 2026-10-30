@@ -2,7 +2,7 @@ import type { Point } from './profiles';
 
 export type Interval = readonly [number, number];
 export type EdgeRun = { from: number; to: number; color: number };
-export type StrokeEdge = { start: Point; horizontal: boolean; runs: EdgeRun[]; crossings?: { color: number; positions: number[] } };
+export type StrokeEdge = { start: Point; horizontal: boolean; runs: EdgeRun[]; crossings?: { color: number; positions: number[] }; paintedAt?: number; changedAt?: number };
 const epsilon = 1e-10;
 export const snapQuarter = (position: number) => Math.max(0, Math.min(1, Math.floor(position * 4 + .5 + 1e-9) / 4));
 

@@ -4,6 +4,8 @@ Run `npm run cells` and open http://localhost:1434/. This isolated Vite app impo
 neither the normal app nor the reviewer and has no persistent storage. The user
 runs the server manually. Build output and test screenshots go under ignored
 `work/`. Commands: `cells:typecheck`, `cells:build`, `test:cells`.
+Run `npm run cells:bench` for model CPU timings (one warmup, median of three measured
+runs). Optional JSON output: `node scripts/benchmark-cell-brush.mjs work/cell-bench.json`.
 
 ## Libraries and controls
 
@@ -163,7 +165,9 @@ The grid occupies width x height x 3 bytes, independent of stroke count. The
 is transparent; paper is the container background. It is not white paint.
 
 Temporary sample payload is 64 bytes per touched cell in an earlier library,
-or 192 bytes for straight cuts (64 interior + 128 edge samples). Larger grids
+or 192 bytes per sampled boundary cell for straight cuts (64 interior + 128 edge
+samples). Proven fully covered cells bypass fitting when diagnostic capture is off;
+a gesture-local Set tracks them instead. Larger grids
 therefore increase worst-case gesture scratch as well as authoritative storage. The analytic shared-edge interval records are additional transient allocations
 (excluded from the sample-buffer counter). Both buffers and intervals release on
 pointer-up, cancellation, blur or clear. This is scratch
@@ -183,9 +187,47 @@ they are not isolated cell-engine measurements. This is standalone comparison
 instrumentation, not a raster-engine addition to Studioodle.
 
 Painted/boundary counters update from dirty cells without scanning the entire
-grid each frame. Canvas2D redraws changed cells, using prebuilt paths and integer physical pixels
+grid each frame. At one physical pixel per cell, an ImageData staging surface and
+software-Canvas-rasterized profile/color lookup replace per-cell path operations.
+The lookup is 64 KiB per loaded library with the eight-slot palette; the staging
+surface is four bytes per cell. Both are disposable display data, included in the
+display-memory counter, not authoritative paint. All 16,384 straight profile/color cases
+match canonical software Canvas output byte-for-byte. Across all three libraries
+(49,152 cases), alpha is identical; a few older curved-profile RGB values differ
+by one level due to premultiplication roundtrip rounding. GPU path antialiasing may
+differ slightly; cell geometry and storage do not change. Larger cells retain
+prebuilt paths and integer physical pixels
 per cell. Resize redraws the page. Opaque colors draw over an opaque base; transparent
 fronts erase their portion. No React, polygon union, worker or shader is involved.
 There is no smoothing, undo, zoom, fills, stickers, source-art conversion or output
 conversion. The normal app's engine and reviewer are unchanged. No production
 speedup claim follows from this prototype. Track work in `docs/REFINEMENT-TASKS.md`.
+
+## One-pixel performance investigation
+
+Painting visits narrow capsule row spans rather than a diagonal's full bounding
+rectangle. Fully covered squares skip samples/edge generation/fitting; genuine
+boundary cells retain the existing profile rules. Shared edges update once per
+segment, unchanged edge coverage does not refit, and edge probe arrays are reused
+and filled by runs. Histogram buffers are reused and only populated colors are
+considered, including neighboring edge colors. Coalesced input shares one layout
+read/cursor update per event; every geometry sample is retained. Diagnostic capture
+deliberately uses the full sampling path and remains slower (off by default).
+
+On this Windows machine, Node 22.15.0 model-only medians at 1520 x 850, radius four,
+matching/capture off, compared commit 722819e with this optimized model:
+
+| Workload, empty background | Before | After |
+| --- | ---: | ---: |
+| 1300-pixel diagonal jump, worst event | 326 ms | 64 ms |
+| Fast 13-event curve, worst event | 44 ms | 9 ms |
+| Steady 121-event curve, worst event | 8.7 ms | 2.5 ms |
+
+All six empty/solid-background output hashes match the pre-optimization model;
+golden fixtures enforce this. Sample payload fell about 70% (fast curve: 2,764,416
+to 812,928 bytes), excluding gesture Set/Map/object overhead. A warm headless Edge
+CPU/API-submission microbenchmark with 16,384 changed cells measured roughly
+17-25 ms for the old path operations versus 3.5-5 ms for pixel staging/flush. Atlas construction
+is outside those warm timings. Neither measurement is pointer-to-screen latency
+or proof of universal constant cost: very large jumps can still exceed a frame,
+and local geometry/color complexity and inspection can affect fitting cost.
