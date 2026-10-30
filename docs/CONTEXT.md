@@ -253,6 +253,17 @@ claim is included. `cells:typecheck`, `cells:build` and `test:cells` verify the 
 tool; generated output/captures stay under ignored `work/`. The user runs the dev
 server manually; do not leave a server running after automated tests.
 
+Thin contour investigation now provides repeatable diameter-one arc/spiral fixtures,
+a grid-phase slider and optional per-cell diagnostic capture/inspection. Inspect
+actual orange crossings, snapped blue crossings, selected profile and actual fit
+route alongside eight neighbors. Capture must be enabled before hand drawing;
+inspection clicks do not paint. Latest per-cell copies survive gesture end only
+when opted in, release on clear/library change/disable, and add memory beyond the
+display counters (including a 300 x 300 inspector canvas). Generated open arcs
+pass monotonicity at eight offsets; the user's hand-drawn spikes are not reliably
+reproduced yet. Do not assume multi-crossing counts prove the pictured cause.
+No new profile, snapping offset or fallback algorithm change was made in this step.
+
 The demo now has a Compare coverage selector: cells, a separately rendered round-
 brush reference, and a visual difference overlay. Every incoming gesture/example
 also updates a fixed 1000 x 1000 Canvas2D reference (3.81 MiB extra, reported in

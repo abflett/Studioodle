@@ -64,7 +64,7 @@ export function edgeColor(edge: StrokeEdge, t: number): number {
 
 /** Clockwise outline crossings, snapped once per shared edge. Corner transitions
  * are positions too, not contradictory 'painted edge' constraints. */
-export function cellCrossings(edges: StrokeEdge[], slot: number): Point[] {
+export function cellCrossings(edges: StrokeEdge[], slot: number, snapped = true): Point[] {
   const crossings: Point[] = [];
   const point = (side: number, t: number): Point => side === 0 ? [t, 0] : side === 1 ? [1, t] : side === 2 ? [t, 1] : [0, t];
   for (let side = 0; side < 4; side++) {
@@ -73,13 +73,15 @@ export function cellCrossings(edges: StrokeEdge[], slot: number): Point[] {
       color: slot,
       positions: runs.slice(1).filter((run, i) => (run.color === slot) !== (runs[i]!.color === slot)).map(run => snapQuarter(run.from)),
     };
-    const positions = side < 2 ? edge.crossings.positions : [...edge.crossings.positions].reverse();
+    const values = snapped ? edge.crossings.positions : runs.slice(1).filter((run, i) => (run.color === slot) !== (runs[i]!.color === slot)).map(run => run.from);
+    const positions = side < 2 ? values : [...values].reverse();
     for (const position of positions) crossings.push(point(side, position));
     const next = edges[(side + 1) % 4]!;
     const end = side < 2 ? runs.at(-1)!.color : runs[0]!.color;
     const after = side + 1 < 2 || side === 3 ? next.runs[0]!.color : next.runs.at(-1)!.color;
     if ((end === slot) !== (after === slot)) crossings.push(point(side, side < 2 ? 1 : 0));
   }
+  if (!snapped) return crossings;
   // A tiny arc can enter/leave through the same rounded corner. Its two crossings
   // cancel, rather than manufacturing an inverted triangle.
   const counts = new Map<number, number>();

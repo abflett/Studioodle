@@ -137,6 +137,13 @@ This is an evolution of the current engine, not a second painting engine.
   Regress analytic intervals, shared exits, full-to-3/4 alignment, curved strokes,
   direction/orientation, stable rounding ties and existing circle tests. The user's
   outside-edge teeth are distinct from true overlap cusps. No main-app engine change.
+- [x] Add diameter-one arc/spiral fixtures with adjustable grid phase and opt-in
+  cell inspection: actual/snapped crossings, chosen byte/colors, fitting route and
+  neighboring cells. Verify capture does not alter output, snapshots do not mutate,
+  and the open arc remains monotone at eight offsets. No selection-rule change.
+- [ ] Use the thin-contour inspector to isolate the user's hand-drawn outside-edge
+  tooth before changing snapping/fallback rules or expanding the profile dictionary.
+  Generated smooth fixtures do not yet reliably reproduce the reported spikes.
 - [ ] Review the straight-cut demo's appearance and connectivity with the user before
   choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/

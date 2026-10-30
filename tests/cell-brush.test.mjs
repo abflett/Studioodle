@@ -5,14 +5,61 @@ import { createServer } from 'vite';
 let server, model;
 let library;
 let edgeGeometry;
+let fixtures;
 before(async () => {
   server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
   model = await server.ssrLoadModule('/tools/cell-brush/src/model.ts');
   library = await server.ssrLoadModule('/tools/cell-brush/src/profiles.ts');
   edgeGeometry = await server.ssrLoadModule('/tools/cell-brush/src/strokeEdges.ts');
+  fixtures = await server.ssrLoadModule('/tools/cell-brush/src/fixtures.ts');
 });
 after(async () => { await server?.close(); });
 const snapshot = field => [field.profile.slice(), field.front.slice(), field.back.slice()];
+
+test('thin curve diagnostics preserve painting and retain immutable crossing snapshots only when enabled', () => {
+  for (const kind of ['arc', 'spiral']) {
+    const points = fixtures.thinCurve(kind, .375);
+    const plain = new model.CellField('straight', false), observed = new model.CellField('straight', false);
+    const records = new Map(); observed.onFit = (index, diagnostic) => records.set(index, diagnostic);
+    let previous = points[0];
+    for (const point of points) { plain.paint(previous, point, .5, 1); observed.paint(previous, point, .5, 1); previous = point; }
+    plain.endStroke(); observed.endStroke();
+    assert.deepEqual(snapshot(observed), snapshot(plain), 'Observation must not change profile selection');
+    assert.ok(records.size > 100);
+    assert.ok([...records.values()].some(record => record.mode === 'cut'));
+    assert.ok([...records.values()].some(record => record.actual.some(([x, y]) => !Number.isInteger(x * 4) || !Number.isInteger(y * 4))));
+    for (const [index, record] of records) {
+      assert.deepEqual(record.selected, observed.cell(index));
+      assert.ok(record.snapped.every(point => point.every(v => Number.isInteger(v * 4))));
+      assert.deepEqual(record.snapped, edgeGeometry.cellCrossings(record.edges, 1));
+    }
+    const saved = structuredClone([...records]);
+    observed.onFit = undefined; observed.clear(); observed.paint([20, 20], [80, 80], 3, 2); observed.endStroke();
+    assert.deepEqual([...records], saved, 'Later edits must not rewrite captured diagnostics');
+    assert.equal(observed.scratchBytes, 0);
+  }
+});
+
+test('repeatable one-cell open curves have monotone contours across grid offsets', () => {
+  for (const offset of [0, .125, .25, .375, .5, .625, .75, .875]) {
+    const field = new model.CellField('straight', false), points = fixtures.thinCurve('arc', offset);
+    let previous = points[0];
+    for (const point of points) { field.paint(previous, point, .5, 1); previous = point; }
+    field.endStroke();
+    let last;
+    for (let x = 30 + offset; x < 70 + offset; x += .0625) {
+      let top, bottom;
+      for (let y = 35 + offset; y < 50 + offset; y += .03125) if (field.colorAt(x, y)) { top ??= y; bottom = y; }
+      assert.notEqual(top, undefined, 'The thin curve must remain connected');
+      if (last && (last.x < 50 + offset) === (x < 50 + offset)) {
+        const direction = x < 50 + offset ? -1 : 1;
+        assert.ok((top - last.top) * direction >= -.07, `Outer contour reversal at ${x}, offset ${offset}`);
+        assert.ok((bottom - last.bottom) * direction >= -.07, `Inner contour reversal at ${x}, offset ${offset}`);
+      }
+      last = { x, top, bottom };
+    }
+  }
+});
 
 function crossingAt(field, index, side) {
   const cell = field.cell(index), mask = field.tables.fineEdgeMasks[cell.profile * 4 + side];

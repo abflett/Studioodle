@@ -6,7 +6,11 @@ export type { Point } from './profiles';
 export { profiles, profileNames, inProfile } from './profiles';
 export const size = 100;
 type Cell = { profile: number; front: number; back: number };
-type WorkingCell = { target: Uint8Array; original: Cell; edges?: Uint8Array; outline?: StrokeEdge[] };
+type WorkingCell = { target: Uint8Array; original: Cell; edges?: Uint8Array; outline?: StrokeEdge[]; fitMode?: CellDiagnostic['mode'] };
+export type CellDiagnostic = {
+  actual: Point[]; snapped: Point[]; mode: 'cut' | 'uniform' | 'fallback';
+  target: Uint8Array; edges: StrokeEdge[]; selected: Cell;
+};
 const edgeWeight = 4;
 const joinPasses = 6;
 
@@ -20,6 +24,8 @@ export class CellField {
   private strokeSlot: number | undefined;
   readonly library: LibraryId;
   readonly tables: ProfileLibrary;
+  // Optional experiment observer; normal painting retains no diagnostic history.
+  onFit?: (index: number, diagnostic: CellDiagnostic) => void;
   constructor(library: LibraryId = 'experimental', public matchNeighbors = true) {
     this.library = library;
     this.tables = libraries[this.library];
@@ -57,11 +63,26 @@ export class CellField {
         if (!changed) break;
       }
     }
+    if (this.onFit && this.strokeSlot !== undefined) for (const [index, working] of this.working) this.observeFit(index, working, this.strokeSlot);
     this.working.clear(); this.outlineEdges.clear(); this.strokeSlot = undefined; return dirty;
   }
   clear() { this.endStroke(); this.profile.fill(0); this.front.fill(0); this.back.fill(0); }
 
   private fit(index: number, working: WorkingCell, slot: number, useNeighbors = false) {
+    working.fitMode = this.fitCell(index, working, slot, useNeighbors);
+    this.observeFit(index, working, slot);
+  }
+
+  private observeFit(index: number, working: WorkingCell, slot: number) {
+    if (this.onFit && working.outline) {
+      const snapped = cellCrossings(working.outline, slot);
+      this.onFit(index, { actual: cellCrossings(working.outline, slot, false), snapped, mode: working.fitMode!,
+        target: working.target.slice(), selected: this.cell(index),
+        edges: working.outline.map(edge => ({ start: edge.start, horizontal: edge.horizontal, runs: edge.runs.map(run => ({ ...run })) })) });
+    }
+  }
+
+  private fitCell(index: number, working: WorkingCell, slot: number, useNeighbors = false): CellDiagnostic['mode'] {
     const { maskLow, maskHigh, sampleColor, fineEdgeMasks, directionFlags, candidates } = this.tables;
     const { target, original } = working;
     const histogram = new Uint8Array(256);
@@ -77,7 +98,7 @@ export class CellField {
       if (retained === slot || survivors[color]! > survivors[retained]! ||
         (survivors[color] === survivors[retained] && retained === 0)) retained = color;
     }
-    if (retained === slot) { this.profile[index] = slot ? 1 : 0; this.front[index] = slot; this.back[index] = 0; return; }
+    if (retained === slot) { this.profile[index] = slot ? 1 : 0; this.front[index] = slot; this.back[index] = 0; return 'uniform'; }
     if (working.outline) {
       const crossings = cellCrossings(working.outline, slot);
       let direct: number[] | undefined;
@@ -101,7 +122,7 @@ export class CellField {
           best = { profile: color ? 1 : 0, front: color, back: 0 };
         }
         this.profile[index] = best.profile; this.front[index] = best.front; this.back[index] = best.back;
-        return;
+        return direct.length === 2 && direct[0] === 0 && direct[1] === 1 ? 'uniform' : 'cut';
       }
     }
     const targetDirection = monotonicity(i => target[i] === slot);
@@ -214,6 +235,7 @@ export class CellField {
       best = { profile: color ? 1 : 0, front: color, back: 0 };
     }
     this.profile[index] = best.profile; this.front[index] = best.front; this.back[index] = best.back;
+    return 'fallback';
   }
 
   private neighborColors(index: number): (Uint8Array | undefined)[] {

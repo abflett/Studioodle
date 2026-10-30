@@ -2,6 +2,9 @@ import './style.css';
 import { CellField, size } from './model';
 import type { Point } from './model';
 import { numericLookupBytes } from './profiles';
+import { thinCurve } from './fixtures';
+import type { CurveKind } from './fixtures';
+import { CellInspector } from './inspector';
 
 const palette = ['#fffdf6', '#25343a', '#d85a55', '#e9ad45', '#6c9c75', '#508aa5', '#8973ad', '#e999ad'];
 let field = new CellField('straight', false);
@@ -9,8 +12,14 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <header><div><span class="eyebrow">STUDIOODLE / EXPERIMENTS</span><h1>Small cells. Big ideas.</h1><p>Simple straight cuts, with the earlier libraries here to compare.</p></div><span class="badge">100 × 100 cells</span></header>
   <main><section class="workspace"><div class="canvas-wrap"><canvas id="paint" aria-label="Cell brush drawing canvas"></canvas><canvas id="reference" aria-label="Unquantized round brush reference" hidden></canvas><canvas id="grid" aria-hidden="true"></canvas><div id="cursor"></div></div><p class="hint">Drag to paint · Paper erases to transparent · Nothing is saved</p></section>
   <aside><section><h2>Your brush</h2><div id="palette" role="group" aria-label="Brush colors"></div><label class="size-label" for="size">Diameter <output id="diameter">8 cells</output></label><input id="size" type="range" min="1" max="30" step=".25" value="8"><label class="size-label" for="library">Shape library</label><select id="library"><option value="straight">Straight cuts (16 of 32 slots)</option><option value="32">Experimental 32 shapes</option><option value="8">Original 8 profiles</option></select><p class="note library-note">Changing the library clears the canvas.</p><label class="size-label" for="view">Compare coverage</label><select id="view"><option value="cells">Cell profiles</option><option value="reference">Round brush reference</option><option value="difference">Difference overlay</option></select><label class="toggle"><input id="show-grid" type="checkbox" checked> Show cell grid</label><label class="toggle"><input id="match-edges" type="checkbox"> Match edges on release</label><button id="example">Draw test strokes</button><button id="circles">Draw circle dabs</button><button id="overlap">Draw overlapping dabs</button><button id="clear">Clear canvas</button></section>
-  <section><h2 id="legend-title">Straight cuts: 16 / 32 slots</h2><div id="profiles"></div><p class="note">Each byte selects a base shape, rotation and reflection. Colors can swap sides; paper is transparent.</p></section>
+  <section id="curve-test"><h2>Thin contour test</h2><label class="size-label" for="curve-kind">Shape</label><select id="curve-kind"><option value="arc">Open curve</option><option value="spiral">Spiral</option></select><label class="size-label" for="grid-phase">Grid offset <output id="phase-value">0 cells</output></label><input id="grid-phase" type="range" min="0" max=".875" step=".125" value="0"><button id="thin-curve">Draw 1-cell test</button><label class="toggle"><input id="capture-cells" type="checkbox"> Capture cell diagnostics</label><label class="toggle"><input id="inspect-cells" type="checkbox"> Click to inspect instead of paint</label><p class="note">Test button clears the page and enables capture. Orange = actual crossings; blue = snapped. Capture and zoom add diagnostic memory beyond the counters below. Enable it before drawing your own curve. Inspector shows the selected cell and its neighbors.</p><div id="cell-inspector"></div></section><section><h2 id="legend-title">Straight cuts: 16 / 32 slots</h2><div id="profiles"></div><p class="note">Each byte selects a base shape, rotation and reflection. Colors can swap sides; paper is transparent.</p></section>
   <section class="numbers"><h2>Under the surface</h2><dl><dt>Painted cells</dt><dd id="painted">0</dd><dt>Boundary cells</dt><dd id="boundaries">0</dd><dt>Cell data</dt><dd>29.30 KiB</dd><dt>Loaded lookups⁴</dt><dd>${(numericLookupBytes / 1024).toFixed(2)} KiB</dd><dt>Distinct candidates</dt><dd id="candidates">${field.tables.candidates.length}</dd><dt>Stroke samples³</dt><dd id="scratch">0 KiB</dd><dt>Display buffer¹</dt><dd id="buffer">—</dd><dt>Last edit / draw²</dt><dd id="timing">—</dd></dl><p class="note">Straight cuts connect shared stroke-outline crossings. Matching is optional for complex fallback cases.</p><p class="note">¹ Drawing + grid + reference canvases; excludes browser/GPU overhead. ² Latest edit and drawing CPU time, not input latency or a benchmark. ³ Temporary sample buffers, released on stroke end; excludes analytic edge intervals and bookkeeping. ⁴ Shared typed tables; excludes cut-index, polygon and browser path objects.</p></section></aside></main>`;
+
+const inspector = new CellInspector(document.querySelector<HTMLElement>('#cell-inspector')!, () => field);
+function configureCapture() {
+  field.onFit = document.querySelector<HTMLInputElement>('#capture-cells')!.checked ? inspector.capture : undefined;
+}
+document.querySelector<HTMLInputElement>('#capture-cells')!.onchange = () => { end(); inspector.clear(); configureCapture(); };
 
 function makePaths() { return field.tables.variants.map(polygon => {
   const path = new Path2D();
@@ -123,6 +132,9 @@ function paint(next: Point) {
 }
 canvas.addEventListener('pointerdown', event => {
   if (pointer !== undefined || event.button !== 0) return;
+  if (document.querySelector<HTMLInputElement>('#inspect-cells')!.checked) {
+    const [x, y] = point(event); inspector.show(Math.floor(y) * size + Math.floor(x)); return;
+  }
   pointer = event.pointerId; previous = undefined;
   for (const index of field.beginStroke(slot)) dirty.add(index);
   canvas.setPointerCapture(pointer); paint(point(event));
@@ -156,11 +168,11 @@ document.querySelector<HTMLSelectElement>('#library')!.onchange = event => {
   const matching = document.querySelector<HTMLInputElement>('#match-edges')!;
   matching.checked = selected !== 'straight';
   field = new CellField(selected === 'straight' ? 'straight' : selected === '32' ? 'experimental' : 'legacy', matching.checked);
-  paths = makePaths(); renderLegend(); clearReference();
+  inspector.clear(); configureCapture(); paths = makePaths(); renderLegend(); clearReference();
   document.querySelector('#candidates')!.textContent = String(field.tables.candidates.length); schedule(true);
 };
 document.querySelector<HTMLButtonElement>('#example')!.onclick = () => {
-  end(); field.clear(); clearReference();
+  end(); field.clear(); inspector.clear(); clearReference();
   const start = performance.now();
   const stroke = (points: Point[], radius: number, color: number) => {
     field.beginStroke(color);
@@ -176,9 +188,9 @@ document.querySelector<HTMLButtonElement>('#example')!.onclick = () => {
   for (const [i, radius] of [.55, .8, 1.1, 1.5].entries()) stroke([[10 + i * 7, 59]], radius, 3);
   editMs += performance.now() - start; schedule(true);
 };
-document.querySelector<HTMLButtonElement>('#clear')!.onclick = () => { end(); field.clear(); clearReference(); schedule(true); };
+document.querySelector<HTMLButtonElement>('#clear')!.onclick = () => { end(); field.clear(); inspector.clear(); clearReference(); schedule(true); };
 document.querySelector<HTMLButtonElement>('#circles')!.onclick = () => {
-  end(); field.clear(); clearReference();
+  end(); field.clear(); inspector.clear(); clearReference();
   const start = performance.now();
   for (const [x, y, radius, color] of [[25, 30, 14, 1], [67, 28, 10.5, 2], [26, 72, 6.25, 5], [65, 70, 3.5, 4]]) {
     field.beginStroke(color!); referenceStroke([x!, y!], [x!, y!], radius!, color!); field.paint([x!, y!], [x!, y!], radius!, color!); field.endStroke();
@@ -195,11 +207,29 @@ document.querySelector<HTMLSelectElement>('#view')!.onchange = event => {
 };
 
 document.querySelector<HTMLButtonElement>('#overlap')!.onclick = () => {
-  end(); field.clear(); clearReference();
+  end(); field.clear(); inspector.clear(); clearReference();
   const start = performance.now();
   for (const [x, y, radius, color] of [[50, 50, 30, 1], [50, 35, 14, 5], [37, 57.5, 14, 5], [63, 57.5, 14, 5]]) {
     field.beginStroke(color!); referenceStroke([x!, y!], [x!, y!], radius!, color!);
     field.paint([x!, y!], [x!, y!], radius!, color!); field.endStroke();
   }
   editMs += performance.now() - start; schedule(true);
+};
+
+document.querySelector<HTMLInputElement>('#grid-phase')!.oninput = event => {
+  document.querySelector('#phase-value')!.textContent = `${(event.target as HTMLInputElement).value} cells`;
+};
+document.querySelector<HTMLButtonElement>('#thin-curve')!.onclick = () => {
+  end(); field.clear(); inspector.clear(); clearReference();
+  document.querySelector<HTMLInputElement>('#capture-cells')!.checked = true; configureCapture();
+  slider.value = '1'; document.querySelector('#diameter')!.textContent = '1 cells';
+  const kind = document.querySelector<HTMLSelectElement>('#curve-kind')!.value as CurveKind;
+  const offset = Number(document.querySelector<HTMLInputElement>('#grid-phase')!.value);
+  const points = thinCurve(kind, offset), start = performance.now();
+  field.beginStroke(1);
+  let previous = points[0]!;
+  for (const point of points) { referenceStroke(previous, point, .5, 1); field.paint(previous, point, .5, 1); previous = point; }
+  field.endStroke(); editMs += performance.now() - start; schedule(true);
+  const selected = [...inspector.cells].find(([, diagnostic]) => diagnostic.mode === 'fallback') ?? [...inspector.cells][0];
+  if (selected) inspector.show(selected[0]);
 };

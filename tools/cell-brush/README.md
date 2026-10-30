@@ -92,6 +92,32 @@ neighbors never change. No global optimum or arbitrary topology guarantee is cla
 
 ## Storage and rendering
 
+### Thin contour investigation
+
+Use **Draw 1-cell test** to draw an open arc or spiral with diameter one. Grid
+offset changes both coordinates by 0–0.875 cells without changing the curve.
+Press the button again after changing the offset or shape. It clears the drawing
+and enables diagnostic capture. For a hand-drawn reproduction, enable **Capture
+cell diagnostics** before drawing, then enable **Click to inspect instead of
+paint** and click the suspect cell. The inspector shows that cell and its eight
+neighbors, actual crossings in orange, quarter-snapped crossings in blue, the
+selected byte/color slots and the actual fitting route (cut/uniform/fallback).
+Existing reference/difference views and optional matching remain available.
+
+Capture is off by default. It copies the latest fit's samples/edge intervals per
+touched cell, not an input-stroke log. Gesture-end snapshots refresh after shared
+edges settle. Clear, library changes, disabling capture and replacement test
+drawings release the snapshots. Diagnostic JS objects and the 300 × 300 inspector
+canvas (360,000 backing bytes) are extra memory outside the displayed counters.
+Capture affects diagnostic timings; disable it for performance comparisons.
+
+Tests verify observer neutrality, immutable snapshots, browser inspection without
+painting and monotone open-arc contours at eight offsets. These fixtures do not
+yet reproduce the user's hand-drawn teeth reliably. No profile dictionary,
+snapping or fallback selection change is claimed by this instrumentation.
+
+### Packed cell storage
+
 Each cell has three packed bytes: profile/orientation, front slot and back slot.
 The grid occupies 30,000 bytes (29.30 KiB), independent of stroke count. Slot zero
 is transparent; paper is the container background. It is not white paint.
