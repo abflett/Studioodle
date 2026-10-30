@@ -230,11 +230,14 @@ clear and repeatable test strokes. An original-eight selector allows comparison
 cell (profile/front/back, 30,000 bytes total); paper is transparent. An 8 × 8
 coverage fitter replaces the shared-corner/three-color quadrant model, which caused
 paper artifacts. It selects new paint plus the dominant surviving old color, with
-the original profile winning ties after coverage and optional edge agreement.
-Two 32-bit coverage masks speed scoring; eight edge probes and lookup tables break
-equal-error ties at release. Only active-stroke cells are revisited against complete
-gesture targets. Temporary samples release afterward; untouched neighbors never
-change. Numeric lookups add 68.25 KiB shared, excluding polygons/Path2D objects.
+the original profile winning exact objective ties. Simple monotone boundaries now
+use direction-compatible split/wedge families rather than complex shoulder/cap
+fits. Two 32-bit coverage masks speed scoring; 32 edge probes compare actual selected
+neighbors on release, with coverage/continuity and reversal penalties. At most six
+alternating join passes revisit active-stroke cells, starting from complete-gesture
+independent fits. Some coverage accuracy is traded for smooth stepped contours.
+Temporary samples release afterward; untouched neighbors never change. Numeric
+lookups add 72.50 KiB shared, excluding polygons/Path2D objects.
 Connectivity remains approximate. See the tool README for rules and limitations.
 It is deliberately coarse, with no stroke smoothing, persistence, undo, fills,
 workers or shaders. No app/reviewer engine changes or measured speedup claims.

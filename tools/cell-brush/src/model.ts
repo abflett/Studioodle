@@ -1,10 +1,12 @@
-import { candidates, legacyCandidates, maskLow, maskHigh, edgeMasks, edgeDifference, pop8, pop32, sampleX, sampleY, sampleCount as count, sampleColor, inProfile } from './profiles';
+import { candidates, legacyCandidates, maskLow, maskHigh, fineEdgeMasks, edgeDifference, pop32, sampleX, sampleY, sampleCount as count, sampleColor, inProfile, monotonicity, directionFlags, reverseMonotonicity } from './profiles';
 import type { Point } from './profiles';
 export type { Point } from './profiles';
 export { profiles, profileNames, inProfile } from './profiles';
 export const size = 100;
 type Cell = { profile: number; front: number; back: number };
 type WorkingCell = { target: Uint8Array; original: Cell };
+const edgeWeight = 4;
+const joinPasses = 6;
 
 export class CellField {
   // Exactly three authoritative bytes per cell; slot zero means transparent.
@@ -26,12 +28,26 @@ export class CellField {
   }
   beginStroke(slot: number) { const dirty = this.endStroke(); this.strokeSlot = slot; return dirty; }
   endStroke() {
-    // Final ties use the complete gesture's targets, not whichever neighbors
-    // happened to be visited first. No untouched cells are written.
     const dirty = new Set<number>();
-    if (this.matchNeighbors && this.strokeSlot !== undefined) for (const [index, working] of this.working) {
-      const old = this.cell(index); this.fit(index, working, this.strokeSlot, true);
-      if (old.profile !== this.profile[index] || old.front !== this.front[index] || old.back !== this.back[index]) dirty.add(index);
+    if (this.matchNeighbors && this.strokeSlot !== undefined) {
+      const indices = [...this.working.keys()].sort((a, b) => a - b);
+      const refit = (index: number, neighbors: boolean) => {
+        const old = this.cell(index); this.fit(index, this.working.get(index)!, this.strokeSlot!, neighbors);
+        const changed = old.profile !== this.profile[index] || old.front !== this.front[index] || old.back !== this.back[index];
+        if (changed) dirty.add(index); return changed;
+      };
+      // Start from the complete gesture's independent fits in stable order. Then
+      // minimize coverage + actual shared-edge disagreement, not target-edge ties.
+      // Only active-stroke cells can change; untouched neighbors are constraints.
+      for (const index of indices) refit(index, false);
+      for (let pass = 0; pass < joinPasses; pass++) {
+        let changed = false;
+        for (let n = 0; n < indices.length; n++) {
+          const index = indices[pass % 2 ? indices.length - 1 - n : n]!;
+          changed = refit(index, true) || changed;
+        }
+        if (!changed) break;
+      }
     }
     this.working.clear(); this.strokeSlot = undefined; return dirty;
   }
@@ -51,6 +67,15 @@ export class CellField {
         (histogram[color] === histogram[retained] && retained === 0)) retained = color;
     }
     if (retained === slot) { this.profile[index] = slot ? 1 : 0; this.front[index] = slot; this.back[index] = 0; return; }
+    const targetDirection = monotonicity(i => target[i] === slot);
+    const simpleBoundary = !!(targetDirection & 3) && !!(targetDirection & 12);
+    const followsDirection = (profile: number, front: number, back: number) => {
+      // A locally monotone boundary uses a split/wedge, not a dot, elbow or
+      // rounded cap that happens to win a few probes and adds repeated scallops.
+      if (simpleBoundary && (profile & 31) > 11) return false;
+      const flags = front === slot ? directionFlags[profile]! : back === slot ? reverseMonotonicity(directionFlags[profile]!) : 15;
+      return (flags & targetDirection) === targetDirection;
+    };
     let slotLow = 0, slotHigh = 0, retainedLow = 0, retainedHigh = 0;
     for (let i = 0; i < count; i++) {
       if (target[i] === slot) { if (i < 32) slotLow |= 1 << i; else slotHigh |= 1 << (i - 32); }
@@ -62,41 +87,58 @@ export class CellField {
       return result;
     };
     const neighborColors = useNeighbors ? this.neighborColors(index) : undefined;
+    const neighborBits = neighborColors?.map(colors => {
+      if (!colors) return undefined;
+      const bits = new Map<number, number>();
+      for (let i = 0; i < 32; i++) bits.set(colors[i]!, ((bits.get(colors[i]!) ?? 0) | (1 << i)) >>> 0);
+      return bits;
+    });
     const edgeCost = (profile: number, front: number, back: number) => {
-      if (!neighborColors) return 0;
+      if (!neighborBits) return 0;
       let total = 0;
       for (let side = 0; side < 4; side++) {
-        const colors = neighborColors[side]; if (!colors) continue;
-        let wantedFront = 0, wantedBack = 0;
-        for (let i = 0; i < 8; i++) {
-          if (colors[i] === front) wantedFront |= 1 << i;
-          if (colors[i] === back) wantedBack |= 1 << i;
+        const bits = neighborBits[side]; if (!bits) continue;
+        const wantedFront = bits.get(front) ?? 0, wantedBack = bits.get(back) ?? 0;
+        const mask = fineEdgeMasks[profile * 4 + side]!;
+        let difference = 0;
+        if (((wantedFront | wantedBack) >>> 0) === 0xffffffff && front !== back) {
+          for (let shift = 0; shift < 32; shift += 8) difference += edgeDifference[((mask >>> shift) & 255) * 256 + ((wantedFront >>> shift) & 255)]!;
+        } else difference = 32 - pop32(mask & wantedFront) - pop32(~mask & wantedBack);
+        total += difference / 4;
+        const direction = side % 2 ? targetDirection & 3 : (targetDirection >> 2) & 3;
+        if (direction === 1 || direction === 2) {
+          const active = front === slot ? mask : back === slot ? ~mask : 0;
+          const adjacent = bits.get(slot) ?? 0;
+          const isBefore = side === 0 || side === 3;
+          const forbidden = (direction === 1) === isBefore ? adjacent & ~active : active & ~adjacent;
+          total += pop32(forbidden) * 2;
         }
-        const mask = edgeMasks[profile * 4 + side]!;
-        total += (wantedFront | wantedBack) === 255 && front !== back ? edgeDifference[mask * 256 + wantedFront]! :
-          8 - pop8[mask & wantedFront]! - pop8[(mask ^ 255) & wantedBack]!;
       }
       return total;
     };
-    // Existing profile wins exact ties. Do not retain a disappeared third color
+    // Existing profile wins exact objective ties. Do not retain a disappeared third color
     // (notably paper) as an artifact when the brush has covered it completely.
-    const hasFront = !!(maskLow[original.profile] || maskHigh[original.profile]);
-    const hasBack = maskLow[original.profile] !== 0xffffffff || maskHigh[original.profile] !== 0xffffffff;
-    const originalAllowed = (!hasFront || !!histogram[original.front]) && (!hasBack || !!histogram[original.back]);
-    let best = originalAllowed ? original : { profile: 1, front: slot, back: 0 };
-    let bestError = originalAllowed ? error(best.profile, best.front, best.back) : count - histogram[slot]!;
-    let bestEdge = edgeCost(best.profile, best.front, best.back);
+    const seed = useNeighbors ? this.cell(index) : original;
+    const hasFront = !!(maskLow[seed.profile] || maskHigh[seed.profile]);
+    const hasBack = maskLow[seed.profile] !== 0xffffffff || maskHigh[seed.profile] !== 0xffffffff;
+    const originalAllowed = (!hasFront || !!histogram[seed.front]) && (!hasBack || !!histogram[seed.back]) && followsDirection(seed.profile, seed.front, seed.back);
+    let best = originalAllowed ? seed : { profile: 1, front: slot, back: 0 };
+    const bestError = originalAllowed ? error(best.profile, best.front, best.back) : count - histogram[slot]!;
+    const bestEdge = edgeCost(best.profile, best.front, best.back);
+    let bestScore = bestError + edgeWeight * bestEdge;
     for (const profile of this.expanded ? candidates : legacyCandidates) {
       for (const reversed of [false, true]) {
         const front = reversed ? retained : slot, back = reversed ? slot : retained;
+        if (!followsDirection(profile, front, back)) continue;
         const low = maskLow[profile]!, high = maskHigh[profile]!;
         const frontLow = reversed ? retainedLow : slotLow, frontHigh = reversed ? retainedHigh : slotHigh;
         const backLow = reversed ? slotLow : retainedLow, backHigh = reversed ? slotHigh : retainedHigh;
         const candidateError = count - pop32(low & frontLow) - pop32(high & frontHigh) - pop32(~low & backLow) - pop32(~high & backHigh);
-        if (candidateError > bestError) continue;
+        if (candidateError > bestScore) continue;
         const candidateEdge = edgeCost(profile, front, back);
-        if (candidateError < bestError || candidateEdge < bestEdge) {
-          best = { profile, front, back }; bestError = candidateError; bestEdge = candidateEdge;
+        const score = candidateError + edgeWeight * candidateEdge;
+        if (score < bestScore) {
+          best = { profile, front, back }; bestScore = score;
         }
       }
     }
@@ -113,13 +155,9 @@ export class CellField {
     const neighbors = [y ? index - size : -1, x < size - 1 ? index + 1 : -1, y < size - 1 ? index + size : -1, x ? index - 1 : -1];
     return neighbors.map((neighbor, side) => {
       if (neighbor < 0) return undefined;
-      const working = this.working.get(neighbor), cell = this.cell(neighbor), opposite = (side + 2) % 4;
-      return Uint8Array.from({ length: 8 }, (_, i) => {
-        if (working) {
-          const probe = opposite === 0 ? i : opposite === 1 ? i * 8 + 7 : opposite === 2 ? 56 + i : i * 8;
-          return working.target[probe]!;
-        }
-        return edgeMasks[cell.profile * 4 + opposite]! & (1 << i) ? cell.front : cell.back;
+      const cell = this.cell(neighbor), opposite = (side + 2) % 4;
+      return Uint8Array.from({ length: 32 }, (_, i) => {
+        return fineEdgeMasks[cell.profile * 4 + opposite]! & (1 << i) ? cell.front : cell.back;
       });
     });
   }

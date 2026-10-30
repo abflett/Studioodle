@@ -104,6 +104,13 @@ This is an evolution of the current engine, not a second painting engine.
   repeatable test strokes for visual comparison. Cell data stays 29.30 KiB;
   numeric lookups add 68.25 KiB shared. Model/browser checks cover transformations,
   fitting improvement on a shallow-stroke fixture, overlap, release and touch.
+- [x] Correct the expanded demo's backward saw-tooth contours: limit monotone
+  boundary fits to direction-compatible splits/wedges; match actual selected edges
+  using 32 edge probes and bounded join passes, allowing local coverage error in
+  exchange for continuity. Penalize cross-cell direction reversals and preserve
+  untouched cells. Regress shallow strokes in all rotations/reflections and both
+  input directions, with no gaps or backward teeth and a sub-cell contour budget
+  on the fixtures. Shared numeric tables are now 72.50 KiB; no app-engine change.
 - [ ] Review the expanded demo's appearance and connectivity with the user before
   choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/

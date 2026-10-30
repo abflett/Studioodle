@@ -29,7 +29,7 @@ test('all byte codes transform geometry and masks consistently, including reflec
   for (let a = 0; a < 256; a++) for (let b = 0; b < 256; b++) assert.equal(library.edgeDifference[a * 256 + b], library.pop8[a ^ b]);
 });
 
-test('expanded profiles improve shallow-stroke coverage and neighbor ties preserve fitting error', () => {
+test('expanded profiles improve independent coverage and joining stays inside a one-cell error budget', () => {
   const a = [10.2, 20.3], b = [88.1, 43.7], radius = 1.125;
   const coverageError = field => {
     let error = 0;
@@ -54,11 +54,39 @@ test('expanded profiles improve shallow-stroke coverage and neighbor ties preser
   }));
   const old = snapshot(expanded);
   expanded.endStroke();
-  assert.equal(coverageError(expanded), before, 'Neighbor preference must not worsen coverage fit');
+  // Joining deliberately trades some local sample accuracy for a clean contour.
+  assert.ok(coverageError(expanded) < oldError * 2, 'Joined coverage must remain bounded');
   for (const index of untouched) {
     assert.equal(expanded.profile[index], old[0][index]);
     assert.equal(expanded.front[index], old[1][index]);
     assert.equal(expanded.back[index], old[2][index]);
+  }
+});
+
+test('shallow strokes have no backward contour teeth across rotations, reflections and input direction', () => {
+  const a = [10.2, 20.3], b = [88.1, 43.7], slope = (b[1] - a[1]) / (b[0] - a[0]);
+  for (const radius of [1.125, 3.5]) for (const code of [0, 32, 64, 96, 128, 160, 192, 224]) {
+    const transform = (x, y) => library.transformPoint([x / 100, y / 100], code).map(v => v * 100);
+    const field = new model.CellField(), reverse = new model.CellField();
+    field.paint(transform(...a), transform(...b), radius, 1); field.endStroke();
+    reverse.paint(transform(...b), transform(...a), radius, 1); reverse.endStroke();
+    assert.deepEqual(snapshot(reverse), snapshot(field), 'Input direction must not choose a different profile layout');
+    let previousTop, previousBottom;
+    for (let x = 15; x < 83; x += .125) {
+      const center = a[1] + (x - a[0]) * slope;
+      let top = Infinity, bottom = -Infinity;
+      for (let y = center - radius - 2; y < center + radius + 2; y += .0625) if (field.colorAt(...transform(x, y))) {
+        top = Math.min(top, y); bottom = Math.max(bottom, y);
+      }
+      assert.ok(Number.isFinite(top) && Number.isFinite(bottom), 'Stroke must not develop gaps');
+      const extent = radius * Math.sqrt(1 + slope * slope);
+      assert.ok(Math.abs(top - (center - extent)) < .8 && Math.abs(bottom - (center + extent)) < .8, 'Contour may step but must stay close to the intended stroke');
+      if (previousTop !== undefined) {
+        assert.ok(top >= previousTop - .07, `Backward top-edge tooth, orientation ${code}, radius ${radius}`);
+        assert.ok(bottom >= previousBottom - .07, `Backward bottom-edge tooth, orientation ${code}, radius ${radius}`);
+      }
+      previousTop = top; previousBottom = bottom;
+    }
   }
 });
 

@@ -18,8 +18,8 @@ four slopes and four corner wedges, straight/diagonal bands, tapered wedges,
 elbows, V bends, beveled caps, a shoulder, square/diamond/octagonal dots and offset
 dots, half/quarter circles and a round cap. The byte encodes base shape in bits
 0-4, quarter-turn in bits 5-6, and reflection in bit 7. All 256 orientations have
-precomputed contours, masks and edge signatures. Identical interior-mask/edge
-signatures are skipped during fitting (currently 135 distinct candidates). Colors
+precomputed contours, masks and edge signatures. Identical interior-mask/fine-edge
+signatures are skipped during fitting; the UI reports the candidate count. Colors
 can swap sides. Circle profiles use fixed 24-segment arc approximations generated
 once, not exact circular primitives. No shared corner labels, three-color cells
 or junction fallbacks remain.
@@ -32,13 +32,13 @@ inspect all 32 canonical families.
 
 The brush sweeps a capsule over an 8 × 8 staggered sample pattern within each
 touched cell. Samples reconstruct the previous two-color profile with new paint
-overlaid. The fitter minimizes mismatched sample colors using two 32-bit coverage
-masks and population-count lookups, trying each distinct profile with both color
+overlaid. The initial fitter minimizes mismatched sample colors using two 32-bit coverage
+masks and population-count lookups, trying eligible profiles with both color
 assignments. When three colors are present in this
 temporary target, the candidate pair is the new color and the most prevalent
 surviving old color. Opaque old coverage wins ties against transparency; otherwise
 the original foreground wins equal old-color areas. The original cell also remains
-a candidate and wins ties after coverage and optional neighbor cost, preventing
+a candidate and wins exact objective ties, preventing
 unnecessary churn. A color absent from the target cannot be reintroduced by retaining
 the original cell. Full coverage becomes solid paint (or fully transparent erase).
 
@@ -50,14 +50,24 @@ The maximum sample payload at this resolution is 640,000 bytes if every cell is
 touched. Quantizing between separate strokes can still lose detail; no general
 topology or event-rate-independent curved input guarantee is claimed.
 
-Match edges on release runs a final fitting pass over active-stroke cells only.
-Eight probes per edge and a precomputed edge-difference table prefer agreement
-on actual palette slots, strictly between candidates with equal coverage error.
-Neighbor targets come from the complete gesture's sample buffers, so tie decisions
-do not depend on pointer-event segmentation or iteration order. Untouched neighbors
-never change. This is a soft preference, not a connectivity guarantee or diffusion
-pass; there may be contour jumps and tiny-feature loss at this low resolution.
-The numeric lookup buffers total 68.25 KiB shared across the grid; authored and
+Simple monotone target boundaries may use only split/wedge families (0-11), with
+matching coverage directions. Bands, dots, elbows and curved caps remain available
+for non-monotone targets. This prevents complex profiles winning a few samples
+while introducing repeated saw teeth or scallops on a straight stroke.
+
+Match edges on release first reconstructs independent fits from the complete
+gesture, then runs at most six alternating, sorted join passes over active-stroke
+cells only. It compares actual selected neighboring profiles using 32 probes per
+edge. The objective is sample error + edge disagreement + a stronger penalty for
+cross-cell reversals against the target's monotone direction (eight times each
+reversed edge probe). This deliberately permits some local coverage error to
+obtain cleaner contours; agreement is no longer just an equal-error tie-breaker.
+Probe comparisons use shared palette slots and precomputed edge-difference and
+direction tables. A fixed initial state and traversal keep results independent
+of event segmentation. Untouched neighbors never change. This bounded local solver
+does not guarantee a globally optimal contour or preserve every tiny feature.
+Live drawing remains independently fitted; joining happens on stroke release.
+The numeric lookup buffers total 72.50 KiB shared across the grid; authored and
 transformed polygon arrays, candidate lists and browser Path2D objects are additional.
 
 Canvas2D renders only changed cells, at whole physical pixels per cell; resize

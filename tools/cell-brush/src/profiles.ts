@@ -79,10 +79,32 @@ function contains(polygon: Polygon, x: number, y: number) {
 }
 export const inProfile = (code: number, x: number, y: number) => contains(variants[code]!, x, y);
 export const sampleCount = 64;
+// Bits: increasing/decreasing in X, increasing/decreasing in Y. These describe
+// coverage, so swapping colors reverses the directional tests.
+export function monotonicity(sample: (i: number) => boolean): number {
+  let flags = 15;
+  for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) {
+    const here = sample(y * 8 + x);
+    if (x < 7) {
+      const next = sample(y * 8 + x + 1);
+      if (here && !next) flags &= ~1;
+      if (!here && next) flags &= ~2;
+    }
+    if (y < 7) {
+      const next = sample((y + 1) * 8 + x);
+      if (here && !next) flags &= ~4;
+      if (!here && next) flags &= ~8;
+    }
+  }
+  return flags;
+}
+export const reverseMonotonicity = (flags: number) => ((flags & 1) << 1) | ((flags & 2) >> 1) | ((flags & 4) << 1) | ((flags & 8) >> 1);
 export const sampleX = Float64Array.from({ length: sampleCount }, (_, i) => (i % 8 + (Math.floor(i / 8) % 2 ? .375 : .625)) / 8);
 export const sampleY = Float64Array.from({ length: sampleCount }, (_, i) => (Math.floor(i / 8) + .5) / 8);
 export const maskLow = new Uint32Array(256), maskHigh = new Uint32Array(256);
 export const edgeMasks = new Uint8Array(256 * 4);
+export const fineEdgeMasks = new Uint32Array(256 * 4);
+export const directionFlags = new Uint8Array(256);
 export const pop8 = Uint8Array.from({ length: 256 }, (_, n) => { let count = 0; for (; n; n &= n - 1) count++; return count; });
 export const edgeDifference = new Uint8Array(256 * 256);
 export const pop32 = (n: number) => pop8[n & 255]! + pop8[(n >>> 8) & 255]! + pop8[(n >>> 16) & 255]! + pop8[n >>> 24]!;
@@ -96,6 +118,12 @@ for (let code = 0; code < 256; code++) {
     const points: Point[] = [[t, epsilon], [1 - epsilon, t], [t, 1 - epsilon], [epsilon, t]];
     points.forEach(([x, y], side) => { if (inProfile(code, x, y)) edgeMasks[code * 4 + side] = edgeMasks[code * 4 + side]! | (1 << i); });
   }
+  directionFlags[code] = monotonicity(i => !!sampleColor(code, 1, 0, i));
+  for (let i = 0; i < 32; i++) {
+    const t = (i + .5) / 32, epsilon = .000001;
+    const points: Point[] = [[t, epsilon], [1 - epsilon, t], [t, 1 - epsilon], [epsilon, t]];
+    points.forEach(([x, y], side) => { if (inProfile(code, x, y)) fineEdgeMasks[code * 4 + side] = (fineEdgeMasks[code * 4 + side]! | (1 << i)) >>> 0; });
+  }
 }
 for (let a = 0; a < 256; a++) for (let b = 0; b < 256; b++) edgeDifference[a * 256 + b] = pop8[a ^ b]!;
 
@@ -103,12 +131,12 @@ for (let a = 0; a < 256; a++) for (let b = 0; b < 256; b++) edgeDifference[a * 2
 // repeatedly. Retain edge-distinct variants even when interior probes coincide.
 const seen = new Set<string>();
 export const candidates = variants.map((_, code) => code).filter(code => {
-  const key = `${maskLow[code]},${maskHigh[code]}:${edgeMasks.slice(code * 4, code * 4 + 4).join(',')}`;
+  const key = `${maskLow[code]},${maskHigh[code]}:${fineEdgeMasks.slice(code * 4, code * 4 + 4).join(',')}`;
   if (seen.has(key)) return false;
   seen.add(key); return true;
 });
 export const legacyCandidates = [0, 1, 2, 34, 4, 36, 68, 100];
-export const numericLookupBytes = sampleX.byteLength + sampleY.byteLength + maskLow.byteLength + maskHigh.byteLength + edgeMasks.byteLength + pop8.byteLength + edgeDifference.byteLength;
+export const numericLookupBytes = sampleX.byteLength + sampleY.byteLength + maskLow.byteLength + maskHigh.byteLength + edgeMasks.byteLength + fineEdgeMasks.byteLength + directionFlags.byteLength + pop8.byteLength + edgeDifference.byteLength;
 export function sampleColor(code: number, front: number, back: number, i: number): number {
   const on = i < 32 ? maskLow[code]! & (1 << i) : maskHigh[code]! & (1 << (i - 32));
   return on ? front : back;
