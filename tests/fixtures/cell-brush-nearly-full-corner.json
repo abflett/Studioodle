@@ -1,0 +1,7 @@
+{
+  "description": "Reconstructed cell (60,42) from the user's inspector: four edge crossings, 60 painted samples and missing top-right/bottom-left corners.",
+  "index": 4260,
+  "crossings": [0.652, 0.1158, 0.4953, 0.8452],
+  "paintAtStart": [true, false, false, true],
+  "unpaintedSamples": [7, 56, 57, 58]
+}

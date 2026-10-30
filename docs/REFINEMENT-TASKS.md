@@ -146,11 +146,13 @@ This is an evolution of the current engine, not a second painting engine.
   and backwards retraversal. Sweep seeds/amplitudes with matching off/on; verify
   idempotent coverage and analytic edges against the full noisy stroke union.
   Exercise the fixture controls and noisy native pointer input in browser tests.
-- [ ] Use the thin-contour inspector to isolate the user's hand-drawn outside-edge
-  tooth before changing snapping/fallback rules or expanding the profile dictionary.
-  Generated smooth fixtures do not yet reliably reproduce the reported spikes.
-  The noisy sweep includes a nine-cell-wide short arc matching the screenshot's
-  approximate scale; pink inspector dots identify source/profile sample mismatches.
+- [x] Isolate the user's cell (60,42) fallback override: the nearly-uniform rule
+  replaced a better inverted Corner 1/4-2/4 with Full. Retain the corner when it
+  improves source coverage; regress the reconstructed crossings/sample mask for
+  paint, another palette slot and erasure. Preserve tangent/arc/jitter regressions.
+- [ ] Review remaining hand-drawn contour spikes after the coverage-aware fallback
+  fix. Use the inspector's crossings and sample mismatches to identify additional
+  causes before adding profiles or changing snapping rules.
 - [ ] Review the straight-cut demo's appearance and connectivity with the user before
   choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/

@@ -63,6 +63,13 @@ whole-edge color masks near rounded tangencies.
 
 The prior sampled-edge scorer and nearly uniform fallback remain only for cells
 with more complex crossings that one straight cut cannot represent. This is still
+coverage-aware: nearly uniform normalization may replace a selected cut only if
+the solid cell has no more source-sample mismatches. The reconstructed inspector
+case (60,42) previously selected an inverted Corner 1/4-2/4, then unconditionally
+overrode it with Full at 60/64 painted samples. The regression now retains the
+corner (two mismatches instead of four), including color-swapped and erased cases.
+This fixes that identified fallback override; it does not prove every pictured
+tooth has the same cause. The representation remains
 an approximation: narrow bands, tiny enclosed marks and three-color junctions can
 lose detail. Do not infer universal watertightness for arbitrary geometry from the
 simple-contour tests. Regressions check analytic intervals, all 80 quarter-edge

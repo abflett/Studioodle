@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
 import { createServer } from 'vite';
+import { readFile } from 'node:fs/promises';
 
 let server, model;
 let library;
@@ -15,6 +16,34 @@ before(async () => {
 });
 after(async () => { await server?.close(); });
 const snapshot = field => [field.profile.slice(), field.front.slice(), field.back.slice()];
+
+test('a nearly full fallback cell preserves a better inverted quarter-to-half corner', async () => {
+  const fixture = JSON.parse(await readFile(new URL('./fixtures/cell-brush-nearly-full-corner.json', import.meta.url), 'utf8'));
+  for (const slot of [1, 5, 0]) {
+    const retained = slot === 0 ? 1 : 0;
+    const target = new Uint8Array(64).fill(slot);
+    for (const i of fixture.unpaintedSamples) target[i] = retained;
+    const outline = fixture.crossings.map((crossing, side) => {
+      const first = fixture.paintAtStart[side] ? slot : retained, second = first === slot ? retained : slot;
+      return { start: [60 + Number(side === 1), 42 + Number(side === 2)], horizontal: side % 2 === 0,
+        runs: [{ from: 0, to: crossing, color: first }, { from: crossing, to: 1, color: second }] };
+    });
+    const working = { target, outline, original: { profile: retained ? 1 : 0, front: retained, back: 0 },
+      edges: Uint8Array.from({ length: 128 }, (_, i) => edgeGeometry.edgeColor(outline[Math.floor(i / 32)], (i % 32 + .5) / 32)) };
+    const field = new model.CellField('straight', false);
+    let diagnostic; field.onFit = (_, record) => { diagnostic = record; };
+    field.fit(fixture.index, working, slot);
+    const selected = field.cell(fixture.index);
+    assert.equal(diagnostic.mode, 'fallback');
+    assert.equal(field.tables.names[selected.profile & 31], 'Corner 1/4-2/4');
+    assert.equal(selected.front, retained, 'The small corner restores the retained color');
+    assert.equal(selected.back, slot);
+    const mismatch = cell => Array.from(target).filter((color, i) => field.tables.sampleColor(cell.profile, cell.front, cell.back, i) !== color).length;
+    assert.equal(mismatch(selected), 2, 'Keep the corner that improves on four solid-cell mismatches');
+    assert.equal(field.colorAt(60.0625, 42.9375), retained, 'Do not paint the protruding bottom-left corner');
+    assert.equal(field.colorAt(60.1875, 42.9375), retained);
+  }
+});
 
 test('seeded pointer flutter, fractional starts and tightening bends survive repeated boundary traversal', () => {
   for (const kind of ['arc', 'short', 'spiral', 'tightening', 'boundary']) for (const seed of [1, 17, 529]) {

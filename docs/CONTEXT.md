@@ -274,7 +274,14 @@ The user's subsequent short-arch screenshot motivated a nine-cell-wide arc fixtu
 (the original open arc spans 52 cells). It is included in the noisy-input sweep;
 the inspector now marks profile/source sample disagreements in pink. A cropped
 short-curve browser capture is generated under work/tests/cell-brush/. No confirmed
-selection fix follows from this instrumented comparison yet.
+selection fix followed from the synthetic comparison alone.
+The user's inspector for cell (60,42) subsequently isolated a fallback bug: after
+selecting an inverted Corner 1/4-2/4, the 60/64 nearly-uniform rule forced Full,
+doubling source mismatch from two samples to four. Uniform normalization now
+requires no worse coverage than the selected profile. A focused reconstructed
+fixture preserves the corner for paint, alternate color and erasure; previous
+monotone-arc/tangent, jitter/retrace and shared-crossing regressions still pass.
+This identifies one concrete spike cause without claiming all teeth are solved.
 
 The demo now has a Compare coverage selector: cells, a separately rendered round-
 brush reference, and a visual difference overlay. Every incoming gesture/example
