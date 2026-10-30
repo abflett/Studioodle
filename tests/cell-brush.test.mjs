@@ -8,53 +8,70 @@ before(async () => {
   model = await server.ssrLoadModule('/tools/cell-brush/src/model.ts');
 });
 after(async () => { await server?.close(); });
+const snapshot = field => [field.profile.slice(), field.front.slice(), field.back.slice()];
 
-function inside(polygon, x, y) {
-  let hit = false;
-  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-    const a = polygon[i], b = polygon[j];
-    if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) hit = !hit;
-  }
-  return hit;
-}
-function sample(labels, x, y) {
-  let color = Math.min(...labels);
-  for (const patch of model.patches(labels)) if (inside(patch.polygon, x, y)) color = patch.slot;
-  return color;
-}
-
-test('all binary configurations preserve corner labels and share matching edge crossings', () => {
+test('coverage selects diagonal and straight profiles and every cell stores at most two slots', () => {
   assert.equal(model.profiles.length, 8);
-  for (let mask = 0; mask < 16; mask++) {
-    const labels = [0, 1, 2, 3].map(i => (mask >> i) & 1);
-    for (let i = 0; i < 4; i++) {
-      const [x, y] = model.corners[i];
-      assert.equal(sample(labels, x ? .999 : .001, y ? .999 : .001), labels[i], `corner ${i}, mask ${mask}`);
-    }
-  }
-  // Binary and exceptional cells must agree across an edge regardless of their
-  // other corner colors. Exercise all four-color endpoint/interior combinations.
-  for (let a = 0; a < 4; a++) for (let b = 0; b < 4; b++) {
-    for (let c = 0; c < 4; c++) for (let d = 0; d < 4; d++) {
-      const left = [c, a, b, d], right = [a, d, c, b];
-      const top = [c, d, b, a], bottom = [a, b, d, c];
-      for (const t of [.13, .37, .63, .87]) {
-        assert.equal(sample(left, .99999, t), sample(right, .00001, t));
-        assert.equal(sample(top, t, .99999), sample(bottom, t, .00001));
-      }
-    }
+  const field = new model.CellField();
+  field.paint([5.2, 8.7], [90.3, 73.6], 3.7, 2);
+  assert.ok(field.profile.some(profile => profile >= 4), 'Diagonal brush edge profiles');
+  field.endStroke();
+  field.paint([10, 80], [85, 15], 2.3, 5);
+  field.endStroke();
+  field.paint([50, 10], [50, 90], 2.5, 3);
+  assert.ok(field.profile.some(profile => profile === 2), 'Vertical half-cell brush edge');
+  assert.equal(field.byteLength, 30000);
+  for (let i = 0; i < 10000; i++) {
+    const cell = field.cell(i);
+    assert.ok(cell.profile >= 0 && cell.profile < 8);
+    const colors = new Set();
+    for (const x of [.1, .3, .7, .9]) for (const y of [.1, .3, .7, .9]) colors.add(field.colorAt(i % 100 + x, Math.floor(i / 100) + y));
+    assert.ok(colors.size <= 2);
   }
 });
 
-test('long strokes remain connected and repeated painting has fixed authoritative storage', () => {
+test('overpainting a blue/paper cell replaces the paper instead of leaving a third-color cross', () => {
+  const field = new model.CellField(), index = 50 * 100 + 50;
+  field.profile[index] = 2; field.front[index] = 5;
+  field.paint([50.75, 49], [50.75, 52], .3, 2);
+  for (const x of [.1, .3, .7, .9]) for (const y of [.1, .3, .7, .9]) {
+    assert.ok([2, 5].includes(field.colorAt(50 + x, 50 + y)), 'Covered paper must not survive as a hole');
+  }
+  assert.equal(field.colorAt(50.1, 50.5), 5);
+  assert.equal(field.colorAt(50.9, 50.5), 2);
+});
+
+test('stroke fitting is independent of pointer segmentation and does not edit untouched neighbors', () => {
+  const whole = new model.CellField(), pieces = new model.CellField();
+  const a = [10.2, 13.7], b = [85.4, 78.6];
+  whole.paint(a, b, 3.25, 2);
+  let previous = a;
+  for (let i = 1; i <= 30; i++) {
+    const next = [a[0] + (b[0] - a[0]) * i / 30, a[1] + (b[1] - a[1]) * i / 30];
+    pieces.paint(previous, next, 3.25, 2); previous = next;
+  }
+  assert.deepEqual(snapshot(pieces), snapshot(whole));
+  const before = snapshot(whole);
+  const dirty = whole.paint([1.5, 1.5], [1.5, 1.5], .45, 2);
+  assert.deepEqual([...dirty], [101]);
+  for (let i = 0; i < 10000; i++) if (i !== 101) {
+    assert.equal(whole.profile[i], before[0][i]);
+    assert.equal(whole.front[i], before[1][i]);
+    assert.equal(whole.back[i], before[2][i]);
+  }
+});
+
+test('stationary input does not accumulate, scratch is released, and paper is transparent', () => {
   const field = new model.CellField();
-  const dirty = field.paint([0, 50], [100, 50], 2, 3);
-  assert.ok(dirty.size > 100);
-  for (let x = 0; x <= 100; x++) assert.equal(field.labels[50 * 101 + x], 3);
-  const first = field.labels.slice();
-  for (let i = 0; i < 1000; i++) assert.equal(field.paint([0, 50], [100, 50], 2, 3).size, 0);
-  assert.deepEqual(field.labels, first);
-  assert.equal(field.labels.byteLength, 10201);
-  field.paint([-10, 50], [110, 50], 3, 0);
-  assert.ok(field.labels.every(slot => slot === 0));
+  field.paint([5, 50], [95, 50], 2, 3);
+  for (let x = 6; x < 95; x++) assert.equal(field.colorAt(x + .5, 50.5), 3);
+  const first = snapshot(field);
+  for (let i = 0; i < 100; i++) assert.equal(field.paint([5, 50], [95, 50], 2, 3).size, 0);
+  assert.deepEqual(snapshot(field), first);
+  assert.ok(field.scratchBytes > 0);
+  field.endStroke(); assert.equal(field.scratchBytes, 0);
+  field.paint([-10, 50], [110, 50], 4, 0);
+  assert.ok(field.profile.every(profile => profile === 0));
+  assert.ok(field.front.every(slot => slot === 0));
+  field.clear(); assert.equal(field.scratchBytes, 0);
 });

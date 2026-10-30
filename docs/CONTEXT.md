@@ -223,15 +223,19 @@ quality before implementing the affected behavior. No second paint engine or
 pixel-only authoritative spray format is planned.
 
 A first standalone cell-brush demo is now under `tools/cell-brush/`. Run `npm run
-cells` on port 1434. It has a 100 × 100 page, eight base profiles with inversion/
-composition, brush diameter and eight colors, optional grid/junction highlighting,
-and clear. Shared 101 × 101 corner slots use 10,201 bytes; per-cell profiles are
-derived, not stored in the proposed three-byte format. Three/four-color cells use
-four quadrants; diagonal saddle connectivity currently follows palette index.
+cells` on port 1434. It has a 100 × 100 page, eight profiles, brush diameter and
+eight palette slots, optional grid and clear. It now stores exactly three bytes per
+cell (profile/front/back, 30,000 bytes total); paper is transparent. An 8 × 8
+coverage fitter replaces the shared-corner/three-color quadrant model, which caused
+paper artifacts. It selects new paint plus the dominant surviving old color, with
+the original profile winning equal-error ties. Temporary samples accumulate for
+one gesture and release afterward. Untouched neighbors never change; independent
+profile fits do not yet guarantee contour agreement. See the tool README for rules.
 It is deliberately coarse, with no stroke smoothing, persistence, undo, fills,
 workers or shaders. No app/reviewer engine changes or measured speedup claims.
 `cells:typecheck`, `cells:build` and `test:cells` verify the isolated tool; output and
-browser captures stay under ignored `work/`. See its README for model limitations.
+browser captures stay under ignored `work/`. The user runs the dev server manually;
+do not leave a demo server running after automated tests.
 
 Solo coloring pages should fit visible subject bounds and preserve proportions,
 with intentional margins and orientation. Roughly 80% of suitable stickers is a

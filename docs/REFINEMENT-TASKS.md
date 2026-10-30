@@ -92,13 +92,14 @@ from avoiding polygon construction, boolean operations and repeated rendering.
 This is an evolution of the current engine, not a second painting engine.
 
 - [x] Build an isolated low-resolution cell-brush demonstration: `npm run cells`,
-  100 × 100 cells, eight base profiles with inversion/composition, shared corner
-  palette slots, brush diameter, grid and complex-junction diagnostics. Model and
+  100 × 100 cells, eight profiles, two color slots per cell, brush diameter, grid
+  and memory diagnostics. Coverage-based fitting replaces shared corner labels and
+  the three-color quadrant fallback; paper is transparent. Model and
   mouse/touch browser checks pass. This is an experiment, not app-engine integration
   or proof of the proposed memory/performance advantage; see tools/cell-brush/README.md.
 - [ ] Review the demo's appearance and connectivity with the user before expanding
   the vocabulary or selecting authoritative cell storage. Compare to indexed raster
-  at comparable quality; include multi-color junctions, thin details and sparse/
+  at comparable quality; include two-color normalization at junctions, thin details and sparse/
   dense repeated paint. Measure model bytes, caches, conversion/render time and
   future undo costs independently. No engine replacement is decided.
 - [ ] **Reproduce and profile scatter/spray and dense painting.** Use a

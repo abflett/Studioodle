@@ -50,16 +50,25 @@ try {
   await stroke([.15, .2], [.8, .7], 2);
   await stroke([.2, .75], [.8, .25], 5);
   assert.ok(Number(await evaluate('document.querySelector("#painted").textContent')) > 500);
+  assert.equal(await evaluate(`(() => {
+    const canvas = document.querySelector('#paint'), ctx = canvas.getContext('2d');
+    const image = ctx.getImageData(Math.floor(canvas.width * .51), Math.floor(canvas.height * .475), 8, 8).data;
+    return Array.from(image).filter((_, i) => i % 4 === 3).every(alpha => alpha === 255);
+  })()`), true, 'Crossing stroke interior has no transparent seams');
+  assert.equal(await evaluate('document.querySelector("#scratch").textContent'), '0.00 KiB', 'Stroke buffers released on pointer up');
   await evaluate('document.querySelector("#show-grid").click()');
   assert.equal(await evaluate('document.querySelector("#grid").hidden'), true);
   await evaluate('document.querySelector("#show-grid").click()');
   const image = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
   await fs.writeFile(path.join(output, 'desktop.png'), Buffer.from(image.data, 'base64'));
+  await stroke([.5, .5], [.55, .5], 0);
+  assert.equal(await evaluate('(()=>{const c=document.querySelector("#paint");return c.getContext("2d").getImageData(Math.floor(c.width*.52),Math.floor(c.height*.5),1,1).data[3]})()'), 0, 'Paper brush erases to transparency');
   await cdp('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true }); await settle();
   assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, 'No mobile horizontal overflow');
   await cdp('Emulation.setTouchEmulationEnabled', { enabled: true });
   box = await evaluate('(()=>{const b=document.querySelector("#paint").getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height}})()');
   await evaluate('document.querySelector("#clear").click()'); await settle();
+  await evaluate('document.querySelector(\'[data-slot="5"]\').click()');
   await cdp('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: box.x + box.w * .2, y: box.y + box.h * .3 }] });
   await cdp('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: box.x + box.w * .8, y: box.y + box.h * .6 }] });
   await cdp('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await settle();
@@ -68,6 +77,7 @@ try {
   await fs.writeFile(path.join(output, 'mobile.png'), Buffer.from(mobile.data, 'base64'));
   await evaluate('document.querySelector("#clear").click()'); await settle();
   assert.equal(await evaluate('document.querySelector("#painted").textContent'), '0');
+  assert.equal(await evaluate('document.querySelector("#paint").getContext("2d").getImageData(10,10,1,1).data[3]'), 0, 'Paper is transparent');
   assert.deepEqual(errors, []);
   console.log('Cell demo: mouse strokes, palette, grid, resize, touch, clear and runtime checks passed. Screenshots: work/tests/cell-brush/');
 } finally { ws?.close(); child?.kill(); await server.close(); }
