@@ -265,6 +265,7 @@ export class EditorSession {
       }
     } else {
       this.previous = point;
+      this.nextSpray = performance.now() + 40;
       this.stroke = this.tool === 'brush' && this.brushOptions.tip !== 'scatter' ? new StrokeSmoothing(point) : undefined;
       this.document.brush(point, point, this.color, this.tool === 'erase', this.brushOptions);
     }

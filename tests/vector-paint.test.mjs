@@ -199,14 +199,6 @@ test('fixed diagonal nibs preserve their angle while sweeping in either directio
  }
 });
 
-test('scattered circles accumulate opaque coverage instead of alpha layers',()=>{
- const original=Math.random;let seed=17;
- Math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
- try{
-  const first=styles.styledStroke([20,20],[20,20],10,{size:20,tip:'scatter'});
-  let combined=first;
-  for(let i=0;i<20;i++)combined=geometry.compactRegion({id:1,base:0xffffff,blobs:[{color:1,geometry:combined},{color:1,geometry:styles.styledStroke([20,20],[20,20],10,{size:20,tip:'scatter'})}]}).blobs[0].geometry;
-  const covered=g=>{let n=0;for(let y=12;y<28;y++)for(let x=12;x<28;x++)if(geometry.containsGeometry(g,[x,y]))n++;return n;};
-  assert.ok(covered(combined)>covered(first)*2,'Repeated scatter must fill gaps');
- }finally{Math.random=original;}
+test('spray cannot accidentally enter vector topology',()=>{
+ assert.throws(()=>styles.styledStroke([20,20],[20,20],10,{size:20,tip:'scatter'}), /raster overlay/);
 });

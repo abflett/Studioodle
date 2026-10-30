@@ -1,3 +1,4 @@
+import type { RasterSprayData } from './rasterSpray';
 import type { VectorPaintData } from './vectorPaintTypes';
 import type { StickerKind } from './stickerKinds';
 import { presetSize } from './paperPresets';
@@ -17,6 +18,7 @@ export type SurfaceData = {
     flipX?: boolean;
     flipY?: boolean;
     vectorPaint?: VectorPaintData;
+    rasterSpray?: RasterSprayData;
 };
 export const defaultPaintDpi = 150;
 export const exportScale = (dpi = defaultPaintDpi) => dpi / 96;

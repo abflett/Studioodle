@@ -1,4 +1,3 @@
-import polygonClipping from './polygonGeometry';
 import type { MultiPolygon, Pair } from './polygonGeometry';
 import type { BrushOptions, FillOptions } from './toolOptions';
 import { brushBlob } from './vectorPaintGeometry';
@@ -18,28 +17,11 @@ export function diagonalTipStroke(a: Pair, b: Pair, radius: number, rising: bool
     return mapGeometry(brushBlob(local(a), local(b), radius), ([u, v]) => [c * u - s * v * aspect, s * u + c * v * aspect]);
 }
 
-/** Opaque vector coverage: round/diagonal strokes or accumulating scattered circles. */
+/** Ordinary brush geometry only; raster spray never enters boolean topology. */
 export function styledStroke(a:Pair,b:Pair,radius:number,options:BrushOptions):MultiPolygon{
     if(options.tip==='round')return brushBlob(a,b,radius);
     if(options.tip==='diagonal-up'||options.tip==='diagonal-down')return diagonalTipStroke(a,b,radius,options.tip==='diagonal-up');
-    const dx=b[0]-a[0],dy=b[1]-a[1],length2=dx*dx+dy*dy;
-    const bounds=[Math.min(a[0],b[0])-radius,Math.min(a[1],b[1])-radius,Math.max(a[0],b[0])+radius,Math.max(a[1],b[1])+radius];
-    const spacing=Math.max(1.1,Math.sqrt((bounds[2]!-bounds[0]!)*(bounds[3]!-bounds[1]!)/600));
-    const particles:MultiPolygon[]=[];
-    const phase=Math.random()*65536;
-    const random=(x:number,y:number)=>{const n=Math.sin((x+phase)*127.1+(y+phase)*311.7)*43758.5453;return n-Math.floor(n);};
-    for(let gy=Math.floor(bounds[1]!/spacing);gy<=Math.ceil(bounds[3]!/spacing);gy++)for(let gx=Math.floor(bounds[0]!/spacing);gx<=Math.ceil(bounds[2]!/spacing);gx++){
-        // Cover the full cell so repeated applications do not leave permanent grid holes.
-        const x=(gx+random(gx,gy))*spacing,y=(gy+random(gy,gx))*spacing;
-        const t=length2?Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/length2)):0;
-        const distance=Math.hypot(x-a[0]-t*dx,y-a[1]-t*dy);
-        if(distance>radius||random(gx+13,gy-7)>.28*(1-distance/radius*.6))continue;
-        particles.push(brushBlob([x,y],[x,y],spacing*.2));
-    }
-    if(!particles.length)return [];
-    let result:MultiPolygon=[];
-    for(let i=0;i<particles.length;i+=64){const batch=particles.slice(i,i+64);result=polygonClipping.union(result.length?result:batch.shift()!,...batch);}
-    return result;
+    throw Error('Spray belongs to the raster overlay.');
 }
 
 const patterns=new Map<string,Path2D>();

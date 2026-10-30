@@ -1,3 +1,4 @@
+import type { SprayBefore } from './rasterSpray';
 import { computePaint } from './paintWorker';
 import type { SurfaceData } from './document';
 import type { PaintSnapshot } from './vectorPaintTypes';
@@ -8,10 +9,11 @@ export type RegionBefore = { surfaceId: string; id: number; paint: PaintSnapshot
 
 /** Previous values for one action. Geometry is shared and never mutated in place. */
 export class ArtworkChange {
+    readonly spray = new Map<string, SprayBefore>();
     readonly colors = new Map<number, number | null>();
     readonly surfaces = new Map<string, SurfaceBefore | undefined>();
     readonly regions = new Map<string, RegionBefore>();
-    get empty() { return !this.surfaces.size && !this.regions.size && !this.colors.size; }
+    get empty() { return !this.surfaces.size && !this.regions.size && !this.colors.size && !this.spray.size; }
     private snapshots() {
         return [...this.regions.values()].map(region => region.paint)
             .concat([...this.surfaces.values()].flatMap(surface => surface?.paint ?? []));
@@ -31,7 +33,11 @@ export class ArtworkChange {
     resources() {
         const resources = new Map<MultiPolygon, number>();
         let overhead = 256 + this.colors.size * 24 + this.surfaces.size * 256 + this.regions.size * 128;
-        for (const surface of this.surfaces.values()) if (surface) overhead += surface.data.id.length * 2;
+        for (const surface of this.surfaces.values()) if (surface) {
+            overhead += surface.data.id.length * 2;
+            for (const tile of surface.data.rasterSpray?.tiles ?? []) overhead += tile.pixels.byteLength;
+        }
+        for (const before of this.spray.values()) overhead += 128 + (before.tile?.pixels.byteLength ?? 0);
         for (const snapshot of this.snapshots()) {
             const region = snapshot.region;
             if (!region) continue;

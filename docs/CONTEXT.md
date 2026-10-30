@@ -1,6 +1,6 @@
 # Current context
 
-Updated 30 October 2026. Read `AGENTS.md` first, then this file and the documentation
+Updated 31 October 2026. Read `AGENTS.md` first, then this file and the documentation
 for the requested feature. Use the checked-out repository root (`git rev-parse
 --show-toplevel`); a client's initial working directory may point elsewhere.
 
@@ -14,7 +14,8 @@ exports. Print saves a PDF on Android. Keep the generated Android Gradle sources
 tracked; build output, local SDK paths, secrets and generated Tauri glue stay ignored.
 
 Studioodle is a pre-v1 drawing/coloring app with React, Canvas2D display and vector
-paint/ink. Phaser and raster painting have been removed. Keep one vector engine;
+paint/ink plus an isolated raster spray trial. Phaser and the old general raster
+painting engine have been removed. Keep ordinary paint/fill vector;
 old development drawings can break. Saved documents are format 6; the current
 drawing database is `studioodle-library-v9`. See [architecture](ARCHITECTURE.md).
 No native builds unless the user explicitly asks. Completed coherent changes are
@@ -146,13 +147,15 @@ Other editor/settings/output overlays still await refinement.
 record the review. No new scene artwork or blanket asset processing was included.
 
 The implemented brush overlay follows approved study 04 in `docs/brush-overlay-examples/`:
-one brush with round, two fixed diagonal and opaque scattered-circle tip effects.
+one brush with round, two fixed diagonal and soft raster spray tip effects.
 A full-width 1-64 size control sits below one compact segmented tip selector;
 a smaller muted gold/teal sample has a matching shallow well beside Apply. The
 size row stays unboxed and there is no divider. Tip and preview wells follow the
 existing overlay grouping language without enclosing every control.
-Scattered circles accumulate geometrically,
-without transparency or blending. The old ink/pencil/brush modes are replaced by tip effects. Size supports single-unit steps, direct numeric entry and a slider; the default remains 5. Paint is still saved as vector geometry, with no save-format change. Earlier captures remain for visual comparison.
+The isolated spray trial now accumulates soft RGB/alpha pixels; ordinary tips stay
+vector. The old ink/pencil/brush modes are replaced by tip effects. Size supports
+single-unit steps, direct numeric entry and a slider; the default remains 5.
+Format 6 has an optional versioned rasterSpray field for the experiment. Earlier captures remain for visual comparison.
 
 Brush/eraser gestures can now start in the surrounding drawing workspace and
 continue onto the page, with page clipping, single-action undo and cancellation.
@@ -222,15 +225,21 @@ loading/cycling. The user previously saw slowdown even after reverting save chan
 do not assume a save/worker cause without measurement. Keep diagnostics standalone.
 Set minimum-device workloads and measurable budgets before choosing optimizations.
 
-Canvas app changes remain planning work in the same backlog:
-trial per-surface spray overlays excluded from bucket topology, larger/fewer dots,
-compact circle particles rendered with Canvas primitives and bounded raster display
-caches. Keep the numeric document authoritative and SVG for source/import/export;
-live painting already avoids per-shape SVG DOM. Investigate moving live pan/zoom
-out of React state and reusing cached pixels during navigation. Resolve brush/spray
-ordering, eraser scope, confinement, appearance, sustained-growth limits and output
-quality before implementing the affected behavior. No second paint engine or
-pixel-only authoritative spray format is planned.
+Raster spray is now an isolated main-app experiment (`editor/rasterSpray.ts`).
+Ordinary paint/line art remain vector; scatter paints soft RGB pixels into sparse
+128px sections per surface, above ordinary paint and beneath ink. Fill ignores it;
+eraser clears both layers. Section snapshots participate in memory-bounded undo,
+including cancellation, sticker deletion/duplication and detached saves. Colors are
+baked: later palette edits do not recolor spray. Fixed native local resolution is
+capped at 1536px long edge/1 megapixel per surface; zoom/export reuse those pixels.
+Format 6 adds optional versioned rasterSpray; existing vector drawings remain valid.
+SVG/PDF/print embed PNG sections. No old raster painting engine was restored.
+This can be dropped by removing the module and narrow Artwork/output/schema hooks.
+Focused checks cover section undo, fill/erase, reload, SVG/PDF, overlap ownership
+and 4x seams. Seeded 640x480 multicolor passes retain 20 sections (1.25MiB pixels),
+zero vector blobs; p95 model calls ~1.9ms and capture ~1.2ms locally. These exclude
+full-app latency and other memory. Appearance still needs user review and physical-device tests.
+Pan/zoom and ordinary vector brush profiling remain next independent work.
 
 The user considers the cell prototype successful and has parked it. Return to
 main-app vector performance discussion/measurement; preserve crisp vector contours.
@@ -239,8 +248,8 @@ this decision. Cells beneath existing line art, existing surface masks/clips, a
 2px mobile fallback and worker processing are contingency ideas if vector fixes
 prove insufficient. The main app's engine, saved format and output stay unchanged.
 The refinement backlog now distinguishes existing worker/caching/indexing from
-remaining profiling/optimization tasks; storage/thumbnails remain the next agreed
-implementation batch. Main-app implementation awaits the current discussion.
+remaining profiling/optimization tasks; storage/thumbnails are complete, and the
+raster spray trial is the current implementation batch.
 
 The standalone cell-brush demo lives under `tools/cell-brush/`; run `npm run cells`
 on port 1434. It defaults to a rectangular grid fitted to approximately 4 x 4 CSS

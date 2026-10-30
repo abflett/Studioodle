@@ -28,12 +28,14 @@ base repository, or interface for every class.
   and generate immutable region-ID lookup arrays once per loaded definition. There is one SVG decoder and one vector paint engine.
 - **`savedPicture.ts`** defines the saved model. **`pictureValidation.ts`** validates untrusted records using lightweight
   catalog metadata; it does not load sticker definitions.
-- **`indexedPictureRepository.ts`** stores drawings asynchronously;
-  **`localColoringBook.ts`** stores the authoritative custom-page collection;
-  `localTemplateRepository.ts` reads the previous current-format template source
-  until the first successful collection write. **`app/pictures.ts`**
-  composes the ordinary-picture and custom-template libraries with their current
-  namespaces. Storage access is resolved at call time; UI callers handle errors.
+- **`indexedPictureRepository.ts`**, **`indexedColoringBook.ts`** and
+  **`pictureThumbnails.ts`** share IndexedDB through `appDatabase.ts`.
+  Legacy localStorage pages import once; preferences remain separate for now.
+  **`app/pictures.ts`** supplies pending-aware drawings and summaries.
+  Storage errors are handled at the UI/composition boundary.
+- **`rasterSpray.ts`** is the removable pixel-only spray experiment. It owns sparse
+  section buffers, soft-dab blending, ownership masks and section snapshots;
+  Artwork supplies surface clipping/transforms. It does not perform bucket fills.
 - **`app/pictureOutput.ts`** coordinates PNG/SVG/PDF output, names and PNG resolution.
   `editor/pictureSvg.ts` serializes exact curves/paint; PDF tooling loads only on export.
   **`platform/pictureOutput.ts`** handles browser/native download and print behavior.
@@ -51,9 +53,9 @@ objects. `useLatest` exposes committed callbacks to long-lived DOM listeners;
 do not mutate callback refs during render. Modal and pointer listener cleanup must
 remain symmetric, including React development effect replay.
 
-Drawings, summaries, thumbnail PNGs and individual custom pages use the `pictures`, `summaries`, `thumbnails`, `pages` and `meta` stores in IndexedDB database `studioodle-library-v9` (schema 2). Valid current localStorage pages import once with an atomic completion marker; subsequent page operations use IndexedDB only. Documents use vector-only format 6. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
+Drawings, summaries, thumbnail PNGs and individual custom pages use the `pictures`, `summaries`, `thumbnails`, `pages` and `meta` stores in IndexedDB database `studioodle-library-v9` (schema 2). Valid current localStorage pages import once with an atomic completion marker; subsequent page operations use IndexedDB only. Documents use format 6 with vector paint and optional raster spray version 1. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
 
-`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no raster paint arrays. Complex surfaces have disposable viewport display canvases under a shared 64 MiB pixel budget; export and print render vectors directly. Shared lookup arrays support only hit testing. A bounds-grid index selects candidate regions for brush clipping, shared by instances of the same definition. See [Vector Painting](VECTOR-PAINT.md).
+`VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. Ordinary brush styles and fill patterns stay vector. Spray alone uses fixed-resolution RGBA sections above ordinary paint and below ink; fill ignores it, and eraser clears both. Complex surfaces have disposable viewport display canvases under a shared 64 MiB pixel budget; export and print render vectors directly and embed spray pixels as PNG sections. Shared lookup arrays support only hit testing. A bounds-grid index selects candidate regions for brush clipping, shared by instances of the same definition. See [Vector Painting](VECTOR-PAINT.md).
 
 ## Adding features
 
@@ -87,8 +89,11 @@ behavior. Build the desktop installer only when requested to test changes in the
 
 ## Coloring book authoring
 
-`editor/coloringBook.ts` defines versioned portable books, geometry-only page normalization, and stable-ID merging. `platform/localColoringBook.ts` stores workshop revisions in one atomic local-storage record, separate from painted drawings. Existing current-format per-template records are
-read-only inputs until the first successful atomic collection write, then ignored. `app/coloringBookWorkshop.ts` composes bundled, custom and revised pages. The canonical shipped collection is `src/assets/coloringBook.json`; workshop JSON can replace it through `npm run books:install -- file.json` after review.
+`editor/coloringBook.ts` defines portable books, geometry-only page normalization
+and stable-ID merging. `platform/indexedColoringBook.ts` stores custom pages as
+individual IndexedDB records with stable ordering and an atomic legacy-import
+marker. Both vector paint and raster spray are stripped from shared page layouts.
+
 
 The optional workshop UI requests an immutable document snapshot from the editor session rather than reading saved-picture storage or reaching into the canvas adapter. Normal saves keep their existing behavior. Browser and native JSON exports are adapted in `platform/coloringBookOutput.ts`. See [the workflow and schema](COLORING-BOOKS.md).
 

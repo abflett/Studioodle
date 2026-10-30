@@ -1,6 +1,6 @@
 # Road to Studioodle 1.0
 
-Updated 30 October 2026. Core feature mechanics are complete enough to shift from
+Updated 31 October 2026. Core feature mechanics are complete enough to shift from
 feature expansion to performance, visual cohesion, content and beta validation.
 Parents and children have already enjoyed the current small library; the next work
 should make that experience reliable and richer, rather than add more tools.
@@ -130,27 +130,19 @@ validation. Preserve the demo without continuing its unfinished contour experime
   geometry/node/blob growth, display work, save work and peak memory. Separate cold
   loads from warm reuse, and record device/browser/build conditions. Keep diagnostics
   in standalone tools/tests and ignored `work/`, never in the main app ribbon.
-- [ ] **Prototype spray outside fill topology.** Give each relevant page/sticker
-  surface its own spray overlay beneath its line art, attached to that surface's
-  transforms and stacking order. Bucket fills should ignore spray dots and operate
-  on the underlying ordinary paint, including when the pointer lands on a dot.
-  Avoid per-dot polygon union/subtraction and participation in bucket connectivity.
-  Confirm the open behavior questions below before committing the new semantics.
-- [ ] **Trial larger, fewer spray dots and compact particle data.** Describe dots
-  by position, radius and palette slot; render circles directly through Canvas2D
-  with surface clipping. Control emission by elapsed time/distance rather than
-  pointer-event frequency, with bounded catch-up after stalls. Preserve continuous
-  stationary spray and the opaque effect initially. Compare visual quality and
-  measured costs against the current polygon implementation; primitives alone do
-  not guarantee an end-to-end speedup.
-- [ ] **Cache spray display without making pixels the sole source.** Evaluate
-  bounded raster tiles backed by immutable particle chunks. Bound generation,
-  decoded memory and sustained-spray data growth; avoid replaying every particle
-  each frame. Retain palette recoloring, surface movement, clipping and high-quality
-  PNG/SVG/PDF/print output. Save particles as document data, not an input-event log.
-  Undo retains affected prior chunks/tiles within the memory budget, not full-scene
-  copies or a fixed action count. Background cache work must not alter restored
-  history. Reject stale cache completions after edits, undo or palette changes.
+- [x] **Trial isolated raster spray outside fill topology.** User approved a
+  pixel-only spray overlay, accepting softness at zoom/print. Soft dabs paint into
+  sparse 128px sections attached to each surface, above ordinary paint and below
+  ink. Fills ignore spray; eraser clears ordinary paint and spray together. Undo
+  stores prior touched sections and counts them against its memory budget. Saves
+  retain pixels, not particles or a stroke log; output embeds those same pixels.
+- [ ] **Review raster spray appearance and measured heavy use.** Compare normal
+  coloring, repeated multicolor full-page spray, many overlapping stickers,
+  pan/zoom, erase/undo, save/reopen and export on desktop and Android. Current
+  resolution caps each surface at 1536px long edge/1 megapixel; allocations are
+  sparse but total cost scales with painted surfaces and undo. RGB is baked, so
+  palette edits do not recolor old spray. Decide whether softness and layering
+  are useful enough to keep. Keep the trial isolated; drop it if it fails.
 - [ ] **Audit ordinary brush work before changing its representation.** Measure
   input/layout reads, generated samples, region clipping, lower-surface subtraction,
   allocations, worker transport/queue/compaction and display independently. Trial
@@ -192,26 +184,14 @@ validation. Preserve the demo without continuing its unfinished contour experime
   described in the engineering findings below. These remain blockers even if the
   ordinary-input performance fixes are successful.
 
-#### Open canvas decisions — discuss before implementing the affected behavior
+#### Raster spray trial decisions
 
-- **Paint ordering:** should normal brush strokes made after spraying remain below
-  the spray, or cover it? A fixed overlay is simpler; arbitrary interleaving needs
-  an explicit ordering model. Fill should ignore spray either way.
-- **Eraser scope:** erase spray, ordinary paint or both? Decide whether the existing
-  eraser is sufficient and what happens across surface/region boundaries.
-- **Spray confinement:** preserve current clipping behavior or confine a gesture
-  to its starting region? Decide how overlapping stickers and exposed paper receive
-  particles; line art stays above spray.
-- **Appearance:** settle dot size, density and size-control meaning with visual
-  trials. Keep opaque dots initially; translucency/blending requires a separate
-  decision about accumulation, palette changes and output equivalence.
-- **Long-session limits:** choose particle chunking, coverage reuse and tile budgets
-  from measured sustained-spray growth. Do not silently discard visible artwork or
-  flatten away required editability to meet a budget.
-- **Output and zoom quality:** decide whether SVG/PDF keep individual circles or
-  use another reviewed representation; measure large-output costs. Set acceptable
-  temporary zoom softness and time-to-sharpness. Cache resolution is independent
-  of authoritative particle precision.
+The user chose pixel-only spray and an eraser affecting both paint layers.
+The initial trial uses fixed overlay ordering (ordinary paint, spray, line art),
+soft round dots and baked RGB. It follows surface transforms/clipping and ignores
+bucket topology. No 600-DPI spray reconstruction or particle recoloring is planned.
+Review dot density/size, softness, section seams and long-session memory before
+keeping it. Palette edits still recolor vector paint/ink, not existing spray pixels.
 
 ## 2. One friendly, playful and calm visual language
 

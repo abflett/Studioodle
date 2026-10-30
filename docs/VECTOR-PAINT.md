@@ -1,10 +1,10 @@
 # Vector painting
 
-All page and sticker paint is vector geometry. There are no raster paint buffers, pixel flood-fill queues, density upgrades, or texture-tool fallbacks. Disposable display caches accelerate complex surfaces without becoming document paint. Canvas2D rasterizes the vectors only at the visible/output resolution, as browsers do for SVG. Compact categorical hit arrays remain shared per sticker definition; these are interaction data, not paint.
+Ordinary page and sticker paint is vector geometry. The isolated experimental spray overlay is pixel-only; it never enters vector fill topology. There are no raster flood-fill queues or density upgrades. Disposable display caches accelerate complex surfaces without becoming document paint. Canvas2D rasterizes the vectors only at the visible/output resolution, as browsers do for SVG. Compact categorical hit arrays remain shared per sticker definition; these are interaction data, not paint.
 
 `Artwork` owns transforms, layer ordering and visible surface selection. `Surface` has a vector definition (a rectangle for the page) and `VectorPaint`. A swept brush shape is transformed into each surface, intersected with its regions, and removed from the coverage passed to lower layers. Erasing restores white on stickers or the page's original background color.
 
-Ordinary ink and square strokes use swept convex brush outlines. The brush style adds bristles; pencil and spray generate vector particles. Input nodes snap to a 1/64 logical-unit grid. Textures require genuine geometry and may grow more than solid brushwork. None of the styles converts to raster.
+Ordinary ink and square strokes use swept convex brush outlines. Round and diagonal tips retain their numeric vector outlines. Input nodes snap to a 1/64 logical-unit grid. Scatter instead uses the isolated raster overlay described below.
 
 The exact SVG region curves clip rendering. Lazy adaptive flattening (0.01 logical-unit tolerance) supplies polygon geometry for intersections and connected-component filling. It handles SVG arcs, quadratic/cubic curves, transforms, holes and separate components. The display retains the original curves.
 
@@ -24,9 +24,14 @@ Repeated coverage compacts, but more visible islands and color edges require mor
 
 ## Current data format
 
-Picture/document format is 5; coloring-book format is 2. Surfaces optionally contain `vectorPaint` (version 1), with region IDs, backing styles and blob geometry. Old paint runs, paint-density fields and format versions are rejected. New development libraries use `studioodle-library-v1` (IndexedDB), `studioodle.v5.coloring.` and `studioodle.workshop.v2`. There are no compatibility decoders or migrations. Bundled layouts have been updated directly.
+Picture/document format is 6; coloring-book format is 2. Surfaces optionally
+contain `vectorPaint` (version 1), with region IDs, backing styles and blob geometry,
+and experimental `rasterSpray` (version 1) pixel sections. The current IndexedDB
+namespace is `studioodle-library-v9`; schema 2 also owns pages and thumbnails.
+Old general raster paint runs and density fields remain unsupported.
 
-Geometry-only coloring-page export removes vector paint. PNG output defaults to 300 DPI, with 150/600 DPI choices; `renderPicture` accepts an output DPI without changing stored paint. Print, SVG and PDF output retain vectors. See [picture output](PICTURE-OUTPUT.md); PNG resolution choices do not affect SVG/PDF output.
+
+Geometry-only coloring-page export removes vector paint. PNG output defaults to 300 DPI, with 150/600 DPI choices; `renderPicture` accepts an output DPI without changing stored paint. Print, SVG and PDF output retain ordinary vectors and embed spray PNG sections. See [picture output](PICTURE-OUTPUT.md); PNG resolution choices do not affect SVG/PDF output.
 
 ## Verification
 
@@ -113,3 +118,39 @@ include deferred Canvas rasterization; that diagnostic is not a hardware frame-r
 measurement. The advanced scene diagnostic uses normal visible rendering without
 per-frame readbacks. Initial builds, fills, undo, newly exposed crop windows and
 settled zoom refinements still require vector drawing.
+
+## Experimental raster spray (31 October 2026)
+
+`rasterSpray.ts` owns pixel storage, section snapshots and rendering. Artwork routes
+scatter to it before constructing any vector stroke geometry. Each surface owns
+sparse 128x128 RGBA sections at fixed local resolution (up to 1536px long edge and
+1,048,576 pixels before section padding). There is no retained particle list.
+Soft radial dabs accumulate RGB/alpha; palette colors resolve when painted.
+Later palette edits do not change these pixels. Fill operates on vector paint only.
+The order is ordinary paint, raster spray, then line art; later ordinary brushwork
+remains below spray. The eraser affects both paint layers with existing surface
+ownership and clipping.
+
+Prior sections are captured once per action, included in the 128MiB undo budget,
+and restored on cancellation/undo. Detached save checkpoints share immutable
+RGBA typed-array section records; live canvases mutate independently. Format 6 surfaces
+have an optional `rasterSpray` version 1 field. Empty surfaces allocate no raster.
+SVG/PDF/print embed PNGs made from the same pixels; PNG/gallery use normal Artwork
+rendering. Zoom never upgrades the authoritative spray resolution. This is a
+removable experiment, not a second general painting engine or cell integration.
+
+The fixed per-surface pixel cap does not cap whole-scene or undo memory. Existing
+vector spray in development drawings remains vector data; new spray uses pixels.
+Physical-device speed, heavy sticker overlap and user acceptance remain to test.
+
+`node scripts/test-browser.mjs --raster-spray` checks section undo, erasing both
+layers, fill isolation, IndexedDB/reload, detached checkpoints, sticker lifecycle,
+overlap ownership, 4x section seams and SVG/PDF bitmap output. It writes diagnostics
+and a preview under ignored `work/tests/`. A seeded 640x480 three-pass multicolor
+stress run retained 20 sections (1.25MiB authoritative RGBA; excludes canvases,
+masks, undo and browser overhead), with zero vector paint blobs. One local headless
+Chromium run measured ~286/282/273ms aggregate pass submission, ~1.9ms p95 input
+call (~9ms maximum), ~1.2ms checkpoint capture and ~11ms for 20 renders plus a
+readback. These are synthetic desktop timings, not hardware frame-rate, full app
+input latency or Android guarantees. Initial mask construction and heavily
+layered sticker scenes still need measurement.

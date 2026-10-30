@@ -9,7 +9,7 @@ import type { Pair } from '../editor/polygonGeometry';
 
 const tips: { id: BrushTip; label: string }[] = [
   { id: 'round', label: 'Round tip' }, { id: 'diagonal-up', label: 'Diagonal tip, rising' },
-  { id: 'diagonal-down', label: 'Diagonal tip, falling' }, { id: 'scatter', label: 'Scattered circle tip' },
+  { id: 'diagonal-down', label: 'Diagonal tip, falling' }, { id: 'scatter', label: 'Soft spray tip' },
 ];
 function TipIcon({ tip }: { tip: BrushTip }) {
   return <svg viewBox="0 0 48 48" aria-hidden="true">
@@ -32,7 +32,7 @@ function previewPath(value: BrushOptions, width: number) {
     const t = i / 96, [x, y] = point(t);
     if (value.tip === 'scatter') {
       const particles = (1 + Math.floor(6 * Math.sin(t * Math.PI) ** 4)) * 5;
-      const r = Math.max(.25, diameter * .035);
+      const r = Math.max(.45, diameter * .07);
       for (let j = 0; j < particles; j++) {
         const angle = random() * Math.PI * 2, distance = Math.sqrt(random()) * radius;
         const cx = n(x + Math.cos(angle) * distance), cy = n(y + Math.sin(angle) * distance);
@@ -61,7 +61,8 @@ function BrushPreview({ value }: { value: BrushOptions }) {
   const path = useMemo(() => previewPath(value, width), [value, width]);
   return <div className="brush-preview-well" ref={host}>
     <svg className="brush-preview" viewBox={`0 0 ${width} 64`} role="img" aria-label={`${tips.find(tip => tip.id === value.tip)!.label}, size ${value.size}: premade stroke preview`}>
-      <path d={path} fill={value.tip === 'round' ? 'none' : 'currentColor'} stroke={value.tip === 'round' ? 'currentColor' : 'none'} strokeWidth={value.size * .58} strokeLinecap="round" strokeLinejoin="round" />
+      {value.tip === 'scatter' && <defs><filter id="brush-spray-softness" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation=".35" /></filter></defs>}
+      <path filter={value.tip === 'scatter' ? 'url(#brush-spray-softness)' : undefined} d={path} fill={value.tip === 'round' ? 'none' : 'currentColor'} stroke={value.tip === 'round' ? 'currentColor' : 'none'} strokeWidth={value.size * .58} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   </div>;
 }

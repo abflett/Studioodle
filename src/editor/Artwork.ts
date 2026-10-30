@@ -1,3 +1,5 @@
+import { RasterSpray } from './rasterSpray';
+import type { SprayTile } from './rasterSpray';
 import type { CustomColors } from './colorPalettes';
 import { emptyCustomColors, resolveColor, validRgb, validCustomColors } from './colorPalettes';
 import { ArtworkChange } from './artworkChange';
@@ -11,16 +13,17 @@ import type { BrushOptions, FillOptions } from './toolOptions';
 import type { ArtworkDocument, Point, StickerKind, SurfaceData } from './document';
 import { VectorPaint } from './VectorPaint';
 import { PaintDisplayCache } from './paintDisplayCache';
-import { geometryBounds, mapGeometry, rectangleGeometry, styledStroke } from './vectorPaintStyles';
+import { geometryBounds, mapGeometry, rectangleGeometry, styledStroke, paintPath } from './vectorPaintStyles';
 const hex = (color: number) => '#' + color.toString(16).padStart(6, '0');
 
 class Surface {
     readonly vector: VectorDefinition;
     readonly vectorPaint: VectorPaint;
+    readonly spray: RasterSpray;
     readonly logicalWidth: number;
     readonly logicalHeight: number;
     readonly opaqueBounds: {left:number;top:number;right:number;bottom:number};
-    constructor(readonly data:SurfaceData,width:number,height:number,definition?:VectorDefinition,changing?:(id:number)=>void,resolve:(color:number)=>number=(color)=>color){
+    constructor(readonly data:SurfaceData,width:number,height:number,definition?:VectorDefinition,changing?:(id:number)=>void,resolve:(color:number)=>number=(color)=>color,sprayChanging?:(key:string,before:()=>SprayTile|undefined)=>void){
         if(data.kind==='canvas'){
             const path=new Path2D();path.rect(0,0,width,height);
             const inside=(x:number,y:number)=>x>=0&&y>=0&&x<width&&y<height;
@@ -31,7 +34,8 @@ class Surface {
         this.logicalWidth=this.vector.width;this.logicalHeight=this.vector.height;
         this.opaqueBounds=this.vector.bounds;
         this.vectorPaint=new VectorPaint(data.vectorPaint,data.kind==='canvas'?data.color:0xffffff,changing,resolve);
-        delete data.vectorPaint;
+        this.spray = new RasterSpray(this.logicalWidth, this.logicalHeight, data.rasterSpray, sprayChanging);
+        delete data.vectorPaint; delete data.rasterSpray;
     }
     worldPoint(x:number,y:number):Point{
         if(this.data.kind==='canvas')return{x,y};
@@ -51,7 +55,7 @@ class Surface {
         const x=Math.floor(Math.min(...points.map(p=>p.x))),y=Math.floor(Math.min(...points.map(p=>p.y)));
         return{x,y,width:Math.ceil(Math.max(...points.map(p=>p.x)))-x,height:Math.ceil(Math.max(...points.map(p=>p.y)))-y};
     }
-    serialize():SurfaceData{return{...this.data,vectorPaint:this.vectorPaint.serialize()};}
+    serialize():SurfaceData{return{...this.data,vectorPaint:this.vectorPaint.serialize(),rasterSpray:this.spray.serialize()};}
 }
 export class Artwork {
     private surfaces: Surface[];
@@ -70,7 +74,7 @@ export class Artwork {
     private change?: ArtworkChange;
     private overlapCache = new Map<string, boolean>();
     constructor(private readonly width: number, private readonly height: number, data: SurfaceData[], private readonly definitionFor: (kind: StickerKind) => VectorDefinition = vectorDefinition) {
-        this.surfaces = data.map(surface => new Surface({...surface}, width, height, surface.kind === 'canvas' ? undefined : this.definitionFor(surface.kind), id=>this.capturePaint(surface.id,id),this.resolve));
+        this.surfaces = data.map(surface => new Surface({...surface}, width, height, surface.kind === 'canvas' ? undefined : this.definitionFor(surface.kind), id=>this.capturePaint(surface.id,id),this.resolve,(key,before)=>this.captureSpray(surface.id,key,before)));
     }
     static create(width: number, height: number, background: string) {
         return new Artwork(width, height, [{ id: 'canvas', kind: 'canvas', x: 0, y: 0, color: parseInt(background.slice(1), 16) }]);
@@ -83,7 +87,7 @@ export class Artwork {
         return art;
     }
     get size() { return { width: this.width, height: this.height }; }
-    dispose() { this.change=undefined; for (const surface of this.surfaces) surface.vectorPaint.dispose(); }
+    dispose() { this.change=undefined; for (const surface of this.surfaces) { surface.vectorPaint.dispose(); surface.spray.dispose(); } }
     async compactPaint(){await Promise.all(this.surfaces.map(surface=>surface.vectorPaint.settled()));}
     serialize():ArtworkDocument{return{version:6,paletteVersion:1,customColors:[...this.custom],width:this.width,height:this.height,surfaces:this.surfaces.map(surface=>surface.serialize())};}
     /** Detached containers share immutable geometry; saving never waits on live input. */
@@ -91,7 +95,7 @@ export class Artwork {
         const paint = this.surfaces.map(surface => surface.vectorPaint.checkpoint());
         const document: ArtworkDocument = { version: 6, paletteVersion: 1, customColors: [...this.custom], width: this.width, height: this.height,
             surfaces: this.surfaces.map((surface, index) => {
-                return { ...surface.data, vectorPaint: paint[index]!.data };
+                return { ...surface.data, vectorPaint: paint[index]!.data, rasterSpray: surface.spray.serialize() };
             }),
         };
         return { document, compact: async () => {
@@ -114,6 +118,10 @@ export class Artwork {
         }
         return change;
     }
+    private captureSpray(surfaceId: string, key: string, before: () => SprayTile | undefined) {
+        const id = JSON.stringify([surfaceId, key]);
+        if (this.change && !this.change.spray.has(id)) this.change.spray.set(id, { surfaceId, key, tile: before() });
+    }
     private capturePaint(surfaceId: string, id: number) {
         const key = JSON.stringify([surfaceId, id]);
         if (!this.change || this.change.regions.has(key)) return;
@@ -126,11 +134,11 @@ export class Artwork {
         if (surface?.data.kind === 'canvas') return;
         if (this.change.surfaces.has(id)) {
             const before = this.change.surfaces.get(id);
-            if (deleted && before && !before.paint) before.paint = surface!.vectorPaint.snapshotRegions();
+            if (deleted && before && !before.paint) { before.paint = surface!.vectorPaint.snapshotRegions(); before.data.rasterSpray = surface!.spray.serialize(); }
             return;
         }
         this.change.surfaces.set(id, surface ? {
-            data: { ...surface.data }, index,
+            data: { ...surface.data, ...(deleted ? { rasterSpray: surface.spray.serialize() } : {}) }, index,
             ...(deleted ? { paint: surface.vectorPaint.snapshotRegions() } : {}),
         } : undefined);
     }
@@ -143,26 +151,28 @@ export class Artwork {
             const index = this.surfaces.findIndex(surface => surface.data.id === id);
             let surface = this.surfaces[index];
             if (!before) {
-                if (surface) { surface.vectorPaint.dispose(); this.surfaces.splice(index, 1); }
+                if (surface) { surface.vectorPaint.dispose(); surface.spray.dispose(); this.surfaces.splice(index, 1); }
                 continue;
             }
             if (!surface) {
-                surface = new Surface({ ...before.data }, this.width, this.height, this.definitionFor(before.data.kind as StickerKind), region => this.capturePaint(id, region),this.resolve);
+                surface = new Surface({ ...before.data }, this.width, this.height, this.definitionFor(before.data.kind as StickerKind), region => this.capturePaint(id, region),this.resolve,(key,before)=>this.captureSpray(id,key,before));
             } else {
                 this.surfaces.splice(index, 1);
                 for (const key of Object.keys(surface.data)) Reflect.deleteProperty(surface.data, key);
                 Object.assign(surface.data, before.data);
+                delete surface.data.rasterSpray;
             }
             this.surfaces.splice(Math.min(before.index, this.surfaces.length), 0, surface);
             for (const paint of before.paint ?? []) if (paint.region) surface.vectorPaint.restoreRegion(paint.region.id, paint);
         }
         for (const { surfaceId, id, paint } of change.regions.values())
             this.surfaces.find(surface => surface.data.id === surfaceId)?.vectorPaint.restoreRegion(id, paint);
+        for (const { surfaceId, key, tile } of change.spray.values()) this.surfaces.find(surface => surface.data.id === surfaceId)?.spray.restore(key, tile);
         this.overlapCache.clear();
     }
     add(kind: StickerKind, color: number, point: Point) {
         const id=crypto.randomUUID();this.captureSurface(id);
-        const surface = new Surface({ id, kind, color, x: Math.round(point.x), y: Math.round(point.y) }, this.width, this.height, this.definitionFor(kind),region=>this.capturePaint(id,region),this.resolve);
+        const surface = new Surface({ id, kind, color, x: Math.round(point.x), y: Math.round(point.y) }, this.width, this.height, this.definitionFor(kind),region=>this.capturePaint(id,region),this.resolve,(key,before)=>this.captureSpray(id,key,before));
         {
             const bounds = surface.bounds();
             surface.data.scale = Math.min(1, this.width * .6 / Math.max(1, bounds.width), this.height * .6 / Math.max(1, bounds.height));
@@ -224,7 +234,7 @@ export class Artwork {
         const data = original.serialize();
         data.id = crypto.randomUUID();
         this.captureSurface(data.id);
-        const copy = new Surface(data, this.width, this.height, original.vector,region=>this.capturePaint(data.id,region),this.resolve);
+        const copy = new Surface(data, this.width, this.height, original.vector,region=>this.capturePaint(data.id,region),this.resolve,(key,before)=>this.captureSpray(data.id,key,before));
         this.surfaces.push(copy);
         this.move(data.id, { x: data.x + 24, y: data.y + 24 });
         return data.id;
@@ -281,7 +291,7 @@ export class Artwork {
         this.captureSurface(id,true);
         this.surfaces = this.surfaces.filter(surface => {
             if (surface.data.kind === 'canvas' || surface.data.id !== id) return true;
-            surface.vectorPaint.dispose();
+            surface.vectorPaint.dispose(); surface.spray.dispose();
             return false;
         });
         this.overlapCache.clear();
@@ -339,7 +349,54 @@ export class Artwork {
         }
         this.overlapCache.clear();
     }
+    private surfaceMatrix(surface: Surface) {
+        const origin = surface.worldPoint(0, 0), x = surface.worldPoint(1, 0), y = surface.worldPoint(0, 1);
+        return new DOMMatrix([x.x-origin.x, x.y-origin.y, y.x-origin.x, y.y-origin.y, origin.x, origin.y]);
+    }
+    private sprayStroke(from: Point, to: Point, color: number, size: number) {
+        const radius = size / 2, distance = Math.hypot(to.x-from.x, to.y-from.y);
+        const steps = Math.max(1, Math.ceil(distance / Math.max(1, radius * .4)));
+        let changed = false;
+        const clipKey = JSON.stringify([this.focusedId,this.surfaces.map(s=>s.data)]);
+        const dots: {point:Point;radius:number}[] = [];
+        for (let step = 0; step < steps; step++) {
+            const t = distance ? (step + 1) / steps : 0;
+            const center = { x: from.x+(to.x-from.x)*t, y: from.y+(to.y-from.y)*t };
+            const count = Math.max(3, Math.ceil(radius * .7));
+            for (let dot = 0; dot < count; dot++) {
+                const angle = Math.random()*Math.PI*2, offset = Math.sqrt(Math.random())*radius;
+                dots.push({ point: {x:center.x+Math.cos(angle)*offset,y:center.y+Math.sin(angle)*offset}, radius: Math.max(.8, radius*(.07+Math.random()*.07)) });
+            }
+        }
+        for (let i = this.surfaces.length-1; i >= 0; i--) {
+            const surface = this.surfaces[i]!;
+            if (this.focusedId && surface.data.id !== this.focusedId) continue;
+            surface.spray.setClipKey(clipKey);
+            const inverse = this.surfaceMatrix(surface).inverse();
+            const page = new Path2D(); page.rect(0,0,this.width,this.height);
+            const localPage = new Path2D(); localPage.addPath(page,inverse);
+            const excluded: Path2D[] = [];
+            if (!this.focusedId) for (const upper of this.surfaces.slice(i+1)) {
+                const path = new Path2D(); path.rect(-16384,-16384,32768,32768);
+                path.addPath(upper.vector.silhouette, inverse.multiply(this.surfaceMatrix(upper))); excluded.push(path);
+            }
+            const clip = (ctx:CanvasRenderingContext2D) => {
+                ctx.clip(surface.vector.silhouette); ctx.clip(localPage);
+                for (const path of excluded) ctx.clip(path,'evenodd');
+            };
+            const scale = surface.data.kind === 'canvas' ? 1 : surface.data.scale ?? 1;
+            for (const dot of dots) {
+                const p = surface.localPoint(dot.point), r = dot.radius / scale;
+                if (p.x+r<0 || p.y+r<0 || p.x-r>surface.logicalWidth || p.y-r>surface.logicalHeight) continue;
+                // Reject dabs outside the page before allocating sections. Edge dabs use exact clipping.
+                if (dot.point.x+dot.radius<0 || dot.point.y+dot.radius<0 || dot.point.x-dot.radius>this.width || dot.point.y-dot.radius>this.height) continue;
+                changed = surface.spray.dab(p,r,this.resolve(color),clip) || changed;
+            }
+        }
+        return changed;
+    }
     brush(from:Point,to:Point,color:number,erase=false,options:BrushOptions=defaultBrush){
+        if (!erase && options.tip === 'scatter') return this.sprayStroke(from,to,color,options.size);
         const shape=erase?{...options,tip:'round' as const}:options;
         let remaining=styledStroke([from.x,from.y],[to.x,to.y],erase?20:options.size/2,shape);
         if(!remaining.length)return false;
@@ -356,6 +413,7 @@ export class Artwork {
             const result=surface.vectorPaint.apply(surface.vector,local,erase?(surface.data.kind==='canvas'?surface.data.color:0xffffff):color);
             if(!result.coverage.length)continue;
             changed=result.changed||changed;
+            if (erase) changed = surface.spray.erase(paintPath(result.coverage),geometryBounds(result.coverage),ctx=>ctx.clip(surface.vector.silhouette)) || changed;
             if(i===0||this.focusedId)break;
             const world=mapGeometry(result.coverage,([x,y])=>{const p=surface.worldPoint(x,y);return[p.x,p.y];});
             remaining=polygonClipping.difference(remaining,world);
@@ -389,7 +447,7 @@ export class Artwork {
         }
         for(const surface of surfaces){
             ctx.save();this.transformSurface(ctx,surface);
-            surface.vectorPaint.draw(ctx,surface.vector,cacheDisplay);drawVectorInk(ctx,surface.vector,hex(this.resolve(surface.data.color)),thumbnail);ctx.restore();
+            surface.vectorPaint.draw(ctx,surface.vector,cacheDisplay);surface.spray.draw(ctx);drawVectorInk(ctx,surface.vector,hex(this.resolve(surface.data.color)),thumbnail);ctx.restore();
         }
         ctx.restore();
     }

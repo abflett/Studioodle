@@ -69,7 +69,7 @@ export async function checkVectorPaint(){
  const pc=document.createElement('canvas');pc.width=pc.height=100;const pctx=pc.getContext('2d',{willReadFrequently:true})!;page.render(pctx);
  const rgb=(x:number,y:number)=>{const p=pctx.getImageData(x,y,1,1).data;return(p[0]!<<16)|(p[1]!<<8)|p[2]!;};
  assert(rgb(50,50)===0x22aa66&&rgb(5,5)===0xffffff&&rgb(20,50)===0,'Page bucket must preserve its closed vector boundary');
- for(const tip of ['round','diagonal-up','diagonal-down','scatter'] as const){
+ for(const tip of ['round','diagonal-up','diagonal-down'] as const){
   const styled=Artwork.create(100,100,'#ffffff');
   assert(styled.brush({x:40,y:40},{x:60,y:60},0x773399,false,{size:12,tip}),`${tip} must paint`);
   await styled.compactPaint();assert(styled.serialize().surfaces[0]!.vectorPaint!.regions.some(r=>r.blobs.length),`${tip} remains vector`);

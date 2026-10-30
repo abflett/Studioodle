@@ -85,6 +85,13 @@ try {
     const metrics = await evaluate("import('/tests/browser/save-performance.ts').then(m=>m.profileSavePerformance())");
     await fs.writeFile('work/tests/save-performance-results.json', JSON.stringify(metrics, null, 2));
     console.log('Save performance:', JSON.stringify(metrics));
+  }else if(process.argv.includes('--raster-spray')){
+    const result=await evaluate("import('/tests/browser/raster-spray.ts').then(m=>m.checkRasterSpray(true))");
+    const preview=result.preview;delete result.preview;
+    await fs.writeFile('work/tests/raster-spray.png',Buffer.from(preview.split(',')[1],'base64'));
+    console.log('Raster spray:',JSON.stringify(result));
+    await fs.writeFile('work/tests/raster-spray.json',JSON.stringify(result,null,2));
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(process.argv.includes('--picture-output-only')){
     const result=await evaluate("import('/tests/browser/picture-output.ts').then(m=>m.checkPictureOutput())");
     console.log('Picture output:',result.vectorPrint,result.printFailure,result.downloadCleanup);
@@ -218,6 +225,7 @@ try {
   result.libraryState=await evaluate("import('/tests/browser/library-state.ts').then(m => m.checkLibraryState())");
   result.paintDisplay=paintDisplay;
   console.log('Paint display:',JSON.stringify(paintDisplay));
+  result.rasterSpray=await evaluate("import('/tests/browser/raster-spray.ts').then(m=>m.checkRasterSpray())");
   result.storageThumbnails=await evaluate("import('/tests/browser/storage-thumbnails.ts').then(m=>m.checkStorageThumbnails())");
   result.pictureStorage=await evaluate("import('/tests/browser/picture-storage.ts').then(m=>m.checkPictureStorage())");
   console.log('Picture storage:',JSON.stringify(result.pictureStorage));
@@ -371,7 +379,7 @@ try {
     }
   }
   await cdp('Emulation.clearDeviceMetricsOverride');
-  for(const label of ['Diagonal tip, rising','Diagonal tip, falling','Scattered circle tip','Round tip']) {
+  for(const label of ['Diagonal tip, rising','Diagonal tip, falling','Soft spray tip','Round tip']) {
     await evaluate(`document.querySelector('button[aria-label="${label}"]').click()`);
     await waitFor(`document.querySelector('button[aria-label="${label}"]').getAttribute('aria-pressed')==='true'`);
     if(await evaluate(`document.querySelectorAll('.brush-tip[aria-pressed="true"]').length`)!==1)throw Error('Brush tips must be exclusive');

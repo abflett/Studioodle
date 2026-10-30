@@ -84,7 +84,7 @@ export async function checkCanvasEditor() {
     pointer('pointerdown', 70, 70);
     await new Promise(resolve => setTimeout(resolve, 110));
     pointer('pointerup', 70, 70, 0);
-    assert((await snapshot()).document.surfaces[0]!.vectorPaint!.regions.length > 0, 'Stationary spray must animate');
+    assert((await snapshot()).document.surfaces[0]!.rasterSpray!.tiles.length > 0, 'Stationary raster spray must animate');
     // A previously requested zoom refinement may finish after release. Require
     // a bounded return to quiescence rather than treating that legitimate frame
     // as an endless spray loop on a loaded machine.

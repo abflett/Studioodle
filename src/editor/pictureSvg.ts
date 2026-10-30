@@ -1,3 +1,4 @@
+import { sprayImages } from './rasterSpray';
 import { resolveColor } from './colorPalettes';
 import { geometryBounds } from './vectorPaintStyles';
 import { paperSize } from './document';
@@ -69,6 +70,7 @@ export async function pictureSvg(picture: EditorSetup): Promise<SVGSVGElement> {
   surfaces.forEach((surface, index) => {
     const group = element('g'); page.append(group);
     let regions: Element[], ink: Element | null = null;
+    let logicalWidth = width, logicalHeight = height;
     if (surface.kind === 'canvas') {
       regions = [element('path', { id: 'region-1', d: `M0 0H${width}V${height}H0Z` })];
     } else {
@@ -85,6 +87,7 @@ export async function pictureSvg(picture: EditorSetup): Promise<SVGSVGElement> {
       }
       for (const sourceDefs of source.querySelectorAll('defs')) defs.append(...[...sourceDefs.children]);
       const viewBox = source.getAttribute('viewBox')!.split(/[ ,]+/).map(Number);
+      logicalWidth = viewBox[2]!; logicalHeight = viewBox[3]!;
       group.setAttribute('transform', `translate(${surface.x} ${surface.y}) rotate(${surface.rotation ?? 0}) scale(${(surface.scale ?? 1)*(surface.flipX ? -1 : 1)} ${(surface.scale ?? 1)*(surface.flipY ? -1 : 1)}) translate(${-Math.floor(viewBox[2]!/2)} ${-Math.floor(viewBox[3]!/2)})`);
       regions = [...source.querySelectorAll(`[id="s${index}-regions"] > path`)];
       ink = source.querySelector(`[id="s${index}-ink"]`);
@@ -122,6 +125,15 @@ export async function pictureSvg(picture: EditorSetup): Promise<SVGSVGElement> {
         const visible = [Math.max(bounds[0]!, b[0]!), Math.max(bounds[1]!, b[1]!), Math.min(bounds[2]!, b[2]!), Math.min(bounds[3]!, b[3]!)];
         blobs.append(paintShape(element('path', { d: pathData(blob.geometry), 'fill-rule': 'nonzero' }), blob.color, visible, blob.pattern));
       }
+    }
+    if (surface.rasterSpray) {
+      const clipId = `spray-clip-${serial++}`;
+      const clip = element('clipPath', { id: clipId, clipPathUnits: 'userSpaceOnUse' });
+      for (const region of regions) { const path = region.cloneNode(true) as Element; path.removeAttribute('id'); clip.append(path); }
+      defs.append(clip);
+      const overlay = element('g', { 'clip-path': `url(#${clipId})` });
+      for (const image of sprayImages(surface.rasterSpray, logicalWidth, logicalHeight)) overlay.append(element('image', { ...image, preserveAspectRatio: 'none' }));
+      group.append(overlay);
     }
     if (ink) {
       for (const path of ink.querySelectorAll('path')) for (const attribute of ['fill', 'stroke']) {

@@ -1,3 +1,4 @@
+import { validRasterSpray } from './rasterSpray';
 import { definedColor, validCustomColors } from './colorPalettes';
 import type { PictureSummary } from './pictureSummary';
 import { isVectorSticker } from './vectorCatalog';
@@ -58,6 +59,7 @@ function isArtworkDocument(value: unknown): value is ArtworkDocument {
             return false;
         if (surface.kind === 'canvas' && ((surface.scale ?? 1) !== 1 || (surface.rotation ?? 0) !== 0))
             return false;
+        if (surface.rasterSpray !== undefined && !validRasterSpray(surface.rasterSpray)) return false;
         if('paint' in surface || 'paintScale' in surface)return false;
         return surface.vectorPaint===undefined || validVectorPaint(surface.vectorPaint, doc.customColors ?? Array(32).fill(null));
     });
