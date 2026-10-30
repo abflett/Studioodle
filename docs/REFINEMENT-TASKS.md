@@ -118,6 +118,11 @@ This is an evolution of the current engine, not a second painting engine.
   Add repeatable circle dabs, enumerate the edge vocabulary and verify dab continuity/
   radial error and stroke partitioning with matching off/on. Cell data is unchanged;
   both dictionaries plus shared numeric tables occupy 79.75 KiB, excluding paths.
+- [x] Fix repeated tangent teeth in straight-cut circle dabs. Rounded edge demands
+  can conflict near a nearly full/empty cell; prefer uniform coverage when 60/64
+  interior samples agree and the selected cut still mismatches the edges. Preserve
+  exact small corner profiles. Regress 384 radius/offset/matching combinations for
+  contour backtracking, retaining the existing radial-error and browser checks.
 - [ ] Review the straight-cut demo's appearance and connectivity with the user before
   choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/

@@ -41,6 +41,14 @@ prioritizes these quarter-edge signatures, then interior coverage error. Matchin
 edge evidence is from the stroke itself, not a neighbor traversal or diffusion pass.
 Both adjacent cells therefore see the same new-stroke evidence on a shared edge.
 
+At rounded tangencies the four independently quantized edges can describe no
+single straight cut. If the selected cut still disagrees with those edges and at
+least 60 of 64 interior probes agree on one color, normalize to that uniform color
+instead of inventing a repeated inverted-corner tooth. Exactly representable small
+corner cuts remain intact. A regression sweeps 384 dabs across three radii, eight
+offsets in each axis and matching off/on, checking contour monotonicity near the
+rounded extremities. This does not add a neighbor correction or blur pass.
+
 This is an approximation, not a universal watertightness guarantee: an individual
 cell still supports only one straight cut and two colors. Sub-cell dots, narrow
 bands, multiple boundary crossings and three-color junctions must lose detail.

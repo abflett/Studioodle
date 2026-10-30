@@ -234,6 +234,10 @@ in the dropdown; switching clears the page and resets matching to that mode's de
 Straight mode accumulates 64 interior and 128 shared-coordinate stroke-edge probes
 per touched cell, snaps edge coverage to quarters, then selects a matching cut with
 interior coverage as secondary evidence. No bands/caps/dots are in this dictionary.
+Rounded tangencies now normalize nearly uniform interiors (60/64 samples) to
+full/empty when the selected cut cannot match the rounded edges, preventing repeated
+inverted-corner teeth. Exact small cuts remain. A 384-dab offset/radius/matching
+sweep checks the regression; cell/lookup storage is unchanged.
 One-cut/two-color limits deliberately discard small or conflicting detail; thin
 marks can still show quarter-cell steps. Tests cover complete edge vocabulary,
 circle continuity/error and stroke partitioning with matching off/on. Optional

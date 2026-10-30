@@ -171,6 +171,14 @@ export class CellField {
         }
       }
     }
+    // Near a rounded tangent, independently rounded edges can demand an
+    // impossible cut (e.g. empty top edge but fully painted sides). Don't invent
+    // a repeated corner notch to satisfy it: prefer the nearly uniform interior.
+    // Exact, representable small corner cuts remain available.
+    if (referenceEdges && referenceError(best.profile, best.front, best.back) > 0) {
+      const dominant = histogram[slot]! > histogram[retained]! ? slot : retained;
+      if (histogram[dominant]! >= count - 4) best = { profile: dominant ? 1 : 0, front: dominant, back: 0 };
+    }
     if ((!maskLow[best.profile] && !maskHigh[best.profile]) ||
       (maskLow[best.profile] === 0xffffffff && maskHigh[best.profile] === 0xffffffff) || best.front === best.back) {
       const color = !maskLow[best.profile] && !maskHigh[best.profile] ? best.back : best.front;

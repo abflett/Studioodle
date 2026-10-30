@@ -62,6 +62,36 @@ test('straight circle dabs are close to circles with or without neighbor matchin
   }
 });
 
+test('rounded tangencies stay monotone across cell offsets instead of choosing repeated corner teeth', () => {
+  const offsets = [0, .125, .25, .375, .5, .625, .75, .875];
+  for (const matching of [false, true]) for (const radius of [4, 6, 7.25]) {
+    for (const ox of offsets) for (const oy of offsets) {
+      const field = new model.CellField('straight', matching), cx = 50 + ox, cy = 50 + oy;
+      field.paint([cx, cy], [cx, cy], radius, 1); field.endStroke();
+      let previous;
+      for (let x = cx - radius + .5; x < cx + radius - .5; x += .125) {
+        const height = Math.sqrt(radius * radius - (x - cx) ** 2);
+        let top = Infinity, bottom = -Infinity;
+        for (let y = cy - height - .75; y < cy - height + .75; y += .03125) if (field.colorAt(x, y)) { top = y; break; }
+        for (let y = cy + height + .75; y > cy + height - .75; y -= .03125) if (field.colorAt(x, y)) { bottom = y; break; }
+        assert.ok(Number.isFinite(top) && Number.isFinite(bottom), 'Dab must not develop gaps');
+        if (previous && (x < cx) === (previous.x < cx)) {
+          const direction = x < cx ? 1 : -1;
+          assert.ok((top - previous.top) * direction <= .07, `Top tooth: r=${radius}, offset=${ox},${oy}, matching=${matching}`);
+          assert.ok((previous.bottom - bottom) * direction <= .07, `Bottom tooth: r=${radius}, offset=${ox},${oy}, matching=${matching}`);
+        }
+        previous = { x, top, bottom };
+      }
+    }
+  }
+  const nearSolid = new model.CellField('straight', false);
+  nearSolid.paint([50, 50], [50, 50], 6, 1);
+  for (const index of [4449, 4450, 4944, 5044]) assert.equal(nearSolid.profile[index], 1, 'Nearly full tangent cells should normalize to full');
+  const smallCut = new model.CellField('straight', false);
+  smallCut.paint([50, 50], [50, 50], .35, 1);
+  assert.equal(smallCut.profile.filter(profile => profile > 1).length, 4, 'Representable small corner cuts must survive');
+});
+
 test('straight stroke fitting and edge coverage are independent of event segmentation', () => {
   for (const matching of [false, true]) {
     const whole = new model.CellField('straight', matching), pieces = new model.CellField('straight', matching);
