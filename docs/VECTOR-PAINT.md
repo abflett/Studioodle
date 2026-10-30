@@ -154,3 +154,40 @@ call (~9ms maximum), ~1.2ms checkpoint capture and ~11ms for 20 renders plus a
 readback. These are synthetic desktop timings, not hardware frame-rate, full app
 input latency or Android guarantees. Initial mask construction and heavily
 layered sticker scenes still need measurement.
+
+## Local brush and fill work (31 October 2026)
+
+Ordinary paint remains numeric vector geometry at the existing 1/64 brush and
+1/4096 boolean precision. A conservative boundary-cell index can prove a brush's
+entire bounds are inside a region: cells crossed by any outer/hole boundary are
+never accepted. Interior cells reuse one exact inside/outside classification;
+uncertain cases still perform exact clipping. Narrow regions retain the ordinary
+path. This is a boolean-work shortcut, not raster paint or approximate clipping.
+
+Immutable sticker boundaries register Clipper's reusable input data, avoiding
+repeated coordinate normalization and vertex allocation across samples. An LRU
+caps retained data at 8MiB of conservative estimates (not measured heap bytes),
+separate from the display-cache budget. Live paint is never registered here.
+Brush disc offsets also reuse a bounded radius table; chord tolerance is unchanged.
+
+Worker compaction bounds-checks disconnected paint components before subtraction
+or merging. Distant islands retain their geometry instead of entering every
+boolean. Single-component dense geometry and large complex brush batches keep the direct boolean path. A fill
+moves its already-disjoint connected component from the old style to the new
+style and merges only that destination; other colors need no repeated subtraction.
+Backing components still use exact boundary difference. Fill dispatch retains a
+shallow immutable checkpoint instead of cloning it once before postMessage clones
+it again. Existing revision checks, undo and asynchronous maintenance remain.
+
+`node scripts/benchmark-paint.mjs work/tests/paint-model.json` runs repeatable
+model diagnostics. `node scripts/test-browser.mjs --paint-profile` measures the
+real Moon Sorceress brush trace and model workloads in Chromium; append
+`--paint-baseline` to load the original modules from commit 26074b6 in the test
+server only. Normal app builds contain one implementation. Tests preserve sampled
+color signatures and cover holes/notches, remote components, destination merging,
+immutable input reuse and prepared-cache accounting. Outputs stay in `work/`.
+
+For longer dense/component-fill timing comparisons use
+`node --expose-gc scripts/benchmark-paint.mjs --compare work/tests/paint-interleaved.json`.
+This alternates baseline/current versions after ten warm-up trials, with thirty
+measured trials each. See PERFORMANCE.md for timing scope and results.

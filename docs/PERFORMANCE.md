@@ -61,3 +61,44 @@ The memory profile checks final closed-cycle stability with a 2 MiB tolerance,
 definition sharing and canvas release. The ordinary browser suite covers paint,
 fill, cache invalidation, transformed coverage, save/undo and vector output.
 Repeat on a modest physical tablet before changing budgets for platform claims.
+
+## Brush/fill locality and reusable boundaries (31 October 2026)
+
+Brush interiors can now skip exact intersections only when a conservative cell
+index proves no region/hole edge crosses their bounds. Other strokes still clip
+exactly. Clipper's reusable input containers retain immutable sticker boundaries
+under an 8MiB estimated LRU, avoiding normalization/vertex rebuilding per sample.
+Brush circle offsets are reused without lowering geometric precision.
+
+Worker maintenance keeps distant disconnected components out of local booleans;
+complex large shapes keep the direct path. Filling a colored component moves that
+already-disjoint polygon to its destination style instead of subtracting it from
+every other color again. Fill transport avoids an extra main-thread deep clone.
+Worker ordering, undo snapshots, display caching, source precision and output remain.
+
+A local three-pass headless Chromium comparison against 26074b6 observed:
+
+| Workload | Before | After |
+| --- | ---: | ---: |
+| Moon Sorceress, 120 brush samples, first pass | 123.5ms | 109.7ms |
+| Same trace, two warmer passes | 65?103ms | 65?79ms |
+| 384 separated patches, warm compaction | 208?244ms | 13.5?15.2ms |
+| Local edit after those patches, warm geometry work | 1.7?2.1ms | ~0.2ms |
+
+All sampled output-color signatures match. The detailed brush improvement is
+modest and varies with warm-up; it is not a 10x input-latency claim. Raw brush-shape
+construction and dense first compaction did not show a dependable large gain.
+
+An alternating Node comparison (10 warm-ups, 30 measured trials per version,
+explicit GC outside timed sections), repeated twice, measured dense compaction at
+30.8?39.8ms before and 31.2?38.4ms after (no consistent improvement), and selected
+colored-component filling at 5.3?7.9ms before and 0.076?0.086ms after. These isolate geometry processing,
+exclude worker transport/display/save work and choose a painted component; backing
+fills that must find connectivity still have substantial costs. They do not establish
+Android performance, total memory usage or a uniform app speedup.
+
+Reproduce with `node scripts/test-browser.mjs --paint-profile` and the same command
+with `--paint-baseline`. For alternating geometry checks use
+`node --expose-gc scripts/benchmark-paint.mjs --compare work/tests/paint-interleaved.json`.
+Baseline modules load from Git in the diagnostic server only. Normal builds use
+one implementation. Keep generated measurements in ignored `work/`.

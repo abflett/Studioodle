@@ -1,4 +1,4 @@
-import { Clipper64, ClipType, FillRule, PolyTree64 } from 'clipper2-ts';
+import { Clipper64, ClipType, FillRule, PolyTree64, ReuseableDataContainer64, PathType } from 'clipper2-ts';
 import type { Paths64, PolyPath64 } from 'clipper2-ts';
 
 export type Pair = [number, number];
@@ -19,9 +19,31 @@ function paths(geometry: MultiPolygon): Paths64 {
         return [points];
     }));
 }
+// Only explicitly registered immutable region boundaries are retained, never live paint.
+const preparedBudget=8*1024*1024;
+type Prepared={clip:ReuseableDataContainer64;subject?:ReuseableDataContainer64;bytes:number;vertices:number};
+const prepared=new Map<MultiPolygon,Prepared>();let preparedBytes=0;
+function trimPrepared(){while(preparedBytes>preparedBudget&&prepared.size){const oldest=prepared.keys().next().value!;preparedBytes-=prepared.get(oldest)!.bytes;prepared.delete(oldest);}}
+export function prepareBooleanGeometry(geometry:MultiPolygon){
+    const cached=prepared.get(geometry);if(cached){prepared.delete(geometry);prepared.set(geometry,cached);return;}
+    const vertices=geometry.reduce((n,p)=>n+p.reduce((n,r)=>n+r.length,0),0),bytes=vertices*512+256;
+    if(bytes>preparedBudget)return;
+    const clip=new ReuseableDataContainer64();clip.addPaths(paths(geometry),PathType.Clip,false);
+    prepared.set(geometry,{clip,vertices,bytes});preparedBytes+=bytes;trimPrepared();
+}
+export function booleanGeometryCacheStats(){return {entries:prepared.size,estimatedBytes:preparedBytes,budget:preparedBudget};}
+function reusable(geometry:MultiPolygon,subject:boolean){
+    const cached=prepared.get(geometry);if(!cached)return;
+    prepared.delete(geometry);prepared.set(geometry,cached);
+    if(!subject)return cached.clip;
+    if(!cached.subject){cached.subject=new ReuseableDataContainer64();cached.subject.addPaths(paths(geometry),PathType.Subject,false);const extra=cached.vertices*512;cached.bytes+=extra;preparedBytes+=extra;trimPrepared();}
+    return cached.subject;
+}
 function operation(type:ClipType,subject:MultiPolygon,clips:MultiPolygon[]):MultiPolygon {
     const engine=new Clipper64(),tree=new PolyTree64();
-    engine.addSubject(paths(subject));engine.addClip(clips.flatMap(paths));
+    const cached=reusable(subject,true);
+    if(cached)engine.addReuseableData(cached);else engine.addSubject(paths(subject));
+    for(const clip of clips){const cached=reusable(clip,false);if(cached)engine.addReuseableData(cached);else engine.addClip(paths(clip));}
     if(!engine.execute(type,FillRule.NonZero,tree))throw Error('Vector geometry operation failed');
     const output:MultiPolygon=[];
     const ring=(node:PolyPath64):Ring=>{

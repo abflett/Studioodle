@@ -1,5 +1,6 @@
+import { containsBrush } from './regionContainment';
 import { regionsNear } from './regionSearch';
-import polygonClipping from './polygonGeometry';
+import polygonClipping, { prepareBooleanGeometry } from './polygonGeometry';
 import type { FillOptions } from './toolOptions';
 import { paintStyleKey, normalizedPattern } from './vectorPaintTypes';
 import { drawPaint, geometryBounds, rectangleGeometry, paintPath } from './vectorPaintStyles';
@@ -100,7 +101,7 @@ export class VectorPaint {
             const revision=this.revision;
             // Reuse completed maintenance instead of queuing the same raw strokes
             // twice. Read the latest accepted prefix after maintenance completes.
-            const prepare=()=>this.disposed?Promise.resolve([]):computePaint({regions:[structuredClone(r)],compacted:[this.stableCounts.get(id)??0],fill:{color,point,pattern,boundary:boundary?.()}});
+            const prepare=()=>this.disposed?Promise.resolve([]):computePaint({regions:[{...r,blobs:[...r.blobs]}],compacted:[this.stableCounts.get(id)??0],fill:{color,point,pattern,boundary:boundary?.()}});
             return (this.pendingMerge?this.pendingMerge.then(prepare,prepare):prepare()).then(([result])=>{
                 // A different edit supersedes an in-flight fill; never paint stale topology.
                 if(!result||revision!==this.revision)return false;
@@ -116,7 +117,10 @@ export class VectorPaint {
             const [left,top,right,bottom]=region.bounds;
             if(bounds[2]!<left!||bounds[0]!>right!||bounds[3]!<top!||bounds[1]!>bottom!)continue;
             const inside=region.rectangular&&bounds[0]!>=left!&&bounds[1]!>=top!&&bounds[2]!<=right!&&bounds[3]!<=bottom!;
-            const coverage=inside?geometry:polygonClipping.intersection(geometry,region.geometry?.()??rectangleGeometry(left!,top!,right!,bottom!));
+            const boundary=inside?undefined:region.geometry?.()??rectangleGeometry(left!,top!,right!,bottom!);
+            const contained=inside||containsBrush(boundary!,bounds,region.bounds);
+            if(!contained)prepareBooleanGeometry(boundary!);
+            const coverage=contained?geometry:polygonClipping.intersection(geometry,boundary!);
             if(!coverage.length)continue;
             pieces.push(coverage);
             const existing=this.regions.get(region.id);

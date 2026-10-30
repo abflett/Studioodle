@@ -4,6 +4,50 @@ import type { MultiPolygon, Pair } from './polygonGeometry';
 import type { PaintBlob, PaintJob, VectorPaintRegion } from './vectorPaintTypes';
 import type { FillOptions } from './toolOptions';
 
+// Geometry is immutable after publication; these bounds disappear with its owners.
+const boundsCache = new WeakMap<object, readonly number[]>();
+function bounds(geometry: MultiPolygon): readonly number[] {
+    let cached=boundsCache.get(geometry);if(cached)return cached;
+    let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity;
+    for(const polygon of geometry)for(const ring of polygon)for(const [x,y] of ring){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x);bottom=Math.max(bottom,y);}
+    cached=[left,top,right,bottom];boundsCache.set(geometry,cached);return cached;
+}
+function polygonBounds(polygon: MultiPolygon[number]) {
+    let cached=boundsCache.get(polygon);if(!cached){cached=bounds([polygon]);boundsCache.set(polygon,cached);}return cached;
+}
+const overlap=(a:readonly number[],b:readonly number[])=>a[0]!<=b[2]!+1/4096&&a[2]!>=b[0]!-1/4096&&a[1]!<=b[3]!+1/4096&&a[3]!>=b[1]!-1/4096;
+const localShapes=new WeakMap<MultiPolygon,boolean>();
+function localShape(geometry:MultiPolygon){
+    let small=localShapes.get(geometry);if(small!==undefined)return small;
+    let nodes=0;small=true;
+    outer:for(const polygon of geometry)for(const ring of polygon)if((nodes+=ring.length)>128){small=false;break outer;}
+    localShapes.set(geometry,small);return small;
+}
+/** Keep distant components out of boolean work; holes stay attached to their outer ring. */
+function subtractPaint(subject: MultiPolygon, clip: MultiPolygon): MultiPolygon {
+    if(subject.length<4||!localShape(clip))return polygonClipping.difference(subject,clip);
+    const box=bounds(clip);if(!overlap(bounds(subject),box))return subject;
+    const nearby:MultiPolygon=[],untouched:MultiPolygon=[];
+    for(const polygon of subject)(overlap(polygonBounds(polygon),box)?nearby:untouched).push(polygon);
+    return nearby.length?[...untouched,...polygonClipping.difference(nearby,clip)]:subject;
+}
+function unionPaint(a: MultiPolygon,b: MultiPolygon): MultiPolygon {
+    if(!a.length)return b;if(!b.length)return a;
+    if((a.length===1&&b.length===1)||!localShape(b))return polygonClipping.union(a,b);
+    const ab=bounds(a),bb=bounds(b);if(!overlap(ab,bb))return [...a,...b];
+    const nearA:MultiPolygon=[],nearB:MultiPolygon=[],untouched:MultiPolygon=[];
+    for(const polygon of a)(overlap(polygonBounds(polygon),bb)?nearA:untouched).push(polygon);
+    for(const polygon of b)(overlap(polygonBounds(polygon),ab)?nearB:untouched).push(polygon);
+    if(!nearA.length||!nearB.length)return [...a,...b];
+    return [...untouched,...polygonClipping.union(nearA,nearB)];
+}
+const circles=new Map<number, Pair[]>();
+function circle(radius: number) {
+    let points=circles.get(radius);if(points)return points;
+    const steps=Math.min(128,Math.max(16,Math.ceil(Math.PI/Math.acos(Math.max(-1,1-.01/Math.max(radius,.01))))));
+    points=Array.from({length:steps},(_,i):Pair=>[Math.cos(i*2*Math.PI/steps)*radius,Math.sin(i*2*Math.PI/steps)*radius]);
+    if(circles.size>=64)circles.delete(circles.keys().next().value!);circles.set(radius,points);return points;
+}
 const brushGrid = 64;
 const snap = (n: number) => Math.round(n * brushGrid) / brushGrid;
 /** Capsule outline, bounded chord error, with input nodes on a fine logical grid. */
@@ -12,8 +56,7 @@ export function brushBlob(a: Pair, b: Pair, radius: number, square = false): Mul
     if(square) {
         for(const p of [a,b])for(const [x,y] of [[-1,-1],[1,-1],[1,1],[-1,1]])points.push([snap(p[0]+x!*radius),snap(p[1]+y!*radius)]);
     } else {
-        const steps=Math.min(128,Math.max(16,Math.ceil(Math.PI/Math.acos(Math.max(-1,1-.01/Math.max(radius,.01))))));
-        for(const p of [a,b])for(let i=0;i<steps;i++)points.push([snap(p[0]+Math.cos(i*2*Math.PI/steps)*radius),snap(p[1]+Math.sin(i*2*Math.PI/steps)*radius)]);
+        for(const p of a[0]===b[0]&&a[1]===b[1]?[a]:[a,b])for(const [x,y] of circle(radius))points.push([snap(p[0]+x),snap(p[1]+y)]);
     }
     // Convex hull of two discs/squares is the swept brush shape.
     points.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
@@ -59,12 +102,12 @@ export function compactRegionPrefix(region: VectorPaintRegion, compacted=0): Vec
     for(const blob of runs){
         const key=paintStyleKey(blob.color,blob.pattern);
         for(const [other,paint] of colors)if(other!==key){
-            const remaining=polygonClipping.difference(paint.geometry,blob.geometry);
+            const remaining=subtractPaint(paint.geometry,blob.geometry);
             if(remaining.length)colors.set(other,{...paint,geometry:remaining});else colors.delete(other);
         }
         if(key!==paintStyleKey(region.base,region.pattern)){
             const previous=colors.get(key);
-            colors.set(key,{...blob,geometry:previous?polygonClipping.union(previous.geometry,blob.geometry):blob.geometry});
+            colors.set(key,{...blob,geometry:previous?unionPaint(previous.geometry,blob.geometry):blob.geometry});
         }
     }
     const blobs=[...colors.values()];
@@ -77,19 +120,37 @@ export function filledRegion(region:VectorPaintRegion,color:number,point:Pair,pa
     // as later maintenance. Overlaid replacement blobs can leave an old-color
     // antialias fringe until their shared edges are removed.
     // Compaction makes visible color components disjoint. Test topmost first.
-    for(const blob of [...r.blobs].reverse())for(const polygon of blob.geometry)if(containsGeometry([polygon],point)){
-        if(paintStyleKey(blob.color,blob.pattern)===key)return;
-        return compactRegionPrefix({...r,blobs:[...r.blobs,{color,pattern,geometry:[polygon]}]},r.blobs.length);
+    for(let index=r.blobs.length-1;index>=0;index--){
+        const blob=r.blobs[index]!;
+        for(const polygon of blob.geometry){
+            const box=polygonBounds(polygon);
+            if(point[0]<box[0]!||point[0]>box[2]!||point[1]<box[1]!||point[1]>box[3]!||!containsGeometry([polygon],point))continue;
+            if(paintStyleKey(blob.color,blob.pattern)===key)return;
+            return recolorComponent(r,color,pattern,[polygon],index);
+        }
     }
     if(paintStyleKey(r.base,r.pattern)===key)return;
     if(boundary){
         const background=polygonClipping.difference(boundary,...r.blobs.map(blob=>blob.geometry));
         if(background.length>1){
             const component=background.find(polygon=>containsGeometry([polygon],point));
-            if(component)return compactRegionPrefix({...r,blobs:[...r.blobs,{color,pattern,geometry:[component]}]},r.blobs.length);
+            if(component)return recolorComponent(r,color,pattern,[component]);
         }
     }
-    return compactRegionPrefix({...r,base:color,pattern},r.blobs.length);
+    return {...r,base:color,pattern,blobs:r.blobs.filter(blob=>paintStyleKey(blob.color,blob.pattern)!==key)};
+}
+/** The input partitions are disjoint. Only the source and destination styles can change. */
+function recolorComponent(region: VectorPaintRegion,color:number,pattern:FillOptions|undefined,component:MultiPolygon,source=-1):VectorPaintRegion {
+    const key=paintStyleKey(color,pattern),blobs:PaintBlob[]=[];
+    let target:PaintBlob|undefined;
+    for(let index=0;index<region.blobs.length;index++){
+        const blob=region.blobs[index]!;
+        if(paintStyleKey(blob.color,blob.pattern)===key){target=blob;continue;}
+        if(index===source){const geometry=blob.geometry.filter(polygon=>polygon!==component[0]);if(geometry.length)blobs.push({...blob,geometry});}
+        else blobs.push(blob);
+    }
+    if(key!==paintStyleKey(region.base,region.pattern))blobs.push({color,pattern,geometry:target?unionPaint(target.geometry,component):component});
+    return {...region,blobs};
 }
 export function containsGeometry(geometry: MultiPolygon, point: Pair) {
     return geometry.some(polygon=>{

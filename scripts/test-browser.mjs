@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import { spawn } from 'node:child_process';
+import { spawn, execFileSync } from 'node:child_process';
 import { createServer } from 'vite';
 
 const browserCandidates = [process.env.BENCHMARK_BROWSER, 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Google/Chrome/Application/chrome.exe'].filter(Boolean);
@@ -18,13 +18,15 @@ const repeat=Number(process.argv.find(arg=>arg.startsWith('--scene-repeat='))?.s
 if(![1,2].includes(repeat))throw Error('Scene repeat must be 1 or 2');
 const sceneSuffix=`-cache${sceneBudget}`;
 const profile = await fs.mkdtemp(path.join(os.tmpdir(), 'studioodle-region-coverage-'));
+const baseline=process.argv.includes('--paint-baseline');
+const paintBaselineFiles=new Map(baseline?['VectorPaint.ts','vectorPaintGeometry.ts','polygonGeometry.ts'].map(name=>[name,execFileSync('git',['show',`26074b6:src/editor/${name}`],{encoding:'utf8'})]):[]);
 const plugins=sceneProfile?[{
   name:'diagnostic-cache-budget', enforce:'pre',
   transform(code,id){
     if(id.replaceAll('\\','/').endsWith('/src/editor/paintDisplayCache.ts'))
       return code.replace(/export const paintDisplayBudget = \d+ \* 1024 \* 1024;/,`export const paintDisplayBudget = ${sceneBudget} * 1024 * 1024;`);
   },
-}]:[];
+}]:baseline?[{name:'paint-baseline',enforce:'pre',transform(code,id){return paintBaselineFiles.get(id.replaceAll('\\','/').split('/').at(-1));}}]:[];
 const server = await createServer({ plugins, configFile: process.argv.includes('--artwork-review') ? 'tools/artwork-review/vite.config.ts' : 'vite/config.dev.ts', server: { host: '127.0.0.1', port: 1433, strictPort: true, open: false } });
 if (path.dirname(profile) !== os.tmpdir() || !path.basename(profile).startsWith('studioodle-region-coverage-')) throw Error('Unexpected test profile path');
 let child, ws, cdp;
@@ -85,6 +87,12 @@ try {
     const metrics = await evaluate("import('/tests/browser/save-performance.ts').then(m=>m.profileSavePerformance())");
     await fs.writeFile('work/tests/save-performance-results.json', JSON.stringify(metrics, null, 2));
     console.log('Save performance:', JSON.stringify(metrics));
+  }else if(process.argv.includes('--paint-profile')){
+    const brush=await evaluate("import('/tests/browser/brush-performance.ts').then(async m=>{const runs=[];for(let i=0;i<3;i++)runs.push(await m.profileBrush());return runs;})");
+    const model=await evaluate("import('/tests/fixtures/paint-workloads.ts').then(m=>[m.profilePaintModel(),m.profilePaintModel(),m.profilePaintModel()])");
+    console.log('Paint profile:',JSON.stringify({brush,model}));
+    await fs.writeFile(`work/tests/paint-browser-${baseline?'before':'after'}.json`,JSON.stringify({brush,model},null,2));
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(process.argv.includes('--raster-spray')){
     const result=await evaluate("import('/tests/browser/raster-spray.ts').then(m=>m.checkRasterSpray(true))");
     const preview=result.preview;delete result.preview;

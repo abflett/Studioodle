@@ -152,6 +152,15 @@ validation. Preserve the demo without continuing its unfinished contour experime
   the baseline, not new work. Keep exact boundary clipping, causal smooth curves,
   immediate feedback and action saving. Add workers only if measured queue/compute
   costs justify them; moving work does not remove it.
+Implemented 31 October brush/fill batch: conservative interior proofs skip exact
+intersection only away from all outer/hole boundaries; immutable sticker clipping
+inputs have an 8MiB estimated LRU and brush circle offsets are reused. Worker
+compaction keeps distant islands out of boolean operations; connected fills move
+the selected component directly and merge only its destination style. An extra
+main-thread fill clone is removed. Current precision, clipping, vector output,
+undo and asynchronous maintenance semantics remain. Broad real-device/dense-scene
+profiling items above/below remain open; see PERFORMANCE.md for measured limits.
+
 - [ ] Profile and fix fills on detailed canvases: distinguish region/topology search,
   geometry preparation, worker queueing, redraw and persistence. Check repeated fills,
   fill after spray, undo and cancellation without blocking other interactions.

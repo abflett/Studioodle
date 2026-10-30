@@ -241,6 +241,16 @@ zero vector blobs; p95 model calls ~1.9ms and capture ~1.2ms locally. These excl
 full-app latency and other memory. Appearance still needs user review and physical-device tests.
 Pan/zoom and ordinary vector brush profiling remain next independent work.
 
+Ordinary brush/fill now has conservative interior-cell proofs, an 8MiB estimated
+LRU for Clipper's reusable immutable region inputs, and bounded brush-circle reuse.
+Uncertain edges/holes still use exact clipping at existing precision. Compaction
+limits boolean work to nearby disconnected components; fills directly move the
+selected disjoint component and merge its destination style. Fill dispatch avoids
+an extra deep clone before worker transport. Undo/save/stale-result rules remain.
+See VECTOR-PAINT.md and PERFORMANCE.md for diagnostics and measurements; these do
+not establish Android input latency or a uniform app speedup. Pan/zoom and larger
+real-device sessions remain independent follow-up work.
+
 The user considers the cell prototype successful and has parked it. Return to
 main-app vector performance discussion/measurement; preserve crisp vector contours.
 No integration, new profile work or Android/desktop engine split is authorized by
@@ -249,7 +259,8 @@ this decision. Cells beneath existing line art, existing surface masks/clips, a
 prove insufficient. The main app's engine, saved format and output stay unchanged.
 The refinement backlog now distinguishes existing worker/caching/indexing from
 remaining profiling/optimization tasks; storage/thumbnails are complete, and the
-raster spray trial is the current implementation batch.
+raster spray trial is working well in user testing. The next completed batch optimizes ordinary
+vector brush/fill while keeping crisp geometry.
 
 The standalone cell-brush demo lives under `tools/cell-brush/`; run `npm run cells`
 on port 1434. It defaults to a rectangular grid fitted to approximately 4 x 4 CSS
