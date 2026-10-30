@@ -3,27 +3,79 @@ import { before, after, test } from 'node:test';
 import { createServer } from 'vite';
 
 let server, model;
+let library;
 before(async () => {
   server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
   model = await server.ssrLoadModule('/tools/cell-brush/src/model.ts');
+  library = await server.ssrLoadModule('/tools/cell-brush/src/profiles.ts');
 });
 after(async () => { await server?.close(); });
 const snapshot = field => [field.profile.slice(), field.front.slice(), field.back.slice()];
 
+test('all byte codes transform geometry and masks consistently, including reflections', () => {
+  assert.equal(library.variants.length, 256);
+  assert.ok(library.candidates.length > 64 && library.candidates.length <= 256);
+  for (let code = 0; code < 256; code++) {
+    for (const point of [[.137, .219], [.371, .813], [.729, .431], [.863, .681]]) {
+      const mapped = library.transformPoint(point, code);
+      assert.equal(model.inProfile(code, ...mapped), model.inProfile(code & 31, ...point), `Code ${code}`);
+    }
+    for (let i = 0; i < 64; i++) {
+      assert.equal(library.sampleColor(code, 3, 5, i), model.inProfile(code, library.sampleX[i], library.sampleY[i]) ? 3 : 5);
+    }
+    const low = library.maskLow[code], high = library.maskHigh[code];
+    assert.equal(library.pop32(low) + library.pop32(high), Array.from({ length: 64 }, (_, i) => library.sampleColor(code, 1, 0, i)).reduce((a, b) => a + b, 0));
+  }
+  for (let a = 0; a < 256; a++) for (let b = 0; b < 256; b++) assert.equal(library.edgeDifference[a * 256 + b], library.pop8[a ^ b]);
+});
+
+test('expanded profiles improve shallow-stroke coverage and neighbor ties preserve fitting error', () => {
+  const a = [10.2, 20.3], b = [88.1, 43.7], radius = 1.125;
+  const coverageError = field => {
+    let error = 0;
+    const dx = b[0] - a[0], dy = b[1] - a[1], length2 = dx * dx + dy * dy;
+    for (let y = 18; y <= 46; y++) for (let x = 8; x <= 90; x++) for (let i = 0; i < 64; i++) {
+      const px = x + library.sampleX[i], py = y + library.sampleY[i];
+      const t = Math.max(0, Math.min(1, ((px - a[0]) * dx + (py - a[1]) * dy) / length2));
+      const expected = (px - a[0] - t * dx) ** 2 + (py - a[1] - t * dy) ** 2 <= radius ** 2 ? 2 : 0;
+      if (field.colorAt(px, py) !== expected) error++;
+    }
+    return error;
+  };
+  const legacy = new model.CellField(false), expanded = new model.CellField();
+  legacy.paint(a, b, radius, 2); expanded.paint(a, b, radius, 2);
+  const before = coverageError(expanded), oldError = coverageError(legacy);
+  assert.ok(before < oldError, `${before} should improve on ${oldError} sample mismatches`);
+  const untouched = new Set(Array.from({ length: 10000 }, (_, i) => i).filter(i => {
+    const x = i % 100 + .5, y = Math.floor(i / 100) + .5;
+    const dx = b[0] - a[0], dy = b[1] - a[1];
+    const t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / (dx * dx + dy * dy)));
+    return Math.hypot(x - a[0] - t * dx, y - a[1] - t * dy) > radius + Math.SQRT1_2;
+  }));
+  const old = snapshot(expanded);
+  expanded.endStroke();
+  assert.equal(coverageError(expanded), before, 'Neighbor preference must not worsen coverage fit');
+  for (const index of untouched) {
+    assert.equal(expanded.profile[index], old[0][index]);
+    assert.equal(expanded.front[index], old[1][index]);
+    assert.equal(expanded.back[index], old[2][index]);
+  }
+});
+
 test('coverage selects diagonal and straight profiles and every cell stores at most two slots', () => {
-  assert.equal(model.profiles.length, 8);
+  assert.equal(model.profiles.length, 32);
   const field = new model.CellField();
   field.paint([5.2, 8.7], [90.3, 73.6], 3.7, 2);
-  assert.ok(field.profile.some(profile => profile >= 4), 'Diagonal brush edge profiles');
+  assert.ok(field.profile.some(profile => (profile & 31) >= 4), 'Diagonal brush edge profiles');
   field.endStroke();
   field.paint([10, 80], [85, 15], 2.3, 5);
   field.endStroke();
   field.paint([50, 10], [50, 90], 2.5, 3);
-  assert.ok(field.profile.some(profile => profile === 2), 'Vertical half-cell brush edge');
+  assert.ok(field.profile.some(profile => (profile & 31) === 2), 'Vertical half-cell brush edge');
   assert.equal(field.byteLength, 30000);
   for (let i = 0; i < 10000; i++) {
     const cell = field.cell(i);
-    assert.ok(cell.profile >= 0 && cell.profile < 8);
+    assert.ok(cell.profile >= 0 && cell.profile < 256);
     const colors = new Set();
     for (const x of [.1, .3, .7, .9]) for (const y of [.1, .3, .7, .9]) colors.add(field.colorAt(i % 100 + x, Math.floor(i / 100) + y));
     assert.ok(colors.size <= 2);
@@ -50,6 +102,7 @@ test('stroke fitting is independent of pointer segmentation and does not edit un
     const next = [a[0] + (b[0] - a[0]) * i / 30, a[1] + (b[1] - a[1]) * i / 30];
     pieces.paint(previous, next, 3.25, 2); previous = next;
   }
+  pieces.endStroke(); whole.endStroke();
   assert.deepEqual(snapshot(pieces), snapshot(whole));
   const before = snapshot(whole);
   const dirty = whole.paint([1.5, 1.5], [1.5, 1.5], .45, 2);

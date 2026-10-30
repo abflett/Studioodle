@@ -6,26 +6,40 @@ output goes to ignored `work/cell-brush-dist/`. Commands: `cells:typecheck`,
 `cells:build`, `test:cells` (model regressions and a real headless-browser smoke test).
 
 The square page has 100 × 100 cells. Brush diameter is measured in document cells,
-independent of screen size. Each cell stores one of eight profiles and two palette
+independent of screen size. Each cell stores a profile/orientation byte and two palette
 slots in three packed Uint8Arrays: 30,000 bytes total (29.30 KiB). Slot zero is
 transparent; the paper color comes from the canvas container, not paint data.
 Paint data never grows with stroke count. Grid buffers, diagnostic flags and canvas
 backings are extra; the UI shows backing-buffer bytes separately. No speedup claim
 or production memory bound is established by this demonstration.
 
-Eight silhouettes: empty, full, vertical half, horizontal half and four diagonal
-half-cell corner triangles. Colors can swap sides. There are no shared corner
-labels, composite saddle profiles, three-color cells or junction fallbacks.
+The default library has 32 authored families: empty/full, centered/offset splits,
+four slopes and four corner wedges, straight/diagonal bands, tapered wedges,
+elbows, V bends, beveled caps, a shoulder, square/diamond/octagonal dots and offset
+dots, half/quarter circles and a round cap. The byte encodes base shape in bits
+0-4, quarter-turn in bits 5-6, and reflection in bit 7. All 256 orientations have
+precomputed contours, masks and edge signatures. Identical interior-mask/edge
+signatures are skipped during fitting (currently 135 distinct candidates). Colors
+can swap sides. Circle profiles use fixed 24-segment arc approximations generated
+once, not exact circular primitives. No shared corner labels, three-color cells
+or junction fallbacks remain.
+
+The Shape library selector offers the original eight silhouettes for comparison;
+changing it explicitly clears the page. Draw test strokes replaces the page with
+the same shallow line, sine curve, thin ellipse, crossing strokes and dots in either
+mode. Brush diameter can be 1-30 cells in quarter-cell steps. Scroll the legend to
+inspect all 32 canonical families.
 
 The brush sweeps a capsule over an 8 × 8 staggered sample pattern within each
 touched cell. Samples reconstruct the previous two-color profile with new paint
-overlaid. The fitter minimizes the number of mismatched sample colors, trying each
-profile with both color assignments. When three colors are present in this
+overlaid. The fitter minimizes mismatched sample colors using two 32-bit coverage
+masks and population-count lookups, trying each distinct profile with both color
+assignments. When three colors are present in this
 temporary target, the candidate pair is the new color and the most prevalent
 surviving old color. Opaque old coverage wins ties against transparency; otherwise
 the original foreground wins equal old-color areas. The original cell also remains
-a candidate and wins equal-error ties, preventing barely touching strokes from
-churning it. A color absent from the target cannot be reintroduced by retaining
+a candidate and wins ties after coverage and optional neighbor cost, preventing
+unnecessary churn. A color absent from the target cannot be reintroduced by retaining
 the original cell. Full coverage becomes solid paint (or fully transparent erase).
 
 Per-cell target samples accumulate only for the active gesture, independent of
@@ -36,16 +50,21 @@ The maximum sample payload at this resolution is 640,000 bytes if every cell is
 touched. Quantizing between separate strokes can still lose detail; no general
 topology or event-rate-independent curved input guarantee is claimed.
 
-No neighbor correction or diffusion pass runs: only cells whose sampled coverage
-changes are fitted. This deliberately avoids cascading edits. Profiles have shared
-fixed geometric positions but independently fitted neighbors can still disagree
-about a contour; perfect boundary connectivity is not guaranteed. Judge blocky
-joins visually before adding edge-agreement rules or a larger profile vocabulary.
+Match edges on release runs a final fitting pass over active-stroke cells only.
+Eight probes per edge and a precomputed edge-difference table prefer agreement
+on actual palette slots, strictly between candidates with equal coverage error.
+Neighbor targets come from the complete gesture's sample buffers, so tie decisions
+do not depend on pointer-event segmentation or iteration order. Untouched neighbors
+never change. This is a soft preference, not a connectivity guarantee or diffusion
+pass; there may be contour jumps and tiny-feature loss at this low resolution.
+The numeric lookup buffers total 68.25 KiB shared across the grid; authored and
+transformed polygon arrays, candidate lists and browser Path2D objects are additional.
 
 Canvas2D renders only changed cells, at whole physical pixels per cell; resize
 redraws the page. Opaque two-color cells draw one color beneath the other, avoiding
 transparent antialias cracks between those colors; transparent fronts erase their
-portion of a colored background. There is no React, polygon union, curve fitting,
+portion of a colored background. The 256 browser paths are constructed once and
+reused with per-cell transforms. There is no React, polygon union, curve fitting,
 worker or shader. Clear and transparent paper paint allow repeat trials. Strokes are
 intentionally unsmoothed to expose quantization. No undo, zoom, fills, sticker
 surfaces or output conversion yet. Source ink is not normalized or changed.

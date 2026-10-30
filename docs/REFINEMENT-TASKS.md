@@ -97,8 +97,15 @@ This is an evolution of the current engine, not a second painting engine.
   the three-color quadrant fallback; paper is transparent. Model and
   mouse/touch browser checks pass. This is an experiment, not app-engine integration
   or proof of the proposed memory/performance advantage; see tools/cell-brush/README.md.
-- [ ] Review the demo's appearance and connectivity with the user before expanding
-  the vocabulary or selecting authoritative cell storage. Compare to indexed raster
+- [x] Expand the experiment to 32 canonical shape families and byte-encoded rotation/
+  reflection variants. Precompute coverage/edge tables and browser paths, skip
+  equivalent fitting candidates, and use neighbor agreement only for equal-error
+  ties at release without editing untouched cells. Add original-eight mode and
+  repeatable test strokes for visual comparison. Cell data stays 29.30 KiB;
+  numeric lookups add 68.25 KiB shared. Model/browser checks cover transformations,
+  fitting improvement on a shallow-stroke fixture, overlap, release and touch.
+- [ ] Review the expanded demo's appearance and connectivity with the user before
+  choosing authoritative cell storage or broad conversion. Compare to indexed raster
   at comparable quality; include two-color normalization at junctions, thin details and sparse/
   dense repeated paint. Measure model bytes, caches, conversion/render time and
   future undo costs independently. No engine replacement is decided.

@@ -39,6 +39,7 @@ try {
   for (let i = 0; i < 100; i++) { if (await evaluate('!!document.querySelector("#paint")?.width')) break; await new Promise(r => setTimeout(r, 100)); }
   const settle = () => evaluate('new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))');
   await settle();
+  assert.equal(await evaluate('document.querySelectorAll("#profiles canvas").length'), 32, 'All 32 base profiles are inspectable');
   let box = await evaluate('(()=>{const b=document.querySelector("#paint").getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height}})()');
   const stroke = async (a, b, color) => {
     await evaluate(`document.querySelector('[data-slot="${color}"]').click()`);
@@ -63,6 +64,17 @@ try {
   await fs.writeFile(path.join(output, 'desktop.png'), Buffer.from(image.data, 'base64'));
   await stroke([.5, .5], [.55, .5], 0);
   assert.equal(await evaluate('(()=>{const c=document.querySelector("#paint");return c.getContext("2d").getImageData(Math.floor(c.width*.52),Math.floor(c.height*.5),1,1).data[3]})()'), 0, 'Paper brush erases to transparency');
+  await evaluate('document.querySelector("#example").click()'); await settle();
+  assert.ok(Number(await evaluate('document.querySelector("#painted").textContent')) > 800);
+  assert.equal(await evaluate('document.querySelector("#scratch").textContent'), '0.00 KiB');
+  const expandedExample = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
+  await fs.writeFile(path.join(output, 'profiles-32.png'), Buffer.from(expandedExample.data, 'base64'));
+  await evaluate('(()=>{const select=document.querySelector("#library");select.value="8";select.dispatchEvent(new Event("change"));})()'); await settle();
+  assert.equal(await evaluate('document.querySelector("#painted").textContent'), '0', 'Library change explicitly clears canvas');
+  await evaluate('document.querySelector("#example").click()'); await settle();
+  const legacyExample = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
+  await fs.writeFile(path.join(output, 'profiles-8.png'), Buffer.from(legacyExample.data, 'base64'));
+  await evaluate('(()=>{const select=document.querySelector("#library");select.value="32";select.dispatchEvent(new Event("change"));})()'); await settle();
   await cdp('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true }); await settle();
   assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, 'No mobile horizontal overflow');
   await cdp('Emulation.setTouchEmulationEnabled', { enabled: true });
