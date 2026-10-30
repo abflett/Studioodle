@@ -11,7 +11,7 @@ let field = new CellField('straight', false);
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <header><div><span class="eyebrow">STUDIOODLE / EXPERIMENTS</span><h1>Small cells. Big ideas.</h1><p>Simple straight cuts, with the earlier libraries here to compare.</p></div><span class="badge" id="grid-info">Fitting grid...</span></header>
   <main><section class="workspace"><div class="canvas-wrap"><canvas id="paint" aria-label="Cell brush drawing canvas"></canvas><canvas id="reference" aria-label="Unquantized round brush reference" hidden></canvas><canvas id="grid" aria-hidden="true"></canvas><div id="cursor"></div></div><p class="hint">Drag to paint · Paper erases to transparent · Nothing is saved</p></section>
-  <aside><section><h2>Your brush</h2><label class="size-label" for="grid-mode">Grid resolution</label><select id="grid-mode"><option value="display">4 ? 4 display pixels per cell</option><option value="legacy">100 ? 100 comparison grid</option></select><button id="fit-grid">Fit grid to view (clears)</button><p class="note" id="grid-note">Grid changes clear the drawing. Window resizing preserves it.</p><div id="palette" role="group" aria-label="Brush colors"></div><label class="size-label" for="size">Diameter <output id="diameter">8 cells</output></label><input id="size" type="range" min="1" max="30" step=".25" value="8"><label class="size-label" for="library">Shape library</label><select id="library"><option value="straight">Straight cuts (16 of 32 slots)</option><option value="32">Experimental 32 shapes</option><option value="8">Original 8 profiles</option></select><p class="note library-note">Changing the library clears the canvas.</p><label class="size-label" for="view">Compare coverage</label><select id="view"><option value="cells">Cell profiles</option><option value="reference">Round brush reference</option><option value="difference">Difference overlay</option></select><label class="toggle"><input id="show-grid" type="checkbox" checked> Show cell grid</label><label class="toggle"><input id="match-edges" type="checkbox"> Match edges on release</label><button id="example">Draw test strokes</button><button id="circles">Draw circle dabs</button><button id="overlap">Draw overlapping dabs</button><button id="clear">Clear canvas</button></section>
+  <aside><section><h2>Your brush</h2><label class="size-label" for="grid-mode">Grid resolution</label><select id="grid-mode"><option value="display">4 &times; 4 CSS pixels per cell</option><option value="display2">2 &times; 2 CSS pixels per cell</option><option value="display1">1 &times; 1 CSS pixel per cell</option><option value="legacy">100 &times; 100 comparison grid</option></select><button id="fit-grid">Fit grid to view (clears)</button><p class="note" id="grid-note">Grid changes clear the drawing. Window resizing preserves it.</p><div id="palette" role="group" aria-label="Brush colors"></div><label class="size-label" for="size">Diameter <output id="diameter">8 cells</output></label><input id="size" type="range" min="1" max="30" step=".25" value="8"><label class="size-label" for="library">Shape library</label><select id="library"><option value="straight">Straight cuts (16 of 32 slots)</option><option value="32">Experimental 32 shapes</option><option value="8">Original 8 profiles</option></select><p class="note library-note">Changing the library clears the canvas.</p><label class="size-label" for="view">Compare coverage</label><select id="view"><option value="cells">Cell profiles</option><option value="reference">Round brush reference</option><option value="difference">Difference overlay</option></select><label class="toggle"><input id="show-grid" type="checkbox" checked> Show cell grid</label><label class="toggle"><input id="match-edges" type="checkbox"> Match edges on release</label><button id="example">Draw test strokes</button><button id="circles">Draw circle dabs</button><button id="overlap">Draw overlapping dabs</button><button id="clear">Clear canvas</button></section>
   <section id="curve-test"><h2>Thin contour test</h2><label class="size-label" for="curve-kind">Shape</label><select id="curve-kind"><option value="arc">Open curve</option><option value="short">Short curve (9 cells wide)</option><option value="spiral">Spiral</option><option value="tightening">Loose to tight bend</option><option value="boundary">Boundary flutter</option></select><label class="size-label" for="grid-phase">X offset <output id="phase-value">0 cells</output></label><input id="grid-phase" type="range" min="0" max=".997" step=".001" value="0"><label class="size-label" for="grid-phase-y">Y offset <output id="phase-y-value">0 cells</output></label><input id="grid-phase-y" type="range" min="0" max=".997" step=".001" value="0"><label class="size-label" for="jitter">Mouse jitter <output id="jitter-value">0 cells</output></label><input id="jitter" type="range" min="0" max=".25" step=".01" value="0"><label class="size-label" for="noise-seed">Noise seed</label><input id="noise-seed" type="number" min="0" max="4294967295" step="1" value="17"><label class="toggle"><input id="retrace" type="checkbox" checked> Repeat and retrace input samples</label><button id="thin-curve">Draw 1-cell test</button><label class="toggle"><input id="capture-cells" type="checkbox"> Capture cell diagnostics</label><label class="toggle"><input id="inspect-cells" type="checkbox"> Click to inspect instead of paint</label><p class="note">Test button clears the page and enables capture. Orange = actual crossings; blue = snapped. Capture and zoom add diagnostic memory beyond the counters below. Enable it before drawing your own curve. Inspector shows the selected cell and its neighbors.</p><div id="cell-inspector"></div></section><section><h2 id="legend-title">Straight cuts: 16 / 32 slots</h2><div id="profiles"></div><p class="note">Each byte selects a base shape, rotation and reflection. Colors can swap sides; paper is transparent.</p></section>
   <section class="numbers"><h2>Under the surface</h2><dl><dt>Painted cells</dt><dd id="painted">0</dd><dt>Boundary cells</dt><dd id="boundaries">0</dd><dt>Cell data</dt><dd id="cell-data">?</dd><dt>Loaded lookups⁴</dt><dd>${(numericLookupBytes / 1024).toFixed(2)} KiB</dd><dt>Distinct candidates</dt><dd id="candidates">${field.tables.candidates.length}</dd><dt>Stroke samples³</dt><dd id="scratch">0 KiB</dd><dt>Display buffer¹</dt><dd id="buffer">—</dd><dt>Last edit / draw²</dt><dd id="timing">—</dd></dl><p class="note">Straight cuts connect shared stroke-outline crossings. Matching is optional for complex fallback cases.</p><p class="note">¹ Drawing + grid + reference canvases; excludes browser/GPU overhead. ² Latest edit and drawing CPU time, not input latency or a benchmark. ³ Temporary sample buffers, released on stroke end; excludes analytic edge intervals and bookkeeping. ⁴ Shared typed tables; excludes cut-index, polygon and browser path objects.</p></section></aside></main>`;
 
@@ -61,7 +61,8 @@ const cursor = document.querySelector<HTMLDivElement>('#cursor')!;
 const slider = document.querySelector<HTMLInputElement>('#size')!;
 const showGrid = document.querySelector<HTMLInputElement>('#show-grid')!;
 let slot = 1, pointer: number | undefined, previous: Point | undefined;
-let dirty = new Set<number>(), frame = 0, editMs = 0;
+const dirty = new Set<number>();
+let frame = 0, editMs = 0, fullRedraw = false;
 let painted = new Uint8Array(field.width * field.height), boundaries = new Uint8Array(field.width * field.height);
 let paintedCount = 0, boundaryCount = 0, gridInitialized = false;
 
@@ -90,19 +91,25 @@ document.querySelector('#legend-title')!.textContent = field.library === 'straig
 renderLegend();
 
 function schedule(all = false) {
-  if (all) dirty = new Set(Array.from({ length: field.width * field.height }, (_, i) => i));
+  if (all) { fullRedraw = true; dirty.clear(); }
   if (!frame) frame = requestAnimationFrame(draw);
 }
 function draw() {
   frame = 0;
-  const start = performance.now(), cell = canvas.width / field.width, hadDirty = dirty.size > 0;
-  for (const index of dirty) {
+  const start = performance.now(), cell = canvas.width / field.width, all = fullRedraw, hadDirty = all || dirty.size > 0;
+  fullRedraw = false;
+  if (all) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    painted.fill(0); boundaries.fill(0); paintedCount = boundaryCount = 0;
+  }
+  for (const index of all ? field.profile.keys() : dirty) {
+    if (all && !field.front[index] && !field.back[index]) continue;
     const x = index % field.width, y = Math.floor(index / field.width), state = field.cell(index);
     paintedCount -= painted[index]!; boundaryCount -= boundaries[index]!;
     painted[index] = state.front || state.back ? 1 : 0;
     boundaries[index] = state.profile > 1 ? 1 : 0;
     paintedCount += painted[index]!; boundaryCount += boundaries[index]!;
-    ctx.clearRect(x * cell, y * cell, cell, cell);
+    if (!all) ctx.clearRect(x * cell, y * cell, cell, cell);
     if (state.back) { ctx.fillStyle = palette[state.back]!; ctx.fillRect(x * cell, y * cell, cell, cell); }
     const polygon = field.tables.variants[state.profile]!;
     if (polygon.length) {
@@ -123,15 +130,16 @@ function draw() {
 function fitGrid() {
   end();
   const mode = document.querySelector<HTMLSelectElement>('#grid-mode')!.value;
-  document.body.dataset.gridMode = mode;
-  const width = mode === 'legacy' ? 100 : Math.max(1, Math.floor(wrap.clientWidth / 4));
-  const height = mode === 'legacy' ? 100 : Math.max(1, Math.floor(wrap.clientHeight / 4));
+  const pixels = mode === 'display2' ? 2 : mode === 'display1' ? 1 : 4;
+  document.body.dataset.gridMode = mode === 'legacy' ? 'legacy' : 'display';
+  const width = mode === 'legacy' ? 100 : Math.max(1, Math.floor(wrap.clientWidth / pixels));
+  const height = mode === 'legacy' ? 100 : Math.max(1, Math.floor(wrap.clientHeight / pixels));
   field = new CellField(field.library, field.matchNeighbors, width, height);
   inspector.clear(); configureCapture();
   painted = new Uint8Array(width * height); boundaries = new Uint8Array(width * height);
   paintedCount = boundaryCount = 0; dirty.clear();
   gridInitialized = true;
-  const scale = mode === 'legacy' ? 10 : Math.max(1, Math.round(4 * devicePixelRatio));
+  const scale = mode === 'legacy' ? 10 : Math.max(1, Math.round(pixels * devicePixelRatio));
   reference.width = width * scale; reference.height = height * scale;
   referenceCtx.setTransform(scale, 0, 0, scale, 0, 0);
   document.querySelector('#cell-data')!.textContent = `${(field.byteLength / 1024).toFixed(2)} KiB`;

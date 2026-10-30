@@ -16,6 +16,12 @@ comparison grid** preserves the coarse experiment. Changing modes or clicking
 **Fit grid to view (clears)** allocates a fresh grid and clears both drawing and
 reference. Window resizing preserves model/reference and aspect ratio; refit
 explicitly to restore approximately four-pixel cells at the new window size.
+The same selector offers **2 x 2** and **1 x 1 CSS pixels per cell**. At the tested
+1080p layout these produce 760 x 425 (946.29 KiB) and 1520 x 850 (3785.16 KiB)
+respectively. Brush diameter remains in cells. Reference backing stays near the
+display resolution rather than multiplying with the cell count. Full redraws
+clear the surface once, iterate the packed grid directly and skip empty cells;
+they do not allocate a Set containing every cell or issue per-empty-cell clears.
 
 The default library is **Straight cuts (16 of 32
 slots)**, with neighbor matching off. The previous **Experimental 32 shapes** and

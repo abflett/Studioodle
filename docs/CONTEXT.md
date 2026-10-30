@@ -229,7 +229,13 @@ it. At a 1920 x 1080 browser viewport, the verified layout is 380 x 212 cells
 (236.02 KiB). A 100 x 100 comparison mode remains. Mode changes/explicit refits clear
 the drawing; ordinary resizing preserves the grid/reference and proportions.
 Eight palette slots and three bytes per cell remain, with dynamic memory reporting,
-transparent paper, diameter/grid controls, repeatable test strokes and circle dabs. The new default is Straight cuts: 16 of 32 base slots, with neighbor
+transparent paper, diameter/grid controls, repeatable test strokes and circle dabs.
+The selector also offers 2 x 2 and 1 x 1 CSS-pixel cells: the verified 1080p layout
+gives 760 x 425 (946.29 KiB) and 1520 x 850 (3785.16 KiB). Reference backing tracks
+display density in each mode. Full redraws avoid per-cell Set allocation and canvas
+clears for empty cells. Browser checks cover sizing/storage, pointer mapping and
+clear in all three densities. Brush diameter stays in cell units.
+The default is Straight cuts: 16 of 32 base slots, with neighbor
 matching off. Empty/full, quarter/half splits, ten corner wedges and two opposite-
 edge cuts cover all 80 quarter-edge straight boundaries under transforms/color
 swaps. Remaining slots are reserved. The experimental 32 and original eight remain

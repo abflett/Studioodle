@@ -183,6 +183,22 @@ try {
   await evaluate('document.querySelector("#fit-grid").click()'); await settle();
   assert.equal(await evaluate('document.querySelector("#painted").textContent'), '0', 'Explicit refit clears and reallocates');
   console.log('1080p display grid:', displayGrid);
+  for (const [mode, pixels] of [['display2', 2], ['display1', 1]]) {
+    await cdp('Emulation.setDeviceMetricsOverride', { width: 1920, height: 1080, deviceScaleFactor: 1, mobile: false }); await settle();
+    await evaluate(`document.querySelector('#grid-mode').value='${mode}'; document.querySelector('#grid-mode').dispatchEvent(new Event('change'))`); await settle();
+    const fineGrid = await evaluate(`(()=>{const b=document.querySelector('#paint').getBoundingClientRect(),dims=document.querySelector('#grid-info').textContent.match(/[0-9]+/g).map(Number);return {width:dims[0],height:dims[1],cell:b.width/dims[0],bytes:document.querySelector('#cell-data').textContent,reference:document.querySelector('#reference').width}})()`);
+    assert.ok(Math.abs(fineGrid.cell - pixels) < .01);
+    assert.equal(fineGrid.width, Math.floor(1520 / pixels));
+    assert.equal(fineGrid.height, Math.floor(850 / pixels));
+    assert.equal(fineGrid.bytes, `${(fineGrid.width * fineGrid.height * 3 / 1024).toFixed(2)} KiB`);
+    assert.equal(fineGrid.reference, 1520, 'Finer grids must not multiply reference backing resolution');
+    assert.equal(await evaluate('document.querySelector("#painted").textContent'), '0');
+    await stroke([.25, .4], [.5, .45], 2);
+    assert.ok(Number(await evaluate('document.querySelector("#painted").textContent')) > 300, 'Finer grids paint using the correct coordinates');
+    await evaluate('document.querySelector("#clear").click()'); await settle();
+    assert.equal(await evaluate('document.querySelector("#painted").textContent'), '0');
+    console.log(`${pixels}px display grid:`, fineGrid);
+  }
   await evaluate('document.querySelector("#grid-mode").value="legacy"; document.querySelector("#grid-mode").dispatchEvent(new Event("change")); document.querySelector("#size").value="8"'); await settle();
   await cdp('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true }); await settle();
   assert.equal(await evaluate('document.documentElement.scrollWidth <= innerWidth'), true, 'No mobile horizontal overflow');
