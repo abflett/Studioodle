@@ -37,7 +37,7 @@
     "books:install": "node scripts/install-coloring-book.mjs",
     "test:browser": "node scripts/test-browser.mjs",
     "test:review": "node scripts/test-browser.mjs --artwork-review",
-    "test:library": "node scripts/test-browser.mjs --library-profile",
+    "test:library": "node scripts/test-browser.mjs --storage-thumbnails",
     "test:save": "node scripts/test-browser.mjs --save-profile",
     "test:memory": "node scripts/test-browser.mjs --memory-profile",
     "test:scene": "node scripts/test-browser.mjs --scene-profile --scene-cache-mib=64 --scene-repeat=2",

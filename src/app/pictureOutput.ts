@@ -26,6 +26,8 @@ export async function exportPicture(picture: EditorSetup, format: PictureFormat,
   const name = `${outputTitle(picture).replace(/[^a-z0-9 _-]/gi, '').trim() || 'Studioodle picture'}.${format}`;
   await savePictureFile(blob, name, format);
 }
-export function printPicture(picture: EditorSetup, onError: () => void) {
-  printVectorPicture(() => pictureSvg(picture), outputTitle(picture), onError);
+export function printPicture(picture: EditorSetup | (() => Promise<EditorSetup>), onError: () => void, title?: string) {
+  // The platform adapter opens its browser window before this lazy load starts.
+  const render = typeof picture === 'function' ? async () => pictureSvg(await picture()) : () => pictureSvg(picture);
+  printVectorPicture(render, typeof picture === 'function' ? title ?? 'Studioodle picture' : outputTitle(picture), onError);
 }

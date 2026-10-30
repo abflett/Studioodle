@@ -1,14 +1,12 @@
 import type { SetStateAction } from 'react';
-import { useEffect, useState, useSyncExternalStore } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { pictureRepository, pictureSaves } from '../app/pictures';
-import { PictureWindow } from '../app/pictureWindow';
+import { pictureThumbnails } from '../app/pictureThumbnails';
 import type { SavedPicture } from '../editor/savedPicture';
 import type { PictureSummary } from '../editor/pictureSummary';
 
 export function usePictureLibrary() {
   const [library, setLibrary] = useState<{ pictures: PictureSummary[]; error: boolean; loading: boolean; index: number }>({ pictures: [], error: false, loading: true, index: 0 });
-  const [window] = useState(() => new PictureWindow((id, signal) => pictureRepository.get(id, signal)));
-  const loaded = useSyncExternalStore(window.subscribe, window.getSnapshot);
   const [refresh, setRefresh] = useState(0);
   const [retryAttempt, setRetryAttempt] = useState(0);
   useEffect(() => pictureSaves.subscribePictures(() => setRefresh(value => value + 1)), []);
@@ -25,15 +23,31 @@ export function usePictureLibrary() {
     );
     return () => { active = false; };
   }, [refresh]);
-  useEffect(() => { window.select(library.pictures, library.index); }, [window, library.pictures, library.index, retryAttempt]);
-  useEffect(() => () => window.dispose(), [window]);
+  useEffect(() => () => pictureThumbnails.clear(), []);
   const summary = library.pictures[library.index];
-  const matches = loaded.id === summary?.id && loaded.updatedAt === summary?.updatedAt;
-  const current = summary && (window.cached(summary) ?? (matches ? loaded.picture : undefined));
-  const currentError = matches && loaded.error;
+  const [errorKey, setErrorKey] = useState<string>();
+  const currentError = !!summary && errorKey === `${summary.id}:${summary.updatedAt}`;
+  const previewFailed = useCallback((picture: PictureSummary) => setErrorKey(`${picture.id}:${picture.updatedAt}`), []);
+  const [busy, setBusy] = useState(false);
+  const loadCurrent = async () => {
+    if (!summary) return;
+    setBusy(true); setErrorKey(undefined);
+    try {
+      const picture = await pictureRepository.get(summary.id);
+      if (!picture || picture.updatedAt !== summary.updatedAt) throw Error('Drawing changed; retry loading.');
+      return picture;
+    } catch (error) { setErrorKey(`${summary.id}:${summary.updatedAt}`); throw error; }
+    finally { setBusy(false); }
+  };
+  const previewMetadata = useCallback((metadata: PictureSummary) => setLibrary(previous => {
+    const existing = previous.pictures.find(item => item.id === metadata.id && item.updatedAt === metadata.updatedAt);
+    if (!existing || (existing.pageLayout === metadata.pageLayout && existing.stickerCount === metadata.stickerCount)) return previous;
+    const records = previous.pictures.map(item => item.id === metadata.id && item.updatedAt === metadata.updatedAt ? { ...item, pageLayout: metadata.pageLayout, stickerCount: metadata.stickerCount } : item);
+    return { ...previous, pictures: records };
+  }), []);
   const removePicture = async (picture: SavedPicture) => {
     await pictureRepository.delete(picture.id);
-    window.invalidate(picture.id);
+    pictureThumbnails.invalidate(picture.id);
     setLibrary(previous => {
       const pictures = previous.pictures.filter(item => item.id !== picture.id);
       const selected = pictures.findIndex(item => item.id === previous.pictures[previous.index]?.id);
@@ -42,10 +56,10 @@ export function usePictureLibrary() {
   };
   const restorePicture = async (picture: SavedPicture) => {
     await pictureRepository.save(picture);
-    window.invalidate(picture.id);
+    pictureThumbnails.invalidate(picture.id);
     const pictures = await pictureRepository.list();
     setLibrary({ pictures, error: false, loading: false, index: Math.max(0, pictures.findIndex(item => item.id === picture.id)) });
   };
-  return { library, saved: library.pictures, sampleIndex: library.index, setSampleIndex, current, currentError,
-    retry: () => { if (summary) window.invalidate(summary.id); setRefresh(value => value + 1); setRetryAttempt(value => value + 1); }, removePicture, restorePicture };
+  return { library, saved: library.pictures, sampleIndex: library.index, setSampleIndex, loadCurrent, busy, previewMetadata, previewFailed, currentError,
+    retry: () => { setErrorKey(undefined); if (summary) pictureThumbnails.invalidate(summary.id); setRefresh(value => value + 1); setRetryAttempt(value => value + 1); }, removePicture, restorePicture, retryAttempt };
 }

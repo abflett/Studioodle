@@ -1,4 +1,5 @@
-import { PictureWindow } from '../../src/app/pictureWindow';
+// Historical full-document-window baseline; current gallery uses persisted PNGs.
+import { PictureWindow } from '../fixtures/pictureWindow';
 import { createIndexedPictureRepository } from '../../src/platform/indexedPictureRepository';
 import { createAdvancedSceneFixture } from './advanced-scene-fixture';
 import type { SavedPicture } from '../../src/editor/savedPicture';

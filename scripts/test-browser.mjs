@@ -85,6 +85,21 @@ try {
     const metrics = await evaluate("import('/tests/browser/save-performance.ts').then(m=>m.profileSavePerformance())");
     await fs.writeFile('work/tests/save-performance-results.json', JSON.stringify(metrics, null, 2));
     console.log('Save performance:', JSON.stringify(metrics));
+  }else if(process.argv.includes('--picture-output-only')){
+    const result=await evaluate("import('/tests/browser/picture-output.ts').then(m=>m.checkPictureOutput())");
+    console.log('Picture output:',result.vectorPrint,result.printFailure,result.downloadCleanup);
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
+  }else if(process.argv.includes('--storage-ui')){
+    console.log('Library UI:',await evaluate("import('/tests/browser/library-state.ts').then(m=>m.checkLibraryState())"));
+    console.log('Coloring pages:',await evaluate("import('/tests/browser/coloring-page-picker.ts').then(m=>m.checkColoringPagePicker())"));
+    console.log('Page action:',await evaluate("import('/tests/browser/coloring-page-action.ts').then(m=>m.checkColoringPageAction())"));
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
+  }else if(process.argv.includes('--storage-thumbnails')){
+    const checks=await evaluate("import('/tests/browser/storage-thumbnails.ts').then(m=>m.checkStorageThumbnails())");
+    const scale=await evaluate("import('/tests/browser/storage-thumbnails.ts').then(m=>m.profileThumbnailLibrary())");
+    console.log('Storage and thumbnails:',JSON.stringify({checks,scale}));
+    await fs.writeFile('work/tests/storage-thumbnails.json',JSON.stringify({checks,scale},null,2));
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(libraryProfile){
     const setup=await evaluate("import('/tests/browser/picture-library-profile.ts').then(m=>m.prepareLibraryProfile())");
     const samples=[];
@@ -203,6 +218,7 @@ try {
   result.libraryState=await evaluate("import('/tests/browser/library-state.ts').then(m => m.checkLibraryState())");
   result.paintDisplay=paintDisplay;
   console.log('Paint display:',JSON.stringify(paintDisplay));
+  result.storageThumbnails=await evaluate("import('/tests/browser/storage-thumbnails.ts').then(m=>m.checkStorageThumbnails())");
   result.pictureStorage=await evaluate("import('/tests/browser/picture-storage.ts').then(m=>m.checkPictureStorage())");
   console.log('Picture storage:',JSON.stringify(result.pictureStorage));
   const canvasEditor = await evaluate("import('/tests/browser/canvas-editor.ts').then(m => m.checkCanvasEditor())");

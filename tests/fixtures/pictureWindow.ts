@@ -1,10 +1,10 @@
-import type { SavedPicture } from '../editor/savedPicture';
-import type { PictureSummary } from '../editor/pictureSummary';
+import type { SavedPicture } from '../../src/editor/savedPicture';
+import type { PictureSummary } from '../../src/editor/pictureSummary';
 
 type Snapshot = { id?: string; updatedAt?: number; picture?: SavedPicture; error: boolean };
 type Load = (id: string, signal: AbortSignal) => Promise<SavedPicture | undefined>;
 
-/** A serial, cancellable five-picture window. Only current changes notify React. */
+/** Pre-thumbnail baseline, retained only for the comparative library diagnostic. */
 export class PictureWindow {
   private cache = new Map<string, SavedPicture>();
   private listeners = new Set<() => void>();

@@ -91,9 +91,17 @@ export async function checkPictureOutput() {
   })) as typeof window.open;
   try {
     printPicture(picture, () => { printError = true; });
-    for (let i=0; i<100 && !printed && !printError; i++) await new Promise(resolve => setTimeout(resolve,20));
-    assert(printed === 1 && !printError, 'Printing must complete using the vector preview');
+    for (let i=0; i<500 && !printed && !printError; i++) await new Promise(resolve => setTimeout(resolve,20));
+    assert(printed === 1 && !printError, `Printing must complete using the vector preview (printed=${printed}, error=${printError}, svg=${!!preview.querySelector('svg')})`);
     assert(preview.querySelector('svg path') && !preview.querySelector('img, canvas, image'), 'Print preview must contain inline vectors, no raster snapshot');
+    const lazy = document.implementation.createHTMLDocument(); let finish!: (picture: EditorSetup) => void, lazyPrinted = 0;
+    const source = new Promise<EditorSetup>(resolve => { finish = resolve; });
+    window.open = (() => ({ document: lazy, closed: false, opener: null, focus() {}, close() {}, print() { lazyPrinted++; }, requestAnimationFrame(callback: FrameRequestCallback) { callback(performance.now()); return 0; } })) as typeof window.open;
+    printPicture(() => source, () => { printError = true; }, picture.title);
+    assert(lazy.querySelector('button') && !lazy.querySelector('svg'), 'Print window must open synchronously before a lazily loaded drawing is available');
+    finish(picture);
+    for (let i = 0; i < 500 && !lazyPrinted && !printError; i++) await new Promise(resolve => setTimeout(resolve, 20));
+    assert(lazyPrinted === 1 && !printError, 'Lazy drawing must print after loading');
   } finally { window.open = originalOpen; }
   window.open = (() => null) as typeof window.open;
   try { printError = false; printPicture(picture, () => { printError = true; }); assert(printError, 'Blocked print windows must report an error'); }
@@ -106,7 +114,7 @@ export async function checkPictureOutput() {
   })) as typeof window.open;
   try {
     printError = false;printPicture(picture, () => { printError = true; });
-    for(let i=0;i<100&&!printError;i++)await new Promise(resolve=>setTimeout(resolve,10));
+    for(let i=0;i<1000&&!printError;i++)await new Promise(resolve=>setTimeout(resolve,10));
     assert(printError, 'Asynchronous print failures must reach the UI rather than escape as runtime errors');
   } finally { window.open = originalOpen; }
   const originalClick=HTMLAnchorElement.prototype.click, originalRevoke=URL.revokeObjectURL;

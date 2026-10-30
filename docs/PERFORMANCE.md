@@ -42,7 +42,7 @@ probe shared five definitions across six instances without duplicates. Forced GC
 distinguishes retention from allocation churn; these are not peak RSS, total OS/GPU
 memory or proof that every future workload is leak-free.
 
-Saved drawings separately use a five-record priority window; see
+Saved-picture browsing uses persisted PNGs and a five-entry bitmap URL cache; see
 [picture-library measurements](PICTURE-LIBRARY.md). Undo uses a memory budget and
 small affected-field records; see [undo](UNDO-HISTORY.md).
 

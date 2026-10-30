@@ -31,8 +31,11 @@ async function paperGeometry() {
   assert(Math.abs(preview.offsetWidth - imageLayer.offsetWidth) <= 1 && Math.abs(preview.offsetHeight - imageLayer.offsetHeight) <= 1, 'The image must fill its masked layer');
   assert(Math.abs(preview.offsetWidth / preview.offsetHeight - faceRatio) < .01, 'The preview viewport must match the paper frame');
   assert(getComputedStyle(preview).maskImage === 'none' && getComputedStyle(preview).opacity === '1', 'Full-color artwork must reach the silhouette without a faded inner frame');
-  const canvas = preview.querySelector('canvas')!;
-  assert(Math.abs(canvas.width - canvas.clientWidth * devicePixelRatio) <= 1 && Math.abs(canvas.height - canvas.clientHeight * devicePixelRatio) <= 1, 'Page rotation must not enlarge or distort the canvas backing');
+  const image = preview.querySelector('img')!;
+  assert(image && image.src.startsWith('blob:'), 'Gallery must use the cached bitmap');
+  await image.decode();
+  assert(image.naturalWidth <= 768 && image.naturalHeight <= 768 && Math.max(image.naturalWidth, image.naturalHeight) === 768, 'Page rotation must not allocate a larger thumbnail');
+  assert(getComputedStyle(image).objectFit === 'cover', 'Bitmap preview must cover the paper without stretching');
   const arrow = document.querySelector('[aria-label="Next saved picture"]')!.getBoundingClientRect();
   const stageBox = stage.getBoundingClientRect();
   assert(Math.abs(arrow.y + arrow.height / 2 - stageBox.y - stageBox.height / 2) < 3, 'Browsing arrows must stay centered on the resized paper stage');

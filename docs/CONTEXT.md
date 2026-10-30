@@ -64,7 +64,7 @@ RGB. Palette edits capture one previous table value, invalidate display pixels
 without rebuilding geometry, participate in undo and action-based saving, and
 update ribbon/cursor colors. All serialized drawings include paletteVersion 1 and
 32 custom entries. PNG/SVG/PDF/print resolve colors; page sharing v4 carries custom
-ink tables. New storage namespaces are library-v9, workshop.v3 and v6.coloring;
+ink tables. The drawing namespace is library-v9; workshop.v3 and v6.coloring are now legacy custom-page import sources;
 format-5 saves and v3 sharing codes are intentionally unsupported. Blank paper
 setup retains its simple fixed RGB background palette.
 
@@ -195,15 +195,25 @@ custom icon and ribbon/overlay control family in both themes, (3) 1,000+ accepte
 stickers from the current 364, (4) a much larger solo-page and composed-scene library
 from the current six pages, and (5) structured beta/release validation.
 
-The next implementation batch is storage and the selection page, as recorded in
-the performance section of REFINEMENT-TASKS.md: remain web-first with centralized
-IndexedDB persistence, move custom pages and then app preferences off localStorage,
-and persist revision-aware raster thumbnails generated lazily on gallery cache
-misses. Preserve current custom pages during the transition; standalone reviewer
-storage stays untouched. Compare bounded two-stage downsampling with direct rendering.
-Measure 1,000/5,000-picture libraries and operation-specific gains against the user's
-10x ambition. SQLite is a later native-platform option, not current implementation.
-These are agreed planning directions; no storage/thumbnail code has changed yet.
+The storage/selection batch is implemented: `studioodle-library-v9` schema 2 now
+also stores individual custom pages, metadata and PNG thumbnails. Valid current
+workshop/individual localStorage pages import once with an atomic marker, preserving
+order and retrying failures. New page writes/import/delete use IndexedDB only;
+settings/favorites remain later consolidation work. Reviewer storage is untouched.
+Gallery browsing reads revision/version-aware PNGs capped at 768px long edge, not
+full vector documents. One generation plus latest waiting selection is bounded;
+cached bitmap reads bypass generation. Five object URLs are retained and revoked
+on eviction/Home exit. Opening/output/delete load source drawings on demand;
+print windows still open synchronously. Source saves/deletes remain atomic, stale
+thumbnail writes/publications are rejected, corrupt previews regenerate once, and
+pending checkpoints preview before their save completes. The document format stays 6.
+`test:library` measures new cache/storage checks and 1,000/5,000 lightweight fixtures;
+old full-document-window diagnostics live only in test fixtures. Current local
+measurements: ~20-30/~90-120ms metadata lists; cold PNG ~240-275ms, persisted PNG
+~1.5-1.6ms with zero vector reads. These are not whole-app or Android benchmarks.
+Next storage work includes real complex-device workloads, quality/downsample trials,
+settings consolidation, health/backup and metadata pagination if measurements need it.
+SQLite remains a later native-platform option.
 
 After that batch: reproduce/profile scatter/spray and dense paint using the user's detailed
 Moon Sorceress when available, a synthetic stress drawing and a simple control.

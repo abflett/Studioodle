@@ -6,7 +6,7 @@ import { workshopRepository } from '../../src/app/coloringBookWorkshop';
 import type { SavedPicture } from '../../src/editor/savedPicture';
 
 export async function checkColoringPageAction() {
-  const stored = localStorage.getItem('studioodle.workshop.v3');
+  const stored = await workshopRepository.load();
   const container = document.createElement('div'); document.body.append(container);
   const root = createRoot(container), originalMerge = workshopRepository.merge;
   const picture: SavedPicture = { id: 'page-action-test', title: 'Page action test', version: 6, updatedAt: Date.now() + 100000,
@@ -47,6 +47,8 @@ export async function checkColoringPageAction() {
   } finally {
     workshopRepository.merge = originalMerge; root.unmount(); container.remove();
     await pictureRepository.delete(picture.id);
-    if (stored === null) localStorage.removeItem('studioodle.workshop.v3'); else localStorage.setItem('studioodle.workshop.v3', stored);
+    const priorIds = new Set(stored.pages.map(page => page.id));
+    for (const page of (await workshopRepository.load()).pages) if (!priorIds.has(page.id)) await workshopRepository.delete(page.id);
+    await workshopRepository.merge(stored);
   }
 }

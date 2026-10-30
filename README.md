@@ -34,6 +34,7 @@ sideload APK using the local development key.
 | `npm run review:build` | Build only the reviewer into `work/artwork-review-dist/` |
 | `npm run check` | Unit tests, TypeScript, ESLint and production web build |
 | `npm run test:browser` | Real browser/worker painting, storage and vector-output regressions |
+| `npm run test:library` | Test IndexedDB custom pages, thumbnail caching and 1,000/5,000-picture metadata |
 | `npm run test:save` | Repeated sticker edits verify background saves reuse unchanged paint |
 | `npm run test:memory` | Eight editor lifecycles and a definition-cache pressure probe |
 | `npm run test:scene` | Repeat the advanced scene profile at the default 64 MiB cache budget |

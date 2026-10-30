@@ -45,9 +45,11 @@ export function ColoringPageTransfer({ page, onAdded, onClose }: { page?: Editor
           }} />
         </>}
       </div>
-      {incoming && <div className="page-import-preview"><ColoringPagePreview page={incoming.pages[0]!} /><p>{incoming.pages.length} {incoming.pages.length === 1 ? 'page' : 'pages'}: {incoming.pages.slice(0, 3).map(p => p.title).join(', ')}{incoming.pages.length > 3 ? '...' : ''}</p><button className="go-button" onClick={() => {
-        try { const added = independentPages(incoming); workshopRepository.merge(added); onAdded(added.pages[0]!.id); }
+      {incoming && <div className="page-import-preview"><ColoringPagePreview page={incoming.pages[0]!} /><p>{incoming.pages.length} {incoming.pages.length === 1 ? 'page' : 'pages'}: {incoming.pages.slice(0, 3).map(p => p.title).join(', ')}{incoming.pages.length > 3 ? '...' : ''}</p><button className="go-button" disabled={busy} onClick={async () => {
+        setBusy(true);
+        try { const added = independentPages(incoming); await workshopRepository.merge(added); onAdded(added.pages[0]!.id); }
         catch { setMessage('Could not add these pages. Existing pages have not been replaced. Check device storage.'); }
+        finally { setBusy(false); }
       }}><FilePlus2 /><span>Add Pages</span></button></div>}
       {message && <p role="status">{message}</p>}
     </div>

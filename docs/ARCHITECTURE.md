@@ -51,7 +51,7 @@ objects. `useLatest` exposes committed callbacks to long-lived DOM listeners;
 do not mutate callback refs during render. Modal and pointer listener cleanup must
 remain symmetric, including React development effect replay.
 
-Drawings and their small summaries use the `pictures` and `summaries` stores in IndexedDB database `studioodle-library-v9`; custom pages/revisions use the atomic `studioodle.workshop.v3` collection record. Documents use vector-only format 6. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
+Drawings, summaries, thumbnail PNGs and individual custom pages use the `pictures`, `summaries`, `thumbnails`, `pages` and `meta` stores in IndexedDB database `studioodle-library-v9` (schema 2). Valid current localStorage pages import once with an atomic completion marker; subsequent page operations use IndexedDB only. Documents use vector-only format 6. This pre-release app intentionally drops old drawing formats rather than retaining migrations or redundant engines. See `AGENTS.md` for the breaking-change policy.
 
 `VectorPaint` owns backing styles and polygon blobs for both paper and stickers. Its worker merges live coverage without changing retained previous states. Historical checkpoints are compacted separately in the worker. `paintWorker.ts` owns job transport; the worker and non-worker fallback share one job implementation. Paint regions are indexed by ID, and maintenance sends only dirty regions. Plain base fills need no merge job. Rendering clips to exact SVG curves; adaptive curve flattening supplies boolean/fill geometry. All brush styles and fill patterns stay vector. There are no raster paint arrays. Complex surfaces have disposable viewport display canvases under a shared 64 MiB pixel budget; export and print render vectors directly. Shared lookup arrays support only hit testing. A bounds-grid index selects candidate regions for brush clipping, shared by instances of the same definition. See [Vector Painting](VECTOR-PAINT.md).
 
@@ -125,9 +125,9 @@ transforms need no history geometry job. See [undo history](UNDO-HISTORY.md).
 
 Saved drawings use asynchronous IndexedDB transactions with structured vector
 records. Metadata and artwork save/delete atomically in the same transaction.
-The home screen lists only ordered summaries and loads a cancellable five-picture
-window: current, next, previous, two ahead, two behind. Only the selected picture
-prepares a preview. See [picture-library measurements](PICTURE-LIBRARY.md).
+The home screen lists ordered summaries and loads bounded, persisted PNG previews.
+Only cache misses load vector drawings for preview generation. Five bitmap URLs
+are retained; full drawings load on demand for editing/output/delete actions. See [picture-library measurements](PICTURE-LIBRARY.md).
 Completed actions capture detached save checkpoints with copied property/region
 containers and shared immutable geometry. `app/pictureSaveQueue.ts` owns one active
 write and one latest pending checkpoint per drawing beyond canvas lifetime. Only
@@ -137,7 +137,7 @@ compaction and transaction commit, while editing continues independently. Home
 finishes input and navigates without a storage barrier. The repository overlays
 pending checkpoints for immediate browsing/reopening and notifies the library only
 when checkpoint contents change. Save completion/retry status does not restart
-the five-picture loader or unchanged previews. Per-region save preparations reuse
+unchanged bitmap previews. Per-region save preparations reuse
 compacted immutable paint until that region changes; undo invalidates the affected
 region. Live maintenance can reuse the same prepared result. Background saves yield
 the input task first, and ending a gesture no longer forces duplicate compaction.
@@ -147,8 +147,8 @@ with 1–30 second backoff and surface a retry notice. IndexedDB uses normal dur
 an interrupted transaction preserves the previous committed drawing and summary,
 but the most recent actions may be lost on process/power loss. No minute timer,
 separate persistence worker, backup journal or persisted undo log is introduced.
-Settings and the atomic custom-page collection
-still use small localStorage records. Development drawings from the
+Settings, favorites and pointer preferences still use small localStorage records;
+custom pages now use individual IndexedDB records. Development drawings from the
 old localStorage repository are not migrated to the IndexedDB library.
 
 

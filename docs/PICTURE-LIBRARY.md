@@ -1,66 +1,64 @@
-# Saved-picture loading
+# Saved-picture library
 
-The home screen reads small metadata records, ordered newest first by update time
-and then ID. Full vector documents are fetched individually. The browsing cache
-holds at most five drawings, wrapping at the ends of the carousel:
+The Home gallery lists lightweight metadata ordered newest first. Browsing loads
+persisted PNG thumbnails, not full vector documents or hit geometry. Full drawings
+load on demand for Continue, Print, Export, Delete (including undo restoration), or
+Add to coloring pages. Browser print opens its window synchronously before lazy
+source loading. Selection changes discard stale action completions.
 
-1. Current picture.
-2. Next picture.
-3. Previous picture.
-4. Two pictures ahead.
-5. Two pictures behind.
+## Shared IndexedDB storage
 
-Reads are sequential in that order. Navigation aborts the previous run, prunes
-unrelated or outdated entries and starts the new current picture first. A late
-completion cannot repopulate the cache or replace the selected picture. Small
-libraries deduplicate overlapping positions. Failed neighbors do not block the
-others; current-picture failures expose retry. Opening, exporting and deleting
-require the selected full drawing to be loaded. The existing preview spinner also
-covers data loading; sticker preparation and preview rendering remain lazy for
-the selected picture rather than allocating five rendered canvases. Cached data is
-available during the selection render, and preview work starts before paint with
-no forced animation-frame delay. The visual spinner appears only after 120 ms of
-pending work; failures appear immediately. Warm-navigation browser tests verify
-that cached pictures are ready by the next painted frame without a spinner.
+`studioodle-library-v9`, schema 2, contains `pictures`, `summaries`, `thumbnails`,
+`pages` and `meta`. Drawing format remains 6. Picture/summary writes remain atomic;
+delete includes the thumbnail in the same transaction. Summary records contain
+compact sticker count/layout identity, so coloring-page action state needs no full
+paint document. Older summary rows receive equivalent preview metadata when their
+thumbnail loads. Read transactions scope only the stores they need.
 
-The selection screen presents saved work over a permanent illustrated paper stack
-beneath the drawing easel and coloring book, with no visible choice captions.
-The static stack is temporarily hidden during the paper-mask review; its asset
-and layer are retained for restoration.
-The base artwork and browsing stage stay fixed across picture ratios. The front
-sheet selects the closest square, A4 landscape or A4 portrait illustration.
-The carousel has three layers: the unchanged stack, the complete rectangular
-picture clipped to a paper silhouette, and the original paper border/folds with
-an actually transparent center. The picture is rendered normally at display
-density, without mesh warping, cover scaling, edge copying or multiply blending.
-The image rectangle follows the saved picture's exact proportions. One shared
-coordinate system derives both its cutout and the overlay's transparent opening;
-the original paper alpha provides a second clip so artwork cannot poke outside.
-The overlay overlaps the cutout slightly to hide antialiasing seams.
-The sheet keeps a slight fixed counterclockwise tilt. Preview backing dimensions
-use local sizes so rotation does not introduce extra cropping. Browsing arrows remain
-outside the open target, and utility buttons take click priority.
-Forward/backward navigation adds a 240 ms page-turn transform without delaying
-loading or interactions. Reduced-motion preferences disable the turn animation.
-The overlay keeps its original paper colors, ink border and folded corners.
-Its center is transparent, and the saved picture shows through with its original
-colors. There is no faded inset frame.
-This decorative preview treatment does not change saved artwork or exported colors.
+Custom coloring pages are separate `pages` records with stable browsing order.
+The one-time import reads valid `studioodle.workshop.v3` and
+`studioodle.v6.coloring.*` data, respecting the old collection's authoritative flag.
+Its marker and imported pages commit atomically. Failed imports retry without
+altering legacy sources; completed imports never read those sources again. New
+page operations are asynchronous, transactional and never write localStorage.
+Settings/favorites still use their existing small records; their consolidation is
+separate backlog work. Standalone reviewer data is untouched.
 
-The drawing, coloring and saved-picture choices use transparent, hand-inked
-watercolor illustrations. Original generated PNGs and exact prompts live in
-`art/source/interface/selection-objects.json` and its sibling files;
-full-resolution, lossless WebP copies live under `src/assets/selection/`.
-All six illustrations and their six derived masks decode during the splash alongside the editor module, so the
-wordless home screen opens with its art ready. These are decorative interface
-assets; painting and output stay vector.
+## Lazy bitmap previews
 
-The fresh pre-release IndexedDB database is `studioodle-library-v8` (schema 1).
-`pictures` stores full format-5 drawings; `summaries` stores explicit metadata
-projections with a compound update-time/ID index. Both records save and delete in
-one transaction, and completion means the transaction committed. A failed write
-leaves both previous records intact. There is no migration from previous
-development libraries, and the vector document format has not changed.
+The selected drawing checks a thumbnail keyed by ID, content `updatedAt` revision
+and renderer version. On a miss it loads that source once, restores read-only
+Artwork, renders a PNG capped at 768 pixels on the long edge, then releases Artwork
+and temporary canvas backing. This starts on gallery access, never while painting
+or for all saved pictures upfront. The PNG includes the original paper, ink and
+resolved palette. CSS cover/cropping uses the existing paper mask and proportions.
+Direct bounded rendering is the initial quality choice; two-stage downsampling
+remains a trial, not an assumed improvement. Bump `thumbnailVersion` when renderer
+or bundled-art changes invalidate existing output.
+
+Persisted cache hits do not read `pictures`, prepare stickers or build Artwork.
+An LRU retains at most five bitmap URLs and revokes evictions; exiting Home clears
+it. Maximum encoded PNG size is 3 MiB, and dimensions are validated before reuse.
+Corrupt images receive one automatic source regeneration, then offer retry through
+the gallery. Cache-write failures leave source drawings intact and can display the
+in-memory result. Full source actions remain usable independently of preview errors.
+
+Only one generation runs, with at most the latest waiting selection. Obsolete
+queued work is rejected; cached PNG reads bypass generation entirely. Source
+loading, generation and publication check cancellation. Shared sticker preparation
+and synchronous Canvas work finish cooperatively rather than being preempted.
+Before publication, the latest pending/persisted metadata is checked again.
+Conditional cache writes reject superseded or deleted source revisions. Pending
+save checkpoints can produce a preview before disk commits; an unpersisted preview
+can retry cache storage on reuse. Unchanged save completion does not restart loads.
+
+## Selection appearance
+
+The watercolor paper stack and fixed tilt remain unchanged. Artwork uses the
+same square/A4 paper geometry, exact mask and full-color cover placement. Navigation
+keeps its page-turn animation and stable controls, with reduced-motion handling.
+A bitmap's dimensions are independent of page tilt and window size. Editing,
+SVG/PDF/print and high-resolution PNG exports still use original vector geometry.
 
 ## Action-based saving
 
@@ -80,8 +78,8 @@ actions can be lost on abrupt shutdown, while a transaction abort preserves the
 previous complete drawing and its summary. Browser backgrounding finishes current
 pointer input; it does not rely on an asynchronous unload save.
 
-Save completion and retries no longer trigger summary reloads or restart the
-five-picture window. Only new checkpoint contents notify browsing; unchanged
+Save completion and retries no longer trigger summary reloads or restart cached
+bitmap previews. Only new checkpoint contents notify browsing; unchanged
 summary lists keep their existing identity and previews. Explicit retry still
 invalidates the failed current record. Pending metadata is captured before and
 after storage reads, so a write finishing mid-read needs no extra library refresh.
@@ -92,11 +90,6 @@ to one reused job (227 ms), with eight writes and maximum synchronous dispatch
 around 1 ms in both runs. The writer is a test double: these totals measure
 preparation/queue behavior, not disk throughput or physical pointer latency.
 The same regression checks that live maintenance reuses a brush save's preparation.
-The 120-drawing library profile retained five records, with a prefetched current
-record available in 0.1 ms and cold reads around 19 ms; those timings exclude
-rendering. Browser interaction tests verify warm previews stay ready while an
-unrelated save finishes.
-
 The 28 October desktop browser regression captured a synthetic 7.0 MB drawing
 (180,001 vertices) in 0.3 ms using shared geometry. Its direct validation/storage
 write took 113 ms. These are single-run measurements, exclude worker compaction
@@ -104,42 +97,25 @@ and are not tablet or power-loss guarantees. The same suite verifies aborted-wri
 rollback, pending Home previews, retry, continued input and save completion after
 canvas disposal. Run `npm run test:browser`; generated measurements stay in `work/`.
 
-## Browser measurement, 2026-10-22
+## Verification and measurements
 
-Run `npm run test:library` to reproduce the isolated headless Chromium profile.
-It stores 120 separate copies of the advanced Safari fixture, each with 26
-stickers, 293 colored regions, 216 simulated shading/highlight strokes, 555 paint
-blobs and 37,931 vertices. Each drawing is approximately 1.27 MB of JSON. Repeated
-geometry is a controlled load fixture, not a claim of 120 distinct illustrations.
+`npm run test:library` runs transactional custom-page import/rollback, PNG revision
+and Blob storage, cached reads without vector access, pending saves, stale
+completion rejection, corrupt-image recovery, bounded URL eviction and 1,000/5,000
+summary fixtures. `node scripts/test-browser.mjs --storage-ui` covers the library,
+page picker, add-page matching, delete/undo and failure feedback. The full browser
+suite also covers picture output, proportional portfolio masks and save/reopen.
 
-| Measurement | Observed result |
-| --- | --- |
-| Summary list | 1.9 ms; 18,863 bytes of JSON for 120 summaries |
-| Uncached current drawing available | 19.8–26.7 ms |
-| Prefetched current drawing available | 0.2 ms |
-| Entire five-picture window loaded | 91.9–122.5 ms for unrelated selections |
-| Cached drawing JSON | About 6.37 MB for five drawings |
-| Post-GC JS heap, summaries only | 18.78 MiB |
-| Post-GC JS heap while browsing | 30.21–30.23 MiB across six selections |
-| Post-GC JS heap after disposal | 18.79 MiB |
+A local Chromium run observed roughly 20-30 ms to list 1,000 summaries and
+90-120 ms for 5,000 (about 0.29/1.44 MB serialized metadata). These are lightweight
+synthetic documents, not a claim about 5,000 complex real paintings. The first
+bounded PNG took 240-275 ms including cold setup/encoding; reloading its persisted
+PNG took 1.5-1.6 ms with zero full-document reads. These compare preview cache paths,
+not a measured whole-app speedup. Metadata still scales with collection size;
+steady browsing and decoded previews do not preload the whole library.
 
-Weak references confirmed exactly five live loaded records at each settled
-selection, including after distant jumps; disposal released all 26 records loaded
-over the run. Moving one position within the warmed window read only the newly
-exposed neighbor. The test also rejects any full-document `getAll()` scan.
-Raw measurements remain under ignored `work/tests/picture-library-results.json`.
-
-These timings cover metadata/data availability, not complete preview latency or
-cold-device startup. They are desktop, unthrottled measurements with a freshly
-seeded database; no old implementation was benchmarked for comparison. Heap totals
-include the fixture's prepared sticker definitions and application overhead.
-JSON byte counts describe payload size, not actual heap consumption or IndexedDB
-disk usage. Metadata still scales with library count, but full geometry no longer
-does. Five drawings are a count bound, not a byte cap; exceptionally complex
-drawings can still be large. Delete undo, export dialogs and the active editor may
-intentionally retain additional drawings outside the browsing cache.
-
-Unit tests cover priority, cancellation, revision invalidation, retries and small
-libraries. Browser regressions cover large-vector round trips, atomic save/delete
-rollback, aborted reads, concurrent deletes, restored selection, save/reopen and
-the export workflow.
+Generated JSON/screenshots stay under `work/tests/`. Android/tablet hardware,
+representative complex collections, storage quotas/eviction and broader thumbnail
+quality/encoding trials remain on the refinement backlog. Device-local storage is
+not a backup. The older five-full-document-window benchmark is retained only as a
+comparison fixture (`--library-profile`); its historical measurements are in Git.

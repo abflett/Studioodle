@@ -1,10 +1,9 @@
 import { createIndexedPictureRepository } from '../platform/indexedPictureRepository';
-import { createLocalTemplateRepository } from '../platform/localTemplateRepository';
 import { createPictureSaveQueue } from './pictureSaveQueue';
 import { pictureSummary } from '../editor/pictureSummary';
 
 // Fresh vector-only development format; old drawing data is intentionally unsupported.
-const storedPictures = createIndexedPictureRepository();
+export const storedPictures = createIndexedPictureRepository();
 export const pictureSaves = createPictureSaveQueue(picture => storedPictures.save(picture));
 export const pictureRepository = {
   save: pictureSaves.enqueue,
@@ -25,8 +24,13 @@ export const pictureRepository = {
     const picture = await storedPictures.get(id, signal);
     return pictureSaves.latest(id) ?? picture;
   },
+  async getSummary(id: string, signal?: AbortSignal) {
+    if (signal?.aborted) throw signal.reason;
+    const pending = pictureSaves.latest(id);
+    if (pending) return pictureSummary(pending);
+    const summary = await storedPictures.getSummary(id, signal);
+    const latest = pictureSaves.latest(id);
+    return latest ? pictureSummary(latest) : summary;
+  },
   async delete(id: string) { await pictureSaves.discard(id); await storedPictures.delete(id); },
 };
-// Read-only input for consolidating existing current-format templates. New writes
-// belong to workshopRepository, which owns atomic collection operations.
-export const coloringPageRepository = createLocalTemplateRepository();

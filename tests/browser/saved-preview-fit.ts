@@ -5,6 +5,7 @@ import { Artwork } from '../../src/editor/Artwork';
 import { rectangleGeometry } from '../../src/editor/vectorPaintStyles';
 import { portfolioPaper } from '../../src/app/startup';
 import type { EditorSetup } from '../../src/editor/setup';
+import { renderThumbnail } from '../../src/app/pictureThumbnails';
 
 function assert(value: unknown, message: string): asserts value { if (!value) throw Error(message); }
 
@@ -52,6 +53,16 @@ export async function checkSavedPreviewFit() {
       let error = 0;
       for (let n = 0; n < actual.length; n++) error += Math.abs(actual[n]! - wanted[n]!);
       assert(error / actual.length < .1, 'Visible edge markings must match an undistorted cover render');
+      const thumbnail = await renderThumbnail({ ...picture, id: 'preview-fit', version: 6, updatedAt: 1, document: picture.document! });
+      const bitmap = await createImageBitmap(thumbnail.blob);
+      const cached = document.createElement('canvas'); cached.width = canvas.width; cached.height = canvas.height;
+      try {
+        const cachedCtx = cached.getContext('2d')!, cover = Math.max(cached.width / bitmap.width, cached.height / bitmap.height);
+        cachedCtx.drawImage(bitmap, (cached.width - bitmap.width * cover) / 2, (cached.height - bitmap.height * cover) / 2, bitmap.width * cover, bitmap.height * cover);
+        const pixels = cachedCtx.getImageData(0, 0, cached.width, cached.height).data;
+        let error = 0; for (let n = 0; n < pixels.length; n++) error += Math.abs(pixels[n]! - actual[n]!);
+        assert(error / pixels.length < 1.5, 'Bounded PNG cover must retain source colors, proportions and edge markings');
+      } finally { bitmap.close(); cached.width = cached.height = 1; }
     }
     return { a4Portrait: true, a4Landscape: true, square: true, customSizes: true, uniformCover: true, noPadding: true, noSyntheticBackground: true };
   } finally { root.unmount(); host.remove(); }

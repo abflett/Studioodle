@@ -3,6 +3,8 @@ import { createElement, useLayoutEffect } from 'react';
 import { flushSync } from 'react-dom';
 import { SavedPreview } from '../../src/ui/SavedPreview';
 import { createRoot } from 'react-dom/client';
+import { GalleryPreview } from '../../src/ui/GalleryPreview';
+import { pictureThumbnails } from '../../src/app/pictureThumbnails';
 import { usePictureLibrary } from '../../src/ui/usePictureLibrary';
 import { pictureRepository } from '../../src/app/pictures';
 import type { SavedPicture } from '../../src/editor/savedPicture';
@@ -22,6 +24,7 @@ export async function checkLibraryState() {
   let lists = 0;
   pictureRepository.list = async () => { lists++; return pictures.map(pictureSummary); };
   pictureRepository.get = async id => pictures.find(picture => picture.id === id);
+  pictureRepository.getSummary = async id => { const picture = pictures.find(picture => picture.id === id); return picture && pictureSummary(picture); };
   pictureRepository.save = async picture => { pictures = [picture, ...pictures.filter(item => item.id !== picture.id)]; };
   pictureRepository.delete = id => new Promise(resolve => { gates.set(id, () => { pictures = pictures.filter(item => item.id !== id); resolve(); }); });
   let current: ReturnType<typeof usePictureLibrary> | undefined;
@@ -29,17 +32,17 @@ export async function checkLibraryState() {
     const state = usePictureLibrary();
     useLayoutEffect(() => { current = state; });
     const summary = state.saved[state.sampleIndex];
-    return summary ? createElement(SavedPreview, { key: summary.id, picture: state.current ?? summary,
-      pending: !state.current && !state.currentError, unavailable: state.currentError }) : null;
+    return summary ? createElement(GalleryPreview, { key: summary.id, picture: summary, onMetadata: state.previewMetadata }) : null;
   }
   const host=document.createElement('div');document.body.append(host);const root=createRoot(host);
   try {
     root.render(createElement(Probe));await waitFor(() => current?.saved.length === 3);
     await waitFor(() => host.querySelector('.saved-preview')?.getAttribute('aria-busy') === 'false');
-    // Both neighbors have finished their microtask-only prefetch by this point.
+    for (const picture of initial) await pictureThumbnails.get(picture);
+    // Bitmap cache hits must not require full documents during navigation.
     for (const index of [1, 0, 2, 0, 1, 0]) {
       flushSync(() => current!.setSampleIndex(index));
-      assert(current!.current?.id === initial[index]!.id, 'Cached navigation must not briefly report pending data');
+      assert(current!.saved[current!.sampleIndex]?.id === initial[index]!.id, 'Selected summary must update immediately');
       await new Promise(requestAnimationFrame);
       assert(host.querySelector('.saved-preview')?.getAttribute('aria-busy') === 'false', 'Warm preview must be ready for the next painted frame');
       assert(!host.querySelector('.preview-loading'), 'Warm navigation must not flash a loading indicator');
@@ -77,5 +80,5 @@ export async function checkLibraryState() {
     flushSync(() => root.render(createElement(SavedPreview, { picture: initial[0]!, unavailable: true })));
     assert(getComputedStyle(indicator).visibility === 'visible' && !!indicator.querySelector('svg'), 'Load failures must display immediately');
     return { concurrentDeletes: true, selectionClamp: true, restoreSelection: true, warmNavigation: true, quietSaveCompletion: true, delayedSpinner: true };
-  } finally { root.unmount();host.remove();Object.assign(pictureRepository,original); }
+  } finally { root.unmount();host.remove();pictureThumbnails.clear();Object.assign(pictureRepository,original); }
 }

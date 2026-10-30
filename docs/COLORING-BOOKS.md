@@ -64,14 +64,15 @@ Device-local storage is not a backup; export pages before clearing app/browser d
 
 ## Local storage
 
-`studioodle.workshop.v3` is the authoritative custom-page/revision record. For
-existing current-format templates previously saved under `studioodle.v6.coloring.`,
-reads combine those pages with workshop revisions without writing. The next
-successful save/import/delete writes the complete collection once with a local-only
-`localPages` marker. Thereafter old individual template keys are ignored. This
-consolidates the current two authoring sources without discarding valid pages;
-quota failures leave both previous sources intact. Deletion no longer performs
-partial writes across two repositories. The marker is never exported.
+Custom pages now use individual `pages` records in `studioodle-library-v9`
+IndexedDB (schema 2), with collection title/import/order metadata in `meta`.
+Save/import/delete are asynchronous transactions and preserve existing page order.
+They do not rewrite one localStorage collection. Valid current workshop and
+`studioodle.v6.coloring.*` sources import once, respecting `localPages` authority;
+imported rows and completion marker commit together. Failure leaves legacy inputs
+intact and retryable. Once complete, legacy keys are ignored, so deleted pages
+cannot reappear. There is no continuing dual-write compatibility layer. The
+standalone artwork reviewer and its origin-local data remain unchanged.
 
 Painted drawings remain in `studioodle-library-v9` IndexedDB. The picker uses
 bounded disposable SVG image previews and does not construct Artwork/hit maps for

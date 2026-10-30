@@ -28,8 +28,8 @@ Keep the app web-first, using IndexedDB as the central app persistence backend.
 Native SQLite is a later option for Windows/other platforms through the same
 repository boundary; it is not part of this batch. Aim for at least 10x improvements
 in measured bottlenecks, recording before/after results per operation rather than
-claiming a uniform whole-app speedup. This list records planned work, not completed
-implementation.
+claiming a uniform whole-app speedup. Completed items below record the implemented storage/preview batch; remaining
+items cover broader scale, quality and device validation.
 
 - [ ] **Measure storage and selection-page baselines.** Seed 1,000 and 5,000
   mixed-complexity drawings and a substantial custom-page collection. Record
@@ -37,7 +37,7 @@ implementation.
   Home load, thumbnail availability, rapid browsing, save latency and peak memory.
   Include a modest Android device when available; desktop timings do not establish
   WebView capacity or tablet performance. Choose concrete budgets from these results.
-- [ ] **Move custom coloring pages to IndexedDB.** Store pages individually rather
+- [x] **Move custom coloring pages to IndexedDB.** Store pages individually rather
   than rewriting one synchronous localStorage collection. Keep bundled layouts in
   coloringBook.json. Preserve current valid custom pages through a one-time import;
   mark the import complete only after a successful transaction, and make retries
@@ -48,13 +48,13 @@ implementation.
   preserve startup appearance and avoid replacing synchronous reads with UI flashes
   or input-blocking waits. Reviewer storage and annotations remain standalone and
   untouched. No ongoing dual-write localStorage compatibility layer is needed.
-- [ ] **Persist lazy raster thumbnails for saved drawings.** On gallery access,
+- [x] **Persist lazy raster thumbnails for saved drawings.** On gallery access,
   first look for a thumbnail matching the drawing's content revision and thumbnail
   renderer version. On a miss, load the latest drawing, render a bounded raster,
   encode/store a Blob and reuse it on later views and visits. Generate on demand
   after returning Home, not during live painting or for the entire library upfront.
   Match page aspect ratio, background, sticker ink and custom palette exactly.
-- [ ] **Make thumbnail lifetime safe and bounded.** Edits/undo invalidate the cached
+- [x] **Make thumbnail lifetime safe and bounded.** Edits/undo invalidate the cached
   revision; saving unchanged content should not force regeneration. Pending saves
   must preview the latest queued checkpoint. Reject stale generation completions,
   deduplicate requests, cancel obsolete work and bound concurrency, decoded memory
@@ -81,6 +81,18 @@ implementation.
 - [ ] Verify the selection-page batch with cold/warm cache, missing/corrupt preview,
   rapid navigation, edit/undo/Home, pending/failed saves, palette edits and delete
   races. Record before/after results at both library sizes before claiming gains.
+
+Implemented 30 October: schema 2 adds per-page records with stable ordering and an
+atomic legacy-import marker; current source pages are preserved. Gallery previews
+use revision/version-aware PNGs capped at 768px, with one generation plus latest
+waiting request and five bitmap URLs. Cached reads bypass generation and do not
+load vector documents. Full source loads only for explicit actions; browser print
+still opens synchronously. Tests cover pending/stale/delete/cache-failure paths,
+corrupt-image recovery, atomic page failure/retry and preserved add-page matching.
+The 1,000/5,000 lightweight fixture lists measured ~20-30/~90-120ms; persisted PNG
+reload ~1.5-1.6ms versus first generation ~240-275ms. Complex collections and real
+Android results, quota/backup work and direct-vs-two-stage quality trials remain
+unverified; do not claim a uniform 10x app speedup.
 
 ### Canvas and interaction — after the selection-page batch
 
