@@ -1,6 +1,6 @@
 # Road to Studioodle 1.0
 
-Updated 29 October 2026. Core feature mechanics are complete enough to shift from
+Updated 30 October 2026. Core feature mechanics are complete enough to shift from
 feature expansion to performance, visual cohesion, content and beta validation.
 Parents and children have already enjoyed the current small library; the next work
 should make that experience reliable and richer, rather than add more tools.
@@ -22,7 +22,69 @@ reported user-experience problems; their causes and costs still need measurement
 Earlier reverting the save changes did not remove the slowdown. Do not assume the
 save queue, a particular worker or the latest palette work is responsible.
 
-- [ ] **Next task: reproduce and profile scatter/spray and dense painting.** Use a
+### Storage and selection screen — next implementation batch
+
+Keep the app web-first, using IndexedDB as the central app persistence backend.
+Native SQLite is a later option for Windows/other platforms through the same
+repository boundary; it is not part of this batch. Aim for at least 10x improvements
+in measured bottlenecks, recording before/after results per operation rather than
+claiming a uniform whole-app speedup. This list records planned work, not completed
+implementation.
+
+- [ ] **Measure storage and selection-page baselines.** Seed 1,000 and 5,000
+  mixed-complexity drawings and a substantial custom-page collection. Record
+  estimated origin usage/quota separately from serialized payload bytes, cold/warm
+  Home load, thumbnail availability, rapid browsing, save latency and peak memory.
+  Include a modest Android device when available; desktop timings do not establish
+  WebView capacity or tablet performance. Choose concrete budgets from these results.
+- [ ] **Move custom coloring pages to IndexedDB.** Store pages individually rather
+  than rewriting one synchronous localStorage collection. Keep bundled layouts in
+  coloringBook.json. Preserve current valid custom pages through a one-time import;
+  mark the import complete only after a successful transaction, and make retries
+  safe. Test failed writes, duplicate IDs, deletion, reload and import/share behavior.
+- [ ] **Centralize remaining app persistence.** Inventory settings, theme, favorites
+  and pointer preferences; move durable app-owned state behind shared asynchronous
+  IndexedDB repositories. Tiny preferences are not the primary performance problem;
+  preserve startup appearance and avoid replacing synchronous reads with UI flashes
+  or input-blocking waits. Reviewer storage and annotations remain standalone and
+  untouched. No ongoing dual-write localStorage compatibility layer is needed.
+- [ ] **Persist lazy raster thumbnails for saved drawings.** On gallery access,
+  first look for a thumbnail matching the drawing's content revision and thumbnail
+  renderer version. On a miss, load the latest drawing, render a bounded raster,
+  encode/store a Blob and reuse it on later views and visits. Generate on demand
+  after returning Home, not during live painting or for the entire library upfront.
+  Match page aspect ratio, background, sticker ink and custom palette exactly.
+- [ ] **Make thumbnail lifetime safe and bounded.** Edits/undo invalidate the cached
+  revision; saving unchanged content should not force regeneration. Pending saves
+  must preview the latest queued checkpoint. Reject stale generation completions,
+  deduplicate requests, cancel obsolete work and bound concurrency, decoded memory
+  and object-URL lifetime. Delete cached previews with their drawing. Cache failures
+  must leave source artwork intact and allow a usable preview/retry path. Valid
+  cached previews should browse without loading full vector documents; opening,
+  export and editing still use the source drawing.
+- [ ] **Compare thumbnail quality and size.** Trial a modest oversampled render
+  followed by a second downsample against direct rendering at display size. Choose
+  dimensions, pixel budget and encoding using thin-ink quality, high-DPI display,
+  generation latency, storage and memory measurements. Avoid full-print-resolution
+  intermediates; two-stage downsampling is a candidate, not an assumed speedup.
+- [ ] **Bound large-library metadata work.** Measure the current full summary read
+  and sort; add indexed pagination/windowing if needed at the target library sizes.
+  Retain recent ordering, stable selection and bounded full-document loading.
+- [ ] **Expose storage health and recovery.** Add usage/quota estimates where
+  supported, check/request persistent storage where supported, and handle denied or
+  unavailable APIs and quota failures. Define a parent-friendly backup/restore
+  workflow for editable drawings; PNG/PDF output alone cannot restore editable art.
+- [ ] **Measure source encoding and write amplification.** Compare current complete
+  drawing writes with compact numeric encoding, compression and unchanged-content
+  reuse. Count encoding/decoding CPU and temporary memory as well as bytes saved.
+  Adopt only demonstrated improvements while retaining atomic drawing/summary saves.
+- [ ] Verify the selection-page batch with cold/warm cache, missing/corrupt preview,
+  rapid navigation, edit/undo/Home, pending/failed saves, palette edits and delete
+  races. Record before/after results at both library sizes before claiming gains.
+
+### Canvas and interaction — after the selection-page batch
+
+- [ ] **Reproduce and profile scatter/spray and dense painting.** Use a
   user-provided detailed drawing (including the colored Moon Sorceress when available),
   a repeatable synthetic stress drawing and a simple control page. Cover sustained
   stationary spray, long strokes, overlapping strokes and increasing paint density.
@@ -30,7 +92,7 @@ save queue, a particular worker or the latest palette work is responsible.
   geometry/node/blob growth, display work, save work and peak memory. Separate cold
   loads from warm reuse, and record device/browser/build conditions. Keep diagnostics
   in standalone tools/tests and ignored `work/`, never in the main app ribbon.
-- [ ] Fix the measured spray/paint bottlenecks first. Keep the opaque scattered-circle
+- [ ] Fix the measured spray/paint bottlenecks. Keep the opaque scattered-circle
   effect and slot-based color identity. Bound queued work and transient allocations;
   investigate batching, coverage reuse, compaction and scheduling based on evidence.
   A dedicated worker or snapshot cache is an option to evaluate, not a predetermined

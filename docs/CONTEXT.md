@@ -1,6 +1,6 @@
 # Current context
 
-Updated 29 October 2026. Read `AGENTS.md` first, then this file and the documentation
+Updated 30 October 2026. Read `AGENTS.md` first, then this file and the documentation
 for the requested feature. Use the checked-out repository root (`git rev-parse
 --show-toplevel`); a client's initial working directory may point elsewhere.
 
@@ -195,7 +195,17 @@ custom icon and ribbon/overlay control family in both themes, (3) 1,000+ accepte
 stickers from the current 364, (4) a much larger solo-page and composed-scene library
 from the current six pages, and (5) structured beta/release validation.
 
-First task: reproduce/profile scatter/spray and dense paint using the user's detailed
+The next implementation batch is storage and the selection page, as recorded in
+the performance section of REFINEMENT-TASKS.md: remain web-first with centralized
+IndexedDB persistence, move custom pages and then app preferences off localStorage,
+and persist revision-aware raster thumbnails generated lazily on gallery cache
+misses. Preserve current custom pages during the transition; standalone reviewer
+storage stays untouched. Compare bounded two-stage downsampling with direct rendering.
+Measure 1,000/5,000-picture libraries and operation-specific gains against the user's
+10x ambition. SQLite is a later native-platform option, not current implementation.
+These are agreed planning directions; no storage/thumbnail code has changed yet.
+
+After that batch: reproduce/profile scatter/spray and dense paint using the user's detailed
 Moon Sorceress when available, a synthetic stress drawing and a simple control.
 Other reported problems are slow detailed-canvas fills, panning and saved-gallery
 loading/cycling. The user previously saw slowdown even after reverting save changes;
