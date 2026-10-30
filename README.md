@@ -27,6 +27,8 @@ sideload APK using the local development key.
 | Command | Purpose |
 | --- | --- |
 | `npm run review` | Run the standalone artwork reviewer (same origin preserves annotations) |
+| `npm run cells` | Open the isolated 100 × 100 cell-brush experiment on port 1434 |
+| `npm run cells:typecheck` / `npm run cells:build` / `npm run test:cells` | Check/build/test the standalone cell-brush demo |
 | `npm run review:typecheck` / `npm run test:review` | Check the isolated reviewer |
 | `npm run review:build` | Build only the reviewer into `work/artwork-review-dist/` |
 | `npm run check` | Unit tests, TypeScript, ESLint and production web build |

@@ -11,7 +11,7 @@ test('normal development serves only the app entry and rejects reviewer source',
     await server.listen();
     const origin = server.resolvedUrls.local[0];
     assert.equal((await fetch(origin)).status, 200);
-    for (const route of ['artwork-review.html', 'tools/artwork-review/src/artworkReviewMain.tsx']) {
+    for (const route of ['artwork-review.html', 'tools/artwork-review/src/artworkReviewMain.tsx', 'tools/cell-brush/index.html', 'tools/cell-brush/src/main.ts']) {
       assert.equal((await fetch(new URL(route, origin))).status, 404);
     }
     assert.deepEqual(server.config.optimizeDeps.entries, ['index.html']);

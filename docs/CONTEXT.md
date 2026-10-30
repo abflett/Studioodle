@@ -212,7 +212,7 @@ loading/cycling. The user previously saw slowdown even after reverting save chan
 do not assume a save/worker cause without measurement. Keep diagnostics standalone.
 Set minimum-device workloads and measurable budgets before choosing optimizations.
 
-Canvas discussion is now captured in the same backlog, with no implementation yet:
+Canvas app changes remain planning work in the same backlog:
 trial per-surface spray overlays excluded from bucket topology, larger/fewer dots,
 compact circle particles rendered with Canvas primitives and bounded raster display
 caches. Keep the numeric document authoritative and SVG for source/import/export;
@@ -221,6 +221,17 @@ out of React state and reusing cached pixels during navigation. Resolve brush/sp
 ordering, eraser scope, confinement, appearance, sustained-growth limits and output
 quality before implementing the affected behavior. No second paint engine or
 pixel-only authoritative spray format is planned.
+
+A first standalone cell-brush demo is now under `tools/cell-brush/`. Run `npm run
+cells` on port 1434. It has a 100 × 100 page, eight base profiles with inversion/
+composition, brush diameter and eight colors, optional grid/junction highlighting,
+and clear. Shared 101 × 101 corner slots use 10,201 bytes; per-cell profiles are
+derived, not stored in the proposed three-byte format. Three/four-color cells use
+four quadrants; diagonal saddle connectivity currently follows palette index.
+It is deliberately coarse, with no stroke smoothing, persistence, undo, fills,
+workers or shaders. No app/reviewer engine changes or measured speedup claims.
+`cells:typecheck`, `cells:build` and `test:cells` verify the isolated tool; output and
+browser captures stay under ignored `work/`. See its README for model limitations.
 
 Solo coloring pages should fit visible subject bounds and preserve proportions,
 with intentional margins and orientation. Roughly 80% of suitable stickers is a
