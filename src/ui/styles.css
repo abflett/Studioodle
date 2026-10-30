@@ -250,8 +250,6 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 .paper-orientation .format-button { flex-direction: row; gap: 12px; padding: 12px 20px; border-radius: 16px; }
 .orientation-icon { display: block; width: 24px; height: 32px; border: 2px solid currentColor; border-radius: 3px; }
 .orientation-icon.paper-landscape { width: 32px; height: 24px; }
-.asset-loading { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; background: color-mix(in srgb, var(--surface) 85%, transparent); }
-.asset-loading progress { width: min(300px, 70vw); }
 .sticker-ribbon {
   position: absolute;
   top: 10px;
@@ -648,7 +646,14 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .portfolio-stack-brand .brand-icon { width: 14cqw; flex-shrink: 0; filter: none; translate: 0 -.6cqw; }
 .portfolio-stack-brand .brand-name { font-size: 9.3cqw; white-space: nowrap; }
 .portfolio-stack-brand .brand-spark { animation: none; }
-.portfolio-stack-status { position: absolute; left: 20%; right: 20%; top: 65%; display: grid; place-items: center; color: #35545c; }
+.portfolio-stack-status { position: absolute; left: 52%; top: 63%; translate: -50% 0; display: grid; justify-items: center; gap: 4px; color: #35545c; }
+.portfolio-stack-status svg { width: clamp(20px, 10cqw, 30px); height: clamp(20px, 10cqw, 30px); }
+.portfolio-stack-status[data-state="empty"], .portfolio-stack-status[data-state="preview"], .portfolio-stack-status .portfolio-status-error { display: none; }
+.portfolio-stage:has(.preview-loading) .portfolio-stack-status[data-state="preview"] { display: grid; animation: preview-loading-reveal 0s 120ms both; }
+.portfolio-stage:has(.preview-loading.is-error) .portfolio-stack-status[data-state="preview"] { animation: none; }
+.portfolio-stack-status[data-state="error"] .portfolio-status-spinner, .portfolio-stage:has(.preview-loading.is-error) .portfolio-stack-status[data-state="preview"] .portfolio-status-spinner { display: none; }
+.portfolio-stack-status[data-state="error"] .portfolio-status-error, .portfolio-stage:has(.preview-loading.is-error) .portfolio-stack-status[data-state="preview"] .portfolio-status-error { display: block; }
+.selection-screen[data-opening] :is(.portfolio-pile, .library-actions, .picture-carousel > .icon-button) { visibility: hidden; }
 .portfolio-stack-error { font-size: 13px; }
 .portfolio-stage .portfolio-stack-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; pointer-events: none; user-select: none; }
 .portfolio-page { position: absolute; inset: 0; isolation: isolate; transform-origin: left center; }
@@ -659,7 +664,8 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .portfolio-page .saved-preview { max-width: 100%; max-height: 100%; border: 0; border-radius: 0; box-shadow: none; }
 /* Let the branded base sheet show through until the real picture is ready. */
 .portfolio-page:has(.preview-loading) > :is(.portfolio-paper-backing, .portfolio-paper-overlay) { visibility: hidden; }
-.portfolio-page .preview-loading { background: transparent; place-items: end center; padding-bottom: 8%; color: #35545c; }
+.portfolio-page .preview-loading { background: transparent; }
+.portfolio-page .preview-loading > svg { visibility: hidden; }
 .portfolio-page .preview-spinner { width: 30px; height: 30px; filter: none; }
 .portfolio-page.turn-next { animation: portfolio-next 240ms ease-out both; }
 .portfolio-page.turn-previous { animation: portfolio-previous 240ms ease-out both; }

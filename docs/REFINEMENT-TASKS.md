@@ -321,6 +321,11 @@ planning estimates, not an obligation to publish weak pages.
 
 ## Implemented feature baseline and remaining design checks
 
+- [x] Center saved-gallery loading beneath the branded stack logo. Keep the same
+  spinner position while opening a drawing, hiding the front sheet/actions instead
+  of covering the page with a translucent progress-bar overlay.
+
+
 The Coloring Pages Focus layout is implemented using the six existing scenes,
 and the reviewed blank paper size/color steps are now implemented;
 [design brief](OVERLAY-DESIGN.md) and [examples](overlay-examples/README.md) retain

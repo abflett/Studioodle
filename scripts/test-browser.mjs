@@ -87,6 +87,19 @@ try {
     const metrics = await evaluate("import('/tests/browser/save-performance.ts').then(m=>m.profileSavePerformance())");
     await fs.writeFile('work/tests/save-performance-results.json', JSON.stringify(metrics, null, 2));
     console.log('Save performance:', JSON.stringify(metrics));
+  }else if(process.argv.includes('--gallery-loading')){
+    const layouts=[];
+    for(const [width,height] of [[1280,900],[390,844],[320,568],[844,390]]){
+      await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+      for(const format of ['portrait','square','landscape'])for(const phase of ['thumbnail','opening']){
+        layouts.push(await evaluate(`import('/tests/browser/gallery-loading.ts').then(m=>m.showGalleryLoading('${format}','${phase}'))`));
+        const shot=await cdp('Page.captureScreenshot',{format:'png'});
+        await fs.writeFile(`work/tests/gallery-${width}-${format}-${phase}.png`,Buffer.from(shot.data,'base64'));
+      }
+    }
+    await evaluate("import('/tests/browser/gallery-loading.ts').then(m=>m.closeGalleryLoading())");
+    console.log('Gallery loading:',JSON.stringify(layouts));
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(process.argv.includes('--paint-profile')){
     const brush=await evaluate("import('/tests/browser/brush-performance.ts').then(async m=>{const runs=[];for(let i=0;i<3;i++)runs.push(await m.profileBrush());return runs;})");
     const model=await evaluate("import('/tests/fixtures/paint-workloads.ts').then(m=>[m.profilePaintModel(),m.profilePaintModel(),m.profilePaintModel()])");

@@ -21,7 +21,7 @@ import { GalleryPreview } from './GalleryPreview';
 import { mergeColoringPages } from '../editor/coloringBook';
 import type { ColoringBookPage } from '../editor/coloringBook';
 import { useEffect, useMemo, useState, useRef, useCallback, useLayoutEffect } from 'react';
-import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, LoaderCircle, RotateCw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, X, Trash2, Printer, Download, Undo2, Settings, LogOut, Fullscreen, Minimize, LoaderCircle, ImageOff, RotateCw } from 'lucide-react';
 import { pictureChoices, savedStackArtwork, portfolioPaper } from '../app/startup';
 import type { EditorSetup } from '../editor/setup';
 import type { ThemePreference } from './theme';
@@ -33,7 +33,8 @@ function Arrow({ direction }: { direction: 'left' | 'right' }) {
 type WizardStep = 'shape' | 'paper' | 'scene';
 const windowOrientation = () => window.matchMedia('(min-aspect-ratio: 1/1)').matches ? 'landscape' as const : 'portrait' as const;
 
-export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings, onSettingsChange }: {
+export function SelectionScreen({ opening = false, onOpen, onExit, theme, onThemeChange, settings, onSettingsChange }: {
+  opening?: boolean;
   onOpen: (setup: EditorSetup) => void;
   onExit: () => void;
   settings: AppSettings;
@@ -137,6 +138,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   const pageAdded = !!currentSummary?.pageLayout && addedLayouts.has(currentSummary.pageLayout);
   const selectedKey = currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : undefined;
   const [actionBusy, setActionBusy] = useState(false);
+  const [openingSaved, setOpeningSaved] = useState(false);
+  const pictureOpening = opening || openingSaved;
   const actionInFlight = useRef(false);
   const selection = useRef(selectedKey);
   useLayoutEffect(() => { selection.current = selectedKey; return () => { selection.current = undefined; }; }, [selectedKey]);
@@ -168,8 +171,8 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
   };
 
   return (
-    <main className="selection-screen" aria-label="Choose a picture">
-      <section className="selection">
+    <main className="selection-screen" data-opening={pictureOpening || undefined} aria-busy={pictureOpening} aria-label="Choose a picture">
+      <section className="selection" inert={pictureOpening}>
         <nav className="selection-preferences studio-actions" aria-label="Studio controls">
           <button className="icon-button" title="Settings" aria-label="Settings" aria-haspopup="dialog" onClick={() => setSettingsOpen(true)}><Settings aria-hidden="true" /></button>
         {(isDesktop || document.fullscreenEnabled) && <button className="fullscreen-toggle icon-button" title={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} aria-label={fullscreen ? 'Leave fullscreen' : 'Fullscreen'} onClick={() => {
@@ -195,11 +198,16 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
           <div className="picture-carousel" data-paper-shape={frontPaper.shape}>
             <button className="icon-button" aria-label="Previous saved picture" disabled={saved.length < 2} onClick={() => browseSaved('previous')}><Arrow direction="left" /></button>
             <div className="saved-picture-card" role="group" aria-labelledby="your-pictures-label">
-              <button className="choice-card previous-picture" aria-label={currentSummary ? `Continue saved picture: ${currentSummary.title}` : 'Continue a saved picture (no saved pictures yet)'} title={currentSummary ? `Continue ${currentSummary.title}` : 'Your pictures'} disabled={!currentSummary || busy || actionBusy} onClick={() => { void withCurrent(onOpen); }}>
+              <button className="choice-card previous-picture" aria-label={currentSummary ? `Continue saved picture: ${currentSummary.title}` : 'Continue a saved picture (no saved pictures yet)'} title={currentSummary ? `Continue ${currentSummary.title}` : 'Your pictures'} disabled={!currentSummary || busy || actionBusy} onClick={() => { setOpeningSaved(true); void withCurrent(onOpen).finally(() => setOpeningSaved(false)); }}>
                 <span className="choice-art portfolio-stage">
                   <span className="portfolio-stack" aria-hidden="true">
                     <img className="portfolio-stack-art" src={savedStackArtwork} alt="" draggable={false} decoding="async" />
                     <span className="portfolio-stack-brand"><Brand decorative /></span>
+                    <span className="portfolio-stack-status" data-state={pictureOpening ? 'opening' : currentSummary ? 'preview' : library.loading ? 'loading' : library.error ? 'error' : 'empty'}>
+                      <LoaderCircle className="preview-spinner portfolio-status-spinner" />
+                      <ImageOff className="portfolio-status-error" />
+                      {library.error && <span className="portfolio-stack-error">Storage unavailable</span>}
+                    </span>
                   </span>
                   {currentSummary ? <span className="portfolio-pile" data-paper-shape={frontPaper.shape} style={{ rotate: paperRotation(currentSummary?.id ?? 'empty'), width: `min(90%, calc(var(--object-height) * var(--sheet-fill, .88) * ${sheetRatio}))`, aspectRatio: `${sheetRatio}` }}>
                     <span className={`portfolio-page${pageTurn ? ` turn-${pageTurn}` : ''}`} key={currentSummary ? `${currentSummary.id}:${currentSummary.updatedAt}` : 'empty'}>
@@ -209,7 +217,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
                       </span>
                       <img className="portfolio-paper-overlay" src={frontPaper.artwork} alt="" aria-hidden="true" draggable={false} />
                     </span>
-                  </span> : <span className="portfolio-stack-status">{library.loading ? <LoaderCircle className="preview-spinner" aria-label="Loading saved pictures" /> : <span className={library.error ? 'portfolio-stack-error' : 'sr-only'}>{library.error ? 'Storage unavailable' : 'Your art goes here'}</span>}</span>}
+                  </span> : null}
                 </span>
               </button>
               <nav className="library-actions" aria-label="Selected saved picture actions" data-empty={saved.length === 0 || undefined}>
@@ -230,6 +238,7 @@ export function SelectionScreen({ onOpen, onExit, theme, onThemeChange, settings
           <p className="sr-only" role="status">{saved.length ? `Saved picture ${sampleIndex + 1} of ${saved.length}` : 'No saved pictures yet'}</p>
         </section>
       </section>
+      <span className="sr-only" role="status">{pictureOpening ? 'Loading picture' : library.loading ? 'Loading saved pictures' : library.error ? 'Storage unavailable' : ''}</span>
 
       {(step === 'shape' || step === 'paper') && <BlankPageSetup step={step} onStep={setStep} paperPreset={paperPreset} orientation={orientation} background={background} onPreset={setPaperPreset} onOrientation={value => { setManualOrientation(true); setOrientation(value); }} onBackground={setBackground} onClose={() => setStep(null)} onOpen={openPicture} />}
       {step === 'scene' && <ColoringPagePicker pages={scenes} initialPageId={initialSceneId} bundledIds={new Set(coloringPages.map(page => page.id))} onClose={() => setStep(null)} onOpen={openPicture} onAdded={() => { void refreshBooks(); }} onDelete={page => { setDeletingPage(true); setPendingDelete(page); }} />}

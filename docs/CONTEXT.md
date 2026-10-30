@@ -26,6 +26,13 @@ paper stack. Hover scales slightly without layout shifts. Composite paper layers
 share square/A4 portrait/A4 landscape geometry: masked full-bleed art, border/fold
 overlay and a static stack. Preserve aspect ratios, edge alignment, stable carousel
 layout and the user's artwork; do not invent preview backgrounds to hide cropping.
+Gallery loading now uses one spinner anchored to the branded base stack beneath
+the logo, independent of the preview sheet's rotation/mask/aspect ratio. Opening
+hides the front sheet and gallery actions while the same spinner remains; no
+picture-opening progress bar or translucent full-screen veil. The source-read and
+sticker-preparation phases share that state; error feedback and warm-cache previews
+remain. Startup's separate splash progress is unchanged.
+
 
 Fill now selects immediately (toolbar or G) and applies the selected solid color.
 The fill-pattern overlay and settings command are removed; the painting-controls

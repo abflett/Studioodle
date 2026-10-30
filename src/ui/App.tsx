@@ -105,13 +105,12 @@ export function App() {
     return <><Editor settings={settings} setup={choice} onBack={() => setChoice(null)} />{saveNotice}</>;
   }
 
-  return <><SelectionScreen settings={settings} onSettingsChange={changeSettings} onExit={exitStudio} onOpen={(setup) => {
+  return <><SelectionScreen opening={opening} settings={settings} onSettingsChange={changeSettings} onExit={exitStudio} onOpen={(setup) => {
     if (opening) return;
     setOpening(true); setOpenError(false);
     void prepareStickers(setup.document?.surfaces.map(surface => surface.kind) ?? []).then(() => {
       setChoice({ ...setup, id: setup.id ?? crypto.randomUUID() });
     }).catch(() => setOpenError(true)).finally(() => setOpening(false));
   }} theme={theme} onThemeChange={changeTheme} />
-  {opening && <div className="asset-loading"><progress aria-label="Loading picture" /></div>}
   {openError && <button className="save-notice" onClick={() => setOpenError(false)}>Could not load this picture. Tap to dismiss.</button>}{saveNotice}</>;
 }
