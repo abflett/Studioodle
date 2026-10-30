@@ -44,4 +44,4 @@ export class CellInspector {
     detail.style.whiteSpace = 'pre-wrap'; detail.style.fontSize = '11px';
     this.panel.append(detail);
   }
-}
+}
