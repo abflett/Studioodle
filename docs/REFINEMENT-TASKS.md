@@ -84,6 +84,13 @@ implementation.
 
 ### Canvas and interaction — after the selection-page batch
 
+Planning direction: retain the numeric document model and Canvas2D renderer.
+Live paint already uses numeric geometry/Path2D, not SVG strings or per-shape DOM
+elements. SVG remains useful for editable source art, import and scalable export.
+Prefer native circle/curve descriptions where appropriate; measure the savings
+from avoiding polygon construction, boolean operations and repeated rendering.
+This is an evolution of the current engine, not a second painting engine.
+
 - [ ] **Reproduce and profile scatter/spray and dense painting.** Use a
   user-provided detailed drawing (including the colored Moon Sorceress when available),
   a repeatable synthetic stress drawing and a simple control page. Cover sustained
@@ -92,17 +99,49 @@ implementation.
   geometry/node/blob growth, display work, save work and peak memory. Separate cold
   loads from warm reuse, and record device/browser/build conditions. Keep diagnostics
   in standalone tools/tests and ignored `work/`, never in the main app ribbon.
-- [ ] Fix the measured spray/paint bottlenecks. Keep the opaque scattered-circle
-  effect and slot-based color identity. Bound queued work and transient allocations;
-  investigate batching, coverage reuse, compaction and scheduling based on evidence.
-  A dedicated worker or snapshot cache is an option to evaluate, not a predetermined
-  solution. Preserve clipping, immediate feedback, gesture undo and action saving.
+- [ ] **Prototype spray outside fill topology.** Give each relevant page/sticker
+  surface its own spray overlay beneath its line art, attached to that surface's
+  transforms and stacking order. Bucket fills should ignore spray dots and operate
+  on the underlying ordinary paint, including when the pointer lands on a dot.
+  Avoid per-dot polygon union/subtraction and participation in bucket connectivity.
+  Confirm the open behavior questions below before committing the new semantics.
+- [ ] **Trial larger, fewer spray dots and compact particle data.** Describe dots
+  by position, radius and palette slot; render circles directly through Canvas2D
+  with surface clipping. Control emission by elapsed time/distance rather than
+  pointer-event frequency, with bounded catch-up after stalls. Preserve continuous
+  stationary spray and the opaque effect initially. Compare visual quality and
+  measured costs against the current polygon implementation; primitives alone do
+  not guarantee an end-to-end speedup.
+- [ ] **Cache spray display without making pixels the sole source.** Evaluate
+  bounded raster tiles backed by immutable particle chunks. Bound generation,
+  decoded memory and sustained-spray data growth; avoid replaying every particle
+  each frame. Retain palette recoloring, surface movement, clipping and high-quality
+  PNG/SVG/PDF/print output. Save particles as document data, not an input-event log.
+  Undo retains affected prior chunks/tiles within the memory budget, not full-scene
+  copies or a fixed action count. Background cache work must not alter restored
+  history. Reject stale cache completions after edits, undo or palette changes.
+- [ ] Fix remaining measured ordinary-paint bottlenecks separately. Bound queued
+  work and transient allocations; investigate batching, coverage reuse, compaction
+  and scheduling based on evidence. A dedicated worker is an option to evaluate,
+  not a predetermined solution. Preserve immediate feedback and action saving.
 - [ ] Profile and fix fills on detailed canvases: distinguish region/topology search,
   geometry preparation, worker queueing, redraw and persistence. Check repeated fills,
   fill after spray, undo and cancellation without blocking other interactions.
 - [ ] Profile and fix panning/zooming under heavy paint. Separate display-cache misses,
   geometry rendering, region decoding and memory pressure. Reuse stable geometry and
   display work without losing fine detail or showing stale custom-palette colors.
+- [ ] **Separate live viewport movement from React rendering.** The current view
+  hook updates React position/zoom state; the canvas renderer also clears/redraws
+  its visible area when invoked. Measure React commits, layout reads and drawing
+  separately. Trial a view controller holding live transforms outside React,
+  applying at most one update per animation frame and publishing only necessary
+  UI state. Keep input coordinates, pinch anchors, focus/precision zoom, resize
+  and cancellation consistent; view changes must not edit or save artwork.
+- [ ] **Reuse pixels while navigating.** Evaluate bounded overscan/tiles for panning
+  and immediate cached-pixel scaling during zoom followed by a sharp refresh.
+  Render newly exposed areas and invalidated content rather than replaying all
+  geometry. Avoid maximum-zoom whole-page bitmaps; measure sharpness, refresh delay,
+  cache memory and stale-result cancellation on real target devices.
 - [ ] Improve cold reopen and saved-picture carousel latency. Measure preview loading,
   SVG/definition decode, paint restoration, prefetch, stale-load cancellation and
   cache eviction independently. Rapid browsing must not accumulate obsolete work.
@@ -114,6 +153,27 @@ implementation.
 - [ ] Finish the gesture-failure rollback and physical save-interruption validation
   described in the engineering findings below. These remain blockers even if the
   ordinary-input performance fixes are successful.
+
+#### Open canvas decisions — discuss before implementing the affected behavior
+
+- **Paint ordering:** should normal brush strokes made after spraying remain below
+  the spray, or cover it? A fixed overlay is simpler; arbitrary interleaving needs
+  an explicit ordering model. Fill should ignore spray either way.
+- **Eraser scope:** erase spray, ordinary paint or both? Decide whether the existing
+  eraser is sufficient and what happens across surface/region boundaries.
+- **Spray confinement:** preserve current clipping behavior or confine a gesture
+  to its starting region? Decide how overlapping stickers and exposed paper receive
+  particles; line art stays above spray.
+- **Appearance:** settle dot size, density and size-control meaning with visual
+  trials. Keep opaque dots initially; translucency/blending requires a separate
+  decision about accumulation, palette changes and output equivalence.
+- **Long-session limits:** choose particle chunking, coverage reuse and tile budgets
+  from measured sustained-spray growth. Do not silently discard visible artwork or
+  flatten away required editability to meet a budget.
+- **Output and zoom quality:** decide whether SVG/PDF keep individual circles or
+  use another reviewed representation; measure large-output costs. Set acceptable
+  temporary zoom softness and time-to-sharpness. Cache resolution is independent
+  of authoritative particle precision.
 
 ## 2. One friendly, playful and calm visual language
 
