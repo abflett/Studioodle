@@ -44,6 +44,14 @@ test('display documents normalize the shorter side and preserve useful ratio lab
  assert.deepEqual(normalizedPageSize({width:100000,height:1},'landscape'),{width:8192,height:1000});
 });
 
+test('square pages are independent of the remembered paper preset',async()=>{
+ const {paperPresets,blankPageSize,presetMillimeters}=await server.ssrLoadModule('/src/editor/paperPresets.ts');
+ for(const {id} of paperPresets){
+  assert.deepEqual(blankPageSize(id,'square',{width:1920,height:1080}),{width:1000,height:1000});
+  assert.deepEqual(presetMillimeters(id,'square'),{width:210,height:210});
+ }
+});
+
 test('physical output size is independent of normalized vector coordinates',async()=>{
  const {exportDimensions,defaultExportDpi}=await server.ssrLoadModule('/src/editor/exportResolution.ts');
  const {isSavedPicture}=await server.ssrLoadModule('/src/editor/pictureValidation.ts');

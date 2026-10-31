@@ -20,6 +20,7 @@ export function normalizedPageSize(size: PageSize, orientation: PaperOrientation
   return orientSize({width:pageShortSide,height:Math.round(pageShortSide*ratio)},orientation);
 }
 export function presetMillimeters(id: PaperPresetId, orientation: PaperOrientation, display: PageSize={width:4,height:3}): PageSize {
+  if(orientation==='square')return {width:210,height:210};
   const preset=paperPresets.find(p=>p.id===id)!;
   if(preset.id!=='display')return orientSize({width:preset.widthMm,height:preset.heightMm},orientation);
   const size=normalizedPageSize(display,orientation);

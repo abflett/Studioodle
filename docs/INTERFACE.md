@@ -248,6 +248,10 @@ Small-screen overlays (width <=600px or height <=540px) fill the viewport withou
 
 The two-icon step header is a segmented switch with a sliding theme-colored
 highlight, no connector dash, and reduced-motion support.
+Square shows a single 1:1 card instead of square versions of A4/A5/Photo.
+Switching back to Tall/Wide restores the remembered preset. Square documents use
+1000 x 1000 logical units with a separate 210 x 210mm default print size.
+
 Orientation controls share the fixed footer with Next; neither step scrolls.
 Paper cards use equal flexible grid cells and contain their artwork, shrinking
 when needed. The background picker prefers eight columns / four rows in landscape

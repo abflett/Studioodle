@@ -1049,3 +1049,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .ribbon-shell .art-ribbon button { padding-inline: 2px; }
   .ribbon-shell .art-ribbon button svg { width: min(28px, 100%); }
 }
+
+/* Square is one aspect-ratio choice, independent of physical paper presets. */
+.blank-size-options.is-square { grid-template-columns: minmax(0, 230px); grid-template-rows: minmax(0, 1fr); justify-content: center; max-height: 230px; }

@@ -5,9 +5,9 @@ import { contrastingDrawingColor } from '../editor/palette';
 
 export function PaperArtwork({ displaySize, preset, orientation, color }: { displaySize: PageSize; preset: PaperPresetId; orientation: PaperOrientation; color?: string }) {
   const {width,height}=presetMillimeters(preset,orientation,displaySize);
-  const fold=Math.min(24,width*.12),units=preset==='photo';
-  const label=preset==='display'?aspectRatioLabel(displaySize,orientation):preset==='full'?'A4':preset==='half'?'A5':orientation==='square'?'4 \u00d7 4':'4 \u00d7 6';
-  const fontSize=preset==='full'?64:preset==='half'?50:preset==='photo'?32:Math.min(width,height)*.27;
+  const fold=Math.min(24,width*.12),units=preset==='photo'&&orientation!=='square';
+  const label=orientation==='square'?'1:1':preset==='display'?aspectRatioLabel(displaySize,orientation):preset==='full'?'A4':preset==='half'?'A5':'4 \u00d7 6';
+  const fontSize=orientation==='square'?56:preset==='full'?64:preset==='half'?50:preset==='photo'?32:Math.min(width,height)*.27;
   const ink = color ? `#${contrastingDrawingColor(color).toString(16).padStart(6, '0')}` : undefined;
   return <svg className="blank-paper-art" viewBox={`0 0 ${width} ${height}`} aria-hidden="true">
     <path className="blank-paper-face" style={color ? { fill: color } : undefined} d={`M1 1H${width - fold}L${width - 1} ${fold}V${height - 1}H1Z`} />
@@ -24,13 +24,13 @@ export function PaperSetup({ displaySize, paperPreset, orientation, onPreset }: 
   onPreset: (preset: PaperPresetId) => void;
 }) {
   return <div className="blank-paper-options">
-    <div className="blank-size-options" role="group" aria-label="Paper size">
-      {paperPresets.map(preset => {
+    <div className={`blank-size-options${orientation==='square'?' is-square':''}`} role="group" aria-label="Paper size">
+      {(orientation==='square'?[paperPresets[0]]:paperPresets).map(preset => {
         const dimensions=presetMillimeters(preset.id,orientation,displaySize);
         const scale=Math.min(.5,190/Math.max(dimensions.width,dimensions.height));
         const width=dimensions.width*scale,height=dimensions.height*scale;
-        const detail=preset.id==='display'?aspectRatioLabel(displaySize,orientation):preset.detail;
-        return <button type="button" key={preset.id} aria-label={`${preset.title}, ${detail}`} title={`${preset.title}, ${detail}`} aria-pressed={paperPreset === preset.id} onClick={() => onPreset(preset.id)} className="blank-size-choice" style={{ '--paper-width': `${width}px`, '--paper-height': `${height}px` } as CSSProperties}><PaperArtwork displaySize={displaySize} preset={preset.id} orientation={orientation} /></button>;
+        const detail=orientation==='square'?'1:1':preset.id==='display'?aspectRatioLabel(displaySize,orientation):preset.detail;
+        return <button type="button" key={preset.id} aria-label={`${orientation==='square'?'Square':preset.title}, ${detail}`} title={`${orientation==='square'?'Square':preset.title}, ${detail}`} aria-pressed={orientation==='square'||paperPreset === preset.id} onClick={() => {if(orientation!=='square')onPreset(preset.id);}} className="blank-size-choice" style={{ '--paper-width': `${width}px`, '--paper-height': `${height}px` } as CSSProperties}><PaperArtwork displaySize={displaySize} preset={preset.id} orientation={orientation} /></button>;
       })}
     </div>
   </div>;

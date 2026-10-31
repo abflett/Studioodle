@@ -100,6 +100,10 @@ areas, so compressed or expanded controls never appear oval.
 
 Small-screen overlays (width <=600px or height <=540px) fill the viewport without an outer border, gutter or rounded corners, respecting safe areas. Delete confirmation stays compact. Blank paper colors prefer the familiar four landscape rows/eight narrow portrait rows, adapting only when swatches become too small.
 
+Square shows a single 1:1 card instead of square versions of A4/A5/Photo.
+Switching back to Tall/Wide restores the remembered preset. Square documents use
+1000 x 1000 logical units with a separate 210 x 210mm default print size.
+
 Blank setup keeps orientation beside Next in its fixed footer. Paper cards and
 artwork shrink within the header/content/footer layout without scrolling. The
 32-color background picker measures available space, choosing 4/6/8/10/12/16

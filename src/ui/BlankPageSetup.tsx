@@ -21,7 +21,7 @@ export function BlankPageSetup({ displaySize, step, onStep, paperPreset, orienta
   useEffect(() => { const modal = dialog.current; modal?.showModal(); return () => modal?.close(); }, []);
   useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [step]);
   const paper = paperPresets.find(p => p.id === paperPreset)!;
-  const paperLabel=paperPreset==='display'?aspectRatioLabel(displaySize,orientation):paper.detail;
+  const paperLabel=orientation==='square'?'1:1':paperPreset==='display'?aspectRatioLabel(displaySize,orientation):paper.detail;
   const colorName = drawingColors.find(color => color.value === parseInt(background.slice(1), 16))?.name ?? 'Custom color';
   return <dialog ref={dialog} className="setup-dialog blank-page-dialog" aria-labelledby="blank-setup-title" onCancel={onClose} onClick={event => closeOnBackdrop(event, onClose)} onAuxClick={event => { if (event.button === 2) closeOnBackdrop(event, onClose); }}>
     <div className="blank-setup-body">
