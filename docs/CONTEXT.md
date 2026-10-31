@@ -143,7 +143,8 @@ Pixel comparisons cover both themes and desktop/phone widths.
 
 The editor ribbon toggles with T or its arrow-and-line button. The floating
 reopen control sits at the top right with safe-area spacing. Reopen has a borderless
-icon matching the expanded Collapse size and position inside a touch target of at least 44px;
+icon matching the expanded Collapse size, position and rounded-square hover shape
+inside a touch target of at least 44px;
 Collapse uses the same rounded tile shape as the other ribbon buttons.
 Ribbon tools use transparent groups without wells, larger theme-colored icons with contrasting glows
 (32px desktop, up to 28px on narrow screens), rounded

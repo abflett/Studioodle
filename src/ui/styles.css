@@ -951,7 +951,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .ribbon-shell .main-ribbon { padding-inline: max(8px, env(safe-area-inset-left)) max(8px, env(safe-area-inset-right)); }
 .ribbon-toggle { top: max(4px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); z-index: 4; display: grid; place-items: center; width: 48px; height: 48px; padding: 10px; border: 0; border-radius: 50%; }
 .ribbon-collapse { position: static; color: var(--ribbon-icon); background: transparent; padding: 8px; }
-.ribbon-reopen { position: fixed; top: max(6px, env(safe-area-inset-top)); right: max(6px, env(safe-area-inset-right)); width: 44px; height: 44px; padding: 12px; color: var(--ribbon-icon); background: transparent; border: 0; box-shadow: none; }
+.ribbon-reopen { position: fixed; top: max(6px, env(safe-area-inset-top)); right: max(6px, env(safe-area-inset-right)); width: 44px; height: 44px; padding: 12px; color: var(--ribbon-icon); background: transparent; border: 0; border-radius: 10px; box-shadow: none; }
 .ribbon-shell .sticker-ribbon.is-focused button { color: var(--ribbon-icon); border: 1px solid var(--ribbon-icon); background: transparent; box-shadow: 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent), inset 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), inset 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent); }
 .ribbon-toggle svg { width: 28px; height: 28px; stroke-width: 2; }
 .ribbon-reopen svg, .ribbon-shell .sticker-ribbon.is-focused button svg { width: 24px; height: 24px; filter: drop-shadow(0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent)) drop-shadow(0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent)); }
@@ -964,6 +964,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 }
 @media (max-width: 600px) {
   .ribbon-toggle { width: 44px; height: 44px; padding: 9px; }
+  .ribbon-reopen { border-radius: 8px; }
   .ribbon-collapse svg { width: 25px; height: 25px; }
 }
 
