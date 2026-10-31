@@ -15,6 +15,15 @@ export async function checkRibbonCollapse(){
  try{
   root.render(createElement(EditorPreview,{setup:{id:'ribbon-check',title:'Ribbon check',format:'landscape',size:{width:innerWidth,height:innerHeight},background:'#ffffff',leafColor:0},settings:{advancedPainting:true,mouseSpeed:100},onBack:()=>{}}));
   await settle();const fitted=paper(),open=workspace();
+  const theme=document.documentElement.dataset.theme;
+  try{
+   document.documentElement.dataset.theme='light';
+   const light=getComputedStyle(button('Go home')).color,lightGlow=getComputedStyle(button('Go home').querySelector('svg')!).filter;
+   document.documentElement.dataset.theme='dark';
+   assert(getComputedStyle(button('Go home')).color!==light,'Ribbon icon follows theme text color');
+   assert(getComputedStyle(button('Go home').querySelector('svg')!).filter!==lightGlow,'Ribbon glow inverts with the theme');
+  }finally{if(theme===undefined)delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=theme;}
+
   const collapse=button('Hide tools').getBoundingClientRect();
   assert(collapse.right<=innerWidth&&innerWidth-collapse.right<=20&&collapse.top<12,'Collapse is at the ribbon top right');
   for(const tool of host.querySelectorAll('.main-ribbon button')){

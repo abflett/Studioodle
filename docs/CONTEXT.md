@@ -92,10 +92,10 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 ## Current interface
 
 The editor ribbon toggles with T or its corner arrow-and-line icon. Both controls sit at the
-top right with safe-area spacing. Both are circular. Ribbon tools use transparent groups without wells, larger white shadowed icons
+top right with safe-area spacing. Both are circular. Ribbon tools use transparent groups without wells, larger theme-colored icons with contrasting glows
 (32px desktop, up to 28px on narrow screens), circular
-white-film hover targets and a gold selected tool. The open-ribbon toggle matches; only the floating reopen control has a transparent center, 75%-opaque
-white border/icon, an even shadow glow and a white hover film.
+theme-tinted hover targets and the theme action color for the selected tool. The open-ribbon toggle matches; only the floating reopen control has a transparent center, 85%-opaque
+theme-colored border/icon, an even contrast glow and a theme-tinted hover film.
 Fit mode refits to the expanded workspace; manual zoom retains its absolute scale
 and center artwork point across layout changes. Toggle focus follows the visible
 control; ribbon visibility is session-local and does not alter saved artwork.

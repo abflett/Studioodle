@@ -13,6 +13,9 @@
   --action-text: #fffaf0;
   --shadow: #35545c30;
   --ribbon-shadow: #294a514d;
+  --ribbon-icon: color-mix(in srgb, var(--text) 85%, transparent);
+  --ribbon-glow: var(--surface);
+  --ribbon-hover: color-mix(in srgb, var(--text) 12%, transparent);
   --brand-tile: #c3dcdb;
   --brand-paper: #faf4e6;
   --brand-ink: #35545c;
@@ -49,6 +52,7 @@
     --action-text: #243148;
     --shadow: #050c1c70;
     --ribbon-shadow: #050c1c99;
+    --ribbon-glow: var(--page);
     --brand-tile: #344761;
     --brand-paper: #22334c;
     --brand-ink: #f6f0e2;
@@ -947,15 +951,15 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .ribbon-shell[hidden] { display: none; }
 .ribbon-shell .main-ribbon { padding-inline: max(64px, calc(env(safe-area-inset-right) + 58px)); }
 .ribbon-toggle { top: max(4px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); z-index: 4; display: grid; place-items: center; width: 48px; height: 48px; padding: 10px; border: 0; border-radius: 50%; }
-.ribbon-collapse { position: absolute; color: #ffffffbf; background: transparent; padding: 8px; }
-.ribbon-reopen { position: fixed; color: #ffffffbf; border: 1px solid #ffffffbf; background: transparent; box-shadow: 0 0 1px #000b, 0 0 3px #0008, inset 0 0 1px #000b, inset 0 0 3px #0008; }
+.ribbon-collapse { position: absolute; color: var(--ribbon-icon); background: transparent; padding: 8px; }
+.ribbon-reopen { position: fixed; color: var(--ribbon-icon); border: 1px solid var(--ribbon-icon); background: transparent; box-shadow: 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent), inset 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), inset 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent); }
 .ribbon-toggle svg { width: 28px; height: 28px; stroke-width: 2; }
-.ribbon-reopen svg { width: 24px; height: 24px; filter: drop-shadow(0 0 1px #000b) drop-shadow(0 0 3px #0008); }
+.ribbon-reopen svg { width: 24px; height: 24px; filter: drop-shadow(0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent)) drop-shadow(0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent)); }
 .ribbon-collapse:focus-visible { outline: 3px solid var(--action); outline-offset: 2px; }
-.ribbon-reopen:focus-visible { outline: 2px solid #ffffffbf; outline-offset: 3px; }
+.ribbon-reopen:focus-visible { outline: 2px solid var(--ribbon-icon); outline-offset: 3px; }
 @media (hover: hover) {
-  .ribbon-collapse:is(:hover, .app-mouse-hover) { background: #ffffff1f; }
-  .ribbon-reopen:is(:hover, .app-mouse-hover) { background: #ffffff1f; }
+  .ribbon-collapse:is(:hover, .app-mouse-hover) { background: var(--ribbon-hover); }
+  .ribbon-reopen:is(:hover, .app-mouse-hover) { background: var(--ribbon-hover); }
 }
 @media (max-width: 600px) {
   .ribbon-shell .main-ribbon { padding-left: max(4px, env(safe-area-inset-left)); padding-right: max(58px, calc(env(safe-area-inset-right) + 52px)); }
@@ -963,13 +967,13 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .ribbon-collapse svg { width: 25px; height: 25px; }
 }
 
-/* Larger white overlay icons with soft circular hover feedback. */
-.ribbon-shell .art-ribbon button { color: #ffffffbf; border-radius: 50%; }
-.ribbon-shell .art-ribbon button svg, .ribbon-collapse svg { filter: drop-shadow(0 0 1px #000b) drop-shadow(0 0 3px #0008); }
+/* Theme-colored overlay icons with soft circular hover feedback. */
+.ribbon-shell .art-ribbon button { color: var(--ribbon-icon); border-radius: 50%; }
+.ribbon-shell .art-ribbon button svg, .ribbon-collapse svg { filter: drop-shadow(0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent)) drop-shadow(0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent)); }
 .ribbon-shell .art-ribbon button[aria-pressed='true'], .ribbon-shell .sticker-ribbon button[aria-label='Finish selecting'] { background: var(--action); color: var(--action-text); }
 .ribbon-shell .art-ribbon button[aria-pressed='true'] svg, .ribbon-shell .sticker-ribbon button[aria-label='Finish selecting'] svg { filter: none; }
 @media (hover: hover) {
-  .ribbon-shell .art-ribbon button:not(:disabled):not([aria-pressed='true']):not([aria-label='Finish selecting']):is(:hover, .app-mouse-hover) { background: #ffffff1f; }
+  .ribbon-shell .art-ribbon button:not(:disabled):not([aria-pressed='true']):not([aria-label='Finish selecting']):is(:hover, .app-mouse-hover) { background: var(--ribbon-hover); }
 }
 
 .ribbon-shell .art-ribbon button svg { width: 32px; height: 32px; }
