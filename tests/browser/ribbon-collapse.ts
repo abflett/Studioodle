@@ -53,6 +53,7 @@ export async function checkRibbonCollapse(){
   const rows=host.querySelectorAll('.main-ribbon');
   for(const row of rows){const boxes=[...row.querySelectorAll('button')].filter(b=>innerWidth<=800||b!==button('Hide tools')).map(b=>b.getBoundingClientRect());assert(boxes.every(b=>Math.abs(b.top-boxes[0]!.top)<1),'Main ribbon stays on one row: '+JSON.stringify(boxes));assert(Math.abs((boxes[0]!.left+boxes.at(-1)!.right)/2-innerWidth/2)<1,'Main tools center independently of desktop Collapse');}
   const collapse=button('Hide tools').getBoundingClientRect();
+  const collapseIcon=button('Hide tools').querySelector('svg')!.getBoundingClientRect();
   assert(collapse.right<=innerWidth&&collapse.top<12&&host.querySelector('.main-ribbon')!.lastElementChild===button('Hide tools'),'Collapse stays on the top row');
   if(innerWidth>800)assert(innerWidth-collapse.right<=12,'Desktop Collapse stays at the top right');
   for(const tool of host.querySelectorAll('.main-ribbon button')){
@@ -65,7 +66,9 @@ export async function checkRibbonCollapse(){
   assert(Math.abs(expanded.width-full.width)<1&&Math.abs(expanded.height-full.height)<1,'Fit expands to fill matching display ratio');
   assert(document.activeElement===button('Show tools'),'Hidden ribbon transfers keyboard focus to reopen');
   const floating=button('Show tools').getBoundingClientRect();assert(innerWidth-floating.right<=20&&floating.top<12,'Reopen stays at the top right');assert(floating.width>=44&&floating.height>=44,'Reopen keeps a touch-sized target');
-  assert(getComputedStyle(button('Show tools')).borderWidth==='0px'&&button('Show tools').querySelector('svg')!.getBoundingClientRect().width<=20,'Reopen is a small borderless icon inside its touch target');
+  const reopenIcon=button('Show tools').querySelector('svg')!.getBoundingClientRect();
+  assert(getComputedStyle(button('Show tools')).borderWidth==='0px','Reopen stays borderless');
+  assert(Math.abs(reopenIcon.width-collapseIcon.width)<1&&Math.abs(reopenIcon.left-collapseIcon.left)<1&&Math.abs(reopenIcon.top-collapseIcon.top)<1,'Reopen matches the expanded icon size and position: '+JSON.stringify({collapseIcon,reopenIcon}));
   button('Show tools').click();await settle();assert(Math.abs(paper().height-fitted.height)<.01,'Reopening restores fitted page');
   host.querySelector<HTMLButtonElement>('button[aria-label^="Zoom "]')!.click();await settle();const zoomed=paper(),anchor=center();
   assert(shadowRegion().style.clipPath!==fittedShadow,'Shadow receivers follow manual zoom');

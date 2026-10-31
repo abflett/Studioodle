@@ -20,7 +20,7 @@ import { closeOnBackdrop } from './dialog';
 import { paperSize } from '../editor/document';
 import { usePaperView } from './usePaperView';
 import { useEffect, useRef, useState } from 'react';
-import type { PointerEvent as ReactPointerEvent } from 'react';
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
 import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Eraser, MousePointer2, Move, ZoomIn, Save } from 'lucide-react';
 import { EditorLayerShadows } from './EditorLayerShadows';
 import { EditorCanvas } from './EditorCanvas';
@@ -77,13 +77,27 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
   useEffect(() => { if (picker) pickerTitle.current?.focus({ preventScroll: true }); }, [picker, categoryId]);
   const [ribbonHidden, setRibbonHidden] = useState(false);
   const collapseButton = useRef<HTMLButtonElement>(null), reopenButton = useRef<HTMLButtonElement>(null);
+  const [reopenStyle, setReopenStyle] = useState<CSSProperties>();
   const ribbonFocusPending = useRef(false);
   useEffect(() => {
     if (!ribbonFocusPending.current) return;
     ribbonFocusPending.current = false;
     (ribbonHidden ? reopenButton : collapseButton).current?.focus({ preventScroll: true });
   }, [ribbonHidden]);
-  const toggleRibbon = () => { bridge.send({ type: 'cancel-input' }); ribbonFocusPending.current = true; setRibbonHidden(hidden => !hidden); };
+  const toggleRibbon = () => {
+    if (!ribbonHidden && collapseButton.current) {
+      const button = collapseButton.current.getBoundingClientRect(), icon = collapseButton.current.querySelector('svg')!.getBoundingClientRect();
+      const width = Math.max(44, button.width), height = Math.max(44, button.height);
+      const left = Math.max(0, Math.min(innerWidth - width, button.left + (button.width - width) / 2));
+      const top = Math.max(0, button.top + (button.height - height) / 2);
+      setReopenStyle({ width, height, top, right: innerWidth - left - width,
+        '--reopen-icon-size': `${icon.width}px`,
+        '--reopen-icon-height': `${icon.height}px`,
+        '--reopen-icon-x': `${icon.left + icon.width / 2 - left - width / 2}px`,
+        '--reopen-icon-y': `${icon.top + icon.height / 2 - top - height / 2}px` } as CSSProperties);
+    }
+    bridge.send({ type: 'cancel-input' }); ribbonFocusPending.current = true; setRibbonHidden(hidden => !hidden);
+  };
   const [requestedZoom, setZoom] = useState<number | null>(null);
   const { viewport, position, focus, captureView, restoreView, pointAt, zoomAt, transformView, fitPage, zoom, handlers } = usePaperView(paperSize(setup.format, setup.size), requestedZoom, tool === 'pan', setZoom);
   const placementPoint = useLatest(() => {
@@ -205,7 +219,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     </header>
       {((tool === 'select' && selected) || focused) && <StickerSelectionToolbar bridge={bridge} focused={!!focused} order={selectionOrder} drawerRef={selectionDrawer} onFocus={focusSelection} onFinish={finishSelection} />}
     </div>
-    {ribbonHidden && <button ref={reopenButton} className="ribbon-toggle ribbon-reopen" title="Show tools (T)" aria-keyshortcuts="T" aria-label="Show tools" aria-expanded="false" aria-controls="editor-ribbon" onClick={toggleRibbon}><RibbonToggleIcon expand /></button>}
+    {ribbonHidden && <button ref={reopenButton} className="ribbon-toggle ribbon-reopen" style={reopenStyle} title="Show tools (T)" aria-keyshortcuts="T" aria-label="Show tools" aria-expanded="false" aria-controls="editor-ribbon" onClick={toggleRibbon}><RibbonToggleIcon expand /></button>}
     <section className={`art-canvas ${tool === 'pan' ? 'pan-mode' : ''} ${focused ? 'focus-mode' : ''}`} ref={viewport} style={cursorStyle} aria-label="Drawing canvas" tabIndex={0} {...gestureHandlers}>
       <PrecisionFillFeedback aim={precisionFill.aim} magnified={precisionFill.magnified} releasedAim={precisionFill.releasedAim} />
       <div className="canvas-envelope" style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>

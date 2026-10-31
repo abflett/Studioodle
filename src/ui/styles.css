@@ -955,7 +955,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .ribbon-shell .sticker-ribbon.is-focused button { color: var(--ribbon-icon); border: 1px solid var(--ribbon-icon); background: transparent; box-shadow: 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent), inset 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), inset 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent); }
 .ribbon-toggle svg { width: 28px; height: 28px; stroke-width: 2; }
 .ribbon-reopen svg, .ribbon-shell .sticker-ribbon.is-focused button svg { width: 24px; height: 24px; filter: drop-shadow(0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent)) drop-shadow(0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent)); }
-.ribbon-reopen svg { width: 20px; height: 20px; }
+.ribbon-reopen svg { position: absolute; left: 50%; top: 50%; width: var(--reopen-icon-size, 32px); height: var(--reopen-icon-height, 32px); transform: translate(calc(-50% + var(--reopen-icon-x, 0px)), calc(-50% + var(--reopen-icon-y, 0px))); }
 .ribbon-collapse:focus-visible { outline: 3px solid var(--action); outline-offset: 2px; }
 .ribbon-reopen:focus-visible, .ribbon-shell .sticker-ribbon.is-focused button:focus-visible { outline: 2px solid var(--ribbon-icon); outline-offset: 3px; }
 @media (hover: hover) {

@@ -57,8 +57,9 @@ See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries
 
 The ribbon's Hide tools button (an upward arrow above a horizontal line) releases its space to the canvas. A floating
 Show tools button at the top right restores it, using the reversed symbol: a
-downward arrow below a horizontal line. Reopen is a borderless 20px icon inside a
-44px touch target; Collapse uses the ribbon's rounded tile shape. The collapse control matches
+downward arrow below a horizontal line. Reopen is borderless and matches the
+expanded Collapse icon's size and position, with a touch target of at least 44px.
+Collapse uses the ribbon's rounded tile shape. The collapse control matches
 the borderless ribbon buttons, using theme-colored icons, a contrast glow and a
 theme-tinted hover film. Reopen has a transparent center, theme-colored icon,
 contrast glow and hover film, with a visible keyboard focus outline. On desktop
