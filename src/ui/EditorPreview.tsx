@@ -32,7 +32,7 @@ import { prepareStickers } from '../editor/vectorStickers';
 
 // Shortened shaft keeps the arrow balanced above its baseline.
 function RibbonToggleIcon({ expand = false }: { expand?: boolean }) {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><g transform={expand ? 'rotate(180 12 12)' : undefined}><path d="m18 11-6-6-6 6M12 5v12M5 21h14" /></g></svg>;
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><g transform={expand ? 'rotate(180 12 12)' : undefined}><path d="m18 11-6-6-6 6M12 5v11M5 21h14" /></g></svg>;
 }
 
 type Picker = 'stickers' | 'colors' | 'brush';
