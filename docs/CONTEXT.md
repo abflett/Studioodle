@@ -98,7 +98,8 @@ previous first sticker in the visible batch; pagination totals update accordingl
 `node scripts/test-browser.mjs --sticker-layout` checks both themes, fit and paging.
 
 Full-screen brush overlays center their tip/size/preview controls in both portrait
-and short landscape views, keeping Close at its original top-right position.
+and short landscape views, keeping Close at a consistent 16px top-right inset,
+increased only for device safe areas.
 
 Both ribbon rows center their tools with even spacing. Desktop Collapse is anchored
 at the top right independently; compact screens include it as the final slot
