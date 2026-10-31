@@ -313,17 +313,6 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 
 .selection-preferences .fullscreen-toggle { width: 44px; height: 44px; padding: 10px; background: transparent; color: var(--muted); }
 
-/* Use the available phone width for the large picker overlays. */
-@media (max-width: 560px) {
-  .setup-dialog:not(.settings-dialog):not(.delete-picture-dialog):not(.export-dialog):not(.coloring-picker):not(.page-transfer-dialog):not(.blank-page-dialog):not(.brush-dialog):not(.sticker-dialog):not(.palette-dialog):not(.palette-custom-dialog) {
-    width: 100%; max-width: 100vw;
-    height: min(600px, calc(100dvh - 24px));
-    margin: auto; border-radius: 24px;
-  }
-  .setup-dialog:not(.settings-dialog):not(.delete-picture-dialog):not(.export-dialog):not(.coloring-picker):not(.page-transfer-dialog):not(.blank-page-dialog):not(.brush-dialog):not(.sticker-dialog):not(.palette-dialog):not(.palette-custom-dialog) .wizard {
-    padding: 16px max(12px, env(safe-area-inset-right)) 16px max(12px, env(safe-area-inset-left)); gap: 14px;
-  }
-}
 /* A compact selection drawer emerges from beneath the main ribbon. */
 .ribbon-shell { position: relative; flex-shrink: 0; z-index: 3; --ribbon-well: var(--tool-well); background: transparent; }
 .ribbon-shell .main-ribbon { position: relative; z-index: 2; box-shadow: none; }
@@ -780,7 +769,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 
 /* Blank paper setup shares the word-light book picker treatment. */
 .setup-dialog.blank-page-dialog { width: min(900px, calc(100vw - 24px)); height: min(680px, calc(100dvh - 24px)); border-radius: 30px; }
-.blank-setup-body { height: 100%; padding: 22px; display: flex; flex-direction: column; gap: 18px; }
+.blank-setup-body { height: 100%; padding: 22px; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 18px; }
 .blank-page-dialog .dialog-header { position: relative; display: block; flex: 0 0 auto; min-height: 52px; padding: 0 56px; }
 .blank-page-dialog .dialog-heading > h2 { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .blank-page-dialog .dialog-header .dialog-close, .blank-page-dialog .dialog-header .dialog-back { position: absolute; top: 4px; }
@@ -790,21 +779,21 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .blank-step-button svg, .blank-orientation-button svg { display: block; width: 26px; height: 26px; stroke: currentColor; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .blank-step-button[aria-current='step'], .blank-orientation-button[aria-pressed='true'] { background: var(--action); color: var(--action-text); }
 .blank-step-link { width: 24px; height: 1px; background: var(--border); opacity: .65; }
-.blank-setup-content { flex: 1; min-height: 0; display: flex; align-items: flex-start; justify-content: center; overflow: auto; padding: 6px; }
-.blank-paper-options { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
-.blank-size-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; width: 100%; max-width: 790px; }
-.blank-size-choice { display: flex; align-items: center; justify-content: center; min-width: 0; height: 230px; padding: 14px; border: 1px solid transparent; border-radius: 22px; background: var(--ribbon-well); color: var(--text); }
+.blank-setup-content { min-height: 0; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 6px; }
+.blank-paper-options { width: 100%; height: 100%; min-height: 0; display: grid; place-items: center; }
+.blank-size-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; width: 100%; max-width: 790px; height: 100%; max-height: 230px; grid-template-rows: minmax(0, 1fr); }
+.blank-size-choice { position: relative; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 0; height: 100%; padding: 14px; border: 1px solid transparent; border-radius: 22px; background: var(--ribbon-well); color: var(--text); }
 .blank-size-choice[aria-pressed='true'] { border: 2px solid var(--action); background: color-mix(in srgb, var(--action) 8%, transparent); }
-.blank-size-choice .blank-paper-art { width: var(--paper-width); height: var(--paper-height); max-width: 100%; flex: none; filter: drop-shadow(0 4px 5px #0002); }
+.blank-size-choice .blank-paper-art { position: absolute; inset: 0; margin: auto; width: min(calc(100% - 28px), var(--paper-width)); height: min(calc(100% - 28px), var(--paper-height)); min-height: 0; filter: drop-shadow(0 4px 5px #0002); }
 .blank-paper-face { fill: #f6f0e2; stroke: none; }
 .blank-size-choice[aria-pressed='true'] .blank-paper-face { fill: #ddc799; }
 .blank-paper-fold { fill: #24314812; stroke: #24314855; stroke-width: 2; }
 .blank-paper-mark { font-family: inherit; font-weight: 900; fill: #243148; stroke: none; letter-spacing: -2px; }
 .blank-paper-unit { font-size: 20px; font-weight: 600; letter-spacing: 0; }
-.blank-orientations { display: flex; gap: 6px; padding: 4px; border-radius: 18px; background: var(--ribbon-well); }
+.blank-orientations { margin-right: auto; display: flex; gap: 6px; padding: 4px; border-radius: 18px; background: var(--ribbon-well); }
 .blank-orientation-button { width: 58px; }
 .blank-page-dialog button:focus-visible { outline: 3px solid var(--action); outline-offset: 3px; }
-.blank-setup-footer { position: relative; flex: 0 0 auto; min-height: 50px; justify-content: flex-end; }
+.blank-setup-footer { position: relative; flex: 0 0 auto; min-height: 54px; gap: 12px; justify-content: flex-end; }
 .blank-setup-footer .go-button { min-height: 50px; height: 50px; padding: 0; justify-content: center; border-radius: 17px; }
 .blank-next-action { width: 94px; }
 .blank-next-action svg { width: 32px; height: 32px; }
@@ -812,40 +801,39 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .blank-draw-action img, :root:not([data-theme='dark']) .blank-draw-action::after { width: 118px; height: 44px; }
 .blank-paper-summary { position: absolute; left: 0; display: flex; align-items: center; justify-content: center; width: 78px; height: 50px; }
 .blank-paper-summary .blank-paper-art { display: block; width: 70px; height: 48px; filter: drop-shadow(0 2px 3px #0003); }
-.blank-page-dialog .color-picker { width: 100%; padding: 8px; }
-.blank-page-dialog .art-colors { grid-template-columns: repeat(8, 60px); gap: 16px; }
-.blank-page-dialog .art-colors .paper-color { width: 60px; height: 60px; padding: 0; border: 2px solid #ffffff55; }
-.blank-page-dialog .paper-color[aria-pressed='true'] { outline-color: var(--action); outline-offset: 4px; }
-.blank-page-dialog .paper-color svg { width: 25px; height: 25px; }
+.blank-page-dialog .color-picker { width: 100%; height: 100%; min-height: 0; display: grid; place-items: center; padding: 8px; }
+.blank-page-dialog .art-colors { display: flex; flex-wrap: wrap; justify-content: center; width: calc(var(--paper-color-columns, 8) * var(--paper-color-size, 44px) + (var(--paper-color-columns, 8) - 1) * var(--paper-color-gap, 8px)); gap: var(--paper-color-gap, 8px); }
+.blank-page-dialog .art-colors .paper-color { flex: none; width: var(--paper-color-size, 44px); height: var(--paper-color-size, 44px); padding: 0; border: 2px solid #ffffff55; }
+.blank-page-dialog .paper-color[aria-pressed='true'] { outline-color: var(--action); outline-width: 3px; outline-offset: 3px; }
+.blank-page-dialog .paper-color svg { width: 55%; height: 55%; }
 @media (max-width: 620px) {
-  .blank-setup-body { padding: 14px; gap: 16px; }
+  .blank-setup-body { padding: 14px; gap: 12px; }
   .setup-dialog.blank-page-dialog { border-radius: 24px; }
-  .blank-size-options { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .blank-size-choice { height: 170px; padding: 10px; }
-  .blank-size-choice .blank-paper-art { width: calc(var(--paper-width) * .8); height: calc(var(--paper-height) * .8); }
-  .blank-paper-options { gap: 20px; }
-  .blank-page-dialog .art-colors { grid-template-columns: repeat(4, 46px); gap: 12px 18px; }
-  .blank-page-dialog .art-colors .paper-color { width: 46px; height: 46px; }
+  .blank-size-options { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); max-height: 360px; gap: 12px; }
+  .blank-size-choice { padding: 10px; }
 }
-@media (max-height: 520px) and (min-width: 621px) {
-  .blank-setup-body { padding: 12px; gap: 10px; }
+@media (max-height: 520px) {
+  .blank-setup-body { padding: 12px; gap: 8px; }
   .blank-page-dialog .dialog-header { min-height: 46px; }
   .blank-step-well { padding: 2px; }
   .blank-step-button { width: 44px; height: 44px; }
-  .blank-size-choice { height: 168px; padding: 10px; }
-  .blank-size-choice .blank-paper-art { width: calc(var(--paper-width) * .85); height: calc(var(--paper-height) * .85); }
-  .blank-paper-options { gap: 10px; }
-  .blank-orientation-button { height: 40px; }
-  .blank-setup-footer, .blank-setup-footer .go-button { min-height: 46px; height: 46px; }
-  .blank-page-dialog .art-colors { grid-template-columns: repeat(8, 44px); gap: 12px; }
-  .blank-page-dialog .art-colors .paper-color { width: 44px; height: 44px; }
+  .blank-size-choice { padding: 10px; }
+  .blank-setup-footer .go-button { min-height: 46px; height: 46px; }
 }
-
-.blank-setup-content > * { margin-block: auto; }
-@media (max-width: 360px) {
-  .blank-page-dialog .art-colors { grid-template-columns: repeat(4, 44px); gap: 10px 12px; }
-  .blank-page-dialog .art-colors .paper-color { width: 44px; height: 44px; }
+@media (max-height: 520px) and (min-aspect-ratio: 1/1) {
+  .blank-size-options { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); max-height: 230px; gap: 10px; }
 }
+@media (max-width: 420px) {
+  .blank-setup-footer { gap: 8px; }
+  .blank-orientation-button { width: 44px; height: 44px; }
+  .blank-next-action { width: 64px; }
+  .blank-orientations { gap: 4px; }
+  .blank-page-dialog .dialog-header { padding-inline: 48px; }
+  .blank-step-well { gap: 8px; }
+  .blank-step-link { width: 16px; }
+  .blank-step-button { width: 44px; height: 44px; }
+}
+.blank-setup-content > * { margin: 0; }
 /* Compact brush controls share the book picker's quiet wells. */
 .setup-dialog.brush-dialog { width: min(680px, calc(100vw - 24px)); height: fit-content; max-height: calc(100dvh - 24px); overflow: auto; border-radius: 28px; --brush-well: #35545c09; --brush-preview: #557e83; }
 :root[data-theme='dark'] .brush-dialog { --brush-well: #0e1b2c30; --brush-preview: #d2c09a; }
@@ -1026,4 +1014,14 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 
 @media (max-aspect-ratio: 1/1) and (min-width: 541px) {
   .selection-screen .selection { --portrait-book-drop: 8px; }
+}
+
+/* Small screens use the whole surface; destructive confirmations remain compact. */
+@media (max-width: 600px), (max-height: 540px) {
+  .setup-dialog:not(.delete-picture-dialog) {
+    inset: 0; margin: 0; width: 100%; height: 100dvh;
+    max-width: none; max-height: none; border: 0; border-radius: 0;
+    box-shadow: none;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
 }

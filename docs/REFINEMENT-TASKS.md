@@ -363,6 +363,11 @@ the visual discussion. This remains the sole implementation backlog.
   in both themes, with portrait regression checks and 44px utility targets.
 - [x] Add ribbon collapse and a floating transparent reopen control. Fit follows
   workspace expansion; manual zoom/center and keyboard focus survive the toggle.
+- [x] Fill small screens with overlays, removing outer gutters/borders/corners;
+  preserve compact delete confirmation and safe-area padding.
+- [x] Keep blank setup orientation in the footer, fit paper cards without
+  scrolling, and adapt background-color columns/swatch sizes to available space.
+  Verify phone portrait/landscape, all orientations and both themes.
 - [x] Default blank pages to Display aspect ratio; keep A4/A5/Photo and add
   independent Square orientation. Normalize new pages to a 1000-unit short edge,
   preserve physical output separately, and use 300 DPI by default. Browser checks

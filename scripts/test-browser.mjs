@@ -98,6 +98,20 @@ try {
     }
     console.log('Paper view:',await evaluate("import('/tests/browser/paper-view.ts').then(m=>m.checkPaperView())"));
     if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
+  }else if(process.argv.includes('--blank-layout')){
+    for(const [width,height] of [[667,375],[568,320],[844,390],[1280,900],[295,518],[320,568],[375,667],[390,844],[768,1024]]){
+      await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+      for(const theme of ['light','dark']){
+        await evaluate(`document.documentElement.dataset.theme='${theme}'`);
+        for(const [step,orientation] of [['shape','landscape'],['shape','portrait'],['shape','square'],['paper','landscape']]){
+          console.log('Blank layout:',await evaluate(`import('/tests/browser/blank-page-setup.ts').then(m=>m.showBlankSetupLayout('${step}','${orientation}'))`));
+          const shot=await cdp('Page.captureScreenshot',{format:'png'});
+          await fs.writeFile(`work/tests/blank-${width}x${height}-${theme}-${step}-${orientation}.png`,Buffer.from(shot.data,'base64'));
+          await evaluate("import('/tests/browser/blank-page-setup.ts').then(m=>m.closeBlankSetupLayout())");
+        }
+      }
+    }
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(process.argv.includes('--blank-pages')){
     console.log('Blank pages:',await evaluate("import('/tests/browser/blank-page-setup.ts').then(m=>m.checkBlankPageSetup())"));
     console.log('Normalized output:',await evaluate("import('/tests/browser/normalized-page-output.ts').then(m=>m.checkNormalizedPageOutput())"));
@@ -433,7 +447,7 @@ try {
       const layout=await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>{
         const d=document.querySelector('.brush-dialog'),b=d.getBoundingClientRect();
         const controls=[...d.querySelectorAll('button,input')].map(e=>e.getBoundingClientRect());
-        resolve(b.height<320&&b.left>=0&&b.right<=innerWidth&&b.top>=0&&b.bottom<=innerHeight&&d.scrollWidth<=d.clientWidth&&controls.every(r=>r.left>=b.left&&r.right<=b.right&&r.top>=b.top&&r.bottom<=b.bottom));
+        resolve(((innerWidth<=600||innerHeight<=540)?b.height===innerHeight:b.height<320)&&b.left>=0&&b.right<=innerWidth&&b.top>=0&&b.bottom<=innerHeight&&d.scrollWidth<=d.clientWidth&&controls.every(r=>r.left>=b.left&&r.right<=b.right&&r.top>=b.top&&r.bottom<=b.bottom));
       })))`);
       if(!layout)throw Error(`Brush controls overflow at ${width}x${height} ${theme}`);
       const shot=await cdp('Page.captureScreenshot',{format:'png'});
@@ -527,7 +541,7 @@ try {
       const layout = await evaluate(`(() => {
         const dialog=document.querySelector('.export-dialog'), box=dialog.getBoundingClientRect();
         const copy=document.querySelector('.export-format-copy'), title=copy.querySelector('strong').getBoundingClientRect(), caption=copy.querySelector('span').getBoundingClientRect();
-        return {inside:box.left>=0 && box.right<=innerWidth && box.top>=0 && box.bottom<=innerHeight && box.height<520, noOverflow:dialog.scrollWidth<=dialog.clientWidth, stacked:caption.top>=title.bottom && Math.abs(caption.left-title.left)<1};
+        return {inside:box.left>=0 && box.right<=innerWidth && box.top>=0 && box.bottom<=innerHeight && ((innerWidth<=600||innerHeight<=540)?box.height===innerHeight:box.height<520), noOverflow:dialog.scrollWidth<=dialog.clientWidth, stacked:caption.top>=title.bottom && Math.abs(caption.left-title.left)<1};
       })()`);
       if (!layout.inside || !layout.noOverflow || !layout.stacked) throw Error('Export layout failed: '+JSON.stringify({label,theme,...layout}));
       const shot=await cdp('Page.captureScreenshot',{format:'png'});
@@ -586,7 +600,7 @@ try {
     await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
     const fits=await evaluate(`(()=>{const elements=document.querySelectorAll('.choice-grid .choice-card,.saved-picture-card,.selection .icon-button');return [...elements].every(e=>{const r=e.getBoundingClientRect();return r.x>=-1&&r.y>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1})&&document.documentElement.scrollWidth<=innerWidth})()`);
     if(!fits)throw Error(`Selection controls exceed viewport ${width}x${height}`);
-    const paperLayout=await evaluate(`(()=>{const draw=document.querySelector('.choice-blank').getBoundingClientRect(),color=document.querySelector('.choice-coloring').getBoundingClientRect(),saved=document.querySelector('.saved-picture-card').getBoundingClientRect();return color.top>draw.top&&color.top-draw.top<=110&&Math.max(draw.bottom,color.bottom)<=saved.top&&!document.querySelector('.choice-tab,.portfolio-cover')})()`);
+    const paperLayout=await evaluate(`(()=>{const draw=document.querySelector('.choice-blank').getBoundingClientRect(),color=document.querySelector('.choice-coloring').getBoundingClientRect(),saved=document.querySelector('.portfolio-stack').getBoundingClientRect();return color.top>draw.top&&(()=>{const art=document.querySelector('.choice-coloring .choice-art'),image=art.querySelector('img'),r=art.getBoundingClientRect(),w=Math.min(r.width,r.height*image.naturalWidth/image.naturalHeight)*1.04,h=w*image.naturalHeight/image.naturalWidth,angle=Math.abs(parseFloat(getComputedStyle(image).rotate)||0)*Math.PI/180;return Math.max(draw.bottom,r.y+r.height/2+(h*Math.cos(angle)+w*Math.sin(angle))/2)<=saved.top})()&&!document.querySelector('.choice-tab,.portfolio-cover')})()`);
     if(!paperLayout)throw Error(`Paper choices must stay above the unlabeled saved-picture stack at ${width}x${height}`);
   }
   await cdp('Emulation.clearDeviceMetricsOverride');

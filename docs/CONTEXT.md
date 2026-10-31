@@ -91,6 +91,15 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 ## Current interface
 
+Small-screen overlays (width <=600px or height <=540px) fill the viewport without an outer border, gutter or rounded corners, respecting safe areas. Delete confirmation stays compact. Blank paper colors prefer the familiar four landscape rows/eight narrow portrait rows, adapting only when swatches become too small.
+
+Blank setup keeps orientation beside Next in its fixed footer. Paper cards and
+artwork shrink within the header/content/footer layout without scrolling. The
+32-color background picker measures available space, choosing 4/6/8/10/12/16
+columns when needed; incomplete rows center. Four landscape rows and eight
+narrow portrait rows are preferred. Both steps are checked down to 295 x 518 portrait
+and 568 x 320 landscape in both themes and all paper orientations.
+
 Ribbon, sticker submenu and letterboxing share one viewport-aligned scene image. The submenu centers with auto margins (no transform), so its fixed
 background keeps the same origin, with deliberate image displacement for glass refraction:
 no offset on the main ribbon, 4px upward on the submenu and 8px upward on the

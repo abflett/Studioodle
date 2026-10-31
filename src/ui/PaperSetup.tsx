@@ -17,12 +17,11 @@ export function PaperArtwork({ displaySize, preset, orientation, color }: { disp
   </svg>;
 }
 
-export function PaperSetup({ displaySize, paperPreset, orientation, onPreset, onOrientation }: {
+export function PaperSetup({ displaySize, paperPreset, orientation, onPreset }: {
   displaySize: PageSize;
   paperPreset: PaperPresetId;
   orientation: PaperOrientation;
   onPreset: (preset: PaperPresetId) => void;
-  onOrientation: (orientation: PaperOrientation) => void;
 }) {
   return <div className="blank-paper-options">
     <div className="blank-size-options" role="group" aria-label="Paper size">
@@ -34,8 +33,11 @@ export function PaperSetup({ displaySize, paperPreset, orientation, onPreset, on
         return <button type="button" key={preset.id} aria-label={`${preset.title}, ${detail}`} title={`${preset.title}, ${detail}`} aria-pressed={paperPreset === preset.id} onClick={() => onPreset(preset.id)} className="blank-size-choice" style={{ '--paper-width': `${width}px`, '--paper-height': `${height}px` } as CSSProperties}><PaperArtwork displaySize={displaySize} preset={preset.id} orientation={orientation} /></button>;
       })}
     </div>
-    <div className="blank-orientations" role="group" aria-label="Paper orientation">
-      {(['portrait', 'landscape', 'square'] as const).map(value => <button type="button" key={value} className="blank-orientation-button" aria-label={value === 'portrait' ? 'Tall' : value === 'landscape' ? 'Wide' : 'Square'} title={value === 'portrait' ? 'Tall' : value === 'landscape' ? 'Wide' : 'Square'} aria-pressed={orientation === value} onClick={() => onOrientation(value)}><svg viewBox="0 0 24 24" aria-hidden="true">{value === 'portrait' ? <rect x="6" y="2" width="12" height="20" rx="1" /> : <rect x={value === 'square' ? 4 : 2} y={value === 'square' ? 4 : 6} width={value === 'square' ? 16 : 20} height={value === 'square' ? 16 : 12} rx="1" />}</svg></button>)}
-    </div>
   </div>;
+}
+
+export function PaperOrientationControls({orientation,onOrientation}:{orientation:PaperOrientation;onOrientation:(value:PaperOrientation)=>void}) {
+  return <div className="blank-orientations" role="group" aria-label="Paper orientation">
+      {(['portrait', 'landscape', 'square'] as const).map(value => <button type="button" key={value} className="blank-orientation-button" aria-label={value === 'portrait' ? 'Tall' : value === 'landscape' ? 'Wide' : 'Square'} title={value === 'portrait' ? 'Tall' : value === 'landscape' ? 'Wide' : 'Square'} aria-pressed={orientation === value} onClick={() => onOrientation(value)}><svg viewBox="0 0 24 24" aria-hidden="true">{value === 'portrait' ? <rect x="6" y="2" width="12" height="20" rx="1" /> : <rect x={value === 'square' ? 4 : 2} y={value === 'square' ? 4 : 6} width={value === 'square' ? 16 : 20} height={value === 'square' ? 16 : 12} rx="1" />}</svg></button>)}
+    </div>;
 }

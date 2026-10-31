@@ -237,6 +237,16 @@ Delete appears only for custom pages. See [Coloring books](COLORING-BOOKS.md).
 
 ## Blank page setup overlays
 
+Small-screen overlays (width <=600px or height <=540px) fill the viewport without an outer border, gutter or rounded corners, respecting safe areas. Delete confirmation stays compact. Blank paper colors prefer the familiar four landscape rows/eight narrow portrait rows, adapting only when swatches become too small.
+
+Orientation controls share the fixed footer with Next; neither step scrolls.
+Paper cards use equal flexible grid cells and contain their artwork, shrinking
+when needed. The background picker prefers eight columns / four rows in landscape
+and four columns / eight rows on narrow portrait screens, fitting swatches up to
+60px. It tries other column counts only when swatches would be smaller than 32px.
+Partial rows center. The
+selection ring and footer actions remain inside the dialog.
+
 The two-step blank-page layout shows Display's ratio and A4/A5/Photo markings
 inside folded paper artwork. The selected preset has a gold paper face and
 highlighted well. Tall/Wide/Square controls are icon-only with accessible labels.
@@ -247,9 +257,9 @@ visually hidden; dialog names, focus management and tooltips remain.
 The color step shows the complete 32-color palette, a small paper-size/orientation
 summary reflecting the chosen background, and the shared magical pencil/book
 Start action. Summary text uses contrasting ink on dark/light backgrounds. On
-narrow screens presets use two columns and colors four; short landscape uses a
-compact eight-column palette. Shorter viewports scroll only the choice area,
-leaving step, close/back and action controls reachable. Editor painting and ink pickers use the five-palette selector described below. Preview references are in overlay examples 56-60.
+narrow portrait screens presets use two columns, while short landscapes use four.
+The color columns and button size adapt to the available area. Header and footer
+stay fixed and the choices fit between them without scrolling. Editor painting and ink pickers use the five-palette selector described below. Preview references are in overlay examples 56-60.
 
 
 ### Sticker browser

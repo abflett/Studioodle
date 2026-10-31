@@ -8,17 +8,21 @@ import { drawingColors } from '../../src/editor/palette';
 
 const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
 function assert(value:unknown,message:string):asserts value{if(!value)throw Error(message);}
-export async function checkBlankPageSetup(){
+function mountSetup(initialStep:'shape'|'paper'='shape',initialOrientation:PaperOrientation='landscape'){
  const container=document.createElement('div');document.body.append(container);const root=createRoot(container);
  let opened:EditorSetup|undefined;
  function Harness(){
-  const [step,onStep]=useState<'shape'|'paper'>('shape');
+  const [step,onStep]=useState<'shape'|'paper'>(initialStep);
   const [paperPreset,onPreset]=useState<PaperPresetId>('display');
-  const [orientation,onOrientation]=useState<PaperOrientation>('landscape');
+  const [orientation,onOrientation]=useState<PaperOrientation>(initialOrientation);
   const [background,onBackground]=useState('#ffffff');
   return createElement(BlankPageSetup,{displaySize:{width:1920,height:1080},step,onStep,paperPreset,onPreset,orientation,onOrientation,background,onBackground,onClose:()=>{},onOpen:setup=>{opened=setup;}});
  }
  root.render(createElement(Harness));
+ return {container,getOpened:()=>opened,cleanup:()=>{root.unmount();container.remove();}};
+}
+export async function checkBlankPageSetup(){
+ const {container,getOpened,cleanup}=mountSetup();
  const click=async(label:string)=>{const b=[...container.querySelectorAll<HTMLButtonElement>('button')].find(b=>b.getAttribute('aria-label')===label);assert(b,'Missing '+label);b.click();await frame();};
  try{
   await frame();await frame();
@@ -44,8 +48,29 @@ export async function checkBlankPageSetup(){
   await click('Paper color');
   assert(container.querySelector('[aria-pressed="true"].paper-color')?.getAttribute('aria-label')===drawingColors[0]!.name,'Step navigation must preserve color');
   await click('Start drawing');
+  const opened=getOpened();
   assert(opened?.format==='portrait'&&opened.size?.width===1000&&opened.size.height===1419&&opened.printSizeMm?.width===148&&opened.printSizeMm.height===210,'Start must use selected A5 physical dimensions');
   assert(opened?.background==='#000000','Start must use selected background');
   return {paperMarks:true,stepNavigation:true,fullPalette:true,selectionRetention:true,squareOrientation:true,physicalDimensions:true,summaryContrast:true};
- }finally{root.unmount();container.remove();}
+ }finally{cleanup();}
 }
+
+let closeLayout: (()=>void)|undefined;
+export async function showBlankSetupLayout(step:'shape'|'paper',orientation:PaperOrientation){
+ closeLayout?.();const {container,cleanup}=mountSetup(step,orientation);closeLayout=cleanup;
+ for(let i=0;i<5;i++)await frame();
+ const dialog=container.querySelector<HTMLDialogElement>('dialog')!,content=container.querySelector<HTMLElement>('.blank-setup-content')!,footer=container.querySelector<HTMLElement>('footer')!;
+ for(const element of [dialog,container.querySelector<HTMLElement>('.blank-setup-body')!,content])assert(element.scrollHeight<=element.clientHeight+1&&element.scrollWidth<=element.clientWidth+1,'Blank setup must fit without scrolling: '+JSON.stringify({step,orientation,class:element.className,w:element.clientWidth,sw:element.scrollWidth,h:element.clientHeight,sh:element.scrollHeight}));
+ if(innerWidth<=600||innerHeight<=540){const bounds=dialog.getBoundingClientRect(),style=getComputedStyle(dialog);assert(bounds.x===0&&bounds.y===0&&bounds.width===innerWidth&&bounds.height===innerHeight&&style.borderRadius==='0px','Small-screen overlays must fill the viewport');}
+ const within=(element:Element,parent:Element)=>{const a=element.getBoundingClientRect(),b=parent.getBoundingClientRect();return a.left>=b.left-1&&a.top>=b.top-1&&a.right<=b.right+1&&a.bottom<=b.bottom+1;};
+ for(const element of container.querySelectorAll('.blank-size-choice,.paper-color'))assert(within(element,content),'Every paper/color choice must remain visible');
+ for(const element of footer.querySelectorAll('button'))assert(within(element,footer)&&within(element,dialog),'Footer controls must stay visible');
+ if(step==='shape'){
+  assert(footer.contains(container.querySelector('.blank-orientations')),'Orientation belongs in the fixed footer');
+  const next=footer.querySelector('.go-button')!.getBoundingClientRect(),group=footer.querySelector('.blank-orientations')!.getBoundingClientRect();assert(group.right<=next.left-4,'Orientation and Next must not overlap');
+  for(const art of container.querySelectorAll('.blank-size-choice .blank-paper-art'))assert(within(art,art.closest('.blank-size-choice')!),'Paper artwork must shrink inside its card');
+ }else assert(container.querySelectorAll('.paper-color').length===32,'All background colors stay available');
+ const palette=container.querySelector<HTMLElement>('.art-colors');
+ return {width:innerWidth,height:innerHeight,step,orientation,columns:palette?Number(getComputedStyle(palette.parentElement!).getPropertyValue('--paper-color-columns')):undefined,swatch:palette?.querySelector('button')?.getBoundingClientRect().width};
+}
+export function closeBlankSetupLayout(){closeLayout?.();closeLayout=undefined;}

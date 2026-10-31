@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { ArrowRight, Copy, Palette } from 'lucide-react';
 import { DialogHeader } from './DialogHeader';
-import { PaperArtwork, PaperSetup } from './PaperSetup';
+import { PaperArtwork, PaperSetup, PaperOrientationControls } from './PaperSetup';
 import { PaperColorPicker } from './PaperColorPicker';
 import { closeOnBackdrop } from './dialog';
 import { paperPresets, blankPageSize, presetMillimeters, aspectRatioLabel } from '../editor/paperPresets';
@@ -33,9 +33,10 @@ export function BlankPageSetup({ displaySize, step, onStep, paperPreset, orienta
         </div>
       </DialogHeader>
       <div className="blank-setup-content">
-        {step === 'shape' ? <PaperSetup displaySize={displaySize} paperPreset={paperPreset} orientation={orientation} onPreset={onPreset} onOrientation={onOrientation} /> : <PaperColorPicker color={parseInt(background.slice(1), 16)} onChoose={color => onBackground(`#${color.toString(16).padStart(6, '0')}`)} />}
+        {step === 'shape' ? <PaperSetup displaySize={displaySize} paperPreset={paperPreset} orientation={orientation} onPreset={onPreset} /> : <PaperColorPicker color={parseInt(background.slice(1), 16)} onChoose={color => onBackground(`#${color.toString(16).padStart(6, '0')}`)} />}
       </div>
       <footer className="wizard-footer blank-setup-footer">
+        {step === 'shape' && <PaperOrientationControls orientation={orientation} onOrientation={onOrientation} />}
         {step === 'paper' && <span className="blank-paper-summary" role="img" aria-label={`${paperLabel}, ${orientation}, ${colorName} paper`}><PaperArtwork displaySize={displaySize} preset={paperPreset} orientation={orientation} color={background} /></span>}
         {step === 'shape' ? <button type="button" className="go-button blank-next-action" aria-label="Next: paper color" title="Next: paper color" onClick={() => onStep('paper')}><ArrowRight aria-hidden="true" /></button> : <button type="button" className="go-button page-draw-action blank-draw-action" aria-label="Start drawing" title="Start drawing" onClick={() => onOpen({ title: 'Blank Page', format: orientation, size: blankPageSize(paperPreset, orientation, displaySize), printSizeMm: presetMillimeters(paperPreset, orientation, displaySize), background, leafColor: contrastingDrawingColor(background) })}><img src={drawingAction} alt="" aria-hidden="true" /></button>}
       </footer>
