@@ -171,7 +171,7 @@ The borderless controls use compact outer ribbon padding. On narrow screens, the
 
 The selected-sticker ribbon is also icon-only. Shrink/grow and counterclockwise/clockwise rotation use directional icons, with grouped pairs, named actions, and desktop tooltips. At widths up to 800px, Duplicate and Done are omitted, leaving ten actions including Focus and Delete. Another tool, another press of Select, or an empty-space tap leaves ordinary selection. Larger displays retain Duplicate and Done.
 
-Focus uses an eye icon and replaces the submenu with a single closed-eye exit
+Focus uses an eye icon and replaces the submenu with a single X exit
 button floating below the ribbon. Its transparent circular outline and subtle glow
 match the floating ribbon control; no submenu background or shadow bar remains.
 Brush, Fill, Eraser and navigation tools preserve focus. Exit focus (or F/Enter) exits
@@ -223,7 +223,7 @@ the selected border retains it, including transparent margins; clicking empty pa
 or surrounding workspace clears the border/drawer and returns to Fill on release.
 The exit press/release is consumed, so it cannot also fill. Canceling that gesture
 restores the previous selection. Toolbar/drawer presses retain their normal actions;
-focused-sticker mode keeps its explicit closed-eye exit control.
+focused-sticker mode keeps its explicit X exit control.
 
 Brush and eraser gestures may begin in the surrounding drawing workspace and
 continue onto the page. Paint remains clipped to the page; the entire gesture
