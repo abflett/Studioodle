@@ -232,7 +232,7 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 /* Icon-only ribbons: keep related controls together when wrapping. */
 .art-ribbon.main-ribbon { display: flex; flex-wrap: wrap; gap: 6px 10px; padding: max(4px, env(safe-area-inset-top)) 10px 4px; }
 .main-ribbon .ribbon-group { display: flex; flex: 0 0 auto; align-items: center; gap: 4px; }
-.art-ribbon.main-ribbon button, .art-ribbon.sticker-ribbon button { position: relative; flex: 0 0 auto; width: 48px; height: 48px; min-width: 48px; padding: 10px; border-radius: 15px; }
+.art-ribbon.main-ribbon button, .art-ribbon.sticker-ribbon button { position: relative; flex: 0 0 auto; width: 52px; height: 52px; min-width: 52px; padding: 10px; border-radius: 15px; }
 .art-ribbon button:focus-visible { outline: 3px solid var(--action); outline-offset: 2px; }
 .ribbon-color-dot { position: absolute; right: 5px; bottom: 5px; width: 13px; height: 13px; border-radius: 50%; border: 0; box-shadow: none; }
 .art-ribbon.sticker-ribbon { display: flex; gap: 6px; }
@@ -246,22 +246,20 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
   .art-ribbon.main-ribbon button, .art-ribbon.sticker-ribbon button { width: 44px; height: 44px; min-width: 44px; padding: 9px; }
 }
 
-/* Soft group wells retain the overlay feel without light outlines. */
+/* Borderless groups leave more room for the tools themselves. */
 .main-ribbon .ribbon-group {
-  padding: 3px;
-  border-radius: 20px;
-  background: var(--ribbon-well);
-  box-shadow: 0 2px 5px var(--shadow);
+  padding: 0;
+  background: transparent;
 }
 
 /* Share narrow widths across all ten controls instead of wrapping Undo. */
 @media (max-width: 600px) {
   .art-ribbon.main-ribbon { flex-wrap: nowrap; gap: 4px; padding-left: max(4px, env(safe-area-inset-left)); padding-right: max(4px, env(safe-area-inset-right)); }
-  .main-ribbon .ribbon-group { flex: 1 1 0; min-width: 0; gap: 1px; padding: 2px; }
+  .main-ribbon .ribbon-group { flex: 1 1 0; min-width: 0; gap: 1px; padding: 0; }
   .main-ribbon .ribbon-group:nth-child(2) { flex-grow: 3; }
   .main-ribbon .ribbon-group:nth-child(3) { flex-grow: 5; }
   .art-ribbon.main-ribbon button { flex: 1 1 0; width: 44px; min-width: 0; height: 44px; padding: 8px 2px; }
-  .main-ribbon button svg { width: min(25px, 100%); height: 25px; flex-shrink: 0; }
+  .main-ribbon button svg { width: min(28px, 100%); height: 28px; flex-shrink: 0; }
   .main-ribbon .ribbon-color-dot { width: 11px; height: 11px; right: 1px; bottom: 5px; }
 }
 
@@ -330,8 +328,8 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
   animation: none;
 }
 
-/* Borderless wells keep the paired sticker adjustments together. */
-.sticker-ribbon .sticker-adjustment { flex-direction: row; flex: 0 0 auto; align-items: center; gap: 4px; padding: 3px; border-radius: 18px; background: var(--ribbon-well); box-shadow: 0 2px 5px var(--shadow); }
+/* Paired sticker adjustments stay grouped without visible wells. */
+.sticker-ribbon .sticker-adjustment { flex-direction: row; flex: 0 0 auto; align-items: center; gap: 4px; padding: 0; background: transparent; }
 .sticker-ribbon .sticker-adjustment button { background: transparent; }
 @media (hover: hover) { .sticker-ribbon .sticker-adjustment button:is(:hover, .app-mouse-hover) { background: color-mix(in srgb, var(--text) 8%, var(--ribbon-well)); } }
 
@@ -949,7 +947,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .ribbon-shell[hidden] { display: none; }
 .ribbon-shell .main-ribbon { padding-inline: max(64px, calc(env(safe-area-inset-right) + 58px)); }
 .ribbon-toggle { top: max(4px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); z-index: 4; display: grid; place-items: center; width: 48px; height: 48px; padding: 10px; border: 0; border-radius: 50%; }
-.ribbon-collapse { position: absolute; color: #ffffffbf; background: var(--ribbon-well); box-shadow: 0 2px 5px var(--shadow); }
+.ribbon-collapse { position: absolute; color: #ffffffbf; background: transparent; padding: 8px; }
 .ribbon-reopen { position: fixed; color: #ffffffbf; border: 1px solid #ffffffbf; background: transparent; box-shadow: 0 0 1px #000b, 0 0 3px #0008, inset 0 0 1px #000b, inset 0 0 3px #0008; }
 .ribbon-toggle svg { width: 28px; height: 28px; stroke-width: 2; }
 .ribbon-reopen svg { width: 24px; height: 24px; filter: drop-shadow(0 0 1px #000b) drop-shadow(0 0 3px #0008); }
@@ -965,11 +963,20 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .ribbon-collapse svg { width: 25px; height: 25px; }
 }
 
-/* White overlay icons and soft hover feedback inside borderless wells. */
+/* Larger white overlay icons with soft circular hover feedback. */
 .ribbon-shell .art-ribbon button { color: #ffffffbf; border-radius: 50%; }
 .ribbon-shell .art-ribbon button svg, .ribbon-collapse svg { filter: drop-shadow(0 0 1px #000b) drop-shadow(0 0 3px #0008); }
 .ribbon-shell .art-ribbon button[aria-pressed='true'], .ribbon-shell .sticker-ribbon button[aria-label='Finish selecting'] { background: var(--action); color: var(--action-text); }
 .ribbon-shell .art-ribbon button[aria-pressed='true'] svg, .ribbon-shell .sticker-ribbon button[aria-label='Finish selecting'] svg { filter: none; }
 @media (hover: hover) {
   .ribbon-shell .art-ribbon button:not(:disabled):not([aria-pressed='true']):not([aria-label='Finish selecting']):is(:hover, .app-mouse-hover) { background: #ffffff1f; }
+}
+
+.ribbon-shell .art-ribbon button svg { width: 32px; height: 32px; }
+.ribbon-collapse svg { width: 32px; height: 32px; }
+@media (max-width: 600px) {
+  .ribbon-shell .art-ribbon button { padding: 8px; }
+  .ribbon-shell .main-ribbon button { padding: 8px 1px; }
+  .ribbon-shell .art-ribbon button svg { width: min(28px, 100%); height: 28px; }
+  .ribbon-collapse svg { width: 28px; height: 28px; }
 }
