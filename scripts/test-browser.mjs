@@ -90,7 +90,7 @@ try {
     console.log('Save performance:', JSON.stringify(metrics));
   }else if(process.argv.includes('--ribbon')){
     const {checkRibbonBackground,checkLayerShadowTiers}=await import('../tests/ribbon-background.browser.mjs');
-    for(const width of [1280,390,320]){
+    for(const width of [1280,800,691,667,601,390,320]){
       await cdp('Emulation.setDeviceMetricsOverride',{width,height:800,deviceScaleFactor:1,mobile:false});
       console.log(`Ribbon background ${width}px:`,await checkRibbonBackground({evaluate,cdp}));
       if(width===1280)console.log('Shadow tiers:',await checkLayerShadowTiers({evaluate,cdp}));

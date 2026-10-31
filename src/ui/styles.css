@@ -1028,3 +1028,22 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
 }
+
+/* Tool rows never wrap: spend horizontal space before reducing icon size. */
+.ribbon-shell .main-ribbon { flex-wrap: nowrap; gap: 4px; }
+.ribbon-shell .main-ribbon .ribbon-group { display: contents; }
+.ribbon-shell .main-ribbon button { flex: 0 1 52px; min-width: 0; max-width: 52px; padding-inline: 4px; }
+.ribbon-shell .sticker-ribbon { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); width: min(706px, calc(100% - 20px)); flex-wrap: nowrap; gap: 6px; }
+.ribbon-shell .sticker-ribbon .sticker-adjustment,
+.ribbon-shell .sticker-ribbon .sticker-adjustment > div { display: contents; }
+.ribbon-shell .sticker-ribbon button { width: 100%; min-width: 0; margin-left: 0; padding-inline: 4px; }
+.ribbon-shell .art-ribbon button svg { width: min(32px, 100%); flex-shrink: 1; }
+@media (max-width: 800px) {
+  .ribbon-shell .main-ribbon { padding-left: max(4px, env(safe-area-inset-left)); padding-right: max(58px, calc(env(safe-area-inset-right) + 52px)); }
+}
+@media (max-width: 600px) {
+  .ribbon-shell .main-ribbon { gap: 1px; }
+  .ribbon-shell .sticker-ribbon { gap: 2px; padding-inline: 6px; }
+  .ribbon-shell .art-ribbon button { padding-inline: 2px; }
+  .ribbon-shell .art-ribbon button svg { width: min(28px, 100%); }
+}

@@ -1,5 +1,7 @@
 import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
+import { StickerSelectionToolbar } from '../../src/ui/StickerSelectionToolbar';
+import { createEditorBridge } from '../../src/editor/bridge';
 import EditorPreview from '../../src/ui/EditorPreview';
 import { prepareStudio } from '../../src/app/startup';
 const settle=async()=>{for(let i=0;i<6;i++)await new Promise(r=>requestAnimationFrame(r));};
@@ -27,6 +29,14 @@ export async function checkRibbonCollapse(){
   const shadowRegion=()=>host.querySelector<HTMLElement>('[data-layer-shadow="ribbon-to-paper"]')!;
   const fittedShadow=shadowRegion().style.clipPath;
   assert(fittedShadow&& !shadowRegion().hidden,'Fitted paper receives the ribbon shadow');
+  const drawerHost=document.createElement('div');host.querySelector('.ribbon-shell')!.append(drawerHost);const drawerRoot=createRoot(drawerHost);
+  try{
+   drawerRoot.render(createElement(StickerSelectionToolbar,{bridge:createEditorBridge(),focused:false,order:{forward:true,backward:true},drawerRef:{current:null},onFocus:()=>{},onFinish:()=>{}}));await settle();
+   const drawer=drawerHost.querySelector('.sticker-ribbon')!.getBoundingClientRect(),buttons=[...drawerHost.querySelectorAll('button')].map(b=>b.getBoundingClientRect());
+   assert(buttons.length===12&&buttons.every(b=>Math.abs(b.top-buttons[0]!.top)<1&&b.left>=drawer.left&&b.right<=drawer.right),'All twelve submenu controls stay in one visible row');
+  }finally{drawerRoot.unmount();drawerHost.remove();}
+  const rows=host.querySelectorAll('.main-ribbon');
+  for(const row of rows){const boxes=[...row.querySelectorAll('button')].map(b=>b.getBoundingClientRect());assert(boxes.every(b=>Math.abs(b.top-boxes[0]!.top)<1),'Main ribbon stays on one row');}
   const collapse=button('Hide tools').getBoundingClientRect();
   assert(collapse.right<=innerWidth&&innerWidth-collapse.right<=20&&collapse.top<12,'Collapse is at the ribbon top right');
   for(const tool of host.querySelectorAll('.main-ribbon button')){
