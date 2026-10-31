@@ -94,7 +94,7 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 The portrait Coloring Pages picker places Grid at upper left and Favorites beneath
 it, beside centered category and detail wells. Its preview uses the available width
 with the dialog's control inset. Page arrows occupy a centered row directly beneath
-the preview; larger layouts keep their wide composition.
+the bottom-aligned paper, with an 8px gap; larger layouts keep their wide composition.
 
 Main and sticker ribbons each remain a single row at every width. Spacing and
 icons compress on narrow screens while keeping every action visible. Up to 800px

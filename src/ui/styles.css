@@ -754,6 +754,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .coloring-picker .page-favorites-filter { position: absolute; top: 52px; left: 0; }
   .coloring-picker-body[data-grid='false'] .page-browse-content { display: grid; grid-template-columns: 1fr 44px 16px 44px 1fr; grid-template-rows: minmax(0, 1fr) 44px; gap: 8px 0; padding: 0; }
   .coloring-picker-body[data-grid='false'] .coloring-page-single { grid-column: 1 / -1; grid-row: 1; align-items: end; }
+  .coloring-picker-body[data-grid='false'] .coloring-page-cell { align-items: end; }
   .coloring-picker-body[data-grid='false'] .coloring-page-sheet { width: min(100cqw, calc(100cqh * var(--page-ratio))); }
   .coloring-picker-body[data-grid='false'] .page-browse-arrow { position: static; width: 44px; min-width: 44px; padding: 8px; transform: none; }
   .coloring-picker-body[data-grid='false'] .page-previous { grid-column: 2; grid-row: 2; }
