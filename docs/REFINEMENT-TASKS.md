@@ -353,6 +353,9 @@ the visual discussion. This remains the sole implementation backlog.
   receive fresh IDs, with validation/size limits and manual clipboard fallback.
 - [x] Implement template import/share separately from PNG/SVG/PDF picture output;
   verify round trips, missing assets, malformed input, collisions and storage failure.
+- [x] Use receiver-aware editor shadow tiers: 1 for adjacent glass/paper layers,
+  2 across two gaps, 3 from ribbon to desk. Pixel checks compare the five marked
+  regions and verify matching contact shadows plus progressively softer reach.
 - [x] Add ribbon collapse and a floating transparent reopen control. Fit follows
   workspace expansion; manual zoom/center and keyboard focus survive the toggle.
 - [x] Default blank pages to Display aspect ratio; keep A4/A5/Photo and add

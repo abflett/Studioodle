@@ -24,18 +24,23 @@ export async function checkRibbonCollapse(){
    assert(getComputedStyle(button('Go home').querySelector('svg')!).filter!==lightGlow,'Ribbon glow inverts with the theme');
   }finally{if(theme===undefined)delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=theme;}
 
+  const shadowRegion=()=>host.querySelector<HTMLElement>('[data-layer-shadow="ribbon-to-paper"]')!;
+  const fittedShadow=shadowRegion().style.clipPath;
+  assert(fittedShadow&& !shadowRegion().hidden,'Fitted paper receives the ribbon shadow');
   const collapse=button('Hide tools').getBoundingClientRect();
   assert(collapse.right<=innerWidth&&innerWidth-collapse.right<=20&&collapse.top<12,'Collapse is at the ribbon top right');
   for(const tool of host.querySelectorAll('.main-ribbon button')){
    const box=tool.getBoundingClientRect();assert(box.right<=collapse.left||box.bottom<=collapse.top||box.top>=collapse.bottom,'Ribbon tools do not overlap collapse');
   }
   button('Hide tools').click();await settle();const full=workspace(),expanded=paper();
+  assert(!host.querySelector('[data-layer-shadow]:not([hidden])'),'Collapsing tools also removes their shadows');
   assert(full.height>open.height&&full.top===0,'Collapse releases the whole ribbon space');
   assert(Math.abs(expanded.width-full.width)<1&&Math.abs(expanded.height-full.height)<1,'Fit expands to fill matching display ratio');
   assert(document.activeElement===button('Show tools'),'Hidden ribbon transfers keyboard focus to reopen');
   const floating=button('Show tools').getBoundingClientRect();assert(Math.abs(floating.right-collapse.right)<1&&Math.abs(floating.top-collapse.top)<1,'Toggle stays in the same corner');assert(floating.width>=44&&floating.height>=44,'Reopen keeps a touch-sized target');
   button('Show tools').click();await settle();assert(Math.abs(paper().height-fitted.height)<.01,'Reopening restores fitted page');
   host.querySelector<HTMLButtonElement>('button[aria-label^="Zoom "]')!.click();await settle();const zoomed=paper(),anchor=center();
+  assert(shadowRegion().style.clipPath!==fittedShadow,'Shadow receivers follow manual zoom');
   button('Hide tools').click();await settle();assert(Math.abs(paper().width-zoomed.width)<.01,'Manual zoom does not change on collapse');
   assert(Math.abs(center().x-anchor.x)<.0001&&Math.abs(center().y-anchor.y)<.0001,'Manual artwork center stays anchored');
   button('Show tools').click();await settle();assert(Math.abs(paper().width-zoomed.width)<.01,'Manual zoom survives reopen');

@@ -22,6 +22,7 @@ import { usePaperView } from './usePaperView';
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Eraser, MousePointer2, Move, ZoomIn, Save } from 'lucide-react';
+import { EditorLayerShadows } from './EditorLayerShadows';
 import { EditorCanvas } from './EditorCanvas';
 import { createEditorBridge } from '../editor/bridge';
 import type { StickerKind } from '../editor/stickerKinds';
@@ -37,6 +38,7 @@ function RibbonToggleIcon({ expand = false }: { expand?: boolean }) {
 
 type Picker = 'stickers' | 'colors' | 'brush';
 export default function EditorPreview({ setup, onBack, settings }: { setup: EditorSetup; onBack: () => void; settings: AppSettings }) {
+  const studio = useRef<HTMLElement>(null);
   const [bridge] = useState(createEditorBridge);
   const [inputError,setInputError]=useState<string>();
   useEffect(()=>bridge.onError(setInputError),[bridge]);
@@ -178,7 +180,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     if (!picker && modal.open) modal.close();
     return () => { if (modal.open) modal.close(); };
   }, [picker]);
-  return <main className="art-studio" aria-label={setup.title}>
+  return <main ref={studio} className="art-studio" aria-label={setup.title}>
     <div className="ribbon-shell" hidden={ribbonHidden} id="editor-ribbon">
     <header className="art-ribbon main-ribbon" aria-label="Art tools">
       <div className="ribbon-group" role="group" aria-label="Home">
@@ -210,6 +212,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
         <EditorCanvas focused={!!focused} bridge={bridge} setup={setup} zoom={zoom} offsetX={position.x} offsetY={position.y} />
       </div>
     </section>
+    <EditorLayerShadows studio={studio} viewKey={`${position.x},${position.y},${zoom}`} drawerVisible={!!((tool === 'select' && selected) || focused)} hidden={ribbonHidden} focused={!!focused} />
     {inputError && <div className="save-notice" role="alert"><span>{inputError}</span><button className="icon-button" aria-label="Save picture after paint error" onClick={() => { setInputError(undefined); save(); }}><Save aria-hidden="true" /></button><button className="icon-button" aria-label="Dismiss paint error" onClick={()=>setInputError(undefined)}><X /></button></div>}
     {saveStatus !== 'idle' && <div className="save-notice" role="status"><span>{saveStatus === 'saved' ? 'Saved to Your pictures' : 'Could not save. Device storage may be full or unavailable.'}</span><button className="icon-button" aria-label="Dismiss save message" onClick={dismissSaveStatus}><X /></button></div>}
     <dialog className={`setup-dialog art-dialog ${picker === 'stickers' ? 'sticker-dialog' : ''} ${picker === 'brush' ? 'brush-dialog' : ''} ${picker === 'colors' ? 'palette-dialog' : ''}`} ref={dialog} onCancel={closePicker} onClick={(event) => closeOnBackdrop(event, closePicker)} onAuxClick={(event) => { if (event.button === 2) closeOnBackdrop(event, closePicker); }} aria-labelledby="art-picker-title">

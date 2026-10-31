@@ -12,7 +12,6 @@ export async function checkRibbonBackground({evaluate,cdp}) {
    document.body.append(host);
    const main=host.querySelector('.main-ribbon'),drawer=host.querySelector('.sticker-ribbon');
    if(Number(getComputedStyle(main).zIndex)<=Number(getComputedStyle(drawer).zIndex))throw Error('Main ribbon must be above its drawer');
-   if(getComputedStyle(main).boxShadow==='none'||getComputedStyle(drawer).boxShadow==='none')throw Error('Ribbon and drawer must retain layer shadows');
    if(getComputedStyle(main).backgroundPosition===getComputedStyle(drawer).backgroundPosition)throw Error('Drawer must keep its subtle refraction offset');
    // Neutralize intentional depth effects when comparing the shared image origin.
    main.style.boxShadow=drawer.style.boxShadow='none';drawer.style.backgroundPosition='center';
@@ -40,5 +39,24 @@ export async function checkRibbonBackground({evaluate,cdp}) {
    await evaluate(`(()=>{const host=document.querySelector('#ribbon-background-test');if(host.dataset.previousTheme)document.documentElement.dataset.theme=host.dataset.previousTheme;else delete document.documentElement.dataset.theme;host.remove();})()`);
   }
  }
+ return results;
+}
+
+/** Verify the actual shadow profiles at the user's five marked receivers. */
+export async function checkLayerShadowTiers({evaluate,cdp}) {
+ const previous=await evaluate("document.documentElement.dataset.theme??null"),results=[];
+ try{
+  for(const theme of ['light','dark']){
+   await evaluate(`document.documentElement.dataset.theme=${JSON.stringify(theme)}`);
+   const points=await evaluate("import('/tests/browser/layer-shadows.ts').then(m=>m.mountLayerShadows())");
+   try{
+    const shot=await cdp('Page.captureScreenshot',{format:'png'});
+    const profiles=await evaluate(`import('/tests/browser/layer-shadows.ts').then(m=>m.sampleLayerShadows(${JSON.stringify(shot.data)},${JSON.stringify(points)}))`);
+    for(const name of ['purple','red'])if(profiles[name].some((value,i)=>Math.abs(value-profiles.orange[i])>2))throw Error('Adjacent layers must share tier 1: '+JSON.stringify(profiles));
+    if(profiles.orange[0]<10||profiles.orange[2]>=profiles.orange[0]||profiles.blue[3]<=profiles.orange[3]+2||profiles.green[4]<=profiles.blue[4]+1)throw Error('Shadow tiers must soften and spread with distance: '+JSON.stringify(profiles));
+    results.push({theme,profiles});
+   }finally{await evaluate("import('/tests/browser/layer-shadows.ts').then(m=>m.unmountLayerShadows())");}
+  }
+ }finally{await evaluate(previous===null?"delete document.documentElement.dataset.theme":`document.documentElement.dataset.theme=${JSON.stringify(previous)}`);}
  return results;
 }
