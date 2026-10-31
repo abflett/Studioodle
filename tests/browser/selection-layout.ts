@@ -23,10 +23,18 @@ export async function showSelectionLayout(theme:'light'|'dark'){
  }else{
   const selection=screen.querySelector<HTMLElement>('.selection')!;
   selection.style.setProperty('--portrait-easel-lift','0px');
+  selection.style.setProperty('--portrait-book-drop','0px');
   const originalBlank=box('.choice-blank'),originalPages=box('.choice-coloring'),originalGallery=box('.previous-section');
   selection.style.removeProperty('--portrait-easel-lift');
-  if(originalBlank.top-blank.top<15||originalBlank.top-blank.top>33)throw Error('Portrait easel needs a modest upward lift');
-  if(Math.abs(originalPages.top-pages.top)>.1||Math.abs(originalGallery.top-gallery.top)>.1)throw Error('Portrait lift must leave book and gallery in place');
+  selection.style.removeProperty('--portrait-book-drop');
+  if(originalBlank.top-blank.top<23||originalBlank.top-blank.top>45)throw Error('Portrait easel needs a modest upward lift');
+  if(pages.top-originalPages.top<7||pages.top-originalPages.top>19)throw Error('Portrait book needs a gentle downward stagger');
+  if(Math.abs(originalGallery.top-gallery.top)>.1)throw Error('Portrait stagger must leave gallery in place');
+  const art=box('.choice-coloring .choice-art'),image=screen.querySelector<HTMLImageElement>('.choice-coloring img')!;
+  const ratio=image.naturalWidth/image.naturalHeight,w=Math.min(art.width,art.height*ratio)*1.04,h=w/ratio,angle=9*Math.PI/180;
+  const inkBottom=art.y+art.height/2+(h*Math.cos(angle)+w*Math.sin(angle))/2;
+  if(box('.portfolio-stack').top-inkBottom<16)throw Error('Tilted portrait book needs breathing room above the gallery: '+JSON.stringify({width:innerWidth,height:innerHeight,inkBottom,stackTop:box('.portfolio-stack').top}));
+  if(blank.top<controls.bottom+6)throw Error('Raised easel needs breathing room below studio controls');
  }
  const serialize=(b:DOMRect)=>({x:b.x,y:b.y,width:b.width,height:b.height});
  return {width:innerWidth,height:innerHeight,theme,blank:serialize(blank),pages:serialize(pages),controls:serialize(controls),gallery:serialize(gallery)};

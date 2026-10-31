@@ -18,8 +18,10 @@ while settings remain independently anchored at the screen corner. Gallery
 arrows flank the stack and actions sit
 under it. Utility/action targets stay at least 44px, including 568 x 320 and
 667 x 375 phone landscapes. Desktop uses the same arrangement; portrait retains
-the staggered choices and gallery layout, with an additional 16-32px upward
-easel shift for visual balance; book and gallery positions stay fixed.
+a stronger stagger: easel lifted 24-44px, book lowered 8-18px and tilted
+9 degrees counterclockwise. The gallery stays anchored. Taller phones use a
+smaller contribution from the older book stagger so its rotated edge still has
+breathing room above the paper stack.
 
 The splash loads the editor module, stays visible for at least two seconds and
 proceeds when ready. Home illustrations load from bundled selection assets; they do not
