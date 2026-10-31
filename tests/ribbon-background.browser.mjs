@@ -8,8 +8,14 @@ export async function checkRibbonBackground({evaluate,cdp}) {
    const host=document.createElement('main');host.id='ribbon-background-test';host.className='art-studio';host.dataset.previousTheme=document.documentElement.dataset.theme??'';
    document.documentElement.dataset.theme=${JSON.stringify(theme)};
    host.style.cssText='position:fixed;inset:0;z-index:9999';
-   host.innerHTML='<div class="ribbon-shell" style="box-shadow:none"><header class="art-ribbon main-ribbon" style="height:60px;padding:0"></header><div class="art-ribbon sticker-ribbon" style="width:min(700px,calc(100% - 20px));height:100px;box-shadow:none;visibility:hidden"></div></div><section class="art-canvas"></section>';
+   host.innerHTML='<div class="ribbon-shell" style="box-shadow:none"><header class="art-ribbon main-ribbon" style="height:60px;padding:0"></header><div class="art-ribbon sticker-ribbon" style="width:min(700px,calc(100% - 20px));height:100px;visibility:hidden"></div></div><section class="art-canvas"></section>';
    document.body.append(host);
+   const main=host.querySelector('.main-ribbon'),drawer=host.querySelector('.sticker-ribbon');
+   if(Number(getComputedStyle(main).zIndex)<=Number(getComputedStyle(drawer).zIndex))throw Error('Main ribbon must be above its drawer');
+   if(getComputedStyle(main).boxShadow==='none'||getComputedStyle(drawer).boxShadow==='none')throw Error('Ribbon and drawer must retain layer shadows');
+   if(getComputedStyle(main).backgroundPosition===getComputedStyle(drawer).backgroundPosition)throw Error('Drawer must keep its subtle refraction offset');
+   // Neutralize intentional depth effects when comparing the shared image origin.
+   main.style.boxShadow=drawer.style.boxShadow='none';drawer.style.backgroundPosition='center';
    const workspace=host.querySelector('.art-canvas');
    if(getComputedStyle(workspace).backgroundImage==='none')throw Error('Workspace must keep its layer tint');
    // Compare image alignment independently of the intentional workspace tint.
