@@ -47,6 +47,11 @@ with the workspace; manual zoom keeps its scale and center artwork point. Keyboa
 focus transfers between the two controls. Hidden tools are excluded from tab order,
 while drawing shortcuts remain available. Visibility resets for each editor session.
 
+The editor background flows continuously through the ribbon, sticker submenu
+and letterboxing: all use the same viewport-aligned image and tint. The submenu
+uses auto-margin centering so a transform cannot shift its background origin.
+The workspace has no extra tint that would create a color seam.
+
 ## Paper and templates
 
 Blank-page setup defaults to Display, labeled with the device screen aspect ratio (for example 16:9), falling back to the window when screen dimensions are unavailable. A4, A5 and 4 x 6 inch Photo remain available. Tall, Wide and Square are independent orientation choices; Square uses the preset's shorter edge. Automatic orientation follows the display until manually selected and resets when opening a new blank-page wizard.

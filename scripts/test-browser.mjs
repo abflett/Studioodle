@@ -89,8 +89,10 @@ try {
     await fs.writeFile('work/tests/save-performance-results.json', JSON.stringify(metrics, null, 2));
     console.log('Save performance:', JSON.stringify(metrics));
   }else if(process.argv.includes('--ribbon')){
+    const {checkRibbonBackground}=await import('../tests/ribbon-background.browser.mjs');
     for(const width of [1280,390,320]){
       await cdp('Emulation.setDeviceMetricsOverride',{width,height:800,deviceScaleFactor:1,mobile:false});
+      console.log(`Ribbon background ${width}px:`,await checkRibbonBackground({evaluate,cdp}));
       console.log(`Ribbon ${width}px:`,await evaluate("import('/tests/browser/ribbon-collapse.ts').then(m=>m.checkRibbonCollapse())"));
     }
     console.log('Paper view:',await evaluate("import('/tests/browser/paper-view.ts').then(m=>m.checkPaperView())"));
@@ -248,6 +250,8 @@ try {
   console.log('Picture output:', JSON.stringify(output));
   if (output.meanError >= 2 || output.differentFraction >= .03) throw Error('SVG differs from editor: '+JSON.stringify(output));
   console.log('Normalized output:',await evaluate("import('/tests/browser/normalized-page-output.ts').then(m=>m.checkNormalizedPageOutput())"));
+  const {checkRibbonBackground}=await import('../tests/ribbon-background.browser.mjs');
+  console.log('Ribbon background:',await checkRibbonBackground({evaluate,cdp}));
   console.log('Ribbon:',await evaluate("import('/tests/browser/ribbon-collapse.ts').then(m=>m.checkRibbonCollapse())"));
   console.log('Blank paper:', await evaluate("import('/tests/browser/blank-page-setup.ts').then(m => m.checkBlankPageSetup())"));
   console.log('Coloring pages:', await evaluate("import('/tests/browser/coloring-page-picker.ts').then(m => m.checkColoringPagePicker())"));

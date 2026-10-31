@@ -91,6 +91,11 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 ## Current interface
 
+Ribbon, sticker submenu and letterboxing share one viewport-aligned scene image
+and tint. The submenu centers with auto margins (no transform), so its fixed
+background keeps the same origin. There is no separate workspace tint layer.
+Pixel comparisons cover both themes and desktop/phone widths.
+
 The editor ribbon toggles with T or its corner arrow-and-line icon. Both controls sit at the
 top right with safe-area spacing. Both are circular. Ribbon tools use transparent groups without wells, larger theme-colored icons with contrasting glows
 (32px desktop, up to 28px on narrow screens), circular
