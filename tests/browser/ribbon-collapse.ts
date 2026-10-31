@@ -33,6 +33,8 @@ export async function checkRibbonCollapse(){
   try{
    drawerRoot.render(createElement(StickerSelectionToolbar,{bridge:createEditorBridge(),focused:false,order:{forward:true,backward:true},drawerRef:{current:null},onFocus:()=>{},onFinish:()=>{}}));await settle();
    const drawer=drawerHost.querySelector('.sticker-ribbon')!.getBoundingClientRect(),buttons=[...drawerHost.querySelectorAll('button')].map(b=>b.getBoundingClientRect());
+   if(innerWidth<=800)assert(drawer.left===0&&drawer.right===innerWidth&&drawer.height<=54,'Small-screen submenu fills width with compact vertical padding');
+   else assert(drawer.left>0&&drawer.right<innerWidth,'Larger displays keep the inset submenu');
    assert(buttons.length===12&&buttons.every(b=>Math.abs(b.top-buttons[0]!.top)<1&&b.left>=drawer.left&&b.right<=drawer.right),'All twelve submenu controls stay in one visible row');
   }finally{drawerRoot.unmount();drawerHost.remove();}
   const rows=host.querySelectorAll('.main-ribbon');
