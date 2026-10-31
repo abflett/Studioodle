@@ -39,7 +39,7 @@ See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries
 The ribbon's Hide tools button (an upward arrow above a horizontal line) releases its space to the canvas. A floating
 Show tools button at the top right restores it, using the reversed symbol: a
 downward arrow below a horizontal line. Both controls are circular. The collapse control matches
-the themed ribbon buttons; only the floating reopen control has a transparent
+the borderless ribbon buttons, with shadowed white icons and a white hover film; only the floating reopen control has a transparent
 center, 75%-opaque white border/icon, an even shadow glow around its border/chevron and a white hover film. The ribbon reserves space for the collapse control at its top right.
 Fit mode expands/refits
 with the workspace; manual zoom keeps its scale and center artwork point. Keyboard
@@ -71,6 +71,11 @@ Horizon stickers now use manifest placement metadata and insert immediately abov
 The selection screen's save utility button copies the selected saved picture into the coloring-page picker. Templates keep paper size, sticker order, positions, scale, rotation and flips. All vector paint is removed, the canvas becomes white and sticker ink colors are preserved. Freehand marks are paint and are omitted. A picture needs at least one sticker to create a useful template.
 
 Templates are stored locally in the atomic `studioodle.workshop.v3` collection separately from `Your pictures`. Each use receives a new picture ID, so coloring a template never overwrites it or the source picture. The picker previews the new template immediately; custom entries can be deleted through the existing confirmation dialog. Built-in pages cannot be deleted. `coloringPage.ts` creates copies and storage adapters validate both libraries.
+
+Ribbon tool groups have transparent backgrounds without well borders. Buttons
+use circular hover targets and white icons with an even shadow for contrast.
+The active tool retains its gold fill and dark icon. Sticker adjustments use
+the same treatment while keeping their grouped layout.
 
 ## Shortcuts and gestures
 
