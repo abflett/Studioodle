@@ -948,11 +948,11 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @media(max-width:360px) { .palette-picker { padding-inline: 12px; }.color-palette-tab { width: 36px; }.color-palette-tab svg { width: 30px; height: 30px; }.palette-swatch-grid { padding-inline: 6px; } }
 @media(max-height:560px) and (min-width:561px) { .palette-picker { padding: 16px 26px; gap: 14px; }.palette-swatch-grid { grid-template-columns: repeat(8,44px); gap: 12px; padding-top: 0; }.palette-swatch { width: 44px; height: 44px; }.palette-picker > .dialog-header { min-height: 52px; }.color-palette-footer { min-height: 36px; }.color-palette-footer .custom-palette-edit { width: 36px; height: 36px; }.custom-color-content { padding: 18px; }.custom-color-content > .dialog-header { margin-bottom: 14px; }.custom-sv-field { height: 150px; }.custom-hue-slider { margin-block: 8px; } }
 
-/* Keep the ribbon toggle in the same corner in both states. */
+/* Collapse shares the tool row; reopen floats at the top right. */
 .ribbon-shell[hidden] { display: none; }
-.ribbon-shell .main-ribbon { padding-inline: max(64px, calc(env(safe-area-inset-right) + 58px)); }
+.ribbon-shell .main-ribbon { padding-inline: max(8px, env(safe-area-inset-left)) max(8px, env(safe-area-inset-right)); }
 .ribbon-toggle { top: max(4px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); z-index: 4; display: grid; place-items: center; width: 48px; height: 48px; padding: 10px; border: 0; border-radius: 50%; }
-.ribbon-collapse { position: absolute; color: var(--ribbon-icon); background: transparent; padding: 8px; }
+.ribbon-collapse { position: static; color: var(--ribbon-icon); background: transparent; padding: 8px; }
 .ribbon-reopen { position: fixed; color: var(--ribbon-icon); border: 1px solid var(--ribbon-icon); background: transparent; box-shadow: 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent), inset 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), inset 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent); }
 .ribbon-toggle svg { width: 28px; height: 28px; stroke-width: 2; }
 .ribbon-reopen svg { width: 24px; height: 24px; filter: drop-shadow(0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent)) drop-shadow(0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent)); }
@@ -963,7 +963,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .ribbon-reopen:is(:hover, .app-mouse-hover) { background: var(--ribbon-hover); }
 }
 @media (max-width: 600px) {
-  .ribbon-shell .main-ribbon { padding-left: max(4px, env(safe-area-inset-left)); padding-right: max(58px, calc(env(safe-area-inset-right) + 52px)); }
   .ribbon-toggle { width: 44px; height: 44px; padding: 9px; }
   .ribbon-collapse svg { width: 25px; height: 25px; }
 }
@@ -1041,16 +1040,29 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .ribbon-shell .main-ribbon { flex-wrap: nowrap; gap: 4px; }
 .ribbon-shell .main-ribbon .ribbon-group { display: contents; }
 .ribbon-shell .main-ribbon button { flex: 0 1 52px; min-width: 0; max-width: 52px; padding-inline: 4px; }
+.ribbon-shell .main-ribbon .ribbon-collapse { position: static; inset: auto; }
 .ribbon-shell .sticker-ribbon { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); width: min(706px, calc(100% - 20px)); flex-wrap: nowrap; gap: 6px; }
 .ribbon-shell .sticker-ribbon .sticker-adjustment,
 .ribbon-shell .sticker-ribbon .sticker-adjustment > div { display: contents; }
 .ribbon-shell .sticker-ribbon button { width: 100%; min-width: 0; margin-left: 0; padding-inline: 4px; }
+.ribbon-shell .sticker-ribbon.is-focused { width: 68px; grid-template-columns: minmax(0, 1fr); }
+.ribbon-shell .sticker-ribbon.is-focused button { --ribbon-button-fill: var(--action); color: var(--action-text); }
+.ribbon-shell .sticker-ribbon.is-focused button svg { filter: none; }
 .ribbon-shell .art-ribbon button svg { width: min(32px, 100%); flex-shrink: 1; }
+@media (min-width: 801px) {
+  .ribbon-shell .main-ribbon .ribbon-group:first-child button,
+  .ribbon-shell .main-ribbon .ribbon-collapse { margin-left: auto; }
+}
 @media (max-width: 800px) {
   .layer-shadow-caster[data-shadow^='submenu-'] { border-radius: 0; }
   .ribbon-shell .sticker-ribbon { width: 100%; max-width: 100%; border-radius: 0; gap: 2px; padding: 6px max(4px, env(safe-area-inset-right)) 4px max(4px, env(safe-area-inset-left)); }
   .ribbon-shell .sticker-ribbon button { height: 44px; min-height: 44px; padding: 6px 2px; }
-  .ribbon-shell .main-ribbon { padding-left: max(4px, env(safe-area-inset-left)); padding-right: max(58px, calc(env(safe-area-inset-right) + 52px)); }
+  .ribbon-shell .sticker-ribbon:not(.is-focused) { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+  .ribbon-shell .sticker-ribbon .selection-desktop-action { display: none; }
+  .ribbon-shell .sticker-ribbon.is-focused { width: 100%; }
+  .ribbon-shell .sticker-ribbon.is-focused button { width: 44px; justify-self: center; }
+  .ribbon-shell .main-ribbon { padding-left: max(4px, env(safe-area-inset-left)); padding-right: max(4px, env(safe-area-inset-right)); }
+  .ribbon-shell .main-ribbon button { flex: 1 1 0; max-width: none; }
 }
 @media (max-width: 600px) {
   .ribbon-shell .main-ribbon { gap: 1px; }

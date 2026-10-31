@@ -91,6 +91,11 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 ## Current interface
 
+Collapse occupies a normal main-ribbon slot without a reserved side gutter. Up to
+800px wide, ordinary sticker selection omits Duplicate and Done, retaining ten
+controls. Focus shows only Done on all displays; painting tools preserve focus.
+Done or F/Enter exits focus and restores the page view and same sticker selection.
+
 The portrait Coloring Pages picker places Grid at upper left and Favorites beneath
 it, beside centered category and detail wells. Its preview uses the available width
 with the dialog's control inset. The preview and arrows are centered together
@@ -131,8 +136,9 @@ The workspace retains its separate theme tint
 to distinguish layers; focus mode retains its spotlight background.
 Pixel comparisons cover both themes and desktop/phone widths.
 
-The editor ribbon toggles with T or its corner arrow-and-line icon. Both controls sit at the
-top right with safe-area spacing. Both are circular. Ribbon tools use transparent groups without wells, larger theme-colored icons with contrasting glows
+The editor ribbon toggles with T or its final arrow-and-line button. The floating
+reopen control sits at the top right with safe-area spacing. Both are circular.
+Ribbon tools use transparent groups without wells, larger theme-colored icons with contrasting glows
 (32px desktop, up to 28px on narrow screens), circular
 theme-tinted hover targets and the theme action color for the selected tool. The open-ribbon toggle matches; only the floating reopen control has a transparent center, 85%-opaque
 theme-colored border/icon, an even contrast glow and a theme-tinted hover film.

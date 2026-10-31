@@ -156,7 +156,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     'mod+z': () => bridge.send({ type: 'undo' }), backspace: () => bridge.send({ type: 'undo' }), 'mod+s': save,
     'mod+d': () => { if (selected && !focused) bridge.send({ type: 'duplicate-selection' }); },
     delete: () => { if (selected && !focused) bridge.send({ type: 'delete-selection' }); },
-    f: focusSelection, enter: () => { if (focused || (selected && tool === 'select')) finishSelection(); },
+    f: () => { if (focused) finishSelection(); else focusSelection(); }, enter: () => { if (focused || (selected && tool === 'select')) finishSelection(); },
   });
   const singleHandlers = tool === 'bucket' ? precisionFill.handlers : handlers;
   // Trusted touch is owned by the native gesture adapter; its synthetic events
@@ -201,8 +201,8 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       <div className="ribbon-group" role="group" aria-label="History">
         <button title="Undo (Ctrl/Cmd+Z or Backspace)" aria-keyshortcuts="Control+Z Meta+Z Backspace" aria-label="Undo" onClick={() => bridge.send({ type: 'undo' })}><Undo2 aria-hidden="true" /></button>
       </div>
-    </header>
       <button ref={collapseButton} className="ribbon-toggle ribbon-collapse" title="Hide tools (T)" aria-keyshortcuts="T" aria-label="Hide tools" aria-expanded="true" aria-controls="editor-ribbon" onClick={toggleRibbon}><RibbonToggleIcon /></button>
+    </header>
       {((tool === 'select' && selected) || focused) && <StickerSelectionToolbar bridge={bridge} focused={!!focused} order={selectionOrder} drawerRef={selectionDrawer} onFocus={focusSelection} onFinish={finishSelection} />}
     </div>
     {ribbonHidden && <button ref={reopenButton} className="ribbon-toggle ribbon-reopen" title="Show tools (T)" aria-keyshortcuts="T" aria-label="Show tools" aria-expanded="false" aria-controls="editor-ribbon" onClick={toggleRibbon}><RibbonToggleIcon expand /></button>}

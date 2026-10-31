@@ -11,6 +11,9 @@ export function StickerSelectionToolbar({ bridge, focused, order, drawerRef, onF
   onFocus: () => void;
   onFinish: () => void;
 }) {
+  if (focused) return <div ref={drawerRef} className="art-ribbon sticker-ribbon is-focused" role="toolbar" aria-label="Focused sticker" onPointerDown={(event) => event.stopPropagation()}>
+    <button title="Done: exit focus (F or Enter)" aria-label="Exit focus" aria-keyshortcuts="F Enter" onClick={onFinish}><Check aria-hidden="true" /></button>
+  </div>;
   return <div ref={drawerRef} className="art-ribbon sticker-ribbon" role="toolbar" aria-label="Selected sticker" onPointerDown={(event) => event.stopPropagation()}>
     <div className="sticker-adjustment" role="group" aria-label="Sticker size"><div>
       <button title="Shrink sticker by 10 percentage points" aria-label="Shrink sticker by 10 percentage points" onClick={() => bridge.send({ type: 'transform-selection', scaleDelta: -.1, rotationDelta: 0 })}><Minimize2 aria-hidden="true" /></button>
@@ -25,12 +28,12 @@ export function StickerSelectionToolbar({ bridge, focused, order, drawerRef, onF
       <button title="Flip vertically" aria-label="Flip sticker vertically" onClick={() => bridge.send({ type: 'flip-selection', axis: 'vertical' })}><FlipHorizontal2 aria-hidden="true" /></button>
     </div></div>
     <div className="sticker-adjustment" role="group" aria-label="Sticker layer order"><div>
-      <button title="Move behind the next overlapping sticker" disabled={!!focused || !order.backward} aria-label="Move behind the next overlapping sticker" onClick={() => bridge.send({ type: 'order-selection', direction: 'backward' })}><LayerOrderIcon direction="backward" /></button>
-      <button title="Move in front of the next overlapping sticker" disabled={!!focused || !order.forward} aria-label="Move in front of the next overlapping sticker" onClick={() => bridge.send({ type: 'order-selection', direction: 'forward' })}><LayerOrderIcon direction="forward" /></button>
+      <button title="Move behind the next overlapping sticker" disabled={!order.backward} aria-label="Move behind the next overlapping sticker" onClick={() => bridge.send({ type: 'order-selection', direction: 'backward' })}><LayerOrderIcon direction="backward" /></button>
+      <button title="Move in front of the next overlapping sticker" disabled={!order.forward} aria-label="Move in front of the next overlapping sticker" onClick={() => bridge.send({ type: 'order-selection', direction: 'forward' })}><LayerOrderIcon direction="forward" /></button>
     </div></div>
-    <button title={focused ? 'Refit focused sticker' : 'Focus on this sticker (F)'} aria-label={focused ? 'Refit focused sticker' : 'Focus on this sticker (F)'} aria-pressed={!!focused} onClick={onFocus}><ScanSearch aria-hidden="true" /></button>
-    <button title="Duplicate (Ctrl/Cmd+D)" aria-keyshortcuts="Control+D Meta+D" aria-label="Duplicate" disabled={!!focused} onClick={() => bridge.send({ type: 'duplicate-selection' })}><Copy aria-hidden="true" /></button>
-    <button title="Delete (Del)" aria-keyshortcuts="Delete" aria-label="Delete" disabled={!!focused} onClick={() => bridge.send({ type: 'delete-selection' })}><Trash2 aria-hidden="true" /></button>
-    <button title={focused ? "Exit focus" : "Done"} onClick={onFinish} aria-label="Finish selecting"><Check aria-hidden="true" /></button>
+    <button title="Focus on this sticker (F)" aria-label="Focus on this sticker (F)" onClick={onFocus}><ScanSearch aria-hidden="true" /></button>
+    <button className="selection-desktop-action" title="Duplicate (Ctrl/Cmd+D)" aria-keyshortcuts="Control+D Meta+D" aria-label="Duplicate" onClick={() => bridge.send({ type: 'duplicate-selection' })}><Copy aria-hidden="true" /></button>
+    <button title="Delete (Del)" aria-keyshortcuts="Delete" aria-label="Delete" onClick={() => bridge.send({ type: 'delete-selection' })}><Trash2 aria-hidden="true" /></button>
+    <button className="selection-desktop-action" title="Done" onClick={onFinish} aria-label="Finish selecting"><Check aria-hidden="true" /></button>
   </div>;
 }

@@ -60,7 +60,7 @@ Show tools button at the top right restores it, using the reversed symbol: a
 downward arrow below a horizontal line. Both controls are circular. The collapse control matches
 the borderless ribbon buttons, using theme-colored icons, a contrast glow and a
 theme-tinted hover film; only the floating reopen control has a transparent
-center, theme-colored border/icon, an even contrast glow and a theme-tinted hover film. The ribbon reserves space for the collapse control at its top right.
+center, theme-colored border/icon, an even contrast glow and a theme-tinted hover film. Collapse is the final ordinary button in the main ribbon, without a reserved side gutter.
 Fit mode expands/refits
 with the workspace; manual zoom keeps its scale and center artwork point. Keyboard
 focus transfers between the two controls. Hidden tools are excluded from tab order,
@@ -138,7 +138,7 @@ Editor shortcuts pause while a dialog is open or a field is being edited. Ctrl b
 | Ctrl+S | Save the current picture |
 | Ctrl+D | Duplicate the selected sticker |
 | Delete | Delete the selected sticker |
-| F | Focus or refit the selected sticker |
+| F | Enter or exit sticker focus |
 | Enter | Finish selection/focus when canvas or general content is focused |
 
 Focus mode retains its existing restrictions on duplicate/delete/add stickers. Keyboard tool selection shares the toolbar actions, including advanced painting options. The settings panel opens the shortcut guide in its own centered dialog; tool button titles also show shortcuts.
@@ -164,13 +164,17 @@ areas, so compressed or expanded controls never appear oval.
 
 The primary ribbon uses icon-only controls in this order:
 
-Home | Move page, Zoom, Select | Erase, Brush, Fill, Stickers, Colors | Undo
+Home | Move page, Zoom, Select | Erase, Brush, Fill, Stickers, Colors | Undo | Collapse
 
 Home is separate because it leaves the workspace. View and selection controls form one group; drawing controls form another. Undo stays at the far end as an easy-to-find recovery action away from Home. This placement is a product design choice, not a universal usability rule.
 
-Groups use subtle rounded wells separated by spacing, with compact outer ribbon padding. On narrow screens, the primary ribbon stays on one row and shares the available width proportionally between its ten buttons. Buttons use 48px targets on wide screens and 44px height on compact screens, with widths adapting to the available space, accessible names, desktop title tooltips, visible keyboard focus, and selected-tool feedback. The color picker uses a neutral palette icon with a separate current-color dot so the icon remains visible for very light or dark colors.
+The borderless controls use compact outer ribbon padding. On narrow screens, the primary ribbon stays on one row and shares the available width between all eleven buttons, including Collapse. Buttons use 52px targets on wide screens and 44px height on compact screens, with widths adapting to the available space, accessible names, desktop title tooltips, visible keyboard focus, and selected-tool feedback. The color picker uses a neutral palette icon with a separate current-color dot so the icon remains visible for very light or dark colors.
 
-The selected-sticker ribbon is also icon-only. Shrink/grow and counterclockwise/clockwise rotation use directional icons, with grouped pairs, named actions, and desktop tooltips. Done is highlighted; Delete is spaced apart.
+The selected-sticker ribbon is also icon-only. Shrink/grow and counterclockwise/clockwise rotation use directional icons, with grouped pairs, named actions, and desktop tooltips. At widths up to 800px, Duplicate and Done are omitted, leaving ten actions including Focus and Delete. Another tool, another press of Select, or an empty-space tap leaves ordinary selection. Larger displays retain Duplicate and Done.
+
+Focus replaces the submenu with a single highlighted Done control on every screen.
+Brush, Fill, Eraser and navigation tools preserve focus. Done (or F/Enter) exits
+focus, restores the previous page view and returns to selection on the same sticker.
 
 References: [W3C button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/) for accessible names and pressed state; [NN/g icon usability](https://www.nngroup.com/articles/icon-usability/) for the recognition tradeoff when removing visible labels. Icon-only controls follow the app's requested visual direction; accessible names and tooltips do not provide equivalent discoverability to visible labels on touch devices.
 

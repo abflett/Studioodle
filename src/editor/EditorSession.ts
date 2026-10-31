@@ -102,8 +102,8 @@ export class EditorSession {
     this.end();
     if (this.focused && ['add-sticker', 'duplicate-selection', 'delete-selection', 'order-selection', 'clear-selection'].includes(command.type)) return;
     if (command.type === 'exit-focus') {
-      this.focused = undefined; this.selected = undefined;
-      this.document.setFocus(); this.tool = 'bucket';
+      this.selected = this.focused; this.focused = undefined;
+      this.document.setFocus(); this.tool = this.selected ? 'select' : 'bucket';
     }
     if (command.type === 'fill-at' && this.tool === 'bucket') {
       this.document.beginChange();

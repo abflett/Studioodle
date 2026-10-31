@@ -354,7 +354,14 @@ test('focused session blocks structural edits and prevents undo crossing the foc
   editor.execute({ type: 'fill-at', point: { x: 1, y: 1 } });
   assert.notDeepEqual(editor.artwork.serialize(), focused);
   editor.execute({ type: 'undo' }); assert.deepEqual(editor.artwork.serialize(), focused);
-  editor.execute({ type: 'exit-focus' }); editor.execute({ type: 'undo' });
+  const selected = editor.state.selected;
+  for (const tool of ['brush','erase','bucket']) {
+    editor.execute({ type: 'set-tool', tool });
+    assert.equal(editor.state.focused, selected);
+  }
+  editor.execute({ type: 'exit-focus' });
+  assert.equal(editor.state.selected, selected); assert.equal(editor.state.tool, 'select');
+  editor.execute({ type: 'undo' });
   assert.equal(editor.artwork.serialize().surfaces.length, 1);
 });
 
