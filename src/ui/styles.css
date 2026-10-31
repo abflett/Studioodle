@@ -537,8 +537,8 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 /* Both surfaces sample the viewport; avoid transformed ancestors on the drawer. */
 .art-studio :is(.main-ribbon, .sticker-ribbon) { background-image: var(--scene-tint), var(--scene-art); background-size: cover; background-position: center; background-attachment: fixed; }
 /* Refraction increases with height above the letterboxing, not shadow darkness. */
-.art-studio .main-ribbon { background-position: center, calc(50% + 4px) calc(50% + 3px); }
-.art-studio .sticker-ribbon { background-position: center, calc(50% + 2px) calc(50% + 1px); }
+.art-studio .main-ribbon { background-position: center, calc(50% + 8px) calc(50% + 8px); }
+.art-studio .sticker-ribbon { background-position: center, calc(50% + 4px) calc(50% + 4px); }
 /* Staggered paper choices above a loose collection of saved pictures. */
 .selection-screen { padding-top: max(84px, calc(env(safe-area-inset-top) + 72px)); padding-bottom: max(28px, env(safe-area-inset-bottom)); }
 .selection-screen .selection { --object-height: min(clamp(160px, 30vw, 300px), calc((100dvh - 340px) / 2)); --saved-picture-height: var(--object-height); width: min(820px, 100%); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 20px; }

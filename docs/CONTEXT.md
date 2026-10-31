@@ -93,7 +93,7 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 Ribbon, sticker submenu and letterboxing share one viewport-aligned scene image. The submenu centers with auto margins (no transform), so its fixed
 background keeps the same origin, with deliberate image displacement for glass refraction:
-4px/3px on the top ribbon and 2px/1px on its submenu. The drawer tucks 4px beneath the opaque main ribbon;
+8px/8px on the top ribbon and 4px/4px on its submenu. The drawer tucks 4px beneath the opaque main ribbon;
 shadows use three reusable distance tiers. Tier 1 (slightly softened contact) is
 ribbon-to-submenu, submenu-to-paper and paper-to-desk. Tier 2 is ribbon-to-paper
 and submenu-to-desk. Tier 3 is ribbon-to-desk. `EditorLayerShadows` clips small CSS
