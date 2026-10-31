@@ -9,8 +9,11 @@ settings/fullscreen/exit at upper right with Pages beneath, and a centered saved
 picture carousel across the lower band. The composition is bounded to
 1120px wide / 860px tall, with extra top space
 and side gutters on larger displays. A shared gallery-based size keeps the book
-only slightly wider than the paper stack and the easel smaller; their centers
-form a gently rotated triangle. The gallery receives half the composition height,
+near the paper stack's width and the easel smaller. The arrangement is an open
+stagger, not an equal-sided triangle: the easel lifts, the smaller book moves
+right, and the gallery lowers on tall displays. Compare visible edge gaps
+(easel-to-book and book-to-gallery), rather than only center distances.
+Offsets shrink on short displays to keep all controls in view. The gallery receives half the composition height,
 while settings remain independently anchored at the screen corner. Gallery
 arrows flank the stack and actions sit
 under it. Utility/action targets stay at least 44px, including 568 x 320 and

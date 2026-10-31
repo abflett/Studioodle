@@ -117,9 +117,10 @@ control; ribbon visibility is session-local and does not alter saved artwork.
 The wordless selection screen uses the easel, open book and saved-art stack.
 Landscape uses a bounded grid: Blank occupies the upper left, studio controls
 sit above Pages on the upper right, and the gallery spans the lower band.
-The triangular composition adds desktop gutters/top breathing room and
-shares a sizing baseline: book near gallery width, slightly smaller easel, and a
-larger gallery. Settings remain anchored in the screen corner. Artwork scales
+The open stagger uses comparable artwork-edge gaps rather than equal center
+distances: a smaller book moves right, the easel lifts, and the gallery lowers
+when larger displays have room. Desktop gutters/top breathing room and shared
+sizing keep the book near gallery width and the easel slightly smaller. Settings remain anchored in the screen corner. Artwork scales
 from iPhone SE landscape through desktop; controls keep 44px touch targets. Portrait retains its staggered layout.
 Preserve paper aspect ratios/masks, full-bleed artwork, stable carousel geometry
 and subtle artwork-only hover scaling. Loading sits beneath the branded stack
