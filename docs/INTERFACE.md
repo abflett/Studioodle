@@ -72,7 +72,7 @@ The selection screen's save utility button copies the selected saved picture int
 
 Templates are stored locally in the atomic `studioodle.workshop.v3` collection separately from `Your pictures`. Each use receives a new picture ID, so coloring a template never overwrites it or the source picture. The picker previews the new template immediately; custom entries can be deleted through the existing confirmation dialog. Built-in pages cannot be deleted. `coloringPage.ts` creates copies and storage adapters validate both libraries.
 
-Ribbon tool groups have transparent backgrounds without well borders. Buttons
+Ribbon tool groups have soft filled wells with subtle outer shadows and no light borders. Buttons
 use circular hover targets and white icons with an even shadow for contrast.
 The active tool retains its gold fill and dark icon. Sticker adjustments use
 the same treatment while keeping their grouped layout.

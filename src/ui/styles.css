@@ -246,11 +246,12 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
   .art-ribbon.main-ribbon button, .art-ribbon.sticker-ribbon button { width: 44px; height: 44px; min-width: 44px; padding: 9px; }
 }
 
-/* Keep tool groups aligned without visible wells. */
+/* Soft group wells retain the overlay feel without light outlines. */
 .main-ribbon .ribbon-group {
   padding: 3px;
   border-radius: 20px;
-  background: transparent;
+  background: var(--ribbon-well);
+  box-shadow: 0 2px 5px var(--shadow);
 }
 
 /* Share narrow widths across all ten controls instead of wrapping Undo. */
@@ -329,8 +330,8 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
   animation: none;
 }
 
-/* Keep the four paired sticker adjustments grouped without visible wells. */
-.sticker-ribbon .sticker-adjustment { flex-direction: row; flex: 0 0 auto; align-items: center; gap: 4px; padding: 3px; border-radius: 18px; background: transparent; }
+/* Borderless wells keep the paired sticker adjustments together. */
+.sticker-ribbon .sticker-adjustment { flex-direction: row; flex: 0 0 auto; align-items: center; gap: 4px; padding: 3px; border-radius: 18px; background: var(--ribbon-well); box-shadow: 0 2px 5px var(--shadow); }
 .sticker-ribbon .sticker-adjustment button { background: transparent; }
 @media (hover: hover) { .sticker-ribbon .sticker-adjustment button:is(:hover, .app-mouse-hover) { background: color-mix(in srgb, var(--text) 8%, var(--ribbon-well)); } }
 
@@ -948,7 +949,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .ribbon-shell[hidden] { display: none; }
 .ribbon-shell .main-ribbon { padding-inline: max(64px, calc(env(safe-area-inset-right) + 58px)); }
 .ribbon-toggle { top: max(4px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); z-index: 4; display: grid; place-items: center; width: 48px; height: 48px; padding: 10px; border: 0; border-radius: 50%; }
-.ribbon-collapse { position: absolute; color: #ffffffbf; background: transparent; }
+.ribbon-collapse { position: absolute; color: #ffffffbf; background: var(--ribbon-well); box-shadow: 0 2px 5px var(--shadow); }
 .ribbon-reopen { position: fixed; color: #ffffffbf; border: 1px solid #ffffffbf; background: transparent; box-shadow: 0 0 1px #000b, 0 0 3px #0008, inset 0 0 1px #000b, inset 0 0 3px #0008; }
 .ribbon-toggle svg { width: 28px; height: 28px; stroke-width: 2; }
 .ribbon-reopen svg { width: 24px; height: 24px; filter: drop-shadow(0 0 1px #000b) drop-shadow(0 0 3px #0008); }
@@ -964,7 +965,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .ribbon-collapse svg { width: 25px; height: 25px; }
 }
 
-/* Borderless tools echo the floating overlay without boxing in each group. */
+/* White overlay icons and soft hover feedback inside borderless wells. */
 .ribbon-shell .art-ribbon button { color: #ffffffbf; border-radius: 50%; }
 .ribbon-shell .art-ribbon button svg, .ribbon-collapse svg { filter: drop-shadow(0 0 1px #000b) drop-shadow(0 0 3px #0008); }
 .ribbon-shell .art-ribbon button[aria-pressed='true'], .ribbon-shell .sticker-ribbon button[aria-label='Finish selecting'] { background: var(--action); color: var(--action-text); }
