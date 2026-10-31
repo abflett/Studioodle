@@ -51,8 +51,9 @@ The editor background flows continuously through the ribbon, sticker submenu
 and letterboxing: all use the same viewport-aligned image. The submenu
 uses auto-margin centering. Image offsets suggest glass depth: 4px/3px on the
 top ribbon, 2px/1px on the submenu, and none on the letterboxing. It tucks 4px behind the opaque main ribbon;
-the ribbon and drawer cast soft shallow shadows, while the paper has the
-strongest contact/ambient shadow above the letterboxing.
+the ribbon has a crisp contact shadow, the drawer a medium offset/blur, and the
+paper a broad soft shadow over the letterboxing. Theme-specific contact and
+ambient colors keep the stack visible without giving every layer a dark halo.
 The workspace retains its additional theme tint to distinguish it from the
 ribbons; focus mode keeps its separate spotlight background.
 

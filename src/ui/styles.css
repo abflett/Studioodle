@@ -12,7 +12,8 @@
   --action: #3e747d;
   --action-text: #fffaf0;
   --shadow: #35545c30;
-  --ribbon-shadow: color-mix(in srgb, var(--shadow) 55%, transparent);
+  --layer-contact: #29434a66;
+  --layer-ambient: #29434a40;
   --ribbon-icon: color-mix(in srgb, var(--text) 85%, transparent);
   --ribbon-glow: var(--surface);
   --ribbon-hover: color-mix(in srgb, var(--text) 12%, transparent);
@@ -51,6 +52,8 @@
     --action: #ddc799;
     --action-text: #243148;
     --shadow: #050c1c70;
+    --layer-contact: #020916b3;
+    --layer-ambient: #02091673;
     --ribbon-glow: var(--page);
     --brand-tile: #344761;
     --brand-paper: #22334c;
@@ -179,7 +182,7 @@ button:is(:active, .app-mouse-pressed) { transform: scale(.96); filter: brightne
 
 .art-canvas { background: var(--sky); }
 .canvas-envelope { position: absolute; left: 0; top: 0; width: max-content; height: max-content; will-change: transform; }
-.art-canvas .canvas-host { flex-shrink: 0; box-shadow: 0 2px 8px var(--shadow), 0 8px 28px var(--shadow); }
+.art-canvas .canvas-host { flex-shrink: 0; box-shadow: 0 2px 4px color-mix(in srgb, var(--layer-contact) 70%, transparent), 0 12px 28px -4px var(--layer-ambient); }
 .save-notice { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 20px; background: var(--surface); color: var(--text); box-shadow: 0 6px 24px var(--shadow); z-index: 2; max-width: calc(100vw - 32px); }
 button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); transform: none; filter: none; }
 .saved-preview { border-radius: 16px; border: 4px solid var(--preview-border); }
@@ -320,14 +323,14 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 }
 /* A compact selection drawer emerges from beneath the main ribbon. */
 .ribbon-shell { position: relative; flex-shrink: 0; z-index: 3; --ribbon-well: var(--tool-well); background: transparent; }
-.ribbon-shell .main-ribbon { position: relative; z-index: 2; box-shadow: 0 1px 4px -1px var(--ribbon-shadow); }
+.ribbon-shell .main-ribbon { position: relative; z-index: 2; box-shadow: 0 1px 1px var(--layer-contact), 0 3px 6px -2px var(--layer-ambient); }
 .ribbon-shell .sticker-ribbon {
   top: calc(100% - 4px); left: 0; right: 0;
   width: max-content; max-width: calc(100% - 20px); margin: 0 auto;
   padding: 10px 8px 8px;
   border-radius: 0 0 22px 22px;
   background: transparent;
-  box-shadow: 0 2px 6px -2px var(--ribbon-shadow);
+  box-shadow: 0 2px 3px color-mix(in srgb, var(--layer-contact) 85%, transparent), 0 6px 12px -3px var(--layer-ambient);
   z-index: 1;
   animation: none;
 }
