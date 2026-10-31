@@ -312,8 +312,13 @@ All/Easy/Medium/Detailed filter well, with Close on the right and Back on the le
 inside categories. Category icons show all ten subjects in a responsive grid;
 category and sticker buttons retain accessible names/tooltips without visible labels.
 Filters use authored simple/moderate/detailed metadata. Categories without matches
-remain in position but disabled. Sticker pages show twelve previews on desktop or
-six on small/short screens. Changing category or detail starts at the first page.
+remain in position but disabled. Sticker pages measure the available overlay width
+and height after the header, padding and paging controls. They use up to six columns
+and four rows (24 previews maximum), preserving practical card sizes instead of
+fixed desktop/mobile batches. Tall phones typically show 3 x 4, and a 667 x 375
+landscape shows 4 x 2. Shorter views reduce rows to stay within the overlay.
+Resizing keeps the previous first sticker visible, and page totals follow the
+current capacity. Changing category or detail starts at the first page.
 
 Ink defaults to #000000 for a new editor session. Its separate native color dialog
 reuses the drawing palette without changing the current paint color. Choosing ink

@@ -91,6 +91,12 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 ## Current interface
 
+Sticker-category pages measure the usable overlay area and adapt columns/rows,
+reserving space for pagination. Tall 390 x 844 phones show 3 x 4 and 667 x 375
+landscape shows 4 x 2, with at most 24 mounted previews. Resizing preserves the
+previous first sticker in the visible batch; pagination totals update accordingly.
+`node scripts/test-browser.mjs --sticker-layout` checks both themes, fit and paging.
+
 Full-screen brush overlays center their tip/size/preview controls in both portrait
 and short landscape views, keeping Close at its original top-right position.
 

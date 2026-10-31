@@ -366,6 +366,9 @@ the visual discussion. This remains the sole implementation backlog.
 - [x] Give Collapse an ordinary ribbon slot, omit Duplicate/Done from small-screen
   selection, and show only Done during focus. Restore the same sticker selection
   and previous view on exit, while painting tools preserve focus.
+- [x] Fit sticker-category page capacity to usable overlay space, adding portrait
+  rows and landscape columns while reserving pagination room. Keep the current
+  sticker visible on resize and bound mounted previews to 24.
 - [x] Fill small screens with overlays, removing outer gutters/borders/corners;
   preserve compact delete confirmation and safe-area padding.
 - [x] Keep blank setup orientation in the footer, fit paper cards without

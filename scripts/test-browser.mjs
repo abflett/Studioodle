@@ -98,6 +98,22 @@ try {
     }
     console.log('Paper view:',await evaluate("import('/tests/browser/paper-view.ts').then(m=>m.checkPaperView())"));
     if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
+  }else if(process.argv.includes('--sticker-layout')){
+    await evaluate("import('/tests/browser/sticker-layout.ts').then(m=>m.mountStickerLayout())");
+    for(const [width,height] of [[390,844],[320,568],[295,518],[667,375],[568,320],[844,390],[1280,900]]){
+      await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+      for(const theme of ['light','dark']){
+        await evaluate(`document.documentElement.dataset.theme='${theme}'`);
+        console.log('Sticker layout:',await evaluate("import('/tests/browser/sticker-layout.ts').then(m=>m.checkStickerLayout())"));
+        const shot=await cdp('Page.captureScreenshot',{format:'png'});
+        await fs.writeFile(`work/tests/sticker-grid-${width}x${height}-${theme}.png`,Buffer.from(shot.data,'base64'));
+      }
+    }
+    const first=await evaluate("import('/tests/browser/sticker-layout.ts').then(m=>m.checkStickerPagination())");
+    await cdp('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});
+    await evaluate(`import('/tests/browser/sticker-layout.ts').then(m=>m.checkStickerResize(${JSON.stringify(first)}))`);
+    await evaluate("import('/tests/browser/sticker-layout.ts').then(m=>m.closeStickerLayout())");
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(process.argv.includes('--blank-layout')){
     for(const [width,height] of [[667,375],[568,320],[844,390],[1280,900],[295,518],[320,568],[375,667],[390,844],[768,1024]]){
       await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
