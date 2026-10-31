@@ -31,6 +31,11 @@ export async function checkRibbonCollapse(){
   assert(Math.abs(center().x-anchor.x)<.0001&&Math.abs(center().y-anchor.y)<.0001,'Manual artwork center stays anchored');
   button('Show tools').click();await settle();assert(Math.abs(paper().width-zoomed.width)<.01,'Manual zoom survives reopen');
   assert(document.activeElement===button('Hide tools'),'Reopening returns keyboard focus');
-  return {fitExpansion:true,manualZoom:true,centerAnchor:true,focusReturn:true,touchTarget:true};
+  const shortcut=()=>window.dispatchEvent(new KeyboardEvent('keydown',{key:'t',bubbles:true,cancelable:true}));
+  shortcut();await settle();assert(button('Show tools'),'T hides the ribbon');
+  shortcut();await settle();assert(!host.querySelector('.ribbon-reopen'),'T reopens the ribbon');
+  button('Colors').click();await settle();shortcut();await settle();assert(!host.querySelector('.ribbon-reopen'),'T is paused while a picker is open');
+  button('Close picker').click();await settle();
+  return {shortcut:true,dialogGuard:true,fitExpansion:true,manualZoom:true,centerAnchor:true,focusReturn:true,touchTarget:true};
  }finally{root.unmount();host.remove();app.style.display=display;}
 }

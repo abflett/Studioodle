@@ -39,7 +39,7 @@ See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries
 The ribbon's Hide tools chevron releases its space to the canvas. A floating
 Show tools button at the top right restores it. Both controls are circular. The collapse control matches
 the themed ribbon buttons; only the floating reopen control has a transparent
-center, 75%-opaque white border/chevron, subtle shadows and a white hover film. The ribbon reserves space for the collapse control at its top right.
+center, 75%-opaque white border/chevron, an even shadow glow around its border/chevron and a white hover film. The ribbon reserves space for the collapse control at its top right.
 Fit mode expands/refits
 with the workspace; manual zoom keeps its scale and center artwork point. Keyboard
 focus transfers between the two controls. Hidden tools are excluded from tab order,
@@ -82,6 +82,7 @@ Editor shortcuts pause while a dialog is open or a field is being edited. Ctrl b
 | B / G / E | Brush / Fill / Eraser |
 | V / H | Select / Pan |
 | S / C | Stickers / Colors |
+| T | Hide or show the tools ribbon |
 | Z | Cycle zoom levels |
 | + or = / - | Zoom in / out at the viewport center |
 | 0 | Fit the page, or refit the focused sticker |

@@ -145,7 +145,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
   const resetZoom = () => { if (focused) focusSelection(); else { fitPage(); setZoom(null); } };
   useEditorShortcuts({
     b: selectBrush, g: selectFill, e: () => chooseTool('erase'), v: () => chooseTool('select'), h: () => chooseTool('pan'),
-    s: openStickers, c: () => setPicker('colors'), z: cycleZoom, '+': () => stepZoom(1.25), '=': () => stepZoom(1.25), '-': () => stepZoom(.8), '0': resetZoom,
+    t: toggleRibbon, s: openStickers, c: () => setPicker('colors'), z: cycleZoom, '+': () => stepZoom(1.25), '=': () => stepZoom(1.25), '-': () => stepZoom(.8), '0': resetZoom,
     'mod+z': () => bridge.send({ type: 'undo' }), backspace: () => bridge.send({ type: 'undo' }), 'mod+s': save,
     'mod+d': () => { if (selected && !focused) bridge.send({ type: 'duplicate-selection' }); },
     delete: () => { if (selected && !focused) bridge.send({ type: 'delete-selection' }); },
@@ -195,10 +195,10 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
         <button title="Undo (Ctrl/Cmd+Z or Backspace)" aria-keyshortcuts="Control+Z Meta+Z Backspace" aria-label="Undo" onClick={() => bridge.send({ type: 'undo' })}><Undo2 aria-hidden="true" /></button>
       </div>
     </header>
-      <button ref={collapseButton} className="ribbon-toggle ribbon-collapse" title="Hide tools" aria-label="Hide tools" aria-expanded="true" aria-controls="editor-ribbon" onClick={toggleRibbon}><ChevronUp aria-hidden="true" /></button>
+      <button ref={collapseButton} className="ribbon-toggle ribbon-collapse" title="Hide tools (T)" aria-keyshortcuts="T" aria-label="Hide tools" aria-expanded="true" aria-controls="editor-ribbon" onClick={toggleRibbon}><ChevronUp aria-hidden="true" /></button>
       {((tool === 'select' && selected) || focused) && <StickerSelectionToolbar bridge={bridge} focused={!!focused} order={selectionOrder} drawerRef={selectionDrawer} onFocus={focusSelection} onFinish={finishSelection} />}
     </div>
-    {ribbonHidden && <button ref={reopenButton} className="ribbon-toggle ribbon-reopen" title="Show tools" aria-label="Show tools" aria-expanded="false" aria-controls="editor-ribbon" onClick={toggleRibbon}><ChevronDown aria-hidden="true" /></button>}
+    {ribbonHidden && <button ref={reopenButton} className="ribbon-toggle ribbon-reopen" title="Show tools (T)" aria-keyshortcuts="T" aria-label="Show tools" aria-expanded="false" aria-controls="editor-ribbon" onClick={toggleRibbon}><ChevronDown aria-hidden="true" /></button>}
     <section className={`art-canvas ${tool === 'pan' ? 'pan-mode' : ''} ${focused ? 'focus-mode' : ''}`} ref={viewport} style={cursorStyle} aria-label="Drawing canvas" tabIndex={0} {...gestureHandlers}>
       <PrecisionFillFeedback aim={precisionFill.aim} magnified={precisionFill.magnified} releasedAim={precisionFill.releasedAim} />
       <div className="canvas-envelope" style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>

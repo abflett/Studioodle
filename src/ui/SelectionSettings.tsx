@@ -17,7 +17,7 @@ export function SelectionSettings({ open, onClose, theme, onThemeChange, setting
     ['Mouse control', 'Space toggles; Escape releases'],
     ['Brush / Fill / Eraser', 'B / G / E'], ['Select / Pan', 'V / H'], ['Stickers / Colors', 'S / C'],
     ['Undo', 'Ctrl or Cmd + Z, or Backspace'], ['Save', 'Ctrl or Cmd + S'],
-    ['Duplicate / Delete', 'Ctrl or Cmd + D / Delete'], ['Zoom / Fit', '+ and - / 0; Z cycles zoom'], ['Focus / Done', 'F / Enter'],
+    ['Duplicate / Delete', 'Ctrl or Cmd + D / Delete'], ['Zoom / Fit', '+ and - / 0; Z cycles zoom'], ['Focus / Done', 'F / Enter'], ['Show / Hide tools', 'T'],
     ['Touch canvas', 'One finger draws; two fingers pan and pinch to zoom'], ['Trackpad canvas', 'Two fingers pan; pinch to zoom'],
   ];
   const dialog = useRef<HTMLDialogElement>(null);
