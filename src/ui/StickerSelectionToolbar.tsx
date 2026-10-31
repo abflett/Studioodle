@@ -1,5 +1,5 @@
 import type { Ref } from 'react';
-import { Check, Eye, Maximize2, Minimize2, RotateCw, RotateCcw, FlipHorizontal2, FlipVertical2, Copy, Trash2 } from 'lucide-react';
+import { Check, Eye, EyeClosed, Maximize2, Minimize2, RotateCw, RotateCcw, FlipHorizontal2, FlipVertical2, Copy, Trash2 } from 'lucide-react';
 import type { EditorBridge, SelectionOrder } from '../editor/bridge';
 import { LayerOrderIcon } from './LayerOrderIcon';
 
@@ -12,7 +12,7 @@ export function StickerSelectionToolbar({ bridge, focused, order, drawerRef, onF
   onFinish: () => void;
 }) {
   if (focused) return <div ref={drawerRef} className="art-ribbon sticker-ribbon is-focused" role="toolbar" aria-label="Focused sticker" onPointerDown={(event) => event.stopPropagation()}>
-    <button title="Done: exit focus (F or Enter)" aria-label="Exit focus" aria-keyshortcuts="F Enter" onClick={onFinish}><Check aria-hidden="true" /></button>
+    <button title="Exit focus (F or Enter)" aria-label="Exit focus" aria-keyshortcuts="F Enter" onClick={onFinish}><EyeClosed aria-hidden="true" /></button>
   </div>;
   return <div ref={drawerRef} className="art-ribbon sticker-ribbon" role="toolbar" aria-label="Selected sticker" onPointerDown={(event) => event.stopPropagation()}>
     <div className="sticker-adjustment" role="group" aria-label="Sticker size"><div>

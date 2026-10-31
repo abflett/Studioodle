@@ -93,9 +93,10 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 Collapse occupies a normal main-ribbon slot without a reserved side gutter. Up to
 800px wide, ordinary sticker selection omits Duplicate and Done, retaining ten
-controls. Focus uses an eye icon and shows only a floating Done button on all
-displays, without a submenu background or shadow bar; painting tools preserve focus.
-Done or F/Enter exits focus and restores the page view and same sticker selection.
+controls. Focus uses an eye icon and shows only a floating closed-eye exit button
+on all displays, with the transparent outline/glow of the ribbon reopen control
+and no submenu background or shadow bar; painting tools preserve focus.
+Exit focus or F/Enter restores the page view and same sticker selection.
 
 The portrait Coloring Pages picker places Grid at upper left and Favorites beneath
 it, beside centered category and detail wells. Its preview uses the available width

@@ -953,14 +953,15 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .ribbon-shell .main-ribbon { padding-inline: max(8px, env(safe-area-inset-left)) max(8px, env(safe-area-inset-right)); }
 .ribbon-toggle { top: max(4px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); z-index: 4; display: grid; place-items: center; width: 48px; height: 48px; padding: 10px; border: 0; border-radius: 50%; }
 .ribbon-collapse { position: static; color: var(--ribbon-icon); background: transparent; padding: 8px; }
-.ribbon-reopen { position: fixed; color: var(--ribbon-icon); border: 1px solid var(--ribbon-icon); background: transparent; box-shadow: 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent), inset 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), inset 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent); }
+.ribbon-reopen { position: fixed; }
+.ribbon-reopen, .ribbon-shell .sticker-ribbon.is-focused button { color: var(--ribbon-icon); border: 1px solid var(--ribbon-icon); background: transparent; box-shadow: 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent), inset 0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent), inset 0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent); }
 .ribbon-toggle svg { width: 28px; height: 28px; stroke-width: 2; }
-.ribbon-reopen svg { width: 24px; height: 24px; filter: drop-shadow(0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent)) drop-shadow(0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent)); }
+.ribbon-reopen svg, .ribbon-shell .sticker-ribbon.is-focused button svg { width: 24px; height: 24px; filter: drop-shadow(0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent)) drop-shadow(0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent)); }
 .ribbon-collapse:focus-visible { outline: 3px solid var(--action); outline-offset: 2px; }
-.ribbon-reopen:focus-visible { outline: 2px solid var(--ribbon-icon); outline-offset: 3px; }
+.ribbon-reopen:focus-visible, .ribbon-shell .sticker-ribbon.is-focused button:focus-visible { outline: 2px solid var(--ribbon-icon); outline-offset: 3px; }
 @media (hover: hover) {
   .ribbon-collapse:is(:hover, .app-mouse-hover) { background: var(--ribbon-hover); }
-  .ribbon-reopen:is(:hover, .app-mouse-hover) { background: var(--ribbon-hover); }
+  .ribbon-reopen:is(:hover, .app-mouse-hover), .ribbon-shell .sticker-ribbon.is-focused button:is(:hover, .app-mouse-hover) { background: var(--ribbon-hover); }
 }
 @media (max-width: 600px) {
   .ribbon-toggle { width: 44px; height: 44px; padding: 9px; }
@@ -1045,9 +1046,8 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .ribbon-shell .sticker-ribbon .sticker-adjustment,
 .ribbon-shell .sticker-ribbon .sticker-adjustment > div { display: contents; }
 .ribbon-shell .sticker-ribbon button { width: 100%; min-width: 0; margin-left: 0; padding-inline: 4px; }
-.ribbon-shell .sticker-ribbon.is-focused { top: calc(100% + 8px); width: 52px; padding: 0; grid-template-columns: minmax(0, 1fr); background: none; box-shadow: none; }
-.ribbon-shell .sticker-ribbon.is-focused button { --ribbon-button-fill: var(--action); color: var(--action-text); box-shadow: var(--layer-shadow-1); }
-.ribbon-shell .sticker-ribbon.is-focused button svg { filter: none; }
+.ribbon-shell .sticker-ribbon.is-focused { top: calc(100% + 8px); width: 48px; padding: 0; grid-template-columns: minmax(0, 1fr); background: none; box-shadow: none; }
+.ribbon-shell .sticker-ribbon.is-focused button { height: 48px; padding: 10px; border-radius: 50%; }
 .ribbon-shell .art-ribbon button svg { width: min(32px, 100%); flex-shrink: 1; }
 @media (min-width: 801px) {
   .ribbon-shell .main-ribbon .ribbon-group:first-child button,
@@ -1060,7 +1060,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .ribbon-shell .sticker-ribbon:not(.is-focused) { grid-template-columns: repeat(10, minmax(0, 1fr)); }
   .ribbon-shell .sticker-ribbon .selection-desktop-action { display: none; }
   .ribbon-shell .sticker-ribbon.is-focused { width: 44px; padding: 0; }
-  .ribbon-shell .sticker-ribbon.is-focused button { width: 44px; justify-self: center; }
+  .ribbon-shell .sticker-ribbon.is-focused button { width: 44px; height: 44px; padding: 9px; justify-self: center; }
   .ribbon-shell .main-ribbon { padding-left: max(4px, env(safe-area-inset-left)); padding-right: max(4px, env(safe-area-inset-right)); }
   .ribbon-shell .main-ribbon button { flex: 1 1 0; max-width: none; }
 }

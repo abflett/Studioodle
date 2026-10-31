@@ -171,14 +171,15 @@ The borderless controls use compact outer ribbon padding. On narrow screens, the
 
 The selected-sticker ribbon is also icon-only. Shrink/grow and counterclockwise/clockwise rotation use directional icons, with grouped pairs, named actions, and desktop tooltips. At widths up to 800px, Duplicate and Done are omitted, leaving ten actions including Focus and Delete. Another tool, another press of Select, or an empty-space tap leaves ordinary selection. Larger displays retain Duplicate and Done.
 
-Focus uses an eye icon and replaces the submenu with a single highlighted Done
-button floating below the ribbon. No submenu background or shadow bar remains.
-Brush, Fill, Eraser and navigation tools preserve focus. Done (or F/Enter) exits
+Focus uses an eye icon and replaces the submenu with a single closed-eye exit
+button floating below the ribbon. Its transparent circular outline and subtle glow
+match the floating ribbon control; no submenu background or shadow bar remains.
+Brush, Fill, Eraser and navigation tools preserve focus. Exit focus (or F/Enter) exits
 focus, restores the previous page view and returns to selection on the same sticker.
 
 References: [W3C button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/) for accessible names and pressed state; [NN/g icon usability](https://www.nngroup.com/articles/icon-usability/) for the recognition tradeoff when removing visible labels. Icon-only controls follow the app's requested visual direction; accessible names and tooltips do not provide equivalent discoverability to visible labels on touch devices.
 
-Selection controls open as a compact rounded drawer centered beneath the main ribbon, with its top edge tucked behind it. A slightly shaded surface and downward reveal distinguish it from the primary controls. The drawer overlays the canvas so selecting a sticker does not resize or recenter the page. Focus framing accounts for its smaller floating Done button.
+Selection controls open as a compact rounded drawer centered beneath the main ribbon, with its top edge tucked behind it. A slightly shaded surface and downward reveal distinguish it from the primary controls. The drawer overlays the canvas so selecting a sticker does not resize or recenter the page. Focus framing accounts for its smaller floating exit button.
 
 The selected-sticker drawer includes separate horizontal and vertical flip buttons. Flips mirror the whole sticker in its local axes (before rotation), including its paint, silhouette, and ink; a second tap reverses the same flip. They participate in undo, duplication, saved documents, preview rendering, and export.
 
@@ -222,7 +223,7 @@ the selected border retains it, including transparent margins; clicking empty pa
 or surrounding workspace clears the border/drawer and returns to Fill on release.
 The exit press/release is consumed, so it cannot also fill. Canceling that gesture
 restores the previous selection. Toolbar/drawer presses retain their normal actions;
-focused-sticker mode keeps its explicit Done behavior.
+focused-sticker mode keeps its explicit closed-eye exit control.
 
 Brush and eraser gestures may begin in the surrounding drawing workspace and
 continue onto the page. Paint remains clipped to the page; the entire gesture
