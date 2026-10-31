@@ -94,7 +94,9 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 Main and sticker ribbons each remain a single row at every width. Spacing and
 icons compress on narrow screens while keeping every action visible. Up to 800px
 wide, the submenu fills the screen width with 44px buttons and reduced padding;
-larger displays keep the inset rounded drawer.
+larger displays keep the inset rounded drawer. Full-width shadow masks also use
+square corners. Circular button fills stay inside the available rectangular hit
+areas, so compressed or expanded controls never appear oval.
 
 Small-screen overlays (width <=600px or height <=540px) fill the viewport without an outer border, gutter or rounded corners, respecting safe areas. Delete confirmation stays compact. Blank paper colors prefer the familiar four landscape rows/eight narrow portrait rows, adapting only when swatches become too small.
 

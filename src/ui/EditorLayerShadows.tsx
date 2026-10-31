@@ -4,8 +4,8 @@ import { useLatest } from './useLatest';
 
 type Box = { x: number; y: number; width: number; height: number };
 const rectangle = (b: Box) => `M${b.x} ${b.y}h${b.width}v${b.height}h${-b.width}Z`;
-function drawerShape(b: Box) {
-  const r = Math.min(22, b.width / 2, b.height / 2), right = b.x + b.width, bottom = b.y + b.height;
+function drawerShape(b: Box, radius: number) {
+  const r = Math.min(radius, b.width / 2, b.height / 2), right = b.x + b.width, bottom = b.y + b.height;
   return `M${b.x} ${b.y}H${right}V${bottom-r}Q${right} ${bottom} ${right-r} ${bottom}H${b.x+r}Q${b.x} ${bottom} ${b.x} ${bottom-r}Z`;
 }
 const shadows = [ ['ribbon-to-submenu',1], ['ribbon-to-paper',2], ['ribbon-to-desk',3], ['submenu-to-paper',1], ['submenu-to-desk',2] ] as const;
@@ -23,10 +23,12 @@ export function EditorLayerShadows({ studio, viewKey, drawerVisible, hidden, foc
       return b && b.width && b.height ? { x: b.left-bounds.left, y: b.top-bounds.top, width: b.width, height: b.height } : undefined;
     };
     const ribbon = hidden ? undefined : read('.main-ribbon'), drawer = hidden ? undefined : read('.sticker-ribbon');
+    const drawerRadius = parseFloat(getComputedStyle(root.querySelector('.sticker-ribbon') ?? root).borderBottomLeftRadius) || 0;
+    const drawerPath = drawer ? drawerShape(drawer, drawerRadius) : '';
     const paper = focused ? undefined : read('.canvas-host');
     const full = rectangle({x:0,y:0,width:bounds.width,height:bounds.height});
     const outsidePaper = full + (paper ? rectangle(paper) : '');
-    const outsideDrawer = full + (drawer ? drawerShape(drawer) : '');
+    const outsideDrawer = full + drawerPath;
     const outsideRibbon = full + (ribbon ? rectangle(ribbon) : '');
     const configure = (name: string, caster: Box | undefined, receiver: string | undefined, exclusion: string) => {
       const region = element.querySelector<HTMLElement>(`[data-layer-shadow="${name}"]`)!;
@@ -37,7 +39,7 @@ export function EditorLayerShadows({ studio, viewKey, drawerVisible, hidden, foc
       inner.style.clipPath = `path(evenodd, "${exclusion}")`;
       Object.assign(frame.style,{left:`${caster.x}px`,top:`${caster.y}px`,width:`${caster.width}px`,height:`${caster.height}px`});
     };
-    configure('ribbon-to-submenu',ribbon,drawer && drawerShape(drawer),outsideRibbon);
+    configure('ribbon-to-submenu',ribbon,drawer && drawerPath,outsideRibbon);
     configure('ribbon-to-paper',ribbon,paper && rectangle(paper),outsideDrawer);
     configure('ribbon-to-desk',ribbon,outsidePaper,outsideDrawer);
     configure('submenu-to-paper',drawer,paper && rectangle(paper),outsideRibbon);

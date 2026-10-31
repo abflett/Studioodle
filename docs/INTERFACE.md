@@ -158,7 +158,9 @@ Non-spray brush strokes blend input samples to damp hand jitter and use rounded 
 Main and sticker ribbons each remain a single row at every width. Spacing and
 icons compress on narrow screens while keeping every action visible. Up to 800px
 wide, the submenu fills the screen width with 44px buttons and reduced padding;
-larger displays keep the inset rounded drawer.
+larger displays keep the inset rounded drawer. Full-width shadow masks also use
+square corners. Circular button fills stay inside the available rectangular hit
+areas, so compressed or expanded controls never appear oval.
 
 The primary ribbon uses icon-only controls in this order:
 
