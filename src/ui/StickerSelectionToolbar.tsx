@@ -1,5 +1,5 @@
 import type { Ref } from 'react';
-import { Check, ScanSearch, Maximize2, Minimize2, RotateCw, RotateCcw, FlipHorizontal2, FlipVertical2, Copy, Trash2 } from 'lucide-react';
+import { Check, Eye, Maximize2, Minimize2, RotateCw, RotateCcw, FlipHorizontal2, FlipVertical2, Copy, Trash2 } from 'lucide-react';
 import type { EditorBridge, SelectionOrder } from '../editor/bridge';
 import { LayerOrderIcon } from './LayerOrderIcon';
 
@@ -31,7 +31,7 @@ export function StickerSelectionToolbar({ bridge, focused, order, drawerRef, onF
       <button title="Move behind the next overlapping sticker" disabled={!order.backward} aria-label="Move behind the next overlapping sticker" onClick={() => bridge.send({ type: 'order-selection', direction: 'backward' })}><LayerOrderIcon direction="backward" /></button>
       <button title="Move in front of the next overlapping sticker" disabled={!order.forward} aria-label="Move in front of the next overlapping sticker" onClick={() => bridge.send({ type: 'order-selection', direction: 'forward' })}><LayerOrderIcon direction="forward" /></button>
     </div></div>
-    <button title="Focus on this sticker (F)" aria-label="Focus on this sticker (F)" onClick={onFocus}><ScanSearch aria-hidden="true" /></button>
+    <button title="Focus on this sticker (F)" aria-label="Focus on this sticker (F)" onClick={onFocus}><Eye aria-hidden="true" /></button>
     <button className="selection-desktop-action" title="Duplicate (Ctrl/Cmd+D)" aria-keyshortcuts="Control+D Meta+D" aria-label="Duplicate" onClick={() => bridge.send({ type: 'duplicate-selection' })}><Copy aria-hidden="true" /></button>
     <button title="Delete (Del)" aria-keyshortcuts="Delete" aria-label="Delete" onClick={() => bridge.send({ type: 'delete-selection' })}><Trash2 aria-hidden="true" /></button>
     <button className="selection-desktop-action" title="Done" onClick={onFinish} aria-label="Finish selecting"><Check aria-hidden="true" /></button>

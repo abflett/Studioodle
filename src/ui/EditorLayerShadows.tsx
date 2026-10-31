@@ -22,7 +22,7 @@ export function EditorLayerShadows({ studio, viewKey, drawerVisible, hidden, foc
       const b = root.querySelector(selector)?.getBoundingClientRect();
       return b && b.width && b.height ? { x: b.left-bounds.left, y: b.top-bounds.top, width: b.width, height: b.height } : undefined;
     };
-    const ribbon = hidden ? undefined : read('.main-ribbon'), drawer = hidden ? undefined : read('.sticker-ribbon');
+    const ribbon = hidden ? undefined : read('.main-ribbon'), drawer = hidden || focused ? undefined : read('.sticker-ribbon');
     const drawerRadius = parseFloat(getComputedStyle(root.querySelector('.sticker-ribbon') ?? root).borderBottomLeftRadius) || 0;
     const drawerPath = drawer ? drawerShape(drawer, drawerRadius) : '';
     const paper = focused ? undefined : read('.canvas-host');

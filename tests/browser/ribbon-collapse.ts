@@ -38,12 +38,14 @@ export async function checkRibbonCollapse(){
    if(innerWidth<=800)assert(drawer.left===0&&drawer.right===innerWidth&&drawer.height<=54,'Small-screen submenu fills width with compact vertical padding');
    else assert(drawer.left>0&&drawer.right<innerWidth,'Larger displays keep the inset submenu');
    const focus=drawerHost.querySelector<HTMLElement>('[aria-label="Focus on this sticker (F)"]')!,fill=getComputedStyle(focus);
-   assert(fill.backgroundImage.includes('radial-gradient')&&fill.backgroundImage.includes('closest-side'),'Button highlight stays circular inside its full hitbox');
+   assert(fill.backgroundImage==='none'&&parseFloat(fill.borderRadius)>0&&parseFloat(fill.borderRadius)<=10,'Ribbon feedback uses softly rounded tiles');
    if(innerWidth<=800)assert(getComputedStyle(drawerHost.querySelector('.sticker-ribbon')!).borderBottomLeftRadius==='0px','Full-width submenu has square corners');
    assert(buttons.length===(innerWidth<=800?10:12)&&buttons.every(b=>Math.abs(b.top-buttons[0]!.top)<1&&b.left>=drawer.left&&b.right<=drawer.right),'Selection controls stay in one visible row, with fewer actions on small screens');
    let finished=false;
    drawerRoot.render(createElement(StickerSelectionToolbar,{bridge:createEditorBridge(),focused:true,order:{forward:true,backward:true},drawerRef:{current:null},onFocus:()=>{},onFinish:()=>{finished=true;}}));await settle();
    assert(drawerHost.querySelectorAll('button').length===1&&!!drawerHost.querySelector('[aria-label="Exit focus"]'),'Focus has a single Done action');
+   const focusedDrawer=drawerHost.querySelector<HTMLElement>('.is-focused')!,floating=focusedDrawer.getBoundingClientRect();
+   assert(floating.width<=52&&floating.height<=52&&getComputedStyle(focusedDrawer).backgroundImage==='none','Focused Done floats without a submenu bar');
    drawerHost.querySelector<HTMLButtonElement>('[aria-label="Exit focus"]')!.click();assert(finished,'Focused Done exits focus');
   }finally{drawerRoot.unmount();drawerHost.remove();}
   const rows=host.querySelectorAll('.main-ribbon');
@@ -81,6 +83,7 @@ export async function checkRibbonCollapse(){
   button('Select and move stickers').click();await settle();await clickPaper(.5,.5);
   button('Focus on this sticker (F)').click();await settle();
   assert(!!host.querySelector('.focus-mode')&&host.querySelector('.sticker-ribbon')?.querySelectorAll('button').length===1,'Focusing shows only Done');
+  assert([...host.querySelectorAll<HTMLElement>('[data-layer-shadow^="submenu-"]')].every(e=>e.hidden),'Focus has no phantom submenu shadow');
   button('Erase').click();await settle();assert(!!host.querySelector('.focus-mode'),'Painting tools preserve focused sticker');
   button('Exit focus').click();await settle();
   assert(!host.querySelector('.focus-mode')&&!!host.querySelector('.sticker-ribbon:not(.is-focused)')&&button('Select and move stickers').getAttribute('aria-pressed')==='true','Done restores normal sticker selection');

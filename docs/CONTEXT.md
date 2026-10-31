@@ -93,7 +93,8 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 Collapse occupies a normal main-ribbon slot without a reserved side gutter. Up to
 800px wide, ordinary sticker selection omits Duplicate and Done, retaining ten
-controls. Focus shows only Done on all displays; painting tools preserve focus.
+controls. Focus uses an eye icon and shows only a floating Done button on all
+displays, without a submenu background or shadow bar; painting tools preserve focus.
 Done or F/Enter exits focus and restores the page view and same sticker selection.
 
 The portrait Coloring Pages picker places Grid at upper left and Favorites beneath
@@ -106,8 +107,7 @@ Main and sticker ribbons each remain a single row at every width. Spacing and
 icons compress on narrow screens while keeping every action visible. Up to 800px
 wide, the submenu fills the screen width with 44px buttons and reduced padding;
 larger displays keep the inset rounded drawer. Full-width shadow masks also use
-square corners. Circular button fills stay inside the available rectangular hit
-areas, so compressed or expanded controls never appear oval.
+square corners. Ribbon button fills use softly rounded tiles across their hit areas.
 
 Small-screen overlays (width <=600px or height <=540px) fill the viewport without an outer border, gutter or rounded corners, respecting safe areas. Delete confirmation stays compact. Blank paper colors prefer the familiar four landscape rows/eight narrow portrait rows, adapting only when swatches become too small.
 
@@ -137,9 +137,10 @@ to distinguish layers; focus mode retains its spotlight background.
 Pixel comparisons cover both themes and desktop/phone widths.
 
 The editor ribbon toggles with T or its final arrow-and-line button. The floating
-reopen control sits at the top right with safe-area spacing. Both are circular.
+reopen control sits at the top right with safe-area spacing. Reopen is circular;
+Collapse uses the same rounded tile shape as the other ribbon buttons.
 Ribbon tools use transparent groups without wells, larger theme-colored icons with contrasting glows
-(32px desktop, up to 28px on narrow screens), circular
+(32px desktop, up to 28px on narrow screens), rounded
 theme-tinted hover targets and the theme action color for the selected tool. The open-ribbon toggle matches; only the floating reopen control has a transparent center, 85%-opaque
 theme-colored border/icon, an even contrast glow and a theme-tinted hover film.
 Fit mode refits to the expanded workspace; manual zoom retains its absolute scale

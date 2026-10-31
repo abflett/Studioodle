@@ -147,7 +147,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
   const focusSelection = () => {
     if (!selected) return;
     if (!focused) beforeFocus.current = { zoom: requestedZoom, view: captureView() };
-    bridge.send({ type: 'focus-selection', onFocus: bounds => { const fitted = focus(bounds, (selectionDrawer.current?.getBoundingClientRect().height ?? 100) + 20); setFocusZoom(fitted); setZoom(fitted); } });
+    bridge.send({ type: 'focus-selection', onFocus: bounds => { const fitted = focus(bounds, (collapseButton.current?.getBoundingClientRect().height ?? 44) + 28); setFocusZoom(fitted); setZoom(fitted); } });
   };
   const resetZoom = () => { if (focused) focusSelection(); else { fitPage(); setZoom(null); } };
   useEditorShortcuts({

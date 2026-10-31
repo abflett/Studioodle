@@ -57,7 +57,7 @@ See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries
 
 The ribbon's Hide tools button (an upward arrow above a horizontal line) releases its space to the canvas. A floating
 Show tools button at the top right restores it, using the reversed symbol: a
-downward arrow below a horizontal line. Both controls are circular. The collapse control matches
+downward arrow below a horizontal line. Reopen is circular; Collapse uses the ribbon's rounded tile shape. The collapse control matches
 the borderless ribbon buttons, using theme-colored icons, a contrast glow and a
 theme-tinted hover film; only the floating reopen control has a transparent
 center, theme-colored border/icon, an even contrast glow and a theme-tinted hover film. Collapse is the final ordinary button in the main ribbon, without a reserved side gutter.
@@ -159,8 +159,7 @@ Main and sticker ribbons each remain a single row at every width. Spacing and
 icons compress on narrow screens while keeping every action visible. Up to 800px
 wide, the submenu fills the screen width with 44px buttons and reduced padding;
 larger displays keep the inset rounded drawer. Full-width shadow masks also use
-square corners. Circular button fills stay inside the available rectangular hit
-areas, so compressed or expanded controls never appear oval.
+square corners. Ribbon button fills use softly rounded tiles across their hit areas.
 
 The primary ribbon uses icon-only controls in this order:
 
@@ -172,13 +171,14 @@ The borderless controls use compact outer ribbon padding. On narrow screens, the
 
 The selected-sticker ribbon is also icon-only. Shrink/grow and counterclockwise/clockwise rotation use directional icons, with grouped pairs, named actions, and desktop tooltips. At widths up to 800px, Duplicate and Done are omitted, leaving ten actions including Focus and Delete. Another tool, another press of Select, or an empty-space tap leaves ordinary selection. Larger displays retain Duplicate and Done.
 
-Focus replaces the submenu with a single highlighted Done control on every screen.
+Focus uses an eye icon and replaces the submenu with a single highlighted Done
+button floating below the ribbon. No submenu background or shadow bar remains.
 Brush, Fill, Eraser and navigation tools preserve focus. Done (or F/Enter) exits
 focus, restores the previous page view and returns to selection on the same sticker.
 
 References: [W3C button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/) for accessible names and pressed state; [NN/g icon usability](https://www.nngroup.com/articles/icon-usability/) for the recognition tradeoff when removing visible labels. Icon-only controls follow the app's requested visual direction; accessible names and tooltips do not provide equivalent discoverability to visible labels on touch devices.
 
-Selection controls open as a compact rounded drawer centered beneath the main ribbon, with its top edge tucked behind it. A slightly shaded surface and downward reveal distinguish it from the primary controls. The drawer overlays the canvas so selecting a sticker does not resize or recenter the page. Focus framing accounts for the drawer height.
+Selection controls open as a compact rounded drawer centered beneath the main ribbon, with its top edge tucked behind it. A slightly shaded surface and downward reveal distinguish it from the primary controls. The drawer overlays the canvas so selecting a sticker does not resize or recenter the page. Focus framing accounts for its smaller floating Done button.
 
 The selected-sticker drawer includes separate horizontal and vertical flip buttons. Flips mirror the whole sticker in its local axes (before rotation), including its paint, silhouette, and ink; a second tap reverses the same flip. They participate in undo, duplication, saved documents, preview rendering, and export.
 
