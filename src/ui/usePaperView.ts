@@ -12,7 +12,9 @@ function constrain(view: View, paper: { width: number; height: number }): View {
   };
 }
 
-export function usePaperView(paper: { width: number; height: number }, requestedZoom: number | null, enabled: boolean) {
+export function usePaperView(paper: { width: number; height: number }, requestedZoom: number | null, enabled: boolean, onResizeZoom?: (zoom: number) => void) {
+  const resizeZoom = useRef(onResizeZoom);
+  useLayoutEffect(() => { resizeZoom.current = onResizeZoom; });
   const [fitZoom, setFitZoom] = useState(1);
   const zoom = (requestedZoom ?? 1) * fitZoom;
   const viewport = useRef<HTMLElement>(null);
@@ -31,8 +33,12 @@ export function usePaperView(paper: { width: number; height: number }, requested
       if (!w || !h) return;
       const fitted = Math.min(w / width, h / height);
       setFitZoom(fitted);
-      const activeZoom = (requestedZoom ?? 1) * fitted;
       const old = current.current;
+      // Layout changes refit Fit mode, but keep manual magnification and its
+      // center artwork point stable as the available workspace expands/shrinks.
+      const keepScale = old && requestedZoom !== null && resizeZoom.current && (old.width !== w || old.height !== h);
+      const activeZoom = keepScale ? old.zoom : (requestedZoom ?? 1) * fitted;
+      if (keepScale) resizeZoom.current!(activeZoom / fitted);
       const preserve = preserveNextView.current || (old !== null && old.width === w && old.height === h && Math.abs(old.zoom - activeZoom) < .00001);
       preserveNextView.current = false;
       // An explicitly positioned view (including temporary precision zoom) must

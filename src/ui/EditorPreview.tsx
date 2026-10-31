@@ -21,7 +21,7 @@ import { paperSize } from '../editor/document';
 import { usePaperView } from './usePaperView';
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
-import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Eraser, MousePointer2, Move, ZoomIn, Save } from 'lucide-react';
+import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Eraser, MousePointer2, Move, ZoomIn, Save, ChevronUp, ChevronDown } from 'lucide-react';
 import { EditorCanvas } from './EditorCanvas';
 import { createEditorBridge } from '../editor/bridge';
 import type { StickerKind } from '../editor/stickerKinds';
@@ -68,8 +68,17 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
   const category = stickerCategories.find((item) => item.id === categoryId);
   const pickerTitle = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (picker) pickerTitle.current?.focus({ preventScroll: true }); }, [picker, categoryId]);
+  const [ribbonHidden, setRibbonHidden] = useState(false);
+  const collapseButton = useRef<HTMLButtonElement>(null), reopenButton = useRef<HTMLButtonElement>(null);
+  const ribbonFocusPending = useRef(false);
+  useEffect(() => {
+    if (!ribbonFocusPending.current) return;
+    ribbonFocusPending.current = false;
+    (ribbonHidden ? reopenButton : collapseButton).current?.focus({ preventScroll: true });
+  }, [ribbonHidden]);
+  const toggleRibbon = () => { bridge.send({ type: 'cancel-input' }); ribbonFocusPending.current = true; setRibbonHidden(hidden => !hidden); };
   const [requestedZoom, setZoom] = useState<number | null>(null);
-  const { viewport, position, focus, captureView, restoreView, pointAt, zoomAt, transformView, fitPage, zoom, handlers } = usePaperView(paperSize(setup.format, setup.size), requestedZoom, tool === 'pan');
+  const { viewport, position, focus, captureView, restoreView, pointAt, zoomAt, transformView, fitPage, zoom, handlers } = usePaperView(paperSize(setup.format, setup.size), requestedZoom, tool === 'pan', setZoom);
   const placementPoint = useLatest(() => {
     const box=viewport.current?.getBoundingClientRect();
     return box ? pointAt({x:box.left+box.width/2,y:box.top+box.height/2}) : undefined;
@@ -165,7 +174,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
     return () => { if (modal.open) modal.close(); };
   }, [picker]);
   return <main className="art-studio" aria-label={setup.title}>
-    <div className="ribbon-shell">
+    <div className="ribbon-shell" hidden={ribbonHidden} id="editor-ribbon">
     <header className="art-ribbon main-ribbon" aria-label="Art tools">
       <div className="ribbon-group" role="group" aria-label="Home">
         <button title="Home" aria-label="Go home" onClick={goHome}><House aria-hidden="true" /></button>
@@ -185,9 +194,13 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       <div className="ribbon-group" role="group" aria-label="History">
         <button title="Undo (Ctrl/Cmd+Z or Backspace)" aria-keyshortcuts="Control+Z Meta+Z Backspace" aria-label="Undo" onClick={() => bridge.send({ type: 'undo' })}><Undo2 aria-hidden="true" /></button>
       </div>
+      <div className="ribbon-group" role="group" aria-label="Ribbon visibility">
+        <button ref={collapseButton} title="Hide tools" aria-label="Hide tools" aria-expanded="true" aria-controls="editor-ribbon" onClick={toggleRibbon}><ChevronUp aria-hidden="true" /></button>
+      </div>
     </header>
       {((tool === 'select' && selected) || focused) && <StickerSelectionToolbar bridge={bridge} focused={!!focused} order={selectionOrder} drawerRef={selectionDrawer} onFocus={focusSelection} onFinish={finishSelection} />}
     </div>
+    {ribbonHidden && <button ref={reopenButton} className="ribbon-reopen" title="Show tools" aria-label="Show tools" aria-expanded="false" aria-controls="editor-ribbon" onClick={toggleRibbon}><ChevronDown aria-hidden="true" /></button>}
     <section className={`art-canvas ${tool === 'pan' ? 'pan-mode' : ''} ${focused ? 'focus-mode' : ''}`} ref={viewport} style={cursorStyle} aria-label="Drawing canvas" tabIndex={0} {...gestureHandlers}>
       <PrecisionFillFeedback aim={precisionFill.aim} magnified={precisionFill.magnified} releasedAim={precisionFill.releasedAim} />
       <div className="canvas-envelope" style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>

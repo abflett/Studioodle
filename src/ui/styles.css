@@ -945,3 +945,10 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 }
 @media(max-width:360px) { .palette-picker { padding-inline: 12px; }.color-palette-tab { width: 36px; }.color-palette-tab svg { width: 30px; height: 30px; }.palette-swatch-grid { padding-inline: 6px; } }
 @media(max-height:560px) and (min-width:561px) { .palette-picker { padding: 16px 26px; gap: 14px; }.palette-swatch-grid { grid-template-columns: repeat(8,44px); gap: 12px; padding-top: 0; }.palette-swatch { width: 44px; height: 44px; }.palette-picker > .dialog-header { min-height: 52px; }.color-palette-footer { min-height: 36px; }.color-palette-footer .custom-palette-edit { width: 36px; height: 36px; }.custom-color-content { padding: 18px; }.custom-color-content > .dialog-header { margin-bottom: 14px; }.custom-sv-field { height: 150px; }.custom-hue-slider { margin-block: 8px; } }
+
+/* Floating recovery control stays legible on both dark and light artwork. */
+.ribbon-shell[hidden] { display: none; }
+.ribbon-reopen { position: fixed; top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); z-index: 4; display: grid; place-items: center; width: 44px; height: 44px; padding: 10px; border: 1px solid #ffffff80; border-radius: 14px; color: #26383e; background: #ffffffb8; box-shadow: 0 2px 8px #0003; }
+.ribbon-reopen svg { width: 24px; height: 24px; }
+.ribbon-reopen:focus-visible { outline: 3px solid #26383e; outline-offset: 3px; }
+@media (hover: hover) { .ribbon-reopen:is(:hover, .app-mouse-hover) { background: #ffffffe6; } }

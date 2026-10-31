@@ -91,6 +91,12 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 ## Current interface
 
+The editor ribbon can collapse using its up-chevron. A translucent white floating
+reopen control sits at the top right with safe-area spacing and a subtle shadow.
+Fit mode refits to the expanded workspace; manual zoom retains its absolute scale
+and center artwork point across layout changes. Toggle focus follows the visible
+control; ribbon visibility is session-local and does not alter saved artwork.
+
 The wordless selection screen uses the easel, open book and saved-art stack.
 Preserve paper aspect ratios/masks, full-bleed artwork, stable carousel geometry
 and subtle artwork-only hover scaling. Loading sits beneath the branded stack
