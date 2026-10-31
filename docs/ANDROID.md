@@ -3,6 +3,10 @@
 Studioodle uses Tauri 2 with the same offline Vite frontend. Android has its own
 identity, `com.studioodle.app`; Windows keeps `com.studioodle.desktop`.
 
+Android runs in immersive mode: status and navigation bars hide while the app is
+active, including after returning from dialogs or another app. An edge swipe
+temporarily reveals system controls. This uses AndroidX's system-bar controller.
+
 ## Build on Windows
 
 Install the project dependencies, Rust stable with `aarch64-linux-android`, and

@@ -5,6 +5,9 @@ root. `README.md` indexes commands/docs; `REFINEMENT-TASKS.md` is the sole backl
 
 ## Working boundaries
 
+Android uses immersive mode to hide status/navigation bars while active; edge
+swipes temporarily reveal them. MainActivity reapplies it on resume/focus.
+
 - Keep the app web-first. Routine checks use Vite; build native apps/installers
   only when explicitly requested. Commit and push completed coherent batches after
   relevant checks. Preserve unrelated work and never force-push.
