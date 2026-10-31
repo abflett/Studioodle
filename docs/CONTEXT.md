@@ -92,9 +92,9 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 ## Current interface
 
 The editor ribbon can collapse using its up-chevron. Both controls sit at the
-top right with safe-area spacing. Their centers are
-transparent, with 75%-opaque white borders/chevrons, subtle shadows and a white
-hover film.
+top right with safe-area spacing. Both are circular. The open-ribbon control uses the normal themed ribbon
+style; only the floating reopen control has a transparent center, 75%-opaque
+white border/chevron, subtle shadows and a white hover film.
 Fit mode refits to the expanded workspace; manual zoom retains its absolute scale
 and center artwork point across layout changes. Toggle focus follows the visible
 control; ribbon visibility is session-local and does not alter saved artwork.

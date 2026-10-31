@@ -37,9 +37,9 @@ the authoring format, region maps, loading/caches and cleanup decisions.
 See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries.
 
 The ribbon's Hide tools chevron releases its space to the canvas. A floating
-Show tools button at the top right restores it. Both controls use transparent
-centers, 75%-opaque white borders/chevrons, subtle shadows and a light white hover
-film. The ribbon reserves space for the collapse control at its top right.
+Show tools button at the top right restores it. Both controls are circular. The collapse control matches
+the themed ribbon buttons; only the floating reopen control has a transparent
+center, 75%-opaque white border/chevron, subtle shadows and a white hover film. The ribbon reserves space for the collapse control at its top right.
 Fit mode expands/refits
 with the workspace; manual zoom keeps its scale and center artwork point. Keyboard
 focus transfers between the two controls. Hidden tools are excluded from tab order,
