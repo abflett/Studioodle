@@ -357,7 +357,9 @@ the visual discussion. This remains the sole implementation backlog.
   2 across two gaps, 3 from ribbon to desk. Pixel checks compare the five marked
   regions and verify matching contact shadows plus progressively softer reach.
 - [x] Rework landscape selection into Blank left, controls above Pages right,
-  and a full-width gallery band below; validate SE phone sizes, tablets and desktop
+  and a gallery band below. Bound the three selections into a balanced triangle
+  with desktop gutters, top breathing room and shared visual sizing; validate SE
+  phone sizes, tablets and desktop
   in both themes, with portrait regression checks and 44px utility targets.
 - [x] Add ribbon collapse and a floating transparent reopen control. Fit follows
   workspace expansion; manual zoom/center and keyboard focus survive the toggle.

@@ -6,9 +6,13 @@ Current user-facing behavior; implementation boundaries are in [architecture](AR
 
 Landscape selection uses the user's sketched regions: Blank at upper left,
 settings/fullscreen/exit at upper right with Pages beneath, and a centered saved
-picture carousel across the full-width lower band. The main split is approximately
-54% / 46%; artwork grows inside its allocated region instead of reserving a full
-utility row above both choices. Gallery arrows flank the stack and actions sit
+picture carousel across the lower band. The composition is bounded to
+1120px wide / 860px tall, with extra top space
+and side gutters on larger displays. A shared gallery-based size keeps the book
+only slightly wider than the paper stack and the easel smaller; their centers
+form a gently rotated triangle. The gallery receives half the composition height,
+while settings remain independently anchored at the screen corner. Gallery
+arrows flank the stack and actions sit
 under it. Utility/action targets stay at least 44px, including 568 x 320 and
 667 x 375 phone landscapes. Desktop uses the same arrangement; portrait retains
 the existing staggered choices and gallery layout.
