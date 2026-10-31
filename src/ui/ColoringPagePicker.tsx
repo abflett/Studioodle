@@ -46,6 +46,7 @@ export function ColoringPagePicker({ pages, initialPageId, bundledIds, onOpen, o
     return (category === 'all' || info.categories.includes(category)) && (!detail || info.detail === detail) && (!onlyFavorites || favoriteState.ids.includes(page.id!));
   }).map((page, index) => ({ page, index })).sort((a, b) => Number(priority.includes(b.page.id!)) - Number(priority.includes(a.page.id!)) || a.index - b.index).map(item => item.page), [pages, category, detail, onlyFavorites, favoriteState.ids, priority]);
   const index = Math.max(0, list.findIndex(page => page.id === selectedId)), current = list[index];
+  const currentSize = current ? paperSize(current.format, current.size) : { width: 1, height: 1 };
   const batch = Math.floor(index / 6) * 6, shown = grid ? list.slice(batch, batch + 6) : current ? [current] : [];
   const touch = useRef<{ x: number; y: number } | undefined>(undefined);
   const skipClick = useRef(false);
@@ -88,7 +89,7 @@ export function ColoringPagePicker({ pages, initialPageId, bundledIds, onOpen, o
           if (start && Math.abs(e.clientX - start.x) > 45 && Math.abs(e.clientX - start.x) > Math.abs(e.clientY - start.y) * 1.5) { skipClick.current = true; browse(e.clientX < start.x ? 1 : -1); }
         }} onPointerCancel={() => { touch.current = undefined; }} onClickCapture={e => { if (skipClick.current) { skipClick.current = false; e.preventDefault(); e.stopPropagation(); } }}>
           <Control label="Previous coloring page" className="page-control page-browse-arrow page-previous" disabled={list.length < (grid ? 7 : 2)} onClick={() => browse(-1)}><ArrowLeft /></Control>
-          {list.length ? <div className={grid ? 'coloring-page-grid' : 'coloring-page-single'}>{shown.map(page => {
+          {list.length ? <div className={grid ? 'coloring-page-grid' : 'coloring-page-single'} style={{ '--preview-ratio': currentSize.width / currentSize.height } as CSSProperties}>{shown.map(page => {
             const size = paperSize(page.format, page.size), favorite = favoriteState.ids.includes(page.id!);
             return <div className="coloring-page-cell" key={page.id}>
               <div className="coloring-page-sheet" style={{ '--page-ratio': size.width / size.height } as CSSProperties}>
