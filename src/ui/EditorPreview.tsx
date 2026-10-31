@@ -127,7 +127,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       beforeFocus.current = undefined;
     } else chooseTool('bucket');
   };
-  const chooseTool = (value: EditorTool) => { setTool(value); bridge.send({ type: 'set-tool', tool: value }); };
+  const chooseTool = (value: EditorTool) => { if (focused && value === 'select') return; setTool(value); bridge.send({ type: 'set-tool', tool: value }); };
   const toggleSelect = () => {
     if (tool === 'select') chooseTool('bucket');
     else chooseTool('select');
@@ -203,7 +203,7 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       <div className="ribbon-group" role="group" aria-label="View and selection">
         <button title="Move the page (H)" aria-keyshortcuts="H" aria-label="Move the page" aria-pressed={tool === 'pan'} onClick={() => chooseTool('pan')}><Move aria-hidden="true" /></button>
         <button title="Zoom (Z; + / -; 0 to fit)" aria-label={`Zoom ${requestedZoom ?? 1} times fitted page, next zoom level`} onClick={cycleZoom}><ZoomIn aria-hidden="true" /></button>
-        <button title="Select and move stickers (V)" aria-keyshortcuts="V" aria-label="Select and move stickers" aria-pressed={tool === 'select'} onClick={toggleSelect}><MousePointer2 aria-hidden="true" /></button>
+        <button title={focused ? 'Exit focus to select stickers' : 'Select and move stickers (V)'} aria-keyshortcuts="V" aria-label="Select and move stickers" aria-pressed={tool === 'select'} disabled={!!focused} onClick={toggleSelect}><MousePointer2 aria-hidden="true" /></button>
       </div>
       <div className="ribbon-group" role="group" aria-label="Drawing tools">
         <button title="Erase (E)" aria-keyshortcuts="E" aria-label="Erase" aria-pressed={tool === 'erase'} onClick={() => chooseTool('erase')}><Eraser aria-hidden="true" /></button>

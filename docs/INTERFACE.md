@@ -184,6 +184,7 @@ Delete. All actions share the same spacing.
 Focus uses an eye icon and replaces the submenu with a single X exit
 button floating below the ribbon. It has a transparent circular outline and subtle
 glow; no submenu background or shadow bar remains.
+Select and adding stickers are disabled during focus, including the V shortcut.
 Brush, Fill, Eraser and navigation tools preserve focus. Exit focus (or F/Enter) exits
 focus, restores the previous page view and returns to selection on the same sticker.
 

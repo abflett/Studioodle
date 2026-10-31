@@ -358,6 +358,8 @@ test('focused session blocks structural edits and prevents undo crossing the foc
   for (const tool of ['brush','erase','bucket']) {
     editor.execute({ type: 'set-tool', tool });
     assert.equal(editor.state.focused, selected);
+    editor.execute({ type: 'set-tool', tool: 'select' });
+    assert.equal(editor.state.tool, tool, 'Focus blocks selection without changing the painting tool');
   }
   editor.execute({ type: 'exit-focus' });
   assert.equal(editor.state.selected, selected); assert.equal(editor.state.tool, 'select');

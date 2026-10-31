@@ -100,7 +100,8 @@ controls. Focus uses an eye icon and shows only a floating X exit button
 on all displays, with a transparent outline and glow
 and no submenu background or shadow bar; painting tools preserve focus.
 Exit focus or F/Enter restores the page view and same sticker selection. Ordinary
-selection has no Done button on any screen; desktop retains Duplicate.
+selection has no Done button on any screen; desktop retains Duplicate. Select is
+disabled during focus, including V, alongside adding stickers; exit re-enables it.
 
 The portrait Coloring Pages picker places Grid at upper left and Favorites beneath
 it, beside centered category and detail wells. Its preview uses the available width

@@ -90,10 +90,14 @@ export async function checkRibbonCollapse(){
   button('Select and move stickers').click();await settle();await clickPaper(.5,.5);
   button('Focus on this sticker (F)').click();await settle();
   assert(!!host.querySelector('.focus-mode')&&host.querySelector('.sticker-ribbon')?.querySelectorAll('button').length===1,'Focusing shows only Done');
+  assert(button('Select and move stickers').disabled&&button('Stickers').disabled,'Focus disables both Select and adding stickers');
+  window.dispatchEvent(new KeyboardEvent('keydown',{key:'v',bubbles:true,cancelable:true}));await settle();
+  assert(button('Fill').getAttribute('aria-pressed')==='true','V cannot activate selection during focus');
   assert([...host.querySelectorAll<HTMLElement>('[data-layer-shadow^="submenu-"]')].every(e=>e.hidden),'Focus has no phantom submenu shadow');
   button('Erase').click();await settle();assert(!!host.querySelector('.focus-mode'),'Painting tools preserve focused sticker');
   button('Exit focus').click();await settle();
   assert(!host.querySelector('.focus-mode')&&!!host.querySelector('.sticker-ribbon:not(.is-focused)')&&button('Select and move stickers').getAttribute('aria-pressed')==='true','Done restores normal sticker selection');
+  assert(!button('Select and move stickers').disabled,'Leaving focus enables Select again');
   await clickPaper(.01,.01);assert(!host.querySelector('.sticker-ribbon'),'Tapping empty paper dismisses restored selection');
   return {shortcut:true,dialogGuard:true,fitExpansion:true,manualZoom:true,centerAnchor:true,focusReturn:true,touchTarget:true,focusedDone:true,selectionDismissal:true};
  }finally{root.unmount();host.remove();app.style.display=display;}

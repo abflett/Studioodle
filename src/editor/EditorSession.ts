@@ -150,7 +150,7 @@ export class EditorSession {
     if (command.type === 'set-color' && definedColor(command.color, this.document.customColors)) this.color = command.color;
     if (command.type === 'set-custom-color') this.edit(() => this.document.setCustomColor(command.index, command.color));
     if (command.type === 'set-brush') this.brushOptions = command.options;
-    if (command.type === 'set-tool') { this.tool = command.tool; this.selected = this.focused; }
+    if (command.type === 'set-tool' && !(this.focused && command.tool === 'select')) { this.tool = command.tool; this.selected = this.focused; }
     if (command.type === 'clear-selection') { this.selected = undefined; this.tool = 'bucket'; }
     if ((command.type === 'duplicate-selection' || command.type === 'delete-selection') && this.selected) {
       this.edit(() => {
