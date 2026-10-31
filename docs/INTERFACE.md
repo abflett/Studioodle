@@ -239,6 +239,8 @@ Delete appears only for custom pages. See [Coloring books](COLORING-BOOKS.md).
 
 Small-screen overlays (width <=600px or height <=540px) fill the viewport without an outer border, gutter or rounded corners, respecting safe areas. Delete confirmation stays compact. Blank paper colors prefer the familiar four landscape rows/eight narrow portrait rows, adapting only when swatches become too small.
 
+The two-icon step header is a segmented switch with a sliding theme-colored
+highlight, no connector dash, and reduced-motion support.
 Orientation controls share the fixed footer with Next; neither step scrolls.
 Paper cards use equal flexible grid cells and contain their artwork, shrinking
 when needed. The background picker prefers eight columns / four rows in landscape

@@ -774,11 +774,15 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .blank-page-dialog .dialog-heading > h2 { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .blank-page-dialog .dialog-header .dialog-close, .blank-page-dialog .dialog-header .dialog-back { position: absolute; top: 4px; }
 .blank-page-dialog .dialog-close { right: 0; } .blank-page-dialog .dialog-back { left: 0; }
-.blank-step-well { width: max-content; max-width: 100%; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 4px; border-radius: 18px; background: var(--ribbon-well); }
+.blank-step-well { --step-padding: 4px; --step-width: 60px; position: relative; isolation: isolate; width: max-content; max-width: 100%; margin: 0 auto; display: flex; align-items: center; gap: 4px; padding: var(--step-padding); border-radius: 20px; background: var(--ribbon-well); }
+.blank-step-well::before { content: ''; position: absolute; z-index: -1; top: var(--step-padding); bottom: var(--step-padding); left: var(--step-padding); width: var(--step-width); border-radius: 16px; background: var(--action); box-shadow: 0 2px 5px #0002; transition: transform 180ms ease; }
+.blank-step-well[data-step='paper']::before { transform: translateX(calc(100% + 4px)); }
+.blank-step-well .blank-step-button { width: var(--step-width); background: transparent; transition: color 180ms ease; }
+@media (prefers-reduced-motion: reduce) { .blank-step-well::before, .blank-step-well .blank-step-button { transition: none; } }
 .blank-step-button, .blank-orientation-button { display: flex; align-items: center; justify-content: center; flex: none; width: 46px; height: 46px; padding: 8px; border: 0; border-radius: 14px; color: var(--text); background: transparent; }
 .blank-step-button svg, .blank-orientation-button svg { display: block; width: 26px; height: 26px; stroke: currentColor; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.blank-step-button[aria-current='step'], .blank-orientation-button[aria-pressed='true'] { background: var(--action); color: var(--action-text); }
-.blank-step-link { width: 24px; height: 1px; background: var(--border); opacity: .65; }
+.blank-step-button[aria-current='step'] { color: var(--action-text); }
+.blank-orientation-button[aria-pressed='true'] { background: var(--action); color: var(--action-text); }
 .blank-setup-content { min-height: 0; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 6px; }
 .blank-paper-options { width: 100%; height: 100%; min-height: 0; display: grid; place-items: center; }
 .blank-size-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; width: 100%; max-width: 790px; height: 100%; max-height: 230px; grid-template-rows: minmax(0, 1fr); }
@@ -815,8 +819,8 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @media (max-height: 520px) {
   .blank-setup-body { padding: 12px; gap: 8px; }
   .blank-page-dialog .dialog-header { min-height: 46px; }
-  .blank-step-well { padding: 2px; }
-  .blank-step-button { width: 44px; height: 44px; }
+  .blank-step-well { --step-padding: 2px; }
+  .blank-step-button { height: 44px; }
   .blank-size-choice { padding: 10px; }
   .blank-setup-footer .go-button { min-height: 46px; height: 46px; }
 }
@@ -829,9 +833,8 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .blank-next-action { width: 64px; }
   .blank-orientations { gap: 4px; }
   .blank-page-dialog .dialog-header { padding-inline: 48px; }
-  .blank-step-well { gap: 8px; }
-  .blank-step-link { width: 16px; }
-  .blank-step-button { width: 44px; height: 44px; }
+  .blank-step-well { --step-width: 52px; }
+  .blank-step-button { height: 44px; }
 }
 .blank-setup-content > * { margin: 0; }
 /* Compact brush controls share the book picker's quiet wells. */

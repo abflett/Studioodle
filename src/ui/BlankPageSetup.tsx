@@ -26,9 +26,8 @@ export function BlankPageSetup({ displaySize, step, onStep, paperPreset, orienta
   return <dialog ref={dialog} className="setup-dialog blank-page-dialog" aria-labelledby="blank-setup-title" onCancel={onClose} onClick={event => closeOnBackdrop(event, onClose)} onAuxClick={event => { if (event.button === 2) closeOnBackdrop(event, onClose); }}>
     <div className="blank-setup-body">
       <DialogHeader id="blank-setup-title" title={step === 'shape' ? 'Paper size and orientation' : 'Paper color'} headingRef={heading} onClose={onClose} closeLabel="Close setup" back={step === 'paper' ? { label: 'Back to paper shape', onClick: () => onStep('shape') } : undefined}>
-        <div className="blank-step-well" role="group" aria-label="Blank page setup steps">
+        <div className="blank-step-well" data-step={step} role="group" aria-label="Blank page setup steps">
           <button type="button" aria-label="Paper size and orientation" title="Paper size and orientation" aria-current={step === 'shape' ? 'step' : undefined} className="blank-step-button" onClick={() => onStep('shape')}><Copy aria-hidden="true" /></button>
-          <span className="blank-step-link" aria-hidden="true" />
           <button type="button" aria-label="Paper color" title="Paper color" aria-current={step === 'paper' ? 'step' : undefined} className="blank-step-button" onClick={() => onStep('paper')}><Palette aria-hidden="true" /></button>
         </div>
       </DialogHeader>
