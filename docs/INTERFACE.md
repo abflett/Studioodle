@@ -36,8 +36,9 @@ Old development save formats are intentionally unsupported. See [the sticker pip
 the authoring format, region maps, loading/caches and cleanup decisions.
 See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries.
 
-The ribbon's Hide tools button (a top toolbar with an upward arrow) releases its space to the canvas. A floating
-Show tools button at the top right restores it. Both controls are circular. The collapse control matches
+The ribbon's Hide tools button (an upward arrow above a horizontal line) releases its space to the canvas. A floating
+Show tools button at the top right restores it, using the reversed symbol: a
+downward arrow below a horizontal line. Both controls are circular. The collapse control matches
 the themed ribbon buttons; only the floating reopen control has a transparent
 center, 75%-opaque white border/icon, an even shadow glow around its border/chevron and a white hover film. The ribbon reserves space for the collapse control at its top right.
 Fit mode expands/refits

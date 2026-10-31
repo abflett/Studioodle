@@ -91,7 +91,7 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 ## Current interface
 
-The editor ribbon toggles with T or its corner toolbar hide/show icon. Both controls sit at the
+The editor ribbon toggles with T or its corner arrow-and-line icon. Both controls sit at the
 top right with safe-area spacing. Both are circular. The open-ribbon control uses the normal themed ribbon
 style; only the floating reopen control has a transparent center, 75%-opaque
 white border/icon, an even shadow glow and a white hover film.
