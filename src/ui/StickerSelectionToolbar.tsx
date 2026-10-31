@@ -1,5 +1,5 @@
 import type { Ref } from 'react';
-import { Check, Eye, X, Maximize2, Minimize2, RotateCw, RotateCcw, FlipHorizontal2, FlipVertical2, Copy, Trash2 } from 'lucide-react';
+import { Eye, X, Maximize2, Minimize2, RotateCw, RotateCcw, FlipHorizontal2, FlipVertical2, Copy, Trash2 } from 'lucide-react';
 import type { EditorBridge, SelectionOrder } from '../editor/bridge';
 import { LayerOrderIcon } from './LayerOrderIcon';
 
@@ -34,6 +34,5 @@ export function StickerSelectionToolbar({ bridge, focused, order, drawerRef, onF
     <button title="Focus on this sticker (F)" aria-label="Focus on this sticker (F)" onClick={onFocus}><Eye aria-hidden="true" /></button>
     <button className="selection-desktop-action" title="Duplicate (Ctrl/Cmd+D)" aria-keyshortcuts="Control+D Meta+D" aria-label="Duplicate" onClick={() => bridge.send({ type: 'duplicate-selection' })}><Copy aria-hidden="true" /></button>
     <button title="Delete (Del)" aria-keyshortcuts="Delete" aria-label="Delete" onClick={() => bridge.send({ type: 'delete-selection' })}><Trash2 aria-hidden="true" /></button>
-    <button className="selection-desktop-action" title="Done" onClick={onFinish} aria-label="Finish selecting"><Check aria-hidden="true" /></button>
   </div>;
 }

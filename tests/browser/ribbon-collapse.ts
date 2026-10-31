@@ -40,7 +40,7 @@ export async function checkRibbonCollapse(){
    const focus=drawerHost.querySelector<HTMLElement>('[aria-label="Focus on this sticker (F)"]')!,fill=getComputedStyle(focus);
    assert(fill.backgroundImage==='none'&&parseFloat(fill.borderRadius)>0&&parseFloat(fill.borderRadius)<=10,'Ribbon feedback uses softly rounded tiles');
    if(innerWidth<=800)assert(getComputedStyle(drawerHost.querySelector('.sticker-ribbon')!).borderBottomLeftRadius==='0px','Full-width submenu has square corners');
-   assert(buttons.length===(innerWidth<=800?10:12)&&buttons.every(b=>Math.abs(b.top-buttons[0]!.top)<1&&b.left>=drawer.left&&b.right<=drawer.right),'Selection controls stay in one visible row, with fewer actions on small screens');
+   assert(buttons.length===(innerWidth<=800?10:11)&&buttons.every(b=>Math.abs(b.top-buttons[0]!.top)<1&&b.left>=drawer.left&&b.right<=drawer.right),'Selection controls stay in one visible row, with fewer actions on small screens');
    let finished=false;
    drawerRoot.render(createElement(StickerSelectionToolbar,{bridge:createEditorBridge(),focused:true,order:{forward:true,backward:true},drawerRef:{current:null},onFocus:()=>{},onFinish:()=>{finished=true;}}));await settle();
    assert(drawerHost.querySelectorAll('button').length===1&&!!drawerHost.querySelector('[aria-label="Exit focus"]'),'Focus has a single Done action');

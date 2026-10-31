@@ -249,7 +249,6 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 .sticker-ribbon .sticker-adjustment { display: flex; padding: 0 8px 0 0; }
 .sticker-ribbon .sticker-adjustment > div { gap: 4px; }
 .sticker-ribbon button[aria-label='Delete'] { margin-left: 6px; }
-.sticker-ribbon button[aria-label='Finish selecting'] { background: var(--action); color: var(--action-text); margin-left: 6px; }
 @media (max-width: 600px) {
   .art-ribbon.main-ribbon { gap: 6px 8px; padding-left: 6px; padding-right: 6px; }
   .main-ribbon .ribbon-group { gap: 2px; }
@@ -971,10 +970,10 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 /* Theme-colored icons with simple rounded tile feedback. */
 .ribbon-shell .art-ribbon button { --ribbon-button-fill: transparent; color: var(--ribbon-icon); border-radius: 10px; background: var(--ribbon-button-fill); }
 .ribbon-shell .art-ribbon button svg, .ribbon-collapse svg { filter: drop-shadow(0 0 1px color-mix(in srgb, var(--ribbon-glow) 70%, transparent)) drop-shadow(0 0 3px color-mix(in srgb, var(--ribbon-glow) 50%, transparent)); }
-.ribbon-shell .art-ribbon button[aria-pressed='true'], .ribbon-shell .sticker-ribbon button[aria-label='Finish selecting'] { --ribbon-button-fill: var(--action); color: var(--action-text); }
-.ribbon-shell .art-ribbon button[aria-pressed='true'] svg, .ribbon-shell .sticker-ribbon button[aria-label='Finish selecting'] svg { filter: none; }
+.ribbon-shell .art-ribbon button[aria-pressed='true'] { --ribbon-button-fill: var(--action); color: var(--action-text); }
+.ribbon-shell .art-ribbon button[aria-pressed='true'] svg { filter: none; }
 @media (hover: hover) {
-  .ribbon-shell .art-ribbon button:not(:disabled):not([aria-pressed='true']):not([aria-label='Finish selecting']):not([aria-label='Exit focus']):is(:hover, .app-mouse-hover) { --ribbon-button-fill: var(--ribbon-hover); }
+  .ribbon-shell .art-ribbon button:not(:disabled):not([aria-pressed='true']):not([aria-label='Exit focus']):is(:hover, .app-mouse-hover) { --ribbon-button-fill: var(--ribbon-hover); }
 }
 
 .ribbon-shell .art-ribbon button svg { width: 32px; height: 32px; }
@@ -1042,7 +1041,7 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .ribbon-shell .main-ribbon .ribbon-group { display: contents; }
 .ribbon-shell .main-ribbon button { flex: 0 1 52px; min-width: 0; max-width: 52px; padding-inline: 4px; }
 .ribbon-shell .main-ribbon .ribbon-collapse { position: static; inset: auto; }
-.ribbon-shell .sticker-ribbon { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); width: min(706px, calc(100% - 20px)); flex-wrap: nowrap; gap: 6px; }
+.ribbon-shell .sticker-ribbon { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); width: min(648px, calc(100% - 20px)); flex-wrap: nowrap; gap: 6px; }
 .ribbon-shell .sticker-ribbon .sticker-adjustment,
 .ribbon-shell .sticker-ribbon .sticker-adjustment > div { display: contents; }
 .ribbon-shell .sticker-ribbon button { width: 100%; min-width: 0; margin-left: 0; padding-inline: 4px; }

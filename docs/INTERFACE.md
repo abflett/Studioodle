@@ -169,7 +169,7 @@ Home is separate because it leaves the workspace. View and selection controls fo
 
 The borderless controls use compact outer ribbon padding. On narrow screens, the primary ribbon stays on one row and shares the available width between all eleven buttons, including Collapse. Buttons use 52px targets on wide screens and 44px height on compact screens, with widths adapting to the available space, accessible names, desktop title tooltips, visible keyboard focus, and selected-tool feedback. The color picker uses a neutral palette icon with a separate current-color dot so the icon remains visible for very light or dark colors.
 
-The selected-sticker ribbon is also icon-only. Shrink/grow and counterclockwise/clockwise rotation use directional icons, with grouped pairs, named actions, and desktop tooltips. At widths up to 800px, Duplicate and Done are omitted, leaving ten actions including Focus and Delete. Another tool, another press of Select, or an empty-space tap leaves ordinary selection. Larger displays retain Duplicate and Done.
+The selected-sticker ribbon is also icon-only. Shrink/grow and counterclockwise/clockwise rotation use directional icons, with grouped pairs, named actions, and desktop tooltips. Done is omitted on every screen. At widths up to 800px, Duplicate is also omitted, leaving ten actions including Focus and Delete; larger displays retain Duplicate. Another tool, another press of Select, or an empty-space tap leaves ordinary selection.
 
 Focus uses an eye icon and replaces the submenu with a single X exit
 button floating below the ribbon. Its transparent circular outline and subtle glow
