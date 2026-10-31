@@ -21,7 +21,7 @@ import { paperSize } from '../editor/document';
 import { usePaperView } from './usePaperView';
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
-import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Eraser, MousePointer2, Move, ZoomIn, Save, ArrowUpFromLine, ArrowDownFromLine } from 'lucide-react';
+import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Eraser, MousePointer2, Move, ZoomIn, Save } from 'lucide-react';
 import { EditorCanvas } from './EditorCanvas';
 import { createEditorBridge } from '../editor/bridge';
 import type { StickerKind } from '../editor/stickerKinds';
@@ -29,6 +29,11 @@ import type { EditorTool } from '../editor/bridge';
 import type { EditorSetup } from '../editor/setup';
 import { initialDrawingSettings } from '../editor/setup';
 import { prepareStickers } from '../editor/vectorStickers';
+
+// Shortened shaft keeps the arrow balanced above its baseline.
+function RibbonToggleIcon({ expand = false }: { expand?: boolean }) {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><g transform={expand ? 'rotate(180 12 12)' : undefined}><path d="m18 11-6-6-6 6M12 5v12M5 21h14" /></g></svg>;
+}
 
 type Picker = 'stickers' | 'colors' | 'brush';
 export default function EditorPreview({ setup, onBack, settings }: { setup: EditorSetup; onBack: () => void; settings: AppSettings }) {
@@ -195,10 +200,10 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
         <button title="Undo (Ctrl/Cmd+Z or Backspace)" aria-keyshortcuts="Control+Z Meta+Z Backspace" aria-label="Undo" onClick={() => bridge.send({ type: 'undo' })}><Undo2 aria-hidden="true" /></button>
       </div>
     </header>
-      <button ref={collapseButton} className="ribbon-toggle ribbon-collapse" title="Hide tools (T)" aria-keyshortcuts="T" aria-label="Hide tools" aria-expanded="true" aria-controls="editor-ribbon" onClick={toggleRibbon}><ArrowUpFromLine aria-hidden="true" /></button>
+      <button ref={collapseButton} className="ribbon-toggle ribbon-collapse" title="Hide tools (T)" aria-keyshortcuts="T" aria-label="Hide tools" aria-expanded="true" aria-controls="editor-ribbon" onClick={toggleRibbon}><RibbonToggleIcon /></button>
       {((tool === 'select' && selected) || focused) && <StickerSelectionToolbar bridge={bridge} focused={!!focused} order={selectionOrder} drawerRef={selectionDrawer} onFocus={focusSelection} onFinish={finishSelection} />}
     </div>
-    {ribbonHidden && <button ref={reopenButton} className="ribbon-toggle ribbon-reopen" title="Show tools (T)" aria-keyshortcuts="T" aria-label="Show tools" aria-expanded="false" aria-controls="editor-ribbon" onClick={toggleRibbon}><ArrowDownFromLine aria-hidden="true" /></button>}
+    {ribbonHidden && <button ref={reopenButton} className="ribbon-toggle ribbon-reopen" title="Show tools (T)" aria-keyshortcuts="T" aria-label="Show tools" aria-expanded="false" aria-controls="editor-ribbon" onClick={toggleRibbon}><RibbonToggleIcon expand /></button>}
     <section className={`art-canvas ${tool === 'pan' ? 'pan-mode' : ''} ${focused ? 'focus-mode' : ''}`} ref={viewport} style={cursorStyle} aria-label="Drawing canvas" tabIndex={0} {...gestureHandlers}>
       <PrecisionFillFeedback aim={precisionFill.aim} magnified={precisionFill.magnified} releasedAim={precisionFill.releasedAim} />
       <div className="canvas-envelope" style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>
