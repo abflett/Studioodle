@@ -48,9 +48,10 @@ focus transfers between the two controls. Hidden tools are excluded from tab ord
 while drawing shortcuts remain available. Visibility resets for each editor session.
 
 The editor background flows continuously through the ribbon, sticker submenu
-and letterboxing: all use the same viewport-aligned image and tint. The submenu
+and letterboxing: all use the same viewport-aligned image. The submenu
 uses auto-margin centering so a transform cannot shift its background origin.
-The workspace has no extra tint that would create a color seam.
+The workspace retains its additional theme tint to distinguish it from the
+ribbons; focus mode keeps its separate spotlight background.
 
 ## Paper and templates
 

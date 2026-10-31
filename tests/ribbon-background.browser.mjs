@@ -10,6 +10,10 @@ export async function checkRibbonBackground({evaluate,cdp}) {
    host.style.cssText='position:fixed;inset:0;z-index:9999';
    host.innerHTML='<div class="ribbon-shell" style="box-shadow:none"><header class="art-ribbon main-ribbon" style="height:60px;padding:0"></header><div class="art-ribbon sticker-ribbon" style="width:min(700px,calc(100% - 20px));height:100px;box-shadow:none;visibility:hidden"></div></div><section class="art-canvas"></section>';
    document.body.append(host);
+   const workspace=host.querySelector('.art-canvas');
+   if(getComputedStyle(workspace).backgroundImage==='none')throw Error('Workspace must keep its layer tint');
+   // Compare image alignment independently of the intentional workspace tint.
+   workspace.style.background='transparent';
    const source=getComputedStyle(host).backgroundImage.match(/url\(["']?([^"')]+)/)[1];
    await new Promise((resolve,reject)=>{const image=new Image();image.onload=resolve;image.onerror=reject;image.src=source;});
    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
