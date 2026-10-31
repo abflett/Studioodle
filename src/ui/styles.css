@@ -532,13 +532,14 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 :is(.selection-screen, .splash-panel)::before, :is(.selection-screen, .splash-panel)::after { content: ''; position: absolute; pointer-events: none; }
 :is(.selection-screen, .splash-panel)::before { inset: 0; z-index: -2; background-image: var(--scene-art); background-size: cover; background-position: center; }
 :is(.selection-screen, .splash-panel)::after { inset: 0; z-index: -1; background: var(--scene-tint); }
-.art-studio { background-image: var(--scene-tint), var(--scene-art); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; }
+/* Both scene images are 3:2; a small overscan prevents gaps at shifted edges. */
+.art-studio { --studio-image-height: max(calc(100dvh + 16px), calc((100vw + 16px) * 2 / 3)); background-image: var(--scene-tint), var(--scene-art); background-size: cover, auto var(--studio-image-height); background-position: center, center calc(50% - 8px); background-repeat: no-repeat; background-attachment: fixed; }
 .art-studio .art-canvas:not(.focus-mode) { background: var(--canvas-tint); }
 /* Both surfaces sample the viewport; avoid transformed ancestors on the drawer. */
-.art-studio :is(.main-ribbon, .sticker-ribbon) { background-image: var(--scene-tint), var(--scene-art); background-size: cover; background-position: center; background-attachment: fixed; }
-/* Refraction increases with height above the letterboxing, not shadow darkness. */
-.art-studio .main-ribbon { background-position: center, calc(50% + 8px) calc(50% + 8px); }
-.art-studio .sticker-ribbon { background-position: center, calc(50% + 4px) calc(50% + 4px); }
+.art-studio :is(.main-ribbon, .sticker-ribbon) { background-image: var(--scene-tint), var(--scene-art); background-size: cover, auto var(--studio-image-height); background-position: center; background-repeat: no-repeat; background-attachment: fixed; }
+/* Main ribbon stays still; lower layers sample slightly farther upward. */
+.art-studio .main-ribbon { background-position: center; }
+.art-studio .sticker-ribbon { background-position: center, center calc(50% - 4px); }
 /* Staggered paper choices above a loose collection of saved pictures. */
 .selection-screen { padding-top: max(84px, calc(env(safe-area-inset-top) + 72px)); padding-bottom: max(28px, env(safe-area-inset-bottom)); }
 .selection-screen .selection { --object-height: min(clamp(160px, 30vw, 300px), calc((100dvh - 340px) / 2)); --saved-picture-height: var(--object-height); width: min(820px, 100%); grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 20px; }

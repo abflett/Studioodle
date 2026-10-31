@@ -14,7 +14,7 @@ export async function checkRibbonBackground({evaluate,cdp}) {
    if(Number(getComputedStyle(main).zIndex)<=Number(getComputedStyle(drawer).zIndex))throw Error('Main ribbon must be above its drawer');
    if(getComputedStyle(main).backgroundPosition===getComputedStyle(drawer).backgroundPosition)throw Error('Drawer must keep its subtle refraction offset');
    // Neutralize intentional depth effects when comparing the shared image origin.
-   main.style.boxShadow=drawer.style.boxShadow='none';drawer.style.backgroundPosition='center';
+   main.style.boxShadow=drawer.style.boxShadow='none';host.style.backgroundPosition=main.style.backgroundPosition=drawer.style.backgroundPosition='center';
    const workspace=host.querySelector('.art-canvas');
    if(getComputedStyle(workspace).backgroundImage==='none')throw Error('Workspace must keep its layer tint');
    // Compare image alignment independently of the intentional workspace tint.

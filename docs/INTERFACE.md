@@ -49,8 +49,9 @@ while drawing shortcuts remain available. Visibility resets for each editor sess
 
 The editor background flows continuously through the ribbon, sticker submenu
 and letterboxing: all use the same viewport-aligned image. The submenu
-uses auto-margin centering. Image offsets suggest glass depth: 8px/8px on the
-top ribbon, 4px/4px on the submenu, and none on the letterboxing. It tucks 4px behind the opaque main ribbon;
+uses auto-margin centering. Only vertical image offsets suggest glass depth: the top ribbon stays fixed,
+the submenu shifts 4px upward and the letterboxing shifts 8px upward. Shared
+16px overscan keeps the shifted edges covered without repeating the image. It tucks 4px behind the opaque main ribbon;
 the shadow tier follows the gap between casting and receiving surfaces:
 
 | Tier | Appearance | Surfaces |
