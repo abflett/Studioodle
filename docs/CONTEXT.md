@@ -91,12 +91,13 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 ## Current interface
 
-Both ribbon rows center all visible controls with even spacing. Collapse occupies
-a normal final main-ribbon slot without a reserved side gutter, and desktop
+Both ribbon rows center their tools with even spacing. Desktop Collapse is anchored
+at the top right independently; compact screens include it as the final slot
+without a reserved side gutter. Desktop
 selection ends with Duplicate, Focus, Delete. Up to
 800px wide, ordinary sticker selection omits Duplicate, retaining ten
 controls. Focus uses an eye icon and shows only a floating X exit button
-on all displays, with the transparent outline/glow of the ribbon reopen control
+on all displays, with a transparent outline and glow
 and no submenu background or shadow bar; painting tools preserve focus.
 Exit focus or F/Enter restores the page view and same sticker selection. Ordinary
 selection has no Done button on any screen; desktop retains Duplicate.
@@ -140,13 +141,14 @@ The workspace retains its separate theme tint
 to distinguish layers; focus mode retains its spotlight background.
 Pixel comparisons cover both themes and desktop/phone widths.
 
-The editor ribbon toggles with T or its final arrow-and-line button. The floating
-reopen control sits at the top right with safe-area spacing. Reopen is circular;
+The editor ribbon toggles with T or its arrow-and-line button. The floating
+reopen control sits at the top right with safe-area spacing. Reopen has a borderless
+20px icon inside a 44px touch target;
 Collapse uses the same rounded tile shape as the other ribbon buttons.
 Ribbon tools use transparent groups without wells, larger theme-colored icons with contrasting glows
 (32px desktop, up to 28px on narrow screens), rounded
-theme-tinted hover targets and the theme action color for the selected tool. The open-ribbon toggle matches; only the floating reopen control has a transparent center, 85%-opaque
-theme-colored border/icon, an even contrast glow and a theme-tinted hover film.
+theme-tinted hover targets and the theme action color for the selected tool. The open-ribbon toggle matches; the floating reopen control has a transparent center,
+theme-colored icon, an even contrast glow and a theme-tinted hover film.
 Fit mode refits to the expanded workspace; manual zoom retains its absolute scale
 and center artwork point across layout changes. Toggle focus follows the visible
 control; ribbon visibility is session-local and does not alter saved artwork.

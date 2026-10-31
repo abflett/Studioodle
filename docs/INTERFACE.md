@@ -57,10 +57,13 @@ See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries
 
 The ribbon's Hide tools button (an upward arrow above a horizontal line) releases its space to the canvas. A floating
 Show tools button at the top right restores it, using the reversed symbol: a
-downward arrow below a horizontal line. Reopen is circular; Collapse uses the ribbon's rounded tile shape. The collapse control matches
+downward arrow below a horizontal line. Reopen is a borderless 20px icon inside a
+44px touch target; Collapse uses the ribbon's rounded tile shape. The collapse control matches
 the borderless ribbon buttons, using theme-colored icons, a contrast glow and a
-theme-tinted hover film; only the floating reopen control has a transparent
-center, theme-colored border/icon, an even contrast glow and a theme-tinted hover film. Collapse is the final ordinary button in the main ribbon, without a reserved side gutter.
+theme-tinted hover film. Reopen has a transparent center, theme-colored icon,
+contrast glow and hover film, with a visible keyboard focus outline. On desktop
+Collapse sits at the top right, independently of the centered main tools. Up to
+800px it shares the final ordinary ribbon slot, without a reserved side gutter.
 Fit mode expands/refits
 with the workspace; manual zoom keeps its scale and center artwork point. Keyboard
 focus transfers between the two controls. Hidden tools are excluded from tab order,
@@ -155,8 +158,9 @@ Non-spray brush strokes blend input samples to damp hand jitter and use rounded 
 
 ## Editor ribbons
 
-Main and sticker ribbons each remain a centered single row at every width, with
-even control spacing and no separate Delete or Collapse gutter. Spacing and
+Main tools and sticker actions each remain a centered single row at every width,
+with even control spacing and no separate Delete gutter. Desktop Collapse is
+anchored independently at the top right; compact screens include it in the row. Spacing and
 icons compress on narrow screens while keeping every action visible. Up to 800px
 wide, the submenu fills the screen width with 44px buttons and reduced padding;
 larger displays keep the inset rounded drawer. Full-width shadow masks also use
@@ -176,8 +180,8 @@ The desktop row ends with Duplicate, Focus, Delete; small screens end with Focus
 Delete. All actions share the same spacing.
 
 Focus uses an eye icon and replaces the submenu with a single X exit
-button floating below the ribbon. Its transparent circular outline and subtle glow
-match the floating ribbon control; no submenu background or shadow bar remains.
+button floating below the ribbon. It has a transparent circular outline and subtle
+glow; no submenu background or shadow bar remains.
 Brush, Fill, Eraser and navigation tools preserve focus. Exit focus (or F/Enter) exits
 focus, restores the previous page view and returns to selection on the same sticker.
 
