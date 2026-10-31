@@ -91,9 +91,9 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 ## Current interface
 
-The portrait Coloring Pages picker centers Grid above a 3 x 2 category well, then
-centers detail and Favorites below. Its preview uses the available width and moves
-page arrows underneath; larger layouts keep their wide composition.
+The portrait Coloring Pages picker places Grid at upper left and Favorites beneath
+it, beside centered category and detail wells. Its preview uses the available width
+and moves page arrows underneath; larger layouts keep their wide composition.
 
 Main and sticker ribbons each remain a single row at every width. Spacing and
 icons compress on narrow screens while keeping every action visible. Up to 800px

@@ -744,14 +744,14 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 @media (max-width: 620px) {
   .coloring-picker-body { padding: 12px; gap: 12px; }
   .coloring-picker .page-control { width: 44px; height: 44px; padding: 8px; }
-  .page-browser-top { min-height: 194px; padding: 0; }
+  .page-browser-top { min-height: 148px; padding: 0; }
   .page-filters { display: contents; }
   .page-filter-well { gap: 0; padding: 3px; }
-  .coloring-picker .page-view-toggle { top: 22px; left: 50%; transform: translate(-50%, -50%); }
+  .coloring-picker .page-view-toggle { top: 22px; left: 0; }
   .coloring-picker .page-browser-top .dialog-close { top: 22px; }
-  .page-categories { position: absolute; top: 50px; left: 50%; display: grid; grid-template-columns: repeat(3, 44px); transform: translateX(-50%); }
-  .page-details { position: absolute; top: 148px; left: 50%; transform: translateX(calc(-50% - 26px)); }
-  .coloring-picker .page-favorites-filter { position: absolute; top: 151px; left: calc(50% + 72px); }
+  .page-categories { position: absolute; top: 0; left: 50%; display: grid; grid-template-columns: repeat(3, 44px); transform: translateX(-50%); }
+  .page-details { position: absolute; top: 100px; left: 50%; transform: translateX(-50%); }
+  .coloring-picker .page-favorites-filter { position: absolute; top: 52px; left: 0; }
   .coloring-picker-body[data-grid='false'] .page-browse-content { padding: 0 4px 54px; }
   .coloring-picker-body[data-grid='false'] .page-browse-arrow { top: auto; bottom: 0; width: 44px; min-width: 44px; padding: 8px; transform: none; }
   .coloring-picker-body[data-grid='false'] .page-previous { left: 50%; margin-left: -56px; }
