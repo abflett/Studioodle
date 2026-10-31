@@ -121,7 +121,8 @@ The open stagger uses comparable artwork-edge gaps rather than equal center
 distances: a smaller book moves right, the easel lifts, and the gallery lowers
 when larger displays have room. Desktop gutters/top breathing room and shared
 sizing keep the book near gallery width and the easel slightly smaller. Settings remain anchored in the screen corner. Artwork scales
-from iPhone SE landscape through desktop; controls keep 44px touch targets. Portrait retains its staggered layout.
+from iPhone SE landscape through desktop; controls keep 44px touch targets. Portrait retains its staggered layout, with the easel lifted an extra 16-32px
+without moving the book or gallery.
 Preserve paper aspect ratios/masks, full-bleed artwork, stable carousel geometry
 and subtle artwork-only hover scaling. Loading sits beneath the branded stack
 logo, outside the rotated preview mask. Opening hides the front sheet/actions

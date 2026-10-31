@@ -20,6 +20,13 @@ export async function showSelectionLayout(theme:'light'|'dark'){
   }
   if(innerWidth>=1280&&(blank.top<24||box('.selection').left<64))throw Error('Large displays need top and side breathing room');
   for(const button of screen.querySelectorAll<HTMLElement>('.selection-preferences button,.library-actions button')){const b=button.getBoundingClientRect();if(b.width<43.9||b.height<43.9)throw Error('Landscape utility controls need a 44px touch target');}
+ }else{
+  const selection=screen.querySelector<HTMLElement>('.selection')!;
+  selection.style.setProperty('--portrait-easel-lift','0px');
+  const originalBlank=box('.choice-blank'),originalPages=box('.choice-coloring'),originalGallery=box('.previous-section');
+  selection.style.removeProperty('--portrait-easel-lift');
+  if(originalBlank.top-blank.top<15||originalBlank.top-blank.top>33)throw Error('Portrait easel needs a modest upward lift');
+  if(Math.abs(originalPages.top-pages.top)>.1||Math.abs(originalGallery.top-gallery.top)>.1)throw Error('Portrait lift must leave book and gallery in place');
  }
  const serialize=(b:DOMRect)=>({x:b.x,y:b.y,width:b.width,height:b.height});
  return {width:innerWidth,height:innerHeight,theme,blank:serialize(blank),pages:serialize(pages),controls:serialize(controls),gallery:serialize(gallery)};

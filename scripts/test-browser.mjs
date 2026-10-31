@@ -112,7 +112,7 @@ try {
     await fs.writeFile(`work/tests/startup-${process.argv.includes('--stock-startup')?'before':'after'}.json`,JSON.stringify(result,null,2));
     if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(process.argv.includes('--selection-layout')){
-    for(const [width,height] of [[667,375],[568,320],[844,390],[1280,720],[1920,1080],[1024,768],[375,667],[390,844]]){
+    for(const [width,height] of [[667,375],[568,320],[844,390],[1280,720],[1920,1080],[1024,768],[295,518],[320,568],[375,667],[390,844]]){
       await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
       for(const theme of ['light','dark']){
         console.log('Selection layout:',await evaluate(`import('/tests/browser/selection-layout.ts').then(m=>m.showSelectionLayout('${theme}'))`));
