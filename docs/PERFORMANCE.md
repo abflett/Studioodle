@@ -102,3 +102,22 @@ with `--paint-baseline`. For alternating geometry checks use
 `node --expose-gc scripts/benchmark-paint.mjs --compare work/tests/paint-interleaved.json`.
 Baseline modules load from Git in the diagnostic server only. Normal builds use
 one implementation. Keep generated measurements in ignored `work/`.
+
+## Development and test isolation cleanup (31 October 2026)
+
+In development, an eager SVG URL glob previously imported a JS wrapper per
+sticker. The dev-only `stickerDevUrls` plugin now supplies literal same-origin
+URLs; production keeps Vite's ordinary hashed assets. A cold Chromium diagnostic
+observed 364?0 SVG URL-module requests and 522?155 total recorded resources.
+Cold ready times were ~54s/~61s in those runs, so this establishes fewer requests,
+not a measured end-to-end startup speedup. Run
+`node scripts/test-browser.mjs --startup-profile` and add `--stock-startup` for
+the original dev URL path. Captures increase Resource Timing's buffer to avoid
+silently truncating the before count at the browser's default 250 entries.
+
+Automated browser/SSR servers now use isolated caches under `work/tests/vite-cache/`,
+so their configuration hashes cannot invalidate a running user's dev cache.
+`scripts/lib/ssr-server.mjs` centralizes headless source loading with watchers,
+HMR and dependency discovery disabled. App watchers ignore generated `work/`,
+`dist/` and `release/` output, preventing generated HTML reports from reloading
+an open drawing. No installed dependency/build caches were deleted.

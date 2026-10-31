@@ -1,9 +1,9 @@
-// Install a reviewed workshop export as the next bundled collection.
+// Install a reviewed coloring-page export as the next bundled collection.
 import fs from 'node:fs';
-import { createServer } from 'vite';
+import { createSsrServer } from './lib/ssr-server.mjs';
 const input = process.argv[2];
 if (!input) throw new Error('Usage: npm run books:install -- path/to/book.studioodle');
-const server = await createServer({ configFile: false, server: { middlewareMode: true }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
+const server = await createSsrServer();
 try {
   const { parsePageSharingCode } = await server.ssrLoadModule('/src/editor/pageSharing.ts');
   const book = parsePageSharingCode(fs.readFileSync(input, 'utf8'));

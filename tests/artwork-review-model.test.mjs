@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { before, after, test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 let server,model,geometry,tasks,cleanup;
 const reviewFixture = key => JSON.parse(fs.readFileSync('tests/fixtures/artwork-review/reviews.json','utf8'))[key];
 const repairLedger = key => JSON.parse(fs.readFileSync('tools/artwork-review/data/repair-history.json','utf8'))[key];
-before(async()=>{server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});model=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewModel.ts');geometry=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewGeometry.ts');tasks=await server.ssrLoadModule('/tools/artwork-review/src/artworkLineTasks.ts');cleanup=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewCleanup.ts');});
+before(async()=>{server=await createSsrServer();model=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewModel.ts');geometry=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewGeometry.ts');tasks=await server.ssrLoadModule('/tools/artwork-review/src/artworkLineTasks.ts');cleanup=await server.ssrLoadModule('/tools/artwork-review/src/artworkReviewCleanup.ts');});
 after(async()=>{await server?.close();});
 test('extending review annotations preserves the complete existing exported review',()=>{
  const original=reviewFixture('initial');

@@ -4,7 +4,7 @@ import type { EditorSetup } from '../editor/setup';
 import { makeColoringBook } from '../editor/coloringBook';
 import type { ColoringBook } from '../editor/coloringBook';
 import { independentPages, maxSharingCodeBytes, pageSharingCode, parsePageSharingCode } from '../app/coloringPageSharing';
-import { workshopRepository } from '../app/coloringBookWorkshop';
+import { customPagesRepository } from '../app/customColoringPages';
 import { downloadColoringBook } from '../platform/coloringBookOutput';
 import { DialogHeader } from './DialogHeader';
 import { ColoringPagePreview } from './ColoringPagePreview';
@@ -47,7 +47,7 @@ export function ColoringPageTransfer({ page, onAdded, onClose }: { page?: Editor
       </div>
       {incoming && <div className="page-import-preview"><ColoringPagePreview page={incoming.pages[0]!} /><p>{incoming.pages.length} {incoming.pages.length === 1 ? 'page' : 'pages'}: {incoming.pages.slice(0, 3).map(p => p.title).join(', ')}{incoming.pages.length > 3 ? '...' : ''}</p><button className="go-button" disabled={busy} onClick={async () => {
         setBusy(true);
-        try { const added = independentPages(incoming); await workshopRepository.merge(added); onAdded(added.pages[0]!.id); }
+        try { const added = independentPages(incoming); await customPagesRepository.merge(added); onAdded(added.pages[0]!.id); }
         catch { setMessage('Could not add these pages. Existing pages have not been replaced. Check device storage.'); }
         finally { setBusy(false); }
       }}><FilePlus2 /><span>Add Pages</span></button></div>}

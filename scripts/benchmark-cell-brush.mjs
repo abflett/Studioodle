@@ -1,15 +1,11 @@
-import { createServer } from 'vite';
+import { createSsrServer } from './lib/ssr-server.mjs';
 import { performance } from 'node:perf_hooks';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 
 // Model CPU timings, not browser rendering or pointer-to-display latency.
 // One warmup and three measured repetitions; report their median.
-const server = await createServer({
-  configFile: false,
-  server: { middlewareMode: true, hmr: false, ws: false, watch: null },
-  appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] },
-});
+const server = await createSsrServer();
 try {
   const { CellField } = await server.ssrLoadModule('/tools/cell-brush/src/model.ts');
   const { performanceStrokes } = await server.ssrLoadModule('/tools/cell-brush/src/fixtures.ts');

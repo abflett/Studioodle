@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import {before,after,test} from 'node:test';
-import {createServer} from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 let server,regionsNear,StrokeSmoothing,VectorPaint,geometry,polygons;
 before(async()=>{
- server=await createServer({configFile:false,server:{middlewareMode:true,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});
+ server=await createSsrServer();
  ({regionsNear}=await server.ssrLoadModule('/src/editor/regionSearch.ts'));
  ({StrokeSmoothing}=await server.ssrLoadModule('/src/editor/strokeSmoothing.ts'));
  ({VectorPaint}=await server.ssrLoadModule('/src/editor/VectorPaint.ts'));

@@ -11,7 +11,7 @@ if (!browser) throw Error('Set BENCHMARK_BROWSER to an installed Chromium browse
 const output = path.resolve('work/tests/cell-brush');
 await fs.mkdir(output, { recursive: true });
 const profile = await fs.mkdtemp(path.join(output, 'browser-'));
-const server = await createServer({ configFile: 'tools/cell-brush/vite.config.ts', server: { host: '127.0.0.1', port: 1435, open: false } });
+const server = await createServer({ cacheDir: path.resolve('work/tests/vite-cache/cells'), configFile: 'tools/cell-brush/vite.config.ts', server: { host: '127.0.0.1', port: 1435, open: false } });
 let child, ws;
 try {
   await server.listen();

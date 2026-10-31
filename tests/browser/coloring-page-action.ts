@@ -2,13 +2,13 @@ import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 import { SelectionScreen } from '../../src/ui/SelectionScreen';
 import { pictureRepository, pictureSaves } from '../../src/app/pictures';
-import { workshopRepository } from '../../src/app/coloringBookWorkshop';
+import { customPagesRepository } from '../../src/app/customColoringPages';
 import type { SavedPicture } from '../../src/editor/savedPicture';
 
 export async function checkColoringPageAction() {
-  const stored = await workshopRepository.load();
+  const stored = await customPagesRepository.load();
   const container = document.createElement('div'); document.body.append(container);
-  const root = createRoot(container), originalMerge = workshopRepository.merge;
+  const root = createRoot(container), originalMerge = customPagesRepository.merge;
   const picture: SavedPicture = { id: 'page-action-test', title: 'Page action test', version: 6, updatedAt: Date.now() + 100000,
     format: 'landscape', size: { width: 320, height: 240 }, background: '#ffffff', leafColor: 0,
     document: { version: 6, width: 320, height: 240, surfaces: [{ id: 'canvas', kind: 'canvas', x: 0, y: 0, color: 0xffffff }, { id: 'circle', kind: 'circle', x: 137, y: 119, color: 0, scale: .3 }] } };
@@ -20,11 +20,11 @@ export async function checkColoringPageAction() {
     root.render(createElement(SelectionScreen, { onOpen: () => {}, onExit: () => {}, theme: 'dark', onThemeChange: () => {}, settings: { advancedPainting: true, mouseSpeed: 100 }, onSettingsChange: () => {} }));
     await wait(() => action() && !action()!.disabled);
     const plus = action()!.querySelector('svg')!.innerHTML;
-    workshopRepository.merge = () => { throw Error('Injected page add failure'); };
+    customPagesRepository.merge = () => { throw Error('Injected page add failure'); };
     action()!.click();
     await wait(() => container.textContent?.includes('Could not save coloring page'));
     assert(!action()!.disabled && action()!.dataset.added !== 'true', 'Failed adds must remain available');
-    workshopRepository.merge = originalMerge;
+    customPagesRepository.merge = originalMerge;
     action()!.click();
     await wait(() => action()?.dataset.added === 'true');
     assert(action()!.disabled && action()!.title === 'Added to coloring pages', 'Successful add must show disabled confirmation');
@@ -45,10 +45,10 @@ export async function checkColoringPageAction() {
     await wait(() => action()?.dataset.added === 'true');
     return { successCheck: true, failureRetry: true, paintIgnored: true, layoutReset: true, persistentMatch: true };
   } finally {
-    workshopRepository.merge = originalMerge; root.unmount(); container.remove();
+    customPagesRepository.merge = originalMerge; root.unmount(); container.remove();
     await pictureRepository.delete(picture.id);
     const priorIds = new Set(stored.pages.map(page => page.id));
-    for (const page of (await workshopRepository.load()).pages) if (!priorIds.has(page.id)) await workshopRepository.delete(page.id);
-    await workshopRepository.merge(stored);
+    for (const page of (await customPagesRepository.load()).pages) if (!priorIds.has(page.id)) await customPagesRepository.delete(page.id);
+    await customPagesRepository.merge(stored);
   }
 }

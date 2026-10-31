@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import { before,after,test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 let server,geometry,VectorPaint,valid,svgGeometry,styles;
 before(async()=>{
- server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});
+ server=await createSsrServer();
  styles=await server.ssrLoadModule('/src/editor/vectorPaintStyles.ts');
  geometry=await server.ssrLoadModule('/src/editor/vectorPaintGeometry.ts');
  ({svgPathGeometry:svgGeometry}=await server.ssrLoadModule('/src/editor/svgPathGeometry.ts'));

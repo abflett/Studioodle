@@ -1,5 +1,5 @@
 import { createAppDatabase, abortTransaction } from './appDatabase';
-import { createLocalTemplateRepository } from './localTemplateRepository';
+import { readLegacyColoringPages } from './legacyColoringPages';
 import { parseColoringBook, mergeColoringPages } from '../editor/coloringBook';
 import { isSavedPicture } from '../editor/pictureValidation';
 import type { ColoringBook, ColoringBookPage } from '../editor/coloringBook';
@@ -13,7 +13,7 @@ export function createIndexedColoringBook(name?: string, storage: () => Storage 
     const source = storage(), text = source.getItem('studioodle.workshop.v3');
     const book = text === null ? { title: 'Studioodle Coloring Book', pages: [] } : parseColoringBook(text);
     const authoritative = text !== null && JSON.parse(text).localPages === true;
-    const legacy = { title: book.title, pages: authoritative ? book.pages : mergeColoringPages(createLocalTemplateRepository(() => source).load(), book.pages) };
+    const legacy = { title: book.title, pages: authoritative ? book.pages : mergeColoringPages(readLegacyColoringPages(source), book.pages) };
     await db.transaction(['meta', 'pages'], 'readwrite', tx => {
       const meta = tx.objectStore('meta'), pages = tx.objectStore('pages'), request = meta.get(marker);
       request.onsuccess = () => {

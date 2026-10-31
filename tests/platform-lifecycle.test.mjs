@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
 import { after, before, test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 
 let server, guardDesktopClose, computePaint;
 before(async () => {
- server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]},plugins:[{
+ server=await createSsrServer({plugins:[{
   name:'native-window-port', enforce:'pre',
   transform(code,id){if(id.replaceAll('\\','/').endsWith('/src/platform/desktop.ts'))return code.replaceAll('@tauri-apps/api/window','virtual:native-window').replaceAll('@tauri-apps/api/core','virtual:native-core');},
   resolveId(source){if(source==='virtual:native-window')return '\0native-window';if(source==='virtual:native-core')return '\0native-core';},

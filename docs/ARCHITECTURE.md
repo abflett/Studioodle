@@ -12,9 +12,10 @@ base repository, or interface for every class.
   adapters or Tauri. Undo retains changed-region checkpoints and small sticker-property records,
   bounded by estimated memory rather than an action count. A gesture records one
   change; cancellation restores its previous values without touching older history.
-- **`Artwork`** owns surface transforms, paint ownership, hit testing, fills,
+- **`Artwork`** coordinates surface transforms, paint ownership, hit testing, fills,
   ordering and serialization. It uses browser Canvas2D and prepared vector
-  definitions. It is rendering-aware, not a server-safe pure domain model.
+  definitions. **`Surface`** owns local coordinate conversion, paint serialization
+  and disposal. They are rendering-aware, not server-safe pure domain models.
 - **`canvas/CanvasEditor`** translates DOM pointer events to session calls and
   publishes session state. **`CanvasViewport`** renders artwork and selection into
   one display canvas, allocating only the visible workspace at device resolution.
@@ -30,7 +31,7 @@ base repository, or interface for every class.
   catalog metadata; it does not load sticker definitions.
 - **`indexedPictureRepository.ts`**, **`indexedColoringBook.ts`** and
   **`pictureThumbnails.ts`** share IndexedDB through `appDatabase.ts`.
-  Legacy localStorage pages import once; preferences remain separate for now.
+  `legacyColoringPages.ts` is a read-only input for the one-time import; preferences remain separate for now.
   **`app/pictures.ts`** supplies pending-aware drawings and summaries.
   Storage errors are handled at the UI/composition boundary.
 - **`rasterSpray.ts`** is the removable pixel-only spray experiment. It owns sparse
@@ -95,7 +96,7 @@ individual IndexedDB records with stable ordering and an atomic legacy-import
 marker. Both vector paint and raster spray are stripped from shared page layouts.
 
 
-The optional workshop UI requests an immutable document snapshot from the editor session rather than reading saved-picture storage or reaching into the canvas adapter. Normal saves keep their existing behavior. Browser and native JSON exports are adapted in `platform/coloringBookOutput.ts`. See [the workflow and schema](COLORING-BOOKS.md).
+The saved-gallery add-page action loads the selected source on demand and stores a geometry-only custom page. No developer workshop UI remains. Browser/native page-sharing file output is adapted in `platform/coloringBookOutput.ts`. See [the workflow and schema](COLORING-BOOKS.md).
 
 ## Shared overlay headers
 
@@ -222,3 +223,14 @@ and palette version without paint. Old namespaces/formats are not migrated.
 The editor bridge publishes custom tables and the current paint token so undo
 updates palette swatches, ribbon dots and cursors together. If undo removes the
 active custom assignment, painting falls back to fixed black.
+
+Development's `stickerDevUrls` plugin replaces eager SVG URL-module imports with
+literal same-origin URLs. Images stay lazy without hundreds of JS requests; SVG
+add/remove events invalidate the map. Production uses the standard hashed Vite
+asset pipeline. There are no generated runtime catalogs or duplicate authoring
+inputs in this optimization.
+
+Headless source-loading tests and authoring commands use `scripts/lib/ssr-server.mjs`:
+no HTTP/HMR listeners or file watchers, and separate caches under ignored `work/`.
+Browser/cell checks also have isolated caches so test config hashes cannot invalidate
+the user's running dev/reviewer caches. Required dependencies/caches are not deleted.

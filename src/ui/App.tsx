@@ -1,4 +1,4 @@
-import { useEffect, useState, useSyncExternalStore } from 'react';
+import { useEffect, useState, useSyncExternalStore, useRef } from 'react';
 import { pictureSaves } from '../app/pictures';
 import { prepareStickers } from '../editor/vectorStickers';
 import { RotateCcw, Play } from 'lucide-react';
@@ -27,6 +27,9 @@ export function App() {
   const changeSettings = (next: AppSettings) => { saveSettings(next); setSettings(next); };
   const [exited, setExited] = useState(false);
   const [opening, setOpening] = useState(false);
+  const openRequest = useRef(0);
+  const openPending = useRef(false);
+  useEffect(() => () => { openRequest.current++; }, []);
   const [openError, setOpenError] = useState(false);
   const [startup, setStartup] = useState<StartupState>({ phase: 'loading', completed: 0, total: startupTaskCount });
   const [attempt, setAttempt] = useState(0);
@@ -88,6 +91,7 @@ export function App() {
   }
 
   const exitStudio = () => {
+    openRequest.current++;openPending.current=false;setOpening(false);
     suspendAppMouse();
     if (isDesktop) { void closeDesktop().catch(() => setExited(true)); return; }
     if (document.fullscreenElement) void document.exitFullscreen().catch(() => {});
@@ -106,11 +110,12 @@ export function App() {
   }
 
   return <><SelectionScreen opening={opening} settings={settings} onSettingsChange={changeSettings} onExit={exitStudio} onOpen={(setup) => {
-    if (opening) return;
+    if (openPending.current) return;
+    const request=++openRequest.current;openPending.current=true;
     setOpening(true); setOpenError(false);
     void prepareStickers(setup.document?.surfaces.map(surface => surface.kind) ?? []).then(() => {
-      setChoice({ ...setup, id: setup.id ?? crypto.randomUUID() });
-    }).catch(() => setOpenError(true)).finally(() => setOpening(false));
+      if(request===openRequest.current)setChoice({ ...setup, id: setup.id ?? crypto.randomUUID() });
+    }).catch(() => { if(request===openRequest.current)setOpenError(true); }).finally(() => { if(request===openRequest.current){openPending.current=false;setOpening(false);} });
   }} theme={theme} onThemeChange={changeTheme} />
   {openError && <button className="save-notice" onClick={() => setOpenError(false)}>Could not load this picture. Tap to dismiss.</button>}{saveNotice}</>;
 }

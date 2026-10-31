@@ -22,6 +22,7 @@ export type EditorCommand =
   | { type: 'save'; onComplete: (saved: boolean, written?: boolean) => void };
 
 export function createEditorBridge() {
+  const errorListeners=new Set<(message:string)=>void>();
   let lastPalette: { colors: CustomColors; color: number } | undefined;
   const paletteListeners = new Set<(colors: CustomColors, color: number) => void>();
   const listeners = new Set<(command: EditorCommand) => void>();
@@ -74,6 +75,8 @@ export function createEditorBridge() {
       return () => { selectionListeners.delete(listener); };
     },
     send(command: EditorCommand) { for (const listener of listeners) listener(command); },
+    onError(listener:(message:string)=>void){errorListeners.add(listener);return()=>{errorListeners.delete(listener);};},
+    reportError(message:string){for(const listener of errorListeners)listener(message);},
     subscribe(listener: (command: EditorCommand) => void) {
       listeners.add(listener);
       return () => { listeners.delete(listener); };

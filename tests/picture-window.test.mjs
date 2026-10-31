@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 let server, PictureWindow;
-before(async()=>{server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});({PictureWindow}=await server.ssrLoadModule('/tests/fixtures/pictureWindow.ts'));});
+before(async()=>{server=await createSsrServer();({PictureWindow}=await server.ssrLoadModule('/tests/fixtures/pictureWindow.ts'));});
 after(async()=>{await server?.close();});
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 const summaries=Array.from({length:120},(_,i)=>({id:String(i),updatedAt:i,title:'Picture '+i}));

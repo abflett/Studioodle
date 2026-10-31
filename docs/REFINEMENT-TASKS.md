@@ -189,8 +189,8 @@ profiling items above/below remain open; see PERFORMANCE.md for measured limits.
   artwork, not only empty-page timings. Release acceptance: no crashes/freezes or
   multi-second input stalls in the agreed workloads; browsing and navigation remain
   responsive, memory/queues settle, and artwork/undo/save integrity is preserved.
-- [ ] Finish the gesture-failure rollback and physical save-interruption validation
-  described in the engineering findings below. These remain blockers even if the
+- [ ] Finish physical save-interruption validation described below; automated
+  gesture-failure rollback is now covered. These remain blockers even if the
   ordinary-input performance fixes are successful.
 
 #### Raster spray trial decisions
@@ -392,17 +392,14 @@ termination and interrupted saves. Simulated transaction aborts do not establish
 hardware power-loss behavior. IndexedDB is device-local storage, not a backup;
 browser eviction remains possible. Native builds only when requested.
 
-### Brush/render fault recovery (high priority, fault-path gap)
+### Brush/render fault recovery
 
-Bucket rollback and save failures are now covered. However,
-`EditorSession.begin/move/end/update` still call synchronous brush geometry without
-a common gesture-failure rollback. An injected geometry exception can leave an
-open gesture. Display scheduling now resets in `finally` and has a recovery
-regression, but user-facing error recovery is still absent. This is a code-path risk, not a
-normal-input crash observed during this pass. Add fault-injected regressions,
-rollback the affected gesture and provide a useful
-retry/save route while preserving the last valid artwork. Do not hide real errors
-or repeatedly redraw the same invalid state in a loop.
+Brush/eraser geometry failures now roll back affected region/section snapshots,
+clear active input/animation state and report a retry/save message. Fault injection
+covers press, drag, release, finalization and stationary spray; subsequent gestures
+and undo remain usable. Fill failures preserve prior paint and use the same error
+reporting route. Display scheduling already resets in `finally`. Continue real-device
+fault/lifecycle testing; this closes the inspected open-gesture gap.
 
 ### Bounded/cancellable exports (confirmed work location)
 
@@ -441,11 +438,10 @@ benchmarked in this pass.
 
 ### Async UI/input behavior checks
 
-- `EditorPreview` can still complete a pending sticker load after its picker is
-  closed; its placement uses the initiating view's captured coordinates. Decide
-  whether closing cancels or completes placement, then add request identity and
-  stale-completion tests. `App` picture preparation likewise has no explicit
-  cancellation token if the screen exits mid-load.
+- Sticker placement now invalidates pending results on picker close/unmount,
+  rejects duplicate requests and uses the current committed view at completion.
+  App picture preparation rejects stale results after exit/unmount. Continue
+  testing interruption/retry on physical devices.
 - `ui/appMouse.ts` synthesizes mouse events under adjusted speed. Native `select`
   popups (including PNG DPI) have no explicit picker adapter. Verify in actual
   pointer-lock/WebView2 mode; synthetic mouse events may not open the native menu.

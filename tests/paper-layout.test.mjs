@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
 import { readFile } from 'node:fs/promises';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 
 let server, paperSize, presetSize;
 before(async () => {
-  server = await createServer({ configFile: false, server: { middlewareMode: true, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
+  server = await createSsrServer();
   ({ paperSize } = await server.ssrLoadModule('/src/editor/document.ts'));
   ({ presetSize } = await server.ssrLoadModule('/src/editor/paperPresets.ts'));
 });

@@ -4,14 +4,14 @@ import { ColoringPagePicker } from '../../src/ui/ColoringPagePicker';
 import { coloringPages } from '../../src/app/coloringPages';
 import { makeColoringBook } from '../../src/editor/coloringBook';
 import { pageSharingCode } from '../../src/app/coloringPageSharing';
-import { workshopRepository } from '../../src/app/coloringBookWorkshop';
+import { customPagesRepository } from '../../src/app/customColoringPages';
 
 const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
 function assert(value:unknown,message:string):asserts value{if(!value)throw Error(message);}
 export async function checkColoringPagePicker(){
  const keys=['studioodle.page-favorites.v1','studioodle.workshop.v3'];
  const previous=keys.map(key=>localStorage.getItem(key));
- const storedPages=await workshopRepository.load();
+ const storedPages=await customPagesRepository.load();
  localStorage.removeItem(keys[0]!);
  const container=document.createElement('div');document.body.append(container);const root=createRoot(container);
  const custom={...coloringPages[1]!,id:'picker-custom',title:'Custom Test'};
@@ -62,9 +62,9 @@ export async function checkColoringPagePicker(){
   const preview=[...container.querySelectorAll<HTMLButtonElement>('button')].find(b=>b.textContent?.includes('Preview Pages'))!;preview.click();await frame();
   const add=[...container.querySelectorAll<HTMLButtonElement>('button')].find(b=>b.textContent?.includes('Add Pages'))!;assert(add,'Import preview must expose Add Pages');add.click();for(let i=0;i<200&&!added;i++)await new Promise(resolve=>setTimeout(resolve,10));
   assert(added&&added!==coloringPages[0]!.id,'Import must add independent ID');
-  assert((await workshopRepository.load()).pages.some(p=>p.id===added),'Imported page was not stored');
+  assert((await customPagesRepository.load()).pages.some(p=>p.id===added),'Imported page was not stored');
   root.render(null);await frame();await mount();
   assert(container.querySelector('.page-artwork-button')?.getAttribute('aria-label')==='Draw '+coloringPages[1]!.title,'Favorites must come first on reopening');
   return {boundedGrid:true,filtering:true,favorites:true,gridSelection:true,sharing:true,independentImport:true,customDelete:true};
- }finally{const ids=new Set(storedPages.pages.map(page=>page.id));for(const page of (await workshopRepository.load()).pages)if(!ids.has(page.id))await workshopRepository.delete(page.id);await workshopRepository.merge(storedPages);root.unmount();container.remove();keys.forEach((key,i)=>{const value=previous[i];if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value!);});}
+ }finally{const ids=new Set(storedPages.pages.map(page=>page.id));for(const page of (await customPagesRepository.load()).pages)if(!ids.has(page.id))await customPagesRepository.delete(page.id);await customPagesRepository.merge(storedPages);root.unmount();container.remove();keys.forEach((key,i)=>{const value=previous[i];if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value!);});}
 }

@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 let server, palette, Artwork, EditorSession, validation;
 const OriginalPath = globalThis.Path2D;
 before(async () => {
   globalThis.Path2D = class { rect() {} };
-  server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
+  server = await createSsrServer();
   palette = await server.ssrLoadModule('/src/editor/colorPalettes.ts');
   ({ Artwork } = await server.ssrLoadModule('/src/editor/Artwork.ts'));
   ({ EditorSession } = await server.ssrLoadModule('/src/editor/EditorSession.ts'));

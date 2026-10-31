@@ -15,6 +15,7 @@ import type { ArtworkChange } from './artworkChange';
 export type EditorSessionPorts = {
   save: (picture: SavedPicture, prepare?: () => Promise<SavedPicture>) => void|Promise<void>;
   autoSave?: boolean;
+  failed?: (message: string) => void;
   changed: () => void;
 };
 
@@ -111,6 +112,7 @@ export class EditorSession {
           this.document.undoChange(this.document.endChange());
           this.notifyChanged();
         }
+        if(!this.disposed)this.ports.failed?.('Could not fill this area. Your previous paint is safe. Try again or save your picture.');
         console.error('Vector bucket fill failed; paint was preserved.', error);
       };
       let result: boolean | Promise<boolean>;
@@ -224,7 +226,21 @@ export class EditorSession {
     }
     if (this.tool !== 'brush' || this.brushOptions.tip !== 'scatter' || !this.previous || this.activePointer === undefined || time < this.nextSpray) return;
     this.nextSpray = time + 40;
-    if (this.document.brush(this.previous, this.previous, this.color, false, this.brushOptions)) { this.notifyChanged(); }
+    if (this.paint(this.previous, this.previous, this.color, false, this.brushOptions)) { this.notifyChanged(); }
+  }
+  /** A failed brush/eraser gesture restores only its affected sections/regions. */
+  private paint(from:Point,to:Point,color:number,erase:boolean,options=this.brushOptions) {
+    try { return this.document.brush(from,to,color,erase,options); }
+    catch(error) {
+      const before=this.gestureUndo;
+      this.document.undoChange(this.document.endChange());
+      this.stroke=undefined;this.previous=undefined;this.drag=undefined;this.activePointer=undefined;
+      this.selectionExit=false;this.gestureUndo=undefined;
+      if(before){this.selected=before.selected;this.tool=before.tool;}
+      this.ports.failed?.('Could not finish this stroke. It was undone. Try again or save your picture.');
+      console.error('Brush gesture failed; previous artwork was restored.',error);
+      this.notifyChanged();return false;
+    }
   }
   /** Geometry edits retain previous values only for the parts they actually change. */
   private recordChange(change: ArtworkChange) {
@@ -267,7 +283,7 @@ export class EditorSession {
       this.previous = point;
       this.nextSpray = performance.now() + 40;
       this.stroke = this.tool === 'brush' && this.brushOptions.tip !== 'scatter' ? new StrokeSmoothing(point) : undefined;
-      this.document.brush(point, point, this.color, this.tool === 'erase', this.brushOptions);
+      this.paint(point, point, this.color, this.tool === 'erase', this.brushOptions);
     }
     this.notifyChanged();
   }
@@ -292,7 +308,8 @@ export class EditorSession {
   private applyStrokePoints(points:Point[]){
     for (const next of points) {
       if (!this.previous) break;
-      this.document.brush(this.previous, next, this.color, this.tool === 'erase', this.brushOptions);
+      this.paint(this.previous, next, this.color, this.tool === 'erase', this.brushOptions);
+      if(this.activePointer===undefined)break;
       this.previous = next;
     }
   }
@@ -312,7 +329,7 @@ export class EditorSession {
     if (flush && this.stroke && this.previous) {
       const tip = this.stroke.finish();
       if (tip.x !== this.previous.x || tip.y !== this.previous.y)
-        this.document.brush(this.previous, tip, this.color, false, this.brushOptions);
+        this.paint(this.previous, tip, this.color, false, this.brushOptions);
     }
     const change=this.document.endChange();
     if(flush)this.recordChange(change);else this.document.undoChange(change);

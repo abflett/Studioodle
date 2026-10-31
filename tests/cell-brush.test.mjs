@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 
@@ -9,7 +9,7 @@ let library;
 let edgeGeometry;
 let fixtures;
 before(async () => {
-  server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
+  server = await createSsrServer();
   model = await server.ssrLoadModule('/tools/cell-brush/src/model.ts');
   library = await server.ssrLoadModule('/tools/cell-brush/src/profiles.ts');
   edgeGeometry = await server.ssrLoadModule('/tools/cell-brush/src/strokeEdges.ts');

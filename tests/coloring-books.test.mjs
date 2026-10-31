@@ -1,15 +1,14 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
-import { createServer } from 'vite';
-let server, domain, createStore, pages, sharing, favorites, browsing, layoutKey;
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
+let server, domain, pages, sharing, favorites, browsing, layoutKey;
 before(async () => {
-  server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
+  server = await createSsrServer();
   domain = await server.ssrLoadModule('/src/editor/coloringBook.ts');
   ({ coloringPageLayoutKey: layoutKey } = await server.ssrLoadModule('/src/editor/coloringPageLayout.ts'));
   sharing = await server.ssrLoadModule('/src/app/coloringPageSharing.ts');
   favorites = await server.ssrLoadModule('/src/platform/pageFavorites.ts');
   browsing = await server.ssrLoadModule('/src/app/coloringPageBrowsing.ts');
-  ({ createLocalColoringBook: createStore } = await server.ssrLoadModule('/src/platform/localColoringBook.ts'));
   ({ coloringPages: pages } = await server.ssrLoadModule('/src/app/coloringPages.ts'));
 });
 after(async () => { await server?.close(); });
@@ -44,21 +43,9 @@ test('imports reject unsupported versions, duplicate IDs, missing stickers and u
   assert.throws(()=>domain.parseColoringBook('{'));
 });
 
-test('local imports replace revisions by stable ID, append new pages and write atomically', () => {
-  let data = null, fail = false;
-  const store = createStore(() => ({ getItem: () => data, setItem: (_, text) => { if (fail) throw Error('Quota'); data = text; } }));
-  store.merge(domain.makeColoringBook('First', [pages[0]]));
-  store.merge(domain.makeColoringBook('Second', [{...pages[0],title:'Revised'}, {...pages[1],id:'new-page'}]));
-  assert.deepEqual(store.load().pages.map(p=>[p.id,p.title]), [[pages[0].id,'Revised'],['new-page',pages[1].title]]);
-  const before = data; fail = true;
-  assert.throws(()=>store.merge(domain.makeColoringBook('Failed', [pages[2]]))); assert.equal(data,before);
-  fail = false; store.delete('new-page'); assert.equal(store.load().pages.length,1);
-});
 
-test('corrupt workshop storage is reported without silently overwriting revisions', () => {
-  let writes = 0; const store = createStore(() => ({ getItem: () => '{', setItem: () => writes++ }));
-  assert.throws(()=>store.load()); assert.throws(()=>store.merge(domain.makeColoringBook('Test',pages))); assert.equal(writes,0);
-});
+
+
 
 test('browsing metadata survives sharing and rejects invalid filter values', () => {
   for (const page of pages) {
@@ -109,17 +96,7 @@ test('favorite storage preserves prior values on failed writes and reports corru
   data = '{}'; assert.throws(() => store.load());
 });
 
-test('current template sources consolidate atomically and deleted pages do not reappear', () => {
-  let data = null, fail = false, reads = 0;
-  const legacy = [{...pages[1],id:'existing-custom'}];
-  const store = createStore(() => ({getItem:()=>data,setItem:(_,text)=>{if(fail)throw Error('Quota');data=text;}}),()=>{reads++;return legacy;});
-  assert.equal(store.load().pages[0].id,'existing-custom');assert.equal(data,null,'Reading must not write');
-  fail=true;assert.throws(()=>store.delete('existing-custom'));assert.equal(data,null);assert.equal(store.load().pages.length,1);
-  fail=false;store.merge(domain.makeColoringBook('New',[{...pages[0],id:'new-custom'}]));
-  assert.deepEqual(store.load().pages.map(p=>p.id),['existing-custom','new-custom']);
-  const count=reads;store.delete('existing-custom');assert.equal(reads,count,'Authoritative record must not read retired source');
-  assert.deepEqual(store.load().pages.map(p=>p.id),['new-custom']);
-});
+
 
 
 test('added-page identity ignores paint and storage metadata but tracks every exported layout property', () => {

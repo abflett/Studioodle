@@ -1,6 +1,7 @@
 import { DialogHeader } from './DialogHeader';
 import { PrecisionFillFeedback } from './PrecisionFillFeedback';
 import { useToolCursorStyle } from './toolCursors';
+import { useLatest } from './useLatest';
 import { useEditorSaving } from './useEditorSaving';
 import { usePrecisionFill } from './usePrecisionFill';
 import { useCanvasGestures } from './useCanvasGestures';
@@ -20,9 +21,10 @@ import { paperSize } from '../editor/document';
 import { usePaperView } from './usePaperView';
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
-import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Eraser, MousePointer2, Move, ZoomIn } from 'lucide-react';
+import { Undo2, House, Shapes, Palette, Brush, PaintBucket, X, Eraser, MousePointer2, Move, ZoomIn, Save } from 'lucide-react';
 import { EditorCanvas } from './EditorCanvas';
 import { createEditorBridge } from '../editor/bridge';
+import type { StickerKind } from '../editor/stickerKinds';
 import type { EditorTool } from '../editor/bridge';
 import type { EditorSetup } from '../editor/setup';
 import { initialDrawingSettings } from '../editor/setup';
@@ -31,6 +33,8 @@ import { prepareStickers } from '../editor/vectorStickers';
 type Picker = 'stickers' | 'colors' | 'brush';
 export default function EditorPreview({ setup, onBack, settings }: { setup: EditorSetup; onBack: () => void; settings: AppSettings }) {
   const [bridge] = useState(createEditorBridge);
+  const [inputError,setInputError]=useState<string>();
+  useEffect(()=>bridge.onError(setInputError),[bridge]);
   const [color, setColor] = useState(() => initialDrawingSettings(setup).color);
   const [customColors, setCustomColors] = useState(() => setup.document?.customColors ?? emptyCustomColors());
   useEffect(() => bridge.onPalette((colors, active) => { setCustomColors([...colors]); setColor(active); }), [bridge]);
@@ -56,12 +60,33 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
   const [picker, setPicker] = useState<Picker | null>(null);
   const [loadingSticker, setLoadingSticker] = useState(false);
   const [stickerError, setStickerError] = useState(false);
+  const stickerRequest = useRef(0);
+  const stickerPending = useRef(false);
+  useEffect(() => () => { stickerRequest.current++; }, []);
+  const closePicker = () => { stickerRequest.current++; stickerPending.current=false; setLoadingSticker(false); setPicker(null); };
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const category = stickerCategories.find((item) => item.id === categoryId);
   const pickerTitle = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (picker) pickerTitle.current?.focus({ preventScroll: true }); }, [picker, categoryId]);
   const [requestedZoom, setZoom] = useState<number | null>(null);
   const { viewport, position, focus, captureView, restoreView, pointAt, zoomAt, transformView, fitPage, zoom, handlers } = usePaperView(paperSize(setup.format, setup.size), requestedZoom, tool === 'pan');
+  const placementPoint = useLatest(() => {
+    const box=viewport.current?.getBoundingClientRect();
+    return box ? pointAt({x:box.left+box.width/2,y:box.top+box.height/2}) : undefined;
+  });
+  const addSticker = async (kind: StickerKind) => {
+    if(stickerPending.current)return;
+    const request=++stickerRequest.current;stickerPending.current=true;
+    setLoadingSticker(true);setStickerError(false);
+    try {
+      await prepareStickers([kind]);
+      if(request!==stickerRequest.current)return;
+      const point=placementPoint.current();
+      if(point)bridge.send({type:'add-sticker',sticker:kind,outlineColor,point});
+      closePicker();
+    } catch { if(request===stickerRequest.current)setStickerError(true); }
+    finally { if(request===stickerRequest.current){stickerPending.current=false;setLoadingSticker(false);} }
+  };
   const [focusZoom, setFocusZoom] = useState(1);
   const beforeFocus = useRef<{ zoom: number | null; view: ReturnType<typeof captureView> } | undefined>(undefined);
   const finishSelection = () => {
@@ -169,17 +194,18 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
         <EditorCanvas focused={!!focused} bridge={bridge} setup={setup} zoom={zoom} offsetX={position.x} offsetY={position.y} />
       </div>
     </section>
+    {inputError && <div className="save-notice" role="alert"><span>{inputError}</span><button className="icon-button" aria-label="Save picture after paint error" onClick={() => { setInputError(undefined); save(); }}><Save aria-hidden="true" /></button><button className="icon-button" aria-label="Dismiss paint error" onClick={()=>setInputError(undefined)}><X /></button></div>}
     {saveStatus !== 'idle' && <div className="save-notice" role="status"><span>{saveStatus === 'saved' ? 'Saved to Your pictures' : 'Could not save. Device storage may be full or unavailable.'}</span><button className="icon-button" aria-label="Dismiss save message" onClick={dismissSaveStatus}><X /></button></div>}
-    <dialog className={`setup-dialog art-dialog ${picker === 'stickers' ? 'sticker-dialog' : ''} ${picker === 'brush' ? 'brush-dialog' : ''} ${picker === 'colors' ? 'palette-dialog' : ''}`} ref={dialog} onCancel={() => setPicker(null)} onClick={(event) => closeOnBackdrop(event, () => setPicker(null))} onAuxClick={(event) => { if (event.button === 2) closeOnBackdrop(event, () => setPicker(null)); }} aria-labelledby="art-picker-title">
-      {picker === 'colors' ? <PalettePicker color={color} custom={customColors} onChoose={value => { setColor(value); bridge.send({ type: 'set-color', color: value }); setPicker(null); }} onEdit={(index, value) => bridge.send({ type: 'set-custom-color', index, color: value })} onClose={() => setPicker(null)} headingRef={pickerTitle} /> : picker === 'brush' ? <BrushPicker value={brushOptions} onChange={options => { setBrushOptions(options); bridge.send({ type: 'set-brush', options }); }} onClose={() => setPicker(null)} headingRef={pickerTitle} /> : <div className="wizard" aria-busy={loadingSticker}>
+    <dialog className={`setup-dialog art-dialog ${picker === 'stickers' ? 'sticker-dialog' : ''} ${picker === 'brush' ? 'brush-dialog' : ''} ${picker === 'colors' ? 'palette-dialog' : ''}`} ref={dialog} onCancel={closePicker} onClick={(event) => closeOnBackdrop(event, closePicker)} onAuxClick={(event) => { if (event.button === 2) closeOnBackdrop(event, closePicker); }} aria-labelledby="art-picker-title">
+      {picker === 'colors' ? <PalettePicker color={color} custom={customColors} onChoose={value => { setColor(value); bridge.send({ type: 'set-color', color: value }); closePicker(); }} onEdit={(index, value) => bridge.send({ type: 'set-custom-color', index, color: value })} onClose={closePicker} headingRef={pickerTitle} /> : picker === 'brush' ? <BrushPicker value={brushOptions} onChange={options => { setBrushOptions(options); bridge.send({ type: 'set-brush', options }); }} onClose={closePicker} headingRef={pickerTitle} /> : <div className="wizard" aria-busy={loadingSticker}>
         {loadingSticker && <progress aria-label="Loading sticker" />}
         {stickerError && <button onClick={() => setStickerError(false)}>Could not load sticker. Tap to dismiss.</button>}
-        <DialogHeader id="art-picker-title" headingRef={pickerTitle} title={picker === 'stickers' ? category?.title ?? 'Stickers' : 'Pick a color'} onClose={() => setPicker(null)} closeLabel="Close picker" back={picker === 'stickers' && category ? { label: 'Back to sticker categories', onClick: () => setCategoryId(null) } : undefined}>
+        <DialogHeader id="art-picker-title" headingRef={pickerTitle} title={picker === 'stickers' ? category?.title ?? 'Stickers' : 'Pick a color'} onClose={closePicker} closeLabel="Close picker" back={picker === 'stickers' && category ? { label: 'Back to sticker categories', onClick: () => setCategoryId(null) } : undefined}>
           {picker === 'stickers' && <div className="sticker-header-controls"><button ref={inkButton} className="icon-button sticker-ink-button" aria-label="Choose sticker ink color" title="Sticker ink color" aria-haspopup="dialog" onClick={() => setInkPicker(true)}><Palette aria-hidden="true" /><span className="ribbon-color-dot" aria-hidden="true" style={{ background: `#${resolveColor(outlineColor, customColors).toString(16).padStart(6, '0')}` }} /></button><StickerFilters value={stickerDetail} onChange={setStickerDetail} /></div>}
         </DialogHeader>
         <div className="wizard-body">
 
-          {picker === 'stickers' && <StickerBrowser key={`${categoryId ?? 'categories'}:${stickerDetail ?? 'all'}`} categoryId={categoryId} detail={stickerDetail} onCategory={setCategoryId} onAdd={(kind) => { if (loadingSticker) return; setLoadingSticker(true); void prepareStickers([kind]).then(() => { bridge.send({ type: 'add-sticker', sticker: kind, outlineColor, point: { x: ((viewport.current?.clientWidth ?? 0) / 2 - position.x) / zoom, y: ((viewport.current?.clientHeight ?? 0) / 2 - position.y) / zoom } }); setPicker(null); }).catch(() => setStickerError(true)).finally(() => setLoadingSticker(false)); }} />}
+          {picker === 'stickers' && <StickerBrowser key={`${categoryId ?? 'categories'}:${stickerDetail ?? 'all'}`} categoryId={categoryId} detail={stickerDetail} onCategory={setCategoryId} onAdd={kind => { void addSticker(kind); }} />}
         </div>
 
       </div>}

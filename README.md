@@ -1,9 +1,12 @@
 # Studioodle
 
-A free, offline drawing and coloring studio. Start with blank paper or a coloring
+A free drawing and coloring studio. Start with blank paper or a coloring
 page, arrange stickers, then paint with vector brushes and fills. Pictures and
 preferences stay on the device; no account or server is required. Export PNG, SVG
-or PDF, or print directly from vectors.
+or PDF, or print with vector line art and paint (soft spray stays raster).
+
+Native builds bundle their assets for offline use. Browser offline reload/install
+is not yet guaranteed.
 
 The app is pre-release. Breaking changes are expected, and old development saves
 are intentionally unsupported.
@@ -54,7 +57,7 @@ remain available as `desktop:dev` and `desktop:build`; they are not part of chec
 | Directory | Contents |
 | --- | --- |
 | `src/app/` | Startup, page libraries, persistence composition and output workflows |
-| `src/editor/` | Documents, editing sessions, vector painting and SVG loading |
+| `src/editor/` | Documents, sessions, scene/surface geometry, vector paint and isolated raster spray |
 | `src/canvas/` | Browser pointer adapter and viewport renderer |
 | `src/ui/` | React screens, controls, gestures and styles |
 | `src/platform/` | Browser storage/output and Tauri integration |

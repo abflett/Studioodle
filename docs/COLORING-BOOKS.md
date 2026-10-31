@@ -1,4 +1,4 @@
-# Coloring Books and the Page Workshop
+# Coloring books and custom pages
 
 Books use internal JSON structures referencing shipped sticker IDs; portable exports are encoded text files. No account, server,
 custom sticker embedding or online hub is involved. A recipient needs an app
@@ -31,9 +31,8 @@ or age/ability rating. Further automatic classification needs visual review.
 
 There is no dedicated Edit Page button. Open a page normally, use Select to arrange
 stickers, save the drawing, then Save as coloring page from Your pictures. The
-optional editor workshop ribbon remains available for Save New Page, revisions of
-that session's new page, and export. Ordinary autosave/Home/Ctrl+S save drawings;
-they do not revise coloring templates.
+editor has no developer workshop controls. Ordinary autosave/Home/Ctrl+S save
+drawings; they do not revise coloring templates.
 
 ## Manual sharing
 
@@ -50,10 +49,10 @@ utilities; choose a page to return to single view first.
 - File export uses browser download or the native text save adapter.
   Cancelled native saves do not report success. No native build is required for web work.
 
-Version 3 identifies the portable layout schema; the code is base64, not a hash.
+Version 4 identifies the portable layout and palette schema; the code is base64, not a hash.
 The payload contains titles, paper dimensions, browsing metadata and ordered sticker
-references/transforms and per-sticker inkColor (plus the paper surface), with no paint fields.
-The app supplies white paper and regions when importing; omitted inkColor defaults to black. Older version-2
+references/transforms and per-sticker inkColor and custom palette slots (plus the paper surface), with no paint fields.
+The app supplies white paper and regions when importing; omitted inkColor defaults to black. Older sharing
 codes and raw JSON are not accepted by the user import flow. Internal storage and
 the bundled authoring collection remain JSON.
 
@@ -89,14 +88,14 @@ all grid cards. Editor geometry still prepares only when a page is opened.
     {
       "id": "stable-page-id",
       "title": "Page Title",
-      "version": 5,
+      "version": 6,
       "updatedAt": 0,
       "format": "landscape",
       "size": { "width": 1000, "height": 700 },
       "background": "#ffffff",
-      "leafColor": 2368552,
+      "leafColor": 0,
       "document": {
-        "version": 5,
+        "version": 6,
         "width": 1000,
         "height": 700,
         "surfaces": [
@@ -109,11 +108,11 @@ all grid cards. Editor geometry still prepares only when a page is opened.
 }
 ```
 
-Book format version 2 wraps vector-only document/saved-picture format 6. Old development exports are intentionally unsupported. Page IDs must be unique, 1–120 letters/digits/dots/underscores/hyphens, starting with a letter or digit. Limits: 20 MB decoded data (up to about 28 MB encoded), 1,000 pages, 1,000 surfaces per page, and 160-character titles. Unknown sticker IDs, unsupported versions, malformed geometry, and duplicate IDs reject the entire import. Additional fields are discarded during normalization. An ID collision deliberately means a revision, so use Save New Page for an independent variant.
+Book format version 2 wraps vector-only document/saved-picture format 6. Old development exports are intentionally unsupported. Page IDs must be unique, 1–120 letters/digits/dots/underscores/hyphens, starting with a letter or digit. Limits: 20 MB decoded data (up to about 28 MB encoded), 1,000 pages, 1,000 surfaces per page, and 160-character titles. Unknown sticker IDs, unsupported versions, malformed geometry, and duplicate IDs reject the entire import. Additional fields are discarded during normalization. Internal merges revise matching stable IDs; user imports always receive fresh IDs.
 
 ## Updating the production collection
 
-The canonical bundled collection is `src/assets/coloringBook.json`, loaded by `src/app/coloringPages.ts`. Its IDs remain stable (`winter`, `beach`, `spring`, `counting`, `garden`, `safari` for the initial six pages). Workshop exports encode layouts with sticker ink colors as version-3 sharing codes; the install command decodes them into the internal book format. Scene previews and catalogs read this same collection directly.
+The canonical bundled collection is `src/assets/coloringBook.json`, loaded by `src/app/coloringPages.ts`. Its IDs remain stable (`winter`, `beach`, `spring`, `counting`, `garden`, `safari` for the initial six pages). Page exports encode layouts with sticker ink/palette colors as version-4 sharing codes; the install command decodes them into the internal book format. Scene previews and catalogs read this same collection directly.
 
 After reviewing an exported file, install it with:
 
@@ -122,9 +121,9 @@ npm run books:install -- path/to/reviewed-book.studioodle
 npm run check
 ```
 
-The install command validates the file before replacing the bundled collection. It replaces the complete collection rather than merging, so supply a complete collection when updating the whole app. Then commit the JSON and rebuild the web/native app. You can also supply that JSON to an assistant for a reviewed source update. Existing device-local revisions with matching IDs take precedence over newly bundled pages; test a production update in a clean profile to see the bundled version.
+The install command validates the file before replacing the bundled collection. It replaces the complete collection rather than merging, so supply a complete collection when updating the whole app. Then commit the JSON and run web checks; build native packages only when explicitly requested. You can also supply that JSON to an assistant for a reviewed source update. Existing device-local revisions with matching IDs take precedence over newly bundled pages; test a production update in a clean profile to see the bundled version.
 
 The domain format and normalization live in `src/editor/coloringBook.ts`, storage
-in `src/platform/localColoringBook.ts`, collection composition in
-`src/app/coloringBookWorkshop.ts`, and sharing-code helpers in
+in `src/platform/indexedColoringBook.ts`, collection composition in
+`src/app/customColoringPages.ts`, and sharing-code helpers in
 `src/editor/pageSharing.ts`.

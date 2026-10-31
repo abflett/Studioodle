@@ -3,7 +3,7 @@ import { Brand } from './Brand';
 import { paperRotation } from '../app/paperLayers';
 import { ExportPictureDialog } from './ExportPictureDialog';
 import { BlankPageSetup } from './BlankPageSetup';
-import { saveWorkshopPage, workshopRepository } from '../app/coloringBookWorkshop';
+import { saveCustomPage, customPagesRepository } from '../app/customColoringPages';
 import { coloringPages } from '../app/coloringPages';
 import { DeletePictureDialog } from './DeletePictureDialog';
 import { isDesktop, toggleDesktopFullscreen, watchDesktopFullscreen } from '../platform/desktop';
@@ -74,12 +74,12 @@ export function SelectionScreen({ opening = false, onOpen, onExit, theme, onThem
   const [bookState, setBookState] = useState<{ pages: EditorSetup[]; error: boolean; loading: boolean }>({ pages: coloringPages, error: false, loading: true });
   const scenes: EditorSetup[] = bookState.pages;
   const refreshBooks = useCallback(async () => {
-    try { const book = await workshopRepository.load(); setCustomPages(book.pages); setBookState({ pages: mergeColoringPages(coloringPages, book.pages), error: false, loading: false }); }
+    try { const book = await customPagesRepository.load(); setCustomPages(book.pages); setBookState({ pages: mergeColoringPages(coloringPages, book.pages), error: false, loading: false }); }
     catch { setBookState(previous => ({ ...previous, error: true, loading: false })); }
   }, []);
   useEffect(() => {
     let active = true;
-    void workshopRepository.load().then(book => {
+    void customPagesRepository.load().then(book => {
       if (active) { setCustomPages(book.pages); setBookState({ pages: mergeColoringPages(coloringPages, book.pages), error: false, loading: false }); }
     }).catch(() => { if (active) setBookState(previous => ({ ...previous, error: true, loading: false })); });
     return () => { active = false; };
@@ -104,7 +104,7 @@ export function SelectionScreen({ opening = false, onOpen, onExit, theme, onThem
     setPendingDelete(undefined);
     try {
       if (deletingPage) {
-        await workshopRepository.delete(picture.id);
+        await customPagesRepository.delete(picture.id);
         setCustomPages(pages => pages.filter(item => item.id !== picture.id));
         await refreshBooks();
         setInitialSceneId(undefined);
@@ -158,7 +158,7 @@ export function SelectionScreen({ opening = false, onOpen, onExit, theme, onThem
       try {
         const number = customPages.reduce((max, page) => Math.max(max, Number(/^Coloring page (\d+)$/i.exec(page.title)?.[1] ?? 0)), 0) + 1;
         const page = createColoringPage(current, `Coloring Page ${number}`);
-        await saveWorkshopPage(page, page.id, page.title);
+        await saveCustomPage(page, page.id, page.title);
         await refreshBooks(); setInitialSceneId(page.id); setStep('scene');
         setRemoved(undefined); setActionError(undefined); setNotice('Added to coloring pages');
       } catch { setActionError('Could not save coloring page. Device storage may be full or unavailable.'); }
@@ -246,7 +246,7 @@ export function SelectionScreen({ opening = false, onOpen, onExit, theme, onThem
       <DeletePictureDialog picture={pendingDelete} onCancel={() => { setPendingDelete(undefined); setDeletingPage(false); }} onConfirm={removeCurrent} />
       <SelectionSettings settings={settings} onSettingsChange={onSettingsChange} open={settingsOpen} onClose={() => setSettingsOpen(false)} theme={theme} onThemeChange={onThemeChange} />
 
-      {bookState.error && <p className="workshop-storage-error" role="alert">Coloring pages could not be loaded. Saved pages have not been changed.</p>}
+      {bookState.error && <p className="custom-pages-storage-error" role="alert">Coloring pages could not be loaded. Saved pages have not been changed.</p>}
       {(removed || actionError || notice) && <div className="save-notice library-notice" role="status" onPointerEnter={() => setToastPaused(true)} onPointerLeave={() => setToastPaused(false)} onFocusCapture={() => setToastPaused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setToastPaused(false); }}>
         <span>{actionError ?? notice ?? 'Picture removed'}</span>
         {removed && <button className="icon-button" aria-label="Undo delete" onClick={undoRemove}><Undo2 /></button>}

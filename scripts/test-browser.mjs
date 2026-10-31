@@ -27,7 +27,7 @@ const plugins=sceneProfile?[{
       return code.replace(/export const paintDisplayBudget = \d+ \* 1024 \* 1024;/,`export const paintDisplayBudget = ${sceneBudget} * 1024 * 1024;`);
   },
 }]:baseline?[{name:'paint-baseline',enforce:'pre',transform(code,id){return paintBaselineFiles.get(id.replaceAll('\\','/').split('/').at(-1));}}]:[];
-const server = await createServer({ plugins, configFile: process.argv.includes('--artwork-review') ? 'tools/artwork-review/vite.config.ts' : 'vite/config.dev.ts', server: { host: '127.0.0.1', port: 1433, strictPort: true, open: false } });
+const server = await createServer({ cacheDir: path.resolve('work/tests/vite-cache/browser-'+(process.argv.includes('--artwork-review')?'review':process.argv.includes('--stock-startup')?'stock':baseline?'paint-before':'app')), plugins, configFile: process.argv.includes('--stock-startup') ? 'vite/config.shared.ts' : process.argv.includes('--artwork-review') ? 'tools/artwork-review/vite.config.ts' : 'vite/config.dev.ts', server: { host: '127.0.0.1', port: 1433, strictPort: true, open: false } });
 if (path.dirname(profile) !== os.tmpdir() || !path.basename(profile).startsWith('studioodle-region-coverage-')) throw Error('Unexpected test profile path');
 let child, ws, cdp;
 try {
@@ -63,6 +63,7 @@ try {
   cdp = (method, params = {}, sessionId) => new Promise((resolve, reject) => { const key = ++id; pending.set(key, { resolve, reject }); ws.send(JSON.stringify({ id: key, method, params, sessionId })); });
   const evaluate = async expression => { const result = await cdp('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (result.exceptionDetails) throw new Error(JSON.stringify(result.exceptionDetails)); return result.result.value; };
   await cdp('Page.enable');
+  if(process.argv.includes('--startup-profile'))await cdp('Page.addScriptToEvaluateOnNewDocument',{source:'performance.setResourceTimingBufferSize(5000)'});
   if (process.argv.includes('--artwork-review')) await cdp('Page.addScriptToEvaluateOnNewDocument', { source: `globalThis.reviewRepo = ${JSON.stringify('/@fs/' + process.cwd().split(path.sep).join('/') + '/')};` });
   await cdp('Runtime.enable');
   if(process.argv.includes('--debugger')){
@@ -87,6 +88,15 @@ try {
     const metrics = await evaluate("import('/tests/browser/save-performance.ts').then(m=>m.profileSavePerformance())");
     await fs.writeFile('work/tests/save-performance-results.json', JSON.stringify(metrics, null, 2));
     console.log('Save performance:', JSON.stringify(metrics));
+  }else if(process.argv.includes('--cleanup-regressions')){
+    console.log('Cleanup:',await evaluate("import('/tests/browser/cleanup-regressions.ts').then(m=>m.checkAsyncStickerPlacement())"));
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
+  }else if(process.argv.includes('--startup-profile')){
+    await evaluate("import('/src/app/startup.ts').then(m=>m.prepareStudio(()=>{}))");
+    const result=await evaluate(`({readyMs:performance.now(),urlModules:performance.getEntriesByType('resource').filter(e=>e.name.includes('/assets/vector/')&&e.name.includes('.svg?')&&e.name.includes('import')).length,resources:performance.getEntriesByType('resource').length})`);
+    console.log('Startup profile:',JSON.stringify(result));
+    await fs.writeFile(`work/tests/startup-${process.argv.includes('--stock-startup')?'before':'after'}.json`,JSON.stringify(result,null,2));
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(process.argv.includes('--gallery-loading')){
     const layouts=[];
     for(const [width,height] of [[1280,900],[390,844],[320,568],[844,390]]){
@@ -243,6 +253,7 @@ try {
   result.paletteColors=await evaluate("import('/tests/browser/palette-colors.ts').then(m=>m.checkPaletteColors())");
   console.log('Palette colors:',JSON.stringify(result.paletteColors));
   result.pictureOutput=output;
+  result.asyncStickerPlacement=await evaluate("import('/tests/browser/cleanup-regressions.ts').then(m=>m.checkAsyncStickerPlacement())");
   result.libraryState=await evaluate("import('/tests/browser/library-state.ts').then(m => m.checkLibraryState())");
   result.paintDisplay=paintDisplay;
   console.log('Paint display:',JSON.stringify(paintDisplay));

@@ -1,16 +1,16 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 
 test('lookup cache evicts strong ownership while sharing live definitions and clearing idle sources', async () => {
-  const server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', plugins: [{
+  const server = await createSsrServer({plugins: [{
     name: 'definition-memory-fixture', enforce: 'pre',
     resolveId(source, importer) {
       if (source === './svgDefinition' && importer?.replaceAll('\\', '/').endsWith('/src/editor/vectorStickers.ts')) return '\0test-definition';
     },
     transform(code,id){if(id.replaceAll('\\','/').endsWith('/src/editor/vectorStickers.ts'))return code+'\nexport const cacheState=()=>({entries:definitions.size,lookupBytes,sources:sources.size});';},
     load(id) { if (id === '\0test-definition') return 'export function decodeSvgDefinition(text) { return JSON.parse(text); }'; },
-  }], optimizeDeps: { noDiscovery: true, include: [] } });
+  }]});
   const originalFetch = globalThis.fetch;
   let fetches = 0;
   globalThis.fetch = async () => { fetches++; await Promise.resolve(); return { ok: true, text: async () => JSON.stringify({ typedArrayBytes: 40 * 1024 * 1024 }) }; };

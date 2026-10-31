@@ -5,6 +5,23 @@ export const sprayTileSize = 128;
 export type SprayTile = { x: number; y: number; pixels: Uint8ClampedArray };
 export type RasterSprayData = { version: 1; width: number; height: number; tiles: SprayTile[] };
 export type SprayBefore = { surfaceId: string; key: string; tile?: SprayTile };
+/** Transient emission only; no dot/event log is retained in the document. */
+export function sprayDabs(from: Point, to: Point, size: number) {
+    const radius=size/2,distance=Math.hypot(to.x-from.x,to.y-from.y);
+    const steps=Math.max(1,Math.ceil(distance/Math.max(1,radius*.4)));
+        const dots: {point:Point;radius:number}[] = [];
+        for (let step = 0; step < steps; step++) {
+            const t = distance ? (step + 1) / steps : 0;
+            const center = { x: from.x+(to.x-from.x)*t, y: from.y+(to.y-from.y)*t };
+            const count = Math.max(3, Math.ceil(radius * .7));
+            for (let dot = 0; dot < count; dot++) {
+                const angle = Math.random()*Math.PI*2, offset = Math.sqrt(Math.random())*radius;
+                dots.push({ point: {x:center.x+Math.cos(angle)*offset,y:center.y+Math.sin(angle)*offset}, radius: Math.max(.8, radius*(.07+Math.random()*.07)) });
+            }
+        }
+    return dots;
+}
+
 type Tile = { canvas: HTMLCanvasElement; image: ImageData; saved?: SprayTile; dirty: boolean };
 export function sprayResolution(width: number, height: number) {
     const scale = Math.min(1, 1536 / Math.max(width, height), Math.sqrt(1048576 / (width * height)));
@@ -77,10 +94,15 @@ export class RasterSpray {
         for(let y=top;y<=bottom;y++)for(let x=left;x<=right;x++){
             const key=`${x}:${y}`;let tile=this.tiles.get(key);if(!tile&&erase)continue;
             const alpha=this.mask(x,y,clip,path);if(!alpha.some(n=>n))continue;
-            const previous=tile;
-            this.changing?.(key,()=>previous?this.snapshot(key,previous):undefined);
-            if(!tile){tile=this.create();this.tiles.set(key,tile);}
-            if(!paint(tile.image.data,alpha,x*sprayTileSize,y*sprayTileSize))continue;
+            if(!tile){
+                tile=this.create();
+                if(!paint(tile.image.data,alpha,x*sprayTileSize,y*sprayTileSize)){tile.canvas.width=tile.canvas.height=1;continue;}
+                this.changing?.(key,()=>undefined);this.tiles.set(key,tile);
+            }else{
+                const previous=tile;
+                this.changing?.(key,()=>this.snapshot(key,previous));
+                if(!paint(tile.image.data,alpha,x*sprayTileSize,y*sprayTileSize))continue;
+            }
             tile.saved=undefined;tile.dirty=true;changed=true;
             if(erase&&!tile.image.data.some((n,i)=>i%4===3&&n>0)){tile.canvas.width=tile.canvas.height=1;this.tiles.delete(key);}
         }

@@ -3,7 +3,7 @@ import { createPictureSaveQueue } from './pictureSaveQueue';
 import { pictureSummary } from '../editor/pictureSummary';
 
 // Fresh vector-only development format; old drawing data is intentionally unsupported.
-export const storedPictures = createIndexedPictureRepository();
+const storedPictures = createIndexedPictureRepository();
 export const pictureSaves = createPictureSaveQueue(picture => storedPictures.save(picture));
 export const pictureRepository = {
   save: pictureSaves.enqueue,

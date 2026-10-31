@@ -20,7 +20,7 @@ export class CanvasEditor {
   constructor(private readonly host: HTMLElement, private readonly bridge: EditorBridge, setup: EditorSetup, save: EditorSessionPorts['save'], autoSave = false) {
     const size = paperSize(setup.format, setup.size);
     this.viewport = new CanvasViewport(host, size.width, size.height, this.invalidate);
-    this.session = new EditorSession(setup, { save, autoSave, changed: this.changed });
+    this.session = new EditorSession(setup, { save, autoSave, changed: this.changed, failed: message => bridge.reportError(message) });
     this.unsubscribe = bridge.subscribe(command => this.session.execute(command));
     this.inputSurface = host.closest<HTMLElement>('.art-canvas') ?? host;
     this.inputSurface.addEventListener('pointerdown', this.begin);

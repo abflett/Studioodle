@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 let server, createThumbnailQueue;
 before(async () => {
-  server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', optimizeDeps: { noDiscovery: true, include: [] } });
+  server = await createSsrServer();
   ({ createThumbnailQueue } = await server.ssrLoadModule('/src/app/thumbnailQueue.ts'));
 });
 after(async () => { await server?.close(); });

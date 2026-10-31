@@ -1,396 +1,162 @@
 # Current context
 
-Updated 31 October 2026. Read `AGENTS.md` first, then this file and the documentation
-for the requested feature. Use the checked-out repository root (`git rev-parse
---show-toplevel`); a client's initial working directory may point elsewhere.
+Updated 31 October 2026. Read `AGENTS.md` first and use the checked-out repository
+root. `README.md` indexes commands/docs; `REFINEMENT-TASKS.md` is the sole backlog.
 
-## Product and architecture
+## Working boundaries
 
-Android ARM64 tester packaging is now supported alongside Windows. See
-[Android setup](ANDROID.md) for `npm run android:build`, signing and USB install.
-The shared Rust library has a mobile entry point; desktop window-state behavior
-stays desktop-only. Android uses `com.studioodle.app` and native content-URI file
-exports. Print saves a PDF on Android. Keep the generated Android Gradle sources
-tracked; build output, local SDK paths, secrets and generated Tauri glue stay ignored.
+- Keep the app web-first. Routine checks use Vite; build native apps/installers
+  only when explicitly requested. Commit and push completed coherent batches after
+  relevant checks. Preserve unrelated work and never force-push.
+- The user runs their dev/reviewer/cell servers manually. Automated checks close
+  their temporary servers; do not stop a user-owned server as routine cleanup.
+- Original art belongs under `art/source/`; generated diagnostics, builds and trial
+  output belong in ignored `work/`, `dist/` or `release/`. Required executables stay
+  in ignored `tools/bin/` or use `POTRACE_PATH`. Keep dependencies/build caches.
+- Pre-v1 breaking changes are allowed, but preserve valid source layouts and the
+  explicitly supported one-time custom-page import. No old general raster engine,
+  second vector engine or blanket artwork regeneration.
 
-Studioodle is a pre-v1 drawing/coloring app with React, Canvas2D display and vector
-paint/ink plus an isolated raster spray trial. Phaser and the old general raster
-painting engine have been removed. Keep ordinary paint/fill vector;
-old development drawings can break. Saved documents are format 6; the current
-drawing database is `studioodle-library-v9`. See [architecture](ARCHITECTURE.md).
-No native builds unless the user explicitly asks. Completed coherent changes are
-committed and pushed to the configured upstream after appropriate checks.
+## App and editing model
 
-The wordless selection screen uses an easel, open coloring book and saved-art
-paper stack. Hover scales slightly without layout shifts. Composite paper layers
-share square/A4 portrait/A4 landscape geometry: masked full-bleed art, border/fold
-overlay and a static stack. Preserve aspect ratios, edge alignment, stable carousel
-layout and the user's artwork; do not invent preview backgrounds to hide cropping.
-Gallery loading now uses one spinner anchored to the branded base stack beneath
-the logo, independent of the preview sheet's rotation/mask/aspect ratio. Opening
-hides the front sheet and gallery actions while the same spinner remains; no
-picture-opening progress bar or translucent full-screen veil. The source-read and
-sticker-preparation phases share that state; error feedback and warm-cache previews
-remain. Startup's separate splash progress is unchanged.
+React owns screens/controls/view state. `EditorSession` owns gestures, action-based
+saves and memory-bounded undo. `Artwork` coordinates scene ownership and stacking;
+`Surface` owns local transforms, paint buffers, serialization and disposal.
+`CanvasEditor` adapts browser input; `CanvasViewport` draws the visible workspace.
+These boundaries do not import React/storage/native adapters into editor logic.
 
+Ordinary brush/fill and line art remain numeric vectors. Worker maintenance merges
+changed regions with compacted-prefix reuse; exact curves clip display/output.
+Conservative interior-cell proofs skip booleans only away from every region/hole
+boundary. An estimated 8MiB LRU retains Clipper's reusable immutable region inputs;
+display caches have a separate 64MiB pixel budget. Distant paint islands stay out
+of local boolean operations. Connected fills move their selected component directly
+and merge its destination style. Precision remains 1/64 for brush input and
+1/4096 for booleans. These are workload-specific gains, not constant-cost painting
+or a uniform 10x app speedup. See VECTOR-PAINT.md and PERFORMANCE.md.
 
-Fill now selects immediately (toolbar or G) and applies the selected solid color.
-The fill-pattern overlay and settings command are removed; the painting-controls
-preference now controls the brush overlay only. Existing saved patterned artwork
-still renders and exports through the current vector paint format.
+Soft raster spray is accepted by the user and isolated in `editor/rasterSpray.ts`.
+It stores sparse 128px RGBA sections per surface: ordinary paint, spray, then line
+art. Fills ignore spray; eraser clears both. Colors are baked and do not recolor
+with palette edits. Resolution is fixed (up to 1536px long edge/1 megapixel before
+section padding per surface); zoom/export reuse those pixels. SVG/PDF/print embed
+PNG sections. Undo stores prior affected sections within its memory budget.
+No particles/event log or high-DPI reconstruction. Existing old vector spray marks
+are not converted. Eraser diameter is now one-third of its former 40 logical units.
 
-The sticker overlay implements study 02's centered ink/detail header. All ten
-category icons appear without labels or category paging; unavailable categories
-stay in place but are disabled by the All/Easy/Medium/Detailed filter. Sticker
-metadata comes from authored `detail` in `art/stickers.json` through assetLibrary.
-The separate native ink-color dialog reuses the full drawing palette and preserves
-category/filter/page, returning focus to the ink button. Ink starts at pure black
-per drawing session and is independent of the drawing color. No footer remains.
-Default black/white palette values, new blank paper, bundled page ink and new-page
-paint defaults are now #000000/#ffffff. Existing saves and deliberately colored
-ink/backgrounds are preserved. Study captures remain design references.
+Undo retains affected regions/sections and small sticker-property records, not
+whole-scene copies or stroke logs. Background work must not rewrite restored
+history. Brush geometry failures roll back the gesture, release input and report
+a retry/save message; failed fills preserve previous paint. Fault injection covers
+press, drag, release, finalization and stationary spray. Sticker loads are invalidated
+when the picker closes/unmounts and placement uses the current committed view.
 
-The main app no longer exposes developer workshop controls: the editor ribbon
-button, revision/export dialog, settings toggle and ephemeral authoring route are
-removed. Keep development/review tooling standalone. User page import/export and
-save-as-coloring-page remain, including existing custom pages and their storage.
+## Persistence and output
 
-The saved-picture Add to coloring pages action uses the custom curved open book.
-A matching custom page changes plus to a muted disabled check, derived from saved
-layout content so it survives navigation/reloads. Paint, paper color and metadata
-are ignored; sticker transforms, order, ink and page dimensions determine a match.
-Failed additions leave the action available; deleting the matching custom page
-restores it. No extra save-format fields or browser tracking records are added.
+Saved drawings/documents are format 6, with optional `rasterSpray` version 1.
+IndexedDB `studioodle-library-v9`, schema 2, owns `pictures`, `summaries`, `pages`,
+`thumbnails` and `meta`. `app/pictures.ts` supplies pending-aware drawing reads;
+`app/customColoringPages.ts` composes current custom-page storage.
 
-The color selector implements study 01: five 32-slot palettes, three-dot selector,
-custom edit mode, solid HSV/hex picker and shared use by painting/sticker ink.
-Version-1 fixed slots 0?127 use Everyday/Pastel/Vivid/Moody; custom slots 128?159
-start null and belong to each drawing. Compact negative color tokens encode the
-slot index as `-slot-1`, distinct from literal RGB paper/source art. Production
-painting and chosen ink use slot tokens; merging compares tokens, never resolved
-RGB. Palette edits capture one previous table value, invalidate display pixels
-without rebuilding geometry, participate in undo and action-based saving, and
-update ribbon/cursor colors. All serialized drawings include paletteVersion 1 and
-32 custom entries. PNG/SVG/PDF/print resolve colors; page sharing v4 carries custom
-ink tables. The drawing namespace is library-v9; workshop.v3 and v6.coloring are now legacy custom-page import sources;
-format-5 saves and v3 sharing codes are intentionally unsupported. Blank paper
-setup retains its simple fixed RGB background palette.
+Custom pages import valid `studioodle.workshop.v3` / `studioodle.v6.coloring.*`
+records once, with an atomic completion marker and stable ordering. Legacy sources
+are read-only; new page import/save/delete uses IndexedDB only. Settings, theme,
+favorites and pointer preferences still use localStorage pending consolidation.
+Reviewer storage is independent. IndexedDB is device-local storage, not backup.
 
-Icon redesign is **deferred at the user's request**. The app's original icons and
-button styling are restored to their pre-redesign state (`11ea35b`): standard
-Lucide delete/print/export controls and the original custom open-book plus/check.
-No new icon trial is active. Other features and artwork are unchanged.
+Completed actions queue detached immutable checkpoints: one active write and one
+latest pending checkpoint per drawing. Save preparation/worker work runs separately
+from input; Home does not wait for disk. Pending artwork supplies previews/reopens.
+Failed writes retry with bounded backoff. Drawing/summary writes are atomic. Abrupt
+shutdown may lose latest pending actions; physical-device interruption testing and
+editable backup/restore remain on the backlog.
 
-Keep the exploration assets for future inspiration: seven ImageGen boards, the
-Paper Charms printer study and the actual color-mask/Potrace book proof under
-`docs/icons/`. The compact Enchanted Ink SVG sources remain under
-`art/source/interface/`; the earlier smooth Paper Charms SVGs are preserved under
-`art/source/interface/icon-studies/paper-charms/`. Neither set is imported by the
-app. Bulk raster/draft work remains parked under ignored `work/`; do not resume
-icon generation or rollout without a new user request. `docs/icons/index.html`
-once again records the original 135 uses/states, 15 groups and 61 Lucide imports.
+Gallery browsing loads revision/version-aware PNGs capped at 768px long edge.
+Missing/corrupt previews regenerate on demand. One generation plus latest waiting
+selection is bounded; bitmap reads bypass generation. Five object URLs are retained,
+revoked on eviction/Home exit. Opening/output/delete loads source on demand; browser
+print opens synchronously. Source/revision checks reject stale cache completion.
+Metadata still scales with library size; complex real collections/Android need tests.
 
-## Artwork status
+Output keeps ordinary vectors and exact source ink; PNG offers 150/300/600 DPI
+within its pixel budget. Spray retains its screen-oriented pixels. Custom page
+sharing strips all paint and uses `studioodle-page:4:` with fresh imported IDs;
+internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
-All 364 stickers were upgraded to the current small-region pipeline. Accepted
-editable ink lives in `art/source/stickers/line-repairs/`, selected by manifest
-`inkSource`; original `source` art remains untouched. Current minimum clickable
-region area is 10.2 square pixels at proportional A4/150 DPI. Do not bulk regenerate
-or revise this threshold without reviewing a targeted example.
+## Current interface
 
-Repairs through full-library v5 are complete: 13 lines first, then 13 transparency
-markers, eight fills and one rounded-rectangle alignment correction; 17 assets
-changed. History 1 is v5 (17); History 2 is v4 (seven). There are no deferred v5
-instructions. The user may now inspect regions and submit another export.
-See [repair summary](ARTWORK-REPAIR-LOG.md) and [pipeline](STICKER-PIPELINE.md).
+The wordless selection screen uses the easel, open book and saved-art stack.
+Preserve paper aspect ratios/masks, full-bleed artwork, stable carousel geometry
+and subtle artwork-only hover scaling. Loading sits beneath the branded stack
+logo, outside the rotated preview mask. Opening hides the front sheet/actions
+while the same spinner remains; there is no translucent picture-loading overlay
+or progress bar. Startup's separate splash progress remains.
 
-## Reviewer and annotations
+Coloring Pages uses a single preview plus optional grid, subject/detail filters,
+favorites, user page import/share/delete and ordinary drawing/save-as-page authoring.
+The add-page plus/check uses layout content (including ink/transforms/order) and
+ignores paint/title/paper color. Bundled layouts come only from
+`src/assets/coloringBook.json`. No in-app developer workshop or authoring route.
 
-`tools/artwork-review/` is a standalone Vite/TypeScript project. `npm run review`
-opens it; `review:build` writes only `work/artwork-review-dist/`. Normal app dev
-scanning/typechecking/building excludes reviewer source. Dependencies are shared.
+Brush has round, two diagonal and soft spray tips, sizes 1?64 (default 5). Fill
+selects/applies solid color immediately; no fill overlay. Old patterned vector
+artwork still renders/exports. Gestures can start outside paper and continue onto
+it, with clipping and one-action undo/cancellation. Empty Select clicks consume
+the gesture and return to Fill on release; cancellation restores selection.
 
-Preserve the review storage key `studioodle-artwork-review-v1` and annotation data.
-Storage belongs to the browser origin; stop the app server and reuse the same
-hostname/port to continue a review. Never reset user review data to simplify a fix.
-The compact revision graph in `tools/artwork-review/data/repair-history.json`
-retires only actually applied instructions and preserves later annotations.
-Original completed exports/verbose ledgers are in Git history; retained regression
-samples are in `tests/fixtures/artwork-review/`. New exports belong in `art/reviews/`.
+The palette has five sets of 32 slots: four fixed sets (0?127) and drawing-owned
+custom slots (128?159), initially null. Negative `-slot-1` tokens preserve identity;
+merging compares tokens, not resolved RGB. Edits recolor vector paint/ink without
+rebuilding geometry, participate in undo and action saving, and resolve for output.
+Defaults are pure black/white; existing colors/ink are preserved. Sticker picker
+has ten stable category icons, authored detail filters, and an independent ink dialog.
 
-Reviewer controls: A/D navigate; Space toggles Reviewed; wheel zooms at cursor;
-middle drag pans; Ctrl-click removes a region, Shift-click adds one; right clicks
-define line endpoints; left click selects/drags or deselects on empty space;
-Delete removes selection; Ctrl-wheel adjusts selected line width by 0.1 (.1–2).
-Adding a marker must not focus notes. Cleanup categories are explicit and undoable.
+Icon redesign remains deferred. Keep original app controls and all concept boards
+under `docs/icons/` / `art/source/interface/icon-studies/` for inspiration; do not
+resume redesign without a request. UI guides/studies are linked from README.
 
-## Current interface design focus
+## Artwork and standalone tools
 
-The new Coloring Pages overlay is implemented with the existing six scenes.
-Single preview is the default; artwork or the magical pencil/book action opens a
-fresh drawing directly. Grid is an optional six-page overview; choosing a card
-returns to single view. Side arrows/keyboard/swipes browse, and counts refer to
-the active filter. Page hearts persist locally; initial order puts favorites first
-without jumping when a heart is toggled. Filter controls use All, Characters,
-Animals, Places & Nature, Things, Letters & Numbers, and terrain detail icons.
-Shipped pages have curated `browse` metadata in the canonical book. Custom pages
-use lightweight subject/sticker-count defaults, not geometric difficulty scoring.
+Current content: 364 stickers and six bundled pages. The release goal is 1,000+
+accepted stickers plus substantially more curated solo/composed pages; roughly
+80% of suitable stickers is a curation target, not a quota for weak pages.
 
-Single view has Add (paste code/.studioodle file with validation and preview), Share
-(copy code/download the same code as a .studioodle text file) and custom-only Delete. Imports create independent IDs. Portable codes use studioodle-page:4: and carry sticker layouts and ink colors without paint fields; internal books/storage remain JSON.
-The dedicated Edit Page action is removed; normal open/arrange/save-as-page is the
-user authoring route. All current custom templates consolidate into the workshop
-record on the next successful atomic write; failed writes preserve original data.
-Existing source keys are read-only and ignored once that record is authoritative.
-See [coloring books](COLORING-BOOKS.md). Simple/toddler modes and parent lock remain
-future work. Blank paper setup now also uses the approved two-step layout: bold size marks
-inside folded paper silhouettes, icon-only orientation/navigation, clickable
-paper/color step icons, a selected-paper/color summary and the shared magical
-drawing action. Physical sizes and automatic/manual orientation behavior remain
-unchanged. Blank setup shows all 32 colors; the editor shows all 32 slots of the selected palette.
-Other editor/settings/output overlays still await refinement.
+All submitted repairs through full-library v5 are applied (13 lines, 13 transparency
+markers, eight fills, one rectangle correction across 17 assets). Reviewer History 1
+is v5 (17), History 2 v4 (seven); no submitted v5 instruction is deferred. Minimum
+clickable region area is 10.2 square pixels at proportional A4/150 DPI. Tune small
+region cleanup on targeted examples before any bulk reprocessing. Preserve original
+and accepted ink sources; see STICKER-PIPELINE.md and ARTWORK-REPAIR-LOG.md.
 
-[Design brief](OVERLAY-DESIGN.md) and [layout examples](overlay-examples/README.md)
-record the review. No new scene artwork or blanket asset processing was included.
+The reviewer is standalone under `tools/artwork-review/`. Preserve
+`studioodle-artwork-review-v1`, user annotations/origin and the compact revision
+graph. New immutable review inputs go in `art/reviews/`; apply lines before region
+regeneration, then evaluate markers by coordinates. Never import reviewer code/data
+into `src/` or reset review storage to make a test pass.
 
-The implemented brush overlay follows approved study 04 in `docs/brush-overlay-examples/`:
-one brush with round, two fixed diagonal and soft raster spray tip effects.
-A full-width 1-64 size control sits below one compact segmented tip selector;
-a smaller muted gold/teal sample has a matching shallow well beside Apply. The
-size row stays unboxed and there is no divider. Tip and preview wells follow the
-existing overlay grouping language without enclosing every control.
-The isolated spray trial now accumulates soft RGB/alpha pixels; ordinary tips stay
-vector. The old ink/pencil/brush modes are replaced by tip effects. Size supports
-single-unit steps, direct numeric entry and a slider; the default remains 5.
-Format 6 has an optional versioned rasterSpray field for the experiment. Earlier captures remain for visual comparison.
+The cell-brush experiment is successful and parked under `tools/cell-brush/`.
+The user prefers crisp vector contours. Preserve the demo/benchmarks; no new cell
+profiles, integration, line-art conversion or Android/desktop engine split is current
+work. Detailed grids, contour diagnostics, limitations and benchmark commands are
+in its README. It remains a fallback idea if measured vector improvements fail.
 
-Brush/eraser gestures can now start in the surrounding drawing workspace and
-continue onto the page, with page clipping, single-action undo and cancellation.
+## Cleanup and verification
 
-Tool/menu cursors use one theme-independent palette with dark contours and a fine
-light edge for mixed canvas backgrounds; brush/bucket accents keep selected paint.
+The cleanup removes retired localStorage writers, unused workshop composition and
+obsolete control CSS, and separates Surface/spray responsibilities. The legacy
+page importer remains explicit/read-only. Dev-only literal sticker URLs avoid an
+eager JS URL-module request for every SVG; production retains Vite's hashed assets.
+Test caches are isolated under `work/`; generated HTML/build output is excluded
+from app watching so diagnostics cannot reload an open drawing.
 
-Bucket results now publish fully compacted geometry before display, preventing
-temporary old-color fringes that previously vanished after cleanup and redraw.
+Use `npm run check` and `npm run test:browser` for app changes. Focused storage,
+paint, save, scene and memory commands are documented in README/PERFORMANCE.md.
+Reviewer edits additionally require `review:typecheck`, `test:review`, and for
+entry/build changes `review:build`. Cells retain `cells:typecheck`, `cells:build`,
+`test:cells`; no native build is implicit in any cleanup/check.
 
-Temporary hold-to-fill zoom preserves the exact pointer anchor without pan
-clamping, including through layout updates; release/cancellation restores the view.
-
-Editor saves now run after completed artwork actions, including undo, with no minute
-timer. Untouched pages, canceled gestures and tool/color choices do not start saves.
-Detached checkpoints share immutable geometry; worker compaction and IndexedDB
-writes run independently of editing. The app-level queue retains one active and
-one latest pending checkpoint per drawing, survives Home/canvas disposal and supplies
-pending previews/reopens. Failures retry with bounded backoff and an app-wide notice.
-Drawing and summary remain atomic; losing the latest pending actions on abrupt
-shutdown is acceptable. Home finishes input without waiting for disk; Ctrl+S and
-normal desktop close can flush. See architecture and the picture-library guide.
-
-Selection now switches directly between clicked stickers. Empty page/workspace
-presses outside the border clear the drawer and return to Fill on release, consuming
-the pointer stream; cancellation restores selection and focused mode retains Done.
-Save preparation reuses immutable compacted regions until their paint changes,
-including safe invalidation on undo. Live maintenance reuses prepared results
-instead of forcing duplicate work at gesture end. Saving yields the input task;
-save completion/status no longer restarts the saved-picture loader/previews.
-`npm run test:save` verifies eight geometry edits only compact existing paint once.
-
-## Next work and verification
-
-The core feature mechanics are now considered complete for the 1.0 direction.
-The user reports positive parent/child testing and wants release readiness next,
-not more main-app tooling. [Refinement tasks](REFINEMENT-TASKS.md) is the single
-ordered release backlog: (1) performance/reliability, (2) one friendly, playful/zen
-custom icon and ribbon/overlay control family in both themes, (3) 1,000+ accepted
-stickers from the current 364, (4) a much larger solo-page and composed-scene library
-from the current six pages, and (5) structured beta/release validation.
-
-The storage/selection batch is implemented: `studioodle-library-v9` schema 2 now
-also stores individual custom pages, metadata and PNG thumbnails. Valid current
-workshop/individual localStorage pages import once with an atomic marker, preserving
-order and retrying failures. New page writes/import/delete use IndexedDB only;
-settings/favorites remain later consolidation work. Reviewer storage is untouched.
-Gallery browsing reads revision/version-aware PNGs capped at 768px long edge, not
-full vector documents. One generation plus latest waiting selection is bounded;
-cached bitmap reads bypass generation. Five object URLs are retained and revoked
-on eviction/Home exit. Opening/output/delete load source drawings on demand;
-print windows still open synchronously. Source saves/deletes remain atomic, stale
-thumbnail writes/publications are rejected, corrupt previews regenerate once, and
-pending checkpoints preview before their save completes. The document format stays 6.
-`test:library` measures new cache/storage checks and 1,000/5,000 lightweight fixtures;
-old full-document-window diagnostics live only in test fixtures. Current local
-measurements: ~20-30/~90-120ms metadata lists; cold PNG ~240-275ms, persisted PNG
-~1.5-1.6ms with zero vector reads. These are not whole-app or Android benchmarks.
-Next storage work includes real complex-device workloads, quality/downsample trials,
-settings consolidation, health/backup and metadata pagination if measurements need it.
-SQLite remains a later native-platform option.
-
-After that batch: reproduce/profile scatter/spray and dense paint using the user's detailed
-Moon Sorceress when available, a synthetic stress drawing and a simple control.
-Other reported problems are slow detailed-canvas fills, panning and saved-gallery
-loading/cycling. The user previously saw slowdown even after reverting save changes;
-do not assume a save/worker cause without measurement. Keep diagnostics standalone.
-Set minimum-device workloads and measurable budgets before choosing optimizations.
-
-Raster spray is now an isolated main-app experiment (`editor/rasterSpray.ts`).
-Ordinary paint/line art remain vector; scatter paints soft RGB pixels into sparse
-128px sections per surface, above ordinary paint and beneath ink. Fill ignores it;
-eraser clears both layers. Section snapshots participate in memory-bounded undo,
-including cancellation, sticker deletion/duplication and detached saves. Colors are
-baked: later palette edits do not recolor spray. Fixed native local resolution is
-capped at 1536px long edge/1 megapixel per surface; zoom/export reuse those pixels.
-Format 6 adds optional versioned rasterSpray; existing vector drawings remain valid.
-SVG/PDF/print embed PNG sections. No old raster painting engine was restored.
-This can be dropped by removing the module and narrow Artwork/output/schema hooks.
-Focused checks cover section undo, fill/erase, reload, SVG/PDF, overlap ownership
-and 4x seams. Seeded 640x480 multicolor passes retain 20 sections (1.25MiB pixels),
-zero vector blobs; p95 model calls ~1.9ms and capture ~1.2ms locally. These exclude
-full-app latency and other memory. Appearance still needs user review and physical-device tests.
-Pan/zoom and ordinary vector brush profiling remain next independent work.
-
-Ordinary brush/fill now has conservative interior-cell proofs, an 8MiB estimated
-LRU for Clipper's reusable immutable region inputs, and bounded brush-circle reuse.
-Uncertain edges/holes still use exact clipping at existing precision. Compaction
-limits boolean work to nearby disconnected components; fills directly move the
-selected disjoint component and merge its destination style. Fill dispatch avoids
-an extra deep clone before worker transport. Undo/save/stale-result rules remain.
-See VECTOR-PAINT.md and PERFORMANCE.md for diagnostics and measurements; these do
-not establish Android input latency or a uniform app speedup. Pan/zoom and larger
-real-device sessions remain independent follow-up work.
-
-The user considers the cell prototype successful and has parked it. Return to
-main-app vector performance discussion/measurement; preserve crisp vector contours.
-No integration, new profile work or Android/desktop engine split is authorized by
-this decision. Cells beneath existing line art, existing surface masks/clips, a
-2px mobile fallback and worker processing are contingency ideas if vector fixes
-prove insufficient. The main app's engine, saved format and output stay unchanged.
-The refinement backlog now distinguishes existing worker/caching/indexing from
-remaining profiling/optimization tasks; storage/thumbnails are complete, and the
-raster spray trial is working well in user testing. The next completed batch optimizes ordinary
-vector brush/fill while keeping crisp geometry.
-
-The standalone cell-brush demo lives under `tools/cell-brush/`; run `npm run cells`
-on port 1434. It defaults to a rectangular grid fitted to approximately 4 x 4 CSS
-pixels per cell inside the visible canvas, with desktop tooling scrolling beside
-it. At a 1920 x 1080 browser viewport, the verified layout is 380 x 212 cells
-(236.02 KiB). A 100 x 100 comparison mode remains. Mode changes/explicit refits clear
-the drawing; ordinary resizing preserves the grid/reference and proportions.
-Eight palette slots and three bytes per cell remain, with dynamic memory reporting,
-transparent paper, diameter/grid controls, repeatable test strokes and circle dabs.
-The selector also offers 2 x 2 and 1 x 1 CSS-pixel cells: the verified 1080p layout
-gives 760 x 425 (946.29 KiB) and 1520 x 850 (3785.16 KiB). Reference backing tracks
-display density in each mode. Full redraws avoid per-cell Set allocation and canvas
-clears for empty cells. Browser checks cover sizing/storage, pointer mapping and
-clear in all three densities. Brush diameter stays in cell units.
-The default is Straight cuts: 16 of 32 base slots, with neighbor
-matching off. Empty/full, quarter/half splits, ten corner wedges and two opposite-
-edge cuts cover all 80 quarter-edge straight boundaries under transforms/color
-swaps. Remaining slots are reserved. The experimental 32 and original eight remain
-in the dropdown; switching clears the page and resets matching to that mode's default.
-
-Straight mode now analytically intersects the swept round brush with grid edges.
-Each physical edge has one shared per-gesture colored-interval record; cached
-quarter crossings determine the cell profile directly via an endpoint index.
-Coverage chooses the side colors, not alternative exits. Degenerate same-border
-or collapsed-corner cuts become uniform; contour segments may lie on grid edges.
-The sampled scorer/neighbor solver remains only for unsupported complex crossings.
-This replaces independent whole-edge-mask fitting for simple outside contours.
-The user's reported teeth concern these outside contours, not overlapping-dab
-cusps; do not conflate them. Tests cover analytic intersections, shared exits,
-full-to-3/4 alignment, curves, orientations, rounding ties and the 384-dab sweep.
-One-cut/two-color limitations still apply to tiny or conflicting detail.
-
-All gesture samples and analytic edge intervals release afterward. Cell data is
-unchanged. Both loaded libraries/shared numeric lookups remain 79.75 KiB; cut-index
-maps, polygons/Path2D objects and transient interval records are additional. See
-the tool README for limits. Matching is off by default for the straight library.
-
-No source-art conversion, main-app engine change, native build or measured speedup
-claim is included. `cells:typecheck`, `cells:build` and `test:cells` verify the isolated
-tool; generated output/captures stay under ignored `work/`. The user runs the dev
-server manually; do not leave a server running after automated tests.
-
-Thin contour investigation now provides repeatable diameter-one arc/spiral fixtures,
-a grid-phase slider and optional per-cell diagnostic capture/inspection. Inspect
-actual orange crossings, snapped blue crossings, selected profile and actual fit
-route alongside eight neighbors. Capture must be enabled before hand drawing;
-inspection clicks do not paint. Latest per-cell copies survive gesture end only
-when opted in, release on clear/library change/disable, and add memory beyond the
-display counters (including a 300 x 300 inspector canvas). Generated open arcs
-pass monotonicity at eight offsets; the user's hand-drawn spikes are not reliably
-reproduced yet. Do not assume multi-crossing counts prove the pictured cause.
-No new profile, snapping offset or fallback algorithm change was made in this step.
-The fixtures now also include seeded per-axis jitter, independent 0.001-cell X/Y
-offsets, loose-to-tight curvature and a line fluttering across a grid boundary.
-Optional duplicate samples and backwards retraversals simulate repeated input over
-existing coverage. Tests cover four shapes/three seeds with matching off/on,
-verify repeats preserve output and compare accumulated edges to the noisy capsule
-union. Browser tests replay noisy native mouse events too. This strengthens the
-reproduction tools without claiming a tooth fix or applying input smoothing.
-The user's subsequent short-arch screenshot motivated a nine-cell-wide arc fixture
-(the original open arc spans 52 cells). It is included in the noisy-input sweep;
-the inspector now marks profile/source sample disagreements in pink. A cropped
-short-curve browser capture is generated under work/tests/cell-brush/. No confirmed
-selection fix followed from the synthetic comparison alone.
-The user's inspector for cell (60,42) subsequently isolated a fallback bug: after
-selecting an inverted Corner 1/4-2/4, the 60/64 nearly-uniform rule forced Full,
-doubling source mismatch from two samples to four. Uniform normalization now
-requires no worse coverage than the selected profile. A focused reconstructed
-fixture preserves the corner for paint, alternate color and erasure; previous
-monotone-arc/tangent, jitter/retrace and shared-crossing regressions still pass.
-This identifies one concrete spike cause without claiming all teeth are solved.
-
-The demo now has a Compare coverage selector: cells, a separately rendered round-
-brush reference, and a visual difference overlay. Every incoming gesture/example
-also updates an independent Canvas2D reference (1000 x 1000 in comparison mode;
-roughly four physical pixels per cell adjusted for DPR in display mode, reported
-in display memory); there is no input log and it never changes authoritative cells.
-Clear/library switches reset both; draw/resize work in comparison views. The overlap
-example demonstrates genuine pointed arc-intersection gaps in the reference as
-well as cell approximations. A round brush does not guarantee rounded union/gap
-intersections. This instrumentation does not establish another geometry fix or
-isolated performance result; use it to reproduce before changing profile rules.
-
-Solo coloring pages should fit visible subject bounds and preserve proportions,
-with intentional margins and orientation. Roughly 80% of suitable stickers is a
-curation target, not a mandate to publish boring or awkward subjects. Keep composed
-scenes as a separate content stream and the canonical bundled layouts in coloringBook.json.
-The book-plus/check pair should pilot more organic, slightly asymmetric custom
-icons with restrained sparkle; preserve clear meaning and avoid decorative noise.
-Existing engineering findings, reviewer protections, palette/undo/save behavior,
-physical-device checks and the explicit-native-build rule remain in force.
-
-Run `npm run check` for normal checks; `npm run test:browser` for app behavior.
-Reviewer changes also need `npm run review:typecheck`, `npm run test:review` and,
-for entry/config changes, `npm run review:build`. Use memory/scene profiles only
-when relevant. No asset regeneration is part of these checks.
-
-`work/`, `dist/` and local `release/` are disposable generated output. Portable
-Potrace belongs in ignored `tools/bin/potrace/`, or set `POTRACE_PATH`; deleting
-scratch output must not remove required conversion tools or active review inputs.
-
-Local cleanup limitation: automatic approval rejected bulk deletion of `work/`,
-`dist/` and `release/` during this cleanup. Existing generated artifacts remain on
-this machine; they are ignored and do not represent active repair work. The source
-cleanup and validation are independent of that local disk housekeeping.
-
-Rectangular grid tests cover landscape/portrait addressing and edge/erase bounds.
-Browser tests verify 1080p cell sizing, side-by-side tools, painting, resize
-preservation and explicit refit clearing. Counters update incrementally from dirty
-cells rather than rescanning the complete grid every frame. No speedup claim is
-implied by the increased-resolution demo.
-
-One-pixel performance work adds narrow capsule row scanning, a proven solid-cell
-fast path (capture off), per-segment shared-edge updates, reused edge probe/histogram
-buffers and populated-color retention. All coalesced samples remain; layout/cursor
-updates happen once per pointer event. At one physical pixel/cell, a disposable
-ImageData surface plus 64 KiB/browser-rasterized palette lookup per loaded library
-replaces per-cell paths. It matches canonical software Canvas for all 16,384
-profile/color cases; GPU AA can differ. Extra display payload is reported.
-`cells:bench` runs reproducible model-only workloads. Against 722819e on this Windows
-Node 22.15 machine, worst-event medians fell roughly 326->64 ms (extreme jump),
-44->9 ms (fast curve), 8.7->2.5 ms (steady curve). All six model output hashes match
-and are golden-tested; sample payload fell about 70%, excluding Set/Map overhead.
-Warm headless Edge CPU submission for 16,384 changed cells measured ~17-25->3.5-5 ms. These
-are isolated CPU/render tests, not measured end-to-end latency; huge jumps and
-complex local cases can still lag. Capture stays slower and off by default.
+Known remaining release work is in REFINEMENT-TASKS.md: pan/zoom and long-session
+performance on modest devices, storage health/backup, cancellable vector exports,
+maximum-size background validation, physical save interruption/printing/native
+input checks, and Firefox/Safari/iPad coverage. Browser offline reload/install is
+not promised by a service worker or manifest; native assets are bundled.

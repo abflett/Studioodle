@@ -1,4 +1,4 @@
-import { createServer } from 'vite';
+import { createSsrServer } from './lib/ssr-server.mjs';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs/promises';
 const compare=process.argv.includes('--compare');
@@ -6,7 +6,7 @@ const output=process.argv.slice(2).find(arg=>!arg.startsWith('--'));
 const servers=[];
 async function open(name){
  const sources=new Map(name==='before'?['vectorPaintGeometry.ts','polygonGeometry.ts'].map(file=>[file,execFileSync('git',['show',`26074b6:src/editor/${file}`],{encoding:'utf8'})]):[]);
- const server=await createServer({configFile:false,plugins:[{name:'paint-model-baseline',enforce:'pre',transform(code,id){return sources.get(id.replaceAll('\\','/').split('/').at(-1));}}],server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});
+ const server=await createSsrServer({plugins:[{name:'paint-model-baseline',enforce:'pre',transform(code,id){return sources.get(id.replaceAll('\\','/').split('/').at(-1));}}]});
  servers.push(server);return server;
 }
 try{

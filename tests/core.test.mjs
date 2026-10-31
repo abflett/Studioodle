@@ -1,18 +1,18 @@
 import assert from 'node:assert/strict';
 import { after, before, test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 import { fileURLToPath } from 'node:url';
 
-let server, createRepository, createBridge, createColoringPage, outputTitle, EditorSession, createSaveQueue;
+let server, readLegacyPages, createBridge, createColoringPage, outputTitle, EditorSession, createSaveQueue;
 before(async () => {
-  server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false, ws: false, watch: null }, appType: 'custom', plugins: [{
+  server = await createSsrServer({plugins: [{
     name: 'session-artwork-double', enforce: 'pre',
     resolveId(source, importer) {
       if (source === './Artwork' && importer?.replaceAll('\\', '/').endsWith('/src/editor/EditorSession.ts'))
         return fileURLToPath(new URL('./fixtures/artwork.mjs', import.meta.url));
     },
-  }], optimizeDeps: { noDiscovery: true, include: [] } });
-  ({ createLocalTemplateRepository: createRepository } = await server.ssrLoadModule('/src/platform/localTemplateRepository.ts'));
+  }]});
+  ({ readLegacyColoringPages: readLegacyPages } = await server.ssrLoadModule('/src/platform/legacyColoringPages.ts'));
   ({ createEditorBridge: createBridge } = await server.ssrLoadModule('/src/editor/bridge.ts'));
   ({ createColoringPage } = await server.ssrLoadModule('/src/editor/coloringPage.ts'));
   ({ EditorSession } = await server.ssrLoadModule('/src/editor/EditorSession.ts'));
@@ -44,21 +44,20 @@ function storage() {
 
 function library() {
   const store = storage();
-  const pages = createRepository(() => store);
+  const pages = { load: () => readLegacyPages(store) };
   return { store, pages };
 }
 
-test('current template keys round-trip and deletion removes the template', () => {
+test('legacy page imports read valid keys without writing or deleting them', () => {
   const { store, pages } = library();
-  const page = fixture();pages.save(page);
-  assert.deepEqual(JSON.parse(store.getItem('studioodle.v6.coloring.picture-1')), page);
-  assert.deepEqual(pages.load(), [page]);pages.delete(page.id);
-  assert.deepEqual(pages.load(), []);
+  store.setItem('studioodle.v6.coloring.picture-1', JSON.stringify(fixture()));
+  assert.deepEqual(pages.load(), [fixture()]);
+  assert.equal(store.length, 1); assert.ok(store.getItem('studioodle.v6.coloring.picture-1'));
 });
 
 test('corrupt, foreign and mismatched records do not hide valid pages', () => {
   const { store, pages } = library();
-  pages.save(fixture());
+  store.setItem('studioodle.v6.coloring.picture-1', JSON.stringify(fixture()));
   store.setItem('studioodle.v6.coloring.bad-json', '{');
   store.setItem('studioodle.v6.coloring.null', 'null');
   store.setItem('studioodle.v6.coloring.wrong-id', JSON.stringify(fixture('another-id')));
@@ -84,25 +83,22 @@ test('validation rejects unsafe geometry, obsolete paint fields and unsupported 
     p => { p.version = 2; },
   ];
   for (const change of changes) {
-    const { pages } = library(); const picture = fixture(); change(picture);
-    pages.save(picture);
+    const { pages, store } = library(); const picture = fixture(); change(picture);
+    store.setItem('studioodle.v6.coloring.' + picture.id, JSON.stringify(picture));
     assert.deepEqual(pages.load(), []);
   }
 });
 
 test('library normalizes titles and sorts newest first', () => {
-  const { pages } = library();
-  pages.save({ ...fixture('older'), title: 'sunny beach day' });
-  pages.save({ ...fixture('newer'), updatedAt: 2 });
+  const { pages, store } = library();
+  store.setItem('studioodle.v6.coloring.older', JSON.stringify({ ...fixture('older'), title: 'sunny beach day' }));
+  store.setItem('studioodle.v6.coloring.newer', JSON.stringify({ ...fixture('newer'), updatedAt: 2 }));
   assert.deepEqual(pages.load().map(p => p.id), ['newer', 'older']);
   assert.equal(pages.load()[1].title, 'Sunny Beach Day');
 });
 
-test('storage is resolved lazily and failures propagate for UI recovery', () => {
-  const repository = createRepository(() => { throw new Error('Storage unavailable'); });
-  assert.throws(() => repository.load(), /Storage unavailable/);
-  assert.throws(() => repository.save(fixture()), /Storage unavailable/);
-  assert.throws(() => repository.delete('id'), /Storage unavailable/);
+test('legacy storage read failures propagate instead of silently losing pages', () => {
+  assert.throws(() => readLegacyPages({ get length() { throw Error('Storage unavailable'); } }), /Storage unavailable/);
 });
 
 test('custom coloring pages preserve transforms but clear paint without changing the source', () => {
@@ -401,11 +397,11 @@ test('coloring page creation strips vector paint without mutating the saved draw
 
 
 test('current vector pages round-trip and obsolete formats are ignored', () => {
-  const {pages}=library();
+  const {pages,store}=library();
   const first=fixture('first');const vector=fixture('vector');
   vector.version=6;vector.document.version=6;
   vector.document.surfaces.push({id:'moon',kind:'fantasy-moon-sorceress',x:10,y:10,color:0,vectorPaint:{version:1,regions:[{id:1,base:0x773399,blobs:[]}]}});
-  pages.save(first);pages.save(vector);
+  store.setItem('studioodle.v6.coloring.first', JSON.stringify(first));store.setItem('studioodle.v6.coloring.vector', JSON.stringify(vector));
   const loaded=pages.load();
   assert.equal(loaded.length,2);
   assert.deepEqual(loaded.find(p=>p.id==='vector'),vector);
@@ -476,4 +472,30 @@ test('disposed sessions ignore direct pointer and animation calls', () => {
  const before=editor.artwork.serialize(); editor.dispose();
  editor.begin({x:1,y:1},1,0);editor.move({x:3,y:3},1,true,1);editor.release({x:3,y:3},1,1);editor.update(100);editor.end();
  assert.deepEqual(editor.artwork.serialize(),before);
+});
+
+for(const phase of ['begin','move','release','end','update'])test(`brush failure during ${phase} rolls back and releases the gesture`,()=>{
+ const errors=[],editor=new EditorSession(fixture(),{save(){throw Error('Failed gestures must not save');},changed(){},failed:message=>errors.push(message)});
+ const log=console.error;console.error=()=>{};
+ try{
+  editor.execute({type:'set-tool',tool:'brush'});
+  if(phase==='update')editor.execute({type:'set-brush',options:{tip:'scatter',size:12}});
+  const before=editor.artwork.serialize(),brush=editor.artwork.brush.bind(editor.artwork);
+  if(phase!=='begin')editor.begin({x:1,y:1},1,0);
+  if(phase==='end')editor.move({x:20,y:20},1,true,1);
+  editor.artwork.brush=(...args)=>{brush(...args);throw Error('Injected geometry failure');};
+  assert.doesNotThrow(()=>{
+   if(phase==='begin')editor.begin({x:1,y:1},1,0);
+   if(phase==='move')editor.move({x:20,y:20},1,true,1);
+   if(phase==='release')editor.release({x:20,y:20},1,1);
+   if(phase==='end')editor.end();
+   if(phase==='update')editor.update(Infinity);
+  });
+  assert.equal(errors.length,1);assert.match(errors[0],/undone/);
+  assert.deepEqual(editor.artwork.serialize(),before);assert.equal(editor.needsAnimation,false);
+  editor.artwork.brush=brush;
+  editor.begin({x:2,y:2},2,0);editor.release({x:3,y:3},2,1);
+  assert.notDeepEqual(editor.artwork.serialize(),before);
+  editor.execute({type:'undo'});assert.deepEqual(editor.artwork.serialize(),before);
+ }finally{console.error=log;editor.dispose();}
 });

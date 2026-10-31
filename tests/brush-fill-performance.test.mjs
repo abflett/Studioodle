@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import { before,after,test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 let server,paint,styles,clipper,containsBrush,VectorPaint;
 before(async()=>{
- server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});
+ server=await createSsrServer();
  paint=await server.ssrLoadModule('/src/editor/vectorPaintGeometry.ts');styles=await server.ssrLoadModule('/src/editor/vectorPaintStyles.ts');
  ({default:clipper}=await server.ssrLoadModule('/src/editor/polygonGeometry.ts'));
  ({containsBrush}=await server.ssrLoadModule('/src/editor/regionContainment.ts'));({VectorPaint}=await server.ssrLoadModule('/src/editor/VectorPaint.ts'));

@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
-import { createServer } from 'vite';
+import { createSsrServer } from '../scripts/lib/ssr-server.mjs';
 let server,Artwork,ArtworkChange,UndoHistory,geometry;
 const OriginalPath=globalThis.Path2D;
 before(async()=>{
  globalThis.Path2D=class {rect(){}};
- server=await createServer({configFile:false,server:{middlewareMode:true,ws:false,watch:null},appType:'custom',optimizeDeps:{noDiscovery:true,include:[]}});
+ server=await createSsrServer();
  ({Artwork}=await server.ssrLoadModule('/src/editor/Artwork.ts'));
  ({ArtworkChange}=await server.ssrLoadModule('/src/editor/artworkChange.ts'));
  ({UndoHistory}=await server.ssrLoadModule('/src/editor/UndoHistory.ts'));
