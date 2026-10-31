@@ -10,6 +10,7 @@ export type EditorSetup = {
   title: string;
   format: PaperFormat;
   size?: { width: number; height: number };
+  printSizeMm?: { width: number; height: number };
   background: string;
   leafColor: number;
 };

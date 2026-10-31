@@ -185,7 +185,7 @@ export class EditorSession {
   private snapshot(document = this.document.serialize()): SavedPicture {
     this.lastSnapshotTime = Math.max(Date.now(), this.lastSnapshotTime + 1);
     return { id: this.setup.id!, title: this.setup.title, format: this.setup.format, size: paperSize(this.setup.format, this.setup.size),
-      background: this.setup.background, leafColor: this.setup.leafColor, version: document.version, updatedAt: this.lastSnapshotTime, document };
+      ...(this.setup.printSizeMm ? {printSizeMm:{...this.setup.printSizeMm}} : {}), background: this.setup.background, leafColor: this.setup.leafColor, version: document.version, updatedAt: this.lastSnapshotTime, document };
   }
   private autoSave() { if (this.ports.autoSave) void this.saveCurrent(); }
   private saveCurrent(): Promise<boolean> {

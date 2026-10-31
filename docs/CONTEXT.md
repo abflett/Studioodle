@@ -78,7 +78,13 @@ revoked on eviction/Home exit. Opening/output/delete loads source on demand; bro
 print opens synchronously. Source/revision checks reject stale cache completion.
 Metadata still scales with library size; complex real collections/Android need tests.
 
-Output keeps ordinary vectors and exact source ink; PNG offers 150/300/600 DPI
+New blank pages default to Display aspect ratio (screen, with window fallback),
+with A4/A5/Photo alternatives and Tall/Wide/Square orientations. Their short edge
+is 1000 logical units; resizing only changes the view. Separate `printSizeMm`
+metadata preserves physical output (Display uses a 210 mm short edge). Existing
+saved/bundled layouts retain their coordinates.
+
+Output keeps ordinary vectors and exact source ink; PNG defaults to 300 DPI and offers 150/300/600 DPI
 within its pixel budget. Spray retains its screen-oriented pixels. Custom page
 sharing strips all paint and uses `studioodle-page:4:` with fresh imported IDs;
 internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.

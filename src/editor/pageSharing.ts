@@ -10,7 +10,7 @@ export function pageSharingCode(book: ColoringBook) {
   const checked = makeColoringBook(book.title, book.pages);
   if (new TextEncoder().encode(JSON.stringify(checked)).length > maxBookBytes) throw Error('This page is too large to share.');
   const text = JSON.stringify({ title: checked.title, pages: checked.pages.map(page => ({
-    id: page.id, title: page.title, format: page.format, size: page.size, browse: page.browse, paletteVersion: page.document.paletteVersion ?? 1, customColors: page.document.customColors ?? Array(32).fill(null),
+    id: page.id, title: page.title, format: page.format, size: page.size, printSizeMm: page.printSizeMm, browse: page.browse, paletteVersion: page.document.paletteVersion ?? 1, customColors: page.document.customColors ?? Array(32).fill(null),
     surfaces: page.document.surfaces.map(surface => ({
       id: surface.id, kind: surface.kind, x: surface.x, y: surface.y,
       ...(surface.kind !== 'canvas' ? { inkColor: surface.color } : {}),
@@ -22,7 +22,7 @@ export function pageSharingCode(book: ColoringBook) {
 }
 
 type Layout = { title: string; pages: { id: string; title: string; format: string;
-  size: { width: number; height: number }; browse?: unknown; paletteVersion: 1; customColors: (number | null)[];
+  size: { width: number; height: number }; printSizeMm?: {width:number;height:number}; browse?: unknown; paletteVersion: 1; customColors: (number | null)[];
   surfaces: { id: string; kind: string; x: number; y: number; scale?: number; rotation?: number; flipX?: boolean; flipY?: boolean; inkColor?: number }[] }[] };
 
 export function parsePageSharingCode(input: string) {
@@ -38,7 +38,7 @@ export function parsePageSharingCode(input: string) {
     // Reuse document validation for sticker availability, dimensions and transforms.
     return parseColoringBook(JSON.stringify({ format: 'studioodle-coloring-book', version: 2,
       title: layout.title, pages: layout.pages.map(page => ({
-        id: page.id, title: page.title, format: page.format, size: page.size, browse: page.browse,
+        id: page.id, title: page.title, format: page.format, size: page.size, printSizeMm: page.printSizeMm, browse: page.browse,
         version: 6, updatedAt: 0, background: '#ffffff', leafColor: 0x000000,
         document: { version: 6, paletteVersion: page.paletteVersion, customColors: page.customColors, width: page.size.width, height: page.size.height,
           surfaces: page.surfaces.map(surface => ({

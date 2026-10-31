@@ -1,3 +1,4 @@
+import { svgPrintSize } from '../editor/exportResolution';
 import { downloadFile } from './downloadFile';
 import { isDesktop, isNative, printDesktopPicture, saveDesktopPicture } from './desktop';
 
@@ -37,8 +38,8 @@ export function printVectorPicture(render: () => Promise<SVGSVGElement>, title: 
     void render().then(svg => {
       if (preview.closed) return;
       doc.body.append(doc.importNode(svg, true));
-      const [, , width, height] = svg.getAttribute('viewBox')!.split(' ').map(Number);
-      style.textContent += `@page{size:${width! / 96}in ${height! / 96}in;margin:0}`;
+      const {width,height}=svgPrintSize(svg);
+      style.textContent += `@page{size:${width}in ${height}in;margin:0}`;
       // Let the vector preview lay out before opening the browser print dialog.
       preview.requestAnimationFrame(() => preview.requestAnimationFrame(print));
     }).catch(() => { preview.close(); onError(); });

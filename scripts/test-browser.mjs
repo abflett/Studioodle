@@ -88,6 +88,10 @@ try {
     const metrics = await evaluate("import('/tests/browser/save-performance.ts').then(m=>m.profileSavePerformance())");
     await fs.writeFile('work/tests/save-performance-results.json', JSON.stringify(metrics, null, 2));
     console.log('Save performance:', JSON.stringify(metrics));
+  }else if(process.argv.includes('--blank-pages')){
+    console.log('Blank pages:',await evaluate("import('/tests/browser/blank-page-setup.ts').then(m=>m.checkBlankPageSetup())"));
+    console.log('Normalized output:',await evaluate("import('/tests/browser/normalized-page-output.ts').then(m=>m.checkNormalizedPageOutput())"));
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(process.argv.includes('--cleanup-regressions')){
     console.log('Cleanup:',await evaluate("import('/tests/browser/cleanup-regressions.ts').then(m=>m.checkAsyncStickerPlacement())"));
     if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
@@ -236,6 +240,7 @@ try {
 
   console.log('Picture output:', JSON.stringify(output));
   if (output.meanError >= 2 || output.differentFraction >= .03) throw Error('SVG differs from editor: '+JSON.stringify(output));
+  console.log('Normalized output:',await evaluate("import('/tests/browser/normalized-page-output.ts').then(m=>m.checkNormalizedPageOutput())"));
   console.log('Blank paper:', await evaluate("import('/tests/browser/blank-page-setup.ts').then(m => m.checkBlankPageSetup())"));
   console.log('Coloring pages:', await evaluate("import('/tests/browser/coloring-page-picker.ts').then(m => m.checkColoringPagePicker())"));
   console.log('Paper view:', await evaluate("import('/tests/browser/paper-view.ts').then(m => m.checkPaperView())"));
@@ -540,7 +545,7 @@ try {
   await waitFor(`!document.querySelector('button[aria-label="Undo delete"]')`);
   const restored = await evaluate(`import('/src/app/pictures.ts').then(async ({pictureRepository}) => await pictureRepository.get(${JSON.stringify(deletedId)}))`);
   if (!restored || JSON.stringify(restored.document) !== JSON.stringify(afterPinch)) throw Error('Undo delete did not restore the saved drawing');
-  await evaluate(`import('/src/app/pictures.ts').then(({pictureRepository:r})=>r.save({...${JSON.stringify(restored)},id:'portfolio-second',title:'Second drawing',updatedAt:${restored.updatedAt}-1,format:'portrait',size:{width:24,height:32},document:{version:6,width:24,height:32,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:16777215}]}}))`);
+  await evaluate(`import('/src/app/pictures.ts').then(({pictureRepository:r})=>r.save({...${JSON.stringify(restored)},id:'portfolio-second',title:'Second drawing',printSizeMm:undefined,updatedAt:${restored.updatedAt}-1,format:'portrait',size:{width:24,height:32},document:{version:6,width:24,height:32,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:16777215}]}}))`);
   await evaluate("document.documentElement.dataset.beforeReload='yes'");
   await cdp('Page.reload');
   await waitFor('!document.documentElement?.dataset.beforeReload && !!document.querySelector(".choice-blank") && !!document.querySelector(".previous-picture:not(:disabled)")');

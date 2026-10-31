@@ -11,6 +11,7 @@ export function isPictureSummary(value: unknown): value is PictureSummary {
   const picture = value as PictureSummary;
   return typeof picture.id === 'string' && picture.id.length > 0 && typeof picture.title === 'string' &&
     typeof picture.background === 'string' && /^#[0-9a-f]{6}$/i.test(picture.background) &&
+    (!('printSizeMm' in picture) || picture.printSizeMm === undefined || validPrintSize(picture.printSizeMm,picture.size)) &&
     ['square', 'landscape', 'portrait'].includes(picture.format) && validSize(picture.size) &&
     Number.isInteger(picture.leafColor) && picture.leafColor >= 0 && picture.leafColor <= 0xffffff && Number.isFinite(picture.updatedAt);
 }
@@ -22,6 +23,11 @@ export function isSavedPicture(value: unknown): value is SavedPicture {
     picture.document.width === paperSize(picture.format, picture.size).width && picture.document.height === paperSize(picture.format, picture.size).height;
 }
 
+function validPrintSize(value: unknown, logical: unknown): boolean {
+  if(!value||typeof value!=='object')return false;
+  const size=value as {width:number;height:number};
+  return [size.width,size.height].every(n=>Number.isFinite(n)&&n>=1&&n<=2500) && validSize(logical) && Math.abs((size.width/size.height)/(logical.width/logical.height)-1)<.002;
+}
 function validSize(value: unknown): value is {
     width: number;
     height: number;

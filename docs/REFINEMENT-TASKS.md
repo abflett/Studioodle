@@ -353,6 +353,10 @@ the visual discussion. This remains the sole implementation backlog.
   receive fresh IDs, with validation/size limits and manual clipboard fallback.
 - [x] Implement template import/share separately from PNG/SVG/PDF picture output;
   verify round trips, missing assets, malformed input, collisions and storage failure.
+- [x] Default blank pages to Display aspect ratio; keep A4/A5/Photo and add
+  independent Square orientation. Normalize new pages to a 1000-unit short edge,
+  preserve physical output separately, and use 300 DPI by default. Browser checks
+  cover save/sharing, PNG dimensions, vector PDF and print sizing.
 - [x] Apply the approved blank paper/orientation and color layout, with internal
   size markings, step navigation, full palette, paper summary and shared drawing action.
 - [x] Implement [color study 01](color-overlay-examples/README.md): five 32-slot palettes,

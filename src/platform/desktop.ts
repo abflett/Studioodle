@@ -1,3 +1,4 @@
+import { svgPrintSize } from '../editor/exportResolution';
 import { invoke, isTauri } from '@tauri-apps/api/core';
 
 export const isNative = isTauri();
@@ -58,8 +59,8 @@ export async function printDesktopPicture(svg: SVGSVGElement, title: string) {
   artwork.setAttribute('aria-label', title);
   const previousTitle = document.title;
   const pageStyle = document.createElement('style');
-  const [, , width, height] = svg.getAttribute('viewBox')!.split(' ').map(Number);
-  pageStyle.textContent = `@page{size:${width! / 96}in ${height! / 96}in;margin:0}`;
+  const {width,height}=svgPrintSize(svg);
+  pageStyle.textContent = `@page{size:${width}in ${height}in;margin:0}`;
   let timeout: ReturnType<typeof setTimeout>;
   const cleanup = () => {
     artwork.remove(); pageStyle.remove(); document.title = previousTitle;

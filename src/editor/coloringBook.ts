@@ -21,6 +21,7 @@ export function coloringBookPage(source: EditorSetup, id: string, title = source
   const size = paperSize(source.format, source.size);
   const page: ColoringBookPage = {
     id, title: title.trim(), version: 6, updatedAt, format: source.format, size,
+    ...(source.printSizeMm ? { printSizeMm: {...source.printSizeMm} } : {}),
     background: '#ffffff', leafColor: 0x000000,
     document: { version: 6, paletteVersion: 1, customColors: [...(source.document.customColors ?? Array(32).fill(null))], width: size.width, height: size.height,
       surfaces: source.document.surfaces.map(s => ({

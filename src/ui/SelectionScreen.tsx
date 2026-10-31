@@ -10,7 +10,8 @@ import { isDesktop, toggleDesktopFullscreen, watchDesktopFullscreen } from '../p
 import type { AppSettings } from './settings';
 import { SelectionSettings } from './SelectionSettings';
 import { paperSize } from '../editor/document';
-import type { PaperPresetId } from '../editor/paperPresets';
+import { useDisplayPage } from './useDisplayPage';
+import type { PaperOrientation, PaperPresetId } from '../editor/paperPresets';
 import { createColoringPage } from '../editor/coloringPage';
 import { coloringPageLayoutFingerprint } from '../editor/coloringPageLayout';
 import { ColoringPageActionIcon } from './ColoringPageActionIcon';
@@ -31,7 +32,6 @@ function Arrow({ direction }: { direction: 'left' | 'right' }) {
 }
 
 type WizardStep = 'shape' | 'paper' | 'scene';
-const windowOrientation = () => window.matchMedia('(min-aspect-ratio: 1/1)').matches ? 'landscape' as const : 'portrait' as const;
 
 export function SelectionScreen({ opening = false, onOpen, onExit, theme, onThemeChange, settings, onSettingsChange }: {
   opening?: boolean;
@@ -57,16 +57,10 @@ export function SelectionScreen({ opening = false, onOpen, onExit, theme, onThem
   const [exportingPicture, setExportingPicture] = useState<SavedPicture>();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [step, setStep] = useState<WizardStep | null>(null);
-  const [paperPreset, setPaperPreset] = useState<PaperPresetId>('full');
-  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>(windowOrientation);
-  const [manualOrientation, setManualOrientation] = useState(false);
-  useEffect(() => {
-    if (manualOrientation) return;
-    const query = window.matchMedia('(min-aspect-ratio: 1/1)');
-    const update = () => setOrientation(query.matches ? 'landscape' : 'portrait');
-    update(); query.addEventListener('change', update);
-    return () => query.removeEventListener('change', update);
-  }, [manualOrientation]);
+  const [paperPreset, setPaperPreset] = useState<PaperPresetId>('display');
+  const displaySize = useDisplayPage();
+  const [manualOrientation, setOrientation] = useState<PaperOrientation>();
+  const orientation = manualOrientation ?? (displaySize.width >= displaySize.height ? 'landscape' : 'portrait');
   const [pageTurn, setPageTurn] = useState<'next' | 'previous'>();
   const [background, setBackground] = useState('#ffffff');
   const { library, saved, sampleIndex, setSampleIndex, loadCurrent, busy, previewMetadata, previewFailed, retryAttempt, currentError, retry, removePicture, restorePicture } = usePictureLibrary();
@@ -186,7 +180,7 @@ export function SelectionScreen({ opening = false, onOpen, onExit, theme, onThem
             <button className={`choice-card choice-${item.id}`} key={item.id}
               aria-label={item.id === 'blank' ? 'Draw a new picture' : 'Color a picture'}
               title={item.id === 'blank' ? 'Draw a new picture' : 'Color a picture'}
-              onClick={() => { if (item.id === 'blank') { setManualOrientation(false); setOrientation(windowOrientation()); } else setInitialSceneId(undefined); setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
+              onClick={() => { if (item.id === 'blank') { setOrientation(undefined); } else setInitialSceneId(undefined); setStep(item.id === 'blank' ? 'shape' : 'scene'); }} aria-haspopup="dialog">
               <span className="choice-art">
                 <img className="choice-illustration" src={item.artwork} alt="" aria-hidden="true" draggable={false} decoding="async" />
               </span>
@@ -240,7 +234,7 @@ export function SelectionScreen({ opening = false, onOpen, onExit, theme, onThem
       </section>
       <span className="sr-only" role="status">{pictureOpening ? 'Loading picture' : library.loading ? 'Loading saved pictures' : library.error ? 'Storage unavailable' : ''}</span>
 
-      {(step === 'shape' || step === 'paper') && <BlankPageSetup step={step} onStep={setStep} paperPreset={paperPreset} orientation={orientation} background={background} onPreset={setPaperPreset} onOrientation={value => { setManualOrientation(true); setOrientation(value); }} onBackground={setBackground} onClose={() => setStep(null)} onOpen={openPicture} />}
+      {(step === 'shape' || step === 'paper') && <BlankPageSetup displaySize={displaySize} step={step} onStep={setStep} paperPreset={paperPreset} orientation={orientation} background={background} onPreset={setPaperPreset} onOrientation={setOrientation} onBackground={setBackground} onClose={() => setStep(null)} onOpen={openPicture} />}
       {step === 'scene' && <ColoringPagePicker pages={scenes} initialPageId={initialSceneId} bundledIds={new Set(coloringPages.map(page => page.id))} onClose={() => setStep(null)} onOpen={openPicture} onAdded={() => { void refreshBooks(); }} onDelete={page => { setDeletingPage(true); setPendingDelete(page); }} />}
       {exportingPicture && <ExportPictureDialog picture={exportingPicture} onClose={() => setExportingPicture(undefined)} />}
       <DeletePictureDialog picture={pendingDelete} onCancel={() => { setPendingDelete(undefined); setDeletingPage(false); }} onConfirm={removeCurrent} />

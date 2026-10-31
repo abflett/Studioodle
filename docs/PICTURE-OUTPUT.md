@@ -15,8 +15,9 @@ The saved-picture Export button opens a native HTML dialog with three choices:
 
 Printing uses inline SVG in a browser preview or a temporary print-only desktop
 surface. The browser print window opens synchronously from the click to respect
-popup rules. Physical dimensions follow 96 scene units per inch; the print
-stylesheet requests that page size. Browser and printer settings can override
+popup rules. New normalized pages carry separate `printSizeMm` dimensions; existing drawings
+without that metadata retain 96 scene units per inch. SVG physical attributes, PDF
+page size, PNG dimensions and the print stylesheet use the same physical size. Browser and printer settings can override
 orientation, margins and scaling. No raster-print fallback is retained.
 
 Browser exports download the chosen file. Desktop exports use the corresponding

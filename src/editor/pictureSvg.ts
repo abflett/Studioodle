@@ -23,6 +23,7 @@ export async function pictureSvg(picture: EditorSetup): Promise<SVGSVGElement> {
   const hex = (color: number) => `#${resolveColor(color, picture.document?.customColors).toString(16).padStart(6, '0')}`;
   const { width, height } = picture.document ?? paperSize(picture.format, picture.size);
   const svg = element('svg', { viewBox: `0 0 ${width} ${height}`, width: `${width / 96}in`, height: `${height / 96}in` });
+  if(picture.printSizeMm){svg.setAttribute('width',`${picture.printSizeMm.width}mm`);svg.setAttribute('height',`${picture.printSizeMm.height}mm`);}
   const title = element('title'); title.textContent = picture.title; svg.append(title);
   const defs = element('defs'); svg.append(defs);
   const pageClip = element('clipPath', { id: 'page-clip', clipPathUnits: 'userSpaceOnUse' });

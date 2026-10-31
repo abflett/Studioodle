@@ -1,7 +1,7 @@
 import type { RasterSprayData } from './rasterSpray';
 import type { VectorPaintData } from './vectorPaintTypes';
 import type { StickerKind } from './stickerKinds';
-import { presetSize } from './paperPresets';
+import { normalizedPageSize } from './paperPresets';
 export type { StickerKind } from './stickerKinds';
 export type Point = {
     x: number;
@@ -20,8 +20,8 @@ export type SurfaceData = {
     vectorPaint?: VectorPaintData;
     rasterSpray?: RasterSprayData;
 };
-export const defaultPaintDpi = 150;
-export const exportScale = (dpi = defaultPaintDpi) => dpi / 96;
+export const defaultExportDpi = 300;
+export const exportScale = (dpi = defaultExportDpi) => dpi / 96;
 export type ArtworkDocument = {
     version: 6;
     paletteVersion?: 1;
@@ -36,5 +36,5 @@ export function paperSize(format: 'square' | 'landscape' | 'portrait', size?: {
 }) {
     if (size)
         return size;
-    return presetSize(format === 'square' ? 'square' : 'full', format === 'landscape' ? 'landscape' : 'portrait');
+    return normalizedPageSize({width:210,height:297},format);
 }

@@ -1,10 +1,10 @@
 import { Artwork } from './Artwork';
 import { paperSize } from './document';
-import { exportDimensions } from './exportResolution';
+import { exportDimensions, defaultExportDpi } from './exportResolution';
 import type { EditorSetup } from './setup';
 import { prepareStickers } from './vectorStickers';
 
-export async function renderPicture(picture: EditorSetup, dpi = 150) {
+export async function renderPicture(picture: EditorSetup, dpi = defaultExportDpi) {
   const { width, height } = picture.document ?? paperSize(picture.format, picture.size);
   const pixels = exportDimensions(picture, dpi);
   if (!pixels.fits) throw Error('Export exceeds the image size budget');

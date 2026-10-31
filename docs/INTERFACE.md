@@ -8,8 +8,8 @@ The splash loads the editor module, stays visible for at least two seconds and
 proceeds when ready. Home illustrations load from bundled selection assets; they do not
 require fetching or decoding the full sticker library. It does not download every sticker definition.
 
-React owns home/setup, the ribbon and overlays. Blank setup selects a physical paper
-preset, Tall/Wide orientation inferred from the window, then background color. The
+React owns home/setup, the ribbon and overlays. Blank setup selects Display or a physical paper
+preset, Tall/Wide/Square orientation, then background color. The
 page is independent of window size and starts fitted beneath the ribbon.
 
 Coloring templates arrange reusable SVG stickers. Choosing a picture prepares its
@@ -38,15 +38,15 @@ See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries
 
 ## Paper and templates
 
-Blank-page setup now offers Full page (A4, 210 × 297 mm), Half page (A5, 148 × 210 mm), Photo (4 × 6 inches), and Square (6 × 6 inches). Non-square choices support Tall/Wide orientation. Full A4 is the default, with orientation chosen from the selection window aspect ratio (Wide for a landscape window, Tall for a portrait window). It follows window rotation/resizing until the user selects an orientation manually; opening a new blank-page wizard resets this automatic choice. Background-color selection follows as before.
+Blank-page setup defaults to Display, labeled with the device screen aspect ratio (for example 16:9), falling back to the window when screen dimensions are unavailable. A4, A5 and 4 x 6 inch Photo remain available. Tall, Wide and Square are independent orientation choices; Square uses the preset's shorter edge. Automatic orientation follows the display until manually selected and resets when opening a new blank-page wizard.
 
-Dimensions are converted to rounded integer scene units at 96 units per inch, stored in the existing explicit `size` field, and painted as resolution-independent vectors. PNG output defaults to 300 DPI, with 150/600 DPI choices; print, SVG and PDF retain vectors at the document size. The page is fitted to the available window, so choosing larger print dimensions does not change the fit-relative zoom baseline. Physical dimensions are accurate to scene-coordinate rounding. Version-5 saves store their explicit page dimensions. Older development save formats have been retired.
+New pages use a stable 1000-unit short edge, with the longer edge derived from the chosen ratio. Saved geometry never follows window resizing or device density; the viewport fits the page and renders at native device-pixel density. Physical dimensions live separately in `printSizeMm`: A4/A5/Photo retain their real sizes, while Display uses a 210 mm short edge as its output reference. PNG defaults to 300 DPI, with 150/600 choices; SVG, PDF and printing retain vectors at that physical size. Existing saved and bundled layouts keep their explicit dimensions.
 
 Newly added stickers preserve aspect ratio and vector paint detail, shrink if necessary to fit within 60% of both page dimensions, and start entirely on the page. Small assets are not enlarged. Placement uses the visible silhouette bounds; subsequent selection resizing/movement retains the existing controls. Existing scene placements and duplicates are not automatically fitted.
 
 ### Coloring pages and previews
 
-Built-in coloring pages use full A4 landscape paper (1123 x 794 scene units), matching the full-page blank preset. The authored arrangement scales uniformly and centers on that paper; saved documents retain their original dimensions.
+Built-in coloring pages use full A4 landscape paper (1123 x 794 scene units), retaining their authored coordinates independently of new blank-page normalization. The authored arrangement scales uniformly and centers on that paper; saved documents retain their original dimensions.
 
 Saved-picture and coloring-page previews render vector ink directly at their displayed device-pixel dimensions. A thumbnail-only minimum stroke weight keeps thin outlines visible; exports and editable artwork retain their original line weights. Preview sizing is controlled by CSS rather than the changing raster backing dimensions.
 
@@ -179,12 +179,10 @@ Delete appears only for custom pages. See [Coloring books](COLORING-BOOKS.md).
 
 ## Blank page setup overlays
 
-The reviewed two-step blank-page layout is implemented. Size markings (A4, A5,
-4 x 6 in, 6 x 6 in) sit inside solid folded paper artwork rather than below it.
-The selected preset has a gold paper face and highlighted well; physical size
-ratios, dimensions and orientation behavior are unchanged. Tall/Wide controls are
-icon-only with accessible labels; square disables orientation without clearing
-the prior choice. The paper and palette step icons provide direct back/forward
+The two-step blank-page layout shows Display's ratio and A4/A5/Photo markings
+inside folded paper artwork. The selected preset has a gold paper face and
+highlighted well. Tall/Wide/Square controls are icon-only with accessible labels.
+The paper and palette step icons provide direct back/forward
 navigation while keeping selections intact. Redundant headings/captions are
 visually hidden; dialog names, focus management and tooltips remain.
 
