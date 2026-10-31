@@ -91,7 +91,9 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 ## Current interface
 
-Collapse occupies a normal main-ribbon slot without a reserved side gutter. Up to
+Both ribbon rows center all visible controls with even spacing. Collapse occupies
+a normal final main-ribbon slot without a reserved side gutter, and desktop
+selection ends with Duplicate, Focus, Delete. Up to
 800px wide, ordinary sticker selection omits Duplicate, retaining ten
 controls. Focus uses an eye icon and shows only a floating X exit button
 on all displays, with the transparent outline/glow of the ribbon reopen control

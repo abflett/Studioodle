@@ -155,7 +155,8 @@ Non-spray brush strokes blend input samples to damp hand jitter and use rounded 
 
 ## Editor ribbons
 
-Main and sticker ribbons each remain a single row at every width. Spacing and
+Main and sticker ribbons each remain a centered single row at every width, with
+even control spacing and no separate Delete or Collapse gutter. Spacing and
 icons compress on narrow screens while keeping every action visible. Up to 800px
 wide, the submenu fills the screen width with 44px buttons and reduced padding;
 larger displays keep the inset rounded drawer. Full-width shadow masks also use
@@ -170,6 +171,9 @@ Home is separate because it leaves the workspace. View and selection controls fo
 The borderless controls use compact outer ribbon padding. On narrow screens, the primary ribbon stays on one row and shares the available width between all eleven buttons, including Collapse. Buttons use 52px targets on wide screens and 44px height on compact screens, with widths adapting to the available space, accessible names, desktop title tooltips, visible keyboard focus, and selected-tool feedback. The color picker uses a neutral palette icon with a separate current-color dot so the icon remains visible for very light or dark colors.
 
 The selected-sticker ribbon is also icon-only. Shrink/grow and counterclockwise/clockwise rotation use directional icons, with grouped pairs, named actions, and desktop tooltips. Done is omitted on every screen. At widths up to 800px, Duplicate is also omitted, leaving ten actions including Focus and Delete; larger displays retain Duplicate. Another tool, another press of Select, or an empty-space tap leaves ordinary selection.
+
+The desktop row ends with Duplicate, Focus, Delete; small screens end with Focus,
+Delete. All actions share the same spacing.
 
 Focus uses an eye icon and replaces the submenu with a single X exit
 button floating below the ribbon. Its transparent circular outline and subtle glow

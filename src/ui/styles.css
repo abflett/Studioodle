@@ -248,7 +248,6 @@ button:disabled { opacity: .35; cursor: var(--app-cursor-default, default); tran
 .art-ribbon.sticker-ribbon { display: flex; gap: 6px; }
 .sticker-ribbon .sticker-adjustment { display: flex; padding: 0 8px 0 0; }
 .sticker-ribbon .sticker-adjustment > div { gap: 4px; }
-.sticker-ribbon button[aria-label='Delete'] { margin-left: 6px; }
 @media (max-width: 600px) {
   .art-ribbon.main-ribbon { gap: 6px 8px; padding-left: 6px; padding-right: 6px; }
   .main-ribbon .ribbon-group { gap: 2px; }
@@ -1048,10 +1047,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 .ribbon-shell .sticker-ribbon.is-focused { top: calc(100% + 8px); width: 48px; padding: 0; grid-template-columns: minmax(0, 1fr); background: none; box-shadow: none; }
 .ribbon-shell .sticker-ribbon.is-focused button { height: 48px; padding: 10px; border-radius: 50%; }
 .ribbon-shell .art-ribbon button svg { width: min(32px, 100%); flex-shrink: 1; }
-@media (min-width: 801px) {
-  .ribbon-shell .main-ribbon .ribbon-group:first-child button,
-  .ribbon-shell .main-ribbon .ribbon-collapse { margin-left: auto; }
-}
 @media (max-width: 800px) {
   .layer-shadow-caster[data-shadow^='submenu-'] { border-radius: 0; }
   .ribbon-shell .sticker-ribbon { width: 100%; max-width: 100%; border-radius: 0; gap: 2px; padding: 6px max(4px, env(safe-area-inset-right)) 4px max(4px, env(safe-area-inset-left)); }

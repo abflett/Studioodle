@@ -41,6 +41,8 @@ export async function checkRibbonCollapse(){
    assert(fill.backgroundImage==='none'&&parseFloat(fill.borderRadius)>0&&parseFloat(fill.borderRadius)<=10,'Ribbon feedback uses softly rounded tiles');
    if(innerWidth<=800)assert(getComputedStyle(drawerHost.querySelector('.sticker-ribbon')!).borderBottomLeftRadius==='0px','Full-width submenu has square corners');
    assert(buttons.length===(innerWidth<=800?10:11)&&buttons.every(b=>Math.abs(b.top-buttons[0]!.top)<1&&b.left>=drawer.left&&b.right<=drawer.right),'Selection controls stay in one visible row, with fewer actions on small screens');
+   assert(Math.abs((buttons[0]!.left+buttons.at(-1)!.right)/2-innerWidth/2)<1,'Submenu controls are centered without a separate Delete gap');
+   if(innerWidth>800){const labels=[...drawerHost.querySelectorAll('button')].map(b=>b.getAttribute('aria-label'));assert(labels.indexOf('Duplicate')<labels.indexOf('Focus on this sticker (F)'),'Desktop Duplicate precedes Focus');}
    let finished=false;
    drawerRoot.render(createElement(StickerSelectionToolbar,{bridge:createEditorBridge(),focused:true,order:{forward:true,backward:true},drawerRef:{current:null},onFocus:()=>{},onFinish:()=>{finished=true;}}));await settle();
    assert(drawerHost.querySelectorAll('button').length===1&&!!drawerHost.querySelector('[aria-label="Exit focus"]'),'Focus has a single Done action');
@@ -49,9 +51,9 @@ export async function checkRibbonCollapse(){
    drawerHost.querySelector<HTMLButtonElement>('[aria-label="Exit focus"]')!.click();assert(finished,'Focused Done exits focus');
   }finally{drawerRoot.unmount();drawerHost.remove();}
   const rows=host.querySelectorAll('.main-ribbon');
-  for(const row of rows){const boxes=[...row.querySelectorAll('button')].map(b=>b.getBoundingClientRect());assert(boxes.every(b=>Math.abs(b.top-boxes[0]!.top)<1),'Main ribbon stays on one row: '+JSON.stringify(boxes));}
+  for(const row of rows){const boxes=[...row.querySelectorAll('button')].map(b=>b.getBoundingClientRect());assert(boxes.every(b=>Math.abs(b.top-boxes[0]!.top)<1),'Main ribbon stays on one row: '+JSON.stringify(boxes));assert(Math.abs((boxes[0]!.left+boxes.at(-1)!.right)/2-innerWidth/2)<1,'Main ribbon controls are centered as one evenly spaced row');}
   const collapse=button('Hide tools').getBoundingClientRect();
-  assert(collapse.right<=innerWidth&&innerWidth-collapse.right<=20&&collapse.top<12,'Collapse is at the ribbon top right');
+  assert(collapse.right<=innerWidth&&collapse.top<12&&host.querySelector('.main-ribbon')!.lastElementChild===button('Hide tools'),'Collapse occupies the final slot of the centered ribbon');
   for(const tool of host.querySelectorAll('.main-ribbon button')){
    if(tool===button('Hide tools'))continue;
    const box=tool.getBoundingClientRect();assert(box.right<=collapse.left||box.bottom<=collapse.top||box.top>=collapse.bottom,'Ribbon tools do not overlap collapse');
