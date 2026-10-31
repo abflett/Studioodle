@@ -89,7 +89,10 @@ try {
     await fs.writeFile('work/tests/save-performance-results.json', JSON.stringify(metrics, null, 2));
     console.log('Save performance:', JSON.stringify(metrics));
   }else if(process.argv.includes('--ribbon')){
-    console.log('Ribbon:',await evaluate("import('/tests/browser/ribbon-collapse.ts').then(m=>m.checkRibbonCollapse())"));
+    for(const width of [1280,390,320]){
+      await cdp('Emulation.setDeviceMetricsOverride',{width,height:800,deviceScaleFactor:1,mobile:false});
+      console.log(`Ribbon ${width}px:`,await evaluate("import('/tests/browser/ribbon-collapse.ts').then(m=>m.checkRibbonCollapse())"));
+    }
     console.log('Paper view:',await evaluate("import('/tests/browser/paper-view.ts').then(m=>m.checkPaperView())"));
     if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(process.argv.includes('--blank-pages')){

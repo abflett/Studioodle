@@ -36,9 +36,11 @@ Old development save formats are intentionally unsupported. See [the sticker pip
 the authoring format, region maps, loading/caches and cleanup decisions.
 See [architecture](ARCHITECTURE.md) for repository, output and engine boundaries.
 
-The ribbon's Hide tools chevron releases its space to the canvas. A 44px floating
-Show tools button at the top right restores it, with translucent white backing,
-dark icon and subtle shadow for legibility over artwork. Fit mode expands/refits
+The ribbon's Hide tools chevron releases its space to the canvas. A floating
+Show tools button at the top right restores it. Both controls use transparent
+centers, 75%-opaque white borders/chevrons, subtle shadows and a light white hover
+film. The ribbon reserves space for the collapse control at its top right.
+Fit mode expands/refits
 with the workspace; manual zoom keeps its scale and center artwork point. Keyboard
 focus transfers between the two controls. Hidden tools are excluded from tab order,
 while drawing shortcuts remain available. Visibility resets for each editor session.

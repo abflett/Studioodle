@@ -194,13 +194,11 @@ export default function EditorPreview({ setup, onBack, settings }: { setup: Edit
       <div className="ribbon-group" role="group" aria-label="History">
         <button title="Undo (Ctrl/Cmd+Z or Backspace)" aria-keyshortcuts="Control+Z Meta+Z Backspace" aria-label="Undo" onClick={() => bridge.send({ type: 'undo' })}><Undo2 aria-hidden="true" /></button>
       </div>
-      <div className="ribbon-group" role="group" aria-label="Ribbon visibility">
-        <button ref={collapseButton} title="Hide tools" aria-label="Hide tools" aria-expanded="true" aria-controls="editor-ribbon" onClick={toggleRibbon}><ChevronUp aria-hidden="true" /></button>
-      </div>
     </header>
+      <button ref={collapseButton} className="ribbon-toggle ribbon-collapse" title="Hide tools" aria-label="Hide tools" aria-expanded="true" aria-controls="editor-ribbon" onClick={toggleRibbon}><ChevronUp aria-hidden="true" /></button>
       {((tool === 'select' && selected) || focused) && <StickerSelectionToolbar bridge={bridge} focused={!!focused} order={selectionOrder} drawerRef={selectionDrawer} onFocus={focusSelection} onFinish={finishSelection} />}
     </div>
-    {ribbonHidden && <button ref={reopenButton} className="ribbon-reopen" title="Show tools" aria-label="Show tools" aria-expanded="false" aria-controls="editor-ribbon" onClick={toggleRibbon}><ChevronDown aria-hidden="true" /></button>}
+    {ribbonHidden && <button ref={reopenButton} className="ribbon-toggle ribbon-reopen" title="Show tools" aria-label="Show tools" aria-expanded="false" aria-controls="editor-ribbon" onClick={toggleRibbon}><ChevronDown aria-hidden="true" /></button>}
     <section className={`art-canvas ${tool === 'pan' ? 'pan-mode' : ''} ${focused ? 'focus-mode' : ''}`} ref={viewport} style={cursorStyle} aria-label="Drawing canvas" tabIndex={0} {...gestureHandlers}>
       <PrecisionFillFeedback aim={precisionFill.aim} magnified={precisionFill.magnified} releasedAim={precisionFill.releasedAim} />
       <div className="canvas-envelope" style={{ transform: `translate(${position.x}px, ${position.y}px)` }}>

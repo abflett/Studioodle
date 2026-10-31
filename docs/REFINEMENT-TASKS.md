@@ -353,7 +353,7 @@ the visual discussion. This remains the sole implementation backlog.
   receive fresh IDs, with validation/size limits and manual clipboard fallback.
 - [x] Implement template import/share separately from PNG/SVG/PDF picture output;
   verify round trips, missing assets, malformed input, collisions and storage failure.
-- [x] Add ribbon collapse and a floating translucent reopen control. Fit follows
+- [x] Add ribbon collapse and a floating transparent reopen control. Fit follows
   workspace expansion; manual zoom/center and keyboard focus survive the toggle.
 - [x] Default blank pages to Display aspect ratio; keep A4/A5/Photo and add
   independent Square orientation. Normalize new pages to a 1000-unit short edge,
