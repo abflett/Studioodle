@@ -111,6 +111,17 @@ try {
     console.log('Startup profile:',JSON.stringify(result));
     await fs.writeFile(`work/tests/startup-${process.argv.includes('--stock-startup')?'before':'after'}.json`,JSON.stringify(result,null,2));
     if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
+  }else if(process.argv.includes('--selection-layout')){
+    for(const [width,height] of [[667,375],[568,320],[844,390],[1280,720],[1920,1080],[1024,768],[375,667],[390,844]]){
+      await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+      for(const theme of ['light','dark']){
+        console.log('Selection layout:',await evaluate(`import('/tests/browser/selection-layout.ts').then(m=>m.showSelectionLayout('${theme}'))`));
+        const shot=await cdp('Page.captureScreenshot',{format:'png'});
+        await fs.writeFile(`work/tests/selection-${width}x${height}-${theme}.png`,Buffer.from(shot.data,'base64'));
+        await evaluate("import('/tests/browser/selection-layout.ts').then(m=>m.closeSelectionLayout())");
+      }
+    }
+    if(runtimeErrors.length)throw Error(JSON.stringify(runtimeErrors));
   }else if(process.argv.includes('--gallery-loading')){
     const layouts=[];
     for(const [width,height] of [[1280,900],[390,844],[320,568],[844,390]]){

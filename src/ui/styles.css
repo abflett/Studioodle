@@ -653,14 +653,6 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .saved-picture-card .library-actions { gap: 8px; min-height: 32px; }
   .saved-picture-card .library-actions .icon-button::before { inset: -8px -4px; }
 }
-/* Short landscape screens can use the top center; utility buttons occupy the right corner. */
-@media (max-height: 540px) and (min-aspect-ratio: 1/1) {
-  .selection-screen { padding-top: max(12px, env(safe-area-inset-top)); }
-  .selection-screen .selection { --object-height: min(170px, calc((100dvh - 120px) / 2)); }
-}
-@media (max-height: 540px) and (min-aspect-ratio: 1/1) and (max-width: 720px) {
-  .selection .choice-grid { width: min(100%, calc(var(--object-height) * 3), calc(100vw - 280px)); translate: -48px 0; }
-}
 @media (prefers-reduced-motion: reduce) {
   .portfolio-page.turn-next, .portfolio-page.turn-previous { animation: none; }
   .saved-picture-card, .selection .choice-art { transition: none; }
@@ -1007,3 +999,21 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
 /* Editing feedback and notices sit above the decorative layer shadows. */
 .art-studio .precision-fill-aim { z-index: 4; }
 .art-studio .save-notice { z-index: 5; }
+
+/* Landscape home: Blank left, controls above Pages right, gallery across the base. */
+@media (min-aspect-ratio: 1/1) {
+  .selection-screen { padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+  .selection-screen .selection { --object-height: clamp(48px, calc(46dvh - 66px), 300px); --home-controls-height: clamp(56px, 18dvh, 88px); width: 100%; height: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: var(--home-controls-height) minmax(0, calc(54% - var(--home-controls-height))) minmax(0, 46%); gap: 0; }
+  .selection .selection-preferences { position: static; inset: auto; grid-column: 2; grid-row: 1; align-self: start; justify-self: end; padding: 0 8px; }
+  .selection .choice-grid { display: contents; }
+  .selection .choice-grid .choice-card { width: min(96%, 700px); padding: 0; translate: none; justify-self: center; }
+  .selection .choice-grid .choice-art { height: 100%; }
+  .selection .choice-blank { grid-column: 1; grid-row: 1 / 3; height: min(80%, 480px); align-self: start; margin-top: 4px; }
+  .selection .choice-coloring { grid-column: 2; grid-row: 2; height: min(100%, 480px); align-self: end; }
+  .selection .previous-section { grid-column: 1 / -1; grid-row: 3; width: 100%; height: 100%; translate: none; }
+  .previous-section .picture-carousel { --browse-size: clamp(44px, 5.8dvh, 56px); width: min(720px, 100%); grid-template-columns: var(--browse-size) minmax(0, calc(var(--object-height) * 1.5)) var(--browse-size); justify-content: center; gap: 12px; }
+  .selection .saved-picture-card { padding: 0; gap: 6px; }
+  .previous-section .picture-carousel > .icon-button { margin-top: calc((var(--object-height) - var(--browse-size)) / 2); }
+  .selection .saved-picture-card .library-actions { min-height: 44px; gap: 10px; }
+  .previous-section .library-actions .icon-button { width: 44px; height: 44px; padding: 11px; }
+}

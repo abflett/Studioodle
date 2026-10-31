@@ -9,7 +9,7 @@ import type { SavedPicture } from '../../src/editor/savedPicture';
 let cleanup: (()=>void)|undefined;
 let assets: Promise<unknown>|undefined;
 const wait=async(test:()=>unknown)=>{for(let i=0;i<1000;i++){if(test())return;await new Promise(r=>setTimeout(r,15));}throw Error('Loading layout did not settle');};
-export async function showGalleryLoading(format:'portrait'|'square'|'landscape',phase:'thumbnail'|'opening') {
+export async function showGalleryLoading(format:'portrait'|'square'|'landscape',phase:'thumbnail'|'opening',count=1) {
  await (assets ??= prepareStudio(()=>{}));
  cleanup?.();
  const app=document.querySelector<HTMLElement>('#root')!,display=app.style.display;app.style.display='none';
@@ -18,7 +18,7 @@ export async function showGalleryLoading(format:'portrait'|'square'|'landscape',
  const size=format==='portrait'?{width:240,height:320}:format==='landscape'?{width:320,height:240}:{width:240,height:240};
  const picture:SavedPicture={id:'loading-layout',title:'Loading layout',version:6,updatedAt:1,format,size,background:'#ffffff',leafColor:0,document:{version:6,...size,surfaces:[{id:'paper',kind:'canvas',x:0,y:0,color:0xffffff}]}};
  let finish:((value:SavedPicture)=>void)|undefined;
- pictureRepository.list=async()=>[pictureSummary(picture)];
+ pictureRepository.list=async()=>Array.from({length:count},(_,i)=>pictureSummary({...picture,id:i?picture.id+'-'+i:picture.id,updatedAt:1+i}));
  pictureRepository.get=()=>new Promise(resolve=>{finish=resolve;});
  pictureThumbnails.get=(_picture,signal)=>new Promise((_resolve,reject)=>{signal?.addEventListener('abort',()=>reject(new DOMException('Cancelled','AbortError')),{once:true});});
  const show=(opening=false)=>root.render(createElement(SelectionScreen,{opening,onOpen:()=>show(true),onExit:()=>{},theme:'light',onThemeChange:()=>{},settings:{advancedPainting:true,mouseSpeed:100},onSettingsChange:()=>{}}));

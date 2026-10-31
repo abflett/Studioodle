@@ -115,6 +115,10 @@ and center artwork point across layout changes. Toggle focus follows the visible
 control; ribbon visibility is session-local and does not alter saved artwork.
 
 The wordless selection screen uses the easel, open book and saved-art stack.
+Landscape uses a full-height grid: Blank occupies the upper left, studio controls
+sit above Pages on the upper right, and the gallery spans the lower band. Large
+artwork scales within those regions from iPhone SE landscape through desktop;
+controls keep 44px touch targets. Portrait retains its staggered layout.
 Preserve paper aspect ratios/masks, full-bleed artwork, stable carousel geometry
 and subtle artwork-only hover scaling. Loading sits beneath the branded stack
 logo, outside the rotated preview mask. Opening hides the front sheet/actions

@@ -4,6 +4,15 @@ Current user-facing behavior; implementation boundaries are in [architecture](AR
 
 ## Startup and navigation
 
+Landscape selection uses the user's sketched regions: Blank at upper left,
+settings/fullscreen/exit at upper right with Pages beneath, and a centered saved
+picture carousel across the full-width lower band. The main split is approximately
+54% / 46%; artwork grows inside its allocated region instead of reserving a full
+utility row above both choices. Gallery arrows flank the stack and actions sit
+under it. Utility/action targets stay at least 44px, including 568 x 320 and
+667 x 375 phone landscapes. Desktop uses the same arrangement; portrait retains
+the existing staggered choices and gallery layout.
+
 The splash loads the editor module, stays visible for at least two seconds and
 proceeds when ready. Home illustrations load from bundled selection assets; they do not
 require fetching or decoding the full sticker library. It does not download every sticker definition.

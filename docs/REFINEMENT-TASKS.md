@@ -356,6 +356,9 @@ the visual discussion. This remains the sole implementation backlog.
 - [x] Use receiver-aware editor shadow tiers: 1 for adjacent glass/paper layers,
   2 across two gaps, 3 from ribbon to desk. Pixel checks compare the five marked
   regions and verify matching contact shadows plus progressively softer reach.
+- [x] Rework landscape selection into Blank left, controls above Pages right,
+  and a full-width gallery band below; validate SE phone sizes, tablets and desktop
+  in both themes, with portrait regression checks and 44px utility targets.
 - [x] Add ribbon collapse and a floating transparent reopen control. Fit follows
   workspace expansion; manual zoom/center and keyboard focus survive the toggle.
 - [x] Default blank pages to Display aspect ratio; keep A4/A5/Photo and add
