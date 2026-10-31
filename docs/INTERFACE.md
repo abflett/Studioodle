@@ -160,6 +160,10 @@ Non-spray brush strokes blend input samples to damp hand jitter and use rounded 
 
 ## Editor ribbons
 
+On full-screen small-device brush overlays, the tip, size and preview/apply controls
+form a vertically centered group. Close remains independently anchored at the top
+right. The desktop brush overlay retains its compact layout.
+
 Main tools and sticker actions each remain a centered single row at every width,
 with even control spacing and no separate Delete gutter. Desktop Collapse is
 anchored independently at the top right; compact screens include it in the row. Spacing and

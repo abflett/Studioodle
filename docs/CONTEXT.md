@@ -91,6 +91,9 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 
 ## Current interface
 
+Full-screen brush overlays center their tip/size/preview controls in both portrait
+and short landscape views, keeping Close at its original top-right position.
+
 Both ribbon rows center their tools with even spacing. Desktop Collapse is anchored
 at the top right independently; compact screens include it as the final slot
 without a reserved side gutter. Desktop
