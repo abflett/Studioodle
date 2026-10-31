@@ -92,9 +92,10 @@ internal books remain version 2. See PICTURE-OUTPUT.md and COLORING-BOOKS.md.
 ## Current interface
 
 Ribbon, sticker submenu and letterboxing share one viewport-aligned scene image. The submenu centers with auto margins (no transform), so its fixed
-background keeps the same origin, with a deliberate 3px/2px image displacement
-for subtle glass refraction. The drawer tucks 4px beneath the opaque main ribbon;
-both cast independent shadows. The workspace retains its separate theme tint
+background keeps the same origin, with deliberate image displacement for glass refraction:
+4px/3px on the top ribbon and 2px/1px on its submenu. The drawer tucks 4px beneath the opaque main ribbon;
+both cast soft, shallow shadows. The paper has the strongest contact and ambient
+shadow above the tinted letterboxing. The workspace retains its separate theme tint
 to distinguish layers; focus mode retains its spotlight background.
 Pixel comparisons cover both themes and desktop/phone widths.
 
