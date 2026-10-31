@@ -230,8 +230,9 @@ overlay presses do not start painting.
 On portrait screens, Grid occupies the upper-left position with Favorites directly
 below it. The six categories form a centered 3 x 2 well, with the centered detail
 well beneath. The single-page preview uses nearly the full width, with Previous and
-Next centered beneath it rather than occupying side gutters. Larger layouts retain
-the wide arrangement.
+Next in a dedicated row eight pixels beneath it rather than occupying side gutters.
+The preview shares the same side inset as the dialog controls. Larger layouts
+retain the wide arrangement.
 
 The approved Focus layout is now in the app. There is no visible dialog heading;
 accessible names/tooltips remain. Categories and terrain detail toggles sit above

@@ -752,10 +752,12 @@ input[type='checkbox'], input[type='radio'], input[type='button'], input[type='s
   .page-categories { position: absolute; top: 0; left: 50%; display: grid; grid-template-columns: repeat(3, 44px); transform: translateX(-50%); }
   .page-details { position: absolute; top: 100px; left: 50%; transform: translateX(-50%); }
   .coloring-picker .page-favorites-filter { position: absolute; top: 52px; left: 0; }
-  .coloring-picker-body[data-grid='false'] .page-browse-content { padding: 0 4px 54px; }
-  .coloring-picker-body[data-grid='false'] .page-browse-arrow { top: auto; bottom: 0; width: 44px; min-width: 44px; padding: 8px; transform: none; }
-  .coloring-picker-body[data-grid='false'] .page-previous { left: 50%; margin-left: -56px; }
-  .coloring-picker-body[data-grid='false'] .page-next { right: 50%; margin-right: -56px; }
+  .coloring-picker-body[data-grid='false'] .page-browse-content { display: grid; grid-template-columns: 1fr 44px 16px 44px 1fr; grid-template-rows: minmax(0, 1fr) 44px; gap: 8px 0; padding: 0; }
+  .coloring-picker-body[data-grid='false'] .coloring-page-single { grid-column: 1 / -1; grid-row: 1; align-items: end; }
+  .coloring-picker-body[data-grid='false'] .coloring-page-sheet { width: min(100cqw, calc(100cqh * var(--page-ratio))); }
+  .coloring-picker-body[data-grid='false'] .page-browse-arrow { position: static; width: 44px; min-width: 44px; padding: 8px; transform: none; }
+  .coloring-picker-body[data-grid='false'] .page-previous { grid-column: 2; grid-row: 2; }
+  .coloring-picker-body[data-grid='false'] .page-next { grid-column: 4; grid-row: 2; }
   .coloring-page-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 14px 10px; }
   .coloring-page-grid .page-heart { width: 30px; height: 30px; min-width: 30px; min-height: 30px; }
   .coloring-page-grid .page-heart svg { width: 18px; height: 18px; }
